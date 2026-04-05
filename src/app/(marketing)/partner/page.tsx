@@ -156,16 +156,14 @@ export default function PartnerPage() {
             <div className="flex flex-col lg:flex-row">
               {/* Left panel */}
               <div className="flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F0FDF4] to-white px-10 py-10 lg:w-72 border-b lg:border-b-0 lg:border-r border-[#E2E8F0]">
-                {/* Avatar with ring */}
+                {/* Portrait */}
                 <div className="relative">
-                  <div className="h-48 w-48 rounded-full bg-[#F8FAFC] ring-4 ring-[#059669]/20 shadow-lg overflow-hidden flex items-start justify-center pt-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/rohit-sethi.png"
-                      alt="Rohit Sethi"
-                      className="w-40 object-contain"
-                    />
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/rohit-sethi.png"
+                    alt="Rohit Sethi"
+                    className="w-52 drop-shadow-xl"
+                  />
                   <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#059669] px-3 py-1 text-xs font-semibold text-white shadow">
                     Master Franchise – India
                   </span>
