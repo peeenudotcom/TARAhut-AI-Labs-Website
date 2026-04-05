@@ -140,7 +140,7 @@ export default function PartnerPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Backed by Industry Expertise</h2>
           <p className="max-w-3xl mx-auto text-[#475569] mb-10">
-            Uplrn AI Labs is proud to be supported by strong industry leadership.
+            Uplrn AI Labs is supported by proven leaders with deep experience in scaling distribution and education businesses across India.
           </p>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8 border border-[#E2E8F0] flex flex-col sm:flex-row items-center gap-8 text-left">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -151,17 +151,18 @@ export default function PartnerPage() {
             />
             <div>
               <h3 className="text-2xl font-semibold text-[#0F172A] mb-1">Rohit Sethi</h3>
-              <p className="text-[#059669] font-medium mb-4">Director, My Visa Guide (MVG)</p>
+              <p className="text-[#059669] font-medium mb-4">Director, My Visa Guide (MVG) | Master Franchise Partner – India</p>
               <p className="text-[#475569] leading-relaxed">
-                My Visa Guide (MVG), established in 2018, is one of India&apos;s leading overseas
-                career consulting organizations, known for its strong reputation and client trust.
-                A significant portion of their clients come through word-of-mouth — a testament
-                to their credibility and service quality.
+                Rohit Sethi brings over 20 years of experience in building and scaling distribution networks across India, including his long-standing association as a distributor with Unilevel.
               </p>
-              <p className="text-[#475569] leading-relaxed mt-4">
-                As the <strong className="text-[#0F172A]">Master Franchise Partner for India</strong>, Rohit Sethi brings
-                deep industry expertise, operational strength, and a proven track record in scaling
-                education and migration services across the country.
+              <ul className="text-[#475569] mt-5 space-y-2">
+                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Extensive experience in developing and managing large-scale partner networks</li>
+                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Strong understanding of ground-level operations in tier-2 and tier-3 markets</li>
+                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Proven track record in scaling education and service-based businesses</li>
+                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Deep expertise in franchise growth, partner onboarding, and retention</li>
+              </ul>
+              <p className="text-[#475569] leading-relaxed mt-5">
+                As the <strong className="text-[#0F172A]">Master Franchise Partner for India</strong>, he ensures that every Uplrn AI Labs partner receives the right guidance, systems, and support to build a sustainable and profitable AI training center.
               </p>
             </div>
           </div>
