@@ -136,41 +136,90 @@ export default function PartnerPage() {
       </section>
 
       {/* Backed by Industry Expertise */}
-      <section className="py-16 bg-[#F8FAFC] text-center">
+      <section className="py-20 bg-[#F8FAFC]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Backed by Industry Expertise</h2>
-          <p className="max-w-3xl mx-auto text-[#475569] mb-10">
-            Uplrn AI Labs is supported by experienced industry leaders with a proven track record in education, migration, and large-scale business distribution.
-          </p>
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8 border border-[#E2E8F0] flex flex-col sm:flex-row items-start gap-8 text-left">
-            <div className="flex-shrink-0 flex flex-col items-center gap-3 sm:w-64">
-              <div className="h-64 w-64 rounded-full overflow-hidden border-4 border-[#059669]/20 shadow-md bg-white">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/rohit-sethi.png"
-                  alt="Rohit Sethi"
-                  className="w-full h-full object-contain object-top scale-110"
-                />
+          <div className="text-center mb-12">
+            <span className="inline-block rounded-full bg-[#059669]/10 px-4 py-1.5 text-sm font-medium text-[#059669] mb-4">
+              Industry Leadership
+            </span>
+            <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Backed by Industry Expertise</h2>
+            <p className="max-w-2xl mx-auto text-[#475569]">
+              Uplrn AI Labs is supported by experienced industry leaders with a proven track record in education, migration, and large-scale business distribution.
+            </p>
+          </div>
+
+          {/* Profile Card */}
+          <div className="max-w-4xl mx-auto overflow-hidden rounded-2xl border border-[#E2E8F0] shadow-lg bg-white">
+            {/* Green accent bar */}
+            <div className="h-2 bg-gradient-to-r from-[#059669] to-[#0D9488]" />
+
+            <div className="flex flex-col lg:flex-row">
+              {/* Left panel */}
+              <div className="flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F0FDF4] to-white px-10 py-10 lg:w-72 border-b lg:border-b-0 lg:border-r border-[#E2E8F0]">
+                {/* Avatar with ring */}
+                <div className="relative">
+                  <div className="h-48 w-48 rounded-full bg-white ring-4 ring-[#059669]/20 shadow-lg overflow-hidden flex items-end justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/rohit-sethi.png"
+                      alt="Rohit Sethi"
+                      className="w-44 object-contain"
+                    />
+                  </div>
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#059669] px-3 py-1 text-xs font-semibold text-white shadow">
+                    Master Franchise – India
+                  </span>
+                </div>
+                <div className="text-center mt-4">
+                  <h3 className="text-xl font-bold text-[#0F172A]">Rohit Sethi</h3>
+                  <p className="text-sm text-[#059669] font-medium mt-1">Director, My Visa Guide (MVG)</p>
+                </div>
+                {/* Stats */}
+                <div className="w-full mt-2 grid grid-cols-2 gap-3">
+                  <div className="rounded-xl bg-white border border-[#E2E8F0] p-3 text-center shadow-sm">
+                    <p className="text-2xl font-bold text-[#059669]">20+</p>
+                    <p className="text-xs text-[#475569] mt-0.5">Years Experience</p>
+                  </div>
+                  <div className="rounded-xl bg-white border border-[#E2E8F0] p-3 text-center shadow-sm">
+                    <p className="text-2xl font-bold text-[#059669]">2018</p>
+                    <p className="text-xs text-[#475569] mt-0.5">MVG Founded</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold text-[#0F172A] mb-1">Rohit Sethi</h3>
-              <p className="text-[#059669] font-medium mb-4">Director, My Visa Guide (MVG) | Master Franchise Partner – India</p>
-              <p className="text-[#475569] leading-relaxed">
-                Rohit Sethi is the Director of My Visa Guide (MVG), one of India&apos;s leading overseas career consulting organizations, established in 2018. Known for its strong reputation and high client trust, a significant portion of MVG&apos;s business comes through word-of-mouth referrals.
-              </p>
-              <p className="text-[#475569] leading-relaxed mt-4">
-                Alongside his success in the visa and education industry, he brings over 20 years of experience in building and scaling distribution networks across India, including his long-standing association as a distributor with Unilevel.
-              </p>
-              <ul className="text-[#475569] mt-5 space-y-2">
-                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Expertise in building and managing large-scale partner and franchise networks</li>
-                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Strong understanding of tier-2 and tier-3 market dynamics</li>
-                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Proven ability to scale education and service-based businesses</li>
-                <li className="flex items-start gap-2"><span className="text-[#059669] font-bold mt-0.5">✔</span> Deep experience in partner onboarding, training, and long-term support</li>
-              </ul>
-              <p className="text-[#475569] leading-relaxed mt-5">
-                As the <strong className="text-[#0F172A]">Master Franchise Partner for India</strong>, he ensures that every Uplrn AI Labs partner receives the right systems, guidance, and support to build a sustainable and profitable AI training center.
-              </p>
+
+              {/* Right panel */}
+              <div className="flex-1 px-8 py-10 text-left">
+                <p className="text-[#475569] leading-relaxed">
+                  Rohit Sethi is the Director of My Visa Guide (MVG), one of India&apos;s leading overseas career consulting organizations, established in 2018. Known for its strong reputation and high client trust, a significant portion of MVG&apos;s business comes through word-of-mouth referrals.
+                </p>
+                <p className="text-[#475569] leading-relaxed mt-4">
+                  Alongside his success in the visa and education industry, he brings over 20 years of experience in building and scaling distribution networks across India, including his long-standing association as a distributor with Unilevel.
+                </p>
+
+                <div className="mt-6 space-y-3">
+                  {[
+                    'Expertise in building and managing large-scale partner and franchise networks',
+                    'Strong understanding of tier-2 and tier-3 market dynamics',
+                    'Proven ability to scale education and service-based businesses',
+                    'Deep experience in partner onboarding, training, and long-term support',
+                  ].map((point) => (
+                    <div key={point} className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#059669]/10">
+                        <svg className="h-3 w-3 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-[#475569]">{point}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 rounded-xl bg-[#F0FDF4] border border-[#059669]/20 px-5 py-4">
+                  <p className="text-sm text-[#475569] leading-relaxed">
+                    As the <span className="font-semibold text-[#0F172A]">Master Franchise Partner for India</span>, he ensures that every Uplrn AI Labs partner receives the right systems, guidance, and support to build a sustainable and profitable AI training center.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
