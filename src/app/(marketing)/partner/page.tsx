@@ -142,13 +142,17 @@ export default function PartnerPage() {
           <p className="max-w-3xl mx-auto text-[#475569] mb-10">
             Uplrn AI Labs is supported by experienced industry leaders with a proven track record in education, migration, and large-scale business distribution.
           </p>
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8 border border-[#E2E8F0] flex flex-col sm:flex-row items-center gap-8 text-left">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/rohit-sethi.png"
-              alt="Rohit Sethi"
-              className="w-64 flex-shrink-0 object-contain"
-            />
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8 border border-[#E2E8F0] flex flex-col sm:flex-row items-start gap-8 text-left">
+            <div className="flex-shrink-0 flex flex-col items-center gap-3 sm:w-48">
+              <div className="h-40 w-40 rounded-full overflow-hidden border-4 border-[#059669]/20 shadow-md bg-white">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/rohit-sethi.png"
+                  alt="Rohit Sethi"
+                  className="w-full h-full object-contain object-top scale-110"
+                />
+              </div>
+            </div>
             <div>
               <h3 className="text-2xl font-semibold text-[#0F172A] mb-1">Rohit Sethi</h3>
               <p className="text-[#059669] font-medium mb-4">Director, My Visa Guide (MVG) | Master Franchise Partner – India</p>
