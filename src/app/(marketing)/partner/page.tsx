@@ -147,7 +147,7 @@ export default function PartnerPage() {
             <img
               src="/images/rohit-sethi.png"
               alt="Rohit Sethi"
-              className="h-36 w-36 rounded-full object-cover object-top shadow-md flex-shrink-0"
+              className="w-48 flex-shrink-0 object-contain"
             />
             <div>
               <h3 className="text-2xl font-semibold text-[#0F172A] mb-1">Rohit Sethi</h3>
