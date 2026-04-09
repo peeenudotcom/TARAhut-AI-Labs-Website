@@ -143,7 +143,7 @@ export function Header() {
         <Link href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/logo-full.png"
+            src="/images/logo-tarahut.png"
             alt={siteConfig.name}
             style={{ height: '44px', width: 'auto' }}
           />
