@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const order = await getRazorpay().orders.create({
       amount: amount * 100, // Razorpay expects paise
       currency: 'INR',
-      receipt: `uplrn_${courseSlug}_${Date.now()}`,
+      receipt: `upl_${Date.now()}`,
       notes: {
         course_slug: courseSlug,
         course_title: courseTitle,
@@ -50,8 +50,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Payment order error:', error);
+    const message = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json(
-      { error: 'Failed to create payment order' },
+      { error: `Payment failed: ${message}` },
       { status: 500 }
     );
   }
