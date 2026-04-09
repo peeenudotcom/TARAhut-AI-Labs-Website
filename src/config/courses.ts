@@ -394,6 +394,76 @@ export const courses: Course[] = [
     ],
     tools: ['ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'Canva AI', 'Leonardo AI', 'CapCut AI', 'InVideo AI', 'Gamma AI', 'Zapier', 'Make', 'Notion AI', 'Botpress', 'Custom GPTs', 'Grammarly AI'],
   },
+  {
+    id: '9',
+    title: 'Master Claude in 15 Days',
+    slug: 'master-claude-15-days',
+    shortDescription: 'Go from zero to Claude power user in 15 days. Master prompts, Projects, Artifacts, Cowork, and the API.',
+    description: 'The most comprehensive Claude training program in India. In 15 intensive days, you will master every feature of Claude — from basic conversations to advanced Projects, interactive Artifacts, the CRISP prompt engineering framework, autonomous Cowork, and the Claude API. Built by TARAhut AI Lab with a trainer manual that goes 10x deeper than what students see. You will walk out knowing Claude better than 99% of users worldwide.',
+    price: 7999,
+    originalPrice: 14999,
+    duration: '15 Days',
+    level: 'Beginner',
+    category: 'AI Tools',
+    thumbnail: '/images/course-claude.jpg',
+    rating: 4.9,
+    studentsEnrolled: 48,
+    instructorName: 'Parveen Sukhija',
+    instructorRole: 'Founder, Uplrn AI Labs',
+    isFeatured: true,
+    isNew: true,
+    syllabus: [
+      {
+        module: 'Days 1–3: Foundation',
+        topics: [
+          'Understanding Claude — models (Opus, Sonnet, Haiku), context window, Constitutional AI',
+          'Interface mastery — every button, setting, and shortcut in Claude',
+          'The CRISP Framework — TARAhut\'s prompt engineering system (Context, Role, Instructions, Specifics, Parameters)',
+        ],
+      },
+      {
+        module: 'Days 4–6: Projects & Artifacts',
+        topics: [
+          'Claude Projects — persistent AI workspaces with custom instructions and knowledge bases',
+          'Claude Artifacts — building interactive outputs (code, documents, visualizations)',
+          'Hands-on: Build a complete business project with uploaded documents and custom instructions',
+        ],
+      },
+      {
+        module: 'Days 7–9: Professional Applications',
+        topics: [
+          'Business writing — reports, proposals, emails, marketing copy at professional level',
+          'Research & analysis — extracting insights from long documents, market research, competitive analysis',
+          'Content creation — blogs, social media, video scripts, multilingual content (English/Hindi/Punjabi)',
+        ],
+      },
+      {
+        module: 'Days 10–12: Advanced Features',
+        topics: [
+          'Claude Cowork — autonomous task execution with desktop app integration',
+          'Claude Dispatch — remote control and mobile integration',
+          'Automation workflows — connecting Claude with other tools for end-to-end productivity',
+        ],
+      },
+      {
+        module: 'Days 13–15: Mastery & Certification',
+        topics: [
+          'Vernacular AI — working with Hindi, Punjabi, and regional content',
+          'Claude API fundamentals — building custom AI applications',
+          'Final project: Complete a real-world business challenge using all Claude features learned',
+        ],
+      },
+    ],
+    learningOutcomes: [
+      'Master every feature of Claude — chat, Projects, Artifacts, Cowork, and Dispatch',
+      'Write expert-level prompts using the CRISP framework for any professional task',
+      'Build persistent AI workspaces with custom instructions and knowledge bases',
+      'Create interactive Artifacts — documents, code, visualizations, and dashboards',
+      'Use Claude for business writing, research, content creation, and automation',
+      'Understand Claude API basics to build custom AI-powered applications',
+    ],
+    tools: ['Claude', 'Claude Desktop', 'Claude Projects', 'Claude Artifacts', 'Claude Cowork', 'Claude Dispatch', 'Claude API'],
+  },
 ];
 
 export const categories = [...new Set(courses.map(c => c.category))];
