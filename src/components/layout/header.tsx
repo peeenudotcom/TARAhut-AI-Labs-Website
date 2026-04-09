@@ -145,7 +145,7 @@ export function Header() {
           <img
             src="/images/logo-tarahut.png"
             alt={siteConfig.name}
-            style={{ height: '36px', width: 'auto' }}
+            style={{ height: '52px', width: 'auto' }}
           />
         </Link>
 
