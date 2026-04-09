@@ -433,6 +433,64 @@ export const courses: Course[] = [
     ],
     tools: ['Claude', 'Claude Desktop', 'Claude Projects', 'Claude Artifacts', 'Claude Cowork', 'Claude Dispatch', 'Claude API'],
   },
+  {
+    id: '10',
+    title: 'Master AI Builder — 90 Day Program',
+    slug: 'master-ai-builder',
+    shortDescription: 'Go from zero to AI-skilled professional in 90 days. 20+ tools, 50+ portfolio pieces, freelancing-ready.',
+    description: 'Punjab\'s most comprehensive AI training program. In 90 intensive days (12 weeks), you go from complete beginner to confident AI practitioner with a portfolio of 50+ real deliverables. No coding required. The 20-40-40 model (20% instruction, 40% guided practice, 40% independent work) means you learn by doing, not watching. Every example and project is grounded in Punjab business realities. By Day 90, you have a portfolio, freelancing profiles live, a personal brand launched, and the skills to earn ₹20,000–50,000/month.',
+    price: 24999,
+    originalPrice: 49999,
+    duration: '90 Days (12 Weeks)',
+    level: 'Beginner',
+    category: 'AI Tools',
+    thumbnail: '/images/course-ai-builder.jpg',
+    rating: 4.9,
+    studentsEnrolled: 32,
+    instructorName: 'Parveen Sukhija',
+    instructorRole: 'Founder, Uplrn AI Labs',
+    isFeatured: true,
+    isNew: true,
+    syllabus: [
+      {
+        module: 'Month 1: AI Foundations + Tool Mastery (Weeks 1–4)',
+        topics: [
+          'Week 1 — AI Awakening: Navigate ChatGPT, Claude, Gemini. Write first 20 prompts. Identify 5 local business AI opportunities',
+          'Week 2 — CRISP Prompt Engineering: Master TARAhut\'s prompting methodology. Build 30+ prompt templates. A/B test prompt quality',
+          'Week 3 — AI Content Creation: Blog posts, social captions, emails, ad copy. 7-day content calendar for a real business',
+          'Week 4 — AI Design Mastery: Canva AI visual branding. Instagram kit, business cards, flyers. Complete Brand Kit',
+        ],
+      },
+      {
+        module: 'Month 2: AI Creation + Workflow Building (Weeks 5–8)',
+        topics: [
+          'Week 5 — AI Video Creation: HeyGen avatar videos, faceless content, CapCut editing. 5 video portfolio',
+          'Week 6 — AI Voice + Audio: ElevenLabs voiceovers, podcast creation, multilingual dubbing (English/Hindi/Punjabi)',
+          'Week 7 — AI Image Generation: Product photos, marketing visuals, brand imagery with Ideogram + Leonardo AI',
+          'Week 8 — Automation Workflows: Zapier + Make.com. Connect AI tools into end-to-end automated systems',
+        ],
+      },
+      {
+        module: 'Month 3: Monetization + Real-World Application (Weeks 9–12)',
+        topics: [
+          'Week 9 — AI for Business: Real client project. Business analysis, content strategy, automation for a local business',
+          'Week 10 — Freelancing Launch: Fiverr, Upwork, LinkedIn profiles live. Service packages (₹5K–25K/month). Portfolio website',
+          'Week 11 — Personal Brand: Launch personal brand across platforms. Content strategy. Professional networking',
+          'Week 12 — Capstone Project: Complete end-to-end AI solution for a real business. Final presentation. Certification',
+        ],
+      },
+    ],
+    learningOutcomes: [
+      'Master 20+ AI tools — ChatGPT, Claude, Canva AI, HeyGen, ElevenLabs, Zapier, Make, and more',
+      'Build a portfolio of 50+ real deliverables — content, designs, videos, automations, client proposals',
+      'Write expert prompts using the CRISP framework for any professional task',
+      'Create professional videos, voiceovers, and multilingual content using AI',
+      'Build automated workflows that connect AI tools into end-to-end business systems',
+      'Launch freelancing profiles and earn ₹20,000–50,000/month with AI skills',
+      'Complete a capstone project solving a real business problem with AI',
+    ],
+    tools: ['ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'Canva AI', 'HeyGen', 'ElevenLabs', 'CapCut AI', 'Leonardo AI', 'Ideogram', 'InVideo AI', 'Gamma AI', 'Zapier', 'Make', 'Notion AI', 'Grammarly', 'Descript', 'Copy.ai'],
+  },
 ];
 
 export const categories = [...new Set(courses.map(c => c.category))];
