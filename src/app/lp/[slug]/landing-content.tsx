@@ -290,7 +290,6 @@ export function LandingPageContent({ course }: { course: Course }) {
             {/* Claude facts — builds urgency */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-10 flex justify-center gap-3 sm:gap-5 flex-wrap">
               {[
-                { value: 60, suffix: 'B+', label: 'Anthropic Valuation', color: 'from-emerald-400 to-emerald-600' },
                 { value: 200, suffix: 'M+', label: 'Claude Users Worldwide', color: 'from-violet-400 to-violet-600' },
                 { value: 1, suffix: '#', label: 'Rated AI for Coding & Writing', color: 'from-amber-400 to-orange-500' },
                 { value: 15, suffix: '', label: 'Days to Master It', color: 'from-cyan-400 to-blue-500' },
