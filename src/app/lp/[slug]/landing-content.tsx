@@ -31,6 +31,172 @@ function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string
   return <>{count.toLocaleString('en-IN')}{suffix}</>
 }
 
+const examplePrompts = [
+  'Write me an email asking for a raise',
+  'Help me prepare for a job interview',
+  'Create a social media post for my shop',
+  'Explain machine learning simply',
+  'Write a resume summary for me',
+]
+
+function PromptImproverSection() {
+  const [input, setInput] = useState('')
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [tried, setTried] = useState(false)
+
+  async function handleImprove() {
+    if (!input.trim() || input.trim().length < 5) return
+    setLoading(true)
+    setResult('')
+    try {
+      const res = await fetch('/api/prompt-improve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: input }),
+      })
+      const data = await res.json()
+      if (res.ok) { setResult(data.result); setTried(true) }
+      else setResult('Something went wrong. Try again.')
+    } catch { setResult('Network error. Try again.') }
+    setLoading(false)
+  }
+
+  return (
+    <section className="py-16 md:py-24 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#0d1424] to-[#020617]" />
+      {/* Colored glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-[150px]" style={{ background: 'rgba(79,70,229,0.08)' }} />
+
+      <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6">
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/15 border border-violet-400/25 text-xs font-semibold text-violet-300 mb-4">
+            <span className="text-base">⚡</span> LIVE DEMO — Try it now, no signup
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white">
+            Your Prompts Are{' '}
+            <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">Weak</span>
+          </h2>
+          <p className="text-gray-400 mt-3 text-sm md:text-base">
+            Paste any prompt you&apos;d normally give ChatGPT or Claude. Watch it transform using the CRISP framework you&apos;ll learn in this course.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 backdrop-blur-sm"
+        >
+          {/* Example chips */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="text-xs text-gray-500">Try:</span>
+            {examplePrompts.map((ex) => (
+              <button
+                key={ex}
+                onClick={() => setInput(ex)}
+                className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 hover:border-violet-400/30 hover:text-violet-300 transition-colors"
+              >
+                {ex}
+              </button>
+            ))}
+          </div>
+
+          {/* Input */}
+          <div className="relative">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleImprove() }}
+              placeholder="Type your prompt here..."
+              rows={3}
+              className="w-full px-4 py-3 rounded-xl bg-[#020617] border border-white/10 text-white placeholder-gray-600 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-400/30 transition-all resize-none text-sm"
+            />
+          </div>
+
+          <button
+            onClick={handleImprove}
+            disabled={loading || input.trim().length < 5}
+            className="group w-full mt-3 py-3 rounded-xl font-semibold text-sm text-white relative overflow-hidden disabled:opacity-40"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500" />
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-400 via-fuchsia-500 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="relative flex items-center justify-center gap-2">
+              {loading ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                    <path d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" fill="currentColor" className="opacity-75" />
+                  </svg>
+                  AI is rewriting...
+                </>
+              ) : (
+                <>⚡ Improve My Prompt</>
+              )}
+            </span>
+          </button>
+
+          {/* Result */}
+          {result && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-5"
+            >
+              {/* Before */}
+              <div className="mb-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px] font-bold uppercase">Before</span>
+                  <span className="text-xs text-gray-600">Your prompt</span>
+                </div>
+                <div className="px-4 py-3 rounded-xl bg-red-500/5 border border-red-500/10 text-sm text-gray-400 italic">
+                  &ldquo;{input}&rdquo;
+                </div>
+              </div>
+
+              {/* After */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase">After — CRISP Framework</span>
+                </div>
+                <div className="px-4 py-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-sm text-gray-200 whitespace-pre-wrap leading-relaxed">
+                  {result}
+                </div>
+              </div>
+
+              {/* Hook */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-5 p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-emerald-500/10 border border-white/10 text-center"
+              >
+                <p className="text-white font-semibold text-sm">
+                  That took 5 seconds. Imagine what you&apos;ll do after {' '}
+                  <span className="text-emerald-400">15 days of training.</span>
+                </p>
+                <a
+                  href="#enroll"
+                  onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
+                  className="inline-block mt-3 px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-bold text-sm hover:scale-105 transition-transform"
+                >
+                  Start Learning →
+                </a>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {!tried && !loading && !result && (
+            <p className="text-center text-xs text-gray-600 mt-3">
+              Free. No signup. See the difference instantly.
+            </p>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 export function LandingPageContent({ course }: { course: Course }) {
   const [step, setStep] = useState<Step>('form')
   const [name, setName] = useState('')
@@ -176,6 +342,9 @@ export function LandingPageContent({ course }: { course: Course }) {
             </svg>
           </motion.div>
         </section>
+
+        {/* ═══════════ TRY IT — Interactive Prompt Improver ═══════════ */}
+        <PromptImproverSection />
 
         {/* ═══════════ WHAT YOU'LL LEARN — Visual Cards ═══════════ */}
         <section className="py-16 md:py-24 relative">
