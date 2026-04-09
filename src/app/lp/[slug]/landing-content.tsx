@@ -136,15 +136,16 @@ export function LandingPageContent({ course }: { course: Course }) {
             }}
           />
 
-          <div className="relative z-10 max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-24">
             {/* Logo */}
-            <div className="text-center mb-12">
-              <span className="text-lg font-semibold text-white">Uplrn AI Labs</span>
+            <div className="text-center mb-8 md:mb-12">
+              <span className="text-base md:text-lg font-semibold text-white">Uplrn AI Labs</span>
               <span className="text-gray-500 mx-2">|</span>
-              <span className="text-sm text-gray-400">Punjab&apos;s First AI Training Center</span>
+              <span className="text-xs md:text-sm text-gray-400">Punjab&apos;s First AI Training Center</span>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Mobile: form first (sticky), Desktop: course info left + form right */}
+            <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 md:gap-12 items-start">
               {/* Left: Course info */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -157,11 +158,11 @@ export function LandingPageContent({ course }: { course: Course }) {
                   </span>
                 )}
 
-                <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight">
                   {course.title}
                 </h1>
 
-                <p className="mt-4 text-lg text-gray-400 leading-relaxed">
+                <p className="mt-4 text-base md:text-lg text-gray-400 leading-relaxed">
                   {course.description}
                 </p>
 
@@ -229,9 +230,9 @@ export function LandingPageContent({ course }: { course: Course }) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="sticky top-8"
+                className="md:sticky md:top-8"
               >
-                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+                <div id="enroll-form" className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 sm:p-8">
                   {step === 'success' ? (
                     <div className="text-center py-6">
                       <div className="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
@@ -482,11 +483,33 @@ export function LandingPageContent({ course }: { course: Course }) {
         </section>
 
         {/* Minimal footer */}
-        <footer className="py-6 border-t border-white/5 text-center">
+        <footer className="py-6 pb-24 md:pb-6 border-t border-white/5 text-center">
           <p className="text-xs text-gray-600">
             {siteConfig.name} &middot; {siteConfig.contact.address} &middot; {siteConfig.contact.phone}
           </p>
         </footer>
+
+        {/* Mobile sticky CTA bar */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#020617]/95 backdrop-blur-md border-t border-white/10 px-4 py-3 flex items-center justify-between">
+          <div>
+            <span className="text-xs text-gray-500 line-through mr-2">
+              ₹{course.originalPrice?.toLocaleString('en-IN')}
+            </span>
+            <span className="text-lg font-bold text-white">
+              ₹{course.price.toLocaleString('en-IN')}
+            </span>
+          </div>
+          <a
+            href="#enroll-form"
+            onClick={(e) => {
+              e.preventDefault()
+              document.getElementById('enroll-form')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-semibold text-sm"
+          >
+            Enroll Now
+          </a>
+        </div>
       </div>
     </>
   )
