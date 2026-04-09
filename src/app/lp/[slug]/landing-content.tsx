@@ -287,18 +287,23 @@ export function LandingPageContent({ course }: { course: Course }) {
               {course.shortDescription}
             </motion.p>
 
-            {/* Animated stats */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-10 flex justify-center gap-3 sm:gap-6 flex-wrap">
+            {/* Claude facts — builds urgency */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-10 flex justify-center gap-3 sm:gap-5 flex-wrap">
               {[
-                { value: course.studentsEnrolled, suffix: '+', label: 'Students', color: 'from-emerald-400 to-emerald-600' },
-                { value: parseFloat(course.duration), suffix: '', label: course.duration.replace(/[0-9\s]/g, ''), color: 'from-violet-400 to-violet-600' },
-                { value: Math.round(course.rating * 10), suffix: '', label: `${course.rating}/5 Rating`, color: 'from-amber-400 to-orange-500' },
+                { value: 60, suffix: 'B+', label: 'Anthropic Valuation', color: 'from-emerald-400 to-emerald-600' },
+                { value: 200, suffix: 'M+', label: 'Claude Users Worldwide', color: 'from-violet-400 to-violet-600' },
+                { value: 1, suffix: '#', label: 'Rated AI for Coding & Writing', color: 'from-amber-400 to-orange-500' },
+                { value: 15, suffix: '', label: 'Days to Master It', color: 'from-cyan-400 to-blue-500' },
               ].map((stat) => (
-                <div key={stat.label} className="text-center px-4 sm:px-6 py-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm min-w-[100px]">
-                  <div className={`text-2xl sm:text-3xl font-bold bg-gradient-to-b ${stat.color} bg-clip-text text-transparent`}>
-                    <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                <div key={stat.label} className="text-center px-4 sm:px-5 py-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm min-w-[90px]">
+                  <div className={`text-xl sm:text-2xl font-bold bg-gradient-to-b ${stat.color} bg-clip-text text-transparent`}>
+                    {stat.suffix === '#' ? (
+                      <><span className="text-amber-400">#</span><AnimatedNumber value={stat.value} /></>
+                    ) : (
+                      <><AnimatedNumber value={stat.value} />{stat.suffix}</>
+                    )}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+                  <div className="text-[10px] sm:text-xs text-gray-500 mt-1">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
