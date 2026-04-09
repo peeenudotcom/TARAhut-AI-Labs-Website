@@ -270,13 +270,13 @@ export function LandingPageContent({ course }: { course: Course }) {
             {/* Main headline */}
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-                <span className="text-white">Master Claude</span>
+                <span className="text-white" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>Master Claude</span>
                 <br />
-                <span className="text-lg sm:text-xl md:text-2xl font-light italic text-gray-400 tracking-wide" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                <span className="text-lg sm:text-xl md:text-2xl font-light italic text-gray-400 tracking-wide" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                   in just
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                   15 Days
                 </span>
               </h1>
