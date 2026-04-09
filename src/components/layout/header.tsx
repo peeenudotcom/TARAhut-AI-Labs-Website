@@ -7,7 +7,7 @@ import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { Menu } from 'lucide-react';
 
 import { siteConfig } from '@/config/site';
-import { navItems } from '@/config/nav';
+import { navItems, navCta } from '@/config/nav';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -72,8 +72,14 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Desktop CTA */}
-        <div className="hidden items-center gap-3 md:flex">
+        {/* Desktop CTAs */}
+        <div className="hidden items-center gap-2 md:flex">
+          <Link
+            href={navCta.href}
+            className="inline-flex h-9 items-center justify-center rounded-full border border-emerald-500 px-4 text-sm font-medium text-emerald-600 transition-all hover:bg-emerald-50"
+          >
+            {navCta.label}
+          </Link>
           <a
             href="https://wa.me/919915424411?text=Hi%2C+I+want+to+book+a+free+demo+class+at+Uplrn+AI+Labs"
             target="_blank"
@@ -118,7 +124,13 @@ export function Header() {
                     </span>
                   </SheetClose>
                 ))}
-                <div className="mt-4 border-t border-[#E2E8F0] pt-4">
+                <div className="mt-4 border-t border-[#E2E8F0] pt-4 space-y-2">
+                  <Button
+                    className="w-full border border-emerald-500 text-emerald-600 bg-transparent hover:bg-emerald-50"
+                    render={<Link href={navCta.href} />}
+                  >
+                    {navCta.label}
+                  </Button>
                   <Button
                     className="w-full bg-gradient-to-r from-[#059669] to-[#0D9488] text-white"
                     render={<Link href="/contact" />}
