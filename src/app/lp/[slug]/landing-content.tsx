@@ -270,22 +270,21 @@ export function LandingPageContent({ course }: { course: Course }) {
             {/* Main headline */}
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-                <span className="text-white" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>Claude AI Training</span>
-                <br />
-                <span className="text-lg sm:text-xl md:text-2xl font-light italic text-gray-400 tracking-wide" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                  The Tool Smart Professionals
+                <span className="text-white" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>Learn Claude AI</span>
+                <span className="text-lg sm:text-xl md:text-2xl font-light italic text-gray-400 tracking-wide mx-3" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
+                  in
                 </span>
-                <br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                  Are Switching To
+                  15 Days
                 </span>
               </h1>
+              <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-300 font-medium">
+                The Smarter Alternative to ChatGPT
+              </p>
+              <p className="mt-2 text-sm text-gray-500">
+                Offline Training with Real-World Use Cases
+              </p>
             </motion.div>
-
-            {/* One-liner */}
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-center text-lg md:text-xl text-gray-400 mt-6 max-w-2xl mx-auto">
-              {course.shortDescription}
-            </motion.p>
 
             {/* Claude facts — builds urgency */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-10 flex justify-center gap-3 sm:gap-5 flex-wrap">
