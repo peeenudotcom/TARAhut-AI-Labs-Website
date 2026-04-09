@@ -21,7 +21,6 @@ export const navEntries: NavEntry[] = [
       { label: 'All Courses', href: '/courses' },
       { label: 'AI Tools Mastery', href: '/courses/ai-tools-mastery-beginners' },
       { label: 'AI for Marketing', href: '/courses/ai-digital-marketing' },
-      { label: 'AI for Business', href: '/courses/ai-business-leaders' },
       { label: 'Master Claude in 15 Days', href: '/courses/master-claude-15-days' },
       { label: 'AI Builder — 90 Days', href: '/courses/master-ai-builder' },
     ],
