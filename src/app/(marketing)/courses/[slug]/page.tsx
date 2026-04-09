@@ -15,7 +15,10 @@ const levelColors: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
-  return courses.map((course) => ({ slug: course.slug }));
+  return [
+    ...courses.map((course) => ({ slug: course.slug })),
+    ...schoolCourses.map((course) => ({ slug: course.slug })),
+  ];
 }
 
 export async function generateMetadata({

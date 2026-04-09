@@ -24,6 +24,8 @@ export const navEntries: NavEntry[] = [
       { label: 'Master Claude in 15 Days', href: '/courses/master-claude-15-days' },
       { label: 'AI Builder — 90 Days', href: '/courses/master-ai-builder' },
       { label: 'AI Hustler 45', href: '/courses/ai-hustler-45' },
+      { label: 'School: Junior (Class 5–7)', href: '/courses/ai-explorer-school-kids-junior' },
+      { label: 'School: Senior (Class 8–10)', href: '/courses/ai-explorer-school-kids-senior' },
     ],
   },
   {
