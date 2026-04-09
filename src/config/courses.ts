@@ -338,7 +338,7 @@ export const courses: Course[] = [
     slug: 'master-claude-15-days',
     shortDescription: 'Go from zero to Claude power user in 15 days. Master prompts, Projects, Artifacts, Cowork, and the API.',
     description: 'The most comprehensive Claude training program in India. In 15 intensive days, you will master every feature of Claude — from basic conversations to advanced Projects, interactive Artifacts, the CRISP prompt engineering framework, autonomous Cowork, and the Claude API. Built by TARAhut AI Lab with a trainer manual that goes 10x deeper than what students see. You will walk out knowing Claude better than 99% of users worldwide.',
-    price: 7999,
+    price: 9999,
     originalPrice: 14999,
     duration: '15 Days',
     level: 'Beginner',
