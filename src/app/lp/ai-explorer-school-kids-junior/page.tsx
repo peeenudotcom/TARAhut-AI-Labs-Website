@@ -25,19 +25,19 @@ export default function Page() {
         gradientVia: '#3b82f6',
         gradientTo: '#0ea5e9',
       }}
-      trustBadge="👨‍👩‍👧 Parents Love This Program"
+      trustBadge="☀️ SUMMER SPECIAL — Limited Seats"
       hook={{
-        punjabi: 'Aapke bachche ke classmates AI seekh rahe hain...',
-        translation: '...kya aapka bachcha peeche reh jayega?',
+        punjabi: 'Summer holidays waste ho jayengi...',
+        translation: '...ya aapka bachcha AI master ban jayega?',
       }}
-      headlineWhite="AI for Kids"
-      headlineGradient="Class 5-7 · Ages 10-12"
-      subtitle="The Skill Every Child Needs in 2026"
-      subSubtitle="Fun projects · Creative learning · Zero stress"
+      headlineWhite="Summer Special"
+      headlineGradient="Gift Your Child The Future"
+      subtitle="4-Week AI Summer Program · Class 5-7"
+      subSubtitle="🎯 Limited to 10 seats per batch · Secure now before full"
       stats={[
+        { value: 10, suffix: ' Seats', label: 'Per Batch Only' },
+        { value: 4, suffix: ' Weeks', label: 'Summer Program' },
         { value: 10, suffix: '+', label: 'Fun AI Tools' },
-        { value: 4, suffix: ' Weeks', label: 'Of Learning' },
-        { value: 12, suffix: ' Modules', label: 'Age-Appropriate' },
       ]}
       audience={[
         { emoji: '👦', title: 'Curious Kids', subtitle: 'Love exploring new things' },
@@ -46,9 +46,10 @@ export default function Page() {
       ]}
       audienceLabel="Perfect For"
       beforeAfter={[
-        { before: '📱 Just watching YouTube all day', after: '🎨 Creating AI art and stories' },
-        { before: '🤷 "I don&apos;t know what to do with AI"', after: '🚀 Building real AI projects' },
-        { before: '😴 Bored with school projects', after: '✨ Excited about every class' },
+        { before: '📱 Summer holidays = screen time', after: '🎨 Summer = creating with AI' },
+        { before: '😴 Bored at home all day', after: '✨ Excited to attend every class' },
+        { before: '🤷 No real skills to show', after: '🏆 AI projects to showcase' },
+        { before: '📺 YouTube all day', after: '🚀 Building AI stories & art' },
       ]}
       differentiators={[
         { icon: '🎮', text: 'Fun & interactive' },
@@ -76,8 +77,8 @@ export default function Page() {
         { icon: '🎯', item: '4 Weeks Live Classes', desc: 'Fun, interactive, hands-on learning' },
       ]}
       totalValue="₹10,000+"
-      finalCtaText="Give Your Child"
-      finalCtaGradient="An Unfair Advantage."
+      finalCtaText="Make This Summer"
+      finalCtaGradient="The One That Changed Everything."
     >
       <CourseToolSection
         toolId="kids-story"

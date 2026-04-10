@@ -23,19 +23,19 @@ export default function Page() {
         gradientVia: '#8b5cf6',
         gradientTo: '#6366f1',
       }}
-      trustBadge="🎯 Board Exam Game-Changer"
+      trustBadge="☀️ SUMMER SPECIAL — Limited Seats"
       hook={{
-        punjabi: 'Boards aa rahe hain, tension ho rahi hai?',
-        translation: '...AI se padho, top karo.',
+        punjabi: 'Summer holidays mein kya karenge?',
+        translation: '...AI seekho, boards ke liye ready ho jao.'
       }}
-      headlineWhite="AI for Teens"
-      headlineGradient="Class 8-10 · Board Exam Ready"
-      subtitle="Study Smarter, Not Harder"
-      subSubtitle="AI study plans · Chatbots · Board prep"
+      headlineWhite="Summer Special"
+      headlineGradient="AI Head-Start for Your Teen"
+      subtitle="4-Week Program · Class 8-10"
+      subSubtitle="🎯 Only 10 seats per batch · Board-prep + future skills"
       stats={[
+        { value: 10, suffix: ' Seats', label: 'Per Batch Only' },
+        { value: 4, suffix: ' Weeks', label: 'Summer Intensive' },
         { value: 10, suffix: '+', label: 'AI Study Tools' },
-        { value: 4, suffix: ' Weeks', label: 'Intensive Program' },
-        { value: 100, suffix: '%', label: 'Ready For 2026' },
       ]}
       audience={[
         { emoji: '📚', title: 'Class 8-10', subtitle: 'Building strong foundation' },
@@ -44,10 +44,10 @@ export default function Page() {
       ]}
       audienceLabel="Perfect For"
       beforeAfter={[
-        { before: '📖 Struggling with tough subjects', after: '🧠 AI tutor explains everything' },
-        { before: '⏰ Hours memorizing', after: '⚡ Smart revision with AI' },
-        { before: '😰 Exam stress', after: '💪 Confident, well-prepared' },
-        { before: '🤖 No tech skills', after: '🚀 Building own AI chatbots' },
+        { before: '📱 Summer = screen time + boredom', after: '🎯 Summer = real skill building' },
+        { before: '📖 Weak in tough subjects', after: '🧠 AI tutor explains everything' },
+        { before: '😰 Boards tension building up', after: '💪 Ahead of the curve for 2026' },
+        { before: '🤷 No edge over classmates', after: '🏆 Teacher&apos;s favorite, class topper' },
       ]}
       differentiators={[
         { icon: '🧑‍🏫', text: 'Expert trainers' },
@@ -75,8 +75,8 @@ export default function Page() {
         { icon: '🎯', item: '4 Weeks Live Classes', desc: 'Interactive, hands-on learning' },
       ]}
       totalValue="₹12,000+"
-      finalCtaText="Start Your Child's"
-      finalCtaGradient="Tech Career Early."
+      finalCtaText="Make This Summer"
+      finalCtaGradient="The Turning Point."
     >
       <CourseToolSection
         toolId="homework-helper"
