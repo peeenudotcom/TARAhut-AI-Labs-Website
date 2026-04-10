@@ -140,12 +140,12 @@ export function Header() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/logo-tarahut.png"
             alt={siteConfig.name}
-            style={{ height: '52px', width: 'auto' }}
+            className="h-7 w-auto sm:h-9"
           />
         </Link>
 
