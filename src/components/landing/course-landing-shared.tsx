@@ -176,6 +176,12 @@ export function CourseLandingShared(props: CourseLandingProps) {
           </div>
 
           <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 w-full">
+            {/* Logo */}
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/logo-tarahut-white.png" alt="TARAhut AI Labs" className="h-8 sm:h-10 w-auto" />
+            </motion.div>
+
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm" style={primaryBorder(0.3)}>
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: theme.primary }} />
