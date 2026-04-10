@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'TARAhut AI Labs',
   description: "Punjab's First AI Training Center. Master AI tools through hands-on offline training in Kotkapura and beyond.",
-  url: 'https://uplrnailabs.com',
-  ogImage: 'https://uplrnailabs.com/og.png',
+  url: 'https://tarahutailabs.com',
+  ogImage: 'https://tarahutailabs.com/og.png',
   links: {
     whatsapp: 'https://wa.me/919200882008',
     instagram: 'https://instagram.com/tarahutailabs',
