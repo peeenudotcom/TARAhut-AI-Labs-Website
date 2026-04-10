@@ -4,14 +4,14 @@ export const siteConfig = {
   url: 'https://uplrnailabs.com',
   ogImage: 'https://uplrnailabs.com/og.png',
   links: {
-    whatsapp: 'https://wa.me/919915424411',
-    instagram: 'https://instagram.com/uplrnailabs',
-    linkedin: 'https://linkedin.com/company/uplrnailabs',
-    youtube: 'https://youtube.com/@uplrnailabs',
+    whatsapp: 'https://wa.me/919200882008',
+    instagram: 'https://instagram.com/tarahutailabs',
+    linkedin: 'https://linkedin.com/company/tarahutailabs',
+    youtube: 'https://youtube.com/@tarahutailabs',
   },
   contact: {
-    email: 'hello@uplrnailabs.com',
-    phone: '+91-9915424411',
+    email: 'hello@tarahutailabs.com',
+    phone: '+91-92008-82008',
     address: 'Kotkapura, Punjab, India',
   },
   stats: {

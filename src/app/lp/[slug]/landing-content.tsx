@@ -728,7 +728,7 @@ export function LandingPageContent({ course }: { course: Course }) {
                   We&apos;ll WhatsApp you within 2 hours with batch details.
                 </p>
                 <a
-                  href={`https://wa.me/919915424411?text=${encodeURIComponent(`Hi! I just enrolled in "${course.title}". Payment ID: ${paymentId}. Please share batch details.`)}`}
+                  href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi! I just enrolled in "${course.title}". Payment ID: ${paymentId}. Please share batch details.`)}`}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-block px-6 py-3 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition-colors"
                 >
@@ -797,7 +797,7 @@ export function LandingPageContent({ course }: { course: Course }) {
                   </div>
 
                   <div className="mt-4 text-center">
-                    <a href={`https://wa.me/919915424411?text=${encodeURIComponent(`Hi, I have a question about "${course.title}"`)}`}
+                    <a href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi, I have a question about "${course.title}"`)}`}
                       target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-emerald-400 transition-colors">
                       Have questions? Chat with us →
                     </a>

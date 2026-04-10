@@ -414,7 +414,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <a
-            href="https://wa.me/919815063184?text=Hi%2C+I+want+to+receive+daily+AI+updates+from+Uplrn+AI+Labs"
+            href="https://wa.me/919200882008?text=Hi%2C+I+want+to+receive+daily+AI+updates+from+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"

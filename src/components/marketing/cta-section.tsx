@@ -83,7 +83,7 @@ export function CtaSection() {
           {/* CTAs */}
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
-              href="https://wa.me/919915424411?text=Hi%2C+I+want+to+book+a+free+demo+class+at+Uplrn+AI+Labs"
+              href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-9 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:brightness-110 hover:-translate-y-0.5"
@@ -106,8 +106,8 @@ export function CtaSection() {
           {/* Phone */}
           <p className="mt-6 text-sm text-slate-500">
             Prefer talking? Call us directly:{' '}
-            <a href="tel:+919915424411" className="font-semibold text-white transition-colors hover:text-emerald-400">
-              +91-9915424411
+            <a href="tel:+919200882008" className="font-semibold text-white transition-colors hover:text-emerald-400">
+              +91-9200882008
             </a>
           </p>
 

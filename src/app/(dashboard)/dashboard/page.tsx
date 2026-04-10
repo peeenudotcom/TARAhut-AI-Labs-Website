@@ -100,7 +100,7 @@ export default async function DashboardPage() {
             You&apos;re not enrolled in any courses yet.
           </p>
           <a
-            href="https://wa.me/919915424411?text=Hi%2C+I+want+to+enroll+in+a+course+at+Uplrn+AI+Labs"
+            href="https://wa.me/919200882008?text=Hi%2C+I+want+to+enroll+in+a+course+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-6 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors"

@@ -125,7 +125,7 @@ function MicroCTA() {
           Explore AI Career Programs →
         </Link>
         <a
-          href="https://wa.me/919915424411?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
+          href="https://wa.me/919200882008?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-semibold text-[#475569] transition-all hover:border-[#059669] hover:text-[#059669]"
@@ -453,7 +453,7 @@ export default function ToolsPage() {
               Explore AI Career Programs →
             </Link>
             <a
-              href="https://wa.me/919915424411?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
+              href="https://wa.me/919200882008?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"

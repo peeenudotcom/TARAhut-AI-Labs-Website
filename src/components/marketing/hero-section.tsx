@@ -111,7 +111,7 @@ export function HeroSection() {
         >
           {/* Primary */}
           <a
-            href="https://wa.me/919915424411?text=Hi%2C+I+want+to+book+a+free+demo+class+at+Uplrn+AI+Labs"
+            href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-4 rounded-xl

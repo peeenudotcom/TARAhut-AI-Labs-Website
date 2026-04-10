@@ -45,7 +45,7 @@ interface CareerResult {
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const WHATSAPP_NUMBER = '919815063184'
+const WHATSAPP_NUMBER = '919200882008'
 
 const STATUS_OPTIONS = [
   { id: 'school', label: 'School Student', icon: '🎒', desc: 'Class 10-12' },

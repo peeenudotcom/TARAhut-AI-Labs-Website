@@ -180,7 +180,7 @@ export function Header() {
             {navCta.label}
           </Link>
           <a
-            href="https://wa.me/919915424411?text=Hi%2C+I+want+to+book+a+free+demo+class+at+Uplrn+AI+Labs"
+            href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110 hover:shadow-emerald-500/25"

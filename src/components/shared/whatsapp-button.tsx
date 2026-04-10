@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 export function WhatsAppButton() {
   return (
     <motion.a
-      href="https://wa.me/919915424411?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
+      href="https://wa.me/919200882008?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

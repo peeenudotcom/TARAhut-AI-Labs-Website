@@ -686,7 +686,7 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
                   We&apos;ll WhatsApp you within 2 hours with batch details.
                 </p>
                 <a
-                  href={`https://wa.me/919915424411?text=${encodeURIComponent(`Hi! I just enrolled in AI for Digital Marketing. Payment ID: ${paymentId}. Please share batch details.`)}`}
+                  href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi! I just enrolled in AI for Digital Marketing. Payment ID: ${paymentId}. Please share batch details.`)}`}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-block px-6 py-3 rounded-xl bg-pink-600 text-white font-medium hover:bg-pink-700 transition-colors"
                 >
@@ -749,7 +749,7 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
                   </div>
 
                   <div className="mt-4 text-center">
-                    <a href={`https://wa.me/919915424411?text=${encodeURIComponent(`Hi, I have a question about AI for Digital Marketing course`)}`}
+                    <a href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi, I have a question about AI for Digital Marketing course`)}`}
                       target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-pink-400 transition-colors">
                       Have questions? Chat with us →
                     </a>

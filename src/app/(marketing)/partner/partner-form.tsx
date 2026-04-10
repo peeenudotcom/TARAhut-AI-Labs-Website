@@ -43,7 +43,7 @@ export function PartnerForm() {
       `Investment: ${form.investment}\nFloor Area: ${form.floorArea || 'N/A'} sq ft\n` +
       `Location: ${form.city}, ${form.state}\nComments: ${form.comments || 'None'}`
     );
-    window.open(`https://wa.me/919915424411?text=${msg}`, '_blank');
+    window.open(`https://wa.me/919200882008?text=${msg}`, '_blank');
     setSubmitted(true);
   }
 

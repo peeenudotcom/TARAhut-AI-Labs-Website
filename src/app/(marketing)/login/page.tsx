@@ -95,7 +95,7 @@ export default function LoginPage() {
               <p className="mt-6 text-center text-sm text-gray-500">
                 Don&apos;t have an account? Contact us on{' '}
                 <a
-                  href="https://wa.me/919915424411?text=Hi%2C+I+want+to+enroll+as+a+student+at+Uplrn+AI+Labs"
+                  href="https://wa.me/919200882008?text=Hi%2C+I+want+to+enroll+as+a+student+at+TARAhut+AI+Labs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-emerald-400 hover:underline"

@@ -163,7 +163,7 @@ export function ReportContent({ report }: { report: ReportData }) {
               walk through your report and create a custom action plan.
             </p>
             <a
-              href={`https://wa.me/919915424411?text=${whatsappMessage}`}
+              href={`https://wa.me/919200882008?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 rounded-xl bg-white text-emerald-700 font-medium hover:bg-emerald-50 transition-colors shadow-lg"

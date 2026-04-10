@@ -248,7 +248,7 @@ export default function ResourcesPage() {
           <h3 className="text-2xl font-bold text-white">Want More Than PDFs?</h3>
           <p className="mt-2 text-slate-400">Join our AI course and get live training, mentorship, and a certificate.</p>
           <a
-            href="https://wa.me/919915424411?text=Hi%2C+I+downloaded+your+AI+resources+and+want+to+know+more+about+courses"
+            href="https://wa.me/919200882008?text=Hi%2C+I+downloaded+your+AI+resources+and+want+to+know+more+about+courses"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:brightness-110"

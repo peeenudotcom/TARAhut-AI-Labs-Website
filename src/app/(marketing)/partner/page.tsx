@@ -157,7 +157,7 @@ export default function PartnerPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#0F172A]">Call us directly</p>
-                    <a href="tel:+919915424411" className="text-sm text-[#059669] hover:underline">+91 99154 24411</a>
+                    <a href="tel:+919200882008" className="text-sm text-[#059669] hover:underline">+91 99154 24411</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -169,7 +169,7 @@ export default function PartnerPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#0F172A]">WhatsApp us</p>
-                    <a href="https://wa.me/919915424411" target="_blank" rel="noopener noreferrer" className="text-sm text-[#059669] hover:underline">Chat on WhatsApp</a>
+                    <a href="https://wa.me/919200882008" target="_blank" rel="noopener noreferrer" className="text-sm text-[#059669] hover:underline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>
