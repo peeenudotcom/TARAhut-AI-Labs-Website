@@ -71,7 +71,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-20 text-white border-b border-[#E2E8F0]">
+      <section className="bg-gradient-to-br from-[#e53935] to-[#DC2626] py-20 text-white border-b border-[#E2E8F0]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
@@ -124,9 +124,9 @@ export default function AboutPage() {
           <AnimatedSection>
             <div className="grid gap-12 md:grid-cols-2">
               <div className="rounded-xl border border-[#E2E8F0] bg-white p-8 shadow-sm">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#059669]/15">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#e53935]/15">
                   <svg
-                    className="h-6 w-6 text-[#059669]"
+                    className="h-6 w-6 text-[#e53935]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -150,9 +150,9 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="rounded-xl border border-[#E2E8F0] bg-white p-8 shadow-sm">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#0D9488]/15">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#DC2626]/15">
                   <svg
-                    className="h-6 w-6 text-[#0D9488]"
+                    className="h-6 w-6 text-[#DC2626]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -201,8 +201,8 @@ export default function AboutPage() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((v, i) => (
               <AnimatedSection key={v.title} delay={i * 0.1}>
-                <div className="flex flex-col items-center rounded-xl border border-[#E2E8F0] bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md hover:shadow-[#059669]/5 h-full">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#059669]/10 text-[#059669]">
+                <div className="flex flex-col items-center rounded-xl border border-[#E2E8F0] bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md hover:shadow-[#e53935]/5 h-full">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#e53935]/10 text-[#e53935]">
                     {v.icon}
                   </div>
                   <h3 className="mb-2 text-lg font-semibold text-[#0F172A]">
@@ -240,17 +240,17 @@ export default function AboutPage() {
                     <img
                       src={member.photo}
                       alt={member.name}
-                      className="mb-4 h-24 w-24 rounded-full object-cover object-top shadow-md bg-[#F0FDF4]"
+                      className="mb-4 h-24 w-24 rounded-full object-cover object-top shadow-md bg-[#FEF2F2]"
                     />
                   ) : (
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#059669] to-[#0D9488] text-2xl font-bold text-white">
+                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#e53935] to-[#DC2626] text-2xl font-bold text-white">
                       {member.initials}
                     </div>
                   )}
                   <h3 className="text-lg font-semibold text-[#0F172A]">
                     {member.name}
                   </h3>
-                  <p className="mb-3 text-sm font-medium text-[#059669]">
+                  <p className="mb-3 text-sm font-medium text-[#e53935]">
                     {member.role}
                   </p>
                   <p className="text-sm text-[#475569] leading-relaxed">

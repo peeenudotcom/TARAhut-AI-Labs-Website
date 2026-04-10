@@ -77,7 +77,7 @@ export function FaqSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-medium tracking-widest uppercase text-[#059669]">
+          <p className="text-sm font-medium tracking-widest uppercase text-[#e53935]">
             Got questions?
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">

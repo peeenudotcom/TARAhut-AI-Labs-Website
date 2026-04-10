@@ -15,7 +15,7 @@ export function SchoolCourseSyllabus({ syllabus }: { syllabus: SchoolCourseModul
         <AccordionItem key={mod.module} value={`module-${mod.module}`}>
           <AccordionTrigger>
             <span className="flex items-center gap-3">
-              <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#059669]/15 text-xs font-bold text-[#059669]">
+              <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#e53935]/15 text-xs font-bold text-[#e53935]">
                 {mod.module}
               </span>
               <span>{mod.title}</span>
@@ -30,7 +30,7 @@ export function SchoolCourseSyllabus({ syllabus }: { syllabus: SchoolCourseModul
               <ul className="space-y-2">
                 {mod.topics.map((topic, j) => (
                   <li key={j} className="flex items-center gap-2 text-[#475569]">
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#059669]/40" />
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#e53935]/40" />
                     {topic}
                   </li>
                 ))}
@@ -46,9 +46,9 @@ export function SchoolCourseSyllabus({ syllabus }: { syllabus: SchoolCourseModul
 
               {/* Outcome */}
               {mod.outcome && (
-                <div className="rounded-lg bg-[#F0FDF4] border border-[#D1FAE5] px-4 py-3">
-                  <p className="text-xs font-semibold text-[#065F46] mb-1">Outcome</p>
-                  <p className="text-sm text-[#059669]">{mod.outcome}</p>
+                <div className="rounded-lg bg-[#FEF2F2] border border-[#FEE2E2] px-4 py-3">
+                  <p className="text-xs font-semibold text-[#B91C1C] mb-1">Outcome</p>
+                  <p className="text-sm text-[#e53935]">{mod.outcome}</p>
                 </div>
               )}
             </div>

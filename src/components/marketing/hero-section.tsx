@@ -48,7 +48,7 @@ export function HeroSection() {
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6
                           rounded-full bg-white/5 border border-white/10
                           backdrop-blur-md text-sm text-gray-300">
-            <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+            <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
             Trusted by 500+ students across Punjab
           </div>
         </motion.div>
@@ -62,7 +62,7 @@ export function HeroSection() {
           className="text-5xl md:text-6xl font-semibold tracking-tight text-white leading-tight"
         >
           Punjab&apos;s First AI Lab{' '}
-          <span className="text-emerald-300 block mt-2">
+          <span className="text-red-300 block mt-2">
             Learn AI Skills That Actually Pay
           </span>
         </motion.h1>
@@ -96,8 +96,8 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <span className="inline-flex items-center gap-2 px-5 py-2
-                          rounded-full bg-emerald-500/10 border border-emerald-400/20
-                          text-sm text-emerald-300">
+                          rounded-full bg-red-500/10 border border-red-400/20
+                          text-sm text-red-300">
             📍 Offline AI Training in Kotkapura (Punjab)
           </span>
         </motion.div>
@@ -115,7 +115,7 @@ export function HeroSection() {
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-4 rounded-xl
-                       bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500
+                       bg-gradient-to-r from-red-400 via-red-500 to-red-500
                        text-black font-medium
                        shadow-[0_10px_40px_rgba(16,185,129,0.35)]
                        hover:scale-105 hover:shadow-[0_20px_60px_rgba(16,185,129,0.5)]

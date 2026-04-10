@@ -59,7 +59,7 @@ export function DashboardShell({
                   href={item.href}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     pathname === item.href
-                      ? 'bg-emerald-50 text-emerald-700'
+                      ? 'bg-red-50 text-red-700'
                       : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
@@ -103,7 +103,7 @@ export function DashboardShell({
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium ${
                   pathname === item.href
-                    ? 'bg-emerald-50 text-emerald-700'
+                    ? 'bg-red-50 text-red-700'
                     : 'text-slate-600'
                 }`}
               >

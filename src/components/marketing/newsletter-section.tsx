@@ -36,7 +36,7 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="bg-gradient-to-br from-[#F0FDF4] to-[#ECFDF5] border-y border-[#D1FAE5]">
+    <section className="bg-gradient-to-br from-[#FEF2F2] to-[#FEF2F2] border-y border-[#FEE2E2]">
       <div className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
         <motion.div
           className="text-center"
@@ -46,13 +46,13 @@ export function NewsletterSection() {
           transition={{ duration: 0.5 }}
         >
           {/* Icon */}
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#059669] shadow-lg shadow-emerald-500/25">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e53935] shadow-lg shadow-red-500/25">
             <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
 
-          <p className="text-sm font-medium tracking-widest uppercase text-[#059669]">Stay Ahead</p>
+          <p className="text-sm font-medium tracking-widest uppercase text-[#e53935]">Stay Ahead</p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
             Weekly AI Insights — Free
           </h2>
@@ -65,7 +65,7 @@ export function NewsletterSection() {
             <div className="flex -space-x-2">
               {['H', 'A', 'G', 'R'].map((l, i) => (
                 <div key={i} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white"
-                  style={{ backgroundColor: ['#059669', '#10B981', '#F59E0B', '#EF4444'][i] }}>
+                  style={{ backgroundColor: ['#e53935', '#EF4444', '#F59E0B', '#EF4444'][i] }}>
                   {l}
                 </div>
               ))}
@@ -77,7 +77,7 @@ export function NewsletterSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-[#059669] px-8 py-4 text-white shadow-lg shadow-emerald-500/25"
+              className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-[#e53935] px-8 py-4 text-white shadow-lg shadow-red-500/25"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -91,7 +91,7 @@ export function NewsletterSection() {
                 placeholder="Your name (optional)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="flex-1 rounded-xl border border-[#D1FAE5] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+                className="flex-1 rounded-xl border border-[#FEE2E2] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20"
               />
               <input
                 type="email"
@@ -99,12 +99,12 @@ export function NewsletterSection() {
                 placeholder="Your email address *"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 rounded-xl border border-[#D1FAE5] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+                className="flex-1 rounded-xl border border-[#FEE2E2] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20"
               />
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="rounded-xl bg-[#059669] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#10B981] disabled:opacity-60"
+                className="rounded-xl bg-[#e53935] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#EF4444] disabled:opacity-60"
               >
                 {status === 'loading' ? 'Subscribing...' : 'Subscribe Free →'}
               </button>

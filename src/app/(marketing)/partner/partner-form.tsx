@@ -54,7 +54,7 @@ export function PartnerForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-12 text-center"
       >
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 text-[#059669]">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/15 text-[#e53935]">
           <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -65,7 +65,7 @@ export function PartnerForm() {
         </p>
         <button
           onClick={() => setSubmitted(false)}
-          className="mt-6 text-sm font-medium text-[#059669] hover:underline"
+          className="mt-6 text-sm font-medium text-[#e53935] hover:underline"
         >
           Submit another enquiry
         </button>
@@ -114,7 +114,7 @@ export function PartnerForm() {
           <select
             id="investment" name="investment" required
             value={form.investment} onChange={handleChange}
-            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#059669] focus-visible:ring-3 focus-visible:ring-[#059669]/50"
+            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#e53935] focus-visible:ring-3 focus-visible:ring-[#e53935]/50"
           >
             <option value="">How much can you invest?</option>
             {investmentRanges.map((r) => (
@@ -138,7 +138,7 @@ export function PartnerForm() {
           <select
             id="state" name="state" required
             value={form.state} onChange={handleChange}
-            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#059669] focus-visible:ring-3 focus-visible:ring-[#059669]/50"
+            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#e53935] focus-visible:ring-3 focus-visible:ring-[#e53935]/50"
           >
             <option value="">Select State</option>
             {indianStates.map((s) => (
@@ -163,13 +163,13 @@ export function PartnerForm() {
           id="comments" name="comments" rows={4}
           placeholder="Tell us about your background, experience, or any questions..."
           value={form.comments} onChange={handleChange}
-          className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 text-sm text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus-visible:border-[#059669] focus-visible:ring-3 focus-visible:ring-[#059669]/50"
+          className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 text-sm text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus-visible:border-[#e53935] focus-visible:ring-3 focus-visible:ring-[#e53935]/50"
         />
       </div>
 
       <button
         type="submit"
-        className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#059669] to-[#0D9488] px-8 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+        className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#e53935] to-[#DC2626] px-8 text-sm font-semibold text-white transition-opacity hover:opacity-90"
       >
         Submit Enquiry
       </button>

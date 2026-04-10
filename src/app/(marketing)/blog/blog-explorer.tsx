@@ -156,7 +156,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
       <div className="mb-8 flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-6 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3">
           <div className="text-center">
-            <p className="text-lg font-bold text-[#059669]">{totalPosts}</p>
+            <p className="text-lg font-bold text-[#e53935]">{totalPosts}</p>
             <p className="text-[10px] text-[#64748B] font-medium">Articles</p>
           </div>
           <div className="h-8 w-px bg-[#E2E8F0]" />
@@ -198,7 +198,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
               setVisibleCount(POSTS_PER_PAGE)
             }}
             placeholder="Search articles by title, topic, or keyword..."
-            className="w-full rounded-xl border border-[#E2E8F0] bg-white py-3 pl-11 pr-4 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20 transition-all"
+            className="w-full rounded-xl border border-[#E2E8F0] bg-white py-3 pl-11 pr-4 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20 transition-all"
           />
           {searchQuery && (
             <button
@@ -220,7 +220,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
               'rounded-full px-4 py-2 text-xs font-semibold transition-all',
               selectedCategory === 'all'
                 ? 'bg-[#0F172A] text-white shadow-sm'
-                : 'bg-white border border-[#E2E8F0] text-[#475569] hover:border-[#059669] hover:text-[#059669]'
+                : 'bg-white border border-[#E2E8F0] text-[#475569] hover:border-[#e53935] hover:text-[#e53935]'
             )}
           >
             All ({totalPosts})
@@ -236,7 +236,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
                   'inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all',
                   isActive
                     ? `${style.bg} ${style.text} border ${style.border} shadow-sm`
-                    : 'bg-white border border-[#E2E8F0] text-[#475569] hover:border-[#059669] hover:text-[#059669]'
+                    : 'bg-white border border-[#E2E8F0] text-[#475569] hover:border-[#e53935] hover:text-[#e53935]'
                 )}
               >
                 <span className={cn('h-2 w-2 rounded-full', style.dot)} />
@@ -261,7 +261,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
                 className={cn(
                   'rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all',
                   readFilter === rf.id
-                    ? 'bg-[#059669] text-white'
+                    ? 'bg-[#e53935] text-white'
                     : 'text-[#64748B] hover:text-[#0F172A]'
                 )}
               >
@@ -280,7 +280,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
           </span>
           <button
             onClick={resetFilters}
-            className="text-xs font-medium text-[#059669] hover:underline"
+            className="text-xs font-medium text-[#e53935] hover:underline"
           >
             Clear all filters
           </button>
@@ -298,7 +298,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
           </p>
           <button
             onClick={resetFilters}
-            className="rounded-lg bg-[#059669] px-5 py-2 text-sm font-semibold text-white hover:bg-[#047857] transition-colors"
+            className="rounded-lg bg-[#e53935] px-5 py-2 text-sm font-semibold text-white hover:bg-[#DC2626] transition-colors"
           >
             Show all articles
           </button>
@@ -330,7 +330,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
                         transition={{ duration: 0.3, delay: i * 0.05 }}
                       >
                         <Link href={`/blog/${post.slug}`} className="group block h-full">
-                          <article className="flex h-full flex-col rounded-xl border border-[#E2E8F0] bg-white p-5 transition-all hover:shadow-md hover:shadow-[#059669]/5 hover:-translate-y-0.5 hover:border-[#059669]/30">
+                          <article className="flex h-full flex-col rounded-xl border border-[#E2E8F0] bg-white p-5 transition-all hover:shadow-md hover:shadow-[#e53935]/5 hover:-translate-y-0.5 hover:border-[#e53935]/30">
                             {/* Category + meta row */}
                             <div className="flex items-center justify-between mb-3">
                               <span className={cn(
@@ -344,7 +344,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
                             </div>
 
                             {/* Title */}
-                            <h3 className="text-sm font-bold text-[#0F172A] leading-snug group-hover:text-[#059669] transition-colors mb-2 line-clamp-2">
+                            <h3 className="text-sm font-bold text-[#0F172A] leading-snug group-hover:text-[#e53935] transition-colors mb-2 line-clamp-2">
                               {post.title}
                             </h3>
 
@@ -358,7 +358,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
                               <span className="text-[10px] text-[#94A3B8]">
                                 {getRelativeDate(post.created_at)}
                               </span>
-                              <span className="text-xs font-medium text-[#059669] opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs font-medium text-[#e53935] opacity-0 group-hover:opacity-100 transition-opacity">
                                 Read →
                               </span>
                             </div>
@@ -379,7 +379,7 @@ export function BlogExplorer({ posts }: { posts: Post[] }) {
         <div className="mt-10 text-center">
           <button
             onClick={() => setVisibleCount((v) => v + POSTS_PER_PAGE)}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-8 py-3 text-sm font-semibold text-[#0F172A] shadow-sm transition-all hover:border-[#059669] hover:text-[#059669] hover:shadow-md"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-8 py-3 text-sm font-semibold text-[#0F172A] shadow-sm transition-all hover:border-[#e53935] hover:text-[#e53935] hover:shadow-md"
           >
             Load More Articles
             <span className="text-xs text-[#94A3B8]">

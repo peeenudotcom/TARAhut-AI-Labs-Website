@@ -97,9 +97,9 @@ const audiences = [
     icon: '🏪',
     title: 'Business Owners',
     desc: 'Automate tasks, cut costs, and grow faster with AI tools',
-    borderColor: '#a7f3d0',
+    borderColor: '#fecaca',
     bgColor: 'rgba(236,253,245,0.5)',
-    iconBg: '#d1fae5',
+    iconBg: '#fee2e2',
     href: '/courses#business',
   },
 ]
@@ -120,7 +120,7 @@ function MicroCTA() {
       <div className="mt-3 flex flex-wrap gap-2">
         <Link
           href="/courses"
-          className="inline-flex items-center rounded-lg bg-[#059669] px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-[#10B981]"
+          className="inline-flex items-center rounded-lg bg-[#e53935] px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-[#EF4444]"
         >
           Explore AI Career Programs →
         </Link>
@@ -128,7 +128,7 @@ function MicroCTA() {
           href="https://wa.me/919200882008?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-semibold text-[#475569] transition-all hover:border-[#059669] hover:text-[#059669]"
+          className="inline-flex items-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-semibold text-[#475569] transition-all hover:border-[#e53935] hover:text-[#e53935]"
         >
           Get My AI Learning Plan
         </a>
@@ -214,7 +214,7 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={tool.placeholder}
-          className="w-full resize-none rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+          className="w-full resize-none rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20"
         />
 
         {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
@@ -249,7 +249,7 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
                 <p className="text-sm font-medium text-[#0F172A]">{tool.outputLabel}</p>
                 <button
                   onClick={copyToClipboard}
-                  className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1 text-xs font-medium text-[#64748B] transition-colors hover:border-[#059669] hover:text-[#059669]"
+                  className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1 text-xs font-medium text-[#64748B] transition-colors hover:border-[#e53935] hover:text-[#e53935]"
                 >
                   {copied ? '✓ Copied!' : 'Copy'}
                 </button>
@@ -284,12 +284,12 @@ export default function ToolsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-[#059669] mb-4">
+          <span className="inline-block rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-[#e53935] mb-4">
             Powered by Claude AI · Free, no login
           </span>
           <h1 className="text-4xl font-extrabold tracking-tight text-[#0F172A] sm:text-5xl">
             Experience AI.<br />
-            <span className="bg-gradient-to-r from-[#059669] to-[#0D9488] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#e53935] to-[#DC2626] bg-clip-text text-transparent">
               Then Master It.
             </span>
           </h1>
@@ -308,7 +308,7 @@ export default function ToolsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-[#059669]">How it works</p>
+          <p className="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-[#e53935]">How it works</p>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-4">
             {steps.map((s, i) => (
               <div key={s.step} className="relative flex flex-col items-center text-center">
@@ -318,7 +318,7 @@ export default function ToolsPage() {
                 )}
                 <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] text-2xl shadow-sm">
                   {s.icon}
-                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#059669] text-[10px] font-bold text-white">
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#e53935] text-[10px] font-bold text-white">
                     {s.step}
                   </span>
                 </div>
@@ -357,7 +357,7 @@ export default function ToolsPage() {
           transition={{ duration: 0.5 }}
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#059669]">Our philosophy</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#e53935]">Our philosophy</p>
             <h2 className="mt-3 flex items-center gap-3 text-2xl font-bold text-[#0F172A]">
               Why These Tools Exist
               <span className="inline-flex gap-1.5">
@@ -376,7 +376,7 @@ export default function ToolsPage() {
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               {['Experience first', 'Learn the why', 'Build with confidence'].map((tag) => (
-                <span key={tag} className="inline-flex items-center rounded-full border border-[#D1FAE5] bg-[#F0FDF4] px-3 py-1 text-xs font-medium text-[#059669]">
+                <span key={tag} className="inline-flex items-center rounded-full border border-[#FEE2E2] bg-[#FEF2F2] px-3 py-1 text-xs font-medium text-[#e53935]">
                   ✓ {tag}
                 </span>
               ))}
@@ -419,7 +419,7 @@ export default function ToolsPage() {
                 </div>
                 <h3 className="mt-4 text-sm font-bold text-[#0F172A]">{a.title}</h3>
                 <p className="mt-2 text-xs leading-relaxed text-[#475569]">{a.desc}</p>
-                <p className="audience-card-link mt-3 text-xs font-medium text-[#059669]">
+                <p className="audience-card-link mt-3 text-xs font-medium text-[#e53935]">
                   View programs →
                 </p>
               </Link>

@@ -52,7 +52,7 @@ export function ContactForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-12 text-center"
       >
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 text-[#059669]">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/15 text-[#e53935]">
           <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -65,7 +65,7 @@ export function ContactForm() {
         </p>
         <button
           onClick={() => setSubmitted(false)}
-          className="mt-6 text-sm font-medium text-[#059669] hover:underline"
+          className="mt-6 text-sm font-medium text-[#e53935] hover:underline"
         >
           Send another message
         </button>
@@ -121,7 +121,7 @@ export function ContactForm() {
           <select
             id="course"
             name="course"
-            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#059669] focus-visible:ring-3 focus-visible:ring-[#059669]/50"
+            className="h-10 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-sm text-[#0F172A] outline-none transition-colors focus-visible:border-[#e53935] focus-visible:ring-3 focus-visible:ring-[#e53935]/50"
           >
             <option value="">Select a course (optional)</option>
             {courses.map((c) => (
@@ -141,7 +141,7 @@ export function ContactForm() {
           rows={5}
           required
           placeholder="Tell us how we can help you..."
-          className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 text-sm text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus-visible:border-[#059669] focus-visible:ring-3 focus-visible:ring-[#059669]/50"
+          className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 text-sm text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus-visible:border-[#e53935] focus-visible:ring-3 focus-visible:ring-[#e53935]/50"
         />
       </div>
 
@@ -152,7 +152,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#059669] to-[#0D9488] px-8 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:w-auto"
+        className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#e53935] to-[#DC2626] px-8 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:w-auto"
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </button>

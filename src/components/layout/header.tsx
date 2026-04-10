@@ -42,8 +42,8 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
     >
       <button
         className={cn(
-          'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#059669]',
-          isActive ? 'text-[#059669]' : 'text-[#475569]'
+          'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#e53935]',
+          isActive ? 'text-[#e53935]' : 'text-[#475569]'
         )}
       >
         {entry.label}
@@ -59,9 +59,9 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  'block px-4 py-2.5 text-sm transition-colors hover:bg-emerald-50 hover:text-emerald-700',
+                  'block px-4 py-2.5 text-sm transition-colors hover:bg-red-50 hover:text-red-700',
                   pathname === item.href
-                    ? 'text-[#059669] bg-emerald-50/50'
+                    ? 'text-[#e53935] bg-red-50/50'
                     : 'text-[#475569]'
                 )}
               >
@@ -83,9 +83,9 @@ function MobileDropdown({ entry, pathname }: { entry: NavDropdown; pathname: str
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          'flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-[#F0FDF4]',
+          'flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-[#FEF2F2]',
           entry.items.some((item) => pathname === item.href)
-            ? 'text-[#059669]'
+            ? 'text-[#e53935]'
             : 'text-[#0F172A]'
         )}
       >
@@ -93,14 +93,14 @@ function MobileDropdown({ entry, pathname }: { entry: NavDropdown; pathname: str
         <ChevronDown className={cn('w-4 h-4 transition-transform', open && 'rotate-180')} />
       </button>
       {open && (
-        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-emerald-100 pl-3">
+        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-red-100 pl-3">
           {entry.items.map((item) => (
             <SheetClose key={item.href} render={<Link href={item.href} />}>
               <span
                 className={cn(
-                  'block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-[#F0FDF4]',
+                  'block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-[#FEF2F2]',
                   pathname === item.href
-                    ? 'text-[#059669]'
+                    ? 'text-[#e53935]'
                     : 'text-[#475569]'
                 )}
               >
@@ -159,9 +159,9 @@ export function Header() {
                 key={entry.href}
                 href={entry.href}
                 className={cn(
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#059669]',
+                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#e53935]',
                   pathname === entry.href
-                    ? 'text-[#059669]'
+                    ? 'text-[#e53935]'
                     : 'text-[#475569]'
                 )}
               >
@@ -175,7 +175,7 @@ export function Header() {
         <div className="hidden items-center gap-2 lg:flex">
           <Link
             href={navCta.href}
-            className="inline-flex h-9 items-center justify-center rounded-full border border-emerald-500 px-4 text-sm font-medium text-emerald-600 transition-all hover:bg-emerald-50"
+            className="inline-flex h-9 items-center justify-center rounded-full border border-red-500 px-4 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
           >
             {navCta.label}
           </Link>
@@ -183,7 +183,7 @@ export function Header() {
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110 hover:shadow-emerald-500/25"
+            className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-red-500 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110 hover:shadow-red-500/25"
           >
             Book Free Demo
           </a>
@@ -203,7 +203,7 @@ export function Header() {
             <SheetContent side="right" className="bg-white border-[#E2E8F0]">
               <SheetHeader>
                 <SheetTitle>
-                  <span className="bg-gradient-to-r from-[#059669] to-[#0D9488] bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-[#e53935] to-[#DC2626] bg-clip-text text-transparent">
                     {siteConfig.name}
                   </span>
                 </SheetTitle>
@@ -216,9 +216,9 @@ export function Header() {
                     <SheetClose key={entry.href} render={<Link href={entry.href} />}>
                       <span
                         className={cn(
-                          'block rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-[#F0FDF4]',
+                          'block rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-[#FEF2F2]',
                           pathname === entry.href
-                            ? 'text-[#059669]'
+                            ? 'text-[#e53935]'
                             : 'text-[#0F172A]'
                         )}
                       >
@@ -229,13 +229,13 @@ export function Header() {
                 )}
                 <div className="mt-4 border-t border-[#E2E8F0] pt-4 space-y-2">
                   <Button
-                    className="w-full border border-emerald-500 text-emerald-600 bg-transparent hover:bg-emerald-50"
+                    className="w-full border border-red-500 text-red-600 bg-transparent hover:bg-red-50"
                     render={<Link href={navCta.href} />}
                   >
                     {navCta.label}
                   </Button>
                   <Button
-                    className="w-full bg-gradient-to-r from-[#059669] to-[#0D9488] text-white"
+                    className="w-full bg-gradient-to-r from-[#e53935] to-[#DC2626] text-white"
                     render={<Link href="/contact" />}
                   >
                     Get Started

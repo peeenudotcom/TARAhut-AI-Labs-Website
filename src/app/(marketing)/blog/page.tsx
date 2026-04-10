@@ -23,7 +23,7 @@ export default async function BlogPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-16 text-white border-b border-[#E2E8F0]">
+      <section className="bg-gradient-to-br from-[#e53935] to-[#DC2626] py-16 text-white border-b border-[#E2E8F0]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Blog</h1>
           <p className="mt-4 max-w-2xl text-lg text-white/80">
@@ -45,12 +45,12 @@ export default async function BlogPage() {
                 <Link href={`/blog/${featured.slug}`} className="group block mb-12">
                   <div className="rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-8 hover:shadow-lg transition-shadow">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 text-xs font-semibold">
+                      <span className="rounded-full bg-red-50 text-red-700 px-3 py-1 text-xs font-semibold">
                         {featured.category}
                       </span>
                       <span className="text-xs text-[#94A3B8]">Latest</span>
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] group-hover:text-[#059669] transition-colors mb-3">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] group-hover:text-[#e53935] transition-colors mb-3">
                       {featured.title}
                     </h2>
                     <p className="text-[#475569] leading-relaxed mb-4 max-w-3xl">{featured.excerpt}</p>

@@ -26,7 +26,7 @@ export function CtaSection() {
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0A0F1E] via-[#0F2027] to-[#0A0F1E]">
       {/* Glow */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-[100px]" />
       </div>
 
       {/* Particles */}
@@ -52,13 +52,13 @@ export function CtaSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400 mb-6">
+          <span className="inline-block rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-400 mb-6">
             April 2026 Batch
           </span>
 
           <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
             Start Your AI Journey —{' '}
-            <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-red-400 to-red-400 bg-clip-text text-transparent">
               or Build a Business with It
             </span>
           </h2>
@@ -86,7 +86,7 @@ export function CtaSection() {
               href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-9 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:brightness-110 hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-red-500 px-9 py-4 text-base font-semibold text-white shadow-lg shadow-red-500/30 transition-all hover:brightness-110 hover:-translate-y-0.5"
             >
               📅 Book Free Demo Class
             </a>
@@ -106,7 +106,7 @@ export function CtaSection() {
           {/* Phone */}
           <p className="mt-6 text-sm text-slate-500">
             Prefer talking? Call us directly:{' '}
-            <a href="tel:+919200882008" className="font-semibold text-white transition-colors hover:text-emerald-400">
+            <a href="tel:+919200882008" className="font-semibold text-white transition-colors hover:text-red-400">
               +91-9200882008
             </a>
           </p>

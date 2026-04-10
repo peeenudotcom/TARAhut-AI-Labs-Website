@@ -33,9 +33,9 @@ const resources = [
     title: 'AI Tools Cheatsheet — 40+ Tools',
     description: 'Every major AI tool categorized by use case: writing, design, video, coding, business, and productivity.',
     icon: '🛠️',
-    color: 'from-emerald-500 to-teal-500',
+    color: 'from-red-500 to-red-500',
     badge: 'Free',
-    badgeColor: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20',
+    badgeColor: 'bg-red-500/10 text-red-700 border-red-500/20',
     pages: '8 pages',
     format: 'PDF',
     downloadUrl: 'https://drive.google.com/uc?export=download&id=3_TOOLS_CHEATSHEET_ID',
@@ -111,7 +111,7 @@ function EmailGateModal({
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+            className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20"
           />
           <input
             type="email"
@@ -119,13 +119,13 @@ function EmailGateModal({
             placeholder="Your email address *"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+            className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20"
           />
           {error && <p className="text-sm text-red-500">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-[#059669] py-3 text-sm font-semibold text-white transition-all hover:bg-[#10B981] disabled:opacity-60"
+            className="w-full rounded-xl bg-[#e53935] py-3 text-sm font-semibold text-white transition-all hover:bg-[#EF4444] disabled:opacity-60"
           >
             {loading ? 'Sending...' : 'Send Me the Free PDF →'}
           </button>
@@ -160,12 +160,12 @@ export default function ResourcesPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-[#059669] mb-4">
+          <span className="inline-block rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-[#e53935] mb-4">
             100% Free — No Credit Card
           </span>
           <h1 className="text-4xl font-extrabold tracking-tight text-[#0F172A] sm:text-5xl">
             Free AI Resources<br />
-            <span className="bg-gradient-to-r from-[#059669] to-[#0D9488] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#e53935] to-[#DC2626] bg-clip-text text-transparent">
               for Indian Professionals
             </span>
           </h1>
@@ -184,7 +184,7 @@ export default function ResourcesPage() {
           {resources.map((r, i) => (
             <motion.div
               key={r.id}
-              className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-7 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1"
+              className="group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-7 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
@@ -227,7 +227,7 @@ export default function ResourcesPage() {
                 onClick={() => setActiveResource(r)}
                 className={`mt-5 w-full rounded-xl py-3 text-sm font-semibold transition-all ${
                   downloaded.has(r.id)
-                    ? 'bg-emerald-50 text-[#059669] border border-emerald-200'
+                    ? 'bg-red-50 text-[#e53935] border border-red-200'
                     : `bg-gradient-to-r ${r.color} text-white shadow-sm hover:brightness-105`
                 }`}
               >
@@ -251,7 +251,7 @@ export default function ResourcesPage() {
             href="https://wa.me/919200882008?text=Hi%2C+I+downloaded+your+AI+resources+and+want+to+know+more+about+courses"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:brightness-110"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-500 to-red-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/25 transition-all hover:brightness-110"
           >
             📅 Book a Free Demo Class
           </a>

@@ -39,9 +39,9 @@ export default async function CertificatesPage() {
                 className="bg-white rounded-xl border border-slate-200 p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center shrink-0">
                     <svg
-                      className="w-6 h-6 text-emerald-600"
+                      className="w-6 h-6 text-red-600"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

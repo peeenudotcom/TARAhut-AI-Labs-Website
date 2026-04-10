@@ -121,7 +121,7 @@ export function InterviewPrepModal({
             className="fixed inset-4 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 flex flex-col sm:w-full sm:max-w-lg sm:h-[85vh] rounded-2xl bg-white shadow-2xl border border-[#E2E8F0] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#059669] to-[#0D9488]">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#e53935] to-[#DC2626]">
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
                   <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -147,14 +147,14 @@ export function InterviewPrepModal({
             {!started ? (
               /* Start screen */
               <div className="flex-1 flex flex-col items-center justify-center px-8 py-10 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F0FDF4] border border-[#D1FAE5] mb-5">
-                  <svg className="h-8 w-8 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FEF2F2] border border-[#FEE2E2] mb-5">
+                  <svg className="h-8 w-8 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-2">Ready to Practice?</h3>
                 <p className="text-sm text-[#64748B] mb-2 max-w-xs">
-                  Your AI interview coach will ask you real questions for <span className="font-semibold text-[#059669]">{careerPath}</span> roles.
+                  Your AI interview coach will ask you real questions for <span className="font-semibold text-[#e53935]">{careerPath}</span> roles.
                 </p>
                 <div className="space-y-2 text-xs text-[#94A3B8] mb-6">
                   <p>You answer. AI gives feedback + a score out of 10.</p>
@@ -163,7 +163,7 @@ export function InterviewPrepModal({
                 <button
                   onClick={handleStart}
                   className="inline-flex items-center gap-2 rounded-xl px-8 py-3.5 text-sm font-semibold text-white transition-all hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #059669, #0D9488)', boxShadow: '0 8px 25px rgba(5,150,105,0.3)' }}
+                  style={{ background: 'linear-gradient(135deg, #e53935, #DC2626)', boxShadow: '0 8px 25px rgba(5,150,105,0.3)' }}
                 >
                   Start Mock Interview
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -187,7 +187,7 @@ export function InterviewPrepModal({
                         className={cn(
                           'max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed',
                           msg.role === 'user'
-                            ? 'bg-[#059669] text-white rounded-br-md'
+                            ? 'bg-[#e53935] text-white rounded-br-md'
                             : 'bg-[#F1F5F9] text-[#0F172A] rounded-bl-md'
                         )}
                       >
@@ -218,7 +218,7 @@ export function InterviewPrepModal({
                       onKeyDown={handleKeyDown}
                       placeholder="Type your answer..."
                       rows={1}
-                      className="flex-1 resize-none rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-2.5 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20 max-h-24"
+                      className="flex-1 resize-none rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-2.5 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-2 focus:ring-[#e53935]/20 max-h-24"
                       style={{ minHeight: 40 }}
                       disabled={loading}
                     />
@@ -228,7 +228,7 @@ export function InterviewPrepModal({
                       className={cn(
                         'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all',
                         input.trim() && !loading
-                          ? 'bg-[#059669] text-white hover:bg-[#047857]'
+                          ? 'bg-[#e53935] text-white hover:bg-[#DC2626]'
                           : 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed'
                       )}
                     >

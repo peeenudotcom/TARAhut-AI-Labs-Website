@@ -11,7 +11,7 @@ const cards = [
     ),
     title: 'Standardized Curriculum',
     description: 'Every course follows a structured, battle-tested curriculum — ensuring consistent quality regardless of location or instructor.',
-    accent: 'from-emerald-400 to-teal-400',
+    accent: 'from-red-400 to-red-400',
   },
   {
     icon: (
@@ -47,7 +47,7 @@ export function MentorSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-semibold tracking-widest uppercase text-emerald-600">
+          <p className="text-sm font-semibold tracking-widest uppercase text-red-600">
             Our System
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">

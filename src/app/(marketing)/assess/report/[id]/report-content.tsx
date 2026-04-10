@@ -40,7 +40,7 @@ export function ReportContent({ report }: { report: ReportData }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-sm text-emerald-300">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-red-500/10 border border-red-400/20 text-sm text-red-300">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -106,7 +106,7 @@ export function ReportContent({ report }: { report: ReportData }) {
                 className="bg-slate-50 rounded-2xl border border-slate-200 p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 font-bold flex items-center justify-center shrink-0">
                     {i + 1}
                   </div>
                   <div className="flex-1">
@@ -117,7 +117,7 @@ export function ReportContent({ report }: { report: ReportData }) {
                       {rec.description}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-sm font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-700 text-sm font-medium">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -154,11 +154,11 @@ export function ReportContent({ report }: { report: ReportData }) {
             </div>
           )}
 
-          <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-8 text-center text-white">
+          <div className="bg-gradient-to-br from-red-600 to-red-600 rounded-2xl p-8 text-center text-white">
             <h2 className="text-2xl font-semibold mb-3">
               Want help implementing these automations?
             </h2>
-            <p className="text-emerald-100 mb-6">
+            <p className="text-red-100 mb-6">
               Book a free 15-minute consultation with our AI trainer. We&apos;ll
               walk through your report and create a custom action plan.
             </p>
@@ -166,7 +166,7 @@ export function ReportContent({ report }: { report: ReportData }) {
               href={`https://wa.me/919200882008?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-4 rounded-xl bg-white text-emerald-700 font-medium hover:bg-emerald-50 transition-colors shadow-lg"
+              className="inline-block px-8 py-4 rounded-xl bg-white text-red-700 font-medium hover:bg-red-50 transition-colors shadow-lg"
             >
               Book Free Consultation on WhatsApp
             </a>

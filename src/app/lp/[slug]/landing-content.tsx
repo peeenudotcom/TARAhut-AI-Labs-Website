@@ -223,7 +223,7 @@ export function LandingPageContent({ course }: { course: Course }) {
       const options = {
         key: data.keyId, amount: data.amount, currency: data.currency,
         name: siteConfig.name, description: course.title, order_id: data.orderId,
-        prefill: { name, email, contact: phone }, theme: { color: '#059669' },
+        prefill: { name, email, contact: phone }, theme: { color: '#e53935' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           const verifyRes = await fetch('/api/payment/verify', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },

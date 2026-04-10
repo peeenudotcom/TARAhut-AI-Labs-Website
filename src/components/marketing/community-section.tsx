@@ -13,7 +13,7 @@ export function CommunitySection() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
       <motion.div
-        className="overflow-hidden rounded-3xl bg-gradient-to-br from-[#022C22] via-[#064E3B] to-[#065F46] p-8 md:p-14"
+        className="overflow-hidden rounded-3xl bg-gradient-to-br from-[#022C22] via-[#064E3B] to-[#B91C1C] p-8 md:p-14"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -22,17 +22,17 @@ export function CommunitySection() {
         <div className="flex flex-col items-center gap-10 md:flex-row md:items-center md:gap-16">
           {/* Left */}
           <div className="flex-1 text-center md:text-left">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-400">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-red-400"></span>
               </span>
               2,100+ members active now
             </div>
 
             <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
               Join Our Free<br />
-              <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-400 to-teal-300 bg-clip-text text-transparent">
                 AI WhatsApp Community
               </span>
             </h2>

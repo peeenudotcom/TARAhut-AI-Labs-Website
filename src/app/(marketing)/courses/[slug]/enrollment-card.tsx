@@ -83,7 +83,7 @@ export function EnrollmentCard({
         description: courseTitle,
         order_id: data.orderId,
         prefill: { name, email, contact: phone },
-        theme: { color: '#059669' },
+        theme: { color: '#e53935' },
         handler: async (response: {
           razorpay_order_id: string
           razorpay_payment_id: string
@@ -134,7 +134,7 @@ export function EnrollmentCard({
       <div className="lg:self-start lg:sticky lg:top-24">
         <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-lg">
           {/* Price header */}
-          <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-white">
+          <div className="bg-gradient-to-r from-[#e53935] to-[#DC2626] p-6 text-white">
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold">
                 ₹{price.toLocaleString('en-IN')}
@@ -155,8 +155,8 @@ export function EnrollmentCard({
           <div className="p-6">
             {step === 'success' ? (
               <div className="text-center py-4">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#D1FAE5]">
-                  <svg className="h-6 w-6 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#FEE2E2]">
+                  <svg className="h-6 w-6 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -186,7 +186,7 @@ export function EnrollmentCard({
                       placeholder="Your name *"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-1 focus:ring-[#059669]"
+                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-1 focus:ring-[#e53935]"
                       required
                     />
                   </div>
@@ -196,7 +196,7 @@ export function EnrollmentCard({
                       placeholder="Email address *"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-1 focus:ring-[#059669]"
+                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-1 focus:ring-[#e53935]"
                       required
                     />
                   </div>
@@ -206,7 +206,7 @@ export function EnrollmentCard({
                       placeholder="Phone number"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-1 focus:ring-[#059669]"
+                      className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2.5 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#e53935] focus:outline-none focus:ring-1 focus:ring-[#e53935]"
                     />
                   </div>
 
@@ -217,7 +217,7 @@ export function EnrollmentCard({
                   <button
                     type="submit"
                     disabled={loading || step === 'paying'}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#059669] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#047857] disabled:opacity-60"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#e53935] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#DC2626] disabled:opacity-60"
                   >
                     {loading || step === 'paying' ? (
                       <>
@@ -301,7 +301,7 @@ export function EnrollmentCard({
               {isSchoolCourse && (
                 <div className="flex justify-between">
                   <span className="text-[#64748B]">Batch size</span>
-                  <span className="font-medium text-[#059669]">Max 10 students</span>
+                  <span className="font-medium text-[#e53935]">Max 10 students</span>
                 </div>
               )}
             </div>
@@ -336,7 +336,7 @@ function CopyLinkButton({ courseSlug }: { courseSlug: string }) {
     >
       {copied ? (
         <>
-          <svg className="h-3.5 w-3.5 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-3.5 w-3.5 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
           Link Copied!

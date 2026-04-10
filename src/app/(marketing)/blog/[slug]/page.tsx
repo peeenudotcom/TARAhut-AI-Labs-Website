@@ -47,7 +47,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-14 text-white">
+      <section className="bg-gradient-to-br from-[#e53935] to-[#DC2626] py-14 text-white">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <Link href="/blog" className="inline-flex items-center gap-1.5 text-white/70 hover:text-white text-sm mb-6 transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,19 +78,19 @@ export default async function BlogPostPage({ params }: Props) {
               prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
               prose-p:text-[#475569] prose-p:leading-relaxed
               prose-strong:text-[#0F172A]
-              prose-a:text-[#059669] prose-a:no-underline hover:prose-a:underline
+              prose-a:text-[#e53935] prose-a:no-underline hover:prose-a:underline
               prose-li:text-[#475569]
               prose-ul:my-4 prose-li:my-1"
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
 
           {/* CTA */}
-          <div className="mt-12 rounded-2xl bg-gradient-to-br from-[#059669]/10 to-[#0D9488]/10 border border-[#059669]/20 p-8 text-center">
+          <div className="mt-12 rounded-2xl bg-gradient-to-br from-[#e53935]/10 to-[#DC2626]/10 border border-[#e53935]/20 p-8 text-center">
             <h3 className="text-xl font-bold text-[#0F172A] mb-2">Want to master AI skills?</h3>
             <p className="text-[#475569] mb-5">Join TARAhut AI Labs and learn from expert-led, hands-on courses designed for Indian professionals.</p>
             <Link
               href="/courses"
-              className="inline-block bg-[#059669] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#047857] transition-colors"
+              className="inline-block bg-[#e53935] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#DC2626] transition-colors"
             >
               Explore Courses
             </Link>

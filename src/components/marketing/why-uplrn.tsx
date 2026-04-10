@@ -11,8 +11,8 @@ const features = [
     ),
     title: 'Real AI Projects',
     description: 'Build 10+ portfolio-worthy projects using actual tools — not just slides and theory. Every class ends with something you can show employers.',
-    accent: 'from-emerald-400 to-teal-400',
-    glow: 'group-hover:shadow-emerald-500/20',
+    accent: 'from-red-400 to-red-400',
+    glow: 'group-hover:shadow-red-500/20',
   },
   {
     icon: (
@@ -60,7 +60,7 @@ export function WhyUplrn() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-semibold tracking-widest uppercase text-emerald-600">
+          <p className="text-sm font-semibold tracking-widest uppercase text-red-600">
             Why TARAhut AI Labs
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">

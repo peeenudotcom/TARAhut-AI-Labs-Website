@@ -36,7 +36,7 @@ const stats = [
 
 export function StatsCounter() {
   return (
-    <section className="border-y border-[#E2E8F0] bg-[#F0FDF4]">
+    <section className="border-y border-[#E2E8F0] bg-[#FEF2F2]">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <motion.div
           className="grid grid-cols-2 gap-8 lg:grid-cols-4"

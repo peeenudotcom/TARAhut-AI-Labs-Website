@@ -10,7 +10,7 @@ const testimonials = [
     name: 'Harpreet Kaur',
     role: 'Marketing Executive, Ludhiana',
     rating: 5,
-    color: '#059669',
+    color: '#e53935',
   },
   {
     quote:
@@ -18,7 +18,7 @@ const testimonials = [
     name: 'Arjun Sharma',
     role: 'Software Developer, Chandigarh',
     rating: 5,
-    color: '#10B981',
+    color: '#EF4444',
   },
   {
     quote:
@@ -34,7 +34,7 @@ const testimonials = [
     name: 'Nisha Patel',
     role: 'Freelancer, Amritsar',
     rating: 5,
-    color: '#0D9488',
+    color: '#DC2626',
   },
   {
     quote:
@@ -76,7 +76,7 @@ export function TestimonialsSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <p className="text-sm font-medium tracking-widest uppercase text-[#059669]">
+        <p className="text-sm font-medium tracking-widest uppercase text-[#e53935]">
           Trusted by students
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
@@ -98,10 +98,10 @@ export function TestimonialsSection() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
           >
             {/* Gradient left border accent */}
-            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#059669] to-[#0D9488]" />
+            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#e53935] to-[#DC2626]" />
 
             {/* Large quote icon */}
-            <span className="block text-5xl font-serif leading-none font-bold bg-gradient-to-r from-[#059669] to-[#0D9488] bg-clip-text text-transparent select-none">
+            <span className="block text-5xl font-serif leading-none font-bold bg-gradient-to-r from-[#e53935] to-[#DC2626] bg-clip-text text-transparent select-none">
               &ldquo;
             </span>
 
@@ -139,7 +139,7 @@ export function TestimonialsSection() {
         >
           <button
             onClick={() => setShowAll(true)}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#059669] transition-colors hover:text-[#10B981]"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#e53935] transition-colors hover:text-[#EF4444]"
           >
             See more reviews
             <svg
@@ -163,7 +163,7 @@ export function TestimonialsSection() {
         >
           <button
             onClick={() => setShowAll(false)}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#059669] transition-colors hover:text-[#10B981]"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#e53935] transition-colors hover:text-[#EF4444]"
           >
             Show fewer reviews
             <svg

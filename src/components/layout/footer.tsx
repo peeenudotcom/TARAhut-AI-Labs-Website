@@ -72,7 +72,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.href + link.label}>
-                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-emerald-400">
+                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-red-400">
                     {link.label}
                   </Link>
                 </li>
@@ -86,7 +86,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.courses.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-emerald-400">
+                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-red-400">
                     {link.label}
                   </Link>
                 </li>
@@ -100,7 +100,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.href + link.label}>
-                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-emerald-400">
+                  <Link href={link.href} className="text-sm text-[#94A3B8] transition-colors hover:text-red-400">
                     {link.label}
                   </Link>
                 </li>
@@ -118,7 +118,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#94A3B8] transition-all hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#94A3B8] transition-all hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
                   aria-label={social.label}
                 >
                   {social.icon}

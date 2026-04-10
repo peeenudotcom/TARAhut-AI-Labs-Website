@@ -7,7 +7,7 @@ import type { Course } from '@/config/courses';
 import { Badge } from '@/components/ui/badge';
 
 const levelColors: Record<string, string> = {
-  Beginner: 'bg-emerald-500/15 text-emerald-600',
+  Beginner: 'bg-red-500/15 text-red-600',
   Intermediate: 'bg-amber-500/15 text-amber-600',
   Advanced: 'bg-rose-500/15 text-rose-600',
 };
@@ -50,8 +50,8 @@ export function CoursesGrid({
             onClick={() => setActive(cat)}
             className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
               active === cat
-                ? 'bg-gradient-to-r from-[#059669] to-[#0D9488] text-white shadow-md'
-                : 'bg-[#F0FDF4] text-[#475569] hover:bg-[#059669]/10 hover:text-[#0F172A]'
+                ? 'bg-gradient-to-r from-[#e53935] to-[#DC2626] text-white shadow-md'
+                : 'bg-[#FEF2F2] text-[#475569] hover:bg-[#e53935]/10 hover:text-[#0F172A]'
             }`}
           >
             {cat}
@@ -73,11 +73,11 @@ export function CoursesGrid({
             >
               <Link
                 href={`/courses/${course.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-sm transition-all hover:shadow-lg hover:shadow-[#059669]/5 hover:-translate-y-1"
+                className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-sm transition-all hover:shadow-lg hover:shadow-[#e53935]/5 hover:-translate-y-1"
               >
                 {/* Thumbnail placeholder */}
-                <div className="relative h-48 w-full bg-gradient-to-br from-[#059669]/10 to-[#0D9488]/10">
-                  <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-[#059669]/15">
+                <div className="relative h-48 w-full bg-gradient-to-br from-[#e53935]/10 to-[#DC2626]/10">
+                  <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-[#e53935]/15">
                     {course.category}
                   </div>
                   <div className="absolute top-3 left-3 flex gap-2">
@@ -101,7 +101,7 @@ export function CoursesGrid({
                       {course.category}
                     </Badge>
                   </div>
-                  <h3 className="mb-2 text-lg font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">
+                  <h3 className="mb-2 text-lg font-semibold text-[#0F172A] group-hover:text-[#e53935] transition-colors">
                     {course.title}
                   </h3>
                   <p className="mb-4 flex-1 text-sm text-[#475569] leading-relaxed line-clamp-3">
@@ -155,7 +155,7 @@ export function CoursesGrid({
                         </>
                       )}
                     </div>
-                    <span className="text-sm font-medium text-[#059669] group-hover:underline">
+                    <span className="text-sm font-medium text-[#e53935] group-hover:underline">
                       View Details &rarr;
                     </span>
                   </div>

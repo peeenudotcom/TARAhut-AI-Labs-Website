@@ -96,11 +96,11 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
             <span className="text-slate-500">
               {completedCount} of {totalLessons} lessons
             </span>
-            <span className="font-medium text-emerald-600">{progress}%</span>
+            <span className="font-medium text-red-600">{progress}%</span>
           </div>
           <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-emerald-500 rounded-full transition-all duration-300"
+              className="h-full bg-red-500 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -109,19 +109,19 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
 
       {/* Certificate button */}
       {isComplete && (
-        <div className="mb-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
-          <p className="text-emerald-800 font-medium mb-3">
+        <div className="mb-8 bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <p className="text-red-800 font-medium mb-3">
             Congratulations! You&apos;ve completed all lessons.
           </p>
           <button
             onClick={generateCertificate}
             disabled={certLoading}
-            className="px-6 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
           >
             {certLoading ? 'Generating...' : 'Generate Certificate'}
           </button>
           {certMessage && (
-            <p className="mt-3 text-sm text-emerald-700">{certMessage}</p>
+            <p className="mt-3 text-sm text-red-700">{certMessage}</p>
           )}
         </div>
       )}
@@ -158,7 +158,7 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
                     <div
                       className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                         isChecked
-                          ? 'bg-emerald-500 border-emerald-500'
+                          ? 'bg-red-500 border-red-500'
                           : 'border-slate-300'
                       }`}
                     >

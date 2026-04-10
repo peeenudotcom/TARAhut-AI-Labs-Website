@@ -456,12 +456,12 @@ function computeResult(answers: Answers): CareerResult {
 
   // Build strength profile from best archetype
   const strengths = [
-    { label: 'Technical', value: best.strengths.technical, color: '#059669' },
+    { label: 'Technical', value: best.strengths.technical, color: '#e53935' },
     { label: 'Creative', value: best.strengths.creative, color: '#8B5CF6' },
     { label: 'Analytical', value: best.strengths.analytical, color: '#3B82F6' },
     { label: 'Leadership', value: best.strengths.leadership, color: '#F59E0B' },
     { label: 'Communication', value: best.strengths.communication, color: '#EC4899' },
-    { label: 'Business', value: best.strengths.business, color: '#0D9488' },
+    { label: 'Business', value: best.strengths.business, color: '#DC2626' },
   ]
 
   return {
@@ -487,12 +487,12 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-[#64748B]">Step {current} of {total}</span>
-        <span className="text-xs font-semibold text-[#059669]">{Math.round(pct)}%</span>
+        <span className="text-xs font-semibold text-[#e53935]">{Math.round(pct)}%</span>
       </div>
       <div className="h-2 w-full rounded-full bg-[#E2E8F0] overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: 'linear-gradient(to right, #059669, #10B981)' }}
+          style={{ background: 'linear-gradient(to right, #e53935, #EF4444)' }}
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -523,8 +523,8 @@ function SelectCard({
       className={cn(
         'relative w-full rounded-xl border-2 p-4 text-left transition-all duration-200',
         selected
-          ? 'border-[#059669] bg-[#F0FDF4] shadow-md shadow-emerald-500/10'
-          : 'border-[#E2E8F0] bg-white hover:border-[#059669]/40 hover:shadow-sm'
+          ? 'border-[#e53935] bg-[#FEF2F2] shadow-md shadow-red-500/10'
+          : 'border-[#E2E8F0] bg-white hover:border-[#e53935]/40 hover:shadow-sm'
       )}
       whileTap={{ scale: 0.98 }}
     >
@@ -532,7 +532,7 @@ function SelectCard({
         <div
           className={cn(
             'absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-md border-2 transition-all',
-            selected ? 'border-[#059669] bg-[#059669]' : 'border-[#CBD5E1]'
+            selected ? 'border-[#e53935] bg-[#e53935]' : 'border-[#CBD5E1]'
           )}
         >
           {selected && (
@@ -592,7 +592,7 @@ function RadarChart({ strengths }: { strengths: { label: string; value: number; 
       <motion.path
         d={dataPath}
         fill="rgba(5,150,105,0.15)"
-        stroke="#059669"
+        stroke="#e53935"
         strokeWidth={2.5}
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -636,7 +636,7 @@ function RadarChart({ strengths }: { strengths: { label: string; value: number; 
   )
 }
 
-function CircularScore({ score, label, size = 80, color = '#059669' }: { score: number; label: string; size?: number; color?: string }) {
+function CircularScore({ score, label, size = 80, color = '#e53935' }: { score: number; label: string; size?: number; color?: string }) {
   const strokeWidth = 6
   const r = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * r
@@ -815,7 +815,7 @@ export function CareerLab() {
             {[...Array(6)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 rounded-full bg-emerald-400/30"
+                className="absolute w-1 h-1 rounded-full bg-red-400/30"
                 style={{ left: `${15 + i * 15}%`, top: `${20 + (i % 3) * 25}%` }}
                 animate={{ y: [0, -20, 0], opacity: [0.3, 0.7, 0.3] }}
                 transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
@@ -827,8 +827,8 @@ export function CareerLab() {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 backdrop-blur-sm">
                   <span className="flex h-2 w-2">
-                    <span className="absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75 animate-ping" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                    <span className="absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-red-400" />
                   </span>
                   {userCount.toLocaleString()} students already discovered their path
                 </span>
@@ -842,9 +842,9 @@ export function CareerLab() {
                 transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
               >
                 <div className="relative">
-                  <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-xl animate-pulse" style={{ width: 80, height: 80, margin: -8 }} />
-                  <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/20 to-teal-400/20 border border-emerald-400/20">
-                    <svg className="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className="absolute inset-0 rounded-full bg-red-400/20 blur-xl animate-pulse" style={{ width: 80, height: 80, margin: -8 }} />
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-400/20 to-red-400/20 border border-red-400/20">
+                    <svg className="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                     </svg>
                   </div>
@@ -859,7 +859,7 @@ export function CareerLab() {
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
                 Let AI Analyze Your{' '}
-                <span className="bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-red-300 to-teal-300 bg-clip-text text-transparent">
                   Future in 60 Seconds
                 </span>
               </motion.h1>
@@ -883,7 +883,7 @@ export function CareerLab() {
               >
                 {['No login required', 'Takes 60 seconds', '15 career paths'].map((f) => (
                   <span key={f} className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.05] border border-white/10 px-3 py-1.5 text-xs text-gray-400">
-                    <span className="text-emerald-400">&#10003;</span> {f}
+                    <span className="text-red-400">&#10003;</span> {f}
                   </span>
                 ))}
               </motion.div>
@@ -899,7 +899,7 @@ export function CareerLab() {
                   onClick={() => setStep('q1')}
                   className="group relative inline-flex items-center gap-3 rounded-xl px-10 py-4 text-base font-semibold text-black transition-all duration-300 hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, #34D399, #059669, #0D9488)',
+                    background: 'linear-gradient(135deg, #F87171, #e53935, #DC2626)',
                     boxShadow: '0 10px 40px rgba(16,185,129,0.35)',
                   }}
                 >
@@ -1099,7 +1099,7 @@ export function CareerLab() {
                     className={cn(
                       'inline-flex items-center gap-2 rounded-xl px-8 py-3 text-sm font-semibold transition-all duration-200',
                       canProceed
-                        ? 'bg-[#059669] text-white shadow-md shadow-emerald-500/20 hover:bg-[#047857] hover:shadow-lg hover:shadow-emerald-500/30'
+                        ? 'bg-[#e53935] text-white shadow-md shadow-red-500/20 hover:bg-[#DC2626] hover:shadow-lg hover:shadow-red-500/30'
                         : 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed'
                     )}
                   >
@@ -1134,7 +1134,7 @@ export function CareerLab() {
                   transition={{ duration: 2, repeat: Infinity }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <svg className="h-10 w-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                   </svg>
                 </div>
@@ -1147,7 +1147,7 @@ export function CareerLab() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="text-lg font-medium text-emerald-300"
+                  className="text-lg font-medium text-red-300"
                 >
                   {PROCESSING_MESSAGES[processingMsg]}
                 </motion.p>
@@ -1157,7 +1157,7 @@ export function CareerLab() {
               <div className="mt-8 mx-auto max-w-xs">
                 <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"
+                    className="h-full rounded-full bg-gradient-to-r from-red-400 to-red-400"
                     initial={{ width: '0%' }}
                     animate={{ width: `${((processingMsg + 1) / PROCESSING_MESSAGES.length) * 100}%` }}
                     transition={{ duration: 0.3 }}
@@ -1200,7 +1200,7 @@ export function CareerLab() {
               </div>
               <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 text-center">
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}>
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-sm text-emerald-300">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-400/20 text-sm text-red-300">
                     Your Career DNA is Ready
                   </span>
                 </motion.div>
@@ -1212,7 +1212,7 @@ export function CareerLab() {
                   transition={{ delay: 0.3 }}
                 >
                   You are{' '}
-                  <span className="bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-red-300 to-teal-300 bg-clip-text text-transparent">
                     {result.identity}
                   </span>
                 </motion.h1>
@@ -1233,7 +1233,7 @@ export function CareerLab() {
                   transition={{ delay: 0.5 }}
                 >
                   <div className="relative">
-                    <CircularScore score={result.score} label="Career Score" size={90} color="#34D399" />
+                    <CircularScore score={result.score} label="Career Score" size={90} color="#F87171" />
                   </div>
                   <div className="h-12 w-px bg-white/10" />
                   <CircularScore score={result.readiness} label="Readiness" size={70} color="#F59E0B" />
@@ -1306,17 +1306,17 @@ export function CareerLab() {
                       transition={{ delay: i * 0.1 }}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4] text-2xl border border-[#D1FAE5]">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FEF2F2] text-2xl border border-[#FEE2E2]">
                           {career.icon}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between flex-wrap gap-2">
                             <h3 className="text-base font-bold text-[#0F172A]">{career.title}</h3>
-                            <span className="inline-flex items-center rounded-full bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-1 text-xs font-semibold text-[#059669]">
+                            <span className="inline-flex items-center rounded-full bg-[#FEF2F2] border border-[#FEE2E2] px-3 py-1 text-xs font-semibold text-[#e53935]">
                               {career.salaryRange}
                             </span>
                           </div>
-                          <p className="mt-2 text-sm text-[#059669] font-medium">{career.whyFits}</p>
+                          <p className="mt-2 text-sm text-[#e53935] font-medium">{career.whyFits}</p>
                           <p className="mt-1 text-sm text-[#64748B]">{career.whatYouDo}</p>
                           <div className="mt-3 flex items-center gap-1.5 text-xs text-[#94A3B8]">
                             <span>In demand:</span>
@@ -1341,12 +1341,12 @@ export function CareerLab() {
                   {result.roadmap.map((r, i) => (
                     <div key={r.month} className="relative rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-5">
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#059669] text-[11px] font-bold text-white">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#e53935] text-[11px] font-bold text-white">
                           {i + 1}
                         </span>
                         <span className="text-sm font-bold text-[#0F172A]">{r.month}</span>
                       </div>
-                      <h3 className="text-sm font-semibold text-[#059669]">{r.title}</h3>
+                      <h3 className="text-sm font-semibold text-[#e53935]">{r.title}</h3>
                       <p className="mt-1 text-xs text-[#64748B] leading-relaxed">{r.desc}</p>
                     </div>
                   ))}
@@ -1362,7 +1362,7 @@ export function CareerLab() {
               >
                 <div className="flex items-center justify-between mb-1">
                   <h2 className="text-lg font-bold text-[#0F172A]">Your Weekly Learning Plan</h2>
-                  <span className="rounded-full bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-1 text-xs font-semibold text-[#059669]">
+                  <span className="rounded-full bg-[#FEF2F2] border border-[#FEE2E2] px-3 py-1 text-xs font-semibold text-[#e53935]">
                     {TIME_OPTIONS.find(t => t.id === answers.timeCommitment)?.label || ''}/week
                   </span>
                 </div>
@@ -1371,7 +1371,7 @@ export function CareerLab() {
                   {(result.resources.weeklyPlan[answers.timeCommitment] || result.resources.weeklyPlan['5-10'] || []).map((wp, i) => (
                     <div key={wp.week} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#059669] text-[10px] font-bold text-white">{i + 1}</span>
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#e53935] text-[10px] font-bold text-white">{i + 1}</span>
                         <span className="text-sm font-bold text-[#0F172A]">{wp.week}</span>
                       </div>
                       <ul className="space-y-1.5 mb-3">
@@ -1382,8 +1382,8 @@ export function CareerLab() {
                           </li>
                         ))}
                       </ul>
-                      <div className="rounded-lg bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-2">
-                        <p className="text-[10px] font-semibold text-[#059669]">Milestone: {wp.milestone}</p>
+                      <div className="rounded-lg bg-[#FEF2F2] border border-[#FEE2E2] px-3 py-2">
+                        <p className="text-[10px] font-semibold text-[#e53935]">Milestone: {wp.milestone}</p>
                       </div>
                     </div>
                   ))}
@@ -1406,16 +1406,16 @@ export function CareerLab() {
                       href={res.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#e53935]/40 hover:shadow-sm"
                     >
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white border border-[#E2E8F0] text-sm">
                         {res.type === 'youtube' ? '🎥' : res.type === 'course' ? '📚' : res.type === 'tool' ? '🔧' : res.type === 'book' ? '📖' : '🌐'}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{res.title}</p>
+                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#e53935] transition-colors">{res.title}</p>
                         <p className="text-xs text-[#64748B] mt-0.5 leading-relaxed">{res.desc}</p>
                       </div>
-                      <svg className="h-4 w-4 shrink-0 mt-1 text-[#94A3B8] group-hover:text-[#059669] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 shrink-0 mt-1 text-[#94A3B8] group-hover:text-[#e53935] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -1440,7 +1440,7 @@ export function CareerLab() {
                       <div className="flex items-center gap-2 mb-2">
                         <span className={cn(
                           'rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                          cat === 'essential' ? 'bg-[#F0FDF4] text-[#059669] border border-[#D1FAE5]' :
+                          cat === 'essential' ? 'bg-[#FEF2F2] text-[#e53935] border border-[#FEE2E2]' :
                           cat === 'intermediate' ? 'bg-[#EFF6FF] text-[#3B82F6] border border-[#BFDBFE]' :
                           'bg-[#FAF5FF] text-[#8B5CF6] border border-[#E9D5FF]'
                         )}>
@@ -1454,11 +1454,11 @@ export function CareerLab() {
                             href={tool.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                            className="flex items-center gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 transition-all hover:border-[#e53935]/40 hover:shadow-sm"
                           >
                             <span className="text-sm font-medium text-[#0F172A] truncate">{tool.name}</span>
                             {tool.free && (
-                              <span className="shrink-0 rounded bg-[#F0FDF4] px-1.5 py-0.5 text-[9px] font-bold text-[#059669]">FREE</span>
+                              <span className="shrink-0 rounded bg-[#FEF2F2] px-1.5 py-0.5 text-[9px] font-bold text-[#e53935]">FREE</span>
                             )}
                           </a>
                         ))}
@@ -1482,7 +1482,7 @@ export function CareerLab() {
                     <div key={project.title} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#059669] text-xs font-bold text-white mt-0.5">{i + 1}</span>
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e53935] text-xs font-bold text-white mt-0.5">{i + 1}</span>
                           <div>
                             <p className="text-sm font-semibold text-[#0F172A]">{project.title}</p>
                             <p className="text-xs text-[#64748B] mt-1 leading-relaxed">{project.desc}</p>
@@ -1492,7 +1492,7 @@ export function CareerLab() {
                       <div className="flex items-center gap-2 mt-3 ml-10">
                         <span className={cn(
                           'rounded-full px-2 py-0.5 text-[10px] font-semibold',
-                          project.difficulty === 'beginner' ? 'bg-[#F0FDF4] text-[#059669]' :
+                          project.difficulty === 'beginner' ? 'bg-[#FEF2F2] text-[#e53935]' :
                           project.difficulty === 'intermediate' ? 'bg-[#EFF6FF] text-[#3B82F6]' :
                           'bg-[#FAF5FF] text-[#8B5CF6]'
                         )}>
@@ -1521,23 +1521,23 @@ export function CareerLab() {
                       href={cert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group block rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group block rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#e53935]/40 hover:shadow-sm"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{cert.name}</p>
+                          <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#e53935] transition-colors">{cert.name}</p>
                           <p className="text-xs text-[#64748B] mt-0.5">{cert.provider}</p>
                         </div>
                         <span className={cn(
                           'shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold',
                           cert.cost === 'Free' || cert.cost.includes('Free')
-                            ? 'bg-[#F0FDF4] text-[#059669] border border-[#D1FAE5]'
+                            ? 'bg-[#FEF2F2] text-[#e53935] border border-[#FEE2E2]'
                             : 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]'
                         )}>
                           {cert.cost}
                         </span>
                       </div>
-                      <p className="mt-2 text-xs text-[#059669] font-medium">{cert.worth}</p>
+                      <p className="mt-2 text-xs text-[#e53935] font-medium">{cert.worth}</p>
                     </a>
                   ))}
                 </div>
@@ -1555,7 +1555,7 @@ export function CareerLab() {
                   <button
                     onClick={() => setInterviewModalOpen(true)}
                     className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-semibold text-white transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #059669, #0D9488)', boxShadow: '0 4px 15px rgba(5,150,105,0.25)' }}
+                    style={{ background: 'linear-gradient(135deg, #e53935, #DC2626)', boxShadow: '0 4px 15px rgba(5,150,105,0.25)' }}
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
@@ -1590,13 +1590,13 @@ export function CareerLab() {
                       href={platform.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#e53935]/40 hover:shadow-sm"
                     >
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{platform.name}</p>
+                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#e53935] transition-colors">{platform.name}</p>
                         <p className="text-xs text-[#64748B] mt-0.5">{platform.bestFor}</p>
                       </div>
-                      <svg className="h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#059669] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#e53935] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -1606,7 +1606,7 @@ export function CareerLab() {
 
               {/* ── SKILL CHECKLIST ── */}
               <motion.section
-                className="rounded-2xl border border-[#059669]/20 bg-gradient-to-b from-[#F0FDF4] to-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[#e53935]/20 bg-gradient-to-b from-[#FEF2F2] to-white p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -1618,7 +1618,7 @@ export function CareerLab() {
                     <label key={i} className="flex items-center gap-3 rounded-lg border border-[#E2E8F0] bg-white px-4 py-3 cursor-pointer hover:bg-[#F8FAFC] transition-colors">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 rounded border-[#CBD5E1] text-[#059669] focus:ring-[#059669]/20 accent-[#059669]"
+                        className="h-4 w-4 rounded border-[#CBD5E1] text-[#e53935] focus:ring-[#e53935]/20 accent-[#e53935]"
                       />
                       <span className="text-sm text-[#0F172A]">{skill}</span>
                     </label>
@@ -1643,15 +1643,15 @@ export function CareerLab() {
                 </motion.div>
 
                 <motion.div
-                  className="rounded-2xl border border-[#D1FAE5] bg-[#F0FDF4] p-5"
+                  className="rounded-2xl border border-[#FEE2E2] bg-[#FEF2F2] p-5"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                 >
                   <span className="text-2xl">👨‍👩‍👧</span>
-                  <h3 className="mt-2 text-sm font-bold text-[#065F46]">Parent Insight</h3>
-                  <p className="mt-1 text-xs text-[#059669] leading-relaxed">
+                  <h3 className="mt-2 text-sm font-bold text-[#B91C1C]">Parent Insight</h3>
+                  <p className="mt-1 text-xs text-[#e53935] leading-relaxed">
                     This path offers strong career stability, above-average salaries, and global mobility. AI skills add value to any traditional degree.
                   </p>
                 </motion.div>
@@ -1682,14 +1682,14 @@ export function CareerLab() {
                 <p className="text-xs text-[#64748B] mb-6">Projected earnings with dedicated AI skill development</p>
                 <div className="flex items-end justify-between gap-4" style={{ height: 180 }}>
                   {[
-                    { year: 'Year 1', amount: '₹4-8L', px: 48, color: '#D1FAE5' },
-                    { year: 'Year 2', amount: '₹8-15L', px: 80, color: '#A7F3D0' },
-                    { year: 'Year 3', amount: '₹12-22L', px: 104, color: '#6EE7B7' },
-                    { year: 'Year 5', amount: '₹18-35L', px: 136, color: '#34D399' },
-                    { year: 'Year 7+', amount: '₹25-50L+', px: 160, color: '#059669' },
+                    { year: 'Year 1', amount: '₹4-8L', px: 48, color: '#FEE2E2' },
+                    { year: 'Year 2', amount: '₹8-15L', px: 80, color: '#FECACA' },
+                    { year: 'Year 3', amount: '₹12-22L', px: 104, color: '#FCA5A5' },
+                    { year: 'Year 5', amount: '₹18-35L', px: 136, color: '#F87171' },
+                    { year: 'Year 7+', amount: '₹25-50L+', px: 160, color: '#e53935' },
                   ].map((bar, i) => (
                     <div key={bar.year} className="flex-1 flex flex-col items-center justify-end gap-2 h-full">
-                      <span className="text-[10px] font-bold text-[#059669]">{bar.amount}</span>
+                      <span className="text-[10px] font-bold text-[#e53935]">{bar.amount}</span>
                       <motion.div
                         className="w-full rounded-t-lg"
                         style={{ backgroundColor: bar.color, minWidth: 4 }}
@@ -1719,14 +1719,14 @@ export function CareerLab() {
                   ].map((story) => (
                     <div key={story.name} className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
                       <div className="flex items-center gap-3 mb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F0FDF4] text-xl">{story.avatar}</span>
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FEF2F2] text-xl">{story.avatar}</span>
                         <div>
                           <p className="text-sm font-bold text-[#0F172A]">{story.name}</p>
                           <p className="text-[10px] text-[#64748B]">{story.from}</p>
                         </div>
                       </div>
                       <p className="text-xs text-[#475569]">
-                        Now: <span className="font-semibold text-[#059669]">{story.to}</span>
+                        Now: <span className="font-semibold text-[#e53935]">{story.to}</span>
                       </p>
                       <p className="text-[10px] text-[#94A3B8] mt-1">Transformed in {story.time}</p>
                     </div>
@@ -1741,12 +1741,12 @@ export function CareerLab() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-sm text-emerald-300 mb-4">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-400/20 text-sm text-red-300 mb-4">
                   Your personalized plan is ready
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-white">
                   Want Your Complete<br />
-                  <span className="text-emerald-300">Roadmap + Course Plan?</span>
+                  <span className="text-red-300">Roadmap + Course Plan?</span>
                 </h2>
                 <p className="mt-3 text-sm text-gray-400 max-w-lg mx-auto">
                   Talk to our AI career advisor and get a step-by-step plan customized for your profile, budget, and timeline.
@@ -1793,7 +1793,7 @@ export function CareerLab() {
               <div className="text-center py-4">
                 <p className="text-xs text-[#94A3B8]">
                   <motion.span
-                    className="font-semibold text-[#059669]"
+                    className="font-semibold text-[#e53935]"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                   >

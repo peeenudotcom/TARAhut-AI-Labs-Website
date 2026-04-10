@@ -9,7 +9,7 @@ import { SchoolCourseSyllabus } from './school-course-syllabus';
 import { EnrollmentCard } from './enrollment-card';
 
 const levelColors: Record<string, string> = {
-  Beginner: 'bg-emerald-500/15 text-emerald-600',
+  Beginner: 'bg-red-500/15 text-red-600',
   Intermediate: 'bg-amber-500/15 text-amber-600',
   Advanced: 'bg-rose-500/15 text-rose-600',
 };
@@ -52,7 +52,7 @@ export default async function CourseDetailPage({
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-16 text-white border-b border-[#E2E8F0]">
+      <section className="bg-gradient-to-br from-[#e53935] to-[#DC2626] py-16 text-white border-b border-[#E2E8F0]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Link
             href="/courses"
@@ -131,8 +131,8 @@ export default async function CourseDetailPage({
                 <h2 className="mb-4 text-2xl font-bold text-[#0F172A]">What You&apos;ll Achieve</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {course.learningOutcomes.map((outcome, i) => (
-                    <div key={i} className="flex items-start gap-3 rounded-xl border border-[#D1FAE5] bg-[#F0FDF4] p-3">
-                      <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div key={i} className="flex items-start gap-3 rounded-xl border border-[#FEE2E2] bg-[#FEF2F2] p-3">
+                      <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-sm text-[#475569]">{outcome}</span>
@@ -148,7 +148,7 @@ export default async function CourseDetailPage({
                   <div className="grid sm:grid-cols-2 gap-3">
                     {schoolCourse.highlights.map((h, i) => (
                       <div key={i} className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3">
-                        <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#059669] text-white text-[10px] font-bold">{i + 1}</span>
+                        <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#e53935] text-white text-[10px] font-bold">{i + 1}</span>
                         <span className="text-sm text-[#475569]">{h}</span>
                       </div>
                     ))}
@@ -188,7 +188,7 @@ export default async function CourseDetailPage({
                   <ul className="space-y-3">
                     {schoolCourse.whoIsThisFor.map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span className="text-[#475569]">{item}</span>
@@ -200,12 +200,12 @@ export default async function CourseDetailPage({
 
               {/* What you get — school courses only */}
               {schoolCourse && (
-                <div className="mb-12 rounded-2xl bg-gradient-to-br from-[#059669]/5 to-[#0D9488]/5 border border-[#059669]/10 p-6">
+                <div className="mb-12 rounded-2xl bg-gradient-to-br from-[#e53935]/5 to-[#DC2626]/5 border border-[#e53935]/10 p-6">
                   <h2 className="mb-4 text-2xl font-bold text-[#0F172A]">What You Get</h2>
                   <ul className="space-y-3">
                     {schoolCourse.whatYouGet.map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#e53935]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                         <span className="text-[#475569] font-medium">{item}</span>

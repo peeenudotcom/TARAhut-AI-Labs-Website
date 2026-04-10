@@ -81,7 +81,7 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
 
   return (
     <div
-      className="relative group flex flex-col items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-6 transition-all duration-200 hover:shadow-lg hover:shadow-[#059669]/5 hover:scale-[1.04] hover:border-[#059669]/30 cursor-default"
+      className="relative group flex flex-col items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-6 transition-all duration-200 hover:shadow-lg hover:shadow-[#e53935]/5 hover:scale-[1.04] hover:border-[#e53935]/30 cursor-default"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -131,7 +131,7 @@ export function ToolsShowcase() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-semibold tracking-widest uppercase text-emerald-600">
+          <p className="text-sm font-semibold tracking-widest uppercase text-red-600">
             Industry-standard tools
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">

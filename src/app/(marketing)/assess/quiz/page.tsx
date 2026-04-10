@@ -85,7 +85,7 @@ export default function AssessQuizPage() {
           </div>
           <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full"
+              className="h-full bg-gradient-to-r from-red-400 to-red-500 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3 }}
@@ -115,7 +115,7 @@ export default function AssessQuizPage() {
                     }
                     className={`w-full text-left px-5 py-4 rounded-xl border transition-all duration-200 ${
                       responses[assessmentQuestions[currentStep].id] === option
-                        ? 'border-emerald-400 bg-emerald-500/10 text-emerald-300'
+                        ? 'border-red-400 bg-red-500/10 text-red-300'
                         : 'border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:bg-white/10'
                     }`}
                   >
@@ -173,7 +173,7 @@ export default function AssessQuizPage() {
                       setContact((prev) => ({ ...prev, name: e.target.value }))
                     }
                     placeholder="e.g. Rajesh Kumar"
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-emerald-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-red-400 focus:outline-none transition-colors"
                     required
                   />
                 </div>
@@ -189,7 +189,7 @@ export default function AssessQuizPage() {
                       setContact((prev) => ({ ...prev, email: e.target.value }))
                     }
                     placeholder="you@example.com"
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-emerald-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-red-400 focus:outline-none transition-colors"
                     required
                   />
                 </div>
@@ -205,7 +205,7 @@ export default function AssessQuizPage() {
                       setContact((prev) => ({ ...prev, phone: e.target.value }))
                     }
                     placeholder="+91 99154 24411"
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-emerald-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-red-400 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -216,7 +216,7 @@ export default function AssessQuizPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full mt-4 px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500 text-black font-medium shadow-[0_10px_40px_rgba(16,185,129,0.35)] hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(16,185,129,0.5)] transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
+                  className="w-full mt-4 px-8 py-4 rounded-xl bg-gradient-to-r from-red-400 via-red-500 to-red-500 text-black font-medium shadow-[0_10px_40px_rgba(16,185,129,0.35)] hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(16,185,129,0.5)] transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">

@@ -57,7 +57,7 @@ export default function PartnerPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-20 text-white border-b border-[#E2E8F0]">
+      <section className="bg-gradient-to-br from-[#e53935] to-[#DC2626] py-20 text-white border-b border-[#E2E8F0]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-medium text-white mb-5">
@@ -105,7 +105,7 @@ export default function PartnerPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((b) => (
               <div key={b.title} className="rounded-xl border border-[#E2E8F0] bg-white p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#059669]/10 text-[#059669] mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e53935]/10 text-[#e53935] mb-4">
                   {b.icon}
                 </div>
                 <h3 className="font-semibold text-[#0F172A] mb-2">{b.title}</h3>
@@ -126,7 +126,7 @@ export default function PartnerPage() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s) => (
               <div key={s.step} className="relative">
-                <div className="text-5xl font-black text-[#059669]/10 mb-3">{s.step}</div>
+                <div className="text-5xl font-black text-[#e53935]/10 mb-3">{s.step}</div>
                 <h3 className="font-semibold text-[#0F172A] mb-1">{s.title}</h3>
                 <p className="text-sm text-[#475569]">{s.desc}</p>
               </div>
@@ -150,14 +150,14 @@ export default function PartnerPage() {
 
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#059669]/10 text-[#059669]">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#e53935]/10 text-[#e53935]">
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                     </svg>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#0F172A]">Call us directly</p>
-                    <a href="tel:+919200882008" className="text-sm text-[#059669] hover:underline">+91 99154 24411</a>
+                    <a href="tel:+919200882008" className="text-sm text-[#e53935] hover:underline">+91 99154 24411</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -169,7 +169,7 @@ export default function PartnerPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#0F172A]">WhatsApp us</p>
-                    <a href="https://wa.me/919200882008" target="_blank" rel="noopener noreferrer" className="text-sm text-[#059669] hover:underline">Chat on WhatsApp</a>
+                    <a href="https://wa.me/919200882008" target="_blank" rel="noopener noreferrer" className="text-sm text-[#e53935] hover:underline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>

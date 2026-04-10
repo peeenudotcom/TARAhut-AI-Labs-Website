@@ -103,7 +103,7 @@ export default async function DashboardPage() {
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+enroll+in+a+course+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors"
+            className="inline-block px-6 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors"
           >
             Contact us to enroll
           </a>
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
             <Link
               key={enrollment.id}
               href={`/dashboard/course/${course?.slug ?? ''}`}
-              className="bg-white rounded-xl border border-slate-200 p-6 hover:border-emerald-300 hover:shadow-sm transition-all"
+              className="bg-white rounded-xl border border-slate-200 p-6 hover:border-red-300 hover:shadow-sm transition-all"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
                     {course?.duration} &middot; {course?.level}
                   </p>
                 </div>
-                <span className="text-sm font-medium text-emerald-600">
+                <span className="text-sm font-medium text-red-600">
                   {progress}%
                 </span>
               </div>
@@ -133,7 +133,7 @@ export default async function DashboardPage() {
               {/* Progress bar */}
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-emerald-500 rounded-full transition-all duration-300"
+                  className="h-full bg-red-500 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
