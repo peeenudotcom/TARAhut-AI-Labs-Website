@@ -6,7 +6,7 @@ import { schoolCourses } from '@/config/school-courses';
 import { Badge } from '@/components/ui/badge';
 import { CourseSyllabus } from './course-syllabus';
 import { SchoolCourseSyllabus } from './school-course-syllabus';
-import { siteConfig } from '@/config/site';
+import { EnrollmentCard } from './enrollment-card';
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-500/15 text-emerald-600',
@@ -48,10 +48,6 @@ export default async function CourseDetailPage({
   }
 
   const schoolCourse = schoolCourses.find((c) => c.slug === slug);
-
-  const discount = course.originalPrice
-    ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)
-    : 0;
 
   return (
     <>
@@ -220,90 +216,20 @@ export default async function CourseDetailPage({
               )}
             </div>
 
-            {/* Right Column — Sticky Enrollment Card */}
-            <div className="lg:self-start lg:sticky lg:top-24">
-              <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-lg">
-                {/* Price header */}
-                <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-white">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-bold">
-                      ₹{course.price.toLocaleString('en-IN')}
-                    </span>
-                    {course.originalPrice && (
-                      <span className="text-lg text-white/60 line-through">
-                        ₹{course.originalPrice.toLocaleString('en-IN')}
-                      </span>
-                    )}
-                  </div>
-                  {discount > 0 && (
-                    <p className="mt-1 text-sm text-white/80">
-                      {discount}% off — Limited time offer
-                    </p>
-                  )}
-                </div>
-
-                {/* CTA */}
-                <div className="p-6">
-                  <a
-                    href={`${siteConfig.links.whatsapp}?text=Hi, I'm interested in the ${course.title} course.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1eba57]"
-                  >
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.326 0-4.48-.742-6.24-2.004l-.436-.326-2.65.889.889-2.65-.326-.436A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-                    </svg>
-                    Enroll via WhatsApp
-                  </a>
-
-                  <a
-                    href={`mailto:${siteConfig.contact.email}?subject=Enquiry: ${course.title}`}
-                    className="flex w-full items-center justify-center rounded-lg border border-[#E2E8F0] px-6 py-3 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]"
-                  >
-                    Email Enquiry
-                  </a>
-
-                  {/* Course Meta */}
-                  <div className="mt-6 space-y-3 border-t border-[#E2E8F0] pt-6 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Duration</span>
-                      <span className="font-medium text-[#0F172A]">{course.duration}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Level</span>
-                      <span className="font-medium text-[#0F172A]">{course.level}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Category</span>
-                      <span className="font-medium text-[#0F172A]">{course.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Instructor</span>
-                      <span className="font-medium text-[#0F172A]">{course.instructorName}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Enrolled</span>
-                      <span className="font-medium text-[#0F172A]">
-                        {schoolCourse ? schoolCourse.enrolled : `${course.studentsEnrolled}+`} students
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#64748B]">Modules</span>
-                      <span className="font-medium text-[#0F172A]">
-                        {schoolCourse ? schoolCourse.modules : course.syllabus.length} modules
-                      </span>
-                    </div>
-                    {schoolCourse && (
-                      <div className="flex justify-between">
-                        <span className="text-[#64748B]">Batch size</span>
-                        <span className="font-medium text-[#059669]">Max 10 students</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Right Column — Sticky Enrollment Card with Payment */}
+            <EnrollmentCard
+              courseSlug={course.slug}
+              courseTitle={course.title}
+              price={course.price}
+              originalPrice={course.originalPrice}
+              duration={course.duration}
+              level={course.level}
+              category={course.category}
+              instructorName={course.instructorName}
+              enrolledCount={schoolCourse ? String(schoolCourse.enrolled) : `${course.studentsEnrolled}+`}
+              modulesCount={schoolCourse ? schoolCourse.modules : course.syllabus.length}
+              isSchoolCourse={Boolean(schoolCourse)}
+            />
           </div>
         </div>
       </section>
