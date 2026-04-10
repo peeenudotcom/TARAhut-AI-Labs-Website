@@ -15,6 +15,7 @@ export function ExitIntentPopup({ courseTitle, courseSlug, primaryColor = '#0596
   const [shown, setShown] = useState(false)
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
+  const [website, setWebsite] = useState('') // honeypot
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done'>('idle')
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export function ExitIntentPopup({ courseTitle, courseSlug, primaryColor = '#0596
           phone,
           courseInterest: courseTitle,
           message: `Exit-intent lead for ${courseTitle}`,
+          website, // honeypot
         }),
       })
       setStatus('done')
@@ -126,6 +128,17 @@ export function ExitIntentPopup({ courseTitle, courseSlug, primaryColor = '#0596
                   Not ready to enroll? No problem. We&apos;ll send you the complete curriculum, next batch dates, and answer any questions. No spam, promise.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-3">
+                  {/* Honeypot */}
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+                    aria-hidden="true"
+                  />
                   <input
                     type="text"
                     placeholder="Your name"

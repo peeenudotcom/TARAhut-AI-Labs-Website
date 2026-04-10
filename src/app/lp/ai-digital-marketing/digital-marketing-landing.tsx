@@ -8,6 +8,7 @@ import { siteConfig } from '@/config/site'
 import { WhatsAppFloat } from '@/components/landing/whatsapp-float'
 import { ExitIntentPopup } from '@/components/landing/exit-intent-popup'
 import { EnrollmentToast } from '@/components/landing/enrollment-toast'
+import { trackEvent } from '@/components/analytics/meta-pixel'
 
 declare global {
   interface Window {
@@ -258,6 +259,8 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
     if (!name || !email) { setError('Name and email are required.'); return }
     setLoading(true)
     setError('')
+    trackEvent('Lead', { content_name: course.title, content_category: 'course', value: course.price, currency: 'INR' })
+    trackEvent('InitiateCheckout', { content_name: course.title, value: course.price, currency: 'INR' })
     try {
       const res = await fetch('/api/payment/create-order', {
         method: 'POST',
@@ -276,7 +279,12 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...response, courseSlug: course.slug, courseTitle: course.title, studentName: name, studentEmail: email, studentPhone: phone, amount: course.price }),
           })
-          if (verifyRes.ok) { const d = await verifyRes.json(); setPaymentId(d.paymentId); setStep('success') }
+          if (verifyRes.ok) {
+            const d = await verifyRes.json()
+            setPaymentId(d.paymentId)
+            setStep('success')
+            trackEvent('Purchase', { content_name: course.title, value: course.price, currency: 'INR' })
+          }
           else { setError('Payment verification failed.'); setStep('form') }
         },
         modal: { ondismiss: () => { setStep('form'); setLoading(false) } },

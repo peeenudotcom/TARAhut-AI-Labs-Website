@@ -29,6 +29,7 @@ export function ContactForm() {
           phone: formData.get('phone'),
           courseInterest: formData.get('course'),
           message: formData.get('message'),
+          website: formData.get('website'), // honeypot
         }),
       });
 
@@ -81,6 +82,15 @@ export function ContactForm() {
       onSubmit={handleSubmit}
       className="space-y-6 rounded-xl border border-[#E2E8F0] bg-white p-6 shadow-sm sm:p-8"
     >
+      {/* Honeypot — hidden from humans, bots often fill it */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+        aria-hidden="true"
+      />
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">Full Name</Label>

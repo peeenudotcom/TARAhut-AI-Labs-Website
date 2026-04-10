@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, phone, courseInterest, message } = await req.json();
+    // Rate limit: 5 leads per IP per 10 minutes
+    const ip = getClientIp(req);
+    const limit = rateLimit(`leads:${ip}`, { limit: 5, windowMs: 10 * 60 * 1000 });
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again in a few minutes.' },
+        { status: 429 }
+      );
+    }
+
+    const body = await req.json();
+    const { name, email, phone, courseInterest, message, website } = body;
+
+    // Honeypot: bots often fill all fields
+    if (website) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!name || !email) {
       return NextResponse.json(

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Geist_Mono, Playfair_Display } from 'next/font/google';
 import Script from 'next/script';
 import { siteConfig } from '@/config/site';
+import { MetaPixel } from '@/components/analytics/meta-pixel';
 import './globals.css';
 
 const inter = Inter({
@@ -50,6 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
   return (
     <html
@@ -67,6 +69,7 @@ export default function RootLayout({
               })(window, document, "clarity", "script", "${clarityId}");`}
           </Script>
         )}
+        {metaPixelId && <MetaPixel pixelId={metaPixelId} />}
       </body>
     </html>
   );
