@@ -3,13 +3,23 @@
 import { motion } from 'framer-motion'
 
 const perks = [
-  { icon: '🤖', title: 'Daily AI News', desc: 'Curated AI tools and updates every morning' },
-  { icon: '💬', title: 'Peer Learning', desc: 'Ask questions, share wins, get answers fast' },
-  { icon: '🎁', title: 'Exclusive Resources', desc: 'Free templates, prompts, and cheatsheets' },
-  { icon: '🔔', title: 'Batch Alerts', desc: 'First to know when new batches open' },
+  { icon: '📰', title: 'Weekly AI Roundup', desc: 'Curated AI tools and news, once a week' },
+  { icon: '💬', title: 'Peer Learning', desc: 'Ask questions, share wins, help each other' },
+  { icon: '🎁', title: 'Free Resources', desc: 'Templates, prompts, and cheatsheets' },
+  { icon: '🔔', title: 'Batch Alerts', desc: 'First to know when new courses open' },
 ]
 
 export function CommunitySection() {
+  // Community URL is configured via env var. If not set, the whole section disappears
+  // so we never show a broken link.
+  const communityUrl = process.env.NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL
+
+  if (!communityUrl) {
+    // Section hidden until the real WhatsApp community link is configured.
+    // To enable: add NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL in Vercel env vars.
+    return null
+  }
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
       <motion.div
@@ -27,7 +37,7 @@ export function CommunitySection() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
               </span>
-              2,100+ members active now
+              Just launched · Be among the first members
             </div>
 
             <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -38,11 +48,11 @@ export function CommunitySection() {
             </h2>
 
             <p className="mt-4 max-w-md text-slate-300 md:mx-0 mx-auto">
-              India&apos;s most active AI learners community. Get daily tips, free resources, and connect with people using AI to grow their careers and businesses.
+              A friendly space for AI learners across Punjab. Weekly tips, free resources, and a place to connect with people using AI to grow their careers and businesses.
             </p>
 
             <a
-              href="https://chat.whatsapp.com/uplrn-community"
+              href={communityUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-xl shadow-[#25D366]/30 transition-all hover:brightness-110 hover:-translate-y-0.5"
