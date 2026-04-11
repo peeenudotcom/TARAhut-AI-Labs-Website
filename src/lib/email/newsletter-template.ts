@@ -9,6 +9,9 @@ interface NewsletterTemplateProps {
   unsubscribeUrl: string
 }
 
+// Absolute logo URL — email clients require fully qualified URLs, not relative paths
+const LOGO_URL = `${siteConfig.url}/images/logo-tarahut.png`
+
 export function renderNewsletterHtml({ subject, bodyHtml, unsubscribeUrl }: NewsletterTemplateProps): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -20,9 +23,8 @@ export function renderNewsletterHtml({ subject, bodyHtml, unsubscribeUrl }: News
   body { margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #0f172a; line-height: 1.6; }
   .wrapper { max-width: 600px; margin: 0 auto; background: #ffffff; }
   .header { padding: 32px 32px 24px; text-align: center; border-bottom: 1px solid #f1f5f9; }
-  .logo { font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
-  .logo-red { color: #e53935; }
-  .badge { display: inline-block; margin-top: 12px; padding: 4px 12px; background: #fef2f2; color: #e53935; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 999px; }
+  .logo-img { height: 40px; width: auto; display: inline-block; }
+  .badge { display: inline-block; margin-top: 14px; padding: 4px 12px; background: #fef2f2; color: #e53935; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 999px; }
   .content { padding: 32px; }
   .content h1 { margin: 0 0 16px; font-size: 24px; font-weight: 800; color: #0f172a; line-height: 1.3; }
   .content h2 { margin: 28px 0 12px; font-size: 18px; font-weight: 700; color: #0f172a; }
@@ -54,7 +56,7 @@ export function renderNewsletterHtml({ subject, bodyHtml, unsubscribeUrl }: News
 
   <!-- Header -->
   <tr><td class="header">
-    <div class="logo">TARAhut <span class="logo-red">AI</span> LABS</div>
+    <img src="${LOGO_URL}" alt="TARAhut AI Labs" width="180" height="40" style="height: 40px; width: auto; display: inline-block; border: 0;" />
     <div class="badge">Weekly AI Insights</div>
   </td></tr>
 
