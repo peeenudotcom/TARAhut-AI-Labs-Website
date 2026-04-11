@@ -59,12 +59,6 @@ const team: { name: string; role: string; bio: string; photo?: string; initials?
     bio: 'An expert educator with a passion for making AI concepts simple and actionable. Liky leads hands-on training sessions and ensures every student builds real-world skills.',
     photo: '/images/liky-prusty.jpeg',
   },
-  {
-    name: 'Rohit Sethi',
-    role: 'Director',
-    bio: 'With 20+ years of experience in education, distribution, and franchise scaling, Rohit leads strategic partnerships and business growth at TARAhut AI Labs as Director of My Visa Guide (MVG).',
-    photo: '/images/rohit-sethi.png',
-  },
 ];
 
 export default function AboutPage() {
