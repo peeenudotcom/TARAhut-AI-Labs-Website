@@ -4,7 +4,6 @@ import { CourseHighlights } from '@/components/marketing/course-highlights'
 import { WhyUplrn } from '@/components/marketing/why-uplrn'
 import { ToolsShowcase } from '@/components/marketing/tools-showcase'
 import { TestimonialsSection } from '@/components/marketing/testimonials-section'
-import { MentorSection } from '@/components/marketing/mentor-section'
 import { CommunitySection } from '@/components/marketing/community-section'
 import { NewsletterSection } from '@/components/marketing/newsletter-section'
 import { PartnerBanner } from '@/components/marketing/partner-banner'
@@ -21,7 +20,6 @@ export default function HomePage() {
       <WhyUplrn />
       <ToolsShowcase />
       <TestimonialsSection />
-      <MentorSection />
       <CommunitySection />
       <NewsletterSection />
       <PartnerBanner />
