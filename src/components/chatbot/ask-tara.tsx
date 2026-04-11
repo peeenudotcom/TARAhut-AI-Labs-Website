@@ -157,11 +157,19 @@ export function AskTara() {
             className="fixed bottom-6 right-6 z-50 group"
             aria-label="Chat with Ask TARA"
           >
-            <div className="relative flex items-center gap-3 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 pl-4 pr-5 py-3 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow">
+            <div className="relative flex items-center gap-3 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 pl-2 pr-5 py-2 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow">
               {/* Pulsing ring */}
               <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-30 animate-ping" />
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-inner">
-                <span className="text-lg">✨</span>
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow-inner overflow-hidden ring-2 ring-white/40">
+                <video
+                  src="/videos/tara-avatar.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <span className="relative text-white font-semibold text-sm whitespace-nowrap">
                 Ask TARA
@@ -187,8 +195,16 @@ export function AskTara() {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-emerald-950 to-teal-950 px-5 py-4">
               <div className="flex items-center gap-3">
-                <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/30">
-                  <span className="text-lg">✨</span>
+                <div className="relative h-11 w-11 rounded-full overflow-hidden ring-2 ring-emerald-400/40 shadow-lg shadow-emerald-500/30">
+                  <video
+                    src="/videos/tara-avatar.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-cover"
+                  />
                   <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#0a0f1f] bg-emerald-400" />
                 </div>
                 <div>
@@ -229,8 +245,16 @@ export function AskTara() {
             >
               {/* Greeting (always shown as first message) */}
               <div className="flex gap-3">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-sm shadow-md">
-                  ✨
+                <div className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden ring-1 ring-emerald-400/40 shadow-md">
+                  <video
+                    src="/videos/tara-avatar.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-3 text-sm text-gray-100 leading-relaxed">
                   {renderMessage(greeting)}
