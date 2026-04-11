@@ -172,10 +172,10 @@ export function HeroSection() {
               <div className="relative rounded-[28px] overflow-hidden ring-1 ring-white/10 shadow-2xl shadow-emerald-500/20 w-[280px] sm:w-[340px] md:w-[380px] aspect-[4/5] bg-gradient-to-b from-slate-800 to-slate-900">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/parveen-sukhija.jpeg"
+                  src="/images/parveen-sukhija.jpg"
                   alt="Parveen Sukhija — Founder, TARAhut AI Labs"
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 25%' }}
+                  style={{ objectPosition: 'center 18%' }}
                 />
 
                 {/* Bottom gradient overlay */}

@@ -51,7 +51,7 @@ const team: { name: string; role: string; bio: string; photo?: string; initials?
     name: 'Parveen Sukhija',
     role: 'Founder & Lead Instructor',
     bio: 'With 25+ years of experience across IT, digital marketing, and education, Parveen founded TARAhut AI Labs to bring practical AI education to Punjab and beyond.',
-    photo: '/images/parveen-sukhija.jpeg',
+    photo: '/images/parveen-sukhija.jpg',
   },
   {
     name: 'Liky Prusty',
