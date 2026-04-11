@@ -65,7 +65,7 @@ export const faqCategories: FaqCategory[] = [
       {
         question: 'What is the time commitment per week?',
         answer:
-          'Most courses require 5-8 hours per week including live sessions and practice assignments. For intensive programs like AI Hustler 45, expect 3 hours daily. Weekend-friendly batches are available for working professionals.',
+          'Most courses require 5-8 hours per week at our Kotkapura center plus practice assignments you do at home. For intensive programs like AI Hustler 45, expect 3 hours daily. Weekend-friendly batches are available for working professionals.',
       },
       {
         question: 'What AI tools will I learn?',
@@ -73,41 +73,41 @@ export const faqCategories: FaqCategory[] = [
           'Depending on the course: ChatGPT, Claude, Canva AI, Midjourney, Python, Notion AI, Perplexity, ElevenLabs, HeyGen, Gamma, and more. You\'ll use free tiers for most tools — we don\'t require paid subscriptions to learn.',
       },
       {
-        question: 'Are the classes live or recorded?',
+        question: 'What happens if I miss a class?',
         answer:
-          'All classes are live and interactive. You can ask questions in real time. Recordings are provided afterwards for revision and if you miss a session.',
+          'Reach out to your instructor and we\'ll help you catch up. For most courses, instructors share a summary of what was covered and any homework. For the most important topics, instructors run quick catch-up sessions for students who miss classes.',
       },
       {
         question: 'Do I get access to materials after completing the course?',
         answer:
-          'Yes. You get lifetime access to all course materials, recordings, prompt libraries, and templates through the student portal. Come back anytime to revise.',
+          'Yes. You get lifetime access to all course materials, prompt libraries, and templates through the student portal. Come back anytime to revise.',
       },
     ],
   },
   {
-    id: 'online-offline',
-    name: 'Online vs Offline',
+    id: 'location',
+    name: 'Classes & Location',
     emoji: '📍',
     faqs: [
       {
-        question: 'Are the classes online or offline?',
+        question: 'Where are classes held?',
         answer:
-          'Both. We run offline batches at our center in Kotkapura, Punjab, and live online sessions that you can join from anywhere in India. Recordings are available for both formats.',
+          'All our classes are held **offline at our center in Kotkapura, Punjab**. We believe hands-on, in-person training delivers the best results — you can ask questions directly, see demonstrations live, and work on projects with the instructor right there beside you.',
       },
       {
-        question: 'Where is your offline center located?',
+        question: 'Do you offer online classes?',
         answer:
-          'Our offline center is in Kotkapura, Punjab. For the exact address and directions, contact us on WhatsApp at +91 92008-82008 or through our contact form.',
+          'Not currently. We\'re a dedicated offline training center in Kotkapura. Our focus is in-person, hands-on learning because that\'s what gives students the best outcomes. If online training matters to you, WhatsApp us at +91 92008-82008 and we\'ll let you know if we launch online options in the future.',
       },
       {
-        question: 'Can I switch between online and offline batches?',
+        question: 'Where exactly is your center?',
         answer:
-          'Yes. Let us know at least one week in advance and we\'ll accommodate the switch. Some restrictions may apply for very short programs — check with us first.',
+          'Our center is in Kotkapura, Punjab. For the exact address and directions, WhatsApp us at +91 92008-82008 — we\'ll share the location pin directly.',
       },
       {
-        question: 'What if I miss a live class?',
+        question: 'I don\'t live in Kotkapura. Can I still join?',
         answer:
-          'No problem. All sessions are recorded and available in the student portal within 24 hours. You can watch at your own pace. For intensive courses, we also offer catch-up sessions for students who fall behind.',
+          'Absolutely — many of our students travel from nearby towns like Faridkot, Bathinda, Muktsar, and Moga. Since classes are offline, you\'ll need to come to our Kotkapura center for sessions. We can help suggest batch timings that work around your travel schedule. WhatsApp us to discuss.',
       },
     ],
   },
@@ -237,9 +237,9 @@ export const homepageFaqs: Faq[] = [
       'Not at all. Our beginner courses are designed for people with zero technical background. We start from basics and build your skills through hands-on practice. All you need is a laptop and curiosity.',
   },
   {
-    question: 'Are the classes online or offline?',
+    question: 'Where are classes held?',
     answer:
-      'Both. We run offline batches at our center in Kotkapura, Punjab, and live online sessions you can join from anywhere in India. Recordings are provided for both formats.',
+      'All our classes are held **offline at our center in Kotkapura, Punjab**. We believe hands-on, in-person training delivers the best results — you can ask questions directly, work on projects beside the instructor, and learn faster than any online format.',
   },
   {
     question: 'What do your courses cost?',

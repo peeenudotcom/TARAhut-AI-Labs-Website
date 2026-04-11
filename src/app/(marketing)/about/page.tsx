@@ -107,11 +107,12 @@ export default function AboutPage() {
                 to thrive in the AI era.
               </p>
               <p className="text-[#475569] leading-relaxed">
-                Today, we offer 15+ courses across AI tools, marketing,
-                development, and business — all taught through live sessions,
-                real-world projects, and expert mentorship. Our students come
-                from Punjab, Haryana, and across India, united by a shared
-                ambition to master AI and build careers of the future.
+                Today, we offer 9 hands-on courses across AI tools, marketing,
+                development, and business — all taught in-person at our
+                Kotkapura center with real-world projects and direct instructor
+                mentorship. Our students come from Kotkapura and neighbouring
+                towns in Punjab, united by a shared ambition to master AI and
+                build careers of the future.
               </p>
             </div>
           </AnimatedSection>

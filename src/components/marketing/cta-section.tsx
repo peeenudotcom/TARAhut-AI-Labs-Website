@@ -16,7 +16,7 @@ function Particle({ x, y, delay, size }: { x: string; y: string; delay: number; 
 const trustBadges = [
   { icon: '✅', label: 'Beginner Friendly' },
   { icon: '🛠️', label: 'Real Projects' },
-  { icon: '🏫', label: 'Offline + Online' },
+  { icon: '🏫', label: 'Offline in Kotkapura' },
   { icon: '💳', label: 'EMI Available' },
   { icon: '🛡️', label: '7-Day Money Back' },
 ]

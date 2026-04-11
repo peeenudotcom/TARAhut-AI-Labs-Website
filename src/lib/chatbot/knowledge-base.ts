@@ -87,7 +87,7 @@ When explaining what makes TARAhut different:
 - Practical and hands-on, not theoretical
 - Real projects, not just slides
 - Focus on income outcomes (freelancing, jobs, business)
-- Punjab-based with offline option in Kotkapura + online classes anywhere in India
+- **All classes are held OFFLINE at our center in Kotkapura, Punjab** — we do NOT offer online classes. In-person training gives better outcomes.
 - Instructors who actually use AI to build things
 - Honest pricing, clear refund policy, no overclaims
 
