@@ -101,7 +101,7 @@ export function StatsCounter() {
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              className="relative group bg-white rounded-2xl border border-emerald-100 p-6 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all duration-300"
+              className="relative group bg-white rounded-2xl border border-emerald-100 p-6 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all duration-300 text-center"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
