@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
     const resend = getResend()
     const db = createServiceClient()
     const fromAddress = process.env.NEWSLETTER_FROM_ADDRESS || 'TARAhut AI Labs <insights@tarahutailabs.com>'
+    const replyToAddress = process.env.NEWSLETTER_REPLY_TO || siteConfig.contact.email
 
     // TEST MODE — send to a single address only
     if (testEmail) {
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
 
       const result = await resend.emails.send({
         from: fromAddress,
+        replyTo: replyToAddress,
         to: [testEmail],
         subject: `[TEST] ${subject}`,
         html: fullHtml,
@@ -106,11 +108,12 @@ export async function POST(req: NextRequest) {
         const unsubscribeUrl = `${siteConfig.url}/unsubscribe/${sub.unsubscribe_token}`
         return {
           from: fromAddress,
+          replyTo: replyToAddress,
           to: [sub.email as string],
           subject,
           html: renderNewsletterHtml({ subject, bodyHtml: html, unsubscribeUrl }),
           headers: {
-            'List-Unsubscribe': `<${unsubscribeUrl}>, <mailto:${siteConfig.contact.email}?subject=unsubscribe>`,
+            'List-Unsubscribe': `<${unsubscribeUrl}>, <mailto:${replyToAddress}?subject=unsubscribe>`,
             'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
           },
         }
