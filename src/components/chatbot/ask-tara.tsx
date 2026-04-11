@@ -169,6 +169,7 @@ export function AskTara() {
                   playsInline
                   preload="metadata"
                   className="h-full w-full object-cover"
+                  style={{ objectPosition: 'center 20%' }}
                 />
               </div>
               <span className="relative text-white font-semibold text-sm whitespace-nowrap">
@@ -204,6 +205,7 @@ export function AskTara() {
                     playsInline
                     preload="metadata"
                     className="h-full w-full object-cover"
+                    style={{ objectPosition: 'center 20%' }}
                   />
                   <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#0a0f1f] bg-emerald-400" />
                 </div>
@@ -254,6 +256,7 @@ export function AskTara() {
                     playsInline
                     preload="metadata"
                     className="h-full w-full object-cover"
+                    style={{ objectPosition: 'center 20%' }}
                   />
                 </div>
                 <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-3 text-sm text-gray-100 leading-relaxed">
