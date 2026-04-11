@@ -678,23 +678,26 @@ export function LandingPageContent({ course }: { course: Course }) {
           </div>
         </section>
 
-        {/* ═══════════ SOCIAL PROOF ═══════════ */}
+        {/* ═══════════ WHAT YOU WALK AWAY WITH ═══════════ */}
         <section className="py-16 md:py-24 relative">
           <div className="absolute inset-0 bg-[#020617]" />
           <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-              <span className="text-amber-400 text-sm font-semibold tracking-wider uppercase">Real Results</span>
+              <span className="text-amber-400 text-sm font-semibold tracking-wider uppercase">15 Days From Now</span>
               <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-                Students Love It
+                What You&apos;ll Walk Away With
               </h2>
+              <p className="text-gray-400 text-sm mt-3 max-w-xl mx-auto">
+                Concrete skills and artifacts — not just a completion certificate.
+              </p>
             </motion.div>
 
             <div className="grid sm:grid-cols-3 gap-4 md:gap-6">
               {[
-                { name: 'Raman K.', role: 'Business Owner', text: 'Learned more in 15 days than months of YouTube videos. The hands-on approach is next level.', emoji: '🏪', rating: 5 },
-                { name: 'Priya S.', role: 'Marketing Pro', text: 'CRISP framework changed everything. My productivity went up 3x. My boss noticed.', emoji: '💼', rating: 5 },
-                { name: 'Arjun M.', role: 'Freelancer', text: 'Started earning ₹25K/month within a week of completing. Best investment I made.', emoji: '💻', rating: 5 },
-              ].map((t, i) => (
+                { icon: '🧠', title: 'CRISP Mastery', text: 'The 5-part prompt framework used to get 10x better outputs from Claude than beginners.' },
+                { icon: '📦', title: '10+ Real Projects', text: 'Hands-on outputs you can show employers, clients, or use in your own work.' },
+                { icon: '🔧', title: 'Full Claude Toolkit', text: 'Chat, Projects, Artifacts, Cowork, and the API — every feature, used in real scenarios.' },
+              ].map((item, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
@@ -703,23 +706,9 @@ export function LandingPageContent({ course }: { course: Course }) {
                   transition={{ delay: i * 0.1 }}
                   className="p-5 md:p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-amber-400/20 transition-all"
                 >
-                  <div className="flex items-center gap-1 mb-3">
-                    {Array.from({ length: t.rating }).map((_, j) => (
-                      <span key={j} className="text-amber-400 text-sm">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    &ldquo;{t.text}&rdquo;
-                  </p>
-                  <div className="mt-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-lg">
-                      {t.emoji}
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold text-sm">{t.name}</p>
-                      <p className="text-gray-500 text-xs">{t.role}</p>
-                    </div>
-                  </div>
+                  <div className="text-3xl mb-3">{item.icon}</div>
+                  <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.text}</p>
                 </motion.div>
               ))}
             </div>

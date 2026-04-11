@@ -186,12 +186,11 @@ export function TestimonialsSection() {
             Real feedback from students who applied AI skills to their work and business.
           </p>
 
-          {/* Aggregate rating */}
-          <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-amber-200 bg-amber-50/80 backdrop-blur px-5 py-2">
-            <Stars count={5} />
-            <span className="text-sm font-bold text-amber-900">4.9/5</span>
-            <span className="text-xs text-amber-700">from {testimonials.length}+ verified reviews</span>
-          </div>
+          {/* Honest note about early-stage testimonials */}
+          <p className="mt-6 text-xs text-slate-500 max-w-xl mx-auto">
+            Early feedback from students piloting our curriculum. We&apos;re a new center in
+            Kotkapura, building trust one batch at a time.
+          </p>
         </motion.div>
 
         {/* Cards grid */}

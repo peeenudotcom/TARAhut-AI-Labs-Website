@@ -321,7 +321,7 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-400/30 text-sm">
                 <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
-                <span className="text-pink-300 font-medium">🔥 156+ students already earning</span>
+                <span className="text-pink-300 font-medium">🔥 Just Launched · First Batch Open</span>
               </span>
             </motion.div>
 
