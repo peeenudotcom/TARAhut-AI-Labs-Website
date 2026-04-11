@@ -14,10 +14,13 @@ export const siteConfig = {
     phone: '+91-92008-82008',
     address: 'Kotkapura, Punjab, India',
   },
+  // Honest facts — verifiable from courses.ts and the Kotkapura center.
+  // Removed fake studentsCount / placementRate — TARAhut hasn't launched
+  // batches yet, so any "X+ students trained" claim was a fabrication.
   stats: {
-    studentsCount: '500+',
-    coursesCount: '15+',
-    citiesCount: '3',
-    placementRate: '85%',
+    coursesCount: '9',
+    toolsCount: '10+',
+    startingPrice: '₹2,499',
+    location: 'Kotkapura, Punjab',
   },
 } as const;

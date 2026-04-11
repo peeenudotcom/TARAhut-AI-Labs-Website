@@ -856,7 +856,7 @@ export function LandingPageContent({ course }: { course: Course }) {
               <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Just Start.</span>
             </h2>
             <p className="mt-4 text-gray-500 text-sm">
-              {siteConfig.stats.studentsCount} students already did.
+              Just launched · Be among the first Master Claude students.
             </p>
             <a href="#enroll" onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
               className="inline-block mt-8 px-10 py-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-bold text-lg hover:scale-105 transition-transform shadow-[0_10px_40px_rgba(16,185,129,0.3)]">
