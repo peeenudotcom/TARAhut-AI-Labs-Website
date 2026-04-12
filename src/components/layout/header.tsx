@@ -42,8 +42,8 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
     >
       <button
         className={cn(
-          'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#059669]',
-          isActive ? 'text-[#059669]' : 'text-[#475569]'
+          'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#0F172A]',
+          isActive ? 'text-[#0F172A] font-semibold' : 'text-[#475569]'
         )}
       >
         {entry.label}
@@ -173,9 +173,9 @@ export function Header() {
                 key={entry.href}
                 href={entry.href}
                 className={cn(
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#059669]',
+                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#0F172A]',
                   pathname === entry.href
-                    ? 'text-[#059669]'
+                    ? 'text-[#0F172A] font-semibold'
                     : 'text-[#475569]'
                 )}
               >
@@ -186,10 +186,10 @@ export function Header() {
         </nav>
 
         {/* Desktop CTAs */}
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2.5 lg:flex">
           <Link
             href={navCta.href}
-            className="inline-flex h-9 items-center justify-center rounded-full border border-emerald-600 px-4 text-sm font-medium text-emerald-600 transition-all hover:bg-emerald-50"
+            className="inline-flex h-8 items-center justify-center rounded-lg border border-[#E2E8F0] px-3.5 text-xs font-semibold text-[#475569] transition-all hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50"
           >
             {navCta.label}
           </Link>
@@ -197,7 +197,7 @@ export function Header() {
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-110 hover:shadow-emerald-500/25"
+            className="inline-flex h-8 items-center justify-center rounded-lg bg-[#059669] px-3.5 text-xs font-semibold text-white transition-all hover:bg-[#047857]"
           >
             Book Free Demo
           </a>
