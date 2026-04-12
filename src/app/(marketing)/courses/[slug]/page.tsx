@@ -67,8 +67,25 @@ export default async function CourseDetailPage({
     <>
       <CourseSchema course={course} />
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#059669] to-[#0D9488] py-16 text-white border-b border-white/[0.08]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden py-16 text-white border-b border-white/[0.08]" style={{ backgroundColor: '#020617' }}>
+        {/* Course thumbnail background */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={course.thumbnail}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-[#020617]/60" />
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Link
             href="/courses"
             className="mb-6 inline-flex items-center gap-1 text-sm text-white/70 hover:text-white transition-colors"
