@@ -70,36 +70,24 @@ const audiences = [
     icon: '🎒',
     title: 'Students (Class 10–12)',
     desc: 'Explore AI early and build future-ready skills before college',
-    borderColor: '#fde68a',
-    bgColor: 'rgba(255,251,235,0.5)',
-    iconBg: '#fef3c7',
     href: '/courses#beginner',
   },
   {
     icon: '🎓',
     title: 'College Students',
     desc: 'Add AI to your resume and stand out in campus placements',
-    borderColor: '#bfdbfe',
-    bgColor: 'rgba(239,246,255,0.5)',
-    iconBg: '#dbeafe',
     href: '/courses#beginner',
   },
   {
     icon: '💼',
     title: 'Working Professionals',
     desc: 'Save hours every week and become the AI expert in your team',
-    borderColor: '#e9d5ff',
-    bgColor: 'rgba(250,245,255,0.5)',
-    iconBg: '#f3e8ff',
     href: '/courses#professional',
   },
   {
     icon: '🏪',
     title: 'Business Owners',
     desc: 'Automate tasks, cut costs, and grow faster with AI tools',
-    borderColor: '#a7f3d0',
-    bgColor: 'rgba(236,253,245,0.5)',
-    iconBg: '#d1fae5',
     href: '/courses#business',
   },
 ]
@@ -112,9 +100,9 @@ function MicroCTA() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.2 }}
-      className="mt-5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-5 py-4"
+      className="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-4"
     >
-      <p className="text-xs font-medium text-[#475569]">
+      <p className="text-xs font-medium text-gray-400">
         Want to use this skill in real projects?
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -128,7 +116,7 @@ function MicroCTA() {
           href="https://wa.me/919200882008?text=Hi%2C+I+just+tried+your+AI+tools.+Can+you+suggest+the+right+course+for+me%3F"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-semibold text-[#475569] transition-all hover:border-[#059669] hover:text-[#059669]"
+          className="inline-flex items-center rounded-lg border border-white/[0.10] bg-white/[0.04] px-4 py-2 text-xs font-semibold text-gray-400 transition-all hover:border-emerald-500/40 hover:text-emerald-400"
         >
           Get My AI Learning Plan
         </a>
@@ -186,7 +174,7 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
   }
 
   return (
-    <div className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+    <div className="flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm overflow-hidden transition-all hover:border-emerald-500/30 hover:bg-white/[0.06]">
       {/* Coloured header */}
       <div className="p-6" style={{ background: tool.gradient }}>
         <div className="flex items-start justify-between">
@@ -200,12 +188,12 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <p className="mb-3 text-xs text-[#64748B]">
+        <p className="mb-3 text-xs text-gray-400">
           {tool.hint}{' '}
-          <span className="text-[#94A3B8]">Press ⌘+Enter to run.</span>
+          <span className="text-gray-600">Press ⌘+Enter to run.</span>
         </p>
 
-        <label className="mb-1.5 block text-sm font-medium text-[#0F172A]">
+        <label className="mb-1.5 block text-sm font-medium text-white">
           {tool.label}
         </label>
         <textarea
@@ -214,10 +202,10 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={tool.placeholder}
-          className="w-full resize-none rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20"
+          className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-emerald-400/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/10"
         />
 
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
 
         <button
           onClick={handleRun}
@@ -246,18 +234,15 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
               className="mt-5"
             >
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-[#0F172A]">{tool.outputLabel}</p>
+                <p className="text-sm font-medium text-white">{tool.outputLabel}</p>
                 <button
                   onClick={copyToClipboard}
-                  className="flex items-center gap-1.5 rounded-lg border border-[#E2E8F0] px-3 py-1 text-xs font-medium text-[#64748B] transition-colors hover:border-[#059669] hover:text-[#059669]"
+                  className="flex items-center gap-1.5 rounded-lg border border-white/[0.10] bg-white/[0.04] px-3 py-1 text-xs font-medium text-gray-400 transition-colors hover:border-emerald-500/40 hover:text-emerald-400"
                 >
                   {copied ? '✓ Copied!' : 'Copy'}
                 </button>
               </div>
-              <div
-                className="rounded-xl border p-4 text-sm leading-relaxed text-[#0F172A] whitespace-pre-wrap"
-                style={{ backgroundColor: tool.bgLight, borderColor: tool.borderLight }}
-              >
+              <div className="rounded-xl border p-4 text-sm leading-relaxed text-gray-300 whitespace-pre-wrap bg-white/[0.04] border-white/[0.08]">
                 {output}
               </div>
 
@@ -275,55 +260,78 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
 
 export default function ToolsPage() {
   return (
-    <main className="min-h-screen bg-[#F8FAFC] pt-24">
+    <main className="min-h-screen bg-[#0A0F1C] pt-24">
 
       {/* ── Hero ── */}
-      <section className="mx-auto max-w-7xl px-6 pt-4 pb-10 text-center lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-[#059669] mb-4">
-            Powered by Claude AI · Free, no login
-          </span>
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#0F172A] sm:text-5xl">
-            Experience AI.<br />
-            <span className="bg-gradient-to-r from-[#059669] to-[#0D9488] bg-clip-text text-transparent">
-              Then Master It.
+      <section
+        className="relative overflow-hidden"
+        style={{ backgroundColor: '#020617' }}
+      >
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
+        {/* Glow orbs */}
+        <div
+          className="absolute -top-32 left-1/4 h-96 w-96 rounded-full blur-3xl pointer-events-none"
+          style={{ backgroundColor: 'rgba(16,185,129,0.12)' }}
+        />
+        <div
+          className="absolute -bottom-32 right-1/4 h-80 w-80 rounded-full blur-3xl pointer-events-none"
+          style={{ backgroundColor: 'rgba(16,185,129,0.08)' }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-6 pt-10 pb-14 text-center lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block rounded-full border border-emerald-400/20 bg-white/5 px-4 py-1.5 text-sm font-medium text-emerald-300 mb-4">
+              Powered by Claude AI · Free, no login
             </span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-[#475569]">
-            These tools are part of our AI Skill System. Try them now — then learn how to use AI like this every single day.
-          </p>
-        </motion.div>
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+              Experience AI.<br />
+              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
+                Then Master It.
+              </span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-400">
+              These tools are part of our AI Skill System. Try them now — then learn how to use AI like this every single day.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
       {/* ── How It Works ── */}
-      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+      <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <motion.div
-          className="rounded-2xl border border-[#E2E8F0] bg-white px-6 py-10 md:px-10"
+          className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm px-6 py-10 md:px-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-[#059669]">How it works</p>
+          <p className="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-emerald-400">How it works</p>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-4">
             {steps.map((s, i) => (
               <div key={s.step} className="relative flex flex-col items-center text-center">
                 {/* Connector line */}
                 {i < steps.length - 1 && (
-                  <div className="absolute top-7 left-[calc(50%+28px)] hidden h-px w-[calc(100%-56px)] md:block" style={{ background: 'linear-gradient(to right, #CBD5E1, transparent)' }} />
+                  <div className="absolute top-7 left-[calc(50%+28px)] hidden h-px w-[calc(100%-56px)] bg-white/[0.06] md:block" />
                 )}
-                <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] text-2xl shadow-sm">
+                <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] text-2xl">
                   {s.icon}
-                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#059669] text-[10px] font-bold text-white">
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white">
                     {s.step}
                   </span>
                 </div>
-                <p className="mt-3 text-sm font-semibold text-[#0F172A]">{s.title}</p>
-                <p className="mt-1 text-xs text-[#64748B]">{s.desc}</p>
+                <p className="mt-3 text-sm font-semibold text-white">{s.title}</p>
+                <p className="mt-1 text-xs text-gray-400">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -350,33 +358,33 @@ export default function ToolsPage() {
       {/* ── Why These Tools Exist ── */}
       <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         <motion.div
-          className="rounded-2xl border border-[#E2E8F0] bg-white p-10 md:p-14"
+          className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-10 md:p-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#059669]">Our philosophy</p>
-            <h2 className="mt-3 flex items-center gap-3 text-2xl font-bold text-[#0F172A]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400">Our philosophy</p>
+            <h2 className="mt-3 flex items-center gap-3 text-2xl font-bold text-white">
               Why These Tools Exist
               <span className="inline-flex gap-1.5">
                 {['⚡', '🎯', '✍️'].map((icon, i) => (
                   <span
                     key={i}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-base"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] text-base"
                   >
                     {icon}
                   </span>
                 ))}
               </span>
             </h2>
-            <p className="mt-4 max-w-2xl text-[#475569] leading-relaxed">
-              These tools are part of our <span className="font-semibold text-[#0F172A]">AI Skill System</span> — designed to help you move from beginner to job-ready. Instead of learning theory first, you experience AI doing real work, then master the skill step-by-step in our courses.
+            <p className="mt-4 max-w-2xl text-gray-400 leading-relaxed">
+              These tools are part of our <span className="font-semibold text-white">AI Skill System</span> — designed to help you move from beginner to job-ready. Instead of learning theory first, you experience AI doing real work, then master the skill step-by-step in our courses.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               {['Experience first', 'Learn the why', 'Build with confidence'].map((tag) => (
-                <span key={tag} className="inline-flex items-center rounded-full border border-[#D1FAE5] bg-[#F0FDF4] px-3 py-1 text-xs font-medium text-[#059669]">
+                <span key={tag} className="inline-flex items-center rounded-full border border-emerald-400/20 bg-white/5 px-3 py-1 text-xs font-medium text-emerald-300">
                   ✓ {tag}
                 </span>
               ))}
@@ -394,7 +402,7 @@ export default function ToolsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold text-[#0F172A]">Who Is This For?</h2>
+          <h2 className="text-2xl font-bold text-white">Who Is This For?</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -408,18 +416,14 @@ export default function ToolsPage() {
             >
               <Link
                 href={a.href}
-                className="audience-card block rounded-2xl border p-6 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                style={{ borderColor: a.borderColor, backgroundColor: a.bgColor }}
+                className="group block rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-6 transition-all duration-200 hover:border-emerald-500/30 hover:bg-white/[0.06] hover:-translate-y-0.5"
               >
-                <div
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-2xl"
-                  style={{ backgroundColor: a.iconBg }}
-                >
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.06] text-2xl">
                   {a.icon}
                 </div>
-                <h3 className="mt-4 text-sm font-bold text-[#0F172A]">{a.title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-[#475569]">{a.desc}</p>
-                <p className="audience-card-link mt-3 text-xs font-medium text-[#059669]">
+                <h3 className="mt-4 text-sm font-bold text-white">{a.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-gray-400">{a.desc}</p>
+                <p className="mt-3 text-xs font-medium text-emerald-400 group-hover:text-emerald-300 transition-colors">
                   View programs →
                 </p>
               </Link>
