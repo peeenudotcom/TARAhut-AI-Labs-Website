@@ -179,6 +179,29 @@ export default async function CourseDetailPage({
                 </div>
               </div>
 
+              {/* What's Included */}
+              <div className="mb-12">
+                <h2 className="mb-4 text-2xl font-bold text-white">What&apos;s Included</h2>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {[
+                    { icon: '📖', title: 'Student Workbook', desc: 'Fill-in workbook with exercises for every session' },
+                    { icon: '⚡', title: 'Prompt Library', desc: '50+ ready-to-use prompts across 8 categories' },
+                    { icon: '🎯', title: 'Real Projects', desc: 'Build 4 portfolio-worthy projects during the course' },
+                    { icon: '🛠️', title: 'Tool Setup Guide', desc: 'Step-by-step account setup for all 13+ tools' },
+                    { icon: '📋', title: 'Assignments & Briefs', desc: 'Homework + detailed project briefs with rubrics' },
+                    { icon: '🏆', title: 'Certificate', desc: 'TARAhut-verified certificate, shareable on LinkedIn' },
+                  ].map((item) => (
+                    <div key={item.title} className="flex items-start gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-lg">{item.icon}</span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{item.title}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Highlights — school courses only */}
               {schoolCourse && (
                 <div className="mb-12">
