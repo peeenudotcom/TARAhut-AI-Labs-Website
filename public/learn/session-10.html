@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 10: AI Video Creation — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.flow-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:1.5rem}
+.flow-node{text-align:center;padding:1rem 1.2rem;cursor:pointer;transition:all .3s;min-width:100px}
+.flow-node:hover{transform:scale(1.08)}
+.flow-node.on .fi{border-color:var(--c1);box-shadow:0 0 24px rgba(0,240,255,.25);background:rgba(0,240,255,.06)}
+.fi{width:62px;height:62px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto .6rem;background:var(--bg);transition:all .3s}
+.flow-node label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;display:block;cursor:pointer}
+.fl-arrow{color:var(--t3);font-size:1.2rem;flex-shrink:0}
+.fl-detail{padding:1.5rem;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.12);border-radius:var(--rs);display:none;animation:fadeSlide .3s ease}
+.fl-detail.on{display:block}
+.fl-detail h4{font-family:'Syne',sans-serif;color:var(--c1);margin-bottom:.4rem;font-size:1rem}
+.fl-detail p{color:var(--t2);font-size:.9rem}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.hw-box{background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.hw-box h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:1rem}
+.hw-box ul{padding-left:1.2rem;color:var(--t2);font-size:.92rem}
+.hw-box li{margin-bottom:.6rem}
+.workflow-step{display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:1rem;transition:all .3s}
+.workflow-step:hover{border-color:rgba(0,240,255,.25);transform:translateX(4px)}
+.ws-num{width:40px;height:40px;border-radius:50%;background:var(--gbrand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;flex-shrink:0;color:#fff}
+.ws-content h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.ws-content p{color:var(--t2);font-size:.88rem}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.flow-row{flex-direction:column}.fl-arrow{transform:rotate(90deg)}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 10 &middot; AI Tools Mastery</div>
+  <h1>AI Video<br><span class="gr">Creation</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Script to screen in minutes. Create AI avatar videos, auto-caption reels, and professional productions — no camera, no crew, no studio needed.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Video Revolution</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>HeyGen</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>CapCut AI</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Workflow</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: VIDEO REVOLUTION -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The AI Video <span class="gr">Revolution</span></h2>
+    <p>In 2026, a solo creator can produce what used to require a full production studio. Let's understand what's now possible — and what it means for you.</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">&#128248;</div>
+    <div class="call-body">
+      <h4>What Was Impossible. Is Now Trivial.</h4>
+      <p>2020: A 60-second professional brand video cost <strong>&#8377;50,000–2,00,000</strong> (videographer, editor, studio, voiceover artist, post-production).<br><br>
+      2026: The same quality video costs <strong>&#8377;0–500</strong> in tool fees and takes <strong>30 minutes</strong> to produce. That's not an exaggeration — that's the gap AI created.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What's Actually Possible in 2026</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">AI Avatars</span><span class="crd-icon">&#129489;</span><h3>AI Avatar Presenters</h3><p>Create a realistic AI human that speaks your script. Change the language, the outfit, the background — all in software. No camera. No nervousness about speaking on video.</p></div>
+    <div class="crd"><span class="tag tag-1">Text-to-Video</span><span class="crd-icon">&#128196;</span><h3>Script to Video</h3><p>Type a script, choose an avatar and background, and get a fully produced video with lip-synced speech in minutes. HeyGen makes this possible for anyone.</p></div>
+    <div class="crd"><span class="tag tag-2">Multi-Language</span><span class="crd-icon">&#127760;</span><h3>Auto-Dubbing</h3><p>Record once in Hindi, auto-dub into English, Spanish, French — with your voice clone. One video, 20 markets. Global reach from Kotkapura.</p></div>
+    <div class="crd"><span class="tag tag-4">Auto-Edit</span><span class="crd-icon">&#9999;&#65039;</span><h3>Smart Editing</h3><p>CapCut AI removes silences, adds captions, identifies highlights, and applies trending effects automatically. What used to take 4 hours now takes 15 minutes.</p></div>
+    <div class="crd"><span class="tag tag-3">Voice Clone</span><span class="crd-icon">&#127908;</span><h3>Personal Avatar</h3><p>Record 5 minutes of yourself talking. HeyGen creates a digital twin that looks and sounds exactly like you. You never have to record again.</p></div>
+    <div class="crd"><span class="tag tag-5">Templates</span><span class="crd-icon">&#128293;</span><h3>Trending Formats</h3><p>CapCut tracks viral video formats in real-time and offers ready-made templates. Your content looks native to the platform, not like an ad.</p></div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>The Video Opportunity for You</h4>
+      <p>Every restaurant, clinic, coaching center, clothing store, and wedding venue in Kotkapura and nearby cities <strong>needs video content</strong> for Instagram Reels, YouTube, and WhatsApp marketing. Almost none have a videographer on retainer. You can be their video team — using just a laptop and these tools.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>What if your face wasn't on camera but your voice still reached 10,000 people?</strong> AI avatars mean you don't need to be comfortable in front of a camera to be a video creator. Your ideas, your script, your brand — presented by a professional AI avatar that you control.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: HeyGen — the AI avatar tool changing how businesses communicate.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: HeyGen &rarr;</button></div>
+</div>
+
+<!-- S2: HEYGEN -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#127909; Section 2 of 6. You're building a professional video skill set right now.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>HeyGen — <span class="gr">AI Avatar Videos</span></h2>
+    <p>The world's leading AI avatar platform. Create professional presenter videos, dub into any language, or clone yourself — all without a camera.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128640;</div>
+    <div class="call-body">
+      <h4>What HeyGen Can Do</h4>
+      <p><strong>Script-to-Video:</strong> Paste your script, choose an AI avatar presenter, select background, export a professional video.<br>
+      <strong>Multi-Language Dubbing:</strong> Upload any video — HeyGen translates and dubs it in 40+ languages with lip-sync.<br>
+      <strong>Personal Avatar Clone:</strong> Record 2 minutes of your face — get a digital twin that speaks any script you write.<br>
+      <strong>Talking Photo:</strong> Upload any portrait photo and make it speak. Great for social media engagement.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Create Your First HeyGen Video</h3>
+  <div class="workflow-step">
+    <div class="ws-num">1</div>
+    <div class="ws-content"><h4>Sign Up & Choose Avatar</h4><p>Go to heygen.com. Free plan = 1 minute of video/month. Paid plans start at $24/month. Choose from 100+ realistic AI avatars — male, female, different ethnicities, formal and casual styles.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">2</div>
+    <div class="ws-content"><h4>Write or Paste Your Script</h4><p>In the Script box, type what you want the avatar to say. Keep sentences short for better lip-sync. Add commas for natural pauses. The avatar speaks at a natural conversational pace.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">3</div>
+    <div class="ws-content"><h4>Select Voice & Language</h4><p>Choose from 300+ voices in 40+ languages including Hindi. Or use your own voice by recording a sample. Adjust speed, pitch, and emotion (professional, friendly, energetic).</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">4</div>
+    <div class="ws-content"><h4>Choose Background</h4><p>Use HeyGen's built-in backgrounds (office, studio, outdoor), upload your own image, or use a solid color. For product videos, a simple white or brand-colored background works best.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">5</div>
+    <div class="ws-content"><h4>Generate & Download</h4><p>Click "Generate Video". Processing takes 2–5 minutes depending on length. Download as MP4. Free plan has a HeyGen watermark — remove it on paid plans.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Personal Avatar Clone (Advanced)</h3>
+  <div class="callout call-3">
+    <div class="call-ico">&#129489;</div>
+    <div class="call-body">
+      <h4>How to Clone Yourself</h4>
+      <p><strong>1.</strong> Record a 2-minute video of yourself against a plain background, speaking naturally<br>
+      <strong>2.</strong> Upload to HeyGen → Avatar → Create Instant Avatar<br>
+      <strong>3.</strong> HeyGen processes it in 10–30 minutes<br>
+      <strong>4.</strong> Now type any script — your digital twin speaks it, with your face and voice<br>
+      <strong>Use case:</strong> Create 30 days of educational content in one afternoon. You record once, the avatar works forever.</p>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>Free Plan</th><th>Creator ($24/mo)</th></tr></thead>
+      <tbody>
+        <tr><td>Video per month</td><td>1 minute</td><td>15 minutes</td></tr>
+        <tr><td>Watermark</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Avatars</td><td>Basic library</td><td>Full library + custom</td></tr>
+        <tr><td>Languages</td><td>Limited</td><td>40+ languages</td></tr>
+        <tr><td>Personal avatar</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Commercial use</td><td>No</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="micro-action">
+    <h4>Try It Now</h4>
+    <ul>
+      <li>Go to heygen.com — create a free account</li>
+      <li>Click "Create Video" → Video Avatar</li>
+      <li>Write this script: "Welcome to [your business name]. We help you [what they do]. Visit us at [location] or WhatsApp us at [number]."</li>
+      <li>Choose an avatar that matches your brand — formal for clinic, friendly for restaurant</li>
+      <li>Generate and download your first AI avatar video</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: CapCut AI — the editing suite that makes raw footage into viral content automatically.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: CapCut AI &rarr;</button></div>
+</div>
+
+<!-- S3: CAPCUT AI -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#9889; More than halfway! You have enough to create real client videos today.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>CapCut AI — <span class="gr">Smart Editing</span></h2>
+    <p>The world's most popular video editing app for creators. CapCut's AI features turn raw footage into polished, engaging content in minutes.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Captions</span><span class="crd-icon">&#128172;</span><h3>Auto-Captions</h3><p>Upload any video. CapCut transcribes it and places animated, styled captions automatically. 85% of social media videos are watched without sound — captions are not optional anymore.</p></div>
+    <div class="crd"><span class="tag tag-1">Editing</span><span class="crd-icon">&#9999;&#65039;</span><h3>Smart Edit</h3><p>AI identifies filler words ("um", "uh", long pauses) and removes them automatically. Cuts a 10-minute raw recording to a tight 3-minute video without manual editing.</p></div>
+    <div class="crd"><span class="tag tag-2">Background</span><span class="crd-icon">&#127774;</span><h3>BG Removal</h3><p>One-tap background removal from video (not just photos). Place yourself against any background — a professional studio, a city skyline, or a brand-colored backdrop.</p></div>
+    <div class="crd"><span class="tag tag-4">Text-to-Video</span><span class="crd-icon">&#128248;</span><h3>Script to Reel</h3><p>Type a script → CapCut generates a full video with stock footage, transitions, music, and captions automatically. Great for quick product explainer videos.</p></div>
+    <div class="crd"><span class="tag tag-3">Templates</span><span class="crd-icon">&#128293;</span><h3>Trending Templates</h3><p>Browse templates used in viral videos this week. Paste your footage, adjust text — done. Your content matches what the algorithm is currently promoting.</p></div>
+    <div class="crd"><span class="tag tag-5">AI Effects</span><span class="crd-icon">&#127775;</span><h3>AI Effects & Enhance</h3><p>Enhance shaky footage, improve lighting in dark videos, add cinematic color grading, apply face smoothing — all AI-powered, one-click.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">CapCut Web vs CapCut Mobile</h3>
+  <div class="callout call-1">
+    <div class="call-ico">&#128241;</div>
+    <div class="call-body">
+      <h4>Use Both — They Serve Different Purposes</h4>
+      <p><strong>CapCut Mobile (Phone App):</strong> Best for quick Reels — auto-captions, trending templates, fast export. Film on phone, edit on phone, post in 10 minutes.<br><br>
+      <strong>CapCut Web (capcut.com):</strong> Full desktop editing suite. Better for longer videos, brand color control, more advanced AI tools like text-to-video and smart scene detection. Use this for client work.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The 15-Minute Reel Workflow</h3>
+  <div class="workflow-step">
+    <div class="ws-num">1</div>
+    <div class="ws-content"><h4>Film or Generate Raw Footage (3 min)</h4><p>Film yourself talking about a product/service on your phone (1–2 minutes). OR use a HeyGen AI avatar video. OR use CapCut's text-to-video with a script.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">2</div>
+    <div class="ws-content"><h4>Import & Auto-Caption (2 min)</h4><p>Open CapCut → Upload → Click "Captions" → Select style (bold, modern, minimal). Auto-generates captions. Review quickly for errors (usually very accurate for English and Hindi).</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">3</div>
+    <div class="ws-content"><h4>Apply Template or Music (3 min)</h4><p>Browse templates → pick one trending in your niche. Or add background music from CapCut's royalty-free library. Adjust volume so voice is louder than music.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">4</div>
+    <div class="ws-content"><h4>Smart Edit & Polish (5 min)</h4><p>AI Smart Edit removes pauses and filler. Enhance video quality. Add B-roll clips from CapCut's free stock library. Add your logo as a watermark.</p></div>
+  </div>
+  <div class="workflow-step">
+    <div class="ws-num">5</div>
+    <div class="ws-content"><h4>Export & Post (2 min)</h4><p>Export at 1080p or 4K. Share directly to Instagram Reels, TikTok, YouTube Shorts from CapCut. Or download and post manually for more control over captions and hashtags.</p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Action: Your First AI-Edited Reel</h4>
+    <ul>
+      <li>Film yourself for 60 seconds talking about something you know well (a topic, a skill, anything)</li>
+      <li>Open CapCut on your phone or capcut.com on laptop</li>
+      <li>Add auto-captions → pick a style</li>
+      <li>Add a trending template or background music</li>
+      <li>Export and save — your first AI-edited video is done</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Combine everything into one seamless production workflow.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Workflow &rarr;</button></div>
+</div>
+
+<!-- S4: WORKFLOW -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>The Complete Video <span class="gr">Production Workflow</span></h2>
+    <p>How the tools connect: Claude writes the script, HeyGen creates the presenter, CapCut polishes the final video. End-to-end in 45 minutes.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#127775;</div>
+    <div class="call-body">
+      <h4>The Professional Pipeline</h4>
+      <p>This is the exact workflow professional agencies charge &#8377;15,000–50,000 per video for. With AI tools, you can execute the same quality in under an hour. Click each step below to see exactly how.</p>
+    </div>
+  </div>
+
+  <div class="flow-wrap">
+    <div class="flow-row" id="flowRowW">
+      <div class="flow-node on" data-f="0" onclick="selFlow('flowRowW','flowInfoW',0)"><div class="fi">&#129504;</div><label>Script (Claude)</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="1" onclick="selFlow('flowRowW','flowInfoW',1)"><div class="fi">&#129489;</div><label>Avatar (HeyGen)</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="2" onclick="selFlow('flowRowW','flowInfoW',2)"><div class="fi">&#9999;&#65039;</div><label>Edit (CapCut)</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="3" onclick="selFlow('flowRowW','flowInfoW',3)"><div class="fi">&#128248;</div><label>Final Video</label></div>
+    </div>
+    <div id="flowInfoW">
+      <div class="fl-detail on" data-f="0"><h4>Step 1: Script with Claude (10 minutes)</h4><p>Prompt Claude: "Write a 60-second video script for [business name], a [type of business] in Kotkapura. The video should introduce the business, highlight 3 key services, and end with a clear call to action to WhatsApp at [number]. Tone: friendly and professional. Target audience: local families." Copy the script. Edit any local references.</p></div>
+      <div class="fl-detail" data-f="1"><h4>Step 2: Avatar Video with HeyGen (15 minutes)</h4><p>Paste the Claude script into HeyGen. Choose an avatar that matches the business personality (formal for clinic, warm for restaurant). Select a voice in the right language. Set a professional background. Click Generate — your 60-second presenter video renders in 5–10 minutes.</p></div>
+      <div class="fl-detail" data-f="2"><h4>Step 3: Edit & Polish with CapCut (15 minutes)</h4><p>Import the HeyGen video into CapCut. Add auto-captions. Add B-roll clips of the business (stock footage or real photos made into a slideshow). Add background music at 20% volume. Add logo watermark. Add an end card with contact details. Apply color grading for cinematic feel.</p></div>
+      <div class="fl-detail" data-f="3"><h4>Step 4: Final Video (Ready to Publish)</h4><p>Export at 1080p. You now have: a complete 60-second brand video with professional presenter, captions, music, B-roll, logo, and CTA. This video can be used on Instagram Reels, YouTube, WhatsApp Business, and the business website. Total cost: ~&#8377;0-500 in tool fees. Total time: 40-45 minutes.</p></div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Advanced: Multi-Language Video Strategy</h3>
+  <div class="callout call-2">
+    <div class="call-ico">&#127760;</div>
+    <div class="call-body">
+      <h4>One Video, Multiple Languages</h4>
+      <p><strong>Step 1:</strong> Create your base video in English or Hindi with HeyGen<br>
+      <strong>Step 2:</strong> Upload to HeyGen's "Video Translation" feature<br>
+      <strong>Step 3:</strong> Select target language (Punjabi, Tamil, Spanish, etc.)<br>
+      <strong>Step 4:</strong> HeyGen translates the script, re-dubs in the new language, and adjusts lip-sync<br>
+      <strong>Result:</strong> The same video now speaks to audiences in 3-5 different languages. One video, multiple markets — perfect for businesses that serve customers from different regions.</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">You can now build a complete video production service. This is what agencies in Delhi and Mumbai charge lakhs for.</div>
+
+  <div class="micro-action">
+    <h4>Full Workflow Practice</h4>
+    <ul>
+      <li>Pick a real or imaginary local business</li>
+      <li>Ask Claude to write a 30-second script for a product video</li>
+      <li>Use HeyGen to create the avatar video</li>
+      <li>Import into CapCut: add captions, music, and logo</li>
+      <li>Export your first complete brand video — bring it to Session 12</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Ready to test yourself? 8 questions on video creation tools.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Session 10 <span class="gr">Quiz</span></h2>
+    <p>8 questions on AI video creation tools and workflows.</p>
+  </div>
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 10 <span class="gr">Wrap-Up</span></h2>
+    <p>Your homework challenge — create a real AI avatar video.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">&#129489;</span><h3>HeyGen</h3><p>AI avatar creation, script-to-video, 40+ language dubbing, personal avatar clone. The presenter studio in your browser.</p></div>
+    <div class="crd"><span class="crd-icon">&#9999;&#65039;</span><h3>CapCut AI</h3><p>Auto-captions, smart editing, background removal, trending templates, text-to-video. From raw footage to viral reel in 15 minutes.</p></div>
+    <div class="crd"><span class="crd-icon">&#127775;</span><h3>The Workflow</h3><p>Claude (script) &rarr; HeyGen (avatar) &rarr; CapCut (edit) = Professional brand video. The same pipeline agencies charge &#8377;50,000 for.</p></div>
+    <div class="crd"><span class="crd-icon">&#127760;</span><h3>Multi-Language</h3><p>Create once, publish in 5 languages. HeyGen's video translation preserves your voice and lip-syncs in the new language. True global reach.</p></div>
+  </div>
+
+  <div class="hw-box">
+    <h3>&#127909; Homework: Your 60-Second AI Avatar Video</h3>
+    <p style="color:var(--t2);margin-bottom:1rem;font-size:.92rem">Create a 60-second AI avatar video introducing yourself or a brand. This is your most impressive portfolio piece yet.</p>
+    <ul>
+      <li><strong>Script:</strong> Use Claude to write a 60-second script for yourself OR a local business (the same one you'll use for the Session 12 capstone)</li>
+      <li><strong>Avatar:</strong> Generate the video in HeyGen. If it's a personal intro, try the personal avatar clone feature</li>
+      <li><strong>Edit:</strong> Import into CapCut — add captions, background music (soft, professional), and a logo</li>
+      <li><strong>Polish:</strong> Add 2–3 B-roll clips or images as cutaways using CapCut's stock library</li>
+      <li><strong>Share:</strong> Post the video on any one platform OR share the file in the class group for feedback</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>What You Can Charge for This Service</h4>
+      <p><strong>Single brand video (60 sec):</strong> &#8377;2,000–8,000<br>
+      <strong>Monthly video package (4 videos/month):</strong> &#8377;6,000–20,000/month<br>
+      <strong>Multi-language video package:</strong> &#8377;5,000–15,000<br>
+      <strong>Social media Reels (10/month):</strong> &#8377;5,000–15,000/month</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">Next: Session 11 — AI Audio + Social Media. Words become voices. Brands become sounds.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
+</div>
+
+<footer class="foot">
+  <p><span class="brand">TARAhut AI Labs</span> &middot; AI Tools Mastery Program &middot; Week 3, Session 10</p>
+  <p style="margin-top:.5rem">tarahutailabs.com &middot; +91 92008-82008 &middot; &copy; 2026</p>
+</footer>
+
+<script>
+const canvas=document.getElementById('particleCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.5+.1});
+function drawParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.a})`;ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1});requestAnimationFrame(drawParticles)}
+drawParticles();
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progBar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+function startLearning(){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec('s1')}
+function jumpTo(id){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec(id)}
+function go(id){showSec(id);window.scrollTo({top:0,behavior:'smooth'})}
+function showSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.s===id))}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function selFlow(rowId,infoId,idx){
+  document.querySelectorAll(`#${rowId} .flow-node`).forEach((n,i)=>n.classList.toggle('on',i===idx));
+  document.querySelectorAll(`#${infoId} .fl-detail`).forEach(d=>d.classList.remove('on'));
+  document.querySelector(`#${infoId} [data-f="${idx}"]`).classList.add('on');
+}
+const questions=[
+  {q:"What is the primary feature that makes HeyGen different from traditional video tools?",opts:["It's faster than other editors","It creates AI avatar presenters that speak your script without needing a real person on camera","It has the best video filters","It's completely free"],ans:1,fb:"HeyGen creates realistic AI avatar presenters that lip-sync to any script you write — no camera, no studio, no nervousness. This is its core innovation."},
+  {q:"In HeyGen's Video Translation feature, what happens to the original speaker's lips in the dubbed video?",opts:["The lips are blurred and replaced with a subtitle box","The lips are adjusted to match the new language's lip movements (lip-sync)","The original lip movements are kept regardless of language","The face is completely replaced by a new avatar"],ans:1,fb:"HeyGen's video translation uses AI to re-sync the lip movements to match the new language, making the dubbed video look natural and authentic."},
+  {q:"Why are auto-captions considered essential for social media videos in 2026?",opts:["They help the video rank higher in Google search","85% of social media videos are watched without sound — captions make content accessible","Captions make videos shorter","It's required by Instagram's algorithm"],ans:1,fb:"The vast majority of social media videos are watched in silent mode (on public transport, at work, late at night). Captions ensure your message gets through even without sound."},
+  {q:"What is the correct order of the professional video production workflow covered in Section 4?",opts:["CapCut → HeyGen → Claude → Publish","Claude (Script) → HeyGen (Avatar) → CapCut (Edit) → Final Video","HeyGen → Claude → CapCut → Publish","CapCut → Claude → HeyGen → Publish"],ans:1,fb:"The workflow is: Claude writes the script → HeyGen generates the AI avatar video → CapCut polishes with captions, music, and B-roll → Final professional video."},
+  {q:"What does CapCut's 'Smart Edit' AI feature do automatically?",opts:["It selects the best clips from raw footage and creates a music video","It identifies and removes filler words, long pauses, and 'ums' from videos","It generates a complete video script from keywords","It automatically posts your video to all social media platforms"],ans:1,fb:"CapCut's Smart Edit AI removes filler words ('um', 'uh'), long pauses, and dead air from your recordings automatically — turning a rough 10-minute take into a tight, engaging video."},
+  {q:"How do you create a Personal Avatar Clone in HeyGen?",opts:["Submit a profile photo and HeyGen generates the avatar","Record 2 minutes of yourself speaking on camera and upload it to HeyGen","Pay for the most expensive plan and an avatar is assigned to you","Write a detailed physical description and HeyGen builds the avatar"],ans:1,fb:"Record 2 minutes of yourself against a plain background, upload to HeyGen, and it creates a digital twin that can speak any script you write — with your face and voice."},
+  {q:"Which CapCut feature allows you to place yourself against any background in a video without a green screen?",opts:["Magic Filter","Background Removal (AI-powered, works on video)","Chroma Key","Virtual Studio"],ans:1,fb:"CapCut's AI-powered background removal works on video (not just photos), allowing you to appear against any background without a physical green screen setup."},
+  {q:"For a local Kotkapura restaurant that wants 4 short videos per month for Instagram Reels, what is the most efficient workflow?",opts:["Hire a videographer for full-day shoots each month","Use CapCut templates with stock footage + auto-captions, then post","Script with Claude → AI avatar in HeyGen → Edit in CapCut with food B-roll and captions → Export → Post","Film everything on DSLR and outsource editing to Mumbai"]
+  ,ans:2,fb:"The complete workflow — Claude for scripts, HeyGen for the presenter, CapCut for editing with captions and B-roll — produces professional results efficiently and affordably for local businesses."}
+];
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  const q=questions[cur];
+  document.getElementById('qProg').innerHTML=questions.map((_,i)=>`<div class="q-dot ${i<cur?'done':i===cur?'cur':''}"></div>`).join('');
+  document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${cur+1} of ${questions.length}</span>${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="answer(${i})"><span class="ol">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${score}/${cur}</span>${cur<questions.length-1?`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="nextQ()" style="display:none">Next &rarr;</button>`:`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="showScore()" style="display:none">See Results &rarr;</button>`}</div>`;
+  answered=false;
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=questions[cur];
+  const opts=document.querySelectorAll('.q-opt');
+  opts[i].classList.add(i===q.ans?'ok':'no');
+  if(i===q.ans)score++;
+  opts[q.ans].classList.add('ok');
+  const fb=document.getElementById('qFb');
+  fb.className=`q-fb show ${i===q.ans?'fb-ok':'fb-no'}`;
+  fb.innerHTML=(i===q.ans?'&#9989; Correct! ':'&#10060; Not quite. ')+q.fb;
+  document.getElementById('nextBtn').style.display='inline-flex';
+}
+function nextQ(){cur++;if(cur<questions.length)renderQuiz();else showScore();}
+function showScore(){
+  const pct=Math.round(score/questions.length*100);
+  const msg=pct>=80?'Excellent! You are ready for Session 11.':pct>=60?'Good effort! Review the sections you found tricky.':'Keep practicing! Re-read sections and retry.';
+  document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/${questions.length}</div><p style="color:var(--t2);margin:.5rem 0">${pct}% &mdash; ${msg}</p><button class="btn btn-ghost btn-sm" onclick="cur=0;score=0;renderQuiz()" style="margin-top:1.5rem">Retry Quiz</button></div>`;
+  document.getElementById('qProg').innerHTML=questions.map(()=>`<div class="q-dot done"></div>`).join('');
+}
+renderQuiz();
+</script>
+</body>
+</html>

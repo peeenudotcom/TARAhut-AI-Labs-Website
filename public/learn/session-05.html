@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5: Mastering ChatGPT & Claude — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.challenge-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.challenge-task{padding:1.25rem;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:1rem}
+.challenge-task h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.75rem}
+.tool-choice{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem}
+.tool-btn{padding:10px 18px;border-radius:99px;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t2);transition:all .3s}
+.tool-btn:hover{border-color:var(--c1);color:var(--c1)}
+.tool-btn.selected-gpt{border-color:#10a37f;background:rgba(16,163,127,.1);color:#10a37f}
+.tool-btn.selected-claude{border-color:#d97706;background:rgba(217,119,6,.1);color:#d97706}
+.tool-reveal{display:none;margin-top:1rem;padding:1rem 1.25rem;border-radius:var(--rs);background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);font-size:.88rem;color:var(--t2);animation:fadeSlide .35s ease}
+.tool-reveal.show{display:block}
+.tool-reveal strong{color:var(--brand)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 2 &middot; Session 5 &middot; AI Tools Mastery</div>
+  <h1>Mastering<br><span class="gr">ChatGPT &amp; Claude</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Two AI giants, one session. Know them deeply, use them smartly &mdash; and never waste time on the wrong tool again.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>ChatGPT Deep Dive</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Claude Deep Dive</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>When to Use What</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Interactive Challenge</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: ChatGPT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>ChatGPT <span class="gr">Deep Dive</span></h2>
+    <p>ChatGPT isn't just a chatbot. It's a full platform with powerful features most people never discover.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Big Picture</h4><p>ChatGPT by OpenAI is the world's most used AI assistant. But using just the basic chat is like buying a smartphone and only making phone calls. The real power is in the platform features.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">5 Power Features You Must Know</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Free + Paid</span><span class="crd-icon">&#129302;</span><h3>GPTs (Custom Assistants)</h3><p>GPTs are pre-built or custom versions of ChatGPT trained for specific tasks. There's a GPT for resume writing, legal questions, coding, cooking &mdash; browse thousands in the GPT Store. You can build your own too.</p></div>
+    <div class="crd"><span class="tag tag-brand">GPT-4 Memory</span><span class="crd-icon">&#129504;</span><h3>Memory</h3><p>ChatGPT can now remember things about you across conversations. Tell it your job, city, writing style preferences &mdash; it carries that context forward. Go to Settings &rarr; Personalization to see and manage memories.</p></div>
+    <div class="crd"><span class="tag tag-5">Real-Time</span><span class="crd-icon">&#127758;</span><h3>Web Browsing</h3><p>ChatGPT can search the internet in real-time (GPT-4 model). Ask it about today's news, current stock prices, or recent events. It cites sources. Perplexity does this better, but for quick checks it's great.</p></div>
+    <div class="crd"><span class="tag tag-4">Settings</span><span class="crd-icon">&#127775;</span><h3>Custom Instructions</h3><p>Tell ChatGPT how to always respond to you. Example: "Always respond in Hindi. I'm a business owner in Kotkapura. Keep answers concise." Set it once in Settings &rarr; Custom Instructions &mdash; it applies to every chat.</p></div>
+    <div class="crd"><span class="tag tag-2">GPT-4o</span><span class="crd-icon">&#127912;</span><h3>Image Generation (DALL-E)</h3><p>Type a description and ChatGPT generates professional images using DALL-E 3. Great for social media graphics, concepts, and mockups. Works in the main chat &mdash; just describe what you want.</p></div>
+    <div class="crd"><span class="tag tag-3">Pro Feature</span><span class="crd-icon">&#128202;</span><h3>Advanced Data Analysis</h3><p>Upload Excel, CSV, or PDF files and ChatGPT analyzes them. Ask questions like "What's the best-selling product?" or "Summarize this report." No coding needed &mdash; the AI writes and runs code for you.</p></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128241;</div><div class="call-body"><h4>Free vs Paid: What's the Real Difference?</h4><p><strong>Free (GPT-3.5/GPT-4o mini):</strong> Good for basic writing, Q&A, simple tasks<br><strong>ChatGPT Plus (&#8377;1,650/month):</strong> GPT-4o (smarter), image generation, web search, data analysis, GPT Store access, voice mode<br><strong>Honest verdict:</strong> Free works for 80% of tasks. Go paid only when you need power features for professional work.</p></div></div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Open ChatGPT right now and do this:</p>
+    <ul>
+      <li>Go to <strong>Settings &rarr; Custom Instructions</strong> and write 2 sentences about yourself</li>
+      <li>Go to <strong>Explore GPTs</strong> and find a GPT relevant to your work</li>
+      <li>Enable memory if it's not already on</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now know ChatGPT features that 90% of users have never touched.</div>
+  <p class="curiosity-hook">Next: Claude — the underdog that often beats ChatGPT at the most important tasks.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Claude Deep Dive &rarr;</button></div>
+</div>
+
+<!-- S2: Claude -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! You're building a real toolkit now.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Claude <span class="gr">Deep Dive</span></h2>
+    <p>Claude by Anthropic is the AI that professionals quietly prefer for serious work. Here's why.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128293;</div><div class="call-body"><h4>What Makes Claude Different?</h4><p>Claude is built differently from ChatGPT. Anthropic focused on <strong>safety, accuracy, and long-context reasoning</strong>. Claude rarely hallucinates. It admits when it doesn't know. And it can read an entire book and discuss it intelligently. That's rare.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Claude's Most Powerful Features</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Game Changer</span><span class="crd-icon">&#128193;</span><h3>Projects</h3><p>Claude Projects let you create dedicated workspaces for different tasks &mdash; one project for your client proposals, another for your course prep. Add files, set instructions, and Claude maintains full context across all conversations within that project.</p></div>
+    <div class="crd"><span class="tag tag-1">Unique Feature</span><span class="crd-icon">&#128203;</span><h3>Artifacts</h3><p>When you ask Claude to create something (a website, a document, code, a presentation outline), it appears in a separate "Artifact" panel. You can preview it, iterate on it, and copy it cleanly. Game-changing for content creation.</p></div>
+    <div class="crd"><span class="tag tag-5">200K Tokens</span><span class="crd-icon">&#128196;</span><h3>File Uploads &amp; Documents</h3><p>Upload PDFs, Word documents, text files, images, and code files. Claude reads and analyzes them in full. The context window is massive &mdash; 200,000 tokens, which is roughly 500 pages of text in one conversation.</p></div>
+    <div class="crd"><span class="tag tag-2">Research</span><span class="crd-icon">&#128218;</span><h3>Long Document Analysis</h3><p>Paste an entire research paper, legal contract, or book chapter and ask Claude to summarize it, find key points, or compare it to another document. This is where Claude genuinely beats ChatGPT &mdash; depth of understanding at scale.</p></div>
+    <div class="crd"><span class="tag tag-4">Developers</span><span class="crd-icon">&#128187;</span><h3>Coding &amp; Debugging</h3><p>Claude writes cleaner, better-documented code than most AIs. It explains what each part does. It debugs errors thoughtfully, not just throwing fixes. Ask it to build an app or fix a bug and it walks you through every decision.</p></div>
+    <div class="crd"><span class="tag tag-3">Free Tier</span><span class="crd-icon">&#129516;</span><h3>Claude Sonnet (Free)</h3><p>Claude's free tier (Sonnet model) is genuinely excellent. For writing, analysis, and reasoning, it competes with paid ChatGPT. Claude Pro (&#8377;1,650/month) unlocks Claude Opus &mdash; arguably the smartest AI available for complex reasoning tasks.</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>A student in our last batch</strong> used Claude to analyze 40 pages of competitor research in under 10 minutes. She then asked Claude to find gaps in the market and write a business proposal around them. The entire thing that would have taken a week took one afternoon. That's what mastering the right tool feels like.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Go to <strong>claude.ai</strong> right now and try this:</p>
+    <ul>
+      <li>Create a new <strong>Project</strong> called "My AI Learning"</li>
+      <li>Upload a PDF you have (a resume, a report, anything)</li>
+      <li>Ask Claude: <em>"Summarize the key points of this document and suggest 3 improvements"</em></li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now know Claude's superpower — depth of understanding at scale.</div>
+  <p class="curiosity-hook">Next: The decision matrix — when to reach for ChatGPT vs Claude.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: When to Use What &rarr;</button></div>
+</div>
+
+<!-- S3: Comparison -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127919; Halfway there! This section will save you hours of wasted effort.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>ChatGPT vs Claude &mdash;<br><span class="gr">When to Use What</span></h2>
+    <p>Stop using the same tool for everything. The right tool for the right task is where professionals beat beginners every time.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Task</th><th>&#129302; ChatGPT</th><th>&#129302; Claude</th><th>Winner</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Casual writing, emails, posts</strong></td><td>&#9989; Excellent, fast, natural</td><td>&#9989; Also great, slightly more formal</td><td style="color:var(--c1)">ChatGPT (faster feel)</td></tr>
+        <tr><td><strong>Long-form research reports</strong></td><td>&#9888; Good, but loses context in long docs</td><td>&#9989; Outstanding, 200K context</td><td style="color:var(--brand)">Claude (by far)</td></tr>
+        <tr><td><strong>Coding &amp; debugging</strong></td><td>&#9989; Very good, vast code knowledge</td><td>&#9989; Excellent, cleaner explanations</td><td style="color:var(--c4)">Tie (Claude for explanation, GPT for speed)</td></tr>
+        <tr><td><strong>Creative writing &amp; storytelling</strong></td><td>&#9989; More imaginative, playful</td><td>&#9888; Good but more conservative</td><td style="color:var(--c1)">ChatGPT (more creative freedom)</td></tr>
+        <tr><td><strong>Factual accuracy &amp; citations</strong></td><td>&#9888; Can hallucinate, use with caution</td><td>&#9989; More honest, admits uncertainty</td><td style="color:var(--brand)">Claude (safer for facts)</td></tr>
+        <tr><td><strong>Image generation</strong></td><td>&#9989; DALL-E 3 built-in (paid)</td><td>&#10060; Cannot generate images</td><td style="color:var(--c1)">ChatGPT (only option)</td></tr>
+        <tr><td><strong>Analyzing uploaded documents</strong></td><td>&#9888; Limited to shorter documents</td><td>&#9989; 200K tokens — full books</td><td style="color:var(--brand)">Claude (clear winner)</td></tr>
+        <tr><td><strong>Web search &amp; real-time info</strong></td><td>&#9989; Built-in web browsing</td><td>&#9888; Limited web search</td><td style="color:var(--c1)">ChatGPT</td></tr>
+        <tr><td><strong>Custom assistants &amp; GPTs</strong></td><td>&#9989; GPT Store with 1000s of tools</td><td>&#9888; Projects only, no public GPTs</td><td style="color:var(--c1)">ChatGPT</td></tr>
+        <tr><td><strong>Business proposal writing</strong></td><td>&#9888; Good first draft</td><td>&#9989; Superior structure &amp; depth</td><td style="color:var(--brand)">Claude</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Pro Strategy: Use Both</h4><p>Professionals don't pick one. They use <strong>ChatGPT for brainstorming, image creation, and quick tasks</strong>, then switch to <strong>Claude for deep analysis, long documents, and writing that needs to be accurate.</strong> Think of them as two specialists — a creative director and a research analyst. Both on your team.</p></div></div>
+
+  <div class="identity-shift">You're no longer "using AI" — you're deploying the right AI for the right job. That's how professionals think.</div>
+
+  <p class="curiosity-hook">Next: Put this to the test. Three real tasks, you decide which tool wins.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Interactive Challenge &rarr;</button></div>
+</div>
+
+<!-- S4: Interactive Challenge -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#9889; 65% done. This is the most interactive section — engage fully.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive <span class="gr">Tool Challenge</span></h2>
+    <p>Three real-world tasks. You decide: ChatGPT, Claude, or Both? Click your answer, then see the expert recommendation.</p>
+  </div>
+
+  <div class="challenge-box">
+    <div class="challenge-task">
+      <h4>&#128196; Task 1: You need to analyze a 50-page client contract and highlight the risky clauses.</h4>
+      <div class="tool-choice">
+        <button class="tool-btn" onclick="selectTool(this,'task1','chatgpt')">&#129302; ChatGPT</button>
+        <button class="tool-btn" onclick="selectTool(this,'task1','claude')">&#129302; Claude</button>
+        <button class="tool-btn" onclick="selectTool(this,'task1','both')">&#128101; Use Both</button>
+      </div>
+      <div class="tool-reveal" id="task1-reveal">
+        <strong>&#9989; Best Choice: Claude</strong><br>
+        A 50-page document requires Claude's 200K context window. ChatGPT would struggle to process the full document at once and might miss critical clauses. Upload the PDF to Claude, then ask: <em>"Analyze this contract. Identify any risky clauses related to payment, liability, or termination and explain why each is a concern."</em>
+      </div>
+    </div>
+
+    <div class="challenge-task">
+      <h4>&#127912; Task 2: Create a social media post about your bakery in Kotkapura with a matching image.</h4>
+      <div class="tool-choice">
+        <button class="tool-btn" onclick="selectTool(this,'task2','chatgpt')">&#129302; ChatGPT</button>
+        <button class="tool-btn" onclick="selectTool(this,'task2','claude')">&#129302; Claude</button>
+        <button class="tool-btn" onclick="selectTool(this,'task2','both')">&#128101; Use Both</button>
+      </div>
+      <div class="tool-reveal" id="task2-reveal">
+        <strong>&#9989; Best Choice: ChatGPT</strong><br>
+        ChatGPT can write the post AND generate the image in one conversation using DALL-E. Try: <em>"Write a warm, festive Instagram post for my bakery in Kotkapura. Then create an image of golden pastries with warm lighting, Instagram-ready aesthetic."</em> Claude cannot generate images, so for visual content, ChatGPT wins.
+      </div>
+    </div>
+
+    <div class="challenge-task">
+      <h4>&#128203; Task 3: Write a 2,000-word thought-leadership article on "AI's impact on Punjab's agriculture sector."</h4>
+      <div class="tool-choice">
+        <button class="tool-btn" onclick="selectTool(this,'task3','chatgpt')">&#129302; ChatGPT</button>
+        <button class="tool-btn" onclick="selectTool(this,'task3','claude')">&#129302; Claude</button>
+        <button class="tool-btn" onclick="selectTool(this,'task3','both')">&#128101; Use Both</button>
+      </div>
+      <div class="tool-reveal" id="task3-reveal">
+        <strong>&#9989; Best Choice: Both (strategically)</strong><br>
+        Use <strong>ChatGPT with web browsing</strong> to gather current data and statistics about AI in agriculture. Then switch to <strong>Claude</strong> to write the full article using those facts — Claude's long-form writing is more structured, consistent, and accurate. Paste the research into Claude and say: <em>"Using these facts, write a 2,000-word thought leadership article. Make it insightful and credible."</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Pattern Recognition: The Expert Mental Model</h4><p>Ask yourself these two questions before choosing:<br><strong>1. Does this need images or real-time web info?</strong> &rarr; ChatGPT<br><strong>2. Does this need deep reading, long context, or nuanced accuracy?</strong> &rarr; Claude<br>If neither is clear, start with Claude for quality, ChatGPT for speed.</p></div></div>
+
+  <div class="micro-win">You can now make smarter tool decisions than most working professionals.</div>
+  <p class="curiosity-hook">Next: Test everything you've learned. 8 questions await.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: Quiz -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost done! 8 questions to test your mastery.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Quiz: <span class="gr">ChatGPT vs Claude</span></h2>
+    <p>8 questions. Immediate feedback on each. This isn't a test — it's reinforcement.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Knowledge reinforced is knowledge retained.</div>
+  <p class="curiosity-hook">One more section — your homework and next steps.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Finish: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: Wrap-Up -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Wrap-Up &amp; <span class="gr">Homework</span></h2>
+    <p>Session 5 complete. Here's what you mastered and what to do before Session 6.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127942;</div><div class="call-body"><h4>What You Mastered Today</h4><p>
+    &#9989; ChatGPT's 6 platform features: GPTs, Memory, Web Browsing, Custom Instructions, Image Gen, Data Analysis<br>
+    &#9989; Claude's 6 superpowers: Projects, Artifacts, File Uploads, Long Context, Coding, Accuracy<br>
+    &#9989; The comparison matrix: 10 task types, which tool wins each<br>
+    &#9989; The expert mental model: when to use each and when to combine
+  </p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">&#128218; Your Homework — Due Before Session 6</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">&#9654;&#65039;</span>
+      <h3>5-Task Comparison Experiment</h3>
+      <p>Pick 5 real tasks from your life or work. Do each task on BOTH ChatGPT and Claude. Note: Which response was better? Why? What surprised you?</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">&#128211;</span>
+      <h3>Suggested Tasks to Compare</h3>
+      <ul style="color:var(--t2);font-size:.88rem;padding-left:1.2rem;margin-top:.5rem">
+        <li>Write a professional bio about yourself</li>
+        <li>Explain a concept from your field simply</li>
+        <li>Create a 7-day social media plan</li>
+        <li>Draft a follow-up email after a meeting</li>
+        <li>Summarize a long article you upload</li>
+      </ul>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">&#128203;</span>
+      <h3>Reflection Template</h3>
+      <p>Create a table: Task | ChatGPT Output | Claude Output | My Preference | Why. Submit a screenshot in the WhatsApp group. Your insights help the whole class learn.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Before Session 6 — Get Ready</h4>
+    <p>Session 6 is about <strong>AI for Professional Writing</strong>. Come prepared with:</p>
+    <ul>
+      <li>Your current resume (any format)</li>
+      <li>An example of a business email you've written</li>
+      <li>One professional writing challenge you face (emails, proposals, etc.)</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">You now know how to deploy AI like a professional. The right tool. The right task. The right result.</div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px">Contact TARAhut AI Labs</a>
+    <button class="btn btn-ghost" onclick="go('s1')">&#128260; Review Session</button>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Week 2, Session 5 &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// PARTICLES
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV & SECTIONS
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start, keep going`:pctDone<=50?`${pctDone}% — You're building real knowledge`:pctDone<=75?`${pctDone}% — Most people quit by now. You didn't.`:pctDone<100?`${pctDone}% — Almost there. Finish strong.`:`100% — Session 5 Complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// CHALLENGE
+function selectTool(btn, taskId, choice){
+  const parent=btn.closest('.challenge-task');
+  parent.querySelectorAll('.tool-btn').forEach(b=>{b.classList.remove('selected-gpt','selected-claude')});
+  if(choice==='chatgpt')btn.classList.add('selected-gpt');
+  else if(choice==='claude')btn.classList.add('selected-claude');
+  else{btn.classList.add('selected-gpt')}
+  const reveal=document.getElementById(taskId+'-reveal');
+  reveal.classList.add('show');
+}
+
+// QUIZ
+const qData=[
+  {q:"What is the primary advantage of Claude's 200K context window?",o:["It makes Claude free to use","It allows processing of very long documents in full","It speeds up image generation","It gives Claude web browsing ability"],a:1,e:"Claude's 200K context window means it can read and analyze up to ~500 pages of text in a single conversation — far more than ChatGPT. This is its biggest advantage for document analysis."},
+  {q:"Which ChatGPT feature lets you permanently set your preferences like language and profession?",o:["Memory","GPT Store","Custom Instructions","Web Browsing"],a:2,e:"Custom Instructions (Settings → Personalization) lets you set permanent preferences that apply to every conversation — like your language, profession, or preferred response style."},
+  {q:"What are 'Artifacts' in Claude?",o:["Uploaded files","A separate preview panel for Claude's created content","Error messages","Saved chat history"],a:1,e:"Artifacts are Claude's unique feature — when it creates something (code, a document, an outline), it appears in a separate panel you can preview and iterate on cleanly."},
+  {q:"For which task would you clearly choose ChatGPT over Claude?",o:["Analyzing a 100-page legal contract","Writing a business proposal","Generating a product image","Summarizing a research paper"],a:2,e:"ChatGPT has DALL-E 3 image generation built in. Claude cannot generate images at all. For any visual content creation, ChatGPT is the only choice between these two."},
+  {q:"What is the GPT Store?",o:["A place to buy ChatGPT subscriptions","A marketplace of custom-built AI assistants for specific tasks","Where Claude stores your Projects","A database of AI-generated images"],a:1,e:"The GPT Store is OpenAI's marketplace with thousands of custom AI assistants (GPTs) built for specific tasks — resume writing, legal help, cooking, coding, and more."},
+  {q:"Which tool is described as more reliable for factual accuracy and admitting uncertainty?",o:["ChatGPT","Claude","Both are equal","Neither — both hallucinate equally"],a:1,e:"Claude is built by Anthropic with a strong focus on safety and honesty. It's more likely to say 'I'm not sure' rather than confidently giving wrong answers. ChatGPT can hallucinate more confidently."},
+  {q:"What is Claude's 'Projects' feature?",o:["A code compiler","Dedicated workspaces that maintain context across multiple conversations","Image generation tool","A web browsing feature"],a:1,e:"Claude Projects are persistent workspaces for specific tasks. You can add files, set instructions, and Claude remembers context across all conversations within that project — ideal for ongoing client work."},
+  {q:"What is the expert strategy for writing a long research article?",o:["Use only Claude for everything","Use only ChatGPT for everything","Use ChatGPT for real-time research facts, then Claude to write the article","Ask both and merge the outputs manually"],a:2,e:"The pro strategy: ChatGPT with web browsing gathers current data and statistics, then Claude uses those facts to write a well-structured, accurate long-form article. Each tool does what it does best."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Outstanding!';tierColor='var(--brand)';msg='You truly understand both tools. You can now deploy them professionally.'}
+    else if(pct>=50){tier='Solid Foundation!';tierColor='var(--c1)';msg='Good grasp of the concepts. Review the comparison table and try more real tasks.'}
+    else{tier="Keep Practicing!";tierColor='var(--c4)';msg='Revisit sections 1-3 and run the actual tools side-by-side. Hands-on beats reading every time.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

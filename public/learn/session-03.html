@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3: Prompt Engineering Basics — AI Tools Mastery · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+/* VS Box */
+.vs-box{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:2.5rem 0;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.vs-side{padding:2rem;background:var(--bg2)}
+.vs-side h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.vs-side .prompt-text{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--t2);background:rgba(255,255,255,.02);border:1px dashed var(--bd);padding:1rem;border-radius:var(--rs);line-height:1.6}
+.vs-side .result-text{font-size:.87rem;color:var(--t2);margin-top:.75rem;line-height:1.65}
+.vs-mid{display:flex;align-items:center;justify-content:center;padding:1rem;background:var(--bg);font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--t3);writing-mode:vertical-rl;letter-spacing:3px}
+
+/* RCTF Framework */
+.rctf{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin:2rem 0}
+.rctf-part{padding:1.75rem;border-radius:var(--r);position:relative;overflow:hidden}
+.rctf-r{background:rgba(0,240,255,.04);border:1.5px solid rgba(0,240,255,.2)}
+.rctf-c{background:rgba(168,85,247,.04);border:1.5px solid rgba(168,85,247,.2)}
+.rctf-t{background:rgba(5,150,105,.04);border:1.5px solid rgba(5,150,105,.2)}
+.rctf-f{background:rgba(251,191,36,.04);border:1.5px solid rgba(251,191,36,.2)}
+.rctf-letter{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;opacity:.15;position:absolute;top:.5rem;right:1rem}
+.rctf-r .rctf-letter{color:var(--c1)}
+.rctf-c .rctf-letter{color:var(--c2)}
+.rctf-t .rctf-letter{color:var(--brand)}
+.rctf-f .rctf-letter{color:var(--c4)}
+.rctf-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.5rem}
+.rctf-r .rctf-title{color:var(--c1)}
+.rctf-c .rctf-title{color:var(--c2)}
+.rctf-t .rctf-title{color:var(--brand)}
+.rctf-f .rctf-title{color:var(--c4)}
+.rctf-desc{color:var(--t2);font-size:.87rem;margin-bottom:.75rem}
+.rctf-eg{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3);font-style:italic}
+
+/* Example prompts */
+.prompt-examples{display:flex;flex-direction:column;gap:.75rem;margin:1.5rem 0}
+.pe-item{padding:1rem 1.25rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s}
+.pe-item:hover{border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.03)}
+.pe-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--brand);margin-bottom:.4rem;letter-spacing:1px;text-transform:uppercase}
+.pe-text{font-size:.88rem;color:var(--t2);font-family:'JetBrains Mono',monospace;line-height:1.55}
+.pe-copy{font-size:.72rem;color:var(--t3);margin-top:.4rem}
+
+/* Mistakes list */
+.mistake-list{display:flex;flex-direction:column;gap:.9rem;margin:2rem 0}
+.mistake-item{padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start;transition:all .3s}
+.mistake-item:hover{border-color:rgba(255,61,139,.2)}
+.mistake-icon{font-size:1.5rem;margin-top:.1rem}
+.mistake-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem;color:var(--c3)}
+.mistake-body .bad{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:rgba(255,61,139,.7);background:rgba(255,61,139,.04);padding:.5rem .75rem;border-radius:var(--rs);margin:.4rem 0;display:block}
+.mistake-body .good{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:rgba(52,211,153,.9);background:rgba(52,211,153,.04);padding:.5rem .75rem;border-radius:var(--rs);margin:.4rem 0;display:block}
+.mistake-body p{color:var(--t2);font-size:.85rem;margin-top:.3rem}
+
+/* Prompt Lab */
+.prompt-lab{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.prompt-lab h3{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:10px}
+.prompt-lab p{color:var(--t2);font-size:.88rem;margin-bottom:1.25rem}
+.plab-in{width:100%;padding:14px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;resize:vertical;min-height:100px;margin-bottom:1rem}
+.plab-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.plab-score-wrap{padding:1.25rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs)}
+.plab-bar{display:flex;gap:8px;margin-bottom:.75rem;flex-wrap:wrap}
+.plab-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;transition:all .35s}
+.plab-badge.hit{background:rgba(52,211,153,.15);color:var(--c5);border:1px solid rgba(52,211,153,.3)}
+.plab-badge.miss{background:rgba(255,255,255,.03);color:var(--t3);border:1px solid var(--bd)}
+.plab-total{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.plab-msg{font-size:.85rem;color:var(--t2);margin-top:.4rem}
+.plab-tips{margin-top:.75rem;padding:.75rem;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1);border-radius:var(--rs);font-size:.82rem;color:var(--c4);display:none}
+
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+@media(max-width:768px){
+  .cgrid,.rctf{grid-template-columns:1fr}
+  .vs-box{grid-template-columns:1fr}.vs-mid{writing-mode:horizontal-tb;padding:.7rem}
+  .sec{padding:2rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 03 &middot; AI Tools Mastery &middot; 2026</div>
+  <h1>Prompt Engineering<br><span class="gr">Basics</span></h1>
+  <div class="hero-brand">AI Tools Mastery Program &mdash; TARAhut AI Labs</div>
+  <p>The difference between bad AI results and excellent AI results is almost always the prompt. Learn the RCTF Framework and score your own prompts live.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#9889; Try Prompt Lab</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What is a Prompt</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>RCTF Framework</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Common Mistakes</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Prompt Lab</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT IS A PROMPT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What is a <span class="gr">Prompt</span>?</h2>
+    <p>A prompt is the instruction you give AI. It's the single most important factor determining the quality of what AI produces for you.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">💬</div><div class="call-body"><h4>The Core Formula</h4><p><strong>Input (Prompt) → AI Model → Output (Result)</strong><br><br>You control the input completely. The AI model is fixed. The output quality is almost entirely determined by how well you construct your prompt. <strong>This session gives you the system that makes every AI interaction 10x better.</strong></p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Why Prompts Matter — A Dramatic Example</h3>
+  <div class="vs-box">
+    <div class="vs-side">
+      <h4><span style="color:var(--c3)">❌</span> Bad Prompt</h4>
+      <div class="prompt-text">Write about marketing.</div>
+      <div class="result-text"><strong style="color:var(--c3)">AI Result:</strong> A generic 3-paragraph overview of marketing theory. Could apply to any business in any country. Completely useless for your specific needs. You'd delete it immediately.</div>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-side">
+      <h4><span style="color:var(--brand)">✅</span> Good Prompt</h4>
+      <div class="prompt-text">Act as a digital marketing expert specializing in small Indian businesses. Write 5 Instagram caption ideas for a clothing shop in Kotkapura, Punjab that sells traditional Punjabi suits. The captions should be in a mix of Hindi and English (Hinglish), friendly in tone, include a call-to-action, and be under 150 characters each.</div>
+      <div class="result-text"><strong style="color:var(--brand)">AI Result:</strong> 5 specific, ready-to-post captions in Hinglish, with CTAs, perfectly sized for Instagram. You could use all 5 today.</div>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔬</div><div class="call-body"><h4>What Changed Between Those Two Prompts?</h4><p>The good prompt told AI: <strong>1)</strong> What role to play (marketing expert for Indian businesses) <strong>2)</strong> Context (small shop in Kotkapura, Punjabi suits) <strong>3)</strong> Exact task (5 Instagram captions) <strong>4)</strong> Format requirements (Hinglish, friendly tone, CTA, under 150 chars). That structure — Role, Context, Task, Format — is exactly what you'll learn in Section 2.</p></div></div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">⚡</span><h3>Speed Multiplier</h3><p>A well-crafted prompt gets you usable output on the first try. A bad prompt requires 5-10 attempts to get something decent. <strong>Better prompts = hours saved every week.</strong></p></div>
+    <div class="crd"><span class="crd-icon">🎯</span><h3>Precision Control</h3><p>Your prompt is the steering wheel. The more specific your direction, the more accurately AI takes you where you want to go. Vague direction → lost in the wrong city.</p></div>
+    <div class="crd"><span class="crd-icon">💰</span><h3>Monetisable Skill</h3><p>Companies pay ₹20K–80K/month for people who consistently get excellent AI outputs. The difference? Systematic prompt engineering. That's what this session teaches.</p></div>
+  </div>
+
+  <div class="micro-win">You now understand something most ChatGPT users will never learn: the quality gap is almost always in the prompt.</div>
+
+  <div class="micro-action">
+    <h4>60-Second Experiment</h4>
+    <p>Open ChatGPT right now. Send just the text: <code>marketing</code><br>Then send: <code>Act as a marketing strategist. Give me 3 Instagram post ideas for a chai shop in Amritsar targeting college students aged 18-22. Format as: Idea | Caption | Hashtags</code><br>Compare the two responses. The difference is 100% the prompt.</p>
+  </div>
+
+  <div class="identity-shift">From this moment forward, you're not just an AI user. You're someone who understands HOW to direct AI. That distinction will matter.</div>
+
+  <p class="curiosity-hook">Next: The 4-part formula that makes every prompt professional. It takes 90 seconds to learn.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: RCTF Framework &rarr;</button></div>
+</div>
+
+<!-- S2: RCTF FRAMEWORK -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The <span class="gr">RCTF Framework</span></h2>
+    <p>Role + Context + Task + Format. Four elements that transform every prompt from average to excellent. Once you learn this, you can't unlearn it.</p>
+  </div>
+
+  <div class="rctf">
+    <div class="rctf-part rctf-r">
+      <div class="rctf-letter">R</div>
+      <div class="rctf-title">ROLE</div>
+      <div class="rctf-desc">Tell AI who to be. What expert, what persona, what specialist? The role sets the knowledge domain and communication style.</div>
+      <div class="rctf-eg">Examples: "Act as a senior tax consultant..." | "You are an expert Instagram marketer..." | "As a Punjabi-speaking school teacher..."</div>
+    </div>
+    <div class="rctf-part rctf-c">
+      <div class="rctf-letter">C</div>
+      <div class="rctf-title">CONTEXT</div>
+      <div class="rctf-desc">Give AI the background it needs. Who are you? What's the situation? Who is the audience? What platform is this for?</div>
+      <div class="rctf-eg">Examples: "...for a clothing shop in Kotkapura with 500 Instagram followers..." | "...my audience is farmers in Punjab aged 35-55..."</div>
+    </div>
+    <div class="rctf-part rctf-t">
+      <div class="rctf-letter">T</div>
+      <div class="rctf-title">TASK</div>
+      <div class="rctf-desc">State exactly what you want done. Be specific. Include the number of items, the goal, and any constraints.</div>
+      <div class="rctf-eg">Examples: "...write 5 WhatsApp broadcast messages..." | "...create a 7-day content calendar..." | "...list 10 product descriptions..."</div>
+    </div>
+    <div class="rctf-part rctf-f">
+      <div class="rctf-letter">F</div>
+      <div class="rctf-title">FORMAT</div>
+      <div class="rctf-desc">Specify how you want the output structured. Length, language, tone, bullet points, table, numbered list, JSON, etc.</div>
+      <div class="rctf-eg">Examples: "...in bullet points, under 100 words each..." | "...as a table with columns: Day | Topic | Caption..." | "...in Hindi, formal tone..."</div>
+    </div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🏆</div><div class="call-body"><h4>The Full RCTF Template</h4><p><code>Act as [ROLE]. [CONTEXT about your situation]. [Specific TASK]. Format the output as [FORMAT specifications].</code><br><br>You don't always need all four — but the more you include, the better the result. Start with all four until it becomes second nature.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">5 RCTF Examples — Click Each to Copy</h3>
+  <div class="prompt-examples">
+    <div class="pe-item" onclick="copyPE(this)">
+      <div class="pe-label">Example 1 — Instagram Content</div>
+      <div class="pe-text">Act as a social media expert specialising in small Indian retail businesses. I run a sweet shop in Faridkot, Punjab that sells traditional Punjabi mithai — especially kaju katli and gajrela. Write 3 Instagram posts for Diwali season targeting local families. Each post should be in Hinglish, under 200 characters, include 2-3 relevant hashtags, and end with a call-to-action like "Order now" or "Visit us today".</div>
+      <div class="pe-copy">📋 Click to copy</div>
+    </div>
+    <div class="pe-item" onclick="copyPE(this)">
+      <div class="pe-label">Example 2 — Email Writing</div>
+      <div class="pe-text">Act as a professional business communication expert. I am a 22-year-old freelancer from Kotkapura applying for a content writing contract with a startup in Bangalore. Write a cold email introducing my AI-assisted content writing services. The email should be professional but warm, under 200 words, mention my ability to deliver 3x faster with AI tools, and include a clear call-to-action to schedule a 15-minute call.</div>
+      <div class="pe-copy">📋 Click to copy</div>
+    </div>
+    <div class="pe-item" onclick="copyPE(this)">
+      <div class="pe-label">Example 3 — Study Help</div>
+      <div class="pe-text">Act as an experienced teacher explaining concepts to a 10th-grade student in India. I am studying for my economics exam and struggling to understand GDP and inflation. Explain both concepts using everyday examples from Indian life — like buying dal, going to a mela, or watching cricket. Use simple language, avoid technical jargon, and end with 5 multiple-choice practice questions.</div>
+      <div class="pe-copy">📋 Click to copy</div>
+    </div>
+    <div class="pe-item" onclick="copyPE(this)">
+      <div class="pe-label">Example 4 — Business Analysis</div>
+      <div class="pe-text">Act as a business consultant with expertise in Indian SMEs. I am thinking of opening a tiffin delivery service in my town (population 80,000, Tier-3 city in Punjab). Analyse this business idea for me. Include: potential customer segments, estimated startup costs, monthly revenue potential, top 3 risks, and 5 ways to find first customers. Format as a structured report with clear headings.</div>
+      <div class="pe-copy">📋 Click to copy</div>
+    </div>
+    <div class="pe-item" onclick="copyPE(this)">
+      <div class="pe-label">Example 5 — Resume / CV</div>
+      <div class="pe-text">Act as a professional HR consultant and resume expert. I am a fresh graduate from Punjab with a B.Com degree and 6 months of AI tools training from TARAhut AI Labs. I want to apply for digital marketing jobs in Chandigarh. Rewrite my resume summary in 3-4 sentences that highlight my AI skills, creativity, and eagerness to learn. Make it confident, modern, and ATS-friendly.</div>
+      <div class="pe-copy">📋 Click to copy</div>
+    </div>
+  </div>
+
+  <div class="micro-win">5 professional-level prompts in your toolkit. These alone are worth the session.</div>
+
+  <div class="micro-action">
+    <h4>Your Turn — Write an RCTF Prompt</h4>
+    <p>Think of something you genuinely need help with right now — at work, in your studies, or for a personal project. Use the RCTF template to write a prompt. Open ChatGPT, paste it, and compare the result to what you'd normally write.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The 4 mistakes almost everyone makes — and exactly how to fix them.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Common Mistakes &rarr;</button></div>
+</div>
+
+<!-- S3: COMMON MISTAKES -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% done! Knowing what NOT to do is just as important as knowing what to do.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Common Prompting <span class="gr">Mistakes</span></h2>
+    <p>Most people make the same 4 errors with every single AI prompt they write. Here they are — with before/after fixes you can apply immediately.</p>
+  </div>
+
+  <div class="mistake-list">
+    <div class="mistake-item">
+      <div class="mistake-icon">🌫️</div>
+      <div class="mistake-body">
+        <h4>Mistake 1: Too Vague</h4>
+        <span class="bad">❌ "Write something about fitness."</span>
+        <span class="good">✅ "Act as a certified fitness trainer. Write a 7-day beginner workout plan for a 25-year-old woman in India who works from home and has 30 minutes per day. Include exercises, sets, and reps. Format as a weekly table."</span>
+        <p>Vague prompts force AI to guess what you want. AI always picks the safest, most generic interpretation — which is rarely what you actually needed.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-icon">🧩</div>
+      <div class="mistake-body">
+        <h4>Mistake 2: No Context</h4>
+        <span class="bad">❌ "Help me market my business."</span>
+        <span class="good">✅ "I sell handmade clay diyas from my home in Patiala. My customers are middle-class families aged 30-50 who celebrate traditional festivals. I have no budget for paid ads. Suggest 5 free marketing strategies specifically for this situation."</span>
+        <p>Without context, AI produces advice that could apply to anyone — which means it applies to no one effectively. Context is the difference between generic and genuinely useful.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-icon">📋</div>
+      <div class="mistake-body">
+        <h4>Mistake 3: No Format Specified</h4>
+        <span class="bad">❌ "Tell me about investing in stocks."</span>
+        <span class="good">✅ "Explain stock market investing for an absolute beginner in India. Give me: 1) A 5-point 'before you start' checklist, 2) A comparison of stocks vs mutual funds in a table, and 3) The 3 biggest mistakes beginners make. Use simple language, under 400 words total."</span>
+        <p>When you don't specify format, AI writes flowing paragraphs — hard to scan, hard to use. Always state: bullet points, numbered list, table, headings, word count, language, or whatever structure you need.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-icon">🎪</div>
+      <div class="mistake-body">
+        <h4>Mistake 4: Asking for Too Much at Once</h4>
+        <span class="bad">❌ "Write a full business plan, marketing strategy, financial projections, and a pitch deck for my new restaurant."</span>
+        <span class="good">✅ Start with: "Write a one-page executive summary for a new restaurant in Ludhiana targeting working professionals. Include concept, target market, and unique selling point." Then ask for each section separately.</span>
+        <p>When you ask for everything at once, AI produces shallow coverage across all areas. Break complex requests into focused stages. Quality deepens dramatically with focused prompts.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">💡</div><div class="call-body"><h4>The Golden Rule: One Prompt, One Clear Goal</h4><p>The most effective prompts are focused. They have one role, one clear context, one specific task, and one defined format. If your prompt is trying to accomplish 5 things at once, break it into 5 prompts. <strong>Each conversation can be a dialogue — use follow-up messages to go deeper.</strong></p></div></div>
+
+  <div class="micro-win">You can now spot bad prompts instantly. That's a genuine professional skill.</div>
+
+  <div class="identity-shift">You've moved from being someone who "uses AI" to someone who "engineers prompts." That's a title change that carries weight.</div>
+
+  <p class="curiosity-hook">Next: The Prompt Lab — type a prompt, get an instant score. See exactly how your prompts rate.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Interactive Prompt Lab &rarr;</button></div>
+</div>
+
+<!-- S4: INTERACTIVE PROMPT LAB -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! The most interactive part of this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive <span class="gr">Prompt Lab</span></h2>
+    <p>Type any prompt below and get an instant RCTF score. The checker analyses whether your prompt includes Role, Context, Task, and Format elements.</p>
+  </div>
+
+  <div class="prompt-lab">
+    <h3>🧪 Prompt Scorer</h3>
+    <p>Write any AI prompt and see your score out of 4. The system checks for RCTF elements in real time. Aim for 4/4 before copying to ChatGPT.</p>
+    <textarea class="plab-in" id="plabInput" placeholder="Type your prompt here... e.g. 'Act as a marketing expert. I run a shoe shop in Amritsar. Write 3 Facebook ads targeting men aged 20-35. Format as: Headline | Body | CTA'" oninput="scorePrompt()"></textarea>
+    <div class="plab-score-wrap">
+      <div class="plab-bar">
+        <div class="plab-badge miss" id="badge-r">R — Role</div>
+        <div class="plab-badge miss" id="badge-c">C — Context</div>
+        <div class="plab-badge miss" id="badge-t">T — Task</div>
+        <div class="plab-badge miss" id="badge-f">F — Format</div>
+      </div>
+      <div class="plab-total" id="plabScore">Score: 0/4 — Start typing above</div>
+      <div class="plab-msg" id="plabMsg"></div>
+      <div class="plab-tips" id="plabTips"></div>
+    </div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🔬</div><div class="call-body"><h4>How the Scorer Works</h4><p>The scorer looks for linguistic markers associated with each RCTF element:<br><strong>Role:</strong> Phrases like "act as", "you are", "as a", "pretend to be", "play the role"<br><strong>Context:</strong> Specific details — business names, locations, audience descriptions, numbers, situations<br><strong>Task:</strong> Action verbs — write, create, list, explain, analyse, suggest, design<br><strong>Format:</strong> Format words — bullet points, table, numbered list, format, structure, under X words, in [language]</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Practice Prompts — Improve Each One to 4/4</h3>
+  <div class="prompt-examples">
+    <div class="pe-item" onclick="loadPE(this,'Write about healthy eating.')">
+      <div class="pe-label">Practice A — Score this: 1/4</div>
+      <div class="pe-text">Write about healthy eating.</div>
+      <div class="pe-copy">Click to load in the scorer above → then improve it to 4/4</div>
+    </div>
+    <div class="pe-item" onclick="loadPE(this,'I have a bakery. Give me marketing ideas for students.')">
+      <div class="pe-label">Practice B — Score this: 2/4</div>
+      <div class="pe-text">I have a bakery. Give me marketing ideas for students.</div>
+      <div class="pe-copy">Click to load → improve it by adding Role and Format</div>
+    </div>
+    <div class="pe-item" onclick="loadPE(this,'Act as a career counsellor. Help me choose between engineering and arts for my future.')">
+      <div class="pe-label">Practice C — Score this: 2-3/4</div>
+      <div class="pe-text">Act as a career counsellor. Help me choose between engineering and arts for my future.</div>
+      <div class="pe-copy">Click to load → what Context and Format details could you add?</div>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Your Goal: Write Three 4/4 Prompts</h4>
+    <p>Use the Prompt Lab above to write 3 prompts that all score 4/4. Pick topics that are genuinely useful to you. Once they score 4/4, copy them into ChatGPT and use the results. This is the skill in action.</p>
+  </div>
+
+  <div class="micro-win">You have a live tool to evaluate and improve your prompts. Most prompt engineers would love this feedback loop.</div>
+
+  <p class="curiosity-hook">Next: 8 questions to test your prompt engineering knowledge.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time on prompt engineering.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Prompt Skills</span></h2>
+    <p>8 questions on prompts, RCTF, and common mistakes. You've got this.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Quiz done. Your prompt knowledge is now sharper than when you started.</div>
+  <p class="curiosity-hook">Next: Homework and a preview of Session 4 — advanced techniques.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Prompt Lab</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 3 <span class="gr">Complete!</span></h2>
+    <p>Prompt engineering basics are yours. Here's your homework and what's coming in Session 4.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Learned Today</h4><p>✅ What a prompt is and why it's the single most important AI skill<br>✅ The Input → AI → Output model and how you control the input<br>✅ The RCTF Framework: Role + Context + Task + Format<br>✅ 5 complete example RCTF prompts you can use immediately<br>✅ The 4 most common prompting mistakes — and how to fix them<br>✅ Hands-on experience with the live Prompt Scorer</p></div></div>
+
+  <div class="micro-action">
+    <h4>Your Homework Before Session 4</h4>
+    <ul>
+      <li>Write <strong>20 prompts using the RCTF framework</strong> — across different topics (marketing, education, business, writing, personal)</li>
+      <li>Score each prompt in the Prompt Lab — <strong>only keep the ones that score 4/4</strong></li>
+      <li>Save your <strong>best 5 prompts</strong> in a document — this is the start of your Prompt Library</li>
+      <li>Try the same prompt on ChatGPT and Claude — note which gives a better result for that topic</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Session 4 — Advanced Prompting + Prompt Library</h4><p>Session 4 takes you deeper: <strong>Chain-of-Thought prompting</strong> (make AI think step by step), <strong>Few-Shot prompting</strong> (teach AI with examples), <strong>System prompts and personas</strong> (build specialised AI assistants), and how to build your own <strong>Prompt Library</strong> — the most valuable AI asset you'll own.</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=Completed%20Session%203%20-%20Prompt%20Engineering%20Basics!%20Ready%20for%20Session%204." target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">Prompt engineering is the new literacy. You have it. Most people around you don't. Use it well.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Session 03: Prompt Engineering Basics &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Building foundations`:pctDone<=50?`${pctDone}% — RCTF unlocked`:pctDone<=75?`${pctDone}% — Prompt Lab awaits`:pctDone<100?`${pctDone}% — Almost there!`:`100% — Prompt engineer!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === COPY PROMPT EXAMPLES ===
+function copyPE(el){
+  const text=el.querySelector('.pe-text').textContent;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const orig=el.querySelector('.pe-copy').textContent;
+  el.querySelector('.pe-copy').textContent='✅ Copied! Paste into ChatGPT, Claude, or Gemini →';
+  setTimeout(()=>el.querySelector('.pe-copy').textContent=orig,3000);
+}
+function loadPE(el,text){
+  document.getElementById('plabInput').value=text;
+  scorePrompt();
+  go('s4');
+  setTimeout(()=>document.getElementById('plabInput').scrollIntoView({behavior:'smooth',block:'center'}),400);
+}
+
+// === PROMPT SCORER ===
+function scorePrompt(){
+  const txt=document.getElementById('plabInput').value.toLowerCase();
+  if(!txt.trim()){
+    resetBadges();
+    document.getElementById('plabScore').textContent='Score: 0/4 — Start typing above';
+    document.getElementById('plabMsg').textContent='';
+    document.getElementById('plabTips').style.display='none';
+    return;
+  }
+  const roleKw=['act as','you are','as a','pretend to be','play the role','imagine you are','behave as','you\'re a','you\'re an','you are a','you are an','as an expert','as a professional'];
+  const ctxKw=['i run','i have','i am','my business','my shop','my audience','my customer','located in','in india','in punjab','in delhi','in mumbai','city','town','targeting','aged','age','years old','background','situation','currently','students','farmers','women','men','small','large','people who'];
+  const taskKw=['write','create','list','explain','analyse','analyze','generate','suggest','give me','provide','make','design','outline','summarise','summarize','draft','help me','describe','compare','identify','build'];
+  const fmtKw=['bullet','numbered','table','format','structure','under','words','characters','points','columns','heading','in hindi','in english','in punjabi','in hinglish','tone','formal','friendly','professional','short','brief','concise','per item','each','sections'];
+
+  const hitRole=roleKw.some(k=>txt.includes(k));
+  const hitCtx=ctxKw.some(k=>txt.includes(k));
+  const hitTask=taskKw.some(k=>txt.includes(k));
+  const hitFmt=fmtKw.some(k=>txt.includes(k));
+
+  setBadge('badge-r',hitRole,'R — Role ✓','R — Role');
+  setBadge('badge-c',hitCtx,'C — Context ✓','C — Context');
+  setBadge('badge-t',hitTask,'T — Task ✓','T — Task');
+  setBadge('badge-f',hitFmt,'F — Format ✓','F — Format');
+
+  const score=[hitRole,hitCtx,hitTask,hitFmt].filter(Boolean).length;
+  const scoreEl=document.getElementById('plabScore');
+  const msgEl=document.getElementById('plabMsg');
+  const tipsEl=document.getElementById('plabTips');
+
+  scoreEl.textContent=`Score: ${score}/4`;
+
+  const msgs=['🔴 Very basic prompt — add Role, Context, Task, and Format','🟠 Getting there — keep adding RCTF elements','🟡 Good start — add the missing element(s)','🟡 Almost perfect — check the last missing element','🟢 Perfect RCTF prompt! Ready to copy into ChatGPT.'];
+  const tips=[
+    'Try starting with "Act as a [expert type]." to add Role.',
+    !hitCtx?'Add context: Who are you? What is your business? Who is your audience?':'',
+    !hitTask?'Add a clear task: "Write X", "List Y", "Create Z"':'',
+    !hitFmt?'Add format: "as bullet points", "in a table", "under 200 words", "in Hindi"':''
+  ].filter(Boolean).join(' | ');
+
+  msgEl.textContent=msgs[score]||'';
+  if(score<4&&tips){tipsEl.textContent='💡 Missing: '+tips;tipsEl.style.display='block';}
+  else{tipsEl.style.display='none';}
+}
+function setBadge(id,hit,hitText,missText){
+  const el=document.getElementById(id);
+  if(hit){el.className='plab-badge hit';el.textContent=hitText;}
+  else{el.className='plab-badge miss';el.textContent=missText;}
+}
+function resetBadges(){
+  ['badge-r','badge-c','badge-t','badge-f'].forEach(id=>setBadge(id,false,'',[{r:'R — Role'},{c:'C — Context'},{t:'T — Task'},{f:'F — Format'}][['badge-r','badge-c','badge-t','badge-f'].indexOf(id)]||''));
+  setBadge('badge-r',false,'R — Role ✓','R — Role');
+  setBadge('badge-c',false,'C — Context ✓','C — Context');
+  setBadge('badge-t',false,'T — Task ✓','T — Task');
+  setBadge('badge-f',false,'F — Format ✓','F — Format');
+}
+
+// === QUIZ ===
+const qData=[
+  {q:"What is a 'prompt' in the context of AI tools?",o:["A type of AI model","The instruction or question you give to an AI","A programming language","The server that runs AI"],a:1,e:"A prompt is the text instruction, question, or task you give to an AI. It's the input that determines the quality of the AI's output. Better prompts = better results."},
+  {q:"In the RCTF Framework, what does the 'R' stand for?",o:["Result","Response","Role","Research"],a:2,e:"R stands for Role — telling AI who to be. 'Act as a marketing expert', 'You are an experienced teacher', 'As a business consultant in India'. The role sets the knowledge domain and communication style."},
+  {q:"Which of these is the BEST example of a well-formatted RCTF prompt?",o:["Tell me about marketing.","Help my business grow.","Act as a social media expert. I sell handmade jewellery in Jaipur targeting tourists. Write 3 Instagram captions. Format as: Caption | Hashtags | Best posting time.","Write Instagram captions for my shop."],a:2,e:"Option C includes all 4 RCTF elements: Role (social media expert), Context (handmade jewellery in Jaipur targeting tourists), Task (write 3 Instagram captions), and Format (Caption | Hashtags | Best posting time)."},
+  {q:"What is the main problem with the prompt 'Write about healthy eating'?",o:["It's too short to be processed","It's too specific for AI to handle","It's too vague — AI can't know your context, audience, or desired format","It contains grammar errors"],a:2,e:"The prompt is too vague. AI has to guess everything: your audience (kids? athletes? diabetics?), format (article? tips? meal plan?), length, tone, and purpose. Vague prompts always produce generic, unusable output."},
+  {q:"When should you break a complex request into multiple separate prompts?",o:["Never — always give AI everything at once","Only when you're using Claude, not ChatGPT","Always — when asking for 5+ different outputs at once","Only for creative tasks"],a:2,e:"When your request involves 5+ different outputs or topics, break it into focused prompts. AI produces much higher quality responses when each prompt has one clear, focused goal. Quality over quantity in a single prompt."},
+  {q:"What element does 'in bullet points, under 200 words, in Hindi' represent in RCTF?",o:["Role","Context","Task","Format"],a:3,e:"Format specifies how the AI should structure and present its output — bullet points vs paragraphs, word count limits, language (Hindi, English, Hinglish), tone, and any specific structure requirements."},
+  {q:"Which of these prompts has the strongest Context element?",o:["Write a marketing plan.","As a marketer, write about social media.","I run a small pharmacy in Kotkapura, Punjab with 200 daily customers, mostly senior citizens aged 50-75. The shop is 5 years old with no social media presence yet.","Help my shop with marketing."],a:2,e:"Option C has the strongest context — it gives specific details: type of business (pharmacy), location (Kotkapura), customer volume (200/day), audience demographics (seniors 50-75), and current situation (no social media). This specificity enables AI to give highly relevant advice."},
+  {q:"What should you do if your prompt scores 2/4 in the RCTF Prompt Scorer?",o:["Accept the score and move on","Submit it to ChatGPT anyway","Identify which two elements are missing (R, C, T, or F) and add them before using the prompt","Start over with a completely different topic"],a:2,e:"If your prompt scores 2/4, identify which two RCTF elements are missing from the score display, and add them to your prompt. The Prompt Scorer shows you exactly which elements need to be added."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Excellent Prompt Engineer!';tierColor='var(--brand)';msg='You have a strong grasp of prompt engineering fundamentals. Session 4 builds directly on this.';}
+    else if(pct>=50){tier='Good Foundation!';tierColor='var(--c1)';msg='Review the RCTF framework and common mistakes sections to strengthen your understanding.';}
+    else{tier='Keep Practising!';tierColor='var(--c4)';msg='Prompt engineering clicks with practice. Re-read the sections and try the Prompt Lab again.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

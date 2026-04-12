@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 13: Build a Website Without Code — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.tl{position:relative;margin:2.5rem 0;padding-left:36px}
+.tl::before{content:'';position:absolute;top:0;left:12px;width:2px;height:100%;background:linear-gradient(180deg,var(--brand),var(--c1),var(--c2),var(--c4))}
+.tl-item{position:relative;margin-bottom:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:default}
+.tl-item:hover{border-color:rgba(0,240,255,.3);transform:translateX(6px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tl-item::before{content:'';position:absolute;left:-30px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.tl-item h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.tl-item p{color:var(--t2);font-size:.88rem}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.prompt-box{background:var(--bg3);border:1px solid rgba(0,240,255,.15);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--c5);position:relative}
+.prompt-box::before{content:'PROMPT';position:absolute;top:-10px;left:16px;background:var(--c1);color:var(--bg);font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:1.5px}
+.prompt-box p{color:var(--c5);line-height:1.8}
+.step-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin:2rem 0}
+.step-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;position:relative;transition:all .3s}
+.step-card:hover{border-color:rgba(5,150,105,.3);transform:translateY(-4px)}
+.step-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.5rem}
+.step-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.step-card p{color:var(--t2);font-size:.85rem}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid,.step-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 4 &middot; Session 13 &middot; AI Tools Mastery</div>
+  <h1>Build a Website<br><span class="gr">Without Code</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>No programming. No developers. No waiting. Just describe what you want — and AI builds it for you. Today, you become a web builder.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Building &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>No-Code Revolution</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Bolt.new Deep Dive</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Portfolio Site</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Business Landing Page</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: NO-CODE REVOLUTION -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The <span class="gr">No-Code Revolution</span></h2>
+    <p>For decades, building a website required years of programming knowledge. That era is over. AI changed everything.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🌐</div>
+    <div class="call-body">
+      <h4>The Old Way vs The New Way</h4>
+      <p><strong>Old Way:</strong> Learn HTML, CSS, JavaScript (2-3 years). Hire a developer (₹30-80K). Wait weeks for revisions. Pay monthly maintenance fees.<br><br>
+      <strong>New Way (2026):</strong> Describe what you want in plain English. AI generates it in 30 seconds. Deploy live in one click. Zero cost for tools.</p>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd">
+      <span class="tag tag-brand">The Shift</span>
+      <span class="crd-icon">🗣️</span>
+      <h3>Natural Language = Code</h3>
+      <p>You describe your website in plain English. AI writes thousands of lines of perfect code in seconds. You customize with more plain English. No technical skills needed.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-1">Speed</span>
+      <span class="crd-icon">⚡</span>
+      <h3>30 Seconds to Live</h3>
+      <p>From blank screen to deployed website in under a minute. A website that used to take a developer 2 weeks now takes you 2 hours — including all the content and design.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-5">Cost</span>
+      <span class="crd-icon">💰</span>
+      <h3>₹0 to Build</h3>
+      <p>Bolt.new's free tier lets you build and deploy real websites at no cost. The same website a local developer would charge ₹15-25K to build — you can do it for free today.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-2">Opportunity</span>
+      <span class="crd-icon">🚀</span>
+      <h3>Freelance Gold Mine</h3>
+      <p>Millions of small businesses in India have no website. They need one. You now know how to build it. Charge ₹10-20K per website. Build one per week. That's your new income stream.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-4">Who Uses It</span>
+      <span class="crd-icon">🏪</span>
+      <h3>Real Businesses, Real Results</h3>
+      <p>Doctors, dhaba owners, coaching centers, boutiques, photographers — any business that wants an online presence. You are now the person who can give it to them.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-3">Tools Available</span>
+      <span class="crd-icon">🛠️</span>
+      <h3>No-Code Ecosystem</h3>
+      <p>Bolt.new (full web apps), Framer (beautiful designs), Webflow (advanced), Carrd (simple landing pages). Today we master Bolt.new — the most powerful of all.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Think about this:</strong> Every business in your city — every sweet shop, clinic, coaching center, salon — needs a website. Most don't have one. After today, you are the person who can build it. In one afternoon. For real money.</p>
+  </div>
+
+  <div class="micro-win">You just understood why no-code is the biggest career opportunity for non-technical people right now.</div>
+
+  <div class="identity-shift">You don't need to know how to code. You need to know how to communicate. That's exactly what you've been training for.</div>
+
+  <p class="curiosity-hook">Next: Let's get inside Bolt.new and see exactly how it works.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Bolt.new Deep Dive &rarr;</button></div>
+</div>
+
+<!-- S2: BOLT.NEW DEEP DIVE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; You're building real skills. Let's get hands-on.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Bolt.new <span class="gr">Deep Dive</span></h2>
+    <p>Bolt.new is an AI-powered browser tool that writes, runs, and deploys real web applications — all from a single text prompt.</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">🔗</div>
+    <div class="call-body">
+      <h4>Open Bolt.new Right Now</h4>
+      <p>Go to <strong>bolt.new</strong> in your browser. Sign in with Google (free account). You'll see a clean interface — a text box at the bottom. That text box is your entire development environment.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Bolt.new Interface — What You're Looking At</h3>
+  <div class="tl">
+    <div class="tl-item">
+      <h4>&#128196; The Prompt Box (Bottom Center)</h4>
+      <p>This is where you type what you want. Be descriptive. Think of it as giving instructions to a brilliant developer who can build anything — but needs you to tell them what to build.</p>
+    </div>
+    <div class="tl-item">
+      <h4>&#128187; The Code Editor (Left Panel)</h4>
+      <p>AI generates the code here. You don't need to touch it. But you can see the files being created in real-time — HTML, CSS, JavaScript, all written automatically.</p>
+    </div>
+    <div class="tl-item">
+      <h4>&#128065; Live Preview (Right Panel)</h4>
+      <p>See your website render instantly on the right side. Every change updates in real-time. What you see is exactly what your visitors will see.</p>
+    </div>
+    <div class="tl-item">
+      <h4>&#9881;&#65039; The Refine Loop</h4>
+      <p>Type more instructions to refine. "Make the header blue." "Add a contact form." "Change the font to something modern." AI updates the website instantly with each message.</p>
+    </div>
+    <div class="tl-item">
+      <h4>&#128640; Deploy in One Click</h4>
+      <p>Click the Share/Deploy button. Bolt.new gives you a live URL ending in .bolt.app that you can share immediately. Your website is now on the internet.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Art of Describing Your Website</h3>
+  <div class="callout call-2">
+    <div class="call-ico">📝</div>
+    <div class="call-body">
+      <h4>Weak Prompt vs Strong Prompt</h4>
+      <p><strong>Weak:</strong> "Make me a website"<br>
+      <strong>Strong:</strong> "Build a professional portfolio website for a graphic designer. Include: a hero section with my name and tagline, a portfolio grid showing 6 projects with hover effects, an about section, a skills section with progress bars, and a contact form. Use a dark theme with green accents. Make it mobile-responsive."<br><br>
+      The more specific you are, the better the result. Describe the <strong>purpose, sections, style, and audience.</strong></p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Try It Right Now</h4>
+    <p>Open bolt.new and type this exact prompt to see the magic happen:</p>
+    <ul>
+      <li><code>"Build a simple landing page for a tutoring service. Include a hero with headline, 3 service cards, and a contact section with phone and WhatsApp button. Dark background, green and white colors."</code></li>
+      <li>Watch it generate the entire website in under 30 seconds.</li>
+      <li>Then type: "Add a testimonials section with 3 student reviews."</li>
+      <li>Watch it update instantly.</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You just built a website. A real, deployable website. Without writing a single line of code.</div>
+
+  <div class="callout call-3">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Pro Tips for Bolt.new</h4>
+      <p>
+      ✅ <strong>Be specific about colors:</strong> "Use #059669 green as the primary color"<br>
+      ✅ <strong>Mention the audience:</strong> "For a medical clinic targeting families in Punjab"<br>
+      ✅ <strong>Request mobile-first:</strong> Always add "Make it fully mobile-responsive"<br>
+      ✅ <strong>Iterate, don't restart:</strong> Keep refining the same project with follow-up messages<br>
+      ✅ <strong>Copy content in:</strong> Paste your actual business name, phone, address directly into the prompt</p>
+    </div>
+  </div>
+
+  <p class="curiosity-hook">Next: Let's build your actual portfolio website step by step.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Build Your Portfolio &rarr;</button></div>
+</div>
+
+<!-- S3: PORTFOLIO SITE -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#9989; Halfway there. Time to build something real.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Building Your <span class="gr">Portfolio Site</span></h2>
+    <p>Step-by-step: Build a professional portfolio that showcases your 3 course projects and positions you for freelance clients.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎯</div>
+    <div class="call-body">
+      <h4>What You're Building Today</h4>
+      <p>A portfolio website that proves you know AI tools. It will include your name, your story, 3 project case studies (logo design, social media kit, video/presentation), the tools you use, and a "hire me" contact section. This is your professional online presence.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Step-by-Step Build Process</h3>
+
+  <div class="step-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Start with the Master Prompt</h4>
+      <p>Open bolt.new and paste the complete initial prompt (see below). This creates the entire structure in one go.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Review the First Output</h4>
+      <p>Look at the preview. Check: Does it look professional? Is the hero clear? Are the sections in the right order? Note what needs changing.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Add Your Real Content</h4>
+      <p>Tell Bolt: "Replace [Name] with [Your Name]. Replace the tagline with: 'AI Tools Specialist | Social Media + Websites + Videos'"</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h4>Add Your 3 Projects</h4>
+      <p>For each project: describe the client, the problem, the AI tool used, and the result. Bolt adds them as case study cards.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <h4>Refine the Design</h4>
+      <p>Adjust colors, fonts, spacing with follow-up prompts. "Make the hero bigger." "Add subtle animations." "Make the cards hover with a green glow."</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">06</div>
+      <h4>Deploy and Share</h4>
+      <p>Click Share/Deploy. Copy the URL. Share it in the class WhatsApp group. You now have a live portfolio on the internet.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Your Master Prompt — Copy and Use This</h3>
+  <div class="prompt-box">
+    <p>Build a professional portfolio website for an AI tools specialist. Include these sections:<br><br>
+    1. HERO: Name "[Your Name]", tagline "I help businesses grow using AI tools", animated background, Call-to-action button "See My Work"<br>
+    2. ABOUT: 2 paragraph story — student who learned AI tools at TARAhut AI Labs, now helping businesses with logos, social media, websites, and videos<br>
+    3. PROJECTS: 3 case study cards with: Project title, the problem, the AI tool used, and the result achieved<br>
+    4. TOOLS: Icon grid showing — ChatGPT, Claude, Canva AI, Ideogram, HeyGen, Gamma, Bolt.new, CapCut<br>
+    5. CONTACT: WhatsApp button, email, and "Available for freelance" badge<br><br>
+    Dark theme. Use #059669 green as primary accent. Professional and modern. Fully mobile-responsive. Add smooth scroll animations.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Follow-Up Prompts to Refine</h3>
+  <div class="tl">
+    <div class="tl-item">
+      <h4>Add Project 1: Logo Design</h4>
+      <p><code>"For Project 1, add: Client was a local restaurant in Kotkapura. Problem: No visual identity. Tool Used: Ideogram AI. Result: Created 4 professional logo options in 10 minutes — client chose one and used it for their sign and menu."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Add Project 2: Social Media Kit</h4>
+      <p><code>"For Project 2: Client was a coaching center. Problem: Inconsistent social media presence. Tool Used: Canva AI + ChatGPT. Result: Created 30-day content calendar + 15 designed posts in 2 hours. Client saw 40% increase in inquiries."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Add Project 3: Website or Video</h4>
+      <p><code>"For Project 3: Client was a freelance photographer. Problem: No online portfolio. Tool Used: Bolt.new. Result: Built a complete portfolio website with gallery, contact form, and pricing page in 45 minutes. Now live and getting bookings."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Polish the Design</h4>
+      <p><code>"Add a testimonials section with 2 short student reviews. Add a floating WhatsApp button fixed to the bottom right corner. Make all section transitions smoother. Add a footer with copyright 2026."</code></p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Build It Live</h4>
+    <p>Open bolt.new now. Paste the master prompt above (with your real name). Build your portfolio in the next 20 minutes. Share the URL in the class group before moving to Section 4.</p>
+  </div>
+
+  <div class="identity-shift">That URL you just created? That's your professional online presence. No developer. No money. Just you and AI.</div>
+
+  <p class="curiosity-hook">Next: Build a real business landing page for a Kotkapura client.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Business Landing Page &rarr;</button></div>
+</div>
+
+<!-- S4: BUSINESS LANDING PAGE -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128170; Almost at the quiz. One more powerful skill to master.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Building a <span class="gr">Business Landing Page</span></h2>
+    <p>Real-world exercise: Build a complete landing page for a local Kotkapura business — contact form, map link, services, and everything.</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🏪</div>
+    <div class="call-body">
+      <h4>The Client Brief</h4>
+      <p><strong>Business:</strong> "Gill Sweets & Snacks" — a 20-year-old mithai shop in Kotkapura<br>
+      <strong>Problem:</strong> Customers can't find them online, WhatsApp orders are messy, no way to show their menu<br>
+      <strong>Budget for Website:</strong> ₹0<br>
+      <strong>What They Need:</strong> Simple, professional website that looks great on mobile and drives WhatsApp orders</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Build — Prompt by Prompt</h3>
+
+  <div class="tl">
+    <div class="tl-item">
+      <h4>Prompt 1: Initial Build</h4>
+      <p><code>"Build a landing page for Gill Sweets & Snacks, a traditional Indian mithai shop in Kotkapura, Punjab. Include: hero with shop name and tagline 'Authentic Sweets Since 2004', services section showing 6 popular items (Gulab Jamun, Barfi, Ladoo, Halwa, Namkeen, Special Dry Fruit Sweets) with price ranges, about section about the family business, and a contact section. Use warm orange and gold colors on a dark background. Mobile-first design."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Prompt 2: Add Order Button</h4>
+      <p><code>"Add a prominent 'Order on WhatsApp' button in the hero and in the contact section. The button should open WhatsApp with a pre-filled message: 'Hello! I'd like to place an order from your website.' Use phone number +91 98765-XXXXX. Make the button bright orange with a WhatsApp icon."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Prompt 3: Add Google Maps</h4>
+      <p><code>"Add a 'Find Us' section with a Google Maps link button that opens maps to 'Gill Sweets, Kotkapura, Punjab'. Include the full address and a landmark. Add business hours: Monday-Saturday 7AM-10PM, Sunday 8AM-9PM."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Prompt 4: Add Contact Form</h4>
+      <p><code>"Add a simple contact form with fields: Name, Phone Number, Order Details (textarea), Delivery or Pickup (dropdown). Add a submit button. Style the form to match the warm color scheme. Below the form, show the phone number and email as clickable links."</code></p>
+    </div>
+    <div class="tl-item">
+      <h4>Prompt 5: Polish and Deploy</h4>
+      <p><code>"Add a floating 'Order Now' button fixed to the bottom of every page on mobile. Add smooth animations on scroll. Add a simple footer with shop name, copyright 2026, and social media icon placeholders for Instagram and Facebook. Make sure all text is clearly readable on both mobile and desktop."</code></p>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>What This Website Would Cost From a Developer</h4>
+      <p>A local web developer in Kotkapura or Faridkot would charge <strong>₹8,000 to ₹20,000</strong> for exactly this website. It would take them 3-7 days to deliver. You just built an equivalent in 30-45 minutes for ₹0.<br><br>
+      This means you can charge <strong>₹8,000-15,000</strong> for each website you build, do 3-4 per month, and earn <strong>₹30-50K/month</strong> from websites alone — on top of other services.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Practice Build</h4>
+    <p>Think of a real business near your home that has no website. Could be your uncle's shop, a clinic, a salon, or a coaching center. Open bolt.new and build their website using what you learned today. You can pitch it to them as a free demo — and charge if they want it live with a proper domain.</p>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Every small business owner you see today</strong> — selling pakoras, stitching clothes, teaching students, fixing phones — they all need to exist online. They can't afford a developer. But they can afford you. After today, you are the solution they've been waiting for.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Test your knowledge with the Session 13 Quiz.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Session 13 <span class="gr">Quiz</span></h2>
+    <p>8 questions on no-code development, Bolt.new, and building websites with AI. Prove what you know.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 13 <span class="gr">Wrap-Up</span></h2>
+    <p>You did it. You built real websites today. Here's your homework and what comes next.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🏆</div>
+    <div class="call-body">
+      <h4>What You Accomplished Today</h4>
+      <p>
+      ✅ Understood the no-code revolution and why it matters right now<br>
+      ✅ Mastered the Bolt.new interface and prompt structure<br>
+      ✅ Built a personal portfolio website with real project case studies<br>
+      ✅ Built a complete business landing page with contact form and WhatsApp integration<br>
+      ✅ Understood the freelance opportunity — ₹10-20K per website</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🏠 Homework — Due Before Session 14</h3>
+  <div class="step-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Finish Your Portfolio</h4>
+      <p>Your portfolio site from Section 3 must be fully complete — real name, real projects, real contact info. Deploy it and share the link with your trainer.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Build One More Website</h4>
+      <p>Pick a real local business (or make one up). Build their complete landing page using Bolt.new. Document the prompts you used. Bring it to Session 14.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Share in Class Group</h4>
+      <p>Post your portfolio URL and your practice business website in the WhatsApp group with the caption: "I built these with AI in one afternoon — Session 13 complete!"</p>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">⏰</div>
+    <div class="call-body">
+      <h4>Coming Up: Session 14</h4>
+      <p><strong>Capstone Project — Real Client Brief.</strong> You'll receive a real mock client brief and use every tool you've learned to deliver a complete professional package. This is your graduation moment. Come prepared.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>You started this course not knowing what a "prompt" was.</strong> Today you built live websites. Tomorrow you do it for clients. The skills are inside you now. No one can take that away.</p>
+  </div>
+
+  <div class="identity-shift">You are now a website builder. Not someday. Right now. Today. The portfolio URL you created proves it.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3);">Empowering India with practical AI skills &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// PARTICLES
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// QUIZ
+const qData=[
+  {q:"What does 'no-code' mean in the context of building websites?",o:["Writing code without errors","Building websites without writing traditional programming code","Using only HTML and CSS","Designing without using a computer"],a:1,e:"No-code means building real, functional websites and apps using visual tools and AI — without writing traditional programming code like HTML, CSS, or JavaScript."},
+  {q:"What is Bolt.new primarily used for?",o:["Creating social media posts","Building and deploying web applications using AI prompts","Editing videos","Creating logo designs"],a:1,e:"Bolt.new is an AI-powered platform that generates complete web applications from plain English descriptions, including code editing, preview, and deployment in one place."},
+  {q:"What is the most important element of a good Bolt.new prompt?",o:["Using technical jargon","Being as vague as possible","Being specific about purpose, sections, style, and audience","Keeping it under 10 words"],a:2,e:"The more specific your prompt — including sections needed, color preferences, target audience, and style — the better and more accurate your generated website will be."},
+  {q:"Which of these is a realistic freelance charge for building a business landing page using Bolt.new?",o:["₹500-1,000","₹50,000-1 Lakh","₹8,000-20,000","₹200-500"],a:2,e:"A professional business landing page built with Bolt.new can realistically be charged at ₹8,000-20,000 in the Indian market — comparable to what a developer would charge."},
+  {q:"After building a website in Bolt.new, how do you make it live on the internet?",o:["Email the code to a server admin","Buy expensive hosting separately","Click the Share/Deploy button in Bolt.new","Upload files to FTP manually"],a:2,e:"Bolt.new has a built-in Share/Deploy button that instantly publishes your website with a live URL — no hosting setup or technical knowledge required."},
+  {q:"What should you include in a portfolio website built for showcasing AI tools skills?",o:["Only text descriptions, no visuals","Your name, projects, tools used, and contact info","Only your social media links","A list of courses you want to take"],a:1,e:"A strong AI tools portfolio must include your name/tagline, actual project case studies with results, the tools you know, and clear contact/hire-me information."},
+  {q:"Which feature is most important to add to a local business landing page to drive immediate sales?",o:["Animated background particles","A blog section","A WhatsApp Order button with pre-filled message","A detailed history of the company"],a:2,e:"For local Indian businesses, a WhatsApp button with a pre-filled order message is the most high-converting feature — it matches how their customers already communicate."},
+  {q:"What is the correct approach when you want to refine your Bolt.new website after the first generation?",o:["Delete everything and start a new project","Send follow-up text prompts in the same project to update specific sections","Manually edit the code files","Contact Bolt.new customer support"],a:1,e:"In Bolt.new, you refine your website by sending follow-up prompts in the same conversation. The AI understands context and updates only what you specify while keeping the rest intact."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tc,msg;
+    if(pct>=80){tier='Outstanding!';tc='var(--brand)';msg='You fully understand no-code development. You are ready to build for real clients.'}
+    else if(pct>=50){tier='Good Foundation!';tc='var(--c1)';msg='Solid grasp of the concepts. A bit more practice and you\'ll be unstoppable.'}
+    else{tier='Keep Practicing!';tc='var(--c4)';msg='Go back and review the sections. Building actual websites will make these concepts click fast.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tc}">${tier}</p><p style="color:var(--t2);margin-bottom:1rem">${pct}% Correct &mdash; ${msg}</p><p style="color:var(--t2);margin-bottom:2rem">Your homework: Build your portfolio website and deploy it live. <strong style="color:var(--t1)">The URL is the proof.</strong></p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

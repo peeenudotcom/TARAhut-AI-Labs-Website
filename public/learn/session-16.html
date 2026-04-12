@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 16: Freelancing Launchpad + Certification — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .gr2{background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.tl{position:relative;margin:2.5rem 0;padding-left:36px}
+.tl::before{content:'';position:absolute;top:0;left:12px;width:2px;height:100%;background:linear-gradient(180deg,var(--brand),var(--c1),var(--c2),var(--c4))}
+.tl-item{position:relative;margin-bottom:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:default}
+.tl-item:hover{border-color:rgba(0,240,255,.3);transform:translateX(6px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tl-item::before{content:'';position:absolute;left:-30px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.tl-item h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.tl-item p{color:var(--t2);font-size:.88rem}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Pricing Table */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;margin:2rem 0}
+.price-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .3s;text-align:center}
+.price-card:hover{border-color:rgba(5,150,105,.3);transform:translateY(-4px)}
+.price-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.price-range{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:.4rem 0}
+.price-card p{color:var(--t2);font-size:.82rem;margin-top:.4rem}
+/* 90-Day Plan */
+.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin:2rem 0}
+.month-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;position:relative;overflow:hidden;transition:all .3s}
+.month-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3)}
+.month-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.month-1::before{background:var(--brand)}
+.month-2::before{background:var(--c1)}
+.month-3::before{background:var(--c2)}
+.month-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--brand);margin-bottom:.7rem}
+.month-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.75rem}
+.month-card ul{padding-left:1rem;color:var(--t2);font-size:.85rem}
+.month-card li{margin-bottom:.4rem}
+/* Profile Prompt Box */
+.profile-box{background:var(--bg3);border:1px solid rgba(5,150,105,.15);border-radius:var(--r);padding:1.75rem;margin:1.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--c5);line-height:1.9;position:relative}
+.profile-box::before{content:'AI PROMPT';position:absolute;top:-10px;left:16px;background:var(--brand);color:#fff;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:1.5px}
+/* Graduation Section */
+.grad-section{text-align:center;padding:4rem 2rem;background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03),rgba(168,85,247,.04));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);margin:2rem 0;position:relative;overflow:hidden}
+.grad-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand)}
+.grad-badge{display:inline-block;padding:12px 28px;border:2px solid var(--brand);border-radius:99px;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;color:var(--brand);letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;background:rgba(5,150,105,.06)}
+.grad-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.5rem;line-height:1.1}
+.grad-text{max-width:680px;margin:0 auto;color:var(--t2);font-size:1rem;line-height:1.8}
+.achieve-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:3rem 0;text-align:center}
+.achieve-item{padding:1.5rem 1rem;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15);border-radius:var(--r)}
+.achieve-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.achieve-label{font-size:.78rem;color:var(--t2);margin-top:.2rem}
+/* Share Box */
+.share-box{background:var(--bg2);border:1px solid rgba(168,85,247,.25);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.share-box h4{font-family:'Syne',sans-serif;color:var(--c2);margin-bottom:1rem;font-size:1rem;font-weight:700}
+.share-template{background:var(--bg3);border:1px dashed rgba(168,85,247,.2);border-radius:var(--rs);padding:1.25rem;font-size:.88rem;color:var(--t2);line-height:1.8;margin-bottom:1.25rem;white-space:pre-line}
+.share-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn-li{background:linear-gradient(135deg,#0a66c2,#004182);color:#fff}
+.btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff}
+.btn-li:hover,.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+/* Final Quote */
+.final-quote{text-align:center;padding:3rem 2rem;margin:3rem 0;position:relative}
+.final-quote p{font-family:'Syne',sans-serif;font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;color:var(--t1);line-height:1.5;max-width:700px;margin:0 auto}
+.final-quote p span{background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin:2.5rem 0}
+.stat{text-align:center;padding:2rem 1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .3s}
+.stat:hover{border-color:rgba(0,240,255,.2);transform:translateY(-3px)}
+.stat-n{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-l{font-size:.8rem;color:var(--t2);margin-top:.2rem}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid,.price-grid,.month-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 4 &middot; Session 16 &middot; FINAL SESSION</div>
+  <h1>Freelancing <span class="gr">Launchpad</span><br>+ <span class="gr2">Graduation</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>You made it to the last session. Today you launch your freelance career, take the graduation quiz, and receive your TARAhut AI Labs certification. This is just the beginning.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Launch My Career &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#127891; Take Final Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Freelancing 101</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Your Profile</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Pricing</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>90-Day Plan</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Final Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Graduation</button>
+  </div>
+</nav>
+
+<!-- S1: FREELANCING 101 -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Freelancing <span class="gr">101</span></h2>
+    <p>Where to find clients, how to position yourself, and what to do in your first 30 days. The honest, practical guide to starting your AI freelance career.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd">
+      <span class="tag tag-brand">Platform 1</span>
+      <span class="crd-icon">🟢</span>
+      <h3>Fiverr — Best for Beginners</h3>
+      <p>Create a seller profile. List specific "gigs" with fixed pricing. Clients find you. Best for: logo design, social media posts, website building, video creation. Low barrier to entry. Build reputation through reviews quickly.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-1">Platform 2</span>
+      <span class="crd-icon">🔵</span>
+      <h3>Upwork — Best for Repeat Clients</h3>
+      <p>Apply to client job posts. Hourly or fixed price. Better for ongoing relationships. Slightly harder to get first contract, but once established — clients return. Good for social media management (monthly retainers).</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-2">Platform 3</span>
+      <span class="crd-icon">💼</span>
+      <h3>LinkedIn — Best for Professional Work</h3>
+      <p>Post your work samples. Connect with small business owners. Send personalised DMs offering a free audit of their online presence. LinkedIn clients are often higher-paying and more serious than platform-based clients.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-4">Local Market</span>
+      <span class="crd-icon">🏘️</span>
+      <h3>WhatsApp + Local Network — Fastest Results</h3>
+      <p>Your fastest first clients are people who already know you — friends, family, neighbors, local business owners. Share your portfolio in family groups, business groups, and locality groups. No platform fee. No competition.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-5">Strategy</span>
+      <span class="crd-icon">🎯</span>
+      <h3>First Gig Strategy</h3>
+      <p>Do your first 1-2 projects for free or very low cost in exchange for a testimonial and case study. Then use that social proof to charge full rates. One good review is worth more than any profile description you write.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-3">Mindset</span>
+      <span class="crd-icon">🧠</span>
+      <h3>The Freelancer's Reality</h3>
+      <p>Month 1 is slow. Month 2 picks up. Month 3 you have regular clients. Don't quit in Month 1. Every professional you admire went through an identical slow start. Consistency beats talent every single time.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n">63M+</div><div class="stat-l">Freelancers in India (2025)</div></div>
+    <div class="stat"><div class="stat-n">₹25K</div><div class="stat-l">Average monthly AI freelancer income (beginner)</div></div>
+    <div class="stat"><div class="stat-n">4.2M</div><div class="stat-l">Businesses in India needing digital services</div></div>
+    <div class="stat"><div class="stat-n">3 hrs</div><div class="stat-l">Average time to complete one AI project</div></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>There are millions of businesses in India</strong> — dhabas, clinics, coaching centers, boutiques, photographers, tutors — who need exactly what you've learned in this course. They're waiting for someone like you to walk through the door. Your phone, your laptop, and your AI tools are all you need.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Write your Fiverr/Upwork profile using AI — the exact prompts that work.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Build Your Profile &rarr;</button></div>
+</div>
+
+<!-- S2: YOUR PROFILE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; Your profile is your 24/7 sales pitch. Let's make it great.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Your Fiverr/Upwork <span class="gr">Profile</span></h2>
+    <p>Use AI to write a profile so compelling that clients choose you before they even look at your competitors.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">✍️</div>
+    <div class="call-body">
+      <h4>Write Your Fiverr Profile with Claude</h4>
+      <p>Paste this prompt into Claude to generate a professional profile. Then customize with your own details.</p>
+    </div>
+  </div>
+
+  <div class="profile-box">Write a compelling Fiverr seller profile for an AI tools specialist who offers the following services: logo design (using Ideogram AI), social media content creation (using Canva AI + ChatGPT), website building (using Bolt.new), video creation (using HeyGen), and presentation design (using Gamma). The person is based in Punjab, India and has completed a professional AI tools course at TARAhut AI Labs. They have built real projects including logos, websites, and social media kits for local businesses. Write the profile in a warm, professional tone that builds trust. Include: a headline, a 3-paragraph bio, and a "What I offer" section. Keep total length under 300 words.</div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">5 High-Demand Gig Ideas Based on Your Skills</h3>
+  <div class="tl">
+    <div class="tl-item">
+      <h4>Gig 1: AI Logo Design Package</h4>
+      <p><strong>Title:</strong> "I will create a professional logo for your business using AI"<br>
+      <strong>Packages:</strong> Basic (1 concept, PNG) ₹999 | Standard (3 concepts, all formats) ₹1,999 | Premium (5 concepts + brand colors + social media kit) ₹3,999<br>
+      <strong>Delivery:</strong> 1-2 days. <strong>USP:</strong> AI-powered speed with professional human curation.</p>
+    </div>
+    <div class="tl-item">
+      <h4>Gig 2: Social Media Content Calendar</h4>
+      <p><strong>Title:</strong> "I will create 30 days of social media posts for your business"<br>
+      <strong>Packages:</strong> Basic (10 posts, Canva templates) ₹1,499 | Standard (30 posts + captions) ₹3,499 | Premium (30 posts + captions + story designs + hashtag strategy) ₹5,999<br>
+      <strong>USP:</strong> Complete month of content in 24 hours.</p>
+    </div>
+    <div class="tl-item">
+      <h4>Gig 3: Landing Page Website Build</h4>
+      <p><strong>Title:</strong> "I will build a professional website for your small business"<br>
+      <strong>Packages:</strong> Basic (3-section landing page, live URL) ₹2,999 | Standard (5-section site + contact form) ₹5,999 | Premium (Full website + WhatsApp integration + 2 revisions) ₹9,999<br>
+      <strong>USP:</strong> Live and shareable within 24 hours.</p>
+    </div>
+    <div class="tl-item">
+      <h4>Gig 4: AI Spokesperson Video</h4>
+      <p><strong>Title:</strong> "I will create a professional AI presenter video for your business"<br>
+      <strong>Packages:</strong> Basic (30-sec video, 1 avatar) ₹1,999 | Standard (60-sec, custom script + captions) ₹3,499 | Premium (90-sec, script + video + thumbnail + WhatsApp-optimized version) ₹5,999</p>
+    </div>
+    <div class="tl-item">
+      <h4>Gig 5: Monthly Social Media Management</h4>
+      <p><strong>Title:</strong> "I will manage your Instagram/Facebook page with AI-powered content"<br>
+      <strong>Retainer:</strong> Starter (8 posts/month) ₹4,999/mo | Growth (15 posts + stories + engagement) ₹9,999/mo | Premium (daily content + DM management + monthly report) ₹19,999/mo<br>
+      <strong>USP:</strong> Consistent, professional content every week without you lifting a finger.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Action: Set Up Your Profile Now</h4>
+    <p>Open Fiverr.com and create your seller account. Use your full name. Upload a professional photo (use your best selfie — good lighting, smile, plain background). Paste the Claude-generated profile bio. Create at least Gig 1 (logo design) before this session ends. First gig live = milestone.</p>
+  </div>
+
+  <div class="identity-shift">A Fiverr profile is not "just a side hustle." It's your business. It's open 24/7. It can earn while you sleep. Set it up like you mean it.</div>
+
+  <p class="curiosity-hook">Next: What to charge — realistic Indian market rates for 2026.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Pricing Your Services &rarr;</button></div>
+</div>
+
+<!-- S3: PRICING -->
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Pricing Your <span class="gr">Services</span></h2>
+    <p>Realistic Indian market rates for 2026. Not what you hope to charge someday — what you can charge right now, as a certified AI tools professional.</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>The Pricing Principle</h4>
+      <p>Don't price based on how long it takes you. Price based on <strong>the value it delivers to the client.</strong> A logo you create in 20 minutes is worth ₹3,000-8,000 to a business — not ₹200 for 20 minutes of your time. You're selling the result, not the hours.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Service Pricing Guide — Indian Market 2026</h3>
+  <div class="price-grid">
+    <div class="price-card">
+      <span class="crd-icon">🎨</span>
+      <h4>Logo Design</h4>
+      <div class="price-range">₹3K–8K</div>
+      <p>Per project. Single deliverable. Add ₹2K for brand color guide and font kit.</p>
+    </div>
+    <div class="price-card">
+      <span class="crd-icon">📱</span>
+      <h4>Social Media Management</h4>
+      <div class="price-range">₹10K–25K</div>
+      <p>Per month retainer. 3-month minimum commitment ideal. Includes content + captions.</p>
+    </div>
+    <div class="price-card">
+      <span class="crd-icon">🌐</span>
+      <h4>Website (Landing Page)</h4>
+      <div class="price-range">₹8K–20K</div>
+      <p>Per project. Price scales with number of sections, contact form, WhatsApp integration.</p>
+    </div>
+    <div class="price-card">
+      <span class="crd-icon">🎨</span>
+      <h4>Brand Kit</h4>
+      <div class="price-range">₹5K–15K</div>
+      <p>Logo + colors + fonts + social media templates. One-time comprehensive package.</p>
+    </div>
+    <div class="price-card">
+      <span class="crd-icon">🎬</span>
+      <h4>AI Video (60 sec)</h4>
+      <div class="price-range">₹3K–8K</div>
+      <p>Per video. Script + AI avatar + captions + WhatsApp-optimized version.</p>
+    </div>
+    <div class="price-card">
+      <span class="crd-icon">📊</span>
+      <h4>Content Creation</h4>
+      <div class="price-range">₹8K–20K</div>
+      <p>Per month. Blog posts, social captions, email newsletters — written with AI, reviewed by you.</p>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">📈</div>
+    <div class="call-body">
+      <h4>Monthly Income Scenarios — What's Realistic?</h4>
+      <p>
+      <strong>Conservative (Month 1-2):</strong> 2 websites (₹15K) + 1 logo (₹5K) = <strong>₹20,000/month</strong><br>
+      <strong>Growing (Month 3-4):</strong> 2 social media clients (₹20K) + 3 logos (₹15K) + 1 website (₹10K) = <strong>₹45,000/month</strong><br>
+      <strong>Established (Month 6+):</strong> 4 social retainers (₹60K) + 2 websites (₹25K) + ad hoc projects (₹15K) = <strong>₹1 Lakh/month</strong><br><br>
+      These are conservative estimates. Many AI freelancers earn more. The key is consistency and client retention.</p>
+    </div>
+  </div>
+
+  <div class="callout call-4">
+    <div class="call-ico">⚠️</div>
+    <div class="call-body">
+      <h4>Pricing Mistakes to Avoid</h4>
+      <p>
+      ❌ <strong>Never say "I'll do it for free" to recurring work</strong> — it sets a permanent expectation<br>
+      ❌ <strong>Don't quote too low</strong> — low prices signal low quality to professional clients<br>
+      ❌ <strong>Don't quote too high before you have reviews</strong> — start mid-range, raise after 5 positive reviews<br>
+      ❌ <strong>Never work without clarity on scope</strong> — agree on what's included before starting</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Set Your Prices Now</h4>
+    <p>Write down your prices for: (1) Logo design, (2) Website, (3) Social media monthly package. These are your numbers. Not someone else's. Commit to them. Share them with your class group as your public pricing declaration.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Your 90-day plan — exactly what to do when you walk out of this course.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: 90-Day Plan &rarr;</button></div>
+</div>
+
+<!-- S4: 90-DAY PLAN -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128170; This is the roadmap. Follow it. Adjust as needed. Go.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Your <span class="gr">90-Day Career Plan</span></h2>
+    <p>Month by month — exactly what to focus on in your first 90 days as an AI tools professional. Print this. Stick it to your wall.</p>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card month-1">
+      <div class="month-label">Month 01</div>
+      <h4>Build Portfolio + First 3 Clients</h4>
+      <ul>
+        <li>Finalize portfolio website — live URL</li>
+        <li>Set up Fiverr with 3 gigs</li>
+        <li>Optimize LinkedIn profile — post 3 work samples</li>
+        <li>Reach out to 20 local business owners personally</li>
+        <li>Offer first 2 projects at 50% rate for testimonials</li>
+        <li>Complete 3 paid projects (any size)</li>
+        <li>Goal: ₹10,000-20,000 earned</li>
+      </ul>
+    </div>
+    <div class="month-card month-2">
+      <div class="month-label">Month 02</div>
+      <h4>Optimize + Raise Rates</h4>
+      <ul>
+        <li>Use Month 1 testimonials to raise prices 20-30%</li>
+        <li>Add 2 new portfolio case studies with results</li>
+        <li>Start 1-2 monthly social media retainers</li>
+        <li>Post on LinkedIn 3x per week (share your work)</li>
+        <li>Ask every client for a referral</li>
+        <li>Experiment with paid Fiverr promotions</li>
+        <li>Goal: ₹25,000-45,000 earned</li>
+      </ul>
+    </div>
+    <div class="month-card month-3">
+      <div class="month-label">Month 03</div>
+      <h4>Scale or Get Hired</h4>
+      <ul>
+        <li>Choose path: Freelance agency OR full-time job</li>
+        <li>If freelancing: add a specialized niche (e.g., healthcare only, restaurants only)</li>
+        <li>If job-seeking: apply to 5 digital agencies with your portfolio</li>
+        <li>Onboard 3-4 monthly retainer clients</li>
+        <li>Outsource simple tasks to free up your time for higher-value work</li>
+        <li>Consider: TARAhut Advanced Course</li>
+        <li>Goal: ₹50,000-1,00,000 earned</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🔑</div>
+    <div class="call-body">
+      <h4>The Most Important Thing No One Tells You</h4>
+      <p>The biggest barrier is not skill — it's starting. The first client is the hardest to get. Once you have one client and one result, everything becomes easier. The people who succeed with this course are the ones who take action in the first 7 days after graduating. Not the ones who wait until everything is "perfect." <strong>Done is better than perfect. Start now.</strong></p>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Week</th><th>Action</th><th>Goal</th></tr>
+      <tr><td><strong>Week 1</strong></td><td>Portfolio live + Fiverr profile created + 10 local outreach messages sent</td><td>1 free or discounted project started</td></tr>
+      <tr><td><strong>Week 2</strong></td><td>First project delivered + testimonial collected + case study written</td><td>Second paid project started</td></tr>
+      <tr><td><strong>Week 3</strong></td><td>LinkedIn post about your work + 10 more outreach messages + Fiverr gigs optimized</td><td>First Fiverr order received</td></tr>
+      <tr><td><strong>Week 4</strong></td><td>Review Month 1 earnings + adjust pricing + plan Month 2 approach</td><td>₹10,000 in revenue</td></tr>
+    </table>
+  </div>
+
+  <div class="micro-action">
+    <h4>Your First 7-Day Commitment</h4>
+    <p>Write down right now (on paper): ONE person you will message today about your AI services. It could be a relative, a neighbor, a local shop. Send them your portfolio link with this message: "I just completed a professional AI tools course and I'm taking on first clients this month. If you or anyone you know needs a logo, social media, or website for their business, I'd love to help. Here's what I've built: [your portfolio URL]"</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The comprehensive graduation quiz — spanning all 16 sessions.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Final Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: FINAL QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Final Graduation <span class="gr">Quiz</span></h2>
+    <p>10 comprehensive questions spanning all 4 weeks of the AI Tools Mastery course. This is your graduation assessment. Show everything you've learned.</p>
+  </div>
+  <div class="callout call-2">
+    <div class="call-ico">🎓</div>
+    <div class="call-body">
+      <h4>Course-Wide Assessment</h4>
+      <p>These questions cover Weeks 1-4 — AI fundamentals, tool skills, creative applications, workflow, and business applications. Scoring 7/10 or above earns you the TARAhut AI Labs distinction. Scoring 10/10 is rare — and remarkable.</p>
+    </div>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Graduation &rarr; 🎓</button></div>
+</div>
+
+<!-- S6: GRADUATION -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>You Did It. <span class="gr">Congratulations.</span></h2>
+    <p>Take a moment. This is real. You earned it.</p>
+  </div>
+
+  <div class="grad-section">
+    <div class="grad-badge">🎓 TARAhut AI Labs Certified</div>
+    <div class="grad-title">AI Tools Mastery<br>Certificate of Completion</div>
+    <div class="grad-text">
+      <p>This certifies that you have successfully completed the <strong style="color:var(--t1)">4-Week AI Tools Mastery Program</strong> by TARAhut AI Labs — a comprehensive professional training covering 16 sessions, 13+ AI tools, and real-world project delivery.</p>
+    </div>
+  </div>
+
+  <div class="achieve-grid">
+    <div class="achieve-item">
+      <div class="achieve-num">16</div>
+      <div class="achieve-label">Sessions Completed</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-num">13+</div>
+      <div class="achieve-label">AI Tools Mastered</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-num">4</div>
+      <div class="achieve-label">Real Projects Built</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-num">1</div>
+      <div class="achieve-label">Live Portfolio Website</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-num">∞</div>
+      <div class="achieve-label">Earning Potential Unlocked</div>
+    </div>
+  </div>
+
+  <div class="callout call-brand" style="text-align:center">
+    <div class="call-ico">🌟</div>
+    <div class="call-body">
+      <h4>What You've Built in 4 Weeks</h4>
+      <p>
+      ✅ <strong>Week 1:</strong> You understood AI — types, tools, and how they work. Most people never get here.<br>
+      ✅ <strong>Week 2:</strong> You mastered writing, research, and image generation. You can create professional content in minutes.<br>
+      ✅ <strong>Week 3:</strong> You produced videos, presentations, and audio that would cost a production team ₹50,000.<br>
+      ✅ <strong>Week 4:</strong> You built websites, delivered a real client project, assembled your portfolio, and launched your freelance career.<br><br>
+      <strong>In 4 weeks, you went from a beginner to a certified AI tools professional. That is not small. That is remarkable.</strong></p>
+    </div>
+  </div>
+
+  <div class="emotional-hook" style="font-style:normal;font-size:1rem;line-height:1.9">
+    <p><strong>There is a version of you that didn't take this course.</strong> That version is still scrolling, still wondering, still waiting for the "right time." But you're not that person. You showed up for 4 weeks. You built real things. You didn't quit when it got hard. That is the quality that separates people who achieve from people who only wish.</p>
+    <br>
+    <p><strong>The businesses in your city need you.</strong> The coaching centers, the dhabas, the clinics, the boutiques — they can't afford marketing agencies. They can't hire a developer. But they can afford you. And now you can deliver results that would have been impossible without this training.</p>
+    <br>
+    <p><strong>You started this course as a beginner. You're leaving as an AI professional. The world is waiting for what you'll build.</strong></p>
+  </div>
+
+  <!-- Share Achievement -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">🏆 Share Your Achievement</h3>
+  <p style="color:var(--t2);margin-bottom:1.5rem;">You've earned the right to tell the world. Use these ready-to-post templates.</p>
+
+  <div class="share-box">
+    <h4>📱 LinkedIn Post Template (Copy & Post Now)</h4>
+    <div class="share-template">🎓 I just completed the AI Tools Mastery Program at TARAhut AI Labs — and I'm proud to say I'm now a certified AI tools professional.
+
+In 4 weeks, I learned to:
+✅ Create professional logos and brand kits using Ideogram AI
+✅ Build complete websites without writing a single line of code (Bolt.new)
+✅ Produce AI spokesperson videos with HeyGen
+✅ Design social media content at scale with Canva AI
+✅ Write compelling marketing copy with Claude and ChatGPT
+✅ Create presentations in minutes with Gamma
+
+And I delivered a real client project — a complete digital presence for a coaching center — as part of my capstone.
+
+If you're a business owner who needs any of these services, I'm open for projects.
+
+My portfolio: [Your Portfolio URL]
+
+Thank you TARAhut AI Labs for the most practical and hands-on course I've ever taken. 🙏
+
+#AITools #Freelancing #TARAhutAILabs #AIToolsMastery #IndiaAI #DigitalIndia</div>
+    <div class="share-btns">
+      <a class="btn btn-sm btn-li" href="https://www.linkedin.com/share?text=I+just+completed+the+AI+Tools+Mastery+Program+at+TARAhut+AI+Labs!" target="_blank">Share on LinkedIn</a>
+      <a class="btn btn-sm btn-wa" href="https://api.whatsapp.com/send?text=I+just+completed+my+AI+Tools+Mastery+certification+at+TARAhut+AI+Labs!+%F0%9F%8E%93+I+can+now+build+logos%2C+websites%2C+videos+and+social+media+content+using+AI.+Check+out+my+portfolio!" target="_blank">Share on WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="share-box">
+    <h4>📲 WhatsApp Status / Story Template</h4>
+    <div class="share-template">🎓 CERTIFIED AI TOOLS PROFESSIONAL
+
+Just graduated from TARAhut AI Labs' 4-week AI Tools Mastery Program!
+
+Now offering professional services:
+🎨 Logo Design — from ₹3,000
+🌐 Website Building — from ₹8,000
+📱 Social Media Management — from ₹10,000/month
+🎬 AI Videos — from ₹3,000
+
+DM me or check my portfolio 👇
+[Your Portfolio URL]
+
+Kotkapura/Faridkot area + online clients welcome 🙌</div>
+    <div class="share-btns">
+      <a class="btn btn-sm btn-wa" href="https://api.whatsapp.com/send?text=Just+graduated+from+TARAhut+AI+Labs+AI+Tools+Mastery+Program!+Now+offering+professional+AI-powered+services.+DM+me+for+logos%2C+websites%2C+social+media+%26+videos!" target="_blank">Share on WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- TARAhut Alumni -->
+  <div class="callout call-1">
+    <div class="call-ico">👥</div>
+    <div class="call-body">
+      <h4>TARAhut Alumni Community</h4>
+      <p>You are now part of the TARAhut AI Labs alumni network. Stay connected:<br>
+      <strong>Alumni WhatsApp Group:</strong> Ask your trainer for the invite link<br>
+      <strong>Instagram:</strong> @tarahutailabs — share your work and tag us<br>
+      <strong>Website:</strong> <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a> — check for advanced courses<br>
+      <strong>Phone:</strong> +91 92008-82008 — reach out anytime you need support<br><br>
+      Your trainer is not disappearing after today. This community is here for you.</p>
+    </div>
+  </div>
+
+  <div class="final-quote">
+    <p>"You started this course as a beginner.<br><span>You're leaving as an AI professional.</span><br>The world is waiting for what you'll build."</p>
+  </div>
+
+  <div class="grad-section" style="margin-top:3rem;padding:3rem 2rem">
+    <div class="grad-badge" style="margin-bottom:1.5rem">🚀 Your Journey Continues</div>
+    <p style="color:var(--t2);max-width:600px;margin:0 auto;font-size:1.05rem;line-height:1.8">Advanced skills. Bigger clients. Better projects. TARAhut AI Labs will be here for every step. Thank you for trusting us with your learning. Now go build something the world hasn't seen yet.</p>
+    <br>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+      <a href="https://tarahutailabs.com" target="_blank" class="btn btn-glow">Visit TARAhut AI Labs</a>
+      <a href="https://api.whatsapp.com/send?phone=919200882008&text=Hi!+I+just+completed+the+AI+Tools+Mastery+course.+What+are+my+next+steps?" target="_blank" class="btn btn-ghost">WhatsApp Us 👋</a>
+    </div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3);">Empowering India with practical AI skills &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// COMPREHENSIVE GRADUATION QUIZ — 10 QUESTIONS spanning all 4 weeks
+const qData=[
+  // Week 1 — AI Fundamentals
+  {q:"[Week 1] What type of AI is ChatGPT — the AI most commonly used today?",o:["Super AI (ASI)","Artificial General Intelligence (AGI)","Narrow AI (ANI)","Biological AI"],a:2,e:"ChatGPT is Narrow AI — it excels at one domain (text generation) but cannot do everything a human can. All AI tools you've learned in this course are Narrow AI, each specialized for a specific task."},
+  // Week 1 — Prompting
+  {q:"[Week 1] What is 'Prompt Engineering'?",o:["Writing code to build AI models","The skill of writing effective instructions for AI to get better outputs","Programming machine learning algorithms","Designing the user interface of AI tools"],a:1,e:"Prompt engineering is the skill of writing clear, specific, well-structured instructions for AI tools. Better prompts consistently produce better results — it's one of the most valuable skills from this entire course."},
+  // Week 2 — Image Generation
+  {q:"[Week 2] Which AI tool in the TARAhut curriculum specializes in creating text-based logos and illustrations?",o:["HeyGen","Gamma","Ideogram AI","Bolt.new"],a:2,e:"Ideogram AI is specialized for creating images with accurate, well-rendered text — making it the top choice for logos, brand identities, and any design work that requires readable text in the image."},
+  // Week 2 — Content Creation
+  {q:"[Week 2] When writing a social media post with AI, which approach produces the best result?",o:["Ask AI to 'write a post' with no other context","Give AI the platform, audience, tone, goal, and any specific details about the business","Copy whatever AI generates without editing","Ask AI to copy a competitor's post style"],a:1,e:"Specific prompts produce specific, useful results. The more context you give AI — platform, audience, tone, business details — the more tailored and professional the output will be."},
+  // Week 3 — Video Tools
+  {q:"[Week 3] What is HeyGen primarily used for?",o:["Building websites","Creating AI avatar presenter videos where a digital human speaks your script","Designing social media graphics","Writing blog posts"],a:1,e:"HeyGen creates AI spokesperson videos — you provide a script, choose an avatar, and the AI generates a professional video of that avatar delivering your message. Used for marketing videos, explainers, and course content."},
+  // Week 3 — Presentations
+  {q:"[Week 3] Which tool creates complete presentation decks from a single text prompt?",o:["Canva AI","Claude","Gamma","CapCut"],a:2,e:"Gamma creates professional, fully-designed presentation slides from a simple text prompt. It handles layout, design, colors, and content structure automatically — reducing hours of work to minutes."},
+  // Week 4 — No-Code Websites
+  {q:"[Week 4] Which of these is the correct approach to building a website in Bolt.new?",o:["Write HTML and CSS code manually","Describe the website you want in plain English and let AI generate it","Use pre-made templates from the Bolt.new library","Import designs from Figma only"],a:1,e:"Bolt.new works by understanding plain English descriptions. You describe the website you want — sections, style, purpose — and AI writes all the code and shows you a live preview instantly."},
+  // Week 4 — Client Work
+  {q:"[Week 4] In a client project, which deliverable should generally be built FIRST and why?",o:["Social media posts — for immediate visibility","The presentation deck — to show the client what you'll build","The logo — it establishes visual identity that all other materials must match","The video — it's the most impressive deliverable"],a:2,e:"The logo is built first because it establishes the visual identity — colors, style, typography — that must be consistent across the website, social media, presentations, and videos. Without a logo, you can't have brand consistency."},
+  // Week 4 — Freelancing
+  {q:"[Week 4] What is a realistic monthly income for a beginner AI tools freelancer in India after Month 3?",o:["₹500-2,000","₹5,000-10,000","₹30,000-60,000","₹5,00,000+"],a:2,e:"After 3 months of active freelancing, AI tools professionals in India realistically earn ₹30,000-60,000/month from a combination of social media retainers, website projects, and ad hoc work. It grows with reviews and referrals."},
+  // Course-wide — Key Principle
+  {q:"[All Weeks] What is the single most important principle to deliver excellent work for any client?",o:["Use as many AI tools as possible on every project","Price your services as low as possible","Think from the client's customer's perspective — would this make them take the desired action?","Produce work as fast as possible to maximize volume"],a:2,e:"Every deliverable should be evaluated by asking: 'Would this make the client's customer take the action the business wants?' This perspective shifts you from task-completion to outcome-focused thinking — the mark of a true professional."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tc,msg,extra;
+    if(pct>=90){
+      tier='OUTSTANDING GRADUATE 🌟';tc='var(--brand)';
+      msg='You have mastered the AI Tools Mastery curriculum. You are ready for clients, ready for work, ready for what comes next.';
+      extra='You scored in the top tier. Share this result with your family. You earned it.';
+    }else if(pct>=70){
+      tier='CERTIFIED GRADUATE 🎓';tc='var(--c1)';
+      msg='Strong performance across all 4 weeks. You have the knowledge and skills to launch your AI freelance career right now.';
+      extra='A few areas to review — but you are absolutely ready to start working with clients.';
+    }else if(pct>=50){
+      tier='GRADUATE WITH DISTINCTION 📚';tc='var(--c4)';
+      msg='You completed the course and demonstrated solid understanding. The real learning accelerates when you start doing real work.';
+      extra='Review the sections you found challenging. The skills will sharpen with every project you take on.';
+    }else{
+      tier='GRADUATE 🎓';tc='var(--c5)';
+      msg='You completed all 16 sessions of the AI Tools Mastery Program. That in itself is remarkable.';
+      extra='The quiz score is just a number. What matters is that you built real things. Go use your skills.';
+    }
+    box.innerHTML=`<div class="q-score-box">
+      <div class="big">${sc}/10</div>
+      <p style="font-size:1.3rem;margin:1rem 0;color:${tc};font-family:'Syne',sans-serif;font-weight:700">${tier}</p>
+      <p style="color:var(--t2);margin-bottom:.75rem;font-size:1rem">${pct}% on the Graduation Assessment</p>
+      <p style="color:var(--t2);margin-bottom:.75rem">${msg}</p>
+      <p style="color:var(--t2);margin-bottom:2rem;font-size:.88rem">${extra}</p>
+      <p style="color:var(--t1);margin-bottom:2rem;font-size:1.05rem;line-height:1.7;max-width:580px;margin-left:auto;margin-right:auto"><strong>You started this course as a beginner. You're leaving as an AI professional.</strong><br>The world is waiting for what you'll build.</p>
+      <button class="btn btn-glow" onclick="go('s6')" style="margin-right:.8rem">&#127891; Graduation Ceremony &rarr;</button>
+      <button class="btn btn-ghost" onclick="initQuiz()">Retake Quiz</button>
+    </div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Graduation Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">${cq===qData.length-2?'Finish &rarr;':'Next &rarr;'}</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

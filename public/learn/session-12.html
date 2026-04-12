@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 12: Brand Kit Project — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,7vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Checklist */
+.checklist{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.checklist h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .25s;border-radius:var(--rs)}
+.cl-item:last-child{border-bottom:none}
+.cl-item:hover{padding-left:.75rem;background:rgba(0,240,255,.02)}
+.cl-item.checked .cl-box{background:var(--brand);border-color:var(--brand)}
+.cl-item.checked .cl-box::after{content:'✓';color:#fff;font-size:.75rem;font-weight:800}
+.cl-item.checked .cl-label{color:var(--t2);text-decoration:line-through}
+.cl-box{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-top:2px}
+.cl-label{font-size:.9rem;line-height:1.5}
+.cl-label strong{display:block;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700}
+.cl-label span{color:var(--t2);font-size:.82rem}
+.cl-score{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3);text-align:center;margin-top:1.25rem}
+.cl-score span{color:var(--brand);font-weight:700}
+/* Timeline */
+.tl{position:relative;margin:2.5rem 0;padding-left:36px}
+.tl::before{content:'';position:absolute;top:0;left:12px;width:2px;height:100%;background:linear-gradient(180deg,var(--brand),var(--c1),var(--c2),var(--c4))}
+.tl-item{position:relative;margin-bottom:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s}
+.tl-item:hover{border-color:rgba(0,240,255,.3);transform:translateX(6px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tl-item::before{content:'';position:absolute;left:-30px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.tl-item h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.tl-item p{color:var(--t2);font-size:.88rem}
+.tl-item .tool-line{margin-top:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand)}
+/* Business picker */
+.biz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.biz-card{padding:1.25rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .3s;text-align:center}
+.biz-card:hover{border-color:rgba(0,240,255,.3);transform:translateY(-3px)}
+.biz-card.selected{border-color:var(--brand);background:rgba(5,150,105,.06)}
+.biz-card .biz-icon{font-size:2rem;margin-bottom:.5rem}
+.biz-card h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700}
+.biz-card p{color:var(--t2);font-size:.78rem;margin-top:.25rem}
+.biz-detail{padding:1.5rem;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.2);border-radius:var(--rs);margin-top:.75rem;display:none}
+.biz-detail.show{display:block;animation:fadeSlide .3s ease}
+.biz-detail h4{font-family:'Syne',sans-serif;color:var(--brand);margin-bottom:.5rem}
+.biz-detail p{color:var(--t2);font-size:.88rem}
+/* Final submission box */
+.submit-box{background:linear-gradient(135deg,rgba(5,150,105,.12),rgba(0,240,255,.06));border:2px solid rgba(5,150,105,.4);border-radius:var(--r);padding:2.5rem;margin:2rem 0;text-align:center}
+.submit-box h3{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--brand);margin-bottom:.75rem}
+.submit-box p{color:var(--t2);font-size:.95rem;max-width:600px;margin:0 auto}
+.submit-box .deadline{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c4);margin-top:1rem;display:block}
+.week-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:linear-gradient(135deg,var(--brand),var(--c1));border-radius:99px;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:#fff;margin-bottom:1.5rem}
+@media(max-width:768px){.cgrid,.biz-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 12 &middot; CAPSTONE PROJECT</div>
+  <h1>Brand Kit<br><span class="gr">Capstone Project</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>This is it. Everything from Week 3 comes together. You will build a complete brand identity for a real local business — logo, graphics, video, voice, and audio.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start the Project &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#9745; Quality Checklist</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What's a Brand Kit</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>The Brief</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Execution Plan</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quality Checklist</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Submit Project</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT'S A BRAND KIT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What's a <span class="gr">Brand Kit</span>?</h2>
+    <p>A brand kit is everything a business needs to look, sound, and feel consistent across every touchpoint. When someone sees it, they instantly recognize the brand.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#127775;</div>
+    <div class="call-body">
+      <h4>The Complete Brand Kit Formula</h4>
+      <p><strong>Logo</strong> + <strong>Colors</strong> + <strong>Fonts</strong> + <strong>Social Templates</strong> + <strong>Video</strong> + <strong>Audio</strong> = Complete Brand Identity<br><br>
+      Without a consistent brand kit, a business looks different every time someone sees it. With a brand kit, every post, every video, every voiceover says: "This is us. This is who we are." That recognition builds trust. Trust builds customers.</p>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Visual</span><span class="crd-icon">&#128279;</span><h3>Logo</h3><p>The visual symbol of the brand. Needs to work in color, black & white, large and small. At minimum: primary logo + icon-only version + wordmark.</p></div>
+    <div class="crd"><span class="tag tag-1">Visual</span><span class="crd-icon">&#127912;</span><h3>Color Palette</h3><p>3–5 brand colors: primary (main color), secondary (accent), neutral (background/text). Defined as HEX codes so they're always exactly the same.</p></div>
+    <div class="crd"><span class="tag tag-2">Visual</span><span class="crd-icon">&#128212;</span><h3>Typography</h3><p>1–2 brand fonts: one for headings (bold, personality), one for body text (readable, clean). Consistent font use across all materials builds recognition.</p></div>
+    <div class="crd"><span class="tag tag-4">Visual</span><span class="crd-icon">&#128241;</span><h3>Social Templates</h3><p>Pre-designed Instagram post templates, Stories, and Reel thumbnails. Team members fill in content — brand always looks the same.</p></div>
+    <div class="crd"><span class="tag tag-3">Motion</span><span class="crd-icon">&#127909;</span><h3>Brand Video</h3><p>60-second introduction video: who the business is, what they do, why to choose them, how to contact. The most powerful marketing asset a business can have.</p></div>
+    <div class="crd"><span class="tag tag-5">Sound</span><span class="crd-icon">&#127908;</span><h3>Audio Identity</h3><p>Brand voice (the style of speech), IVR greeting, background music loop, and optionally a brand jingle. The sound of the brand reinforces the visual identity.</p></div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>What This Is Worth</h4>
+      <p>A professional branding agency charges <strong>&#8377;50,000–3,00,000</strong> for a complete brand kit like this. Digital agencies in Delhi and Mumbai charge &#8377;15,000–50,000 for just the logo and colors. You are about to build the same thing — using AI tools — in one session. This is your portfolio piece that can earn you real clients.</p>
+    </div>
+  </div>
+
+  <div class="micro-win">After today, you can offer professional brand kit creation as a service. That's a new income stream.</div>
+
+  <p class="curiosity-hook">Next: Pick your client business and understand the brief.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: The Brief &rarr;</button></div>
+</div>
+
+<!-- S2: THE BRIEF -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; Section 2 of 6. Choose your client — this business becomes your portfolio piece.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The Brief — <span class="gr">Pick Your Business</span></h2>
+    <p>Choose a real or fictional Kotkapura business. This is the client you'll build the complete brand kit for. Click a business type to get your full brief.</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">&#128161;</div>
+    <div class="call-body">
+      <h4>Real vs Fictional Business</h4>
+      <p><strong>Option A (Recommended):</strong> Use a real local business — a relative's shop, a nearby clinic, a family friend's salon. Get their permission. When you deliver the kit, this becomes a <strong>real client testimonial</strong>.<br><br>
+      <strong>Option B:</strong> Create a fictional business from the examples below. Fully invent the name, services, and personality. Just as valid for building portfolio skills.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 .75rem;">Click a business type for your project brief</h3>
+  <div class="biz-grid" id="bizGrid">
+    <div class="biz-card" onclick="showBiz(0)"><div class="biz-icon">&#127859;</div><h4>Restaurant / Dhaba</h4><p>Food, hospitality, local flavors</p></div>
+    <div class="biz-card" onclick="showBiz(1)"><div class="biz-icon">&#9986;&#65039;</div><h4>Beauty Salon</h4><p>Wellness, beauty, confidence</p></div>
+    <div class="biz-card" onclick="showBiz(2)"><div class="biz-icon">&#9877;&#65039;</div><h4>Clinic / Healthcare</h4><p>Trust, care, professionalism</p></div>
+    <div class="biz-card" onclick="showBiz(3)"><div class="biz-icon">&#128248;</div><h4>Clothing Store</h4><p>Fashion, style, tradition</p></div>
+    <div class="biz-card" onclick="showBiz(4)"><div class="biz-icon">&#128218;</div><h4>Coaching / Tuition</h4><p>Education, growth, results</p></div>
+    <div class="biz-card" onclick="showBiz(5)"><div class="biz-icon">&#127774;</div><h4>Sweets / Bakery</h4><p>Celebration, tradition, taste</p></div>
+  </div>
+
+  <div class="biz-detail" id="bizDetail"></div>
+
+  <div class="micro-action">
+    <h4>Your First Decision</h4>
+    <p>Open a notes app (phone or laptop). Write:<br>
+    <strong>Business Name:</strong> _______________<br>
+    <strong>Type:</strong> _______________<br>
+    <strong>Location:</strong> Kotkapura (or nearby)<br>
+    <strong>1 sentence about what makes it special:</strong> _______________<br><br>
+    This brief is your foundation. Every asset you create from here serves this business.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The exact day-of execution plan — step by step, tool by tool.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Execution Plan &rarr;</button></div>
+</div>
+
+<!-- S3: EXECUTION PLAN -->
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Step-by-Step <span class="gr">Execution Plan</span></h2>
+    <p>The exact workflow for building the complete Brand Kit. Follow in order. Each step feeds into the next.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#9201;</div>
+    <div class="call-body">
+      <h4>Time Estimate</h4>
+      <p>Total time in-session: <strong>3–4 hours</strong> (or split across sessions). Each step below shows the recommended time. With practice, this reduces to 90 minutes per brand kit — meaning you can deliver 2 complete kits per day as a freelancer.</p>
+    </div>
+  </div>
+
+  <div class="tl">
+    <div class="tl-item">
+      <span class="tag tag-brand">Step 1 &mdash; 30 min</span>
+      <h4>Logo Concepts with Ideogram AI</h4>
+      <p>Generate 5–10 logo concepts for your chosen business. Use the business name in quotes for text-in-image. Try different styles: Design, 3D Render, Minimalist, Vintage. Pick the best 3 variations — primary (full color), secondary (dark background version), icon-only. Export as PNG with transparent background.</p>
+      <div class="tool-line">Tool: ideogram.ai &rarr; Style: Design &rarr; Aspect Ratio: 1:1 &rarr; "Put 'Business Name' in the prompt"</div>
+    </div>
+    <div class="tl-item">
+      <span class="tag tag-1">Step 2 &mdash; 45 min</span>
+      <h4>Social Graphics with Canva AI</h4>
+      <p>Build the social media template library. Create: 3 Instagram post templates (different content types — promotional, educational, social proof), 2 Story templates, 1 Reel thumbnail template. Use Magic Media for images, Magic Write for copy, and apply a consistent color palette across all. Save the Canva project — this is the client's ongoing template set.</p>
+      <div class="tool-line">Tool: canva.com &rarr; Magic Media (images) + Magic Write (copy) + Brand Kit (colors)</div>
+    </div>
+    <div class="tl-item">
+      <span class="tag tag-2">Step 3 &mdash; 45 min</span>
+      <h4>Product/Brand Video with HeyGen</h4>
+      <p>Script the 60-second brand introduction with Claude first. Then open HeyGen — choose an avatar that matches the brand personality. Paste the Claude script. Select background (professional for clinic, warm for restaurant). Generate the video. Import into CapCut: add captions, background music, logo watermark, and the logo from Step 1 as a lower-third. Export at 1080p.</p>
+      <div class="tool-line">Workflow: Claude (script) &rarr; HeyGen (avatar video) &rarr; CapCut (edit + captions + logo)</div>
+    </div>
+    <div class="tl-item">
+      <span class="tag tag-4">Step 4 &mdash; 30 min</span>
+      <h4>Brand Audio with ElevenLabs + Suno</h4>
+      <p>Create three audio assets: (1) Brand voiceover — 45-second brand story narration in ElevenLabs. (2) IVR greeting — 10-second welcome message. (3) Brand music loop — 15-30 seconds of background music from Suno AI that matches the brand mood. Blend voiceover + music in CapCut at 70/30 volume ratio. Export as MP3.</p>
+      <div class="tool-line">Tools: elevenlabs.io (voice) + suno.com (music) + CapCut (mix)</div>
+    </div>
+    <div class="tl-item">
+      <span class="tag tag-5">Step 5 &mdash; 30 min</span>
+      <h4>Compile the Brand Kit Package</h4>
+      <p>Create a folder: "BrandKit_[BusinessName]_[YourName]". Organize into sub-folders: /Logo (3 variations), /Social Templates (5 Canva files or exported PNGs), /Video (brand video MP4), /Audio (voiceover MP3, music MP3, IVR MP3), /Brand Guide (one-page PDF from Canva with colors, fonts, logo rules). This is your deliverable.</p>
+      <div class="tool-line">Final deliverable: Organized folder with all assets + 1-page Brand Guide PDF</div>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#128196;</div>
+    <div class="call-body">
+      <h4>Creating the 1-Page Brand Guide (Bonus)</h4>
+      <p>In Canva, create one page that contains: Logo in all 3 variations, the 5 brand colors with their HEX codes, the 2 brand fonts with examples, the brand voice description (3 adjectives: e.g., "Warm, Trustworthy, Local"), and the mission statement (written by Claude). This becomes the client's reference document for all future design decisions.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Think about what you're building.</strong> A complete brand kit — the same thing Delhi agencies charge ₹50,000+ for. You built it in one afternoon. That's not just a school project. That's a service you can offer tomorrow morning to any local business, anywhere in India.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The interactive quality checklist — make sure everything is complete before submitting.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Quality Checklist &rarr;</button></div>
+</div>
+
+<!-- S4: QUALITY CHECKLIST -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Quality <span class="gr">Checklist</span></h2>
+    <p>Check off each item as you complete it. Your project is submission-ready when all 20 items are ticked. Click each item to mark it done.</p>
+  </div>
+
+  <div class="checklist" id="checklistBox">
+    <h3>&#128203; Brand Kit Deliverables</h3>
+    <div id="checklistItems"></div>
+    <div class="cl-score">Completed: <span id="checkScore">0</span> / <span id="checkTotal">0</span> items</div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#9989;</div>
+    <div class="call-body">
+      <h4>What "Good Enough" Looks Like</h4>
+      <p><strong>Don't overthink it.</strong> Your logo doesn't need to be perfect — it needs to be intentional. Your video doesn't need a Hollywood production — it needs to be clear and consistent. The standard is: <em>If a local business owner saw this, would they feel their business was represented professionally?</em> Yes → Submit. No → Fix one thing and check again.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Final Review Before Submission</h4>
+    <ul>
+      <li>Open your brand kit folder — look at all assets together. Do they feel like they belong to the same brand?</li>
+      <li>Check: Are all logos using the same colors? Does the video font match the social template font?</li>
+      <li>Ask one person (family member, classmate) to look at your kit. What do they think the business does? If they guess correctly — your branding works.</li>
+      <li>Take a screenshot of this completed checklist as proof of completion</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Almost done — take the Week 3 final quiz on brand identity and tools.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Week 3 Final <span class="gr">Quiz</span></h2>
+    <p>8 questions on brand identity, brand kits, and the tools used across Sessions 9–12.</p>
+  </div>
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Submit Project &rarr;</button></div>
+</div>
+
+<!-- S6: SUBMIT PROJECT -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06 — Final</div>
+    <h2>Week 3 Project <span class="gr">Submission</span></h2>
+    <p>The Brand Visual Package — your complete brand kit for a local business. This is your Week 3 capstone deliverable.</p>
+  </div>
+
+  <div class="week-badge">&#127941; Week 3 Complete</div>
+
+  <div class="submit-box">
+    <h3>Brand Visual Package Submission</h3>
+    <p>Submit your complete Brand Kit folder containing: 3 logo variations, 5 social media templates, 1 brand video (60 sec), 1 brand voiceover, 1 brand music loop, 1 IVR greeting, and 1 Brand Guide PDF.</p>
+    <span class="deadline">Submission: Share your folder link in the class WhatsApp group OR present during the next class session</span>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What to Include in Your Submission</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Required</span><span class="crd-icon">&#128279;</span><h3>Logo Package</h3><p>3 logo variations: full color, monochrome, icon-only. PNG format. Ideally with transparent background.</p></div>
+    <div class="crd"><span class="tag tag-1">Required</span><span class="crd-icon">&#128241;</span><h3>Social Templates</h3><p>5 Canva designs: 3 Instagram posts, 2 Stories. Either as Canva share links or exported PNGs.</p></div>
+    <div class="crd"><span class="tag tag-2">Required</span><span class="crd-icon">&#127909;</span><h3>Brand Video</h3><p>60-second AI avatar video with captions, music, and logo. MP4 format, 1080p minimum.</p></div>
+    <div class="crd"><span class="tag tag-4">Required</span><span class="crd-icon">&#127908;</span><h3>Audio Package</h3><p>Brand voiceover (45s), IVR greeting (10s), background music loop (15-30s). MP3 format.</p></div>
+    <div class="crd"><span class="tag tag-5">Required</span><span class="crd-icon">&#128196;</span><h3>Brand Guide PDF</h3><p>1-page PDF: logo usage, color codes, fonts, brand voice adjectives, and mission statement.</p></div>
+    <div class="crd"><span class="tag tag-3">Bonus</span><span class="crd-icon">&#128197;</span><h3>7-Day Content Calendar</h3><p>Claude-generated 7-day Instagram content calendar from Session 11 homework. Earns bonus marks.</p></div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128293;</div>
+    <div class="call-body">
+      <h4>How This Will Be Evaluated</h4>
+      <p><strong>Completeness (40%):</strong> Are all required assets present?<br>
+      <strong>Consistency (30%):</strong> Do all assets feel like they belong to the same brand?<br>
+      <strong>Quality (20%):</strong> Are the assets professional and polished?<br>
+      <strong>Creativity (10%):</strong> Does the brand have a clear, compelling personality?<br><br>
+      Top submissions will be featured on the TARAhut AI Labs social media pages as real portfolio work — with your credit.</p>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#127942;</div>
+    <div class="call-body">
+      <h4>Week 3 — What You've Accomplished</h4>
+      <p><strong>Session 9:</strong> AI Image Generation — Midjourney, Ideogram, Canva AI<br>
+      <strong>Session 10:</strong> AI Video Creation — HeyGen, CapCut, full production workflow<br>
+      <strong>Session 11:</strong> AI Audio + Social Media — ElevenLabs, Suno AI, content machine, 7-day calendar<br>
+      <strong>Session 12:</strong> Brand Kit Capstone — Complete brand identity for a real business<br><br>
+      You've built a skill set that takes professional agencies years to develop. You did it in one week.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>This is not a school project.</strong> This is your first real portfolio piece. Every future client will ask: "Can you show me something you've made?" Now you can say yes. You can show them a complete brand kit — logo, video, audio, social templates — and watch their eyes light up. That's the moment everything changes.</p>
+  </div>
+
+  <div class="identity-shift">You are no longer a student learning AI tools. You are an AI-powered creative professional. That starts now.</div>
+
+  <div class="submit-box">
+    <h3>&#127881; Congratulations on Week 3!</h3>
+    <p>Share your Brand Kit in the class WhatsApp group with a 1-sentence description of the business you chose. Get feedback. Celebrate what you built.</p>
+    <span class="deadline">Week 4 Preview: AI Automation + Building Products. You'll build a real AI-powered product — from scratch.</span>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
+</div>
+
+<footer class="foot">
+  <p><span class="brand">TARAhut AI Labs</span> &middot; AI Tools Mastery Program &middot; Week 3, Session 12 &mdash; Capstone</p>
+  <p style="margin-top:.5rem">tarahutailabs.com &middot; +91 92008-82008 &middot; &copy; 2026</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.5+.1});
+function drawParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.a})`;ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1});requestAnimationFrame(drawParticles)}
+drawParticles();
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progBar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+function startLearning(){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec('s1')}
+function jumpTo(id){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec(id)}
+function go(id){showSec(id);window.scrollTo({top:0,behavior:'smooth'})}
+function showSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.s===id))}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Business briefs
+const bizData=[
+  {name:"Restaurant / Dhaba",desc:"Punjabi Zaika — Authentic Dhaba, Kotkapura",tone:"Warm, traditional, celebratory",colors:"Earthy saffron (#FF6B35), deep green (#1B5E20), cream (#FFF8E7)",font:"Bold serif heading + clean sans-serif body",logo:"Wheat stalks + cooking pot motif, Punjabi script wordmark option",social:"Food photography-led posts. Festive sale graphics. Daily special posts. Customer review quotes.",video:"Avatar in kurta, warm dhaba background. Script: 'From our kitchen to your heart — Punjabi Zaika has served authentic flavors since [year].'",audio:"Warm male voice, gentle dhol music loop, welcome IVR in Punjabi and Hindi"},
+  {name:"Beauty Salon",desc:"Radiance Beauty Studio — Premium Salon, Kotkapura",tone:"Elegant, empowering, aspirational",colors:"Rose gold (#C9967C), ivory white (#FAFAFA), deep plum (#4A1942)",font:"Elegant script heading + modern sans-serif body",logo:"Lotus flower or scissors motif, premium feel, minimal",social:"Before/after transformations. Beauty tips posts. Bridal package promotions. Client testimonial graphics.",video:"Female avatar in professional attire. Script: 'You deserve to feel beautiful every day. At Radiance, we make that our mission.'",audio:"Soft female voice, ambient piano music, calming IVR greeting"},
+  {name:"Clinic / Healthcare",desc:"Dr. Sharma's Health Clinic — Family Medicine, Kotkapura",tone:"Trustworthy, caring, professional",colors:"Medical blue (#1565C0), clean white (#FFFFFF), healing green (#43A047)",font:"Clean sans-serif throughout — readability is essential for healthcare",logo:"Caduceus or heart + cross motif, simple, trustworthy",social:"Health tips posts. Seasonal health advice. Doctor's availability schedule. Patient care testimonials.",video:"Professional male or female avatar in formal attire. Script: 'Your health is our priority. Trusted by Kotkapura families for [X] years.'",audio:"Calm professional voice, gentle background music, clear IVR in Hindi and Punjabi"},
+  {name:"Clothing Store",desc:"Trend Avenue — Fashion for Everyone, Kotkapura",tone:"Trendy, accessible, festive",colors:"Vibrant magenta (#E91E8C), jet black (#1A1A1A), gold accent (#FFD700)",font:"Bold display font heading + modern rounded body",logo:"Fashion motif — hanger, needle, or abstract fabric wave. Clean modern logo.",social:"New arrival posts. Styling tips. Festival/wedding season promotions. Size-inclusive messaging.",video:"Stylish avatar with clothing background. Script: 'Style that speaks. Prices that don't shout. Trend Avenue — fashion for every occasion.'",audio:"Upbeat female voice, contemporary background music, energetic IVR greeting"},
+  {name:"Coaching / Tuition",desc:"BrightMind Classes — Academic Excellence, Kotkapura",tone:"Encouraging, knowledgeable, results-focused",colors:"Academic navy (#0D47A1), bright yellow (#FDD835), clean white (#FFFFFF)",font:"Strong serif heading + clean body — academic, credible",logo:"Open book + upward arrow or graduation cap motif",social:"Study tips posts. Result announcements. Subject-specific tips. Motivation posts for students.",video:"Educator avatar at a whiteboard/clean background. Script: 'Every great student needs the right guidance. At BrightMind, we make learning make sense.'",audio:"Encouraging male or female voice, focused instrumental music, clear IVR with batch information"},
+  {name:"Sweets / Bakery",desc:"Mithas Sweets — Traditional Confectionery, Kotkapura",tone:"Joyful, traditional, celebratory",colors:"Festive orange (#FF6D00), turmeric yellow (#FFC107), deep red (#B71C1C)",font:"Decorative Devanagari-inspired heading + clean body",logo:"Traditional sweetmeat (ladoo or jalebi) motif with ornate border",social:"Festival special posts. Sweet of the day. Gift box promotions. Behind-the-scenes making videos.",video:"Warm avatar in front of display of sweets. Script: 'Made with love since [year]. Mithas — because every celebration deserves something sweet.'",audio:"Cheerful voice, Punjabi folk music jingle, warm IVR greeting in Hindi and Punjabi"}
+];
+function showBiz(i){
+  document.querySelectorAll('.biz-card').forEach((c,j)=>c.classList.toggle('selected',j===i));
+  const d=bizData[i];
+  const det=document.getElementById('bizDetail');
+  det.className='biz-detail show';
+  det.innerHTML=`<h4>Your Client: ${d.desc}</h4>
+    <p><strong>Brand Tone:</strong> ${d.tone}</p>
+    <p style="margin-top:.5rem"><strong>Suggested Colors:</strong> ${d.colors}</p>
+    <p style="margin-top:.5rem"><strong>Typography Direction:</strong> ${d.font}</p>
+    <p style="margin-top:.5rem"><strong>Logo Direction:</strong> ${d.logo}</p>
+    <p style="margin-top:.5rem"><strong>Social Content:</strong> ${d.social}</p>
+    <p style="margin-top:.5rem"><strong>Video Direction:</strong> ${d.video}</p>
+    <p style="margin-top:.5rem"><strong>Audio Direction:</strong> ${d.audio}</p>`;
+}
+
+// Checklist
+const checkItems=[
+  {label:"Logo — Primary Version",desc:"Full color logo with business name and icon, exported as PNG"},
+  {label:"Logo — Monochrome Version",desc:"Black and white version for single-color printing"},
+  {label:"Logo — Icon Only",desc:"Symbol/icon without text for profile pictures and watermarks"},
+  {label:"Color Palette Defined",desc:"3–5 brand colors with exact HEX codes written down"},
+  {label:"Brand Fonts Chosen",desc:"Heading font + body font selected from Google Fonts"},
+  {label:"Social Template — Promotional Post",desc:"Instagram post template for sales and offers (Canva)"},
+  {label:"Social Template — Educational Post",desc:"Instagram post template for tips and value content (Canva)"},
+  {label:"Social Template — Social Proof Post",desc:"Instagram post template for testimonials and reviews (Canva)"},
+  {label:"Social Template — Instagram Story",desc:"Vertical story template (Canva)"},
+  {label:"Social Template — Reel Thumbnail",desc:"Cover image template for video Reels (Canva)"},
+  {label:"Brand Video — Script Written",desc:"60-second script written with Claude and reviewed"},
+  {label:"Brand Video — Generated in HeyGen",desc:"AI avatar video created from the script"},
+  {label:"Brand Video — Edited in CapCut",desc:"Captions, music, logo added; exported as MP4 1080p"},
+  {label:"Brand Voiceover — 45 seconds",desc:"Professional narration generated in ElevenLabs, downloaded as MP3"},
+  {label:"IVR Greeting — 10 seconds",desc:"Phone welcome message generated in ElevenLabs"},
+  {label:"Brand Music Loop",desc:"15-30 second background music generated in Suno AI"},
+  {label:"Audio Mix Complete",desc:"Voiceover + music blended in CapCut, exported as MP3"},
+  {label:"Brand Guide PDF",desc:"1-page PDF: logo usage, colors, fonts, brand voice, mission statement"},
+  {label:"Folder Organized",desc:"All assets in labeled sub-folders (Logo / Social / Video / Audio)"},
+  {label:"Final Review Done",desc:"All assets feel visually consistent — same colors, same personality"}
+];
+let checkState=new Array(checkItems.length).fill(false);
+function buildChecklist(){
+  const container=document.getElementById('checklistItems');
+  document.getElementById('checkTotal').textContent=checkItems.length;
+  container.innerHTML=checkItems.map((item,i)=>`
+    <div class="cl-item ${checkState[i]?'checked':''}" onclick="toggleCheck(${i})">
+      <div class="cl-box"></div>
+      <div class="cl-label"><strong>${item.label}</strong><span>${item.desc}</span></div>
+    </div>`).join('');
+  document.getElementById('checkScore').textContent=checkState.filter(Boolean).length;
+}
+function toggleCheck(i){
+  checkState[i]=!checkState[i];
+  buildChecklist();
+}
+buildChecklist();
+
+// Quiz
+const questions=[
+  {q:"What are the 6 core components of a complete Brand Kit?",opts:["Logo, photo, website, email, phone, address","Logo, colors, fonts, social templates, video, and audio identity","Logo, slogan, mascot, jingle, font, and brochure","Poster, flyer, banner, social post, email, and card"],ans:1,fb:"A complete brand kit contains: Logo (visual symbol), Colors (palette with HEX codes), Fonts (heading + body), Social Templates (ready-to-use designs), Brand Video (introduction), and Audio Identity (voice, music, IVR)."},
+  {q:"In the brand kit execution plan, which tool is used FIRST to create the logo?",opts:["Canva AI","HeyGen","Ideogram AI","ElevenLabs"],ans:2,fb:"Ideogram AI is used first to create logo concepts because it can generate readable text (the business name) inside the image — a critical requirement for logo design that other tools struggle with."},
+  {q:"Why do brand guidelines specify exact HEX color codes instead of just saying 'blue' or 'green'?",opts:["HEX codes look more technical and professional","Different screens and printers display colors differently — HEX codes ensure the exact same color is used every time, everywhere","HEX codes are required by Instagram's algorithm","It's an international legal requirement for business branding"],ans:1,fb:"'Blue' means different things to different people and different devices. A HEX code like #1565C0 is an exact specification — it will reproduce the same color on every screen, printer, and platform, maintaining brand consistency."},
+  {q:"A local salon's brand kit should feel 'elegant and aspirational'. Which color palette BEST matches this brand tone?",opts:["Bright red, neon yellow, and electric blue","Rose gold, ivory white, and deep plum","Forest green, earth brown, and mustard yellow","Navy blue, orange, and silver"],ans:1,fb:"Rose gold, ivory white, and deep plum communicate elegance, luxury, and femininity — perfectly matching an aspirational beauty salon positioning. Colors are emotional signals that must match brand personality."},
+  {q:"What is the correct workflow for creating the brand video in the Session 12 execution plan?",opts:["CapCut → HeyGen → Claude → Export","Claude (script) → HeyGen (avatar video) → CapCut (edit + captions) → Export","Ideogram → ElevenLabs → CapCut → HeyGen → Export","Record yourself → CapCut → ElevenLabs → Export"],ans:1,fb:"The brand video workflow is: Claude writes the script → HeyGen generates the AI avatar video from the script → CapCut adds captions, logo watermark, background music, and B-roll → Final export at 1080p."},
+  {q:"What does a '1-page Brand Guide' include?",opts:["The business's complete history and founding story","Logo usage rules, color codes, fonts, brand voice adjectives, and mission statement","A collection of all social media posts made this year","The pricing for all brand kit services"],ans:1,fb:"A Brand Guide (or brand style guide) documents the rules for using the brand: logo variations and clearspace, exact color codes, font specifications, the brand voice/personality description, and the mission statement. It ensures consistency by everyone who creates branded content."},
+  {q:"According to this session, what is the primary evaluation criterion (highest weight) for the Brand Kit submission?",opts:["Creativity — how unique and original the ideas are","Completeness — are all required assets present?","Quality — are the assets technically perfect?","Speed — how quickly the kit was completed"],ans:1,fb:"Completeness is weighted at 40% — the highest weight. A complete but imperfect brand kit is more valuable than a beautiful but incomplete one. Deliver all required assets first, then refine for quality."},
+  {q:"A student from Kotkapura builds a complete brand kit for their uncle's restaurant and the uncle is happy with it. What is the BEST next step professionally?",opts:["Delete the project after the class — it was just homework","Ask the uncle to write a testimonial, publish the work (with permission) in your portfolio, and reach out to 3 more local businesses to offer the same service","Show it only in class and keep it private","Wait until completing all 4 weeks before approaching any clients"],ans:1,fb:"A satisfied client is proof. Ask for a written testimonial, get permission to show the work, add it to your portfolio (even a Google Drive folder counts), and immediately reach out to more local businesses. The best time to get your first paid client is right after delivering excellent free or low-cost work."}
+];
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  const q=questions[cur];
+  document.getElementById('qProg').innerHTML=questions.map((_,i)=>`<div class="q-dot ${i<cur?'done':i===cur?'cur':''}"></div>`).join('');
+  document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${cur+1} of ${questions.length}</span>${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="answer(${i})"><span class="ol">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${score}/${cur}</span>${cur<questions.length-1?`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="nextQ()" style="display:none">Next &rarr;</button>`:`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="showScore()" style="display:none">See Final Score &rarr;</button>`}</div>`;
+  answered=false;
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=questions[cur];
+  const opts=document.querySelectorAll('.q-opt');
+  opts[i].classList.add(i===q.ans?'ok':'no');
+  if(i===q.ans)score++;
+  opts[q.ans].classList.add('ok');
+  const fb=document.getElementById('qFb');
+  fb.className=`q-fb show ${i===q.ans?'fb-ok':'fb-no'}`;
+  fb.innerHTML=(i===q.ans?'&#9989; Correct! ':'&#10060; Not quite. ')+q.fb;
+  document.getElementById('nextBtn').style.display='inline-flex';
+}
+function nextQ(){cur++;if(cur<questions.length)renderQuiz();else showScore();}
+function showScore(){
+  const pct=Math.round(score/questions.length*100);
+  let msg=pct>=80?'Outstanding! You are ready to build real Brand Kits for real clients.':pct>=60?'Good effort! Review the concepts and you are ready to deliver.':'Revisit the sessions — the knowledge is there, just needs more practice.';
+  document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/${questions.length}</div><p style="color:var(--t2);margin:.5rem 0 1.5rem">${pct}% &mdash; ${msg}</p><button class="btn btn-glow" onclick="go('s6')" style="margin-right:1rem">Submit Project &rarr;</button><button class="btn btn-ghost btn-sm" onclick="cur=0;score=0;renderQuiz()">Retry Quiz</button></div>`;
+  document.getElementById('qProg').innerHTML=questions.map(()=>`<div class="q-dot done"></div>`).join('');
+}
+renderQuiz();
+</script>
+</body>
+</html>

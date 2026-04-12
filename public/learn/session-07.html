@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 7: AI Research Tools — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Flow Steps */
+.flow-steps{margin:2.5rem 0}
+.flow-step{display:flex;gap:1.5rem;align-items:flex-start;margin-bottom:1.5rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:default}
+.flow-step:hover{border-color:rgba(0,240,255,.25);transform:translateX(6px)}
+.flow-num{width:44px;height:44px;border-radius:50%;background:var(--gbrand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0}
+.flow-content h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.flow-content p{color:var(--t2);font-size:.88rem;line-height:1.7}
+.flow-content .flow-prompt{margin-top:.75rem;padding:.75rem 1rem;background:var(--bg);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c5);white-space:pre-wrap}
+/* Race Steps */
+.race-box{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.race-topic{padding:1rem 1.25rem;background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--rs);margin-bottom:1.5rem;font-family:'Syne',sans-serif;font-weight:600}
+.race-step{padding:1.25rem 1.5rem;border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:1rem;cursor:pointer;transition:all .3s;position:relative}
+.race-step:hover{border-color:var(--c1)}
+.race-step-header{display:flex;align-items:center;gap:12px}
+.race-badge{padding:4px 12px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:1px}
+.badge-perp{background:rgba(168,85,247,.15);color:var(--c2)}
+.badge-nblm{background:rgba(0,240,255,.1);color:var(--c1)}
+.badge-claude{background:rgba(5,150,105,.12);color:var(--brand)}
+.race-step h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700}
+.race-step-body{display:none;padding-top:1rem;color:var(--t2);font-size:.88rem;line-height:1.8;animation:fadeSlide .3s ease}
+.race-step.open .race-step-body{display:block}
+.race-step-body .query{background:var(--bg);border:1px dashed rgba(0,240,255,.12);border-radius:var(--rs);padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c5);margin-top:.75rem;white-space:pre-wrap}
+/* Comparison */
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.flow-step{flex-direction:column;gap:1rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 2 &middot; Session 7 &middot; AI Tools Mastery</div>
+  <h1>AI <span class="gr">Research Tools</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Research that used to take days now takes hours. Perplexity + NotebookLM + Claude = the ultimate research stack.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Perplexity AI</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>NotebookLM</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Research Workflow</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Research Race</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: Perplexity -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Perplexity AI — <span class="gr">Google's Biggest Threat</span></h2>
+    <p>Perplexity doesn't just find web pages — it reads them, synthesizes the information, and gives you a cited answer. Research has fundamentally changed.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why Perplexity Beats Google for Research</h4><p>Google gives you 10 links. You click each one, read multiple pages, and manually synthesize the information. Perplexity reads all those pages <strong>for you</strong>, gives you a direct answer, and shows exactly which source each fact came from. Research that took 45 minutes now takes 4 minutes.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Interface — What Each Part Does</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Main Feature</span><span class="crd-icon">&#128269;</span><h3>AI Search</h3><p>Type a research question in natural language. Perplexity searches the web in real-time and synthesizes a comprehensive answer with numbered citations. Click any citation to see the source.</p></div>
+    <div class="crd"><span class="tag tag-brand">Pro Feature</span><span class="crd-icon">&#128202;</span><h3>Pro Search</h3><p>Pro Search goes deeper — it asks you clarifying questions before searching, then conducts multiple searches to give a more nuanced, comprehensive answer. Essential for complex research questions.</p></div>
+    <div class="crd"><span class="tag tag-5">Trust Signals</span><span class="crd-icon">&#128203;</span><h3>Citations &amp; Sources</h3><p>Every fact has a numbered citation. Unlike ChatGPT which can fabricate sources, Perplexity shows real, clickable URLs. For professional research and academic work, this is non-negotiable.</p></div>
+    <div class="crd"><span class="tag tag-2">Organization</span><span class="crd-icon">&#128218;</span><h3>Collections</h3><p>Save related searches into Collections — like folders for your research projects. Example: one collection for "Competitive Analysis," another for "Market Research." Keeps your research organized as you build on it.</p></div>
+    <div class="crd"><span class="tag tag-4">Discovery</span><span class="crd-icon">&#128294;</span><h3>Related Questions</h3><p>After each answer, Perplexity suggests related questions you didn't think to ask. These "rabbit holes" often surface the most valuable insights. Click to explore any direction.</p></div>
+    <div class="crd"><span class="tag tag-3">Focused</span><span class="crd-icon">&#128196;</span><h3>Focus Mode</h3><p>Choose where to search: All (web), Academic (scholarly papers), YouTube (video transcripts), Reddit, Wikipedia. Use Academic for credible research, Reddit for real-world opinions.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Perplexity vs Google: Side by Side</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Google Search</th><th>Perplexity AI</th></tr></thead>
+      <tbody>
+        <tr><td><strong>What you get</strong></td><td>10 links to click and read</td><td>A synthesized answer with citations</td></tr>
+        <tr><td><strong>Time to answer</strong></td><td>20-45 minutes of reading</td><td>30-90 seconds</td></tr>
+        <tr><td><strong>Source verification</strong></td><td>You check each site manually</td><td>Numbered citations, clickable</td></tr>
+        <tr><td><strong>Follow-up questions</strong></td><td>New search each time</td><td>Conversational — remembers context</td></tr>
+        <tr><td><strong>Academic research</strong></td><td>Google Scholar (separate)</td><td>Built-in Academic focus mode</td></tr>
+        <tr><td><strong>Synthesis across sources</strong></td><td>You do it manually</td><td>AI does it automatically</td></tr>
+        <tr><td><strong>Best for</strong></td><td>Finding specific websites, local results, shopping</td><td>Research, factual questions, reports</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Go to <a href="https://perplexity.ai" target="_blank">perplexity.ai</a> right now and search: <em>"What are the top 5 AI tools Indian professionals are using for productivity in 2025?"</em> Notice how it gives you a cited, synthesized answer — not just links.</p>
+  </div>
+
+  <div class="micro-win">You now understand why top researchers have abandoned Google for Perplexity.</div>
+  <p class="curiosity-hook">Next: NotebookLM — Google's secret weapon for deep document analysis.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: NotebookLM &rarr;</button></div>
+</div>
+
+<!-- S2: NotebookLM -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! NotebookLM will change how you study and learn.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Google NotebookLM — <span class="gr">Your Personal Research Assistant</span></h2>
+    <p>Upload your own documents and NotebookLM becomes an expert on them. It only uses what you give it — no hallucination, maximum accuracy.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128293;</div><div class="call-body"><h4>The Core Concept That Changes Everything</h4><p>Most AI tools use their general training data. NotebookLM is different — it <strong>only answers from the documents you upload</strong>. This means zero hallucination. If it says something, it's in your documents. This makes it perfect for analyzing reports, textbooks, research papers, or any content where accuracy is critical.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">4 Things NotebookLM Does Brilliantly</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">&#128196;</span>
+      <h3>Upload &amp; Understand Documents</h3>
+      <p>Upload PDFs, Google Docs, websites, YouTube videos, audio files. NotebookLM reads them all and becomes an expert. Ask it anything about the content — it cites the exact location of every answer.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">&#128209;</span>
+      <h3>Generate Summaries</h3>
+      <p>Ask for a summary at different depths: executive summary (1 page), detailed summary (section by section), or a briefing document. It organizes information the way you need it, not the way the original author organized it.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">&#128218;</span>
+      <h3>Create Study Guides</h3>
+      <p>Click "Study Guide" and NotebookLM generates: key concepts, FAQ, practice questions with answers, and a glossary — all from your uploaded materials. Turns any document into a complete learning resource.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c4)">
+      <span class="crd-icon">&#127911;</span>
+      <h3>Audio Overview (Podcast Feature)</h3>
+      <p>The most impressive feature: click "Generate Audio Overview" and NotebookLM creates a realistic, conversational podcast where two AI hosts discuss your documents. Listen while commuting. Turn 50 pages into a 10-minute audio summary.</p>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#127911;</div><div class="call-body"><h4>The Audio Overview Feature — Why It's Revolutionary</h4><p>The Audio Overview generates a natural, engaging conversation between two AI hosts who discuss, debate, and explain your documents. It doesn't just read text aloud — it creates genuine dialogue with insights and connections. Students use this to <strong>absorb textbook chapters during commutes</strong>. Professionals use it to <strong>get briefed on long reports while driving</strong>. This feature alone makes NotebookLM worth learning.</p></div></div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <ul>
+      <li>Go to <a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a></li>
+      <li>Create a new notebook</li>
+      <li>Upload any PDF you have (a report, article, textbook chapter)</li>
+      <li>Ask: <em>"What are the 5 most important points in this document?"</em></li>
+      <li>Then click "Generate Audio Overview" and listen</li>
+    </ul>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Imagine having 3 months of competitor research</strong> sitting in a folder as PDFs. You upload them all to NotebookLM and ask: "What are the common weaknesses across all these competitors?" In 30 seconds you have an answer with citations from specific documents. That's what professionals with proper AI skills can do.</p>
+  </div>
+
+  <div class="micro-win">You've unlocked the most underrated AI research tool available today — for free.</div>
+  <p class="curiosity-hook">Next: Combine these tools into a professional research workflow.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Research Workflow &rarr;</button></div>
+</div>
+
+<!-- S3: Workflow -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127919; 50% through — now we combine everything into a professional workflow.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>The Professional <span class="gr">Research Workflow</span></h2>
+    <p>Three tools. Three roles. One powerful system that takes you from question to published-quality report.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Problem with Research Today</h4><p>Most people use AI like a single tool. They ask ChatGPT for research and get confident-sounding hallucinations. Or they Google for hours and never synthesize well. The professionals who are winning use a <strong>multi-tool workflow</strong> where each tool does what it does best.</p></div></div>
+
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-content">
+        <h4>&#128269; Topic &rarr; Perplexity for Current Facts &amp; Citations</h4>
+        <p>Start every research project on Perplexity. It searches the live web and gives you cited, current information. This is your <strong>fact-gathering phase</strong>. Collect statistics, recent developments, expert opinions, and key data points. Use Pro Search for complex topics.</p>
+        <div class="flow-prompt">Example Perplexity queries for "AI in Punjab Agriculture":
+1. "Latest statistics on AI adoption in Indian agriculture 2024-2025 with sources"
+2. "How are Punjab farmers using technology to improve crop yields?"
+3. "Government schemes for agricultural technology in Punjab India"
+4. "Experts: impact of AI on small-scale farming in India"
+
+Save all answers + copy citation URLs to a document.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-content">
+        <h4>&#128196; Perplexity Outputs + PDFs &rarr; NotebookLM for Deep Analysis</h4>
+        <p>Take your Perplexity research, download relevant PDFs, and upload everything to a NotebookLM notebook. Now ask deeper, analytical questions that require synthesizing across multiple sources. This is your <strong>analysis phase</strong>.</p>
+        <div class="flow-prompt">Example NotebookLM queries (after uploading research):
+1. "What are the 3 most significant barriers to AI adoption in Indian farming?"
+2. "Find contradictions or disagreements between these sources"
+3. "What questions do these documents raise that aren't answered?"
+4. "Compare the evidence for AI adoption in North India vs South India"
+5. "Generate a study guide from these materials"</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-content">
+        <h4>&#9997;&#65039; Analysis + Citations &rarr; Claude for Report Writing</h4>
+        <p>Take your NotebookLM analysis and Perplexity citations into Claude. Claude is your <strong>writing phase</strong> tool — it structures, polishes, and writes at a professional level. Give it your research and tell it exactly what you need.</p>
+        <div class="flow-prompt">Claude prompt for final report:
+"Write a 1,200-word professional research report on [topic].
+
+Use this research data: [paste Perplexity findings]
+Key analysis points: [paste NotebookLM insights]
+Citations to include: [paste source URLs]
+
+Structure: Executive Summary → Context → Key Findings → Analysis → Recommendations → Conclusion
+Tone: Professional, evidence-based, accessible to non-experts
+Include a citation list at the end."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">&#9200;</div><div class="call-body"><h4>Time Comparison: Old Way vs New Way</h4><p><strong>Old way (without this workflow):</strong> 6-10 hours — endless Googling, manual note-taking, writing from scratch, formatting citations<br><strong>New way (Perplexity + NotebookLM + Claude):</strong> 45-90 minutes — structured research, deep analysis, professional report with full citations<br><strong>That's 5-8 hours saved on every research project.</strong></p></div></div>
+
+  <div class="identity-shift">You're not just doing research faster — you're doing research at a quality level that would have required a research team before AI.</div>
+
+  <p class="curiosity-hook">Next: See the full workflow in action with a live example topic.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Research Race &rarr;</button></div>
+</div>
+
+<!-- S4: Research Race -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#9889; 65% done! This is the most interactive section — click through each step.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive: <span class="gr">Research Race</span></h2>
+    <p>Topic: <strong>"The rise of AI-powered education startups in India."</strong> Follow the 3-step workflow and see exactly what to do at each stage. Click each step to expand.</p>
+  </div>
+
+  <div class="race-box">
+    <div class="race-topic">&#128218; Research Topic: <strong>The Rise of AI-Powered Education Startups in India</strong></div>
+
+    <div class="race-step" onclick="toggleRace(this)">
+      <div class="race-step-header">
+        <span class="race-badge badge-perp">STEP 1</span>
+        <span style="font-size:1.1rem">&#128269;</span>
+        <h4>Perplexity — Gather Facts &amp; Citations</h4>
+        <span style="margin-left:auto;color:var(--t3);font-size:1.2rem">&#43;</span>
+      </div>
+      <div class="race-step-body">
+        <p>Open Perplexity in Pro Search mode. Run these 4 searches one by one:</p>
+        <div class="query">Query 1: "How many AI edtech startups launched in India in 2023-2025?"
+Expected: Statistics, funding data, notable companies
+
+Query 2: "How are students in Tier 2 and Tier 3 Indian cities using AI learning tools?"
+Expected: Usage patterns, adoption barriers, specific examples
+
+Query 3: "What government policies support AI in education in India 2024-2025?"
+Expected: NEP references, AICTE policies, funding schemes
+
+Query 4: "Expert opinions: will AI replace teachers in India?"
+Expected: Quotes from educators, researchers, industry leaders</div>
+        <p style="margin-top:.75rem"><strong>What to save:</strong> Copy all answers into a Google Doc. Click the numbered citations and save the URLs for reference. You now have a fact base.</p>
+      </div>
+    </div>
+
+    <div class="race-step" onclick="toggleRace(this)">
+      <div class="race-step-header">
+        <span class="race-badge badge-nblm">STEP 2</span>
+        <span style="font-size:1.1rem">&#128196;</span>
+        <h4>NotebookLM — Deep Analysis &amp; Pattern Finding</h4>
+        <span style="margin-left:auto;color:var(--t3);font-size:1.2rem">&#43;</span>
+      </div>
+      <div class="race-step-body">
+        <p>Upload your Perplexity research document + any relevant PDFs (e.g., KPMG India EdTech Report, NASSCOM data). Then ask:</p>
+        <div class="query">Analytical questions to ask NotebookLM:
+
+1. "What are the 3 biggest opportunities for AI edtech in India based on these sources?"
+
+2. "What gaps or challenges do these documents identify that startups haven't solved yet?"
+
+3. "Are there any contradictions between what experts say and what the data shows?"
+
+4. "Create a study guide: key players, key trends, key risks in Indian AI edtech"
+
+5. "Generate an Audio Overview of this research for me to listen to"</div>
+        <p style="margin-top:.75rem"><strong>What you get:</strong> Patterns across sources, contradictions to explore, analytical insights your Perplexity search didn't surface. This is where your report gets depth.</p>
+      </div>
+    </div>
+
+    <div class="race-step" onclick="toggleRace(this)">
+      <div class="race-step-header">
+        <span class="race-badge badge-claude">STEP 3</span>
+        <span style="font-size:1.1rem">&#9997;&#65039;</span>
+        <h4>Claude — Write the Final Report</h4>
+        <span style="margin-left:auto;color:var(--t3);font-size:1.2rem">&#43;</span>
+      </div>
+      <div class="race-step-body">
+        <p>Take your Perplexity data + NotebookLM analysis into Claude. Paste it all and use this prompt:</p>
+        <div class="query">Prompt to Claude:
+
+"Write a 1,000-word professional research report titled:
+'The Rise of AI-Powered Education Startups in India: Opportunities, Challenges & Outlook'
+
+Use the following research data I've gathered: [paste everything]
+
+Structure:
+1. Executive Summary (3 sentences)
+2. Market Overview (statistics-rich)
+3. Key Trends (3-4 trends with evidence)
+4. Challenges & Barriers
+5. Opportunities (specific, actionable)
+6. Expert Perspectives
+7. Conclusion
+8. Sources (list all citations)
+
+Tone: Professional, analytical. Suitable for business or academic audience.
+Do NOT add information beyond what I've provided."</div>
+        <p style="margin-top:.75rem"><strong>Total time:</strong> Perplexity (20 min) + NotebookLM (15 min) + Claude (10 min) = <strong>45 minutes for a professional, cited research report.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="micro-win">You just completed a full research workflow that professionals charge thousands for.</div>
+  <p class="curiosity-hook">8 questions to lock in this workflow. Ready?</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: Quiz -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! 8 questions on Perplexity, NotebookLM &amp; research workflows.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Quiz: <span class="gr">AI Research Tools</span></h2>
+    <p>8 questions. Immediate feedback. Let's see what you've absorbed.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Research is no longer a bottleneck — it's a competitive advantage.</div>
+  <p class="curiosity-hook">Final section — homework and preparation for Session 8.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Finish: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: Wrap-Up -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Wrap-Up &amp; <span class="gr">Homework</span></h2>
+    <p>Session 7 complete. You've mastered the research stack that separates amateurs from professionals.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127942;</div><div class="call-body"><h4>What You Mastered Today</h4><p>
+    &#9989; Perplexity AI: interface, Pro Search, citations, Collections, Focus Mode<br>
+    &#9989; Why Perplexity beats Google for research (with comparison table)<br>
+    &#9989; Google NotebookLM: document upload, summaries, study guides, Audio Overview<br>
+    &#9989; The 3-step research workflow: Perplexity &rarr; NotebookLM &rarr; Claude<br>
+    &#9989; Complete walkthrough: research topic to finished report in 45 minutes
+  </p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">&#128218; Your Homework — Due Before Session 8</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">&#128203;</span>
+      <h3>Research a Topic You Care About</h3>
+      <p>Choose any topic relevant to your field or business: a market trend, a competitor landscape, a technical concept. Run the full 3-step workflow: Perplexity &rarr; NotebookLM &rarr; Claude.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">&#128196;</span>
+      <h3>Create a Cited Research Report</h3>
+      <p>The output of your homework is a 500-800 word research report with at least 5 cited sources. This report becomes part of your Week 2 Professional Content Kit portfolio.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">&#127911;</span>
+      <h3>Try the Audio Overview</h3>
+      <p>Upload your research to NotebookLM and generate an Audio Overview. Listen to it. Share your feedback in the group: Did it accurately represent your research? Was it useful?</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Prepare for Session 8</h4>
+    <p>Session 8 is about <strong>AI Presentations &amp; Design</strong> (Gamma &amp; Canva AI). Before coming:</p>
+    <ul>
+      <li>Create a free account at <a href="https://gamma.app" target="_blank">gamma.app</a></li>
+      <li>If you don't have Canva yet, sign up at <a href="https://canva.com" target="_blank">canva.com</a></li>
+      <li>Think of one presentation you need to create (for work, pitch, or portfolio)</li>
+      <li>Bring your research report from this session — we'll turn it into a presentation</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">You can now research any topic professionally, with citations, in under an hour. That skill is worth thousands in consulting fees.</div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px">Contact TARAhut AI Labs</a>
+    <button class="btn btn-ghost" onclick="go('s1')">&#128260; Review Session</button>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Week 2, Session 7 &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// PARTICLES
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV & SECTIONS
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=33?`${pctDone}% — Solid start`:pctDone<=66?`${pctDone}% — Building the stack`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session 7 Complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// RACE STEPS
+function toggleRace(el){
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.race-step').forEach(s=>s.classList.remove('open'));
+  if(!isOpen)el.classList.add('open');
+}
+
+// QUIZ
+const qData=[
+  {q:"What is the core difference between Google Search and Perplexity for research?",o:["Perplexity is faster at finding links","Perplexity synthesizes information from multiple sources and provides cited answers","Google is completely free while Perplexity is paid","Perplexity only searches academic papers"],a:1,e:"Google gives you links to click. Perplexity reads those sources and gives you a synthesized, cited answer directly — eliminating the need to manually read multiple pages."},
+  {q:"What makes NotebookLM fundamentally different from ChatGPT for research?",o:["It's faster at generating text","It can only answer from the documents you upload — no hallucination","It has internet access","It generates images from your documents"],a:1,e:"NotebookLM only uses the documents you upload. This means it cannot hallucinate about your content — every answer is grounded in your actual sources. This is critical for accuracy."},
+  {q:"What does Perplexity's 'Focus Mode' allow you to do?",o:["Focus on one question at a time","Choose which type of source to search (web, academic, YouTube, Reddit)","Block distracting websites","Set a timer for research sessions"],a:1,e:"Focus Mode lets you choose where Perplexity searches: All (web), Academic (scholarly papers), YouTube, Reddit, or Wikipedia. Using Academic mode gives you credible, peer-reviewed sources for serious research."},
+  {q:"In the 3-step research workflow, what is Claude's role?",o:["Gathering facts from the internet","Analyzing patterns across uploaded documents","Writing the final structured report","Generating audio summaries"],a:2,e:"In the workflow: Perplexity gathers facts, NotebookLM performs deep analysis, and Claude writes the final structured report. Each tool does what it does best."},
+  {q:"What is NotebookLM's Audio Overview feature?",o:["A text-to-speech reading of your documents","A realistic podcast where two AI hosts discuss your uploaded documents","A voice search feature","Background music for studying"],a:1,e:"Audio Overview generates a natural, engaging podcast-style conversation where two AI hosts discuss, explain, and debate the content of your documents — far more engaging than text-to-speech."},
+  {q:"Why is Perplexity's Pro Search better for complex research topics?",o:["It searches more websites","It's faster than regular search","It asks clarifying questions and conducts multiple searches for a more nuanced answer","It gives longer answers"],a:2,e:"Pro Search asks you clarifying questions before searching, then conducts multiple targeted searches to build a more comprehensive, nuanced answer. For complex topics, this depth matters enormously."},
+  {q:"According to the session, how long does the 3-step research workflow take to produce a professional report?",o:["5-6 hours","2-3 hours","45-90 minutes","15 minutes"],a:2,e:"The workflow takes approximately 45-90 minutes: Perplexity (~20 min), NotebookLM (~15 min), Claude writing (~10 min). Compare this to the old way: 6-10 hours of manual research and writing."},
+  {q:"What should you save from Perplexity searches to use in later workflow steps?",o:["Only the final answers, not the sources","The answers AND the citation URLs","Only the URLs, not the text","Screenshots of the search results"],a:1,e:"Save both the synthesized answers AND the citation URLs. You'll need the answers to feed into NotebookLM and Claude, and the URLs to include as proper citations in your final report."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Research Pro!';tierColor='var(--brand)';msg='You\'ve mastered the research stack. Run the workflow on a real topic this week to cement it.'}
+    else if(pct>=50){tier='Good Foundation!';tierColor='var(--c1)';msg='Solid understanding. Try each tool hands-on to reinforce the concepts.'}
+    else{tier='Keep Going!';tierColor='var(--c4)';msg='Go back and try the actual tools — Perplexity, NotebookLM, and Claude. Practice beats reading every time.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

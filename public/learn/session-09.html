@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9: AI Image Generation — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.flow-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;overflow:hidden}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:1.5rem}
+.flow-node{text-align:center;padding:1rem 1.2rem;cursor:pointer;transition:all .3s;min-width:110px}
+.flow-node:hover{transform:scale(1.08)}
+.flow-node.on .fi{border-color:var(--c1);box-shadow:0 0 24px rgba(0,240,255,.25);background:rgba(0,240,255,.06)}
+.fi{width:62px;height:62px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto .6rem;background:var(--bg);transition:all .3s}
+.flow-node label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;display:block;cursor:pointer}
+.fl-arrow{color:var(--t3);font-size:1.2rem;flex-shrink:0}
+.fl-detail{padding:1.5rem;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.12);border-radius:var(--rs);display:none;animation:fadeSlide .3s ease}
+.fl-detail.on{display:block}
+.fl-detail h4{font-family:'Syne',sans-serif;color:var(--c1);margin-bottom:.4rem;font-size:1rem}
+.fl-detail p{color:var(--t2);font-size:.9rem}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.prompt-example{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1.25rem 1.5rem;margin:.75rem 0;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);position:relative}
+.prompt-example .p-label{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:.4rem;font-family:'Syne',sans-serif}
+.hw-box{background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.hw-box h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:1rem}
+.hw-box ul{padding-left:1.2rem;color:var(--t2);font-size:.92rem}
+.hw-box li{margin-bottom:.6rem}
+@media(max-width:768px){
+  .cgrid{grid-template-columns:1fr}
+  .flow-row{flex-direction:column}.fl-arrow{transform:rotate(90deg)}
+  .sec{padding:2rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 9 &middot; AI Tools Mastery</div>
+  <h1>AI Image<br><span class="gr">Generation</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Turn words into stunning visuals. Learn Midjourney, Ideogram, and Canva AI to create professional images for any brand, business, or project.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>How AI Creates</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Midjourney</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Ideogram AI</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Canva AI</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: HOW AI CREATES IMAGES -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>How AI <span class="gr">Creates Images</span></h2>
+    <p>No art degree. No Photoshop skills. Just words — and AI turns them into professional visuals in seconds. But how?</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">&#128161;</div>
+    <div class="call-body">
+      <h4>The Magic Explained Simply</h4>
+      <p>Imagine taking a clear photo and slowly adding static noise until it becomes pure fuzz. Now imagine teaching an AI to <strong>reverse that process</strong> — to look at fuzz and intelligently remove noise based on your description. That's a <strong>diffusion model</strong>. It starts from random noise and gradually sculpts your image, guided by your text prompt.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Diffusion Process — Click Each Step</h3>
+  <div class="flow-wrap">
+    <div class="flow-row" id="flowRow1">
+      <div class="flow-node on" data-f="0" onclick="selFlow('flowRow1','flowInfo1',0)"><div class="fi">&#128196;</div><label>Your Prompt</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="1" onclick="selFlow('flowRow1','flowInfo1',1)"><div class="fi">&#127925;</div><label>Text Encoding</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="2" onclick="selFlow('flowRow1','flowInfo1',2)"><div class="fi">&#128168;</div><label>Pure Noise</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="3" onclick="selFlow('flowRow1','flowInfo1',3)"><div class="fi">&#127775;</div><label>Denoising</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="4" onclick="selFlow('flowRow1','flowInfo1',4)"><div class="fi">&#127912;</div><label>Your Image</label></div>
+    </div>
+    <div id="flowInfo1">
+      <div class="fl-detail on" data-f="0"><h4>Step 1: Your Prompt</h4><p>You type: "A golden retriever wearing sunglasses on a beach at sunset, photorealistic." Every word matters. The AI will try to interpret each element.</p></div>
+      <div class="fl-detail" data-f="1"><h4>Step 2: Text Encoding</h4><p>A language model (similar to GPT) converts your text into a numerical "understanding" — a mathematical representation of what you mean. It knows "sunset" means warm colors, low light, horizon.</p></div>
+      <div class="fl-detail" data-f="2"><h4>Step 3: Pure Noise</h4><p>The AI starts with a completely random static image — like TV static. No information, just randomness. This is the starting canvas.</p></div>
+      <div class="fl-detail" data-f="3"><h4>Step 4: Denoising (50 steps)</h4><p>In about 50 small steps, the model removes noise while being "guided" by your text. Each step makes the image a little clearer, a little more like what you described. Like developing a photograph in a darkroom.</p></div>
+      <div class="fl-detail" data-f="4"><h4>Step 5: Your Image</h4><p>A final, coherent image emerges. It was never drawn — it was discovered by removing noise in a text-guided way. That's why AI images have such a unique, slightly surreal quality.</p></div>
+    </div>
+  </div>
+
+  <div class="micro-win">You now understand what took PhD students years to develop. That's your advantage.</div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Text-to-Image</span><span class="crd-icon">&#128221;</span><h3>Text-to-Image</h3><p>Type a description, get an image. Used by Midjourney, Ideogram, Canva AI, DALL-E. The most common approach.</p></div>
+    <div class="crd"><span class="tag tag-2">Image-to-Image</span><span class="crd-icon">&#128247;</span><h3>Image-to-Image</h3><p>Upload a reference image + prompt to guide the style. Great for maintaining brand consistency.</p></div>
+    <div class="crd"><span class="tag tag-5">Inpainting</span><span class="crd-icon">&#9999;&#65039;</span><h3>Inpainting</h3><p>Edit specific parts of an image while keeping the rest. Draw a mask over what you want to change, describe the replacement.</p></div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#9889;</div>
+    <div class="call-body">
+      <h4>Why This Matters for Your Career</h4>
+      <p>In 2024, stock photo agencies reported a <strong>35% drop in downloads</strong>. Businesses are switching to AI-generated images. A social media post that used to need a &#8377;5,000 photoshoot can now be created in 30 seconds. The person who creates those images? That could be you.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Quick Reflection</h4>
+    <p>Think of the last time you searched for a stock photo. What if you could generate exactly what you imagined instead of settling for "close enough"? That's the power you're about to unlock.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The professional's choice for AI images — Midjourney.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Midjourney &rarr;</button></div>
+</div>
+
+<!-- S2: MIDJOURNEY -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; Section 2 of 6. You're building real skills right now.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Midjourney — <span class="gr">Professional AI Art</span></h2>
+    <p>The industry standard for AI image generation. Used by designers, agencies, and brands worldwide. Operates through Discord.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128279;</div>
+    <div class="call-body">
+      <h4>Getting Started: Discord Setup</h4>
+      <p><strong>1.</strong> Create a free account at discord.com<br>
+      <strong>2.</strong> Visit midjourney.com and click "Join the Beta"<br>
+      <strong>3.</strong> Accept the Discord invite — you're now in the Midjourney server<br>
+      <strong>4.</strong> Go to any #newbies channel (or invite the bot to your own server)<br>
+      <strong>5.</strong> Type <code>/imagine</code> and press Enter to start your first prompt<br>
+      <strong>Note:</strong> Free tier gives ~25 images. Paid plans start at $10/month for ~200 images.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Midjourney Prompt Formula</h3>
+
+  <div class="callout call-1">
+    <div class="call-ico">&#128295;</div>
+    <div class="call-body">
+      <h4>Structure: /imagine [Subject] + [Style] + [Details] + [Parameters]</h4>
+      <p>Think of your prompt in 4 layers: <strong>What</strong> (subject) + <strong>How it looks</strong> (style) + <strong>Details</strong> (lighting, mood, camera) + <strong>Technical params</strong> (size, quality)</p>
+    </div>
+  </div>
+
+  <div class="prompt-example">
+    <div class="p-label">Basic Prompt</div>
+    /imagine a cup of chai on a wooden table
+  </div>
+  <div class="prompt-example">
+    <div class="p-label">Better Prompt (with style)</div>
+    /imagine a steaming cup of masala chai on a rustic wooden table, warm morning light, food photography style, shallow depth of field
+  </div>
+  <div class="prompt-example">
+    <div class="p-label">Professional Prompt (with parameters)</div>
+    /imagine a steaming cup of masala chai on a rustic wooden table, warm golden morning light, food photography, shallow depth of field, Canon 85mm lens, bokeh background, cozy atmosphere --ar 4:5 --q 2 --v 6
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Essential Parameters</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>What It Does</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ar</code></td><td>Aspect ratio of your image</td><td><code>--ar 16:9</code> (landscape), <code>--ar 4:5</code> (Instagram), <code>--ar 1:1</code> (square)</td></tr>
+        <tr><td><code>--q</code></td><td>Quality (higher = slower but better)</td><td><code>--q 2</code> for maximum quality</td></tr>
+        <tr><td><code>--v</code></td><td>Midjourney version to use</td><td><code>--v 6</code> is latest (most realistic)</td></tr>
+        <tr><td><code>--style raw</code></td><td>Less AI "beautification" — more authentic</td><td>Great for product photography</td></tr>
+        <tr><td><code>--no</code></td><td>What to exclude from the image</td><td><code>--no watermark, text, blurry</code></td></tr>
+        <tr><td><code>--seed</code></td><td>Reproduce same image with variations</td><td><code>--seed 12345</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">After Your Image Generates</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">&#128250;</span><h3>U1-U4 (Upscale)</h3><p>Upscale any of the 4 generated images to higher resolution. U1 = top-left, U2 = top-right, U3 = bottom-left, U4 = bottom-right.</p></div>
+    <div class="crd"><span class="crd-icon">&#127758;</span><h3>V1-V4 (Variation)</h3><p>Generate 4 new variations based on that image — same style and composition, but different. Use this to explore options.</p></div>
+    <div class="crd"><span class="crd-icon">&#128640;</span><h3>Remix Mode</h3><p>After upscaling, click "Vary (Region)" to edit just one part. Change the background, swap an element, keep the rest.</p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Try It Now</h4>
+    <ul>
+      <li>Open Discord &rarr; Midjourney server &rarr; #newbies channel</li>
+      <li>Type: <code>/imagine a modern Indian restaurant logo, minimalist design, saffron and white color scheme, clean lines --ar 1:1 --q 2</code></li>
+      <li>Try the same prompt but add <code>--style raw</code> — compare the results</li>
+      <li>Upscale your favorite version</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Free alternative with a superpower Midjourney doesn't have — text in images.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Ideogram AI &rarr;</button></div>
+</div>
+
+<!-- S3: IDEOGRAM AI -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127775; Halfway there! You're learning tools professionals charge &#8377;5,000/image for.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Ideogram AI — <span class="gr">Text in Images</span></h2>
+    <p>The free AI image tool with a superpower: it can generate readable, accurate text inside images. Perfect for logos, social graphics, and signage.</p>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#127942;</div>
+    <div class="call-body">
+      <h4>Ideogram's Unfair Advantage</h4>
+      <p>Every other AI image tool (Midjourney, DALL-E, Stable Diffusion) struggles to generate readable text inside images. Ideogram was built specifically to solve this. It can generate <strong>logos with text, poster headlines, signage, social media graphics with readable captions</strong> — all in one generation.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What Ideogram Excels At</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Logos</span><span class="crd-icon">&#128279;</span><h3>Logo Concepts</h3><p>Generate logo ideas with the actual business name in the design. Explore 10 different styles in minutes — what used to take a designer hours.</p></div>
+    <div class="crd"><span class="tag tag-1">Social Media</span><span class="crd-icon">&#128241;</span><h3>Social Graphics</h3><p>Create Instagram posts, Facebook banners, and YouTube thumbnails with text already placed. No Photoshop needed.</p></div>
+    <div class="crd"><span class="tag tag-4">Posters</span><span class="crd-icon">&#127917;</span><h3>Event Posters</h3><p>Wedding invitations, event announcements, festival graphics — with readable text, decorative borders, and traditional motifs.</p></div>
+    <div class="crd"><span class="tag tag-2">Product Labels</span><span class="crd-icon">&#128230;</span><h3>Packaging</h3><p>Product label concepts, packaging design mockups — ideal for local businesses launching new products.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Use Ideogram</h3>
+  <div class="callout call-1">
+    <div class="call-ico">&#127939;</div>
+    <div class="call-body">
+      <h4>Step-by-Step</h4>
+      <p><strong>1.</strong> Go to <a href="https://ideogram.ai" target="_blank">ideogram.ai</a> — sign in with Google (free)<br>
+      <strong>2.</strong> Click "Generate" and type your prompt in the text box<br>
+      <strong>3.</strong> Select <strong>Style</strong>: Realistic, Design, Anime, 3D Render, etc.<br>
+      <strong>4.</strong> Choose <strong>Aspect Ratio</strong>: 1:1 (Instagram), 16:9 (YouTube), 9:16 (Stories)<br>
+      <strong>5.</strong> For text-in-image: put the exact text you want in <strong>quotation marks</strong> in your prompt<br>
+      <strong>6.</strong> Click Generate — you get 4 options. Click Edit to refine any.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Ideogram Prompt Examples</h3>
+  <div class="prompt-example">
+    <div class="p-label">Logo for a dhaba</div>
+    A modern logo design for a restaurant called "Punjabi Tadka", featuring wheat stalks and a stylized cooking pot, warm orange and green colors, clean typography, white background, vector style. "Punjabi Tadka" written in bold serif font
+  </div>
+  <div class="prompt-example">
+    <div class="p-label">Instagram post with text</div>
+    A vibrant social media post design with the headline "50% OFF Today Only" in large bold text, festive Indian design elements, marigold flowers, red and gold color scheme, "Sharma Clothes" written at the bottom
+  </div>
+  <div class="prompt-example">
+    <div class="p-label">Product label</div>
+    A premium product label for "Kotkapura Pickle House", traditional Indian jar label design, deep green and gold, ornate border, serif typography, herbs and spices illustration
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>Free Tier vs Paid</h4>
+      <p>Ideogram Free: ~10 generations per day (enough to practice). Ideogram Basic ($7/month): 400 images/month, no watermark, commercial use. For client work, always use paid plans. The image belongs to <strong>you</strong> on paid plans.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Try It Now — Kotkapura Business Challenge</h4>
+    <ul>
+      <li>Go to ideogram.ai (sign in free)</li>
+      <li>Pick a local business: <strong>Arora Sweets</strong>, <strong>Bhatia Clinic</strong>, or any local name</li>
+      <li>Generate a logo concept with the business name in the image</li>
+      <li>Try 3 different styles: Design, 3D Render, Realistic</li>
+      <li>Screenshot your favorite — you'll use this in Session 12!</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Canva AI — edit, generate, and batch-create like a professional studio.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Canva AI &rarr;</button></div>
+</div>
+
+<!-- S4: CANVA AI -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Canva AI — <span class="gr">Magic Media & More</span></h2>
+    <p>Canva is already the most popular design tool in India. Now add AI generation, editing, and batch creation — and it becomes your complete visual studio.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Generate</span><span class="crd-icon">&#10024;</span><h3>Magic Media</h3><p>Generate images directly inside your Canva designs. Prompt → image appears in your canvas, ready to resize, layer, and use. No switching between tools.</p></div>
+    <div class="crd"><span class="tag tag-1">Edit</span><span class="crd-icon">&#127760;</span><h3>Magic Edit</h3><p>Click any element in an image, describe what you want to change, and AI replaces just that part. Change a product color, swap a background, add elements.</p></div>
+    <div class="crd"><span class="tag tag-2">Erase</span><span class="crd-icon">&#9999;&#65039;</span><h3>Background Removal</h3><p>One-click background removal — no careful selection needed. Works on products, people, and logos. Then place on any background color or image.</p></div>
+    <div class="crd"><span class="tag tag-4">Scale</span><span class="crd-icon">&#128202;</span><h3>Batch Creation</h3><p>Create 100 personalized designs from a spreadsheet. Upload names, prices, or product data — Canva generates individual cards/certificates for each row.</p></div>
+    <div class="crd"><span class="tag tag-3">Extend</span><span class="crd-icon">&#8596;&#65039;</span><h3>Magic Expand</h3><p>Got an image that's too small or wrong ratio? Magic Expand adds realistic content around the edges. Instagram portrait becomes a landscape — automatically.</p></div>
+    <div class="crd"><span class="tag tag-5">Write</span><span class="crd-icon">&#128196;</span><h3>Magic Write</h3><p>AI copywriting inside Canva. Generate headlines, captions, product descriptions — all without leaving the design. Edit and approve instantly.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Practical Workflow: Social Media Post in 3 Minutes</h3>
+  <div class="flow-wrap">
+    <div class="flow-row" id="flowRow4">
+      <div class="flow-node on" data-f="0" onclick="selFlow('flowRow4','flowInfo4',0)"><div class="fi">&#128269;</div><label>Choose Template</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="1" onclick="selFlow('flowRow4','flowInfo4',1)"><div class="fi">&#10024;</div><label>Magic Media</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="2" onclick="selFlow('flowRow4','flowInfo4',2)"><div class="fi">&#128196;</div><label>Magic Write</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="3" onclick="selFlow('flowRow4','flowInfo4',3)"><div class="fi">&#128247;</div><label>Brand Colors</label></div>
+      <div class="fl-arrow">&rarr;</div>
+      <div class="flow-node" data-f="4" onclick="selFlow('flowRow4','flowInfo4',4)"><div class="fi">&#9989;</div><label>Export</label></div>
+    </div>
+    <div id="flowInfo4">
+      <div class="fl-detail on" data-f="0"><h4>Pick a Template</h4><p>Search for "Instagram post", "Facebook ad", or "product promotion". Canva has 100,000+ templates. Choose one close to your goal and customize.</p></div>
+      <div class="fl-detail" data-f="1"><h4>Generate Your Image</h4><p>Click Apps → Magic Media. Type: "Fresh mango lassi in a tall glass, white marble background, warm lighting, food photography." The AI generates 4 options. Drag the best one into your design.</p></div>
+      <div class="fl-detail" data-f="2"><h4>Write Your Copy</h4><p>Click on any text element → right-click → Magic Write. Type: "Write a punchy 2-line caption for a mango lassi product post for Instagram." Edit the result to match your brand voice.</p></div>
+      <div class="fl-detail" data-f="3"><h4>Apply Brand Colors</h4><p>Click Brand Kit (Canva Pro) to apply your exact brand colors with one click. No color codes needed. Consistent branding across every design.</p></div>
+      <div class="fl-detail" data-f="4"><h4>Export & Share</h4><p>Export as PNG (high quality), JPG (smaller file), or PDF. For social media, always export at 2x resolution. Share directly to Instagram from Canva mobile.</p></div>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#128200;</div>
+    <div class="call-body">
+      <h4>Batch Creation: The Game-Changer for Local Businesses</h4>
+      <p>Imagine a clothing store with 50 products. Instead of creating 50 individual posts, you <strong>build one template</strong> and upload a spreadsheet with 50 product names and prices. Canva generates all 50 customized posts in seconds. This is how professional agencies handle clients at scale.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Action: Build Your First AI Social Post</h4>
+    <ul>
+      <li>Open canva.com — sign in free</li>
+      <li>Search templates: "Instagram post food" or "sale announcement"</li>
+      <li>Use Magic Media to generate a product image</li>
+      <li>Use Magic Write to generate a caption</li>
+      <li>Remove background from a product image you have on your phone</li>
+      <li>Export and save — this is your first client-ready AI post</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">You can now create visuals that used to require a professional graphic designer. That's not a small thing.</div>
+
+  <p class="curiosity-hook">Test yourself — 8 questions on everything you just learned.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Session 9 <span class="gr">Quiz</span></h2>
+    <p>8 questions on AI image generation. Every question connects to something you'll use in real projects.</p>
+  </div>
+
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 9 <span class="gr">Wrap-Up</span></h2>
+    <p>What you've learned, what to practice, and your homework for the week.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem;">What You Mastered Today</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">&#128168;</span><h3>Diffusion Models</h3><p>How AI creates images by starting from noise and removing it — guided by your text prompt. You understand what others just use.</p></div>
+    <div class="crd"><span class="crd-icon">&#127912;</span><h3>Midjourney</h3><p>Discord setup, /imagine command, prompt structure with subject + style + details + parameters (--ar, --q, --v).</p></div>
+    <div class="crd"><span class="crd-icon">&#128196;</span><h3>Ideogram AI</h3><p>The text-in-images tool. Logo concepts, social graphics, and posters with readable text — free to start.</p></div>
+    <div class="crd"><span class="crd-icon">&#10024;</span><h3>Canva AI</h3><p>Magic Media, Magic Edit, background removal, batch creation — the complete visual studio for client work.</p></div>
+  </div>
+
+  <div class="hw-box">
+    <h3>&#128218; Homework: The 10-Image Brand Challenge</h3>
+    <p style="color:var(--t2);margin-bottom:1rem;font-size:.92rem">Pick a real or fictional Kotkapura business. Generate 10 professional images for their social media using at least 2 different tools. Bring them to Session 10 for feedback.</p>
+    <ul>
+      <li><strong>Tool 1 (Ideogram):</strong> 1 logo concept with the business name, 2 product/service images</li>
+      <li><strong>Tool 2 (Canva AI):</strong> 3 social media posts (Instagram-sized) using Magic Media + a template</li>
+      <li><strong>Bonus (Midjourney):</strong> 2 high-quality product or atmosphere images</li>
+      <li><strong>Compile:</strong> Save all 10 in a folder labeled "Brand_[YourName]_Session9"</li>
+      <li><strong>Reflect:</strong> Write 2 sentences on which tool you preferred and why</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>Freelance Potential: What You Can Charge</h4>
+      <p><strong>Logo concepts:</strong> &#8377;500–2,000 per set of 3 variations<br>
+      <strong>Social media posts:</strong> &#8377;200–500 per post (batch of 10 = &#8377;2,000–5,000)<br>
+      <strong>Product photography replacement:</strong> &#8377;1,000–3,000 per product shoot<br>
+      <strong>Monthly social media package:</strong> &#8377;5,000–15,000/month for 30 posts</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>You just learned in 45 minutes</strong> what took professional designers years to master. The tools changed — the opportunity is yours. Every local shop in Kotkapura needs professional visuals. Most don't have a designer. You do now.</p>
+  </div>
+
+  <div class="identity-shift">Next: Session 10 — AI Video Creation. Words become videos. Scripts become productions.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
+</div>
+
+<footer class="foot">
+  <p><span class="brand">TARAhut AI Labs</span> &middot; AI Tools Mastery Program &middot; Week 3, Session 9</p>
+  <p style="margin-top:.5rem">tarahutailabs.com &middot; +91 92008-82008 &middot; &copy; 2026</p>
+</footer>
+
+<script>
+// Particle canvas
+const canvas=document.getElementById('particleCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.5+.1});
+function drawParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.a})`;ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1});requestAnimationFrame(drawParticles)}
+drawParticles();
+
+// Progress bar
+window.addEventListener('scroll',()=>{const d=document.documentElement;const pct=(d.scrollTop)/(d.scrollHeight-d.clientHeight)*100;document.getElementById('progBar').style.width=pct+'%'});
+
+// Navigation
+function startLearning(){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec('s1')}
+function jumpTo(id){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec(id)}
+function go(id){showSec(id);window.scrollTo({top:0,behavior:'smooth'})}
+function showSec(id){
+  document.querySelectorAll('.sec').forEach(s=>{s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.toggle('on',b.dataset.s===id)});
+}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Flow diagrams
+function selFlow(rowId,infoId,idx){
+  document.querySelectorAll(`#${rowId} .flow-node`).forEach((n,i)=>n.classList.toggle('on',i===idx));
+  document.querySelectorAll(`#${infoId} .fl-detail`).forEach(d=>d.classList.remove('on'));
+  document.querySelector(`#${infoId} [data-f="${idx}"]`).classList.add('on');
+}
+
+// Quiz
+const questions=[
+  {q:"What type of AI model is used to generate images by starting from random noise?",opts:["Language Model","Diffusion Model","Transformer Model","Classifier Model"],ans:1,fb:"Diffusion models start from pure random noise and progressively remove noise guided by your text prompt — that's how Midjourney, Ideogram, and DALL-E all work."},
+  {q:"In Midjourney, which parameter sets the aspect ratio of your generated image?",opts:["--quality","--version","--ar","--style"],ans:2,fb:"--ar controls the aspect ratio. Use --ar 1:1 for Instagram square, --ar 16:9 for landscape, --ar 9:16 for Stories/Reels."},
+  {q:"Which AI image tool is BEST known for generating readable text inside images?",opts:["Midjourney","DALL-E","Ideogram AI","Adobe Firefly"],ans:2,fb:"Ideogram AI was specifically built to solve the text-in-images problem. Other tools struggle with this, but Ideogram can generate logos, posters, and signs with accurate text."},
+  {q:"What Canva AI feature allows you to generate images directly inside your design?",opts:["Magic Resize","Magic Write","Magic Media","Magic Expand"],ans:2,fb:"Magic Media is Canva's AI image generator. You describe what you want and it generates images directly inside your Canva canvas, ready to use immediately."},
+  {q:"In Midjourney, what do the U1, U2, U3, U4 buttons do after an image is generated?",opts:["Undo the last 4 actions","Upscale one of the 4 images to higher resolution","Generate 4 new variations","Change the upload settings"],ans:1,fb:"U1-U4 upscale individual images from the 4-image grid. U1 = top-left, U2 = top-right, U3 = bottom-left, U4 = bottom-right."},
+  {q:"A local Kotkapura clothing store wants 50 personalized social media posts — one per product. What Canva feature is MOST efficient for this?",opts:["Magic Edit","Background Removal","Batch Creation","Magic Expand"],ans:2,fb:"Batch Creation lets you upload a spreadsheet with product data (names, prices, descriptions) and Canva auto-generates all 50 posts from a single template."},
+  {q:"In Ideogram AI, how do you specify text that should appear inside the generated image?",opts:["Use the 'text layer' option","Put the exact text in quotation marks inside your prompt","Add text in the caption field after generating","Use the text overlay tool"],ans:1,fb:"Put the exact text you want in quotation marks within your prompt. Example: A poster with 'Grand Opening Sale' in large bold text."},
+  {q:"What is 'inpainting' in AI image generation?",opts:["Painting over an entire image with a new style","Editing specific parts of an image while keeping the rest unchanged","Increasing the resolution of a low-quality image","Converting a painting into a photograph"],ans:1,fb:"Inpainting lets you mask (select) a specific region of an image and describe what should replace it, while the rest of the image stays the same. Useful for fixing details or swapping elements."}
+];
+
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  const q=questions[cur];
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=questions.map((_,i)=>`<div class="q-dot ${i<cur?'done':i===cur?'cur':''}"></div>`).join('');
+  document.getElementById('qArea').innerHTML=`
+    <div class="q-head"><span class="qn">Question ${cur+1} of ${questions.length}</span>${q.q}</div>
+    <div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="answer(${i})"><span class="ol">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}</div>
+    <div class="q-fb" id="qFb"></div>
+    <div class="q-nav"><span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${score}/${cur}</span>${cur<questions.length-1?`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="nextQ()" style="display:none">Next &rarr;</button>`:`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="showScore()" style="display:none">See Results &rarr;</button>`}</div>`;
+  answered=false;
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=questions[cur];
+  const opts=document.querySelectorAll('.q-opt');
+  opts[i].classList.add(i===q.ans?'ok':'no');
+  if(i===q.ans){opts[q.ans].classList.add('ok');score++;}
+  else{opts[q.ans].classList.add('ok');}
+  const fb=document.getElementById('qFb');
+  fb.className=`q-fb show ${i===q.ans?'fb-ok':'fb-no'}`;
+  fb.innerHTML=(i===q.ans?'&#9989; Correct! ':'&#10060; Not quite. ')+q.fb;
+  document.getElementById('nextBtn').style.display='inline-flex';
+}
+function nextQ(){cur++;if(cur<questions.length)renderQuiz();else showScore();}
+function showScore(){
+  const pct=Math.round(score/questions.length*100);
+  let msg=pct>=80?'Excellent! You are ready for the next session.':pct>=60?'Good effort! Review the sections where you felt uncertain.':'Keep practicing! Re-read Sections 1-4 and try again.';
+  document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/${questions.length}</div><p style="color:var(--t2);margin:.5rem 0">${pct}% score &mdash; ${msg}</p><button class="btn btn-ghost btn-sm" onclick="cur=0;score=0;renderQuiz()" style="margin-top:1.5rem">Retry Quiz</button></div>`;
+  document.getElementById('qProg').innerHTML=questions.map(()=>`<div class="q-dot done"></div>`).join('');
+}
+renderQuiz();
+</script>
+</body>
+</html>

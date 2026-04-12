@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 6: AI for Professional Writing — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Template Cards */
+.template-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:1.5rem;overflow:hidden}
+.template-header{padding:1rem 1.5rem;background:rgba(5,150,105,.06);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.template-header h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700}
+.template-body{padding:1.5rem}
+.template-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;margin-top:1rem}
+.template-label:first-child{margin-top:0}
+.prompt-box{background:var(--bg);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);line-height:1.7;white-space:pre-wrap}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+@media(max-width:700px){.before-after{grid-template-columns:1fr}}
+.ba-box{padding:1.25rem;border-radius:var(--rs)}
+.ba-before{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.15)}
+.ba-after{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15)}
+.ba-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.ba-before .ba-label{color:var(--c3)}
+.ba-after .ba-label{color:var(--c5)}
+.ba-box p{font-size:.85rem;color:var(--t2);line-height:1.7}
+/* Email Demo */
+.demo-panel{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:600px){.demo-fields{grid-template-columns:1fr}}
+.demo-field label{display:block;font-size:.78rem;color:var(--t2);margin-bottom:.4rem;font-family:'Syne',sans-serif;font-weight:600}
+.demo-in{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.88rem;outline:none;transition:all .3s}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.5rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:80px;font-size:.88rem;color:var(--t2);line-height:1.8;transition:all .3s;white-space:pre-wrap}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 2 &middot; Session 6 &middot; AI Tools Mastery</div>
+  <h1>AI for<br><span class="gr">Professional Writing</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Emails that get replies. Resumes that get interviews. Proposals that win clients. This session shows you exactly how.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Business Emails</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Resume &amp; LinkedIn</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Proposals &amp; Reports</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Email Writer Demo</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: Business Emails -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Business Emails <span class="gr">That Get Replies</span></h2>
+    <p>The average professional ignores 70% of emails they receive. Here's how to be in the 30% they actually respond to &mdash; using AI as your writing partner.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why Most Business Emails Fail</h4><p>They're too long, too vague, or too focused on the sender. A great business email answers one question immediately: <strong>"What's in it for me?"</strong> AI doesn't just write faster &mdash; it forces you to think about the recipient's perspective, which is where most people fail.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Template 1: Cold Outreach Email</h3>
+  <div class="template-card">
+    <div class="template-header">
+      <h4>&#128231; Cold Outreach — Getting a Meeting or Partnership</h4>
+      <span class="tag tag-brand">High Impact</span>
+    </div>
+    <div class="template-body">
+      <div class="template-label">AI Prompt to Use (in ChatGPT or Claude)</div>
+      <div class="prompt-box">Write a cold outreach email to [Name], the owner of [Business Name] in [City].
+
+I am [Your Name], [Your Role] at [Your Company].
+
+Goal: Get a 15-minute call to discuss [specific mutual benefit].
+
+Context: [1-2 sentences about why you're reaching out to them specifically]
+
+Tone: Professional but warm. Concise — under 120 words. Include a clear, low-friction call to action.</div>
+      <div class="template-label" style="margin-top:1.25rem">Example Output Structure AI Will Generate</div>
+      <div class="ba-box ba-after" style="margin-top:.5rem">
+        <p><strong>Subject: Quick question about [their specific interest]</strong><br><br>
+        Hi [Name],<br><br>
+        I noticed [specific observation about their business]. I work with [type of businesses] to [specific outcome they care about].<br><br>
+        [One sentence about the value you bring — not about you, about them].<br><br>
+        Would you be open to a quick 15-minute call this week? I have [Tuesday/Wednesday] available — happy to work around your schedule.<br><br>
+        Best,<br>[Your Name]</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Template 2: Follow-Up Email</h3>
+  <div class="template-card">
+    <div class="template-header">
+      <h4>&#128260; Follow-Up — After a Meeting or No Response</h4>
+      <span class="tag tag-1">Essential Skill</span>
+    </div>
+    <div class="template-body">
+      <div class="template-label">AI Prompt to Use</div>
+      <div class="prompt-box">Write a follow-up email to [Name] after our meeting on [date].
+
+Key points discussed: [2-3 bullet points from the meeting]
+Next step agreed upon: [what was decided]
+What I need from them: [specific action]
+
+Make it feel warm, not pushy. Reference something specific from our conversation to show I was paying attention. Under 100 words.</div>
+      <div class="template-label" style="margin-top:1.25rem">Why This Works</div>
+      <div class="callout call-3" style="margin-top:.5rem"><div class="call-ico">&#129504;</div><div class="call-body"><p>Referencing a specific detail from the conversation ("You mentioned the delivery challenge you're facing") shows you listened. AI can help you phrase this naturally without sounding like you're reciting notes. This single tactic doubles follow-up response rates.</p></div></div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Template 3: Complaint Response</h3>
+  <div class="template-card">
+    <div class="template-header">
+      <h4>&#128545; Complaint Response — Turn an Angry Customer into a Loyal One</h4>
+      <span class="tag tag-4">Reputation Saver</span>
+    </div>
+    <div class="template-body">
+      <div class="template-label">AI Prompt to Use</div>
+      <div class="prompt-box">Write a professional response to this customer complaint:
+
+"[Paste the exact complaint here]"
+
+My response should:
+- Acknowledge their frustration genuinely (not robotically)
+- Take responsibility without admitting legal fault
+- Explain what we're doing to fix it
+- Offer [specific resolution: refund/replacement/discount]
+- End with a genuine commitment to improvement
+
+Tone: Empathetic, professional, human. Not corporate-speak.</div>
+      <div class="template-label" style="margin-top:1.25rem">The AI Advantage Here</div>
+      <div class="callout call-2" style="margin-top:.5rem"><div class="call-ico">&#128161;</div><div class="call-body"><p>When we're emotionally reactive, we write defensive emails. AI stays calm. It helps you respond professionally even when you're frustrated. The result: customers feel heard, and you protect your business reputation. One well-handled complaint often creates your most loyal customers.</p></div></div>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Pick ONE real email you need to write this week. Open Claude or ChatGPT, use one of the prompts above, and send it. Notice the difference in how it feels to write and how people respond.</p>
+  </div>
+
+  <div class="micro-win">You now have 3 email templates that professionals pay copywriters thousands to create.</div>
+  <p class="curiosity-hook">Next: Your resume might be invisible to recruiters. Here's how AI fixes that.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Resume &amp; LinkedIn &rarr;</button></div>
+</div>
+
+<!-- S2: Resume & LinkedIn -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Great start! Section 2 is where careers change.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Resume &amp; LinkedIn <span class="gr">Optimization</span></h2>
+    <p>70% of resumes are rejected by automated systems before a human ever reads them. AI helps you write for both robots and humans.</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">&#128680;</div><div class="call-body"><h4>The Brutal Truth About Resumes</h4><p>Most resumes are a list of duties, not achievements. Recruiters spend an average of <strong>7 seconds</strong> on a resume before deciding. AI doesn't just fix grammar &mdash; it transforms "Was responsible for sales" into "Grew monthly sales by 34% in Q2 by implementing a referral system" &mdash; the kind of language that gets called for interviews.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Before &amp; After: AI Resume Transformation</h3>
+
+  <div class="before-after">
+    <div class="ba-box ba-before">
+      <div class="ba-label">&#10060; Before (Weak)</div>
+      <p>
+        <strong>Work Experience:</strong><br>
+        &bull; Managed social media accounts<br>
+        &bull; Created content for Instagram and Facebook<br>
+        &bull; Helped grow followers<br>
+        &bull; Worked with marketing team<br>
+        &bull; Responsible for email campaigns
+      </p>
+    </div>
+    <div class="ba-box ba-after">
+      <div class="ba-label">&#9989; After (AI-Enhanced)</div>
+      <p>
+        <strong>Work Experience:</strong><br>
+        &bull; Managed social media presence across Instagram &amp; Facebook, growing combined following by 2,400 (from 800 to 3,200) in 6 months<br>
+        &bull; Created 45+ content pieces/month; top post reached 18K organic views<br>
+        &bull; Led email marketing campaigns with 28% avg open rate (industry avg: 21%)<br>
+        &bull; Collaborated with 4-person marketing team to execute quarterly brand campaigns
+      </p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Exact Prompts to Transform Your Resume</h3>
+  <div class="template-card">
+    <div class="template-header"><h4>&#127775; Prompt 1: Achievement Transformer</h4></div>
+    <div class="template-body">
+      <div class="prompt-box">Transform these resume bullet points into achievement-focused statements. Add specific metrics where reasonable. Use action verbs. Keep each under 20 words.
+
+[Paste your bullet points here]
+
+Context: I work in [industry/role] at [type of company]. My target job is [job title].</div>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header"><h4>&#127775; Prompt 2: LinkedIn Summary Writer</h4></div>
+    <div class="template-body">
+      <div class="prompt-box">Write a LinkedIn "About" section for me.
+
+Name: [Your Name]
+Current Role: [Role] at [Company]
+Years of experience: [X years] in [field]
+Key skills: [list 3-5 skills]
+Career goal: [what you're looking for]
+One thing I'm proud of: [specific achievement]
+Personality note: [professional/creative/detail-oriented/etc.]
+
+Make it 3 short paragraphs. First-person. Confident but not arrogant. End with what I'm open to.</div>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header"><h4>&#127775; Prompt 3: ATS Keyword Optimizer</h4></div>
+    <div class="template-body">
+      <div class="prompt-box">I'm applying for this job:
+[Paste the job description]
+
+Here is my current resume:
+[Paste your resume]
+
+Identify:
+1. Keywords in the job description missing from my resume
+2. Which of my experiences are most relevant to highlight
+3. Specific changes to make my resume ATS-friendly for this role
+
+Do NOT fabricate experience. Only suggest genuine reframing.</div>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>A student from our previous batch</strong> spent 45 minutes with Claude optimizing her resume for a digital marketing role. She got 3 interview calls in the next 2 weeks — after months of silence. The resume didn't change what she'd done. It changed how it was communicated. That's the power of the right words.</p>
+  </div>
+
+  <div class="micro-win">You can now write resumes that actually reflect your real value.</div>
+  <p class="curiosity-hook">Next: How to write a client proposal that wins business, not just impresses.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Proposals &amp; Reports &rarr;</button></div>
+</div>
+
+<!-- S3: Proposals & Reports -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127919; 50% through — you're building a real professional writing toolkit.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Proposals &amp; <span class="gr">Research Reports</span></h2>
+    <p>The documents that win clients and establish credibility. AI can structure and draft them in minutes — you just add your expertise.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Client Proposal Structure (AI-Powered)</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-left:3px solid var(--brand)">
+      <span class="tag tag-brand">Section 1</span>
+      <h3>Executive Summary</h3>
+      <p><em>Prompt:</em> "Write a 3-sentence executive summary for a proposal to [client type] to help them [specific goal]. We are offering [service] at [price range]."</p>
+    </div>
+    <div class="crd" style="border-left:3px solid var(--c1)">
+      <span class="tag tag-1">Section 2</span>
+      <h3>Problem Statement</h3>
+      <p><em>Prompt:</em> "Write a 'Problem We're Solving' section for a client in [industry]. Focus on [specific pain points]. Make them feel understood, not sold to."</p>
+    </div>
+    <div class="crd" style="border-left:3px solid var(--c2)">
+      <span class="tag tag-2">Section 3</span>
+      <h3>Our Solution</h3>
+      <p><em>Prompt:</em> "Write a 'Our Approach' section explaining how [your service] solves [their problem]. Break it into 3 phases with clear deliverables. Be specific."</p>
+    </div>
+    <div class="crd" style="border-left:3px solid var(--c4)">
+      <span class="tag tag-4">Section 4</span>
+      <h3>Timeline &amp; Investment</h3>
+      <p><em>Prompt:</em> "Create a professional timeline and pricing table for a [X-week] project. Include: Discovery, Execution, Review, Delivery phases."</p>
+    </div>
+    <div class="crd" style="border-left:3px solid var(--c5)">
+      <span class="tag tag-5">Section 5</span>
+      <h3>Why Choose Us</h3>
+      <p><em>Prompt:</em> "Write a 'Why Work With Us' section. Highlight [your differentiators]. Tone: confident, not boastful. Include a brief social proof statement."</p>
+    </div>
+    <div class="crd" style="border-left:3px solid var(--c3)">
+      <span class="tag tag-3">Section 6</span>
+      <h3>Next Steps</h3>
+      <p><em>Prompt:</em> "Write a clear, action-oriented 'Next Steps' section. The client should know exactly what to do to move forward. Reduce friction to a single step."</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Research Report with Citations</h3>
+  <div class="template-card">
+    <div class="template-header"><h4>&#128203; Research Report Workflow</h4><span class="tag tag-5">Use Perplexity + Claude</span></div>
+    <div class="template-body">
+      <div class="template-label">Step 1: Research (Use Perplexity)</div>
+      <div class="prompt-box">Search on Perplexity: "Latest statistics and data on [your topic] in India 2024-2025"
+
+Collect: key numbers, research findings, expert quotes, source links</div>
+      <div class="template-label">Step 2: Write the Report (Use Claude)</div>
+      <div class="prompt-box">Write a professional research report on [topic].
+
+Structure: Executive Summary → Context → Key Findings (use the data below) → Analysis → Recommendations → Conclusion
+
+Data to include:
+[Paste your Perplexity research here]
+
+Format: Use headers, bullet points where appropriate. 800-1000 words. Professional tone.
+Include a "Sources" section at the end listing all citations.</div>
+      <div class="template-label">Step 3: Format &amp; Polish</div>
+      <div class="prompt-box">Review this report and:
+1. Improve the executive summary to be more compelling
+2. Ensure all data claims have clear source references
+3. Add a "Key Takeaways" box at the top with 3 bullet points
+4. Make the recommendations more actionable and specific</div>
+    </div>
+  </div>
+
+  <div class="identity-shift">You're not just writing faster — you're writing at a professional standard that took people years to develop manually.</div>
+
+  <p class="curiosity-hook">Next: See it in action — the interactive email writer demo.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Email Writer Demo &rarr;</button></div>
+</div>
+
+<!-- S4: Email Writer Demo -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#9889; 65% done. The most interactive section is here.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive Demo: <span class="gr">AI Email Writer</span></h2>
+    <p>Enter your context below and see how AI structures a professional email. Use this as your template to take into ChatGPT or Claude.</p>
+  </div>
+
+  <div class="demo-panel">
+    <div class="demo-bar">
+      <div class="demo-dots"><i></i><i></i><i></i></div>
+      <h4>Professional Email Generator</h4>
+    </div>
+
+    <div class="demo-fields">
+      <div class="demo-field">
+        <label>Email Type</label>
+        <select class="demo-in" id="emailType">
+          <option value="cold">Cold Outreach</option>
+          <option value="followup">Follow-Up</option>
+          <option value="complaint">Complaint Response</option>
+          <option value="proposal">Proposal Introduction</option>
+        </select>
+      </div>
+      <div class="demo-field">
+        <label>Your Name &amp; Role</label>
+        <input class="demo-in" id="senderName" type="text" placeholder="e.g. Priya Sharma, Marketing Manager">
+      </div>
+      <div class="demo-field">
+        <label>Recipient Name</label>
+        <input class="demo-in" id="recipientName" type="text" placeholder="e.g. Mr. Harjit Singh">
+      </div>
+      <div class="demo-field">
+        <label>Your Core Goal</label>
+        <input class="demo-in" id="emailGoal" type="text" placeholder="e.g. Get a 20-min discovery call">
+      </div>
+    </div>
+    <div class="demo-field" style="margin-bottom:1rem">
+      <label>Brief Context (1-2 sentences)</label>
+      <input class="demo-in" id="emailContext" type="text" placeholder="e.g. We help restaurants in Punjab increase online orders by 40%">
+    </div>
+
+    <button class="btn btn-glow btn-sm" onclick="generateEmail()" style="margin-bottom:1.25rem">Generate Email Structure &rarr;</button>
+
+    <div class="demo-out" id="emailOutput">Your email structure will appear here. Fill in the fields above and click Generate.</div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>How to Use This in Real Life</h4><p>Copy the generated structure above, take it into <strong>Claude or ChatGPT</strong>, and add: "Expand this email structure into a complete, polished email. Keep it under 150 words. Tone: [professional/warm/urgent]." You'll have a ready-to-send email in under 2 minutes.</p></div></div>
+
+  <div class="micro-win">You've just built your personal AI email workflow. Use it for every important email from now on.</div>
+  <p class="curiosity-hook">Ready for the quiz? 8 questions to lock in what you've learned.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: Quiz -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost done! 8 questions on professional writing with AI.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Quiz: <span class="gr">AI Professional Writing</span></h2>
+    <p>8 questions. Immediate feedback. Let's see what stuck.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Professional writing is now a skill you can deploy any time.</div>
+  <p class="curiosity-hook">Final section — homework that builds your professional portfolio.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Finish: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: Wrap-Up -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Wrap-Up &amp; <span class="gr">Homework</span></h2>
+    <p>Session 6 complete. This is where writing stops feeling hard.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127942;</div><div class="call-body"><h4>What You Mastered Today</h4><p>
+    &#9989; 3 business email templates with exact AI prompts (cold outreach, follow-up, complaint)<br>
+    &#9989; Resume transformation — duties vs achievements + ATS keyword optimization<br>
+    &#9989; LinkedIn summary writing with AI<br>
+    &#9989; 6-section client proposal structure with prompts<br>
+    &#9989; Research report workflow using Perplexity + Claude<br>
+    &#9989; Interactive email builder workflow
+  </p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">&#128218; Your Homework — Due Before Session 7</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">&#128231;</span>
+      <h3>Create Your Professional Email Set</h3>
+      <p>Write 3 real emails using today's templates: one cold outreach, one follow-up for a real contact, one complaint or apology response you've been avoiding. Send at least one of them.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">&#128203;</span>
+      <h3>Optimize Your Resume</h3>
+      <p>Use the Achievement Transformer prompt on your current resume. Transform at least 5 bullet points. Then update your LinkedIn summary using the AI prompt from Section 2.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">&#128221;</span>
+      <h3>Write a One-Page Proposal</h3>
+      <p>Pick any service you could offer (even hypothetical) and create a one-page client proposal using the 6-section structure. This becomes part of your Week 2 Portfolio.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Prepare for Session 7</h4>
+    <p>Session 7 is about <strong>AI Research Tools</strong> (Perplexity &amp; NotebookLM). Before coming:</p>
+    <ul>
+      <li>Create a free account at <a href="https://perplexity.ai" target="_blank">perplexity.ai</a></li>
+      <li>Create a free account at <a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a> (Google account required)</li>
+      <li>Have a PDF ready to upload (any document you'd like to analyze)</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">You can now write professionally in any format, in any language, for any audience — in minutes. That's a career superpower.</div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px">Contact TARAhut AI Labs</a>
+    <button class="btn btn-ghost" onclick="go('s1')">&#128260; Review Session</button>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Week 2, Session 6 &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// PARTICLES
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV & SECTIONS
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building real skills`:pctDone<=75?`${pctDone}% — Almost there!`:`${pctDone<=99?pctDone+'% — Finish strong':'100% — Session 6 Complete!'}`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// EMAIL DEMO
+function generateEmail(){
+  const type=document.getElementById('emailType').value;
+  const sender=document.getElementById('senderName').value||'[Your Name & Role]';
+  const recipient=document.getElementById('recipientName').value||'[Recipient Name]';
+  const goal=document.getElementById('emailGoal').value||'[Your Goal]';
+  const context=document.getElementById('emailContext').value||'[Your context here]';
+  const out=document.getElementById('emailOutput');
+
+  const templates={
+    cold:`SUBJECT: Quick question about [their specific interest]
+
+Hi ${recipient},
+
+[Opening hook — one sentence referencing something specific about them]
+
+I'm ${sender}. ${context}
+
+[One specific, measurable result you've achieved for similar clients]
+
+${goal} — would [specific day] at [specific time] work for a 15-minute call?
+
+Best regards,
+${sender}
+
+---
+PROMPT TO USE IN CLAUDE/CHATGPT:
+"Expand this into a complete cold outreach email under 120 words. Tone: professional but warm."`,
+    followup:`SUBJECT: Following up on our [meeting topic] conversation
+
+Hi ${recipient},
+
+Thank you for your time on [date]. I really enjoyed [specific thing from the conversation].
+
+As discussed, the key next step is: [agreed action].
+
+To move forward, I just need [specific ask from them].
+
+${context}
+
+${goal} — please let me know if [specific timeframe] works.
+
+Best,
+${sender}
+
+---
+PROMPT TO USE IN CLAUDE/CHATGPT:
+"Expand this follow-up email to feel warm and human. Under 100 words. Reference the conversation naturally."`,
+    complaint:`SUBJECT: Regarding your experience with us — [case reference]
+
+Dear ${recipient},
+
+I sincerely apologize for [specific issue]. Your experience doesn't reflect our standards, and I completely understand your frustration.
+
+Here is what happened: [brief, honest explanation]
+
+Here is what we're doing to fix it: [specific action]
+
+We'd like to offer you [specific resolution] as an acknowledgment of this inconvenience.
+
+${context}
+
+${goal}.
+
+We value your trust and are committed to doing better.
+
+Sincerely,
+${sender}
+
+---
+PROMPT TO USE IN CLAUDE/CHATGPT:
+"Expand this complaint response. Keep it genuine, not corporate. Under 150 words."`,
+    proposal:`SUBJECT: Proposal: [Specific Outcome] for [Company Name]
+
+Dear ${recipient},
+
+I hope this email finds you well. Following our conversation about [their challenge], I've prepared a proposal outlining how we can help.
+
+WHAT WE'RE PROPOSING:
+${context}
+
+OUR APPROACH:
+[3 phases with clear deliverables]
+
+EXPECTED OUTCOME:
+${goal}
+
+INVESTMENT:
+[Pricing and timeline]
+
+I'd love to walk you through this in a 20-minute call. Are you available [specific day]?
+
+Warm regards,
+${sender}
+
+---
+PROMPT TO USE IN CLAUDE/CHATGPT:
+"Expand this proposal introduction into a professional email. Confident but not pushy. Under 200 words."`
+  };
+
+  out.textContent=templates[type];
+}
+
+// QUIZ
+const qData=[
+  {q:"What is the single most important question a great business email answers for the reader?",o:["When will you respond?","What's in it for me?","How long is this?","Who sent this?"],a:1,e:"Great business emails immediately answer 'What's in it for me?' from the reader's perspective. Emails that focus on the sender's needs first get ignored or deleted."},
+  {q:"In the resume before/after example, what is the main improvement AI makes?",o:["Better grammar and spelling","Shorter bullet points","Transforming duties into achievements with specific metrics","Adding more work experience"],a:2,e:"AI transforms vague duty statements ('managed social media') into achievement-focused, metric-rich statements ('grew combined following by 2,400 in 6 months'). This is what gets interviews."},
+  {q:"What does ATS stand for in the context of resume optimization?",o:["Automated Text System","Applicant Tracking System","Advanced Training Software","AI Template Selector"],a:1,e:"ATS stands for Applicant Tracking System — software used by companies to filter resumes before a human reads them. AI can help optimize your resume with the right keywords to pass these filters."},
+  {q:"In the research report workflow, which tool is recommended for gathering current data with citations?",o:["Claude","ChatGPT","Perplexity","NotebookLM"],a:2,e:"Perplexity is the recommended tool for Step 1 — gathering current data with real-time citations. Then Claude is used to write the structured report using that data."},
+  {q:"What makes a complaint response email effective according to the session?",o:["Being defensive to protect the business legally","Admitting full legal fault immediately","Acknowledging frustration genuinely, explaining the fix, and offering resolution","Keeping it very short and saying sorry"],a:2,e:"An effective complaint response: acknowledges frustration genuinely (not robotically), takes responsibility without admitting legal fault, explains what's being done to fix it, and offers a specific resolution. AI helps craft this calmly even when you're frustrated."},
+  {q:"The LinkedIn 'About' section prompt asks for which key final element?",o:["Your salary expectation","A list of all past companies","What you're open to (career opportunities)","Your education details"],a:2,e:"The LinkedIn summary prompt ends with 'what you're open to' — signaling to recruiters what opportunities you're interested in. This is one of the most important parts of a LinkedIn profile for being found."},
+  {q:"How many sections does the AI-powered client proposal structure have?",o:["3","4","6","8"],a:2,e:"The session covers a 6-section proposal: Executive Summary, Problem Statement, Our Solution, Timeline & Investment, Why Choose Us, and Next Steps. Each section has a specific AI prompt to generate it."},
+  {q:"According to the session, how long do recruiters spend on a resume before deciding?",o:["30 seconds","2 minutes","7 seconds","1 minute"],a:2,e:"Research shows recruiters spend an average of just 7 seconds scanning a resume before deciding whether to read further. This is why the first impression — clear achievements, strong opening — is critical."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You\'re ready to write professional documents like a pro. Put these prompts to use this week.'}
+    else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Re-read the email templates and try the prompts in real scenarios.'}
+    else{tier='Keep Practicing!';tierColor='var(--c4)';msg='Go back and try the actual prompts in ChatGPT or Claude. Hands-on practice beats reading every time.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2: The AI Mindset — AI Tools Mastery · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+/* Mindset cards */
+.mindset-grid{display:flex;flex-direction:column;gap:1rem;margin:2rem 0}
+.mindset-item{display:grid;grid-template-columns:64px 1fr;gap:1.25rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;align-items:start}
+.mindset-item:hover{border-color:rgba(5,150,105,.3);transform:translateX(6px)}
+.mindset-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;padding-top:.2rem}
+.mindset-body h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.mindset-body p{color:var(--t2);font-size:.87rem;line-height:1.65}
+
+/* Hallucination demo */
+.hall-demo{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.hall-demo h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem}
+.hall-example{padding:1rem 1.25rem;border-radius:var(--rs);margin-bottom:1rem;font-size:.88rem}
+.hall-ai{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.12);color:var(--t2)}
+.hall-ai .label{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);margin-bottom:.4rem;display:block}
+.hall-truth{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.12);color:var(--t2)}
+.hall-truth .label{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c3);margin-bottom:.4rem;display:block}
+
+/* Ethics pledge */
+.pledge{padding:2rem;background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);margin:2rem 0}
+.pledge h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;color:var(--brand)}
+.pledge-items{display:flex;flex-direction:column;gap:.6rem}
+.pledge-item{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:var(--t2)}
+.pledge-item::before{content:'✓';color:var(--brand);font-weight:700;flex-shrink:0;margin-top:.1rem}
+
+/* Career accordion */
+.acc-item{border:1px solid var(--bd);border-radius:var(--r);margin-bottom:.7rem;overflow:hidden;background:var(--bg2);transition:all .3s}
+.acc-item:hover{border-color:rgba(0,240,255,.15)}
+.acc-h{display:flex;align-items:center;justify-content:space-between;padding:1.15rem 1.5rem;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;transition:all .3s;gap:12px}
+.acc-h:hover{color:var(--c1)}
+.acc-h .salary{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand);margin-left:auto;margin-right:12px}
+.acc-h .tgl{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .3s;flex-shrink:0;color:var(--t3)}
+.acc-item.open .acc-h .tgl{transform:rotate(45deg);color:var(--c1);border-color:var(--c1)}
+.acc-b{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.acc-item.open .acc-b{max-height:600px}
+.acc-c{padding:0 1.5rem 1.5rem;color:var(--t2);font-size:.9rem}
+.acc-c ul{padding-left:1.2rem;margin-top:.5rem}
+.acc-c li{margin-bottom:.35rem}
+
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+@media(max-width:768px){
+  .cgrid{grid-template-columns:1fr}
+  .mindset-item{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 02 &middot; AI Tools Mastery &middot; 2026</div>
+  <h1>The AI<br><span class="gr">Mindset</span></h1>
+  <div class="hero-brand">AI Tools Mastery Program &mdash; TARAhut AI Labs</div>
+  <p>How you think about AI matters more than which tool you use. Learn the 5 mindset shifts, understand what AI gets wrong, and build your ethical framework.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>5 Mindset Shifts</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>What AI Gets Wrong</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>AI Ethics</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Career Paths</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: 5 MINDSET SHIFTS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>5 Mindset Shifts for the <span class="gr">AI Era</span></h2>
+    <p>Most people fail with AI not because of the tools — but because of their thinking. These 5 shifts will change how you approach AI forever.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">✈️</div><div class="call-body"><h4>The Pilot/Co-Pilot Analogy</h4><p>Think of yourself as the <strong>pilot</strong>. AI is your co-pilot. The co-pilot is incredibly capable, knowledgeable, and fast — but you are still in command. You decide the direction, make the key decisions, and take responsibility for the outcome. <strong>AI amplifies your judgment — it doesn't replace it.</strong></p></div></div>
+
+  <div class="mindset-grid">
+    <div class="mindset-item">
+      <div class="mindset-num">01</div>
+      <div class="mindset-body">
+        <h4>AI Amplifies YOUR Skills — It Doesn't Replace Them</h4>
+        <p>A bad writer with AI produces bad content faster. A good writer with AI produces exceptional content faster. AI makes you 10x more productive — but it multiplies whatever skill level you already have. <strong>The higher your skill, the more valuable AI becomes in your hands.</strong></p>
+      </div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">02</div>
+      <div class="mindset-body">
+        <h4>Quality In = Quality Out (Garbage In, Garbage Out)</h4>
+        <p>AI is only as good as the instructions you give it. Vague, lazy prompts produce average results. Clear, specific, context-rich prompts produce remarkable results. <strong>The skill gap in AI is mostly a prompting gap.</strong> This is why Sessions 3 and 4 exist.</p>
+      </div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">03</div>
+      <div class="mindset-body">
+        <h4>Always Verify AI Outputs — Never Trust Blindly</h4>
+        <p>AI can be confidently wrong. It can invent facts, misquote sources, and present fiction as truth with complete confidence. Before using any AI output for important work — verify it. Check facts. Cross-reference sources. Your reputation is on the line, not the AI's.</p>
+      </div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">04</div>
+      <div class="mindset-body">
+        <h4>AI is a Tool for Everyone — Not Just Tech People</h4>
+        <p>Farmers in Punjab are using AI to predict crop prices. Shopkeepers in Kotkapura are using AI to write product descriptions. Doctors in Ludhiana are using AI to draft patient reports. <strong>If you can describe a task in words, AI can help you with it.</strong> No coding required.</p>
+      </div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">05</div>
+      <div class="mindset-body">
+        <h4>Treat AI Like a Brilliant Intern — Give It Context</h4>
+        <p>If you hired the world's most knowledgeable intern but gave them zero context about your business, they'd produce generic work. AI is the same. Tell it who you are, what you need, why you need it, and who it's for. Context is everything. <strong>The more you share, the better it serves you.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="micro-win">5 shifts that took years for AI experts to articulate — you absorbed them in 5 minutes.</div>
+
+  <div class="micro-action">
+    <h4>60-Second Reflection</h4>
+    <p>Think of one task in your daily life or work where AI could amplify your existing skills. Write it down. Now think of what context you'd need to give AI to make it truly useful for that task. You've just designed your first AI use case.</p>
+  </div>
+
+  <div class="identity-shift">You now approach AI the way professionals do — as a tool to amplify, not a magic solution to depend on.</div>
+
+  <p class="curiosity-hook">Next: What happens when AI confidently tells you something completely false? It's more common than you think.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: What AI Gets Wrong &rarr;</button></div>
+</div>
+
+<!-- S2: WHAT AI GETS WRONG -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>What AI <span class="gr">Gets Wrong</span></h2>
+    <p>AI can be confidently, completely wrong. Understanding hallucinations and AI limitations protects you from embarrassing (and dangerous) mistakes.</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>What is an AI Hallucination?</h4><p>When an AI generates information that sounds completely plausible and confident — but is completely false. The AI doesn't know it's wrong. It doesn't "lie" intentionally. It's predicting the most statistically likely next words, and sometimes those words describe things that never happened. <strong>This is the most important AI limitation to understand.</strong></p></div></div>
+
+  <div class="hall-demo">
+    <h4>🔬 Real Hallucination Examples — These Actually Happened</h4>
+
+    <div class="hall-example hall-ai">
+      <span class="label">🤖 AI SAID (ChatGPT, early version):</span>
+      <p>"The research paper 'Efficiency of Neural Networks in Medical Diagnosis' by Dr. Rajesh Kumar, published in the Journal of Applied AI in 2021, confirmed that..."</p>
+    </div>
+    <div class="hall-example hall-truth">
+      <span class="label">❌ REALITY:</span>
+      <p>No such paper exists. No such author. No such journal. The AI invented a completely fictional academic source with specific details — year, author, journal name — all made up.</p>
+    </div>
+
+    <div class="hall-example hall-ai" style="margin-top:1.5rem">
+      <span class="label">🤖 AI SAID (used in a real legal case in the US):</span>
+      <p>"In Varghese v. China Southern Airlines, the court ruled that..." [followed by detailed legal precedent]</p>
+    </div>
+    <div class="hall-example hall-truth">
+      <span class="label">❌ REALITY:</span>
+      <p>This case never existed. A US lawyer submitted this ChatGPT-generated legal brief to a federal court in 2023. He was sanctioned. The case became a global warning about AI hallucinations in professional contexts.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Verify AI Outputs — 4 Rules</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">🔍</span><h3>Ask for Sources</h3><p>Always ask: <code>"Cite the exact source for this claim."</code> Then go verify that source actually exists. AI often makes up citations that look real.</p></div>
+    <div class="crd"><span class="crd-icon">🌐</span><h3>Use Perplexity for Facts</h3><p>For fact-based research, use <a href="https://perplexity.ai" target="_blank">Perplexity.ai</a> — it provides real-time web results with actual links you can click and verify.</p></div>
+    <div class="crd"><span class="crd-icon">📊</span><h3>Cross-Reference 2 Tools</h3><p>Ask the same factual question to two different AI tools. If they give different answers, neither should be trusted without verification.</p></div>
+    <div class="crd"><span class="crd-icon">🧠</span><h3>Apply Common Sense</h3><p>Does this claim seem surprising or too perfect? If something AI says would be "breaking news" if true, it probably isn't. Your judgment is the final filter.</p></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>When AI Hallucinations Matter Most</h4><p>AI hallucinations are low-risk for creative tasks (writing a poem, brainstorming ideas). They are <strong>high-risk</strong> for: medical information, legal advice, financial decisions, academic research, and anything you'll present professionally. <strong>The more the stakes, the more you verify.</strong></p></div></div>
+
+  <div class="micro-action">
+    <h4>LIVE Demo: Catch an AI Hallucination</h4>
+    <p>Open ChatGPT and ask: <code>"Tell me about the book 'The AI Revolution in Punjab' by Harpreet Singh, published in 2019."</code></p>
+    <p style="margin-top:.5rem">This book almost certainly doesn't exist. Watch what ChatGPT does. If it describes the book in detail — that's a hallucination. If it says it can't find info — it's being honest. Note which response you get.</p>
+  </div>
+
+  <div class="micro-win">You can now catch AI mistakes that most professionals miss. This makes you a better AI user than 90% of people.</div>
+
+  <p class="curiosity-hook">Next: Privacy, deepfakes, and the ethical lines you should never cross with AI.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: AI Ethics &rarr;</button></div>
+</div>
+
+<!-- S3: AI ETHICS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% done! This section could save you from a serious mistake one day.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>AI Ethics &amp; <span class="gr">Responsible Use</span></h2>
+    <p>Power without responsibility is dangerous. Here's how to use AI in ways you'll never regret.</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">🔒</div><div class="call-body"><h4>Privacy First — Never Share This With AI</h4><p>AI tools (especially free ones) may use your conversations for training data. Treat AI like a public forum, not a private diary. <strong>Never share:</strong><br>• Aadhaar number, PAN card, or any government ID<br>• Passwords, OTPs, or banking details<br>• Private client or business data<br>• Full addresses or location of minors<br>• Medical records of identifiable people<br>• Any information that would harm someone if made public</p></div></div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">⚖️</span><h3>Bias in AI</h3><p>AI learns from human-created data — which means it inherits human biases. AI models can be biased toward certain skin tones in image generation, certain languages, certain cultural norms. <strong>Be aware this exists</strong> and check AI outputs for fairness before using them widely.</p></div>
+    <div class="crd"><span class="crd-icon">🎭</span><h3>Deepfakes — A Serious Danger</h3><p>AI can now create highly realistic fake videos of real people saying things they never said. Using deepfakes to impersonate someone, spread misinformation, or create non-consensual content is <strong>illegal in India under IT laws</strong> and ethically unacceptable.</p></div>
+    <div class="crd"><span class="crd-icon">📝</span><h3>AI & Academic Honesty</h3><p>Using AI to write your entire assignment without disclosure is academic dishonesty at most institutions. Using AI as a research and drafting aid while being transparent — that's a legitimate skill. <strong>Know your institution's policy.</strong></p></div>
+    <div class="crd"><span class="crd-icon">🌐</span><h3>Copyright & Ownership</h3><p>Who owns AI-generated content? This is actively debated in courts worldwide. As a general rule: be transparent when content is AI-generated if it matters to your audience. Don't use AI to copy proprietary work.</p></div>
+    <div class="crd"><span class="crd-icon">🤝</span><h3>Transparency</h3><p>If you use AI to write something and someone assumes it's your original work — is that honest? Use your judgment. In professional settings, <strong>disclose when significant AI assistance was used.</strong> This builds trust long-term.</p></div>
+    <div class="crd"><span class="crd-icon">🎯</span><h3>Don't Use AI to Harm</h3><p>Never use AI to generate spam, phishing messages, fake news, harassment content, or to manipulate people psychologically. Beyond being unethical, these uses are increasingly illegal under Indian IT regulations.</p></div>
+  </div>
+
+  <div class="pledge">
+    <h4>🤝 The TARAhut AI Responsible Use Pledge</h4>
+    <div class="pledge-items">
+      <div class="pledge-item">I will always verify important AI outputs before using them professionally.</div>
+      <div class="pledge-item">I will never share private or sensitive personal information with AI tools.</div>
+      <div class="pledge-item">I will be transparent about AI assistance when it matters to others.</div>
+      <div class="pledge-item">I will not use AI to create deepfakes, spam, or misleading content.</div>
+      <div class="pledge-item">I will use AI to create value — not to deceive or harm others.</div>
+      <div class="pledge-item">I will continue learning about AI's limitations and ethical challenges.</div>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Open the privacy settings in ChatGPT (Settings → Data Controls). Turn off "Improve the model for everyone." This stops your conversations from being used as training data. Do the same in Claude (Account → Privacy). 2 minutes, much better privacy.</p>
+  </div>
+
+  <div class="micro-win">You just became one of the few AI users who actually understands the ethical landscape. That's rare and valuable.</div>
+
+  <p class="curiosity-hook">Next: What careers are opening up right now — and realistic salary ranges you can achieve.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Career Paths &rarr;</button></div>
+</div>
+
+<!-- S4: CAREER PATHS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Career section — this is where it gets real.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>AI Career <span class="gr">Opportunities</span></h2>
+    <p>6 real career paths opening up right now — with realistic salary ranges and no coding required for most of them.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">📢</div><div class="call-body"><h4>Honest Disclaimer</h4><p>These salary ranges represent realistic earning potential in the Indian market based on current demand. Entry-level ranges assume you're just starting. Experience ranges assume 6-12 months of active work and a portfolio. <strong>Results depend on effort, skills, and market conditions — these are potential earnings, not guarantees.</strong></p></div></div>
+
+  <div id="careerAcc">
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>🎨 AI Content Creator</span><span class="salary">₹15K–40K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Use AI to create blog posts, social media content, marketing copy, video scripts, and newsletters — at scale and speed no human editor can match manually.</p><p><strong>Key Tools:</strong> ChatGPT, Claude, Canva AI, Gamma</p><p><strong>Entry:</strong> ₹15K–25K/month | <strong>Experienced:</strong> ₹30K–60K/month</p><ul><li>Freelance on Fiverr, Upwork, LinkedIn — global clients</li><li>Build a portfolio in 4 weeks with 10 sample pieces</li><li>Local demand from businesses in Kotkapura, Faridkot, Bathinda</li><li>Skill multiplier: learn SEO to double your rates</li></ul></div></div></div>
+
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>📈 AI Marketing Specialist</span><span class="salary">₹20K–50K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Run AI-powered marketing campaigns. Create ads, email sequences, social media strategies, and market analysis reports — all 5x faster with AI tools.</p><p><strong>Key Tools:</strong> ChatGPT, Canva AI, Perplexity, CapCut, Gamma</p><p><strong>Entry:</strong> ₹20K–35K/month | <strong>Experienced:</strong> ₹35K–60K/month</p><ul><li>High demand from SMEs who can't afford full agencies</li><li>Serve 3-5 local businesses at ₹8K–15K each per month</li><li>Can specialize in one platform (Instagram, YouTube, WhatsApp)</li></ul></div></div></div>
+
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>💬 Prompt Engineer</span><span class="salary">₹20K–60K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Write optimized AI prompts for businesses, apps, and workflows. Companies pay well for people who know how to get reliable, high-quality results from AI every time.</p><p><strong>Key Tools:</strong> ChatGPT, Claude, Gemini, Midjourney, Ideogram</p><p><strong>Entry:</strong> ₹20K–35K/month | <strong>Experienced:</strong> ₹40K–80K/month</p><ul><li>Build and sell prompt packs on Gumroad or Etsy</li><li>Create system prompts for businesses setting up AI chatbots</li><li>No coding required — this is pure language skill</li></ul></div></div></div>
+
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>⚙️ AI Automation Specialist</span><span class="salary">₹20K–50K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Help businesses automate repetitive tasks using AI and no-code platforms. From automated email responses to AI-powered customer support bots — businesses pay monthly retainers for this.</p><p><strong>Key Tools:</strong> ChatGPT, Make.com, Notion AI, Bolt.new</p><p><strong>Entry:</strong> ₹20K–35K/month | <strong>Experienced:</strong> ₹40K–70K/month</p><ul><li>Massive demand from small businesses who waste hours on repetitive work</li><li>Build automations once, charge monthly maintenance fees</li><li>High-value, low-competition niche in Punjab right now</li></ul></div></div></div>
+
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>🌐 AI Freelancer</span><span class="salary">₹10K–40K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Offer AI-powered services on freelancing platforms — content writing, image generation, presentations, video scripts, voice-overs. Deliver faster, charge competitively.</p><p><strong>Key Tools:</strong> All 13 course tools depending on service</p><p><strong>Entry:</strong> ₹10K–20K/month | <strong>Experienced:</strong> ₹25K–50K/month</p><ul><li>Start from home, zero investment beyond your phone/laptop</li><li>Fiverr, Upwork, Guru, Internshala all have growing AI demand</li><li>Build niche reputation fast in 1-2 specific service areas</li></ul></div></div></div>
+
+    <div class="acc-item"><div class="acc-h" onclick="togAcc(this)"><span>🎓 AI Trainer & Educator</span><span class="salary">₹15K–50K/mo</span><span class="tgl">+</span></div><div class="acc-b"><div class="acc-c"><p>Teach others to use AI tools. Run workshops for schools, colleges, businesses, and government. Tier-2 and tier-3 cities are massively underserved — huge opportunity right here in Punjab.</p><p><strong>Key Tools:</strong> All course tools + Gamma for presentations</p><p><strong>Entry:</strong> ₹15K–30K/month | <strong>Experienced:</strong> ₹30K–60K/month</p><ul><li>Teaching gap in small towns is enormous — you could be the local expert</li><li>Partner with schools, libraries, coaching centres</li><li>Most rewarding career path — you create more AI professionals</li></ul></div></div></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>The real opportunity isn't in Bangalore or Mumbai.</strong> It's in Kotkapura, Faridkot, Moga, and Bathinda. These cities have businesses that need AI skills, students who need AI training, and shops that could benefit from AI marketing. <strong>And there's almost nobody there providing these services yet. That's you.</strong></p>
+  </div>
+
+  <div class="micro-win">You just learned more about AI career paths than most career counsellors know right now.</div>
+
+  <div class="identity-shift">You're not just learning a skill. You're positioning yourself for careers that didn't exist 3 years ago and pay better than most traditional options.</div>
+
+  <p class="curiosity-hook">Next: 8 questions to test everything from today's session.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost done! 8 questions — let's find out what stuck.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions on mindset, hallucinations, ethics, and careers. Instant feedback after each one.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">You completed the quiz. Every question sharpened your understanding.</div>
+  <p class="curiosity-hook">Next: Homework, key takeaways, and a preview of Session 3.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Careers</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 2 <span class="gr">Complete!</span></h2>
+    <p>The AI Mindset is now yours. Here's your homework and a preview of Session 3.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Learned Today</h4><p>✅ 5 core mindset shifts that define effective AI users<br>✅ What hallucinations are and how to catch them<br>✅ The pilot/co-pilot framework for AI collaboration<br>✅ Privacy rules — what to never share with AI<br>✅ Ethics: deepfakes, bias, transparency, and responsibility<br>✅ 6 real career paths with realistic salary ranges</p></div></div>
+
+  <div class="micro-action">
+    <h4>Your Homework Before Session 3</h4>
+    <ul>
+      <li><strong>Solve 1 real problem</strong> in your work or studies using AI — document what you tried and what worked</li>
+      <li><strong>Write 3 ways</strong> AI could specifically help YOUR work, studies, or side hustle — be specific</li>
+      <li><strong>Test an AI hallucination</strong> — ask two AI tools the same obscure factual question and compare answers</li>
+      <li><strong>Update privacy settings</strong> in ChatGPT and Claude (turn off training data use)</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Session 3 — Prompt Engineering Basics</h4><p>Next session is where everything gets practical. You'll learn the <strong>RCTF Framework</strong> (Role, Context, Task, Format) — the 4-part formula that transforms average AI results into professional outputs. We'll also build an interactive Prompt Scoring tool so you can evaluate your own prompts in real-time.</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=Completed%20Session%202%20of%20AI%20Tools%20Mastery!%20Ready%20for%20Session%203." target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">You now think about AI the way experts do — with a clear framework, ethical boundaries, and real career awareness. Session 3 takes you into actual skill-building.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Session 02: The AI Mindset &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Keep going`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session 2 complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function togAcc(h){const it=h.parentElement;const was=it.classList.contains('open');document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('open'));if(!was)it.classList.add('open')}
+
+const qData=[
+  {q:"In the pilot/co-pilot analogy for AI, who is always in control?",o:["The AI (co-pilot)","The pilot (you, the human)","The AI company","Neither — it's 50/50"],a:1,e:"You are the pilot. AI is the co-pilot — incredibly capable and fast, but you are in command. You set the direction, make key decisions, and take responsibility for outcomes."},
+  {q:"What is an AI 'hallucination'?",o:["When AI creates realistic images","When AI generates confident but completely false information","When AI becomes too slow to respond","When AI refuses to answer a question"],a:1,e:"AI hallucination is when an AI generates information that sounds plausible and confident but is completely false. The AI doesn't know it's wrong — it's just predicting statistically likely next words."},
+  {q:"A student in the US submitted AI-generated legal cases to a federal court. What happened?",o:["The judge was impressed","The AI was correct and the cases were real","The cases didn't exist — the lawyer was sanctioned","Nothing happened"],a:2,e:"This was a real 2023 incident. A lawyer submitted ChatGPT-generated legal cases to a US federal court. The cases were completely fictional. The lawyer was sanctioned (penalised) and the case became a global warning about AI hallucinations."},
+  {q:"Which tool is best for fact-checking AI outputs with real-time web sources?",o:["ChatGPT","Claude","Perplexity","Canva AI"],a:2,e:"Perplexity.ai provides real-time web results with actual clickable links you can verify. For fact-checking, it's much more reliable than ChatGPT or Claude which can generate false citations."},
+  {q:"Which of these should you NEVER share with an AI tool?",o:["Your favourite food","A poem you wrote","Your Aadhaar number","A business idea"],a:2,e:"Never share government IDs (Aadhaar, PAN), passwords, OTPs, banking details, or sensitive personal data with AI tools. Free AI tools may use your conversations for training data."},
+  {q:"Using AI to create realistic fake videos of real people is called what — and is it legal?",o:["Deep learning — perfectly legal","Deepfakes — illegal in India under IT laws","Neural imaging — only sometimes legal","AI cloning — legal with permission"],a:1,e:"Creating deepfakes — realistic fake videos of real people saying things they never said — is illegal in India under IT laws when used to impersonate, spread misinformation, or harm individuals."},
+  {q:"What does 'Quality In = Quality Out' mean for AI?",o:["AI quality depends on the server speed","AI produces results equal in quality to the instructions you give it","All AI tools produce the same quality output","AI quality improves automatically over time"],a:1,e:"The quality of AI output is directly linked to the quality of your prompt (input). Vague, lazy prompts = average results. Specific, context-rich, well-structured prompts = remarkable results. This is why prompt engineering is a valuable skill."},
+  {q:"Which AI career path specifically involves teaching businesses to automate repetitive workflows?",o:["AI Content Creator","AI Marketing Specialist","AI Trainer/Educator","AI Automation Specialist"],a:3,e:"AI Automation Specialists help businesses automate repetitive tasks using AI and no-code platforms. They often charge monthly retainers for building and maintaining these automations — a high-value, growing niche."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='Strong grasp of AI mindset and ethics. You\'re ready to build on this in Session 3!';}
+    else if(pct>=50){tier='Good Effort!';tierColor='var(--c1)';msg='Good foundation. Revisit the sections on hallucinations and ethics to strengthen your understanding.';}
+    else{tier='Keep Going!';tierColor='var(--c4)';msg='Session 2 covers new territory. Re-reading the sections will make everything much clearer.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

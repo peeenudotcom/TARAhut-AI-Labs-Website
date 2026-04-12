@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4: Advanced Prompting + Prompt Library — AI Tools Mastery · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+/* Chain-of-Thought Steps */
+.cot-steps{display:flex;flex-direction:column;gap:.75rem;margin:2rem 0;position:relative;padding-left:36px}
+.cot-steps::before{content:'';position:absolute;top:0;left:14px;width:2px;height:100%;background:linear-gradient(180deg,var(--c1),var(--c2),var(--brand))}
+.cot-step{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem 1.5rem;transition:all .35s;position:relative}
+.cot-step::before{content:'';position:absolute;left:-28px;top:18px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg)}
+.cot-step:hover{border-color:rgba(0,240,255,.25);transform:translateX(6px)}
+.cot-step h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem;color:var(--c1)}
+.cot-step p{color:var(--t2);font-size:.87rem}
+.cot-step code{display:block;margin-top:.5rem;font-size:.8rem;color:var(--c5);background:rgba(52,211,153,.04);padding:.5rem .75rem;border-radius:var(--rs)}
+
+/* Before/After */
+.ba-wrap{margin:2rem 0;display:flex;flex-direction:column;gap:1rem}
+.ba-item{display:grid;grid-template-columns:1fr 1fr;gap:1rem;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.ba-side{padding:1.5rem}
+.ba-bad{background:rgba(255,61,139,.03)}
+.ba-good{background:rgba(52,211,153,.03)}
+.ba-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.6rem;display:block}
+.ba-bad .ba-label{color:var(--c3)}
+.ba-good .ba-label{color:var(--c5)}
+.ba-text{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--t2);line-height:1.6}
+.ba-result{font-size:.8rem;color:var(--t3);margin-top:.5rem;font-style:italic}
+
+/* Persona cards */
+.persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.persona-card{padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:pointer;position:relative;overflow:hidden}
+.persona-card:hover{border-color:rgba(168,85,247,.3);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.persona-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:.35s}
+.persona-card:hover::before{transform:scaleX(1)}
+.persona-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:8px}
+.persona-prompt{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c2);background:rgba(168,85,247,.06);padding:.6rem .8rem;border-radius:var(--rs);margin:.6rem 0;line-height:1.5}
+.persona-desc{font-size:.82rem;color:var(--t2)}
+.persona-copy{font-size:.7rem;color:var(--t3);margin-top:.5rem}
+
+/* Prompt Library */
+.library-table{width:100%;border-collapse:collapse;margin:2rem 0}
+.library-table th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-size:.72rem;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;padding:.8rem 1rem;text-align:left;border-bottom:2px solid rgba(5,150,105,.2)}
+.library-table td{padding:.8rem 1rem;border-bottom:1px solid var(--bd);font-size:.83rem;color:var(--t2);background:var(--bg2);vertical-align:top}
+.library-table tr:last-child td{border-bottom:none}
+.library-table tr:hover td{background:var(--bg3)}
+.library-table td:first-child{font-family:'Syne',sans-serif;font-weight:600;color:var(--c1);white-space:nowrap}
+.library-table td:nth-child(2){font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t2);max-width:350px}
+.library-table td:last-child{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);white-space:nowrap}
+
+/* Project Card */
+.project-card{padding:2rem;background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);margin:2rem 0}
+.project-card h3{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;margin-bottom:.5rem;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.project-card .sub{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--brand);margin-bottom:1rem;letter-spacing:1px}
+.project-card p{color:var(--t2);font-size:.9rem;margin-bottom:.75rem}
+.project-card ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem}
+.project-card li{margin-bottom:.4rem}
+
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+@media(max-width:768px){
+  .cgrid,.persona-grid{grid-template-columns:1fr}
+  .ba-item{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .library-table{font-size:.75rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 04 &middot; AI Tools Mastery &middot; 2026</div>
+  <h1>Advanced Prompting<br><span class="gr">+ Prompt Library</span></h1>
+  <div class="hero-brand">AI Tools Mastery Program &mdash; TARAhut AI Labs</div>
+  <p>Chain-of-Thought, Few-Shot, System Prompts, and building your personal Prompt Library — the techniques that separate amateurs from professionals.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#128218; Build Your Library</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Chain-of-Thought</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Few-Shot Prompting</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>System Prompts</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Prompt Library</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up + Project</button>
+  </div>
+</nav>
+
+<!-- S1: CHAIN-OF-THOUGHT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Chain-of-Thought <span class="gr">Prompting</span></h2>
+    <p>Make AI think step by step before giving you the final answer. This dramatically improves accuracy on complex problems, reasoning tasks, and multi-step decisions.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🧠</div><div class="call-body"><h4>What is Chain-of-Thought (CoT)?</h4><p>Chain-of-Thought prompting is a technique where you instruct AI to <strong>show its reasoning process step by step</strong> before arriving at a conclusion. Research from Google Brain shows that CoT prompting can improve AI accuracy on complex problems by 30-60%. The magic phrase: <strong>"Think step by step."</strong></p></div></div>
+
+  <div class="ba-wrap">
+    <div class="ba-item">
+      <div class="ba-side ba-bad">
+        <span class="ba-label">❌ Without Chain-of-Thought</span>
+        <div class="ba-text">Should I start a clothing shop or a digital marketing agency?</div>
+        <div class="ba-result">AI gives a generic comparison with surface-level pros/cons. No reasoning. No personalisation. Hard to trust.</div>
+      </div>
+      <div class="ba-side ba-good">
+        <span class="ba-label">✅ With Chain-of-Thought</span>
+        <div class="ba-text">I am deciding between opening a clothing shop or a digital marketing agency in Kotkapura. Think through this step by step: First analyse the local market. Then consider my situation (22 years old, ₹50K savings, 6 months free time, no business experience). Then weigh the risks. Finally give me your recommendation with clear reasoning.</div>
+        <div class="ba-result">AI walks through each factor methodically. The recommendation is grounded in visible reasoning you can evaluate and question.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The 4 CoT Trigger Phrases — Copy Any of These</h3>
+  <div class="cot-steps">
+    <div class="cot-step">
+      <h4>Phrase 1: "Think step by step"</h4>
+      <p>The classic CoT trigger. Works in almost every situation. Forces AI to reason before concluding.</p>
+      <code>Analyse the pros and cons of switching from a job to freelancing. Think step by step. Then give me your conclusion.</code>
+    </div>
+    <div class="cot-step">
+      <h4>Phrase 2: "Walk me through your reasoning"</h4>
+      <p>Useful when you want to see the logic, not just the answer — especially for business decisions or strategy.</p>
+      <code>Should I invest my savings in a fixed deposit or mutual fund? Walk me through your reasoning considering I am 24 years old with 2 years of expenses saved.</code>
+    </div>
+    <div class="cot-step">
+      <h4>Phrase 3: "First think, then answer"</h4>
+      <p>Explicitly separates the thinking phase from the answering phase. Great for complex analysis.</p>
+      <code>First think through all the factors involved in starting a food delivery service in a Tier-3 city. Then give me your analysis in 3 clear sections: Opportunities, Challenges, First Steps.</code>
+    </div>
+    <div class="cot-step">
+      <h4>Phrase 4: "Break this down for me before answering"</h4>
+      <p>Useful when you want AI to decompose a complex topic into understandable parts before synthesising.</p>
+      <code>Break down what 'machine learning' really means before explaining how I could use it in my small business without coding.</code>
+    </div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">💡</div><div class="call-body"><h4>When to Use Chain-of-Thought</h4><p>CoT is most powerful for: <strong>Business decisions</strong> (should I do X or Y?), <strong>Problem solving</strong> (why is my sales not growing?), <strong>Planning</strong> (how do I reach goal Z?), <strong>Analysis</strong> (what are the real risks here?), and <strong>Math / logic problems</strong>. For simple tasks (write a caption, translate this), CoT is unnecessary overhead.</p></div></div>
+
+  <div class="micro-win">You just learned a technique that researchers formally published in academic AI papers. And you can use it right now.</div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Think of one real decision you're currently facing. Open ChatGPT and ask: <code>"[Your decision question]. Think step by step: first list all the relevant factors, then weigh them, then give me your recommendation."</code> Compare this to how you'd normally ask the question.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Teaching AI with examples. The Few-Shot technique that makes AI understand your exact style.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Few-Shot Prompting &rarr;</button></div>
+</div>
+
+<!-- S2: FEW-SHOT PROMPTING -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! You're 17% through this advanced session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Few-Shot <span class="gr">Prompting</span></h2>
+    <p>Give AI 2-3 examples of what you want before asking it to produce. This is how you teach AI your specific style, tone, and format — permanently changing how it responds to you.</p>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🎯</div><div class="call-body"><h4>The Core Idea: Show, Don't Just Tell</h4><p>Instead of describing what you want (which can be misinterpreted), you <strong>show AI examples</strong> of the exact pattern you want. Then ask it to create more like those. AI learns your pattern from the examples and replicates it precisely. <strong>This is how you clone your own writing style.</strong></p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Before/After Comparisons — Same Goal, Different Approach</h3>
+
+  <div class="ba-wrap">
+    <div class="ba-item">
+      <div class="ba-side ba-bad">
+        <span class="ba-label">❌ Zero-Shot (No Examples)</span>
+        <div class="ba-text">Write 3 Instagram captions for a clothing shop. Make them engaging and use Hinglish.</div>
+        <div class="ba-result">AI gives generic captions in whatever "Hinglish" it decides. May not match your brand voice at all.</div>
+      </div>
+      <div class="ba-side ba-good">
+        <span class="ba-label">✅ Few-Shot (With Examples)</span>
+        <div class="ba-text">Write 3 more Instagram captions in the EXACT same style as these examples I wrote:<br><br>Example 1: "Naya collection aa gaya hai! 🌸 Desi vibes with a modern twist. Kotkapura walo, aao check karo!"<br><br>Example 2: "Eid special suits ready hain! 💛 Sabse best quality, sabse best price — guarantee se."<br><br>Now write 3 more for our summer collection.</div>
+        <div class="ba-result">AI perfectly replicates your Hinglish style, your emoji usage, your sentence structure, and your brand voice.</div>
+      </div>
+    </div>
+
+    <div class="ba-item">
+      <div class="ba-side ba-bad">
+        <span class="ba-label">❌ Zero-Shot</span>
+        <div class="ba-text">Classify these customer reviews as positive, negative, or neutral: "Great product!" / "Didn't work for me." / "It's okay I guess."</div>
+        <div class="ba-result">May work, but AI might use different labels or add explanations you don't need.</div>
+      </div>
+      <div class="ba-side ba-good">
+        <span class="ba-label">✅ Few-Shot</span>
+        <div class="ba-text">Classify reviews exactly like these examples:<br>"Amazing quality!" → POSITIVE<br>"Broke after 2 days." → NEGATIVE<br>"Decent but nothing special." → NEUTRAL<br><br>Now classify: "Great product!" / "Didn't work for me." / "It's okay I guess."</div>
+        <div class="ba-result">AI outputs exactly the format you showed — no extra explanation, perfect consistency.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">⚡</div><div class="call-body"><h4>The Few-Shot Formula</h4><p><strong>1)</strong> Show 2-3 examples of the pattern/style/format you want<br><strong>2)</strong> Label them clearly as "Example 1", "Example 2" etc.<br><strong>3)</strong> Say "Now do the same for: [your new input]"<br><br>The more precise your examples, the more precisely AI replicates the pattern. This works for writing styles, data formats, classification tasks, and creative work.</p></div></div>
+
+  <div class="micro-win">Few-Shot prompting is used by professional AI developers daily. You now have the same technique.</div>
+
+  <div class="identity-shift">You're no longer writing prompts — you're teaching AI to work in your exact style. That's a different level entirely.</div>
+
+  <div class="micro-action">
+    <h4>Try it Now: Clone Your Style</h4>
+    <p>Find 2 pieces of writing you've done that you're proud of (WhatsApp messages, social posts, anything). Copy them as Few-Shot examples into ChatGPT and ask it to "write 3 more in the exact same style." The result will surprise you.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: System prompts — how to create a permanent AI persona that works exactly the way you need.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: System Prompts &rarr;</button></div>
+</div>
+
+<!-- S3: SYSTEM PROMPTS & PERSONAS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% done! System prompts — the most powerful AI technique most users never discover.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>System Prompts <span class="gr">&amp; Personas</span></h2>
+    <p>Create permanent AI personalities that behave exactly how you need — every conversation, every time. This is how businesses build custom AI assistants.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🤖</div><div class="call-body"><h4>What is a System Prompt?</h4><p>A system prompt is a set of instructions given to AI <strong>before the conversation starts</strong> — defining its persona, rules, tone, knowledge, and constraints. Businesses use system prompts to build custom AI assistants (like customer service bots). In ChatGPT, you can set one in <strong>Settings → Personalization → Custom Instructions</strong>. In Claude, you put it at the very start of your first message.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">6 Ready-to-Use Personas — Click to Copy</h3>
+  <div class="persona-grid">
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">🎓 Expert Teacher</div>
+      <div class="persona-prompt">You are an expert teacher who specialises in breaking down complex concepts for students aged 15-22 in India. Always use simple language, local Indian examples (cricket, festivals, food, Bollywood), and end every explanation with a simple analogy. If the student seems confused, offer to explain differently.</div>
+      <div class="persona-desc">Use for: studying any subject, understanding complex topics, preparing for exams</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">💼 Business Mentor</div>
+      <div class="persona-prompt">You are a seasoned business mentor with 20 years of experience helping small and medium businesses in India grow. You speak practically, not theoretically. You always ground advice in Indian market realities. You ask clarifying questions before giving advice. You are honest about risks and avoid giving unrealistic promises.</div>
+      <div class="persona-desc">Use for: business decisions, strategy, pricing, marketing, hiring, growth</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">✍️ Content Writer</div>
+      <div class="persona-prompt">You are a professional content writer specialising in social media content for Indian businesses. You write in a friendly, conversational tone. You naturally blend Hindi and English (Hinglish) when appropriate. You always include a call-to-action. Your captions are concise, punchy, and never use corporate jargon. You understand Indian culture deeply.</div>
+      <div class="persona-desc">Use for: Instagram captions, WhatsApp copy, product descriptions, ads</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">📊 Data Analyst</div>
+      <div class="persona-prompt">You are a data analyst who explains numbers and trends clearly to non-technical people. When given any data or statistics, you always: 1) State the key insight first, 2) Explain what it means in plain language, 3) Suggest one actionable step based on the data. You avoid technical jargon unless specifically asked.</div>
+      <div class="persona-desc">Use for: understanding reports, making sense of data, business analytics</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">🔍 Research Assistant</div>
+      <div class="persona-prompt">You are a meticulous research assistant. For every factual claim you make, note your confidence level (High/Medium/Low). When your confidence is Medium or Low, explicitly say "Please verify this." You never make up sources. If you don't know something, say so clearly. You present information in clear, numbered points.</div>
+      <div class="persona-desc">Use for: research, fact-finding, reports, academic work — where accuracy matters</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+    <div class="persona-card" onclick="copyPersona(this)">
+      <div class="persona-title">💰 Financial Advisor</div>
+      <div class="persona-prompt">You are a friendly financial advisor who helps young Indians (aged 20-35) understand money management. You always start by understanding the person's current situation before giving advice. You recommend only safe, regulated financial products (FDs, PPF, index funds, SIPs). You always include a disclaimer that this is educational, not formal financial advice. Never recommend specific stock picks.</div>
+      <div class="persona-desc">Use for: personal finance, savings, investments, budgeting — educational guidance</div>
+      <div class="persona-copy">📋 Click to copy this system prompt</div>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">⚙️</div><div class="call-body"><h4>How to Set a System Prompt in ChatGPT</h4><p><strong>Option 1 — Custom Instructions:</strong> Settings → Personalization → Custom Instructions → "How would you like ChatGPT to respond?" → Paste your system prompt here. Now every new conversation starts with that persona.<br><br><strong>Option 2 — GPT Builder:</strong> Create → Explore GPTs → Create a GPT → Add your system prompt. You now have a dedicated custom AI assistant you can reuse.</p></div></div>
+
+  <div class="micro-win">You can now build custom AI assistants. That's a product, not just a skill.</div>
+
+  <p class="curiosity-hook">Next: Building your Prompt Library — the asset that compounds in value over time.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Build Your Prompt Library &rarr;</button></div>
+</div>
+
+<!-- S4: PROMPT LIBRARY -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! The Prompt Library — your most valuable AI asset.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Building Your <span class="gr">Prompt Library</span></h2>
+    <p>A Prompt Library is a personal collection of tested, effective prompts organised by category. Once built, it saves you hours every week and grows more valuable over time.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">📚</div><div class="call-body"><h4>Why a Prompt Library is Your Most Valuable AI Asset</h4><p>Every time you craft a great prompt that produces excellent results — save it. Within 3 months of active AI use, you'll have a library of 50+ tested prompts that consistently deliver. <strong>This library is your competitive advantage.</strong> No one else has your exact collection of prompts tuned to your business, your audience, and your goals.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Template: How to Organise Every Prompt</h3>
+  <div style="overflow-x:auto;border:1px solid var(--bd);border-radius:var(--r)">
+    <table class="library-table">
+      <thead><tr><th>Category</th><th>Prompt (RCTF Format)</th><th>When to Use</th><th>Best Tool</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>📱 Social Media</td>
+          <td>Act as a social media expert for Indian SMEs. I run [BUSINESS] in [CITY]. Write 5 Instagram captions for [OCCASION/PRODUCT]. Format: Caption | Hashtags | Posting time.</td>
+          <td>Before every product launch, festival, or campaign</td>
+          <td>ChatGPT</td>
+        </tr>
+        <tr>
+          <td>📧 Email Outreach</td>
+          <td>Act as a professional business communication expert. I am a [ROLE] reaching out to [TARGET]. Write a cold email to [GOAL]. Under 200 words, end with CTA to [ACTION].</td>
+          <td>Reaching new clients, partners, or opportunities</td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td>🔍 Research</td>
+          <td>Act as a research analyst. I need to understand [TOPIC] for my [PURPOSE]. Provide: 5 key facts, 3 surprising insights, and 3 actionable implications. Cite confidence level for each point.</td>
+          <td>Before making any major business or career decision</td>
+          <td>Perplexity</td>
+        </tr>
+        <tr>
+          <td>📝 Content Creation</td>
+          <td>Act as a content strategist. I need a [CONTENT TYPE] about [TOPIC] for [AUDIENCE]. The tone should be [TONE]. Format as [FORMAT]. Word count: under [N] words.</td>
+          <td>Blogs, newsletters, scripts, descriptions, whitepapers</td>
+          <td>ChatGPT / Claude</td>
+        </tr>
+        <tr>
+          <td>💡 Brainstorming</td>
+          <td>Act as a creative business consultant. My challenge: [PROBLEM]. Think step by step. Generate 10 unconventional ideas to solve this. Rank by effort vs impact. Suggest the top 3 to try first.</td>
+          <td>When stuck on any problem, big or small</td>
+          <td>ChatGPT</td>
+        </tr>
+        <tr>
+          <td>🎨 Image Prompts</td>
+          <td>[Subject], [Style], [Mood/Lighting], [Camera angle], [Color palette], [Extra details]. Photorealistic / Illustration / Oil painting.</td>
+          <td>Generating visuals for content, products, or designs</td>
+          <td>Midjourney / Ideogram</td>
+        </tr>
+        <tr>
+          <td>📊 Analysis</td>
+          <td>Act as a data analyst. I will share [DATA/INFO]. Analyse it for: key patterns, biggest outlier, top 3 insights, and one surprising finding. Format as a structured report.</td>
+          <td>Analysing sales, feedback, survey data, or any information</td>
+          <td>Claude</td>
+        </tr>
+        <tr>
+          <td>📆 Planning</td>
+          <td>Act as a project manager. I want to achieve [GOAL] by [DEADLINE]. I have [RESOURCES/CONSTRAINTS]. Create a week-by-week action plan. Include: milestones, risks, and daily habits that make success likely.</td>
+          <td>Any project, goal, or major task that needs structure</td>
+          <td>ChatGPT</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">💡</div><div class="call-body"><h4>Where to Store Your Prompt Library</h4><p><strong>Notion:</strong> Best for rich formatting, tables, tags, and searchability. Free plan is enough.<br><strong>Google Docs / Sheets:</strong> Simple, accessible on any device, easy to share.<br><strong>Notes App:</strong> Quick and always available on your phone.<br><strong>Obsidian:</strong> For power users who want a knowledge graph of interconnected prompts.<br><br>The best system is the one you'll actually use consistently. Start simple.</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>Think about this:</strong> A professional chef doesn't memorise every recipe from scratch every day. They build a personal recipe book over years. A good prompt library does the same thing for your AI work. <strong>Your future self will thank your present self for building this now.</strong></p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Start Your Prompt Library Right Now</h4>
+    <p>Open Notion, Google Docs, or your Notes app. Create a document called "My Prompt Library." Add the template columns: Category | Prompt | When to Use | Best Tool. Add your first 5 prompts from Sessions 3 and 4. You've started. That's the hardest part done.</p>
+  </div>
+
+  <div class="micro-win">Your Prompt Library is now born. Every great prompt you write from this day forward goes in it.</div>
+
+  <div class="identity-shift">You've moved from following tutorials to building your own AI toolkit. That's a professional mindset, not a student one.</div>
+
+  <p class="curiosity-hook">Next: 8 questions on advanced prompting — then the big Week 1 project reveal.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost done! Let's test your advanced prompting knowledge.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Advanced Skills</span></h2>
+    <p>8 questions on Chain-of-Thought, Few-Shot, System Prompts, and Prompt Libraries. These are real professional techniques now in your toolkit.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">You completed the quiz. This is the knowledge base of a working prompt engineer.</div>
+  <p class="curiosity-hook">Next: Your Week 1 Project — "My Prompt Playbook." This one goes on your portfolio.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Library</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up + Project &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP + WEEK 1 PROJECT -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 4 <span class="gr">Complete!</span> + Your Week 1 Project</h2>
+    <p>Four sessions done. Advanced prompting is yours. Now it's time to build something real.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Learned in Session 4</h4><p>✅ Chain-of-Thought prompting — making AI reason step by step<br>✅ The 4 CoT trigger phrases and when to use each<br>✅ Few-Shot prompting — teaching AI with examples to clone your style<br>✅ System prompts and personas — building custom AI assistants<br>✅ 6 ready-to-use professional personas for different use cases<br>✅ The Prompt Library template — your personal AI asset system</p></div></div>
+
+  <div class="project-card">
+    <h3>🏆 Week 1 Project: "My Prompt Playbook"</h3>
+    <div class="sub">DUE BEFORE WEEK 2 BEGINS &middot; SUBMITTABLE TO INSTRUCTOR</div>
+    <p>Your first real deliverable. This is a document you'll actually use — and show to future employers or clients.</p>
+    <p><strong>What to build:</strong></p>
+    <ul>
+      <li>A well-organised Prompt Library with <strong>minimum 30 prompts</strong> (aim for 30-50)</li>
+      <li>Prompts spread across at least <strong>6 different categories</strong> (social media, email, research, content, brainstorming, planning, etc.)</li>
+      <li>Each prompt must be in <strong>RCTF format</strong> and include: Category | Prompt | When to Use | Best Tool</li>
+      <li><strong>5 prompts must be Few-Shot style</strong> (with example input/output pairs)</li>
+      <li><strong>3 System Prompt personas</strong> you've created and tested (not copied from class)</li>
+      <li>A short <strong>personal note on each prompt</strong>: "I tested this and it works for [specific situation]"</li>
+    </ul>
+    <p style="margin-top:1rem"><strong>Format:</strong> Notion page, Google Doc, or PDF — any clean format that's easy to navigate.</p>
+    <p><strong>Share it:</strong> Post a screenshot in the class WhatsApp group with: "My Prompt Playbook — Week 1 Complete! [Your name]"</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🌟</div><div class="call-body"><h4>Why This Project Matters Beyond This Course</h4><p>Your Prompt Playbook is a portfolio piece. When you apply for AI-related work — freelancing, jobs, or your own business — you can show this. It demonstrates that you don't just "know about AI" — you've built a systematic, professional toolkit. <strong>That distinction is what gets you hired or gets you clients.</strong></p></div></div>
+
+  <div class="micro-action">
+    <h4>Your Week 1 Homework Summary</h4>
+    <ul>
+      <li>Build your <strong>Prompt Playbook</strong> — 30+ prompts across 6+ categories</li>
+      <li>Include 5 Few-Shot prompts and 3 original System Prompt personas</li>
+      <li>Test every prompt in ChatGPT, Claude, or Gemini — only save ones that work</li>
+      <li>Share your playbook in the TARAhut WhatsApp group before Week 2</li>
+      <li>Think about: <strong>what category of prompts is most valuable for YOUR work or career?</strong> Specialise there.</li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=Completed%20Session%204%20of%20AI%20Tools%20Mastery!%20Starting%20my%20Prompt%20Playbook%20now." target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">You've completed 4 sessions. You understand AI, use it ethically, prompt it like a professional, and you're building a portfolio. You're not a beginner anymore. Act like it.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Session 04: Advanced Prompting + Prompt Library &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Advanced mode`:pctDone<=50?`${pctDone}% — Few-Shot mastered`:pctDone<=75?`${pctDone}% — Building library`:pctDone<100?`${pctDone}% — Almost there!`:`100% — Week 1 complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === COPY PERSONA ===
+function copyPersona(card){
+  const text=card.querySelector('.persona-prompt').textContent;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const orig=card.querySelector('.persona-copy').textContent;
+  card.querySelector('.persona-copy').textContent='✅ Copied! Paste as your first message in a new chat →';
+  setTimeout(()=>card.querySelector('.persona-copy').textContent=orig,3000);
+}
+
+// === QUIZ ===
+const qData=[
+  {q:"What is the main benefit of Chain-of-Thought prompting?",o:["It makes AI respond faster","It forces AI to reason step by step, improving accuracy on complex problems","It makes AI write longer responses","It helps AI translate languages better"],a:1,e:"Chain-of-Thought prompting instructs AI to show its reasoning process step by step before concluding. Research shows this improves AI accuracy by 30-60% on complex reasoning, planning, and decision tasks."},
+  {q:"Which phrase is the classic Chain-of-Thought trigger?",o:["Be more creative","Use simple language","Think step by step","Give me more options"],a:2,e:"'Think step by step' is the classic CoT trigger phrase identified in Google Brain research. It signals AI to reason methodically rather than jumping straight to a conclusion."},
+  {q:"In Few-Shot prompting, what do the 'shots' refer to?",o:["Quick responses from AI","Examples you provide to teach AI the pattern you want","Number of questions you can ask","The speed of AI generation"],a:1,e:"'Shots' in Few-Shot prompting refer to examples. A 'zero-shot' prompt has no examples. A 'few-shot' prompt includes 2-3 examples of the exact pattern, style, or format you want AI to replicate."},
+  {q:"What is the key advantage of Few-Shot prompting over simply describing what you want?",o:["Few-Shot prompts are shorter","Few-Shot prompts are faster","Showing examples is more precise than describing — AI replicates the exact style, format, and tone of the examples","Few-Shot prompts don't require RCTF framework"],a:2,e:"'Show, don't just tell' is the core advantage. When you provide examples, AI can pattern-match precisely to your style, tone, format, and vocabulary — far more accurately than when you describe these qualities in words."},
+  {q:"What is a System Prompt?",o:["A prompt about computer systems","Instructions given to AI before the conversation starts to define its persona, rules, and behaviour","A type of programming language","The first message you always send to ChatGPT"],a:1,e:"A system prompt is a set of instructions given to AI before the conversation begins. It defines the AI's persona, tone, expertise, constraints, and rules. This is how businesses build custom AI assistants with consistent behaviour."},
+  {q:"Where can you set persistent Custom Instructions (System Prompt) in ChatGPT?",o:["In the chat box at the start of every conversation","Settings → Personalization → Custom Instructions","In the ChatGPT mobile app settings only","You cannot set custom instructions in ChatGPT"],a:1,e:"In ChatGPT, go to Settings → Personalization → Custom Instructions → 'How would you like ChatGPT to respond?' and paste your system prompt. It applies to every new conversation automatically."},
+  {q:"What is the recommended minimum number of prompts for a solid Prompt Library?",o:["5 prompts across 2 categories","10 prompts, all in one category","30+ prompts across 6+ categories","100+ prompts are required before it's useful"],a:2,e:"A solid Prompt Library starts with 30+ prompts spread across at least 6 categories (social media, email, research, content, brainstorming, planning, etc.). The Week 1 Project targets 30-50 prompts. The library grows over time with every good prompt you save."},
+  {q:"Which storage option is best for a Prompt Library that needs rich formatting, tables, and search?",o:["SMS or WhatsApp notes","Notion (free plan is sufficient)","A physical notebook","Email drafts"],a:1,e:"Notion is widely recommended for Prompt Libraries due to its excellent table support, tagging, search, and rich text formatting — all available on the free plan. Google Docs/Sheets also work well. The key is using whatever you'll actually maintain consistently."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Expert Prompt Engineer!';tierColor='var(--brand)';msg='Outstanding. You\'ve mastered the advanced techniques. Now build your Prompt Playbook!';}
+    else if(pct>=50){tier='Strong Skills!';tierColor='var(--c1)';msg='Good grasp of the concepts. Revisit CoT and Few-Shot sections to fill any gaps.';}
+    else{tier='Keep Building!';tierColor='var(--c4)';msg='Advanced prompting takes practice. Re-read the sections and try each technique hands-on.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

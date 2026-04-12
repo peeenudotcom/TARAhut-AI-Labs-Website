@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 14: Capstone Project — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.tl{position:relative;margin:2.5rem 0;padding-left:36px}
+.tl::before{content:'';position:absolute;top:0;left:12px;width:2px;height:100%;background:linear-gradient(180deg,var(--brand),var(--c1),var(--c2),var(--c4))}
+.tl-item{position:relative;margin-bottom:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:default}
+.tl-item:hover{border-color:rgba(0,240,255,.3);transform:translateX(6px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tl-item::before{content:'';position:absolute;left:-30px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.tl-item h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.tl-item p{color:var(--t2);font-size:.88rem}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Decision Tree */
+.dt-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.dt-question{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;text-align:center;color:var(--c1)}
+.dt-choices{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+.dt-btn{padding:12px 24px;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .3s}
+.dt-btn:hover,.dt-btn.sel{border-color:var(--brand);background:rgba(5,150,105,.1);color:var(--brand)}
+.dt-result{padding:1.5rem;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15);border-radius:var(--rs);display:none}
+.dt-result.show{display:block;animation:fadeSlide .4s ease}
+.dt-result h4{font-family:'Syne',sans-serif;color:var(--brand);margin-bottom:.6rem}
+.dt-result p{color:var(--t2);font-size:.9rem}
+/* Rubric */
+.rubric-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin:1.5rem 0}
+.rubric-col{padding:1.5rem}
+.rubric-col:first-child{background:rgba(52,211,153,.04);border-right:1px solid var(--bd)}
+.rubric-col:last-child{background:rgba(255,61,139,.04)}
+.rubric-col h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:1rem}
+.rubric-col ul{padding-left:1.1rem;color:var(--t2);font-size:.85rem}
+.rubric-col li{margin-bottom:.5rem}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.rubric-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 4 &middot; Session 14 &middot; AI Tools Mastery</div>
+  <h1>Capstone Project<br><span class="gr">Real Client Brief</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Your first real client. A real brief. A real deadline. Everything you've learned comes together right now. This is the moment you've been training for.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">See the Brief &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>The Brief</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Planning</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Execution</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quality Standards</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: THE BRIEF -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The <span class="gr">Client Brief</span></h2>
+    <p>Every professional has a first real client. This is yours. Read the brief carefully. This is exactly how it works in the real world.</p>
+  </div>
+
+  <div class="callout call-brand" style="border-width:2px;padding:2rem">
+    <div class="call-ico">📋</div>
+    <div class="call-body">
+      <h4 style="font-size:1.2rem;">CLIENT BRIEF — CONFIDENTIAL</h4>
+      <p>
+      <strong>Client Name:</strong> Punjab Scholars Academy<br>
+      <strong>Type:</strong> Coaching center (Classes 9-12, JEE, NEET, and competitive exams)<br>
+      <strong>Location:</strong> Faridkot, Punjab<br>
+      <strong>Established:</strong> 2019 (5-year reputation, 200+ students enrolled)<br><br>
+      <strong>The Problem:</strong> Zero online presence. No website, no social media, no logo. When students search "coaching in Faridkot" — Punjab Scholars Academy does not appear. Competitors with weaker teaching but a nicer Instagram page are stealing their students.<br><br>
+      <strong>What They Need:</strong><br>
+      &#128313; A professional logo that conveys academic excellence and trust<br>
+      &#128313; A website that explains their programs and drives admissions inquiries<br>
+      &#128313; 5 social media posts to launch their Instagram presence<br>
+      &#128313; A marketing presentation to show in parent meetings<br>
+      &#128313; Optionally: A short intro video for their WhatsApp status<br><br>
+      <strong>Budget for Tools:</strong> ₹0 (they cannot afford any paid subscriptions)<br>
+      <strong>Deadline:</strong> Today — end of this session<br>
+      <strong>Success Metric:</strong> Within 1 week, they should be getting inquiries from parents who found them online</p>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">⚡</div>
+    <div class="call-body">
+      <h4>Your Challenge</h4>
+      <p>You must deliver a complete professional package using <strong>only free AI tools</strong> you've learned in this course. No budget. Real deadline. Real expectations. This is what freelancing actually looks like — and you are now ready for it.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Three weeks ago,</strong> you didn't know what ChatGPT was. Today, a coaching center is trusting you with their entire online identity. That's not an accident — that's the result of everything you've worked for in this course.</p>
+  </div>
+
+  <div class="micro-win">You have every skill needed to nail this brief. You've already built all of these things in previous sessions.</div>
+
+  <p class="curiosity-hook">Next: Let's plan the right approach — what to build first.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Planning Your Approach &rarr;</button></div>
+</div>
+
+<!-- S2: PLANNING -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; Good. Now think strategically before you start building.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Planning Your <span class="gr">Approach</span></h2>
+    <p>Before you open any tool, think. What does this client need FIRST? What will have the most immediate impact? Good planning is half the work.</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">🤔</div>
+    <div class="call-body">
+      <h4>The Decision Framework</h4>
+      <p>Ask yourself: If this client gets only ONE deliverable today, what would help them the most? Work backwards from the outcome they want — <strong>more student inquiries.</strong></p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Interactive Decision Tree — What Do They Need First?</h3>
+  <div class="dt-wrap">
+    <div class="dt-question">What is Punjab Scholars Academy's most urgent problem?</div>
+    <div class="dt-choices">
+      <button class="dt-btn" onclick="showDecision('identity')">They have no visual identity (no logo)</button>
+      <button class="dt-btn" onclick="showDecision('website')">Parents can't find them online</button>
+      <button class="dt-btn" onclick="showDecision('social')">No social media presence</button>
+      <button class="dt-btn" onclick="showDecision('all')">All of the above — where to start?</button>
+    </div>
+    <div class="dt-result" id="dt-identity">
+      <h4>✅ Logo First — But Not ONLY First</h4>
+      <p>A logo is the foundation of everything — it goes on the website, social media, and presentations. But a logo alone won't drive inquiries. <strong>Priority order: Logo → Website → Social Media → Presentation.</strong> Build the logo in 15 minutes with Ideogram, then move immediately to the website which will do the heavy lifting.</p>
+    </div>
+    <div class="dt-result" id="dt-website">
+      <h4>✅ Website is the Revenue Driver — But Needs a Logo First</h4>
+      <p>You're right — the website is where inquiries will come from. But build the logo first (15 min) so you have branding for the website. <strong>Priority order: Logo → Website → Social Media → Presentation.</strong> The website with a proper domain and inquiry form will be the most impactful single deliverable.</p>
+    </div>
+    <div class="dt-result" id="dt-social">
+      <h4>⚠️ Social Media is Visible — But Website is Permanent</h4>
+      <p>Social media drives quick visibility, but a website builds long-term credibility. Parents searching for coaching centers want a website to trust. <strong>Priority order: Logo → Website → Social Media → Presentation.</strong> Build the social posts AFTER the website so you can link to it.</p>
+    </div>
+    <div class="dt-result" id="dt-all">
+      <h4>✅ Correct — You Need All, in the Right Order</h4>
+      <p>Since you need everything, sequence matters for efficiency. Each deliverable feeds the next: <strong>Logo</strong> (visual identity, 15 min) → <strong>Website</strong> (credibility + inquiries, 45 min) → <strong>Social Posts</strong> (visibility, 20 min) → <strong>Presentation</strong> (parent meetings, 15 min) → <strong>Intro Video</strong> (if time allows, 15 min). Total: ~2 hours for a complete professional package.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Professional Work Plan</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Order</th><th>Deliverable</th><th>Time Budget</th><th>Priority Reason</th></tr>
+      <tr><td><strong>1st</strong></td><td>Logo (Ideogram)</td><td>15 minutes</td><td>Foundation — needed for all other materials</td></tr>
+      <tr><td><strong>2nd</strong></td><td>Website (Bolt.new)</td><td>45 minutes</td><td>Highest impact — where inquiries come from</td></tr>
+      <tr><td><strong>3rd</strong></td><td>Social Posts (Canva AI)</td><td>20 minutes</td><td>Launch visibility — link back to website</td></tr>
+      <tr><td><strong>4th</strong></td><td>Presentation (Gamma)</td><td>15 minutes</td><td>Parent meetings — builds trust immediately</td></tr>
+      <tr><td><strong>5th (bonus)</strong></td><td>Intro Video (HeyGen)</td><td>15 minutes</td><td>WhatsApp/Instagram virality potential</td></tr>
+    </table>
+  </div>
+
+  <div class="micro-action">
+    <h4>Planning Moment</h4>
+    <p>Before building anything, write down on paper: (1) The client's goal in one sentence. (2) The 3 most important things to include on their website. (3) What makes Punjab Scholars Academy different from other coaching centers — this becomes their marketing message across all materials.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The exact tools and prompts for each deliverable.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Execution Framework &rarr;</button></div>
+</div>
+
+<!-- S3: EXECUTION -->
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Execution <span class="gr">Framework</span></h2>
+    <p>Tool by tool, prompt by prompt — exactly how to build each deliverable for Punjab Scholars Academy.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd">
+      <span class="tag tag-brand">Deliverable 1</span>
+      <span class="crd-icon">🎨</span>
+      <h3>Logo — Ideogram AI</h3>
+      <p>Prompt: <em>"Professional logo for 'Punjab Scholars Academy', a coaching institute in Faridkot. Text-based logo with a clean book or mortar board icon. Colors: deep blue and gold. Flat design, modern, trustworthy."</em><br><br>Generate 4 variations. Pick the strongest. Download PNG.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-1">Deliverable 2</span>
+      <span class="crd-icon">🌐</span>
+      <h3>Website — Bolt.new</h3>
+      <p>Prompt: <em>"Build a coaching center website for Punjab Scholars Academy in Faridkot, Punjab. Include: hero with tagline 'Top Results. Real Teachers. Faridkot's Trusted Academy', programs (JEE/NEET/9-12), batch details, why choose us, faculty, contact with WhatsApp button."</em></p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-2">Deliverable 3</span>
+      <span class="crd-icon">📱</span>
+      <h3>Social Posts — Canva AI</h3>
+      <p>Use Canva AI templates. Create 5 posts: (1) Welcome launch post, (2) "Why choose us" stats, (3) Batch announcement, (4) Success story/result, (5) Admission open call-to-action. Use the logo colors throughout.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-4">Deliverable 4</span>
+      <span class="crd-icon">📊</span>
+      <h3>Presentation — Gamma</h3>
+      <p>Prompt to Gamma: <em>"Create a 10-slide presentation for Punjab Scholars Academy for parent meetings. Include: about us, programs, faculty, results/success, fee structure, contact. Professional academic style, blue and gold theme."</em></p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-5">Bonus Deliverable</span>
+      <span class="crd-icon">🎬</span>
+      <h3>Intro Video — HeyGen</h3>
+      <p>Use HeyGen's AI avatar. Script (write with Claude): <em>"Punjab Scholars Academy — where students from Faridkot crack JEE, NEET, and board exams. Expert teachers. Small batches. Proven results. Admissions open. Call now."</em> 30-60 seconds. Share on WhatsApp status.</p>
+    </div>
+    <div class="crd">
+      <span class="tag tag-3">All Copy</span>
+      <span class="crd-icon">✍️</span>
+      <h3>All Text Copy — Claude</h3>
+      <p>Use Claude to write all text: website headline, about us paragraph, program descriptions, social post captions, WhatsApp status messages, and the parent meeting pitch. Give Claude the brief and ask for all text in one go.</p>
+    </div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Key Principle: Consistency</h4>
+      <p>All deliverables must feel like they come from the same brand. <strong>Same colors</strong> (blue and gold). <strong>Same tagline</strong> across website, social, and video. <strong>Same logo</strong> on everything. This is what separates professional work from amateur work. When a parent sees the Instagram post and then visits the website, they should feel "yes, this is the same trustworthy place."</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Start Building Now</h4>
+    <p>Open all tools in separate browser tabs: Ideogram, Bolt.new, Canva, Gamma, Claude. Work in the priority order from Section 2. Your trainer is available to help individually. You have the full session. Go.</p>
+  </div>
+
+  <div class="identity-shift">When you complete this capstone, you won't just have a certificate. You'll have proof that you can deliver real work for real clients under real pressure.</div>
+
+  <p class="curiosity-hook">Next: What "excellent" looks like vs what "needs improvement" means.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quality Standards &rarr;</button></div>
+</div>
+
+<!-- S4: QUALITY STANDARDS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128170; This section separates professionals from amateurs. Read carefully.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Quality <span class="gr">Standards</span></h2>
+    <p>Good vs great. What a client is impressed by vs what makes them hesitate. Know the difference before you submit your work.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Logo — Quality Rubric</h3>
+  <div class="rubric-grid">
+    <div class="rubric-col">
+      <h4 style="color:var(--c5);">✅ Excellent</h4>
+      <ul>
+        <li>Clean, readable at small sizes</li>
+        <li>Colors reflect trust/academics (blue, gold, green)</li>
+        <li>Academy name clearly legible</li>
+        <li>Works on both light and dark backgrounds</li>
+        <li>Feels professional, not clipart-like</li>
+      </ul>
+    </div>
+    <div class="rubric-col">
+      <h4 style="color:var(--c3);">❌ Needs Improvement</h4>
+      <ul>
+        <li>Too cluttered or hard to read</li>
+        <li>Looks generic or like a template</li>
+        <li>Wrong colors — neon, childish, or clashing</li>
+        <li>Low resolution or pixelated</li>
+        <li>Doesn't match the academic tone</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Website — Quality Rubric</h3>
+  <div class="rubric-grid">
+    <div class="rubric-col">
+      <h4 style="color:var(--c5);">✅ Excellent</h4>
+      <ul>
+        <li>Clear headline that explains who they are</li>
+        <li>Visible phone/WhatsApp CTA above the fold</li>
+        <li>Lists programs with clear info (classes, timing)</li>
+        <li>Loads fast on mobile</li>
+        <li>Contact form or WhatsApp button works</li>
+        <li>Consistent branding with logo colors</li>
+      </ul>
+    </div>
+    <div class="rubric-col">
+      <h4 style="color:var(--c3);">❌ Needs Improvement</h4>
+      <ul>
+        <li>Hero doesn't explain what the business does</li>
+        <li>No clear call-to-action (how to contact?)</li>
+        <li>Broken links or missing sections</li>
+        <li>Doesn't work on mobile</li>
+        <li>Generic placeholder text left in</li>
+        <li>Looks different from the logo/social colors</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Social Media Posts — Quality Rubric</h3>
+  <div class="rubric-grid">
+    <div class="rubric-col">
+      <h4 style="color:var(--c5);">✅ Excellent</h4>
+      <ul>
+        <li>Logo/brand name visible on each post</li>
+        <li>Each post has one clear message</li>
+        <li>Caption has a call-to-action</li>
+        <li>Visual hierarchy — headline is the biggest text</li>
+        <li>Consistent color theme across all 5 posts</li>
+      </ul>
+    </div>
+    <div class="rubric-col">
+      <h4 style="color:var(--c3);">❌ Needs Improvement</h4>
+      <ul>
+        <li>Too much text — post is unreadable</li>
+        <li>No branding or contact info</li>
+        <li>Each post looks completely different</li>
+        <li>Caption is generic ("Check us out!")</li>
+        <li>No mention of location or how to reach them</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🎯</div>
+    <div class="call-body">
+      <h4>The Single Most Important Quality Check</h4>
+      <p>Before you submit ANY deliverable, ask yourself: <strong>"If I were a parent in Faridkot looking for a coaching center for my child, would this make me want to call them?"</strong> If yes — submit it. If you're not sure — refine it first.</p>
+    </div>
+  </div>
+
+  <div class="micro-win">Knowing what great looks like is the first step to producing it consistently.</div>
+
+  <p class="curiosity-hook">Next: Test your project planning and tool selection knowledge.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Session 14 <span class="gr">Quiz</span></h2>
+    <p>8 questions on project planning, tool selection, and client delivery. Think like a professional.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Capstone <span class="gr">Wrap-Up</span></h2>
+    <p>This is your independent work session. The trainer is here for you. The brief is clear. Everything you need, you already have.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🏆</div>
+    <div class="call-body">
+      <h4>Capstone Submission Checklist</h4>
+      <p>
+      &#9744; Logo — 1 final logo file (PNG, clean background)<br>
+      &#9744; Website — live URL that opens properly on mobile<br>
+      &#9744; Social Posts — 5 Instagram posts, downloaded or as Canva link<br>
+      &#9744; Presentation — Gamma link or PDF, 8-12 slides<br>
+      &#9744; (Bonus) Intro Video — HeyGen link or downloaded MP4<br>
+      &#9744; All materials use consistent branding (same colors, same logo)<br>
+      &#9744; Everything is submitted before end of session</p>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">⏰</div>
+    <div class="call-body">
+      <h4>Coming Up: Session 15 — Portfolio Assembly + Presentation Practice</h4>
+      <p>Tomorrow you present your work. Tonight, organize all your deliverables. Note the tools you used and the results you achieved. Be ready to explain your choices. Your capstone is the centerpiece of your portfolio.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>Right now,</strong> somewhere in Faridkot, Punjab Scholars Academy is teaching students who deserve to be found by parents who are looking for them. You just gave that school a digital presence. That's not a school project — that's a real impact on real people.</p>
+  </div>
+
+  <div class="identity-shift">You are now a professional who delivers. That's the identity. Own it.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3);">Empowering India with practical AI skills &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Decision tree
+function showDecision(key){
+  document.querySelectorAll('.dt-result').forEach(r=>r.classList.remove('show'));
+  document.querySelectorAll('.dt-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('dt-'+key).classList.add('show');
+  event.target.classList.add('sel');
+}
+
+// QUIZ
+const qData=[
+  {q:"When receiving a client brief with multiple deliverables, what should you do FIRST?",o:["Start building the first thing that comes to mind","Prioritize deliverables by impact and sequence them logically","Tell the client you need more budget","Build everything simultaneously"],a:1,e:"Always plan before building. Sequence deliverables so each one feeds the next — logo before website, website before social posts. Planning saves time and produces better results."},
+  {q:"For Punjab Scholars Academy, which tool would you use to create their logo?",o:["Bolt.new","Gamma","Ideogram AI","HeyGen"],a:2,e:"Ideogram AI is the best tool for generating professional text-based logos. It excels at creating clean, typography-forward logos with consistent style options to choose from."},
+  {q:"What is the most important feature to include on a coaching center's website to drive immediate inquiries?",o:["A detailed history of the academy","A WhatsApp contact button prominently placed","A list of staff birthdays","A blog section with study tips"],a:1,e:"For local Indian businesses, a WhatsApp button is the highest-converting feature. Parents in Punjab prefer WhatsApp for initial contact — making it prominent removes friction from the inquiry process."},
+  {q:"What does 'brand consistency' mean across multiple deliverables?",o:["Using the same software for everything","Using different colors to make each piece stand out","Using the same colors, logo, tone, and messaging across all materials","Making all files the same file size"],a:2,e:"Brand consistency means that all materials — logo, website, social posts, presentations — share the same visual identity. When done right, each piece reinforces the others and builds trust with the audience."},
+  {q:"Which tool would you use to create a 10-slide parent meeting presentation for Punjab Scholars Academy?",o:["Ideogram","Bolt.new","Claude","Gamma"],a:3,e:"Gamma is an AI-powered presentation builder that creates complete, professionally designed slide decks from a text prompt — perfect for quickly producing client-ready presentations."},
+  {q:"What is the correct approach when a client says their budget is ₹0?",o:["Refuse the project — you need budget to work","Use only free tiers of the AI tools you know to deliver the full project","Tell them to hire a developer instead","Only deliver half the work"],a:1,e:"All tools in the TARAhut curriculum have free tiers that can deliver professional results. A ₹0 budget is a constraint, not a blocker — your skill is in using free tools professionally."},
+  {q:"Before submitting any deliverable to a client, what is the best final check?",o:["Check that the file size is exactly right","Ask yourself: Would this make the target customer take action?","Make sure it uses exactly 3 fonts","Confirm the file name follows a naming convention"],a:1,e:"The ultimate quality check is putting yourself in the client's customer's shoes. If the deliverable would make that person take the desired action (call, visit, inquire), it's ready. If not, refine it."},
+  {q:"For Punjab Scholars Academy's social media posts, how many posts should you create for the initial launch?",o:["1 — just a welcome post","10-20 — the more the better","5 — enough to establish a presence without overwhelming","50 — to fill the grid"]  ,a:2,e:"5 posts is the ideal launch set — enough to make the account look active and established, while being achievable in a single session. Include a launch post, value posts, and a clear CTA post."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tc,msg;
+    if(pct>=80){tier='Professional Level!';tc='var(--brand)';msg='You think like a professional. You understand planning, tool selection, and client delivery.'}
+    else if(pct>=50){tier='Strong Foundation!';tc='var(--c1)';msg='Good instincts. Keep building and the professional mindset will become second nature.'}
+    else{tier='Keep Learning!';tc='var(--c4)';msg='Review the sections and build more projects. Practice is the best teacher.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tc}">${tier}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}% Correct &mdash; ${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

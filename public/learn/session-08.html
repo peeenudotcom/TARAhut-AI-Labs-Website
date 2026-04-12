@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 8: AI Presentations & Design — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Comparison Table */
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+/* Prompt Box */
+.prompt-box{background:var(--bg);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);line-height:1.7;white-space:pre-wrap;margin:1rem 0}
+/* Challenge */
+.challenge-panel{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.brief-box{padding:1.25rem 1.5rem;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.2);border-radius:var(--rs);margin-bottom:1.5rem}
+.brief-box h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--c4);margin-bottom:.5rem}
+.brief-box p{color:var(--t2);font-size:.9rem}
+.decision-tabs{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.dtab{padding:11px 20px;border-radius:99px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t2);transition:all .3s}
+.dtab:hover{border-color:var(--c1);color:var(--c1)}
+.dtab.active-gamma{border-color:var(--c2);background:rgba(168,85,247,.1);color:var(--c2)}
+.dtab.active-canva{border-color:var(--c4);background:rgba(251,191,36,.1);color:var(--c4)}
+.dtab.active-both{border-color:var(--brand);background:rgba(5,150,105,.1);color:var(--brand)}
+.decision-reveal{display:none;animation:fadeSlide .35s ease}
+.decision-reveal.show{display:block}
+.slide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1.25rem 0}
+.slide-card{padding:1rem 1.25rem;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);font-size:.85rem}
+.slide-card .slide-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.35rem}
+.slide-card h5{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.25rem}
+.slide-card p{color:var(--t2);font-size:.8rem}
+/* Week 2 Project */
+.project-box{margin:2.5rem 0;padding:2.5rem;background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(168,85,247,.06));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);text-align:center}
+.project-box h3{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.75rem}
+.project-box h3 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.project-box p{color:var(--t2);margin-bottom:1.5rem;font-size:.95rem}
+.project-deliverables{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin:1.5rem 0;text-align:left}
+.deliverable{padding:1.25rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs)}
+.deliverable h5{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.35rem;color:var(--c1)}
+.deliverable p{color:var(--t2);font-size:.82rem}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid,.project-deliverables,.slide-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 2 &middot; Session 8 &middot; AI Tools Mastery</div>
+  <h1>AI Presentations<br><span class="gr">&amp; Design</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>From blank page to boardroom-ready presentation in minutes. Gamma &amp; Canva AI are your new design team.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Gamma AI</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Canva AI</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Gamma vs Canva</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Design Challenge</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Week 2 Project</button>
+  </div>
+</nav>
+
+<!-- S1: Gamma -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Gamma AI — <span class="gr">Presentations in Seconds</span></h2>
+    <p>Gamma turns text into beautiful, professional presentations. What used to take hours in PowerPoint now takes minutes. No design skills required.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#127775;</div><div class="call-body"><h4>The Problem Gamma Solves</h4><p>PowerPoint is powerful but slow. You spend more time formatting than thinking. Gamma inverts this: you focus on the content, and Gamma handles all design decisions — layouts, colors, fonts, spacing, imagery. The result looks like it was made by a professional designer.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Gamma's Core Features</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">The Magic Feature</span><span class="crd-icon">&#9889;</span><h3>Text to Presentation</h3><p>Type a topic or paste your outline and Gamma generates a complete, beautifully designed presentation — structure, content, visuals, and formatting — in under 60 seconds. Choose the number of slides and Gamma does the rest.</p></div>
+    <div class="crd"><span class="tag tag-1">Design Quality</span><span class="crd-icon">&#127912;</span><h3>Professional Templates</h3><p>Gamma's templates are genuinely beautiful — modern, clean, professional. Choose from dozens of themes sorted by purpose: pitch deck, business report, educational, creative. Each template is fully editable after generation.</p></div>
+    <div class="crd"><span class="tag tag-5">Smart AI</span><span class="crd-icon">&#129302;</span><h3>AI-Powered Layouts</h3><p>Gamma's AI doesn't just apply a template — it intelligently decides the best layout for each slide based on your content. A comparison slide gets a side-by-side layout. A list of features gets a card grid. The AI makes design decisions for you.</p></div>
+    <div class="crd"><span class="tag tag-2">Live Sharing</span><span class="crd-icon">&#127760;</span><h3>Present &amp; Share Online</h3><p>Every Gamma presentation gets a live link you can share instantly. Recipients view it in a browser — no PowerPoint needed. You can also export to PDF or PowerPoint format if required.</p></div>
+    <div class="crd"><span class="tag tag-4">Flexibility</span><span class="crd-icon">&#9999;&#65039;</span><h3>Full Editability</h3><p>After Gamma generates the presentation, you have full control: edit text, swap images, change layouts, add slides, reorder content. The AI creates the starting point, you refine it to perfection.</p></div>
+    <div class="crd"><span class="tag tag-3">Free Tier</span><span class="crd-icon">&#128176;</span><h3>Pricing</h3><p>Free plan: 400 AI credits (enough for ~10-15 presentations). Paid plans from $8/month for unlimited. For most students and professionals, the free tier is more than sufficient to start.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Create a Presentation in Gamma</h3>
+  <div class="prompt-box">Step 1: Go to gamma.app → Click "Create New" → Choose "Generate with AI"
+
+Step 2: Choose your starting point:
+  - "Generate from text" (paste your outline or notes)
+  - "Generate from prompt" (just describe what you want)
+  - "Import from file" (upload a Word/PDF document)
+
+Step 3: Write your prompt (example):
+"Create a 10-slide professional pitch deck for a cloud kitchen business in Kotkapura, Punjab.
+Include: Problem/Opportunity, Solution, Market Size, Business Model, Financial Projections,
+Team, and Call to Action. Tone: Professional, confident, investor-ready."
+
+Step 4: Choose theme and number of slides → Click Generate → Review → Edit → Share</div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>Go to <a href="https://gamma.app" target="_blank">gamma.app</a> and create your first presentation right now:</p>
+    <ul>
+      <li>Click "Generate with AI"</li>
+      <li>Choose "Generate from prompt"</li>
+      <li>Type: <em>"Introduction to [your name] — who I am, what I do, and my goals for 2026. 6 slides."</em></li>
+      <li>Watch a presentation appear in under 60 seconds</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You just built a presentation faster than most people take to open PowerPoint.</div>
+  <p class="curiosity-hook">Next: Canva AI — where design truly becomes limitless.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Canva AI &rarr;</button></div>
+</div>
+
+<!-- S2: Canva AI -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! Canva AI is where design meets unlimited creative power.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Canva AI — <span class="gr">Your Design Powerhouse</span></h2>
+    <p>Canva was already the world's most popular design tool. With AI, it became something else entirely. Here's everything you need to know.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128293;</div><div class="call-body"><h4>Canva AI is Not Just One Feature</h4><p>Canva's AI isn't a single feature — it's an entire ecosystem of AI tools woven into the design platform. Magic Design, Magic Edit, Text to Image, Background Remover, Magic Resize, Bulk Create, Brand Kit — each one replaces hours of manual work. Used together, they make a professional designer-level output achievable by anyone.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Canva's Most Powerful AI Features</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="tag tag-brand">Magic Feature</span><span class="crd-icon">&#128161;</span>
+      <h3>Magic Design</h3>
+      <p>Upload your content (text, images, logo) and Magic Design instantly creates multiple fully-designed templates customized to your content. No starting from scratch — AI designs first, you tweak. Perfect for social media posts, presentations, flyers.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="tag tag-1">Generate Images</span><span class="crd-icon">&#127912;</span>
+      <h3>Text to Image</h3>
+      <p>Type a description and Canva generates custom images within your design. No need to search stock photos or pay for photography. "A warm, inviting interior of a Punjabi dhaba at sunset" generates exactly that, in your design's style.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="tag tag-2">Brand Control</span><span class="crd-icon">&#127775;</span>
+      <h3>Brand Kit</h3>
+      <p>Upload your logo, colors, and fonts once. Canva applies them to any design automatically. Every social post, presentation, and flyer is automatically on-brand. For businesses, this is invaluable — brand consistency at zero effort.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c4)">
+      <span class="tag tag-4">Scale</span><span class="crd-icon">&#128202;</span>
+      <h3>Bulk Create</h3>
+      <p>Upload a spreadsheet with data (names, products, prices, cities) and Canva generates hundreds of personalized designs at once. Example: 500 personalized certificates from a single template + Excel sheet. What took days takes minutes.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c5)">
+      <span class="tag tag-5">Marketing</span><span class="crd-icon">&#128247;</span>
+      <h3>Social Media Templates</h3>
+      <p>1000s of AI-enhanced templates for every platform: Instagram posts, Stories, Reels covers, LinkedIn banners, YouTube thumbnails, WhatsApp Status graphics. Click, customize, download. Consistent branding across all channels.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c3)">
+      <span class="tag tag-3">Editing</span><span class="crd-icon">&#9986;&#65039;</span>
+      <h3>Magic Edit &amp; Background Remover</h3>
+      <p>Magic Edit: select any element in an image and tell AI what to replace it with. Background Remover: removes image backgrounds instantly — no Photoshop needed. These two features alone replace &#8377;500/hour photo editing work.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>A small business owner in our last batch</strong> was spending &#8377;8,000/month on a freelance designer for social media posts. After learning Canva AI in one session, she created an entire month's content in an afternoon — with better brand consistency than before. That's &#8377;96,000/year in savings, plus creative control. The tool pays for itself in the first week.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>60-Second Action</h4>
+    <p>If you don't have Canva yet, sign up free at <a href="https://canva.com" target="_blank">canva.com</a>. Then:</p>
+    <ul>
+      <li>Create a new design &rarr; choose "Instagram Post"</li>
+      <li>Click "Magic Design" and upload a photo or type your topic</li>
+      <li>Browse the AI-generated designs and pick one to customize</li>
+      <li>Try "Text to Image" to generate a background image from a description</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">Canva AI is now in your toolkit. This is your design team for life.</div>
+  <p class="curiosity-hook">Next: The critical comparison — when Gamma wins, when Canva wins.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Gamma vs Canva &rarr;</button></div>
+</div>
+
+<!-- S3: Comparison -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127919; 50% done — this comparison will save you hours of wrong-tool frustration.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Gamma vs Canva — <span class="gr">When to Use What</span></h2>
+    <p>They're not competitors — they're complements. But choosing the wrong one for the wrong task wastes time. Here's the clear decision matrix.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Use Case</th><th>&#9889; Gamma</th><th>&#127912; Canva</th><th>Winner</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Business presentations &amp; pitch decks</strong></td><td>&#9989; Purpose-built for this</td><td>&#9888; Possible but time-consuming</td><td style="color:var(--c2)">Gamma</td></tr>
+        <tr><td><strong>Social media graphics (posts, stories)</strong></td><td>&#10060; Not designed for this</td><td>&#9989; Best-in-class templates</td><td style="color:var(--c4)">Canva</td></tr>
+        <tr><td><strong>Client proposals &amp; reports</strong></td><td>&#9989; Excellent structure &amp; sharing</td><td>&#9888; Can be done but slower</td><td style="color:var(--c2)">Gamma</td></tr>
+        <tr><td><strong>AI image generation in design</strong></td><td>&#9888; Limited image customization</td><td>&#9989; Text to Image + Magic Edit</td><td style="color:var(--c4)">Canva</td></tr>
+        <tr><td><strong>Brand consistency (logos, fonts, colors)</strong></td><td>&#9888; Basic theming only</td><td>&#9989; Full Brand Kit system</td><td style="color:var(--c4)">Canva</td></tr>
+        <tr><td><strong>Educational content &amp; lesson slides</strong></td><td>&#9989; Clean, structured slides</td><td>&#9889; Great educational templates too</td><td style="color:var(--c5)">Tie (both excellent)</td></tr>
+        <tr><td><strong>Bulk personalized content (100s of designs)</strong></td><td>&#10060; Not available</td><td>&#9989; Bulk Create feature</td><td style="color:var(--c4)">Canva</td></tr>
+        <tr><td><strong>Speed: idea to finished output</strong></td><td>&#9989; Fastest (60-second presentations)</td><td>&#9888; Faster than manual, but slower than Gamma</td><td style="color:var(--c2)">Gamma</td></tr>
+        <tr><td><strong>YouTube thumbnails &amp; video graphics</strong></td><td>&#10060; Not applicable</td><td>&#9989; Specialized templates</td><td style="color:var(--c4)">Canva</td></tr>
+        <tr><td><strong>Exporting &amp; sharing flexibility</strong></td><td>&#9989; Live link + PDF + PPT</td><td>&#9989; PDF, PNG, MP4, pptx, more</td><td style="color:var(--c5)">Tie</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">&#128101;</div><div class="call-body"><h4>The Pro Combo: Use Both Together</h4><p><strong>Workflow:</strong> Use Canva AI to create your brand assets (logos, color palettes, custom images). Then bring them into Gamma for your presentation, applying Gamma's smart layouts to Canva-quality visuals. The result: a presentation that looks like a top-tier agency created it — because technically, two AI-powered design tools did.</p></div></div>
+
+  <div class="identity-shift">You now have two world-class design tools mastered. Most businesses pay designers &#8377;20,000-50,000/month for what you can now do in hours.</div>
+
+  <p class="curiosity-hook">Next: The real test — a client brief. Which tool, which prompts, which approach?</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Design Challenge &rarr;</button></div>
+</div>
+
+<!-- S4: Design Challenge -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#9889; 65% done. The most interactive section — make real decisions here.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive <span class="gr">Design Challenge</span></h2>
+    <p>A client walks in with a brief. Which tool do you use? What prompts do you write? Click your answer and see the full professional approach.</p>
+  </div>
+
+  <div class="challenge-panel">
+    <div class="brief-box">
+      <h4>&#128203; Client Brief</h4>
+      <p>You've been hired by <strong>Tandoor &amp; Tales</strong> — a new family restaurant in Kotkapura, Punjab specializing in authentic Punjabi cuisine. They need a <strong>10-slide investor pitch deck</strong> to raise &#8377;30 lakhs for expansion. They also need <strong>social media launch content</strong> for Instagram (5 posts). Budget is tight. Timeline: 48 hours.</p>
+    </div>
+
+    <p style="color:var(--t2);font-size:.9rem;margin-bottom:1rem">What's your approach? Click to see the professional recommendation:</p>
+    <div class="decision-tabs">
+      <button class="dtab" onclick="showDecision('gamma')">&#9889; Gamma Only</button>
+      <button class="dtab" onclick="showDecision('canva')">&#127912; Canva Only</button>
+      <button class="dtab" onclick="showDecision('both')">&#128101; Use Both (Strategic)</button>
+    </div>
+
+    <div class="decision-reveal" id="reveal-gamma">
+      <div class="callout call-4"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Gamma Only — Partial Solution</h4><p>Gamma handles the pitch deck perfectly. But for Instagram social media content, Gamma isn't the right tool — it's built for presentations and documents, not social media graphics. You'd need to create the social posts elsewhere. This approach solves 60% of the brief.</p></div></div>
+    </div>
+
+    <div class="decision-reveal" id="reveal-canva">
+      <div class="callout call-2"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Canva Only — Also Partial</h4><p>Canva creates excellent social media content. You can also build a presentation in Canva, but it takes much longer than Gamma and the AI isn't optimized for pitch deck structure. You'd spend 3-4 hours on the presentation alone. This approach solves 70% of the brief, but isn't efficient.</p></div></div>
+    </div>
+
+    <div class="decision-reveal" id="reveal-both">
+      <div class="callout call-3"><div class="call-ico">&#9989;</div><div class="call-body"><h4>Professional Approach: Both Tools — Strategically</h4><p><strong>Step 1 (45 min):</strong> Use Canva AI for brand assets + social posts. <strong>Step 2 (20 min):</strong> Use Gamma for the pitch deck. Bring Canva assets into Gamma.</p></div></div>
+
+      <h4 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 1: Canva AI — Social Media Posts</h4>
+      <div class="prompt-box">Canva Magic Design prompt:
+"Create 5 Instagram posts for Tandoor & Tales restaurant launch.
+Brand: warm, authentic Punjabi hospitality. Orange, deep red, golden colors.
+Post 1: Grand opening announcement
+Post 2: Signature dish highlight (Dal Makhani)
+Post 3: Chef & team introduction
+Post 4: Ambiance & interior reveal
+Post 5: Special launch week offer"
+
+Then use Text to Image for custom food photography:
+"A bowl of rich, creamy Dal Makhani in a copper karahi, warm lighting,
+authentic Punjabi kitchen background, professional food photography style"</div>
+
+      <h4 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 2: Gamma AI — 10-Slide Pitch Deck</h4>
+      <div class="slide-grid">
+        <div class="slide-card"><div class="slide-num">Slide 01</div><h5>Cover: Tandoor &amp; Tales</h5><p>Brand logo, tagline, location, investor pitch context</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 02</div><h5>The Opportunity</h5><p>Kotkapura dining gap, growing middle class, food delivery boom</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 03</div><h5>Our Restaurant</h5><p>Concept, authenticity story, menu highlights</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 04</div><h5>Market Size</h5><p>Punjab food service market, growth projections, our slice</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 05</div><h5>Business Model</h5><p>Revenue streams: dine-in, delivery, catering, events</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 06</div><h5>Traction</h5><p>Soft launch results, customer reviews, early bookings</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 07</div><h5>Financials</h5><p>Revenue projections, break-even, 3-year forecast</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 08</div><h5>The &#8377;30 Lakh Ask</h5><p>Use of funds: kitchen upgrade, marketing, hiring, expansion</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 09</div><h5>The Team</h5><p>Founders, head chef credentials, advisory board</p></div>
+        <div class="slide-card"><div class="slide-num">Slide 10</div><h5>Next Steps</h5><p>Investment terms, timeline, contact, call to action</p></div>
+      </div>
+
+      <div class="prompt-box">Gamma Prompt:
+"Create a 10-slide investor pitch deck for Tandoor & Tales,
+an authentic Punjabi restaurant in Kotkapura, Punjab seeking ₹30 lakh in funding.
+Theme: warm, professional, appetizing. Include data placeholders where needed.
+Tone: confident, story-driven, investor-ready."</div>
+    </div>
+  </div>
+
+  <div class="micro-win">You just created a complete client solution in under 90 minutes. That's professional-grade work.</div>
+  <p class="curiosity-hook">Ready for the quiz? 8 questions on Gamma and Canva AI.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: Quiz -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! 8 questions on Gamma and Canva AI.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Quiz: <span class="gr">Gamma &amp; Canva AI</span></h2>
+    <p>8 questions. Immediate feedback. Let's lock this in.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Design is no longer a barrier. It's your advantage.</div>
+  <p class="curiosity-hook">Final section — your Week 2 Project brief awaits.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Finish: Week 2 Project &rarr;</button></div>
+</div>
+
+<!-- S6: Wrap-Up + Week 2 Project -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 8 Complete.<br><span class="gr">Your Week 2 Project Awaits.</span></h2>
+    <p>You've finished all 4 sessions of Week 2. Now it's time to put everything together in one cohesive portfolio project.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127942;</div><div class="call-body"><h4>What You Mastered in Session 8</h4><p>
+    &#9989; Gamma AI: text to presentation, templates, AI layouts, sharing<br>
+    &#9989; Canva AI: Magic Design, Text to Image, Brand Kit, Bulk Create, Magic Edit<br>
+    &#9989; Gamma vs Canva comparison — when to use each (10-point matrix)<br>
+    &#9989; Real client brief challenge: pitch deck + social media content workflow<br>
+    &#9989; Professional design workflow combining both tools
+  </p></div></div>
+
+  <!-- WEEK 2 PROJECT -->
+  <div class="project-box">
+    <h3>&#127942; Week 2 Final Project:<br>The <span class="gr">Professional Content Kit</span></h3>
+    <p>Apply everything from Sessions 5-8 to create a real, professional content kit for a business (yours, a client's, or a hypothetical one). This is your portfolio centerpiece.</p>
+
+    <div class="project-deliverables">
+      <div class="deliverable">
+        <h5>&#128231; 1. Professional Email Set</h5>
+        <p>3 polished emails using AI: cold outreach, follow-up, and a proposal introduction. From Session 6.</p>
+      </div>
+      <div class="deliverable">
+        <h5>&#128203; 2. Optimized Resume + LinkedIn</h5>
+        <p>Your resume transformed with AI (achievement-focused bullets, ATS keywords) + updated LinkedIn About section. From Session 6.</p>
+      </div>
+      <div class="deliverable">
+        <h5>&#128196; 3. Research Report</h5>
+        <p>A 500-800 word cited research report using the Perplexity + NotebookLM + Claude workflow. Topic: relevant to your field. From Session 7.</p>
+      </div>
+      <div class="deliverable">
+        <h5>&#128247; 4. Social Media Plan (5 Posts)</h5>
+        <p>5 Canva AI-designed social media posts for a brand, with captions written using AI. Consistent brand identity. From Session 8.</p>
+      </div>
+      <div class="deliverable">
+        <h5>&#129517; 5. Presentation / Pitch Deck</h5>
+        <p>A 10-slide Gamma presentation: business pitch, project proposal, or educational deck. Professional quality. From Session 8.</p>
+      </div>
+      <div class="deliverable">
+        <h5>&#128101; 6. Tool Comparison Report</h5>
+        <p>Your personal notes from comparing ChatGPT vs Claude across 5 tasks. Which won? Why? What surprised you? From Session 5.</p>
+      </div>
+    </div>
+
+    <p style="color:var(--brand);font-family:'Syne',sans-serif;font-weight:700;margin-top:1rem">Submission: Share in the TARAhut WhatsApp group before Week 3 begins. Best projects will be featured in class.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">&#128641; What Comes in Week 3</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">&#127916;</span>
+      <h3>Session 9: AI Video Creation</h3>
+      <p>HeyGen AI avatars, CapCut AI editing, script-to-video workflows. Create professional videos without a camera or editing skills.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">&#128248;</span>
+      <h3>Session 10: AI Image Generation</h3>
+      <p>Midjourney, Ideogram, and AI image prompting mastery. Create photorealistic images, illustrations, and product mockups.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">&#127760;</span>
+      <h3>Sessions 11-12: Building &amp; Automation</h3>
+      <p>Bolt.new for building apps without code. Automation workflows. How to turn AI skills into income with your first project or client.</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>You've completed Week 2.</strong> Four sessions. Eight tools. Hundreds of new capabilities. The student who walked in on Monday and the professional sitting here now are genuinely different people. Not because we told you things — but because you <strong>did</strong> things. The tools are yours now. The next step is to use them on something real.</p>
+  </div>
+
+  <div class="identity-shift">Week 2 complete. You are now an AI-powered professional. The only question is: what will you create first?</div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I completed Week 2 of AI Tools Mastery! Ready for Week 3." target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px">Message TARAhut AI Labs</a>
+    <button class="btn btn-ghost" onclick="go('s1')">&#128260; Review Session 8</button>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem">Contact TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">&#127760; <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">&#128205; Kotkapura, Punjab</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Tools Mastery Program &middot; Week 2, Session 8 &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// PARTICLES
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV & SECTIONS
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=33?`${pctDone}% — Designing your future`:pctDone<=66?`${pctDone}% — Building real skills`:pctDone<100?`${pctDone}% — Almost there!`:`100% — Week 2 Complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// DESIGN CHALLENGE
+function showDecision(choice){
+  document.querySelectorAll('.decision-tabs .dtab').forEach(b=>{b.classList.remove('active-gamma','active-canva','active-both')});
+  document.querySelectorAll('.decision-reveal').forEach(d=>d.classList.remove('show'));
+  const tab=event.currentTarget;
+  if(choice==='gamma'){tab.classList.add('active-gamma');document.getElementById('reveal-gamma').classList.add('show')}
+  else if(choice==='canva'){tab.classList.add('active-canva');document.getElementById('reveal-canva').classList.add('show')}
+  else{tab.classList.add('active-both');document.getElementById('reveal-both').classList.add('show')}
+}
+
+// QUIZ
+const qData=[
+  {q:"What is Gamma's primary use case compared to Canva?",o:["Creating social media posts","Building presentations and structured documents quickly with AI","Generating AI images","Managing brand assets"],a:1,e:"Gamma is purpose-built for presentations and structured documents. It excels at converting text into complete, designed presentations in under 60 seconds. Canva is broader — better for graphic design, social media, and brand assets."},
+  {q:"What does Canva's 'Bulk Create' feature do?",o:["Creates multiple design variations of a single design","Generates hundreds of personalized designs from a template + spreadsheet data","Deletes multiple designs at once","Exports designs in multiple file formats simultaneously"],a:1,e:"Bulk Create lets you upload a spreadsheet with variable data (names, prices, cities) and Canva generates hundreds of personalized designs from a single template — perfect for certificates, product catalogues, or personalized marketing."},
+  {q:"According to the comparison table, for which task does Gamma clearly win over Canva?",o:["YouTube thumbnails","Social media stories","Investor pitch decks and business presentations","AI image generation"],a:2,e:"Gamma is purpose-built for presentations and pitch decks — its AI understands presentation structure, narrative flow, and slide layout. Canva can make presentations but it's not optimized for this the way Gamma is."},
+  {q:"What is Canva's 'Brand Kit' feature?",o:["A kit of pre-made brand logos to choose from","A system to store your brand's logo, colors, and fonts for automatic application across all designs","A template pack for brand guidelines documents","AI that generates a brand identity from scratch"],a:1,e:"Brand Kit lets you upload your brand's logo, colors, and fonts once. Canva then automatically applies them across any design you create — ensuring brand consistency without manual effort."},
+  {q:"In the restaurant pitch deck challenge, why is using BOTH Gamma and Canva recommended?",o:["It's cheaper to use both together","Each tool excels at a different part of the brief: Canva for social posts, Gamma for the pitch deck","Gamma can't export to PDF without Canva","They need to be used together for technical reasons"],a:1,e:"The brief required both a pitch deck (Gamma's strength) AND social media content (Canva's strength). Using each tool for what it does best produces higher quality results faster than forcing either tool to do everything."},
+  {q:"How does Gamma's 'AI-Powered Layouts' feature work?",o:["It randomly shuffles slide layouts","It intelligently chooses the best layout for each slide based on the content type","It copies layouts from competitor presentations","It only applies one consistent layout throughout"],a:1,e:"Gamma's AI analyzes what type of content each slide has and chooses the optimal layout for it — a side-by-side layout for comparisons, a card grid for lists, a full-bleed image for impactful statements. This is what makes Gamma presentations look professionally designed."},
+  {q:"What is Canva's 'Magic Edit' feature?",o:["It automatically fixes grammar in text elements","It lets you select any element in an image and replace it with AI-generated content","It edits videos automatically","It corrects color balance across all designs"],a:1,e:"Magic Edit lets you select any area of an image and type what you want to replace it with. AI regenerates that part of the image while keeping the rest intact — similar to AI inpainting in professional tools."},
+  {q:"For bulk creating 500 personalized event certificates, which tool would you use and why?",o:["Gamma, because it's faster for document generation","Canva's Bulk Create, because you can generate all 500 from one template + Excel data in minutes","ChatGPT, to write each certificate individually","Claude, for its better document handling"],a:1,e:"Canva's Bulk Create is specifically designed for this. Upload your template + a spreadsheet with 500 rows of names/details, and Canva generates all 500 personalized certificates simultaneously. This would take hours manually."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Design Pro!';tierColor='var(--brand)';msg='You\'ve mastered both tools. Now create your Week 2 Project — a pitch deck, 5 social posts, and more.'}
+    else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Open Gamma and Canva and try both tools hands-on to reinforce the concepts.'}
+    else{tier='Practice More!';tierColor='var(--c4)';msg='Create something in both Gamma and Canva today. The best learning happens when you actually use the tools.'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Week 2 Project &rarr;</button></div>`;return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+</script>
+</body>
+</html>

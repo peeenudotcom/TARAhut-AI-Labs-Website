@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 11: AI Audio + Social Media — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'\1F3AF  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.hw-box{background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.hw-box h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:1rem}
+.hw-box ul{padding-left:1.2rem;color:var(--t2);font-size:.92rem}
+.hw-box li{margin-bottom:.6rem}
+/* Calendar Builder */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin:1.5rem 0}
+.cal-day{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:.75rem .5rem;text-align:center;cursor:pointer;transition:all .3s;min-height:90px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cal-day:hover{border-color:rgba(0,240,255,.3);background:var(--bg4)}
+.cal-day.active{border-color:var(--c1);background:rgba(0,240,255,.05)}
+.cal-day .day-label{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px}
+.cal-day .day-num{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--t1)}
+.cal-day .day-content{font-size:.62rem;color:var(--c1);font-family:'JetBrains Mono',monospace;text-align:center;line-height:1.3}
+.cal-detail{padding:1.5rem;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.12);border-radius:var(--rs);margin-top:.75rem;display:none;animation:fadeSlide .3s ease}
+.cal-detail.show{display:block}
+.cal-detail h4{font-family:'Syne',sans-serif;color:var(--c1);margin-bottom:.5rem}
+.cal-detail p{color:var(--t2);font-size:.88rem}
+.cal-detail .tools-used{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.cal-detail .tool-tag{padding:3px 10px;border-radius:99px;font-size:.65rem;font-weight:700;background:rgba(5,150,105,.12);color:var(--brand);font-family:'JetBrains Mono',monospace}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.cal-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 11 &middot; AI Tools Mastery</div>
+  <h1>AI Audio +<br><span class="gr">Social Media</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Give your brand a voice. Build a complete social media content machine. ElevenLabs voiceovers, audio branding, and the full content creation workflow.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>ElevenLabs</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Audio Branding</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Content Machine</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Calendar Builder</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: ELEVENLABS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>ElevenLabs — <span class="gr">AI Voice & Speech</span></h2>
+    <p>The world's most realistic text-to-speech AI. Generate professional voiceovers in any language, clone any voice, and give your brand a voice identity — all without recording equipment.</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">&#127908;</div>
+    <div class="call-body">
+      <h4>Why ElevenLabs is Different</h4>
+      <p>Other text-to-speech tools sound robotic. ElevenLabs produces <strong>human-quality speech</strong> that's indistinguishable from a real voice actor. It understands emotion, inflection, pacing, and context. The result is audio that connects with listeners — not just information that's technically spoken.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What ElevenLabs Can Do</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">TTS</span><span class="crd-icon">&#128172;</span><h3>Text-to-Speech</h3><p>Type or paste any text — ElevenLabs converts it to natural-sounding speech in seconds. Choose from 3,000+ voices across 32 languages including Hindi, Punjabi, and Urdu.</p></div>
+    <div class="crd"><span class="tag tag-1">Clone</span><span class="crd-icon">&#129489;</span><h3>Voice Cloning</h3><p>Record 1 minute of your voice. ElevenLabs creates a digital clone. Your AI voice can then narrate anything you type — training content, ads, explainer videos — forever.</p></div>
+    <div class="crd"><span class="tag tag-2">Languages</span><span class="crd-icon">&#127760;</span><h3>Multi-Language</h3><p>Write in English, output in Hindi, Tamil, Punjabi, French, or Spanish — in the same voice. One recording, multiple markets. Critical for local businesses reaching diverse customers.</p></div>
+    <div class="crd"><span class="tag tag-4">Dubbing</span><span class="crd-icon">&#127902;</span><h3>Automatic Dubbing</h3><p>Upload a video or audio file — ElevenLabs transcribes, translates, and re-voices the entire content in your chosen language. Full video localization in minutes.</p></div>
+    <div class="crd"><span class="tag tag-3">Emotion</span><span class="crd-icon">&#127908;</span><h3>Emotional Voice Control</h3><p>Adjust speaking style: calm, excited, sad, professional, energetic. Add breathing sounds, pacing control. The voice matches the mood of your content.</p></div>
+    <div class="crd"><span class="tag tag-5">API</span><span class="crd-icon">&#9881;&#65039;</span><h3>Integration & API</h3><p>ElevenLabs connects to websites, apps, and chatbots. Businesses use it for IVR phone systems, reading out notifications, and real-time voice responses.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Generate Your First Voiceover</h3>
+  <div class="callout call-brand">
+    <div class="call-ico">&#9654;&#65039;</div>
+    <div class="call-body">
+      <h4>Step-by-Step: First Voiceover in 5 Minutes</h4>
+      <p><strong>1.</strong> Go to <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> — sign in with Google (free: 10,000 characters/month)<br>
+      <strong>2.</strong> Click "Text to Speech" from the left panel<br>
+      <strong>3.</strong> In the Voice Selector, try: "Rachel" (professional female) or "Adam" (professional male) or search "Hindi" for Indian voices<br>
+      <strong>4.</strong> Paste your text in the text box. Keep sentences clear and naturally punctuated<br>
+      <strong>5.</strong> Adjust settings: Stability (higher = consistent), Clarity + Similarity (higher = more human-like), Style Exaggeration (for emotion)<br>
+      <strong>6.</strong> Click "Generate" → Play → Download as MP3<br>
+      <strong>7.</strong> Use this audio in CapCut, HeyGen, or any video editor</p>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#128161;</div>
+    <div class="call-body">
+      <h4>Pro Tip: Writing for Voice</h4>
+      <p>Good TTS starts with good text. <strong>Write conversationally:</strong> short sentences, no jargon, commas where you'd pause. <strong>Avoid abbreviations</strong> — spell them out (say "rupees" not "Rs."). <strong>Use punctuation strategically</strong> — a comma creates a small pause, a period creates a longer one. Test with 2–3 sentences first before generating long audio.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Try It: 60-Second Brand Voiceover</h4>
+    <ul>
+      <li>Go to elevenlabs.io and create a free account</li>
+      <li>Write a 30-second welcome script for a local business: "Welcome to [Business Name]. We are Kotkapura's most trusted [service]. Visit us at [location], or WhatsApp us at [number] for a free consultation."</li>
+      <li>Try 3 different voices — male, female, and a Hindi voice</li>
+      <li>Download your favorite — this is your first professional voiceover</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">Voice cloning used to cost ₹5 lakh+ in studio time. You just did it for free.</div>
+
+  <p class="curiosity-hook">Next: Audio branding — making sure people recognize your brand by sound alone.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Audio Branding &rarr;</button></div>
+</div>
+
+<!-- S2: AUDIO BRANDING -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#127925; Section 2 of 6. You're learning what most agencies charge ₹10,000/project for.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Audio Branding — <span class="gr">Sound Identity</span></h2>
+    <p>The most underutilized marketing asset for local businesses. Podcast intros, brand jingles, IVR hold music — all created with AI in minutes.</p>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#127911;</div>
+    <div class="call-body">
+      <h4>What is Audio Branding?</h4>
+      <p>Just as a logo is your visual identity, audio branding is your <strong>sonic identity</strong>. Think of the Netflix "ta-dum" sound, or the McDonald's "ba da ba ba baa" jingle. When someone hears it, they immediately think of the brand. Every business — even a local dhaba — can have this. With AI, it costs almost nothing to create.</p>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Podcast</span><span class="crd-icon">&#127897;</span><h3>Podcast Intros</h3><p>Professional podcast intro: voiceover announcement + background music mixed together. Use ElevenLabs for the voice, Suno AI for the music. Blend in CapCut. Sounds like a Radio Mirchi production.</p></div>
+    <div class="crd"><span class="tag tag-4">Jingles</span><span class="crd-icon">&#127925;</span><h3>Brand Jingles</h3><p>Describe your business to Suno AI: "A catchy 15-second jingle for a sweet shop called Arora Mithai in Kotkapura, upbeat Punjabi folk style, mention the name." Suno generates a full song with vocals.</p></div>
+    <div class="crd"><span class="tag tag-2">IVR</span><span class="crd-icon">&#128222;</span><h3>IVR & Hold Music</h3><p>When a customer calls and is put on hold, what do they hear? Professional IVR greeting (ElevenLabs voice: "Thank you for calling [Business]. Please hold while we connect you.") + royalty-free hold music.</p></div>
+    <div class="crd"><span class="tag tag-brand">Video</span><span class="crd-icon">&#127909;</span><h3>Video Narration</h3><p>Every brand video, product demo, or explainer needs a narrator. ElevenLabs gives you a studio-quality narrator at ₹0 cost. Pair with HeyGen video for complete production.</p></div>
+    <div class="crd"><span class="tag tag-3">Ads</span><span class="crd-icon">&#128244;</span><h3>Radio & Reel Ads</h3><p>30-second audio ad with script (Claude) + voice (ElevenLabs) + music bed (Suno). Ready for Instagram Stories audio, WhatsApp audio messages, or local radio.</p></div>
+    <div class="crd"><span class="tag tag-5">Social</span><span class="crd-icon">&#128241;</span><h3>Reel Voiceovers</h3><p>Trending Reels with a professional voiceover instead of on-camera speaking. Script → ElevenLabs voice → overlay on Canva video or CapCut Reel. Faceless content that performs.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Tool: Suno AI for Brand Music</h3>
+  <div class="callout call-2">
+    <div class="call-ico">&#127774;</div>
+    <div class="call-body">
+      <h4>Create Brand Music with Suno AI</h4>
+      <p><strong>What it is:</strong> AI music generator that creates full songs with vocals, instruments, and production in 30 seconds.<br>
+      <strong>How to use:</strong> Go to suno.com → Describe the music you want: style, mood, tempo, and any lyrics → Click Generate → Download<br>
+      <strong>Key prompt tip:</strong> Include genre, tempo, mood, instruments, and whether you want lyrics. Example: "Upbeat Punjabi folk music, dhol and sarangi, bright and joyful, 15 seconds, no lyrics, suitable for a restaurant background" → Suno generates it instantly.<br>
+      <strong>Free tier:</strong> 50 songs/day. Commercial use requires paid plan ($8/month).</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Create Your Brand Audio Package</h4>
+    <ul>
+      <li><strong>Step 1:</strong> Write an IVR greeting script in ElevenLabs for the brand you're building for Session 12</li>
+      <li><strong>Step 2:</strong> Go to suno.com and generate 15 seconds of brand background music (describe the style to match the brand)</li>
+      <li><strong>Step 3:</strong> Import both into CapCut — layer the voice on top of the music at 70% music volume</li>
+      <li><strong>Step 4:</strong> Export as MP3 — you've created a professional audio brand package</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Build the complete social media content machine — from idea to posted Reel in 30 minutes.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Content Machine &rarr;</button></div>
+</div>
+
+<!-- S3: SOCIAL MEDIA CONTENT MACHINE -->
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Social Media <span class="gr">Content Machine</span></h2>
+    <p>The complete end-to-end workflow: from topic idea to published Reel in under 30 minutes. One workflow, infinite content.</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#9889;</div>
+    <div class="call-body">
+      <h4>The 5-Step Content Machine</h4>
+      <p>Every piece of social media content follows the same pipeline. Once you master this flow, you can produce 2–3 posts per day, for any business, consistently.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Step 1: Research the Topic (Perplexity — 5 min)</h3>
+  <div class="callout call-1">
+    <div class="call-ico">&#128300;</div>
+    <div class="call-body">
+      <h4>Find What's Worth Posting About</h4>
+      <p>Ask Perplexity: <em>"What are the 5 most searched questions about [topic/business type] in India right now?"</em> or <em>"What are trending topics for [restaurant/clinic/fashion] Instagram accounts this week?"</em><br><br>
+      Pick one topic from the results. A post answering a real question always performs better than random promotional content. You're not creating content — you're answering what people are already asking.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 2: Write the Caption (Claude — 5 min)</h3>
+  <div class="callout call-2">
+    <div class="call-ico">&#128196;</div>
+    <div class="call-body">
+      <h4>Caption + Hook + Hashtags in One Prompt</h4>
+      <p>Prompt Claude: <em>"Write an Instagram caption for [business type] about [topic]. Include: 1 strong hook in the first line (something that makes people stop scrolling), 3–5 bullet points of value, a call to action to WhatsApp at [number], and 10 relevant hashtags. Tone: [friendly / professional / informative]. Max 150 words."</em><br><br>
+      Edit the result for local context (mention Kotkapura, Faridkot, Punjab where relevant). Add emojis to match the brand voice.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 3: Generate the Visual (Ideogram or Canva — 5 min)</h3>
+  <div class="callout call-3">
+    <div class="call-ico">&#127912;</div>
+    <div class="call-body">
+      <h4>Matching Visual for the Caption</h4>
+      <p>For <strong>image posts:</strong> Use Ideogram (for text-heavy graphics) or Canva Magic Media (for product/atmosphere images). The visual should reinforce the caption's message.<br>
+      For <strong>Reels:</strong> Shoot 30 seconds of raw video on your phone OR use a Canva Reel template with the AI image as background. Fast, professional, consistent.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 4: Create the Reel (CapCut — 10 min)</h3>
+  <div class="callout call-4">
+    <div class="call-ico">&#128248;</div>
+    <div class="call-body">
+      <h4>Turn the Visual into a Short Video</h4>
+      <p>Import your image or video clip into CapCut. Add: auto-captions, background music (from CapCut library — soft and non-distracting), a text overlay with your key message in the first 3 seconds, your logo watermark, and a call-to-action text at the end. Export at 1080p, 9:16 (vertical for Reels).</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">Step 5: Add Voiceover (ElevenLabs — 5 min)</h3>
+  <div class="callout call-brand">
+    <div class="call-ico">&#127908;</div>
+    <div class="call-body">
+      <h4>Professional Voice, Not Your Shaky Speaking Voice</h4>
+      <p>Take the key points from your caption. Write a 20–30 second voiceover script (bullet points, not full paragraphs). Generate in ElevenLabs in your brand's chosen voice. Import the MP3 into CapCut and layer it over the video. Lower background music volume. The result: a professional narrated Reel — no camera, no microphone, no nervousness.</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">This workflow produces better content than most local businesses create in a month — in 30 minutes flat.</div>
+
+  <div class="micro-action">
+    <h4>Complete Workflow Challenge</h4>
+    <ul>
+      <li>Pick any local business category (salon, clinic, restaurant)</li>
+      <li>Research one topic with Perplexity</li>
+      <li>Write caption with Claude</li>
+      <li>Generate image with Ideogram or Canva</li>
+      <li>Create 30-second Reel in CapCut with voiceover from ElevenLabs</li>
+      <li>Time yourself — aim for under 30 minutes total</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: The interactive 7-day content calendar — plan a full week for any brand.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Calendar Builder &rarr;</button></div>
+</div>
+
+<!-- S4: CONTENT CALENDAR BUILDER -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive: <span class="gr">Content Calendar Builder</span></h2>
+    <p>Plan 7 days of content for a brand. Click each day to see the content type, the best AI tool to use, and the exact prompt to start with.</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">&#128197;</div>
+    <div class="call-body">
+      <h4>The Brand for This Exercise</h4>
+      <p>We're planning content for <strong>Sharma Beauty Salon, Kotkapura</strong> — a women's beauty and wellness salon. Services: facials, bridal makeup, hair, threading. Target audience: women aged 18–45 in Kotkapura and nearby areas. Goal: increase walk-ins and WhatsApp appointment bookings.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1.5rem 0 .75rem;">Click a day to see the content plan</h3>
+  <div class="cal-grid" id="calGrid">
+    <div class="cal-day" onclick="showCalDay(0)"><div class="day-label">Mon</div><div class="day-num">1</div><div class="day-content">Value Post</div></div>
+    <div class="cal-day" onclick="showCalDay(1)"><div class="day-label">Tue</div><div class="day-num">2</div><div class="day-content">Before/After</div></div>
+    <div class="cal-day" onclick="showCalDay(2)"><div class="day-label">Wed</div><div class="day-num">3</div><div class="day-content">Reel Demo</div></div>
+    <div class="cal-day" onclick="showCalDay(3)"><div class="day-label">Thu</div><div class="day-num">4</div><div class="day-content">Offer Post</div></div>
+    <div class="cal-day" onclick="showCalDay(4)"><div class="day-label">Fri</div><div class="day-num">5</div><div class="day-content">Tips Post</div></div>
+    <div class="cal-day" onclick="showCalDay(5)"><div class="day-label">Sat</div><div class="day-num">6</div><div class="day-content">Testimonial</div></div>
+    <div class="cal-day" onclick="showCalDay(6)"><div class="day-label">Sun</div><div class="day-num">7</div><div class="day-content">Brand Story</div></div>
+  </div>
+
+  <div class="cal-detail" id="calDetail"></div>
+
+  <div class="callout call-3">
+    <div class="call-ico">&#128161;</div>
+    <div class="call-body">
+      <h4>The Rule of 3 Content Types</h4>
+      <p>Professional social media managers follow the <strong>3-1-1 rule:</strong><br>
+      <strong>3 Value posts</strong> — tips, education, how-to (builds trust and following)<br>
+      <strong>1 Social proof post</strong> — testimonial, before/after, review (builds credibility)<br>
+      <strong>1 Promotional post</strong> — offer, discount, service highlight (drives sales)<br>
+      <br>Never post 3 promotional posts in a row. Lead with value, earn attention, then offer.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Build Your Own 7-Day Calendar</h4>
+    <ul>
+      <li>Ask Claude: "Create a 7-day Instagram content calendar for [your brand] with post topic, content type (value/promo/social proof), caption angle, and which AI tools to use for each day"</li>
+      <li>Claude will generate the full plan</li>
+      <li>Execute one post from the calendar this week</li>
+      <li>Bring your calendar to Session 12 as part of the Brand Kit</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Quiz time — test your AI audio and social media knowledge.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Session 11 <span class="gr">Quiz</span></h2>
+    <p>8 questions on AI audio, ElevenLabs, and social media content creation.</p>
+  </div>
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 11 <span class="gr">Wrap-Up</span></h2>
+    <p>Your audio homework — create a professional voiceover and background music for a brand video.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">&#127908;</span><h3>ElevenLabs</h3><p>Text-to-speech, voice cloning, multi-language, emotional control. The voice identity for your brand.</p></div>
+    <div class="crd"><span class="crd-icon">&#127911;</span><h3>Audio Branding</h3><p>Podcast intros, brand jingles (Suno AI), IVR greetings, video narration — complete sonic identity.</p></div>
+    <div class="crd"><span class="crd-icon">&#128197;</span><h3>Content Machine</h3><p>Research (Perplexity) → Caption (Claude) → Visual (Ideogram/Canva) → Reel (CapCut) → Voice (ElevenLabs). 30-minute workflow.</p></div>
+    <div class="crd"><span class="crd-icon">&#128241;</span><h3>Content Calendar</h3><p>7 days of planned content: value posts, social proof, and promotional posts in the right balance.</p></div>
+  </div>
+
+  <div class="hw-box">
+    <h3>&#127908; Homework: Brand Audio Package</h3>
+    <p style="color:var(--t2);margin-bottom:1rem;font-size:.92rem">Create a complete audio brand package for the same business you're using for the Session 12 capstone.</p>
+    <ul>
+      <li><strong>Voiceover:</strong> Write a 45-second script introducing the business. Generate in ElevenLabs. Try at least 2 different voices and pick the one that matches the brand.</li>
+      <li><strong>Brand Music:</strong> Generate a 15-second brand jingle or background music loop using Suno AI. Match the style to the business (upbeat for restaurant, calm for clinic, etc.)</li>
+      <li><strong>IVR Greeting:</strong> Write and generate a 10-second phone welcome message: "Thank you for calling [Business]. We're open [hours]. For appointments, WhatsApp us at [number]."</li>
+      <li><strong>Final Mix:</strong> In CapCut, layer the voiceover over the brand music at 25% music volume. Export as MP3.</li>
+      <li><strong>Bring to Session 12:</strong> Your audio package becomes part of the final Brand Kit presentation.</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">&#128176;</div>
+    <div class="call-body">
+      <h4>What You Can Charge for Audio Services</h4>
+      <p><strong>Professional voiceover (60 sec):</strong> &#8377;1,500–5,000<br>
+      <strong>IVR greeting package:</strong> &#8377;2,000–4,000<br>
+      <strong>Brand jingle:</strong> &#8377;3,000–8,000<br>
+      <strong>Monthly social media audio (8 posts):</strong> &#8377;4,000–10,000/month</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">Next: Session 12 — Week 3 Capstone. Everything you've built comes together as a complete Brand Kit.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
+</div>
+
+<footer class="foot">
+  <p><span class="brand">TARAhut AI Labs</span> &middot; AI Tools Mastery Program &middot; Week 3, Session 11</p>
+  <p style="margin-top:.5rem">tarahutailabs.com &middot; +91 92008-82008 &middot; &copy; 2026</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+.5,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.5+.1});
+function drawParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.a})`;ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1});requestAnimationFrame(drawParticles)}
+drawParticles();
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progBar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+function startLearning(){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec('s1')}
+function jumpTo(id){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';showSec(id)}
+function go(id){showSec(id);window.scrollTo({top:0,behavior:'smooth'})}
+function showSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.s===id))}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Calendar
+const calData=[
+  {day:"Monday — Value Post",type:"Educational / Value",goal:"Build trust and establish expertise",content:"'5 signs your skin needs a professional facial' — tips-based image post with numbered list",caption:"Claude prompt: 'Write a 5-tip Instagram post about skin care signs that need professional attention. Hook in first line. Warm, expert tone. CTA to book at Sharma Beauty Salon.'",visual:"Canva AI: professional facial treatment background, text overlay with tip numbers",audio:"ElevenLabs voiceover optional for a Reel version",tools:["Perplexity (research)","Claude (caption)","Canva AI (visual)","CapCut (format)"]},
+  {day:"Tuesday — Before/After",type:"Social Proof",goal:"Show tangible results to build credibility",content:"Before/after bridal makeover or hair treatment transformation",caption:"Claude prompt: 'Write an Instagram caption showcasing a hair transformation at a beauty salon. Emotional, inspiring tone. Encourage others to book their transformation.'",visual:"Real photo (take with client permission) OR AI-illustrated transformation concept in Canva",audio:"No voiceover needed for this type — image speaks",tools:["Claude (caption)","Canva (design frame)","Instagram (post with story reshare)"]},
+  {day:"Wednesday — Reel Demo",type:"Video / Entertainment",goal:"Reach new audience via Reels algorithm",content:"30-second quick tip Reel: 'The 1-minute at-home skin routine' — fast-paced, trending format",caption:"Claude prompt: 'Write a short Reel caption for a quick skin care tip video. Punchy, uses trending language, ends with a soft CTA.'",visual:"CapCut trending template with text overlay and upbeat music",audio:"ElevenLabs voiceover: professional narrator voice for the tip content",tools:["CapCut (Reel)","ElevenLabs (voiceover)","Claude (script)","Canva (thumbnail)"]},
+  {day:"Thursday — Offer Post",type:"Promotional",goal:"Drive direct bookings and walk-ins",content:"'Thursday Special: 20% off facials today only — walk-in or WhatsApp to book'",caption:"Claude prompt: 'Write an urgency-based Instagram promotional post for a 20% discount on facials at a beauty salon. Festive tone, clear CTA with phone number.'",visual:"Ideogram: promotional graphic with 'Thursday Special 20% Off' in bold text, salon aesthetic colors",audio:"Optional: ElevenLabs for Instagram Story audio announcement",tools:["Ideogram (graphic with text)","Claude (caption)","ElevenLabs (Story audio)"]},
+  {day:"Friday — Tips Post",type:"Educational / Value",goal:"Save for Friday when people plan weekend activities",content:"'Planning a weekend look? Here's what to book in advance for best results'",caption:"Claude prompt: 'Write a Friday Instagram post advising women on which beauty services to book in advance for weekend events. Helpful, friendly, closes with WhatsApp booking CTA.'",visual:"Canva AI: weekend glam aesthetic image — warm golds and neutrals",audio:"No voiceover needed for static post",tools:["Claude (caption)","Canva AI (image)","Instagram (post)"]},
+  {day:"Saturday — Testimonial",type:"Social Proof",goal:"Build trust with real customer words",content:"Customer review as a beautifully designed graphic quote",caption:"Claude prompt: 'Write a short, grateful introduction caption for a salon testimonial graphic. Mention how happy the salon is when clients love their results. Warm tone.'",visual:"Canva: testimonial quote card with customer name (with permission), brand colors, salon logo",audio:"Optional: voice reading the testimonial for a Story",tools:["Claude (caption)","Canva (testimonial graphic)","ElevenLabs (optional Story voice)"]},
+  {day:"Sunday — Brand Story",type:"Brand Personality / Connection",goal:"Build emotional connection with the audience",content:"'Why we started Sharma Beauty Salon' — founder story, 'behind the scenes' feel",caption:"Claude prompt: 'Write a heartfelt Sunday Instagram post for a beauty salon owner sharing why they started their business and their passion for making women feel beautiful. Authentic, personal, story-driven.'",visual:"Real behind-the-scenes photo OR Canva AI atmospheric salon image",audio:"ElevenLabs — founder reads the story (voice clone if available)",tools:["Claude (story caption)","Canva AI (image)","ElevenLabs (voice narration)","CapCut (mini-doc Reel)"]}
+];
+function showCalDay(i){
+  document.querySelectorAll('.cal-day').forEach((d,j)=>d.classList.toggle('active',j===i));
+  const d=calData[i];
+  const det=document.getElementById('calDetail');
+  det.className='cal-detail show';
+  det.innerHTML=`<h4>${d.day}</h4>
+    <p><strong>Type:</strong> ${d.type} &nbsp;|&nbsp; <strong>Goal:</strong> ${d.goal}</p>
+    <p style="margin-top:.75rem"><strong>Content:</strong> ${d.content}</p>
+    <p style="margin-top:.5rem"><strong>Caption Approach:</strong> ${d.caption}</p>
+    <p style="margin-top:.5rem"><strong>Visual:</strong> ${d.visual}</p>
+    <p style="margin-top:.5rem"><strong>Audio:</strong> ${d.audio}</p>
+    <div class="tools-used">${d.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>`;
+}
+
+// Quiz
+const questions=[
+  {q:"What is ElevenLabs primarily used for in content creation?",opts:["Generating images from text prompts","Creating professional AI voiceovers and speech synthesis","Editing videos with auto-captions","Designing social media templates"],ans:1,fb:"ElevenLabs is a text-to-speech AI that generates human-quality voiceovers in 32+ languages. It's used for professional narration, voice cloning, and audio branding."},
+  {q:"In the social media content machine workflow, which tool is used FIRST to find what topic to post about?",opts:["Claude","Canva AI","Perplexity AI","ElevenLabs"],ans:2,fb:"Perplexity is used first to research trending questions and topics in your niche. Starting with what people are already searching for ensures your content gets found and engaged with."},
+  {q:"What is 'audio branding' for a business?",opts:["The visual branding applied to podcast cover art","A sonic identity for a brand — unique sounds, jingles, and voice that audiences recognize","The background music used in all advertisements","The script writing process for radio ads"],ans:1,fb:"Audio branding is the sonic identity of a brand — the combination of voice style, music, jingles, and sound effects that make a brand recognizable by ear alone, similar to how a logo makes it recognizable by sight."},
+  {q:"Which AI tool is recommended in this session for creating brand jingles and background music?",opts:["ElevenLabs","CapCut","Suno AI","Ideogram"],ans:2,fb:"Suno AI is an AI music generator that creates full songs, jingles, and music in seconds based on your description of style, mood, and tempo. Perfect for brand audio."},
+  {q:"According to the 3-1-1 content rule taught in Section 4, what is the recommended ratio of post types?",opts:["1 value post, 3 social proof posts, 1 promotional post","3 promotional posts, 1 value post, 1 social proof post","3 value posts, 1 social proof post, 1 promotional post","All posts should be 50% value, 50% promotional"],ans:2,fb:"The 3-1-1 rule: 3 value posts (education, tips), 1 social proof post (testimonials, before/after), 1 promotional post (offers, discounts). Leading with value earns trust before asking for action."},
+  {q:"How do you create a Voice Clone in ElevenLabs?",opts:["Upload a photo and ElevenLabs synthesizes a voice","Record 1 minute of your voice, upload it to ElevenLabs — it creates a digital twin of your voice","Pay for the premium plan and choose from preset voices","Submit a voice description and AI generates a matching voice"],ans:1,fb:"Record about 1 minute of yourself speaking clearly, upload it to ElevenLabs' Voice Lab, and it creates a clone of your voice that can speak any text you type."},
+  {q:"In the 5-step content workflow, after writing the caption with Claude, what is the NEXT step?",opts:["Publish directly to Instagram","Generate the voiceover in ElevenLabs","Generate the visual with Ideogram or Canva AI","Create the Reel in CapCut"],ans:2,fb:"The order is: Research (Perplexity) → Caption (Claude) → Visual (Ideogram/Canva) → Reel (CapCut) → Voiceover (ElevenLabs). The visual comes right after the caption to match the written message."},
+  {q:"Why is a 'value post' (educational/tips content) MORE important than promotional posts for building a social media following?",opts:["Because Instagram's algorithm penalizes promotional content","Because value posts build trust and give audiences a reason to follow you — promotional posts only work when trust already exists","Because value posts get more likes automatically","Because promotional posts are banned in some regions"]
+  ,ans:1,fb:"Posting value-first content builds trust, authority, and a reason for people to follow you. When you've given freely, audiences are far more receptive to promotional content. Selling without trust gets ignored."}
+];
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  const q=questions[cur];
+  document.getElementById('qProg').innerHTML=questions.map((_,i)=>`<div class="q-dot ${i<cur?'done':i===cur?'cur':''}"></div>`).join('');
+  document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${cur+1} of ${questions.length}</span>${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="answer(${i})"><span class="ol">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${score}/${cur}</span>${cur<questions.length-1?`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="nextQ()" style="display:none">Next &rarr;</button>`:`<button class="btn btn-glow btn-sm" id="nextBtn" onclick="showScore()" style="display:none">See Results &rarr;</button>`}</div>`;
+  answered=false;
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=questions[cur];
+  const opts=document.querySelectorAll('.q-opt');
+  opts[i].classList.add(i===q.ans?'ok':'no');
+  if(i===q.ans)score++;
+  opts[q.ans].classList.add('ok');
+  const fb=document.getElementById('qFb');
+  fb.className=`q-fb show ${i===q.ans?'fb-ok':'fb-no'}`;
+  fb.innerHTML=(i===q.ans?'&#9989; Correct! ':'&#10060; Not quite. ')+q.fb;
+  document.getElementById('nextBtn').style.display='inline-flex';
+}
+function nextQ(){cur++;if(cur<questions.length)renderQuiz();else showScore();}
+function showScore(){
+  const pct=Math.round(score/questions.length*100);
+  const msg=pct>=80?'Excellent! You are ready for the Week 3 Capstone.':pct>=60?'Good work! Review any sections you found tricky.':'Keep practicing — you have all the tools, just revisit the content.';
+  document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/${questions.length}</div><p style="color:var(--t2);margin:.5rem 0">${pct}% &mdash; ${msg}</p><button class="btn btn-ghost btn-sm" onclick="cur=0;score=0;renderQuiz()" style="margin-top:1.5rem">Retry Quiz</button></div>`;
+  document.getElementById('qProg').innerHTML=questions.map(()=>`<div class="q-dot done"></div>`).join('');
+}
+renderQuiz();
+</script>
+</body>
+</html>
