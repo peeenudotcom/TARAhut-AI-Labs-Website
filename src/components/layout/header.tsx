@@ -51,21 +51,34 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 pt-1 z-50">
-          <div className="min-w-[200px] rounded-xl border border-[#E2E8F0] bg-white py-2 shadow-lg">
+        <div className="absolute top-full left-0 pt-2 z-50">
+          <div className="w-[320px] rounded-2xl border border-[#E2E8F0] bg-white p-2 shadow-xl shadow-black/5">
             {entry.items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  'block px-4 py-2.5 text-sm transition-colors hover:bg-[#F0FDF4] hover:text-[#059669]',
-                  pathname === item.href
-                    ? 'text-[#059669] bg-[#F0FDF4]'
-                    : 'text-[#475569]'
+                  'flex items-start gap-3 rounded-xl px-3 py-3 transition-all hover:bg-[#F0FDF4] group',
+                  pathname === item.href && 'bg-[#F0FDF4]'
                 )}
               >
-                {item.label}
+                {item.icon && (
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F8FAFC] text-base group-hover:bg-emerald-100 transition-colors">
+                    {item.icon}
+                  </span>
+                )}
+                <div className="min-w-0">
+                  <p className={cn(
+                    'text-sm font-medium group-hover:text-[#059669] transition-colors',
+                    pathname === item.href ? 'text-[#059669]' : 'text-[#0F172A]'
+                  )}>
+                    {item.label}
+                  </p>
+                  {item.description && (
+                    <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">{item.description}</p>
+                  )}
+                </div>
               </Link>
             ))}
           </div>
@@ -93,17 +106,18 @@ function MobileDropdown({ entry, pathname }: { entry: NavDropdown; pathname: str
         <ChevronDown className={cn('w-4 h-4 transition-transform', open && 'rotate-180')} />
       </button>
       {open && (
-        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-emerald-100/20 pl-3">
+        <div className="ml-2 mt-1 space-y-0.5 border-l-2 border-emerald-500/30 pl-3">
           {entry.items.map((item) => (
             <SheetClose key={item.href} render={<Link href={item.href} />}>
               <span
                 className={cn(
-                  'block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-white/[0.06]',
+                  'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-white/[0.06]',
                   pathname === item.href
                     ? 'text-emerald-400'
                     : 'text-gray-400'
                 )}
               >
+                {item.icon && <span className="text-base">{item.icon}</span>}
                 {item.label}
               </span>
             </SheetClose>
