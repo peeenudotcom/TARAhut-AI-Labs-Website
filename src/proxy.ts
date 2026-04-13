@@ -29,6 +29,15 @@ export async function proxy(request: NextRequest) {
   const host = request.headers.get('host') ?? '';
   const url = request.nextUrl;
 
+  // Block direct access to learning module HTML files
+  // Only allow iframe access (from the session viewer page)
+  if (url.pathname.startsWith('/learn/session-') && url.pathname.endsWith('.html')) {
+    const fetchDest = request.headers.get('sec-fetch-dest');
+    if (fetchDest !== 'iframe') {
+      return NextResponse.redirect(new URL('/learn', request.url));
+    }
+  }
+
   // Supabase magic link fix: Supabase sometimes redirects auth codes to the
   // root path (/?code=...) instead of /auth/callback?code=... depending on
   // email template settings. Catch it and forward to the callback route

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getUser } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { learnModules } from '@/config/learn-modules';
+import { SessionViewer } from './session-viewer';
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
@@ -125,31 +126,11 @@ export default async function SessionPage({ params }: Props) {
       </header>
 
       {/* ── Content area with watermark ── */}
-      <div className="relative flex-1 overflow-hidden">
-        {/* Watermark overlay */}
-        {user && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center select-none"
-          >
-            <p
-              className="rotate-[-35deg] text-4xl font-black tracking-widest text-white/[0.04] sm:text-6xl"
-              style={{ userSelect: 'none' }}
-            >
-              {displayName}
-            </p>
-          </div>
-        )}
-
-        {/* Module iframe */}
-        <iframe
-          src={sessionFile}
-          title={`Session ${sessionNum}: ${mod.title}`}
-          className="h-full w-full border-0"
-          sandbox="allow-scripts allow-same-origin allow-forms"
-          referrerPolicy="no-referrer"
-        />
-      </div>
+      <SessionViewer
+        sessionFile={sessionFile}
+        sessionTitle={`Session ${sessionNum}: ${mod.title}`}
+        watermarkName={displayName}
+      />
 
       {/* ── Bottom tools row ── */}
       {mod.tools.length > 0 && (
