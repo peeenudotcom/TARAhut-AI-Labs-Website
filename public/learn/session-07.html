@@ -604,7 +604,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:7,score:sc,total:qData.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Research Pro!';tierColor='var(--brand)';msg='You\'ve mastered the research stack. Run the workflow on a real topic this week to cement it.'}
     else if(pct>=50){tier='Good Foundation!';tierColor='var(--c1)';msg='Solid understanding. Try each tool hands-on to reinforce the concepts.'}

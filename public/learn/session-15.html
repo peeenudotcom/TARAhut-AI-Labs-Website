@@ -583,7 +583,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:15,score:sc,total:qData.length})})}catch(e){}
     let tier,tc,msg;
     if(pct>=80){tier='Presentation Ready!';tc='var(--brand)';msg='You know how to build and present a winning portfolio. Tomorrow will be great.'}
     else if(pct>=50){tier='On the Right Track!';tc='var(--c1)';msg='Review sections 1 and 4 before your presentation tomorrow. You\'re close.'}

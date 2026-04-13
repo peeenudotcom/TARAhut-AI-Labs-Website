@@ -590,7 +590,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:14,score:sc,total:qData.length})})}catch(e){}
     let tier,tc,msg;
     if(pct>=80){tier='Professional Level!';tc='var(--brand)';msg='You think like a professional. You understand planning, tool selection, and client delivery.'}
     else if(pct>=50){tier='Strong Foundation!';tc='var(--c1)';msg='Good instincts. Keep building and the professional mindset will become second nature.'}

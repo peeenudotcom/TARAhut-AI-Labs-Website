@@ -566,7 +566,7 @@ function answer(i){
   document.getElementById('nextBtn').style.display='inline-flex';
 }
 function nextQ(){cur++;if(cur<questions.length)renderQuiz();else showScore();}
-function showScore(){
+function showScore(){try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:11,score:score,total:questions.length})})}catch(e){}
   const pct=Math.round(score/questions.length*100);
   const msg=pct>=80?'Excellent! You are ready for the Week 3 Capstone.':pct>=60?'Good work! Review any sections you found tricky.':'Keep practicing — you have all the tools, just revisit the content.';
   document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/${questions.length}</div><p style="color:var(--t2);margin:.5rem 0">${pct}% &mdash; ${msg}</p><button class="btn btn-ghost btn-sm" onclick="cur=0;score=0;renderQuiz()" style="margin-top:1.5rem">Retry Quiz</button></div>`;

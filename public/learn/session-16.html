@@ -752,7 +752,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:16,score:sc,total:qData.length})})}catch(e){}
     let tier,tc,msg,extra;
     if(pct>=90){
       tier='OUTSTANDING GRADUATE 🌟';tc='var(--brand)';

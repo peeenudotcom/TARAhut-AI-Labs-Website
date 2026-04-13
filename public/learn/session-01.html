@@ -575,7 +575,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:1,score:sc,total:qData.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You\'ve nailed the Session 1 fundamentals. You\'re ready for Session 2!';}
     else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid understanding. A quick review of any missed sections will lock it in.';}

@@ -750,7 +750,7 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){
   const box=document.getElementById('quizBox');
   if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);
+    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:6,score:sc,total:qData.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You\'re ready to write professional documents like a pro. Put these prompts to use this week.'}
     else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Re-read the email templates and try the prompts in real scenarios.'}
