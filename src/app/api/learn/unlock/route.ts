@@ -24,15 +24,23 @@ export async function POST(req: NextRequest) {
     const db = createServiceClient();
 
     // 2. Find matching active, non-expired daily code
-    const { data: dailyCode, error: codeError } = await db
+    const { data: codes, error: codeError } = await db
       .from('daily_codes')
       .select('*')
       .eq('code', code.trim())
       .eq('status', 'active')
       .gt('expires_at', new Date().toISOString())
-      .single();
+      .order('generated_at', { ascending: false })
+      .limit(1);
 
-    if (codeError || !dailyCode) {
+    if (codeError) {
+      console.error('Code lookup error:', codeError);
+    }
+
+    const dailyCode = codes?.[0] ?? null;
+
+    if (!dailyCode) {
+      console.error('No matching code found. Input:', code.trim(), 'Active codes count:', codes?.length);
       return NextResponse.json(
         { error: 'Invalid or expired code. Please check with your trainer.' },
         { status: 400 }
