@@ -54,7 +54,7 @@ export default async function SessionPage({ params }: Props) {
     const { data } = await supabase
       .from('session_unlocks')
       .select('session_number')
-      .eq('user_id', user.id)
+      .eq('student_id', user.id)
       .eq('session_number', sessionNum)
       .maybeSingle();
 
@@ -78,7 +78,6 @@ export default async function SessionPage({ params }: Props) {
   return (
     <div
       className="flex h-screen flex-col bg-[#06060e]"
-      onContextMenu={(e) => e.preventDefault()}
     >
       {/* ── Top bar ── */}
       <header className="flex shrink-0 items-center justify-between border-b border-[#1e1e3a] bg-[#0c0c1a] px-4 py-3">
