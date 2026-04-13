@@ -73,16 +73,29 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="py-14 bg-white/[0.03]">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div
-            className="prose prose-invert prose-lg max-w-none
-              prose-headings:font-bold prose-headings:text-white
-              prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-              prose-p:text-gray-400 prose-p:leading-relaxed
-              prose-strong:text-white
-              prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline
-              prose-li:text-gray-400
-              prose-ul:my-4 prose-li:my-1"
+            className="blog-content max-w-none text-gray-300 leading-relaxed text-lg"
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
+          <style>{`
+            .blog-content h1,.blog-content h2,.blog-content h3,.blog-content h4{color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;line-height:1.3}
+            .blog-content h2{font-size:1.5rem}
+            .blog-content h3{font-size:1.25rem}
+            .blog-content p{color:#9ca3af;line-height:1.8;margin-bottom:1.25rem}
+            .blog-content strong,.blog-content b{color:#e2e8f0;font-weight:600}
+            .blog-content a{color:#34d399;text-decoration:none}
+            .blog-content a:hover{text-decoration:underline}
+            .blog-content ul,.blog-content ol{margin:1rem 0;padding-left:1.5rem;color:#9ca3af}
+            .blog-content li{margin-bottom:0.5rem;line-height:1.7}
+            .blog-content blockquote{border-left:3px solid #059669;padding-left:1rem;margin:1.5rem 0;color:#94a3b8;font-style:italic}
+            .blog-content code{background:rgba(0,240,255,0.08);color:#00f0ff;padding:2px 6px;border-radius:4px;font-size:0.9em}
+            .blog-content pre{background:#0c0c1a;border:1px solid #1e1e3a;border-radius:8px;padding:1rem;overflow-x:auto;margin:1.5rem 0}
+            .blog-content pre code{background:none;padding:0;color:#e2e8f0}
+            .blog-content img{border-radius:12px;margin:1.5rem 0}
+            .blog-content hr{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:2rem 0}
+            .blog-content table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+            .blog-content th{background:#0c0c1a;color:#059669;padding:10px 12px;text-align:left;border:1px solid #1e1e3a;font-size:0.85rem}
+            .blog-content td{padding:10px 12px;border:1px solid #1e1e3a;color:#9ca3af}
+          `}</style>
 
           {/* CTA */}
           <div className="mt-12 rounded-2xl bg-gradient-to-br from-[#059669]/10 to-[#0D9488]/10 border border-[#059669]/20 p-8 text-center">

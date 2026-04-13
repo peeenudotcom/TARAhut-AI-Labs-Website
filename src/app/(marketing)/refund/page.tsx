@@ -25,7 +25,7 @@ export default function RefundPolicyPage() {
 
       {/* Content */}
       <article className="bg-[#0A0F1C] pb-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose prose-invert prose-emerald">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 blog-content text-gray-300 leading-relaxed [prose prose-invert prose-emerald_h2]:text-white [prose prose-invert prose-emerald_h2]:text-xl [prose prose-invert prose-emerald_h2]:font-bold [prose prose-invert prose-emerald_h2]:mt-8 [prose prose-invert prose-emerald_h2]:mb-3 [prose prose-invert prose-emerald_p]:text-gray-400 [prose prose-invert prose-emerald_p]:mb-4 [prose prose-invert prose-emerald_p]:leading-relaxed [prose prose-invert prose-emerald_ul]:text-gray-400 [prose prose-invert prose-emerald_ul]:my-3 [prose prose-invert prose-emerald_ul]:pl-5 [prose prose-invert prose-emerald_li]:mb-2 [prose prose-invert prose-emerald_a]:text-emerald-400 [prose prose-invert prose-emerald_a]:hover:underline [prose prose-invert prose-emerald_strong]:text-white">
           <p>
             At {siteConfig.name}, we stand behind the quality of our courses. This policy explains how refunds and cancellations are handled for all paid enrollments.
           </p>
