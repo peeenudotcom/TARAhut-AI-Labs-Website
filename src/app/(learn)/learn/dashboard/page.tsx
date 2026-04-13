@@ -2,7 +2,12 @@ import Link from 'next/link';
 import { requireAuth } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { learnModules } from '@/config/learn-modules';
+import { dailyChallenges } from '@/config/daily-challenges';
 import { CodeEntry } from './code-entry';
+import { NextSessionPreview } from './next-session-preview';
+import { ShareProgress } from './share-progress';
+import { PeerPair } from './peer-pair';
+import { TeachBack } from './teach-back';
 
 export const metadata = {
   title: 'My Learning Dashboard',
@@ -11,8 +16,13 @@ export const metadata = {
 // ── types ────────────────────────────────────────────────────────────────────
 
 interface UnlockRow { session_number: number }
-interface QuizRow   { score: number }
+interface QuizRow   { score: number; session_number: number; percentage: number }
 interface AchievementRow { badge_type: string; badge_name: string; earned_at: string }
+interface StreakRow {
+  current_streak: number;
+  longest_streak: number;
+  last_activity_date: string | null;
+}
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -24,8 +34,23 @@ const BADGE_ICONS: Record<string, string> = {
   'quiz-champion': '🏆',
 };
 
-function pad(n: number) {
-  return String(n).padStart(2, '0');
+// Earnings brackets based on sessions completed
+const EARNINGS_MAP: Record<number, { min: number; max: number; skills: string }> = {
+  0:  { min: 0,     max: 0,     skills: '' },
+  4:  { min: 5000,  max: 10000, skills: 'AI content writing, prompt engineering' },
+  8:  { min: 10000, max: 20000, skills: 'research, presentations, design' },
+  12: { min: 15000, max: 30000, skills: 'video, audio, brand kits' },
+  16: { min: 20000, max: 40000, skills: 'websites, freelancing, full portfolio' },
+};
+
+function getEarningsBracket(completedCount: number) {
+  const bracket = ([16, 12, 8, 4, 0] as const).find((b) => completedCount >= b) ?? 0;
+  return EARNINGS_MAP[bracket];
+}
+
+function formatCurrency(n: number) {
+  if (n >= 1000) return `₹${n / 1000}K`;
+  return `₹${n}`;
 }
 
 // ── page ─────────────────────────────────────────────────────────────────────
@@ -34,19 +59,26 @@ export default async function DashboardPage() {
   const user = await requireAuth();
   const supabase = await createServerSupabase();
 
-  const [unlocksResult, quizResult, achievementsResult] = await Promise.all([
+  const [unlocksResult, quizResult, achievementsResult, streakResult] = await Promise.all([
     supabase
       .from('session_unlocks')
       .select('session_number')
       .eq('student_id', user.id),
     supabase
       .from('quiz_scores')
-      .select('score')
-      .eq('student_id', user.id),
+      .select('score, session_number, percentage')
+      .eq('student_id', user.id)
+      .order('session_number', { ascending: false }),
     supabase
       .from('achievements')
       .select('badge_type, badge_name, earned_at')
       .eq('student_id', user.id),
+    supabase
+      .from('learn_streaks')
+      .select('current_streak, longest_streak, last_activity_date')
+      .eq('student_id', user.id)
+      .eq('course_id', 'ai-tools-mastery-beginners')
+      .maybeSingle(),
   ]);
 
   const unlockedSessions = new Set<number>(
@@ -55,13 +87,17 @@ export default async function DashboardPage() {
   // Session 1 is always free
   unlockedSessions.add(1);
 
-  const quizScores: number[] = (quizResult.data ?? []).map((r: QuizRow) => r.score);
+  const quizRows: QuizRow[] = quizResult.data ?? [];
   const avgScore =
-    quizScores.length > 0
-      ? Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length)
+    quizRows.length > 0
+      ? Math.round(quizRows.reduce((sum, r) => sum + r.percentage, 0) / quizRows.length)
       : null;
 
+  // Most recently completed session (highest session_number with a quiz score)
+  const lastCompletedSession = quizRows.length > 0 ? quizRows[0].session_number : null;
+
   const achievements: AchievementRow[] = achievementsResult.data ?? [];
+  const streak: StreakRow | null = streakResult.data ?? null;
 
   const completedCount = learnModules.filter((m) => unlockedSessions.has(m.session)).length;
   const progressPct = Math.round((completedCount / 16) * 100);
@@ -72,6 +108,18 @@ export default async function DashboardPage() {
     user.email?.split('@')[0] ??
     'Student';
 
+  // Earnings
+  const earnings = getEarningsBracket(completedCount);
+
+  // Next locked session (for the preview quiz)
+  const nextLockedModule = learnModules.find((m) => !unlockedSessions.has(m.session)) ?? null;
+
+  // Today's challenge — based on last completed session
+  const todayChallenge =
+    lastCompletedSession !== null
+      ? dailyChallenges.find((c) => c.session === lastCompletedSession) ?? null
+      : null;
+
   return (
     <div className="min-h-screen bg-[#06060e] text-[#e2e8f0]">
       {/* ── Top bar ── */}
@@ -80,29 +128,54 @@ export default async function DashboardPage() {
           <Link href="/learn" className="text-sm font-semibold text-[#059669] hover:underline">
             ← TARAhut Learning Engine
           </Link>
-          <span className="text-sm text-[#94a3b8]">{user.email}</span>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/learn/flashcards"
+              className="text-sm font-semibold text-[#94a3b8] transition hover:text-[#00f0ff]"
+            >
+              Flashcards
+            </Link>
+            <Link
+              href="/learn/portfolio"
+              className="text-sm font-semibold text-[#94a3b8] transition hover:text-[#00f0ff]"
+            >
+              My Portfolio
+            </Link>
+            <span className="text-sm text-[#94a3b8]">{user.email}</span>
+          </div>
         </div>
       </header>
 
       <div className="mx-auto max-w-6xl px-6 py-10">
         {/* ── Welcome ── */}
-        <h1 className="mb-1 text-2xl font-bold text-[#e2e8f0]">
-          Welcome back,{' '}
-          <span className="bg-gradient-to-r from-[#00f0ff] to-[#059669] bg-clip-text text-transparent">
-            {displayName}
-          </span>
-        </h1>
-        <p className="mb-10 text-sm text-[#94a3b8]">
-          Keep going — you are making great progress.
-        </p>
+        <div className="mb-10 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="mb-1 text-2xl font-bold text-[#e2e8f0]">
+              Welcome back,{' '}
+              <span className="bg-gradient-to-r from-[#00f0ff] to-[#059669] bg-clip-text text-transparent">
+                {displayName}
+              </span>
+            </h1>
+            <p className="text-sm text-[#94a3b8]">
+              Keep going — you are making great progress.
+            </p>
+          </div>
+          <ShareProgress
+            studentName={displayName}
+            completedCount={completedCount}
+            totalSessions={16}
+            quizAverage={avgScore}
+            streak={streak?.current_streak ?? 0}
+          />
+        </div>
 
         {/* ── Code entry ── */}
         <div className="mb-10">
           <CodeEntry />
         </div>
 
-        {/* ── Stats row ── */}
-        <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* ── Stats row (4 cards) ── */}
+        <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatCard
             label="Sessions completed"
             value={`${completedCount} / 16`}
@@ -118,10 +191,34 @@ export default async function DashboardPage() {
             value={String(achievements.length)}
             accent="#a78bfa"
           />
+          {/* Streak card */}
+          <div className="rounded-xl border border-[#1e1e3a] bg-[#0c0c1a] p-5">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#94a3b8]">
+              Daily streak
+            </p>
+            {streak && streak.current_streak > 0 ? (
+              <>
+                <p className="text-3xl font-extrabold" style={{ color: '#f97316' }}>
+                  🔥 {streak.current_streak}
+                </p>
+                <p className="mt-0.5 text-xs text-[#94a3b8]">
+                  {streak.current_streak === 1 ? '1 day streak' : `${streak.current_streak} day streak`}
+                </p>
+                <p className="text-xs text-[#94a3b8]">
+                  Best: {streak.longest_streak} day{streak.longest_streak !== 1 ? 's' : ''}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-xl font-extrabold text-[#f97316]">🔥 0</p>
+                <p className="mt-0.5 text-xs text-[#94a3b8]">Start your streak today!</p>
+              </>
+            )}
+          </div>
         </div>
 
         {/* ── Progress bar ── */}
-        <div className="mb-10">
+        <div className="mb-6">
           <div className="mb-2 flex items-center justify-between text-sm">
             <span className="font-medium text-[#e2e8f0]">Overall progress</span>
             <span className="text-[#94a3b8]">{progressPct}%</span>
@@ -133,6 +230,101 @@ export default async function DashboardPage() {
             />
           </div>
         </div>
+
+        {/* ── Today's Challenge ── */}
+        {todayChallenge && (
+          <div className="mb-10 rounded-2xl border border-[#a78bfa]/20 bg-[#0c0c1a] p-6">
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <span className="text-lg" aria-hidden>🎯</span>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#a78bfa]">
+                Today&apos;s Challenge — Session {todayChallenge.session}
+              </p>
+              <span className="ml-auto rounded-full bg-[#a78bfa]/10 px-3 py-1 text-xs font-semibold text-[#a78bfa]">
+                {todayChallenge.tool}
+              </span>
+            </div>
+            <p className="mb-1 text-base font-bold text-[#e2e8f0]">{todayChallenge.title}</p>
+            <p className="mb-4 text-sm leading-relaxed text-[#94a3b8]">{todayChallenge.challenge}</p>
+            <p className="text-xs font-medium text-[#a78bfa]">⏱ {todayChallenge.timeEstimate}</p>
+          </div>
+        )}
+
+        {/* ── Earnings potential card ── */}
+        <div className="mb-10 rounded-2xl border border-[#1e1e3a] bg-[#0c0c1a] p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#94a3b8]">
+                💰 Earning Potential
+              </p>
+              {earnings.min > 0 ? (
+                <>
+                  <p className="text-2xl font-extrabold text-[#e2e8f0]">
+                    {formatCurrency(earnings.min)} – {formatCurrency(earnings.max)}
+                    <span className="ml-1 text-base font-semibold text-[#94a3b8]">/month</span>
+                  </p>
+                  <p className="mt-1 text-sm text-[#94a3b8]">
+                    With your current skills:{' '}
+                    <span className="text-[#00f0ff] capitalize">{earnings.skills}</span>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-2xl font-extrabold text-[#94a3b8]">— / month</p>
+                  <p className="mt-1 text-sm text-[#94a3b8]">
+                    Complete your first 4 sessions to see your earning potential.
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-[#94a3b8]">Next milestone</p>
+              {completedCount < 16 ? (
+                <p className="mt-0.5 text-sm font-semibold text-[#059669]">
+                  {completedCount < 4
+                    ? `${4 - completedCount} session${4 - completedCount !== 1 ? 's' : ''} to ₹5K–₹10K/mo`
+                    : completedCount < 8
+                    ? `${8 - completedCount} session${8 - completedCount !== 1 ? 's' : ''} to ₹10K–₹20K/mo`
+                    : completedCount < 12
+                    ? `${12 - completedCount} session${12 - completedCount !== 1 ? 's' : ''} to ₹15K–₹30K/mo`
+                    : `${16 - completedCount} session${16 - completedCount !== 1 ? 's' : ''} to ₹20K–₹40K/mo`}
+                </p>
+              ) : (
+                <p className="mt-0.5 text-sm font-semibold text-[#059669]">
+                  Full potential unlocked! 🎓
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Next session preview quiz ── */}
+        {nextLockedModule && (
+          <div className="mb-10">
+            <NextSessionPreview
+              sessionNumber={nextLockedModule.session}
+              sessionTitle={nextLockedModule.title}
+              questions={nextLockedModule.previewQuestions}
+            />
+          </div>
+        )}
+
+        {/* ── Peer Pair + Teach Back (shown when at least 1 session completed) ── */}
+        {lastCompletedSession !== null && (() => {
+          const mod = learnModules.find((m) => m.session === lastCompletedSession);
+          if (!mod) return null;
+          return (
+            <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <PeerPair
+                lastCompletedSession={lastCompletedSession}
+                sessionTitle={mod.title}
+              />
+              <TeachBack
+                lastCompletedSession={lastCompletedSession}
+                sessionTitle={mod.title}
+              />
+            </div>
+          );
+        })()}
 
         {/* ── Module grid ── */}
         <h2 className="mb-6 text-lg font-bold text-[#e2e8f0]">All Sessions</h2>

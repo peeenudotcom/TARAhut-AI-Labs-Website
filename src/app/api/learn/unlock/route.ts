@@ -107,7 +107,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 6. Return success
+    // 6. Update streak
+    const today = new Date().toISOString().split('T')[0];
+    const { data: streak } = await db
+      .from('learn_streaks')
+      .select('*')
+      .eq('student_id', user.id)
+      .eq('course_id', COURSE_ID)
+      .maybeSingle();
+
+    if (!streak) {
+      await db.from('learn_streaks').insert({
+        student_id: user.id,
+        course_id: COURSE_ID,
+        current_streak: 1,
+        longest_streak: 1,
+        last_activity_date: today,
+      });
+    } else if (streak.last_activity_date !== today) {
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      const newStreak = streak.last_activity_date === yesterday ? streak.current_streak + 1 : 1;
+      const longest = Math.max(newStreak, streak.longest_streak);
+      await db
+        .from('learn_streaks')
+        .update({ current_streak: newStreak, longest_streak: longest, last_activity_date: today })
+        .eq('id', streak.id);
+    }
+
+    // 7. Return success
     return NextResponse.json({
       success: true,
       sessionNumber: dailyCode.session_number,

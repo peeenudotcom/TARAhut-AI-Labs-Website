@@ -130,3 +130,26 @@ CREATE INDEX IF NOT EXISTS idx_daily_codes_active
 
 CREATE INDEX IF NOT EXISTS idx_learn_enrollments_batch
   ON learn_enrollments (batch_id, course_id);
+
+-- ────────────────────────────────────────────────────────────
+-- Streaks (tracks daily learning streaks per student)
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS learn_streaks (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  student_id UUID NOT NULL REFERENCES auth.users(id),
+  course_id TEXT NOT NULL DEFAULT 'ai-tools-mastery-beginners',
+  current_streak INTEGER DEFAULT 0,
+  longest_streak INTEGER DEFAULT 0,
+  last_activity_date DATE,
+  UNIQUE(student_id, course_id)
+);
+
+ALTER TABLE learn_streaks ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Students read own streaks"
+  ON learn_streaks FOR SELECT
+  USING (auth.uid() = student_id);
+
+CREATE INDEX IF NOT EXISTS idx_learn_streaks_student
+  ON learn_streaks (student_id, course_id);

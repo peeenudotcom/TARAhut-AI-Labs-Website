@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
+import { Resend } from 'resend';
+import { renderSessionRecapHtml } from '@/lib/email/session-recap-template';
+import { dailyChallenges } from '@/config/daily-challenges';
+import { learnModules } from '@/config/learn-modules';
 
 const COURSE_ID = 'ai-tools-mastery-beginners';
 
@@ -146,6 +150,68 @@ export async function POST(req: NextRequest) {
           badge_name: a.badge_name,
         }))
       );
+    }
+
+    // 6. Update streak
+    const today = new Date().toISOString().split('T')[0];
+    const { data: streak } = await db
+      .from('learn_streaks')
+      .select('*')
+      .eq('student_id', user.id)
+      .eq('course_id', COURSE_ID)
+      .maybeSingle();
+
+    if (!streak) {
+      await db.from('learn_streaks').insert({
+        student_id: user.id,
+        course_id: COURSE_ID,
+        current_streak: 1,
+        longest_streak: 1,
+        last_activity_date: today,
+      });
+    } else if (streak.last_activity_date !== today) {
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      const newStreak = streak.last_activity_date === yesterday ? streak.current_streak + 1 : 1;
+      const longest = Math.max(newStreak, streak.longest_streak);
+      await db
+        .from('learn_streaks')
+        .update({ current_streak: newStreak, longest_streak: longest, last_activity_date: today })
+        .eq('id', streak.id);
+    }
+
+    // 7. Send session recap email
+    try {
+      const mod = learnModules.find((m) => m.session === session);
+      const challenge = dailyChallenges.find((c) => c.session === session);
+      // Re-read streak to get the current value after the upsert above
+      const { data: freshStreak } = await db
+        .from('learn_streaks')
+        .select('current_streak')
+        .eq('student_id', user.id)
+        .eq('course_id', COURSE_ID)
+        .maybeSingle();
+
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: 'TARAhut AI Labs <hello@tarahutailabs.com>',
+        to: user.email!,
+        subject: `Session ${session} Complete: ${mod?.title ?? 'Great work!'}`,
+        html: renderSessionRecapHtml({
+          studentName:
+            user.user_metadata?.name ??
+            user.email?.split('@')[0] ??
+            'Student',
+          sessionNumber: session,
+          sessionTitle: mod?.title ?? '',
+          deliverable: mod?.deliverable ?? '',
+          nextChallenge: challenge?.challenge ?? '',
+          nextChallengeTime: challenge?.timeEstimate,
+          streak: freshStreak?.current_streak ?? 1,
+          dashboardUrl: 'https://tarahutailabs.com/learn/dashboard',
+        }),
+      });
+    } catch (emailErr) {
+      console.error('Recap email failed:', emailErr);
     }
 
     return NextResponse.json({
