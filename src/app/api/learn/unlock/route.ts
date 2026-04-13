@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     // 3. Check student has an active enrollment
     const { data: enrollment, error: enrollError } = await db
       .from('learn_enrollments')
-      .select('id')
+      .select('id, batch_id')
       .eq('student_id', user.id)
       .eq('course_id', COURSE_ID)
       .is('completed_at', null)
@@ -59,6 +59,14 @@ export async function POST(req: NextRequest) {
     if (enrollError || !enrollment) {
       return NextResponse.json(
         { error: 'You are not enrolled in this course.' },
+        { status: 403 }
+      );
+    }
+
+    // Validate that the code belongs to the student's batch
+    if (dailyCode.batch_id !== enrollment.batch_id) {
+      return NextResponse.json(
+        { error: 'This code is not valid for your batch.' },
         { status: 403 }
       );
     }

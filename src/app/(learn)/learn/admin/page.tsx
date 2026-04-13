@@ -2,11 +2,7 @@ import { redirect } from 'next/navigation';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
 import GenerateCodeForm from './GenerateCodeForm';
-
-const TRAINER_EMAILS = [
-  'hello@tarahutailabs.com',
-  'peeenu@gmail.com',
-];
+import { TRAINER_EMAILS } from '@/config/trainers';
 
 const COURSE_ID = 'ai-tools-mastery-beginners';
 
@@ -40,57 +36,65 @@ export default async function LearnAdminPage() {
     .order('session_number', { ascending: true });
 
   // Fetch student progress: enrollments + unlocks + quiz scores
-  const { data: enrollments } = await db
-    .from('learn_enrollments')
-    .select('student_id, enrolled_at')
-    .eq('course_id', COURSE_ID)
-    .eq('batch_id', activeBatch?.id ?? '')
-    .is('completed_at', null);
-
-  const studentIds = (enrollments ?? []).map((e) => e.student_id);
-
-  // Fetch unlocks and quiz scores for enrolled students
-  const [unlocksResult, scoresResult] = await Promise.all([
-    studentIds.length > 0
-      ? db
-          .from('session_unlocks')
-          .select('student_id, session_number')
-          .eq('course_id', COURSE_ID)
-          .in('student_id', studentIds)
-      : Promise.resolve({ data: [] }),
-    studentIds.length > 0
-      ? db
-          .from('quiz_scores')
-          .select('student_id, percentage')
-          .eq('course_id', COURSE_ID)
-          .in('student_id', studentIds)
-      : Promise.resolve({ data: [] }),
-  ]);
-
-  const unlocks = unlocksResult.data ?? [];
-  const scores = scoresResult.data ?? [];
-
-  // Fetch user profiles from auth.users via service client
-  // We use the student_id to look them up
+  // Only run these queries when an active batch exists
+  let enrollments: { student_id: string; enrolled_at: string }[] = [];
+  let unlocks: { student_id: string; session_number: number }[] = [];
+  let scores: { student_id: string; percentage: number }[] = [];
   const userProfiles: Record<string, { email: string; name: string }> = {};
-  if (studentIds.length > 0) {
-    for (const id of studentIds) {
-      const { data } = await db.auth.admin.getUserById(id);
-      if (data?.user) {
-        userProfiles[id] = {
-          email: data.user.email ?? 'Unknown',
-          name:
-            (data.user.user_metadata?.full_name as string) ||
-            (data.user.user_metadata?.name as string) ||
-            data.user.email?.split('@')[0] ||
-            'Unknown',
-        };
+
+  if (activeBatch) {
+    const { data: enrollmentData } = await db
+      .from('learn_enrollments')
+      .select('student_id, enrolled_at')
+      .eq('course_id', COURSE_ID)
+      .eq('batch_id', activeBatch.id)
+      .is('completed_at', null);
+
+    enrollments = enrollmentData ?? [];
+
+    const studentIds = enrollments.map((e) => e.student_id);
+
+    // Fetch unlocks and quiz scores for enrolled students
+    const [unlocksResult, scoresResult] = await Promise.all([
+      studentIds.length > 0
+        ? db
+            .from('session_unlocks')
+            .select('student_id, session_number')
+            .eq('course_id', COURSE_ID)
+            .in('student_id', studentIds)
+        : Promise.resolve({ data: [] }),
+      studentIds.length > 0
+        ? db
+            .from('quiz_scores')
+            .select('student_id, percentage')
+            .eq('course_id', COURSE_ID)
+            .in('student_id', studentIds)
+        : Promise.resolve({ data: [] }),
+    ]);
+
+    unlocks = (unlocksResult.data ?? []) as typeof unlocks;
+    scores = (scoresResult.data ?? []) as typeof scores;
+
+    // Fetch user profiles from auth.users via service client
+    if (studentIds.length > 0) {
+      for (const id of studentIds) {
+        const { data } = await db.auth.admin.getUserById(id);
+        if (data?.user) {
+          userProfiles[id] = {
+            email: data.user.email ?? 'Unknown',
+            name:
+              (data.user.user_metadata?.full_name as string) ||
+              (data.user.user_metadata?.name as string) ||
+              data.user.email?.split('@')[0] ||
+              'Unknown',
+          };
+        }
       }
     }
   }
 
   // Build student rows
-  const studentRows = (enrollments ?? []).map((enrollment) => {
+  const studentRows = enrollments.map((enrollment) => {
     const sid = enrollment.student_id;
     const profile = userProfiles[sid] ?? { email: 'Unknown', name: 'Unknown' };
     const studentUnlocks = unlocks.filter((u) => u.student_id === sid);
@@ -138,7 +142,7 @@ export default async function LearnAdminPage() {
               })}
             </p>
             <p className="text-sm text-slate-500 mt-0.5">
-              Students enrolled: {enrollments?.length ?? 0}
+              Students enrolled: {enrollments.length}
             </p>
           </div>
         ) : (

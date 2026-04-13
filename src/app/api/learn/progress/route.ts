@@ -40,7 +40,9 @@ export async function GET(_req: NextRequest) {
     const achievements = achievementsResult.data ?? [];
 
     // Build unlocked session numbers array
+    // Session 1 is always free — ensure it's always included
     const unlocked = unlocks.map((u) => u.session_number);
+    if (!unlocked.includes(1)) unlocked.unshift(1);
 
     // Build quiz scores map keyed by session number
     const quizScores: Record<string, { score: number; total: number; percentage: number }> = {};

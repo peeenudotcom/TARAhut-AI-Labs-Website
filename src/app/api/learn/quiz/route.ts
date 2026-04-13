@@ -12,6 +12,27 @@ type AchievementCheck = {
 
 const ACHIEVEMENT_CHECKS: AchievementCheck[] = [
   {
+    badge_type: 'first-steps',
+    badge_name: 'First Steps',
+    // Awarded after student's first quiz ever (at least 1 score exists)
+    condition: (scores) => scores.length >= 1,
+  },
+  {
+    badge_type: 'prompt-master',
+    badge_name: 'Prompt Master',
+    condition: (scores) => scores.some((s) => s.session_number === 4 && s.percentage >= 60),
+  },
+  {
+    badge_type: 'ai-creator',
+    badge_name: 'AI Creator',
+    condition: (scores) => scores.some((s) => s.session_number === 12 && s.percentage >= 60),
+  },
+  {
+    badge_type: 'ai-professional',
+    badge_name: 'AI Professional',
+    condition: (scores) => scores.some((s) => s.session_number === 16 && s.percentage >= 60),
+  },
+  {
     badge_type: 'quiz-champion',
     badge_name: 'Quiz Champion',
     condition: (scores) => {
@@ -19,21 +40,6 @@ const ACHIEVEMENT_CHECKS: AchievementCheck[] = [
       const avg = scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length;
       return avg >= 90;
     },
-  },
-  {
-    badge_type: 'prompt-master',
-    badge_name: 'Prompt Master',
-    condition: (scores) => scores.some((s) => s.session_number === 4),
-  },
-  {
-    badge_type: 'ai-creator',
-    badge_name: 'AI Creator',
-    condition: (scores) => scores.some((s) => s.session_number === 12),
-  },
-  {
-    badge_type: 'ai-professional',
-    badge_name: 'AI Professional',
-    condition: (scores) => scores.some((s) => s.session_number === 16),
   },
 ];
 
@@ -65,19 +71,22 @@ export async function POST(req: NextRequest) {
     const db = createServiceClient();
 
     // 2. Validate session is unlocked for this student
-    const { data: unlock, error: unlockError } = await db
-      .from('session_unlocks')
-      .select('id')
-      .eq('student_id', user.id)
-      .eq('course_id', COURSE_ID)
-      .eq('session_number', session)
-      .single();
+    // Session 1 is always free — skip the unlock check
+    if (session !== 1) {
+      const { data: unlock, error: unlockError } = await db
+        .from('session_unlocks')
+        .select('id')
+        .eq('student_id', user.id)
+        .eq('course_id', COURSE_ID)
+        .eq('session_number', session)
+        .single();
 
-    if (unlockError || !unlock) {
-      return NextResponse.json(
-        { error: 'This session is not unlocked yet.' },
-        { status: 403 }
-      );
+      if (unlockError || !unlock) {
+        return NextResponse.json(
+          { error: 'This session is not unlocked yet.' },
+          { status: 403 }
+        );
+      }
     }
 
     const percentage = Math.round((score / total) * 100);

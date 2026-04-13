@@ -17,12 +17,11 @@ interface AchievementRow { badge_type: string; badge_name: string; earned_at: st
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 const BADGE_ICONS: Record<string, string> = {
-  first_session: '🎯',
-  week_1_complete: '🏆',
-  week_2_complete: '🚀',
-  week_3_complete: '🎨',
-  week_4_complete: '🎓',
-  perfect_quiz: '⭐',
+  'first-steps': '🎯',
+  'prompt-master': '⚡',
+  'ai-creator': '🎨',
+  'ai-professional': '🎓',
+  'quiz-champion': '🏆',
 };
 
 function pad(n: number) {

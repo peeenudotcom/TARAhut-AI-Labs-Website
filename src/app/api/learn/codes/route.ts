@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
-
-// Simple trainer authorization — add trainer emails here
-const TRAINER_EMAILS = [
-  'hello@tarahutailabs.com',
-  'peeenu@gmail.com',
-];
+import { TRAINER_EMAILS } from '@/config/trainers';
 
 function isTrainer(email: string | undefined): boolean {
   if (!email) return false;
