@@ -43,9 +43,9 @@ export function CodeEntry() {
       });
       const data = await res.json();
 
-      if (res.ok && data.session) {
+      if (res.ok && data.success) {
         setStatus('success');
-        setMessage(`Session ${data.session} unlocked!`);
+        setMessage(data.message ?? `Session unlocked!`);
         setDigits(['', '', '', '']);
         setTimeout(() => {
           router.refresh();
