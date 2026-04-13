@@ -1,20 +1,8 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 const client = new Anthropic();
-
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now()
-  const entry = rateLimit.get(ip)
-  if (!entry || now > entry.resetAt) {
-    rateLimit.set(ip, { count: 1, resetAt: now + 60000 })
-    return false
-  }
-  entry.count++
-  return entry.count > 5
-}
 
 type ToolType =
   | 'ai-tool-finder'
@@ -158,14 +146,18 @@ Be ruthlessly practical, Indian market focused.`,
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-    if (isRateLimited(ip)) {
-      return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 })
+    const ip = getClientIp(req);
+    const { allowed } = rateLimit(`course-tool:${ip}`, { limit: 10, windowMs: 60_000 });
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 });
     }
 
     const { tool, input } = await req.json()
     if (!tool || !input || input.length < 3) {
       return NextResponse.json({ error: 'Enter a longer query' }, { status: 400 })
+    }
+    if (typeof input === 'string' && input.length > 2000) {
+      return NextResponse.json({ error: 'Input too long. Maximum 2000 characters.' }, { status: 400 })
     }
 
     const promptFn = prompts[tool as ToolType]

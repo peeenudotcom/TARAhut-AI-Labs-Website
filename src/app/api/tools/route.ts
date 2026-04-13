@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -16,6 +17,12 @@ const PROMPTS: Record<string, (input: string) => string> = {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req)
+    const { allowed } = rateLimit(`tools:${ip}`, { limit: 10, windowMs: 60_000 })
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 })
+    }
+
     const { tool, input } = await req.json()
 
     if (!tool || !input || typeof input !== 'string') {
@@ -30,7 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Input too short' }, { status: 400 })
     }
 
-    if (input.length > 2000) {
+    if (typeof input === 'string' && input.length > 2000) {
       return NextResponse.json({ error: 'Input too long (max 2000 chars)' }, { status: 400 })
     }
 

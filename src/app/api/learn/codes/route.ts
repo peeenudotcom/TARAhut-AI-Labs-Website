@@ -9,7 +9,7 @@ function isTrainer(email: string | undefined): boolean {
 }
 
 function generateCode(): string {
-  return String(Math.floor(1000 + Math.random() * 9000));
+  return String(Math.floor(100000 + Math.random() * 900000));
 }
 
 export async function GET(_req: NextRequest) {

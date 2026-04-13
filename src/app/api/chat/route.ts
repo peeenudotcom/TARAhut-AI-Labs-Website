@@ -35,6 +35,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'messages array is required' }, { status: 400 })
     }
 
+    // Validate last user message length (UIMessage uses parts, not content)
+    const lastMsg = [...messages].reverse().find((m) => m.role === 'user')
+    if (lastMsg) {
+      const textContent = lastMsg.parts
+        .filter((p) => p.type === 'text')
+        .map((p) => (p as { type: 'text'; text: string }).text)
+        .join('')
+      if (textContent.length > 2000) {
+        return NextResponse.json({ error: 'Message too long. Maximum 2000 characters.' }, { status: 400 })
+      }
+    }
+
     // Cap history to last 20 messages to keep token usage bounded
     const trimmedMessages = messages.slice(-20)
 

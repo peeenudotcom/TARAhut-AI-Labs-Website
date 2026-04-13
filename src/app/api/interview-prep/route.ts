@@ -1,14 +1,27 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 const client = new Anthropic();
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const { allowed } = rateLimit(`interview-prep:${ip}`, { limit: 10, windowMs: 60_000 });
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 });
+    }
+
     const { messages, careerPath, identity } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json({ error: 'Messages required' }, { status: 400 });
+    }
+
+    // Validate last user message length
+    const lastUserMessage = [...messages].reverse().find((m: { role: string; content: string }) => m.role === 'user');
+    if (lastUserMessage && typeof lastUserMessage.content === 'string' && lastUserMessage.content.length > 2000) {
+      return NextResponse.json({ error: 'Input too long. Maximum 2000 characters.' }, { status: 400 });
     }
 
     const systemPrompt = `You are an expert AI interview coach at TARAhut AI Labs. You are helping a student prepare for interviews for "${careerPath}" roles. Their career identity is "${identity}".

@@ -72,6 +72,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate session is within bounds for this course
+    if (!courseConfig || session < 1 || session > courseConfig.totalSessions) {
+      return NextResponse.json({ error: 'Invalid session number.' }, { status: 400 });
+    }
+
     const db = createServiceClient();
 
     // 2. Validate session is unlocked for this student

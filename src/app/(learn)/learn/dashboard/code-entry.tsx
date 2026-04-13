@@ -4,11 +4,11 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export function CodeEntry() {
-  const [digits, setDigits] = useState(['', '', '', '']);
+  const [digits, setDigits] = useState(['', '', '', '', '', '']);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
-  // Single ref holding all four input elements — avoids conditional/array hook calls
-  const inputRefs = useRef<Array<HTMLInputElement | null>>([null, null, null, null]);
+  // Single ref holding all six input elements — avoids conditional/array hook calls
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([null, null, null, null, null, null]);
   const router = useRouter();
 
   function handleChange(index: number, value: string) {
@@ -16,7 +16,7 @@ export function CodeEntry() {
     const next = [...digits];
     next[index] = digit;
     setDigits(next);
-    if (digit && index < 3) {
+    if (digit && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
   }
@@ -30,7 +30,7 @@ export function CodeEntry() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const code = digits.join('');
-    if (code.length < 4) return;
+    if (code.length < 6) return;
 
     setStatus('loading');
     setMessage('');
@@ -46,7 +46,7 @@ export function CodeEntry() {
       if (res.ok && data.success) {
         setStatus('success');
         setMessage(data.message ?? `Session unlocked!`);
-        setDigits(['', '', '', '']);
+        setDigits(['', '', '', '', '', '']);
         setTimeout(() => {
           router.refresh();
           setStatus('idle');

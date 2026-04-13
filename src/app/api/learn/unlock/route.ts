@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
 import { courseConfigs } from '@/config/learn-modules';
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,6 +12,12 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Rate limit: 5 unlock attempts per 10 minutes per authenticated user
+    const { allowed } = rateLimit(`unlock:${user.id}`, { limit: 5, windowMs: 600_000 });
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many attempts. Please wait 10 minutes.' }, { status: 429 });
     }
 
     const body = await req.json();
