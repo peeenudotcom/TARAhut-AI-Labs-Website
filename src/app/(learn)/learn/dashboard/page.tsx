@@ -12,7 +12,7 @@ export const metadata = {
 
 interface UnlockRow { session_number: number }
 interface QuizRow   { score: number }
-interface AchievementRow { badge_id: string; label: string; icon: string; earned_at: string }
+interface AchievementRow { badge_type: string; badge_name: string; earned_at: string }
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -39,15 +39,15 @@ export default async function DashboardPage() {
     supabase
       .from('session_unlocks')
       .select('session_number')
-      .eq('user_id', user.id),
+      .eq('student_id', user.id),
     supabase
       .from('quiz_scores')
       .select('score')
-      .eq('user_id', user.id),
+      .eq('student_id', user.id),
     supabase
       .from('achievements')
-      .select('badge_id, label, icon, earned_at')
-      .eq('user_id', user.id),
+      .select('badge_type, badge_name, earned_at')
+      .eq('student_id', user.id),
   ]);
 
   const unlockedSessions = new Set<number>(
@@ -157,13 +157,13 @@ export default async function DashboardPage() {
             <div className="flex flex-wrap gap-3">
               {achievements.map((a) => (
                 <div
-                  key={a.badge_id}
+                  key={a.badge_type}
                   className="flex items-center gap-2 rounded-xl border border-[#1e1e3a] bg-[#0c0c1a] px-4 py-3"
                 >
-                  <span className="text-2xl" role="img" aria-label={a.label}>
-                    {BADGE_ICONS[a.badge_id] ?? a.icon ?? '🏅'}
+                  <span className="text-2xl" role="img" aria-label={a.badge_name}>
+                    {BADGE_ICONS[a.badge_type] ?? '🏅'}
                   </span>
-                  <span className="text-sm font-medium text-[#e2e8f0]">{a.label}</span>
+                  <span className="text-sm font-medium text-[#e2e8f0]">{a.badge_name}</span>
                 </div>
               ))}
             </div>
