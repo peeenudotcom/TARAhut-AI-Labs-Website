@@ -68,20 +68,20 @@ export function ReportContent({ report }: { report: ReportData }) {
       </section>
 
       {/* Summary */}
-      <section className="py-12 bg-slate-50">
+      <section className="py-12 bg-[#0A0F1C]">
         <div className="max-w-3xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-2xl border border-slate-200 p-8"
+            className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-8"
           >
-            <h2 className="text-xl font-semibold text-slate-900 mb-3">
+            <h2 className="text-xl font-semibold text-white mb-3">
               Overview
             </h2>
-            <p className="text-slate-700 leading-relaxed">{content.summary}</p>
+            <p className="text-gray-300 leading-relaxed">{content.summary}</p>
             {content.hindi_summary && (
-              <p className="mt-4 text-slate-500 leading-relaxed text-sm border-t border-slate-100 pt-4">
+              <p className="mt-4 text-gray-500 leading-relaxed text-sm border-t border-white/[0.08] pt-4">
                 {content.hindi_summary}
               </p>
             )}
@@ -90,9 +90,9 @@ export function ReportContent({ report }: { report: ReportData }) {
       </section>
 
       {/* Recommendations */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-[#0A0F1C]">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-2xl font-semibold text-slate-900 mb-8">
+          <h2 className="text-2xl font-semibold text-white mb-8">
             Top 3 AI Automations for Your Business
           </h2>
           <div className="space-y-6">
@@ -103,21 +103,21 @@ export function ReportContent({ report }: { report: ReportData }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-slate-50 rounded-2xl border border-slate-200 p-6"
+                className="bg-white/[0.04] rounded-2xl border border-white/[0.08] p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 font-bold flex items-center justify-center shrink-0">
                     {i + 1}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-900">
+                    <h3 className="text-lg font-semibold text-white">
                       {rec.title}
                     </h3>
-                    <p className="mt-2 text-slate-600 leading-relaxed">
+                    <p className="mt-2 text-gray-400 leading-relaxed">
                       {rec.description}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-sm font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -126,7 +126,7 @@ export function ReportContent({ report }: { report: ReportData }) {
                       {rec.tools?.map((tool) => (
                         <span
                           key={tool}
-                          className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-sm"
+                          className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm"
                         >
                           {tool}
                         </span>
@@ -141,14 +141,14 @@ export function ReportContent({ report }: { report: ReportData }) {
       </section>
 
       {/* Next Step + CTA */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-[#0A0F1C]">
         <div className="max-w-3xl mx-auto px-6">
           {content.next_step && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 mb-8">
-              <h2 className="text-xl font-semibold text-slate-900 mb-3">
+            <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-8 mb-8">
+              <h2 className="text-xl font-semibold text-white mb-3">
                 Your Next Step
               </h2>
-              <p className="text-slate-700 leading-relaxed">
+              <p className="text-gray-300 leading-relaxed">
                 {content.next_step}
               </p>
             </div>

@@ -140,10 +140,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 border-t border-white/[0.06] pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-sm text-[#475569]">
+            <p className="text-sm text-gray-400">
               &copy; {new Date().getFullYear()} TARAhut AI Labs. All rights reserved.
             </p>
-            <p className="text-sm text-[#475569]">
+            <p className="text-sm text-gray-400">
               Made with AI in Punjab 🇮🇳
             </p>
           </div>

@@ -87,9 +87,9 @@ export default function AssessLandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-[#0A0F1C]">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-semibold text-center text-slate-900 mb-12">
+          <h2 className="text-3xl font-semibold text-center text-white mb-12">
             How It Works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -118,13 +118,13 @@ export default function AssessLandingPage() {
                 transition={{ duration: 0.5, delay: Number(item.step) * 0.1 }}
                 className="text-center"
               >
-                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 font-bold text-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 font-bold text-lg flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   {item.title}
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-gray-400 text-sm leading-relaxed">
                   {item.desc}
                 </p>
               </motion.div>

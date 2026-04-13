@@ -118,10 +118,10 @@ export function InterviewPrepModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 flex flex-col sm:w-full sm:max-w-lg sm:h-[85vh] rounded-2xl bg-white shadow-2xl border border-[#E2E8F0] overflow-hidden"
+            className="fixed inset-4 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-50 flex flex-col sm:w-full sm:max-w-lg sm:h-[85vh] rounded-2xl bg-[#0A0F1C] shadow-2xl border border-white/[0.08] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#059669] to-[#0D9488]">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.08] bg-gradient-to-r from-[#059669] to-[#0D9488]">
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
                   <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -147,13 +147,13 @@ export function InterviewPrepModal({
             {!started ? (
               /* Start screen */
               <div className="flex-1 flex flex-col items-center justify-center px-8 py-10 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F0FDF4] border border-[#D1FAE5] mb-5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-5">
                   <svg className="h-8 w-8 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-[#0F172A] mb-2">Ready to Practice?</h3>
-                <p className="text-sm text-[#64748B] mb-2 max-w-xs">
+                <h3 className="text-xl font-bold text-white mb-2">Ready to Practice?</h3>
+                <p className="text-sm text-gray-500 mb-2 max-w-xs">
                   Your AI interview coach will ask you real questions for <span className="font-semibold text-[#059669]">{careerPath}</span> roles.
                 </p>
                 <div className="space-y-2 text-xs text-[#94A3B8] mb-6">
@@ -188,7 +188,7 @@ export function InterviewPrepModal({
                           'max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed',
                           msg.role === 'user'
                             ? 'bg-[#059669] text-white rounded-br-md'
-                            : 'bg-[#F1F5F9] text-[#0F172A] rounded-bl-md'
+                            : 'bg-white/[0.06] text-white rounded-bl-md'
                         )}
                       >
                         <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -199,7 +199,7 @@ export function InterviewPrepModal({
                   {/* Typing indicator */}
                   {loading && (
                     <div className="flex justify-start">
-                      <div className="bg-[#F1F5F9] rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
+                      <div className="bg-white/[0.06] rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
                         <span className="h-2 w-2 rounded-full bg-[#94A3B8] animate-bounce" style={{ animationDelay: '0ms' }} />
                         <span className="h-2 w-2 rounded-full bg-[#94A3B8] animate-bounce" style={{ animationDelay: '150ms' }} />
                         <span className="h-2 w-2 rounded-full bg-[#94A3B8] animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -209,7 +209,7 @@ export function InterviewPrepModal({
                 </div>
 
                 {/* Input area */}
-                <form onSubmit={handleSubmit} className="border-t border-[#E2E8F0] px-4 py-3 bg-white">
+                <form onSubmit={handleSubmit} className="border-t border-white/[0.08] px-4 py-3 bg-white/[0.03]">
                   <div className="flex items-end gap-2">
                     <textarea
                       ref={inputRef}
@@ -218,7 +218,7 @@ export function InterviewPrepModal({
                       onKeyDown={handleKeyDown}
                       placeholder="Type your answer..."
                       rows={1}
-                      className="flex-1 resize-none rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-2.5 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20 max-h-24"
+                      className="flex-1 resize-none rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-[#059669] focus:outline-none focus:ring-2 focus:ring-[#059669]/20 max-h-24"
                       style={{ minHeight: 40 }}
                       disabled={loading}
                     />
@@ -229,7 +229,7 @@ export function InterviewPrepModal({
                         'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all',
                         input.trim() && !loading
                           ? 'bg-[#059669] text-white hover:bg-[#047857]'
-                          : 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed'
+                          : 'bg-white/[0.08] text-gray-500 cursor-not-allowed'
                       )}
                     >
                       <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

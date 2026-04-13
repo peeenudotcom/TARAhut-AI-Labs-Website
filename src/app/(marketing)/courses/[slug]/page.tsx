@@ -12,9 +12,9 @@ import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
 
 const levelColors: Record<string, string> = {
-  Beginner: 'bg-emerald-500/15 text-emerald-600',
-  Intermediate: 'bg-amber-500/15 text-amber-600',
-  Advanced: 'bg-rose-500/15 text-rose-600',
+  Beginner: 'bg-emerald-500/15 text-emerald-400',
+  Intermediate: 'bg-amber-500/15 text-amber-400',
+  Advanced: 'bg-rose-500/15 text-rose-400',
 };
 
 export async function generateStaticParams() {
