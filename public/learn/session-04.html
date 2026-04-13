@@ -641,27 +641,27 @@ const qData=[
   {q:"What is the recommended minimum number of prompts for a solid Prompt Library?",o:["5 prompts across 2 categories","10 prompts, all in one category","30+ prompts across 6+ categories","100+ prompts are required before it's useful"],a:2,e:"A solid Prompt Library starts with 30+ prompts spread across at least 6 categories (social media, email, research, content, brainstorming, planning, etc.). The Week 1 Project targets 30-50 prompts. The library grows over time with every good prompt you save."},
   {q:"Which storage option is best for a Prompt Library that needs rich formatting, tables, and search?",o:["SMS or WhatsApp notes","Notion (free plan is sufficient)","A physical notebook","Email drafts"],a:1,e:"Notion is widely recommended for Prompt Libraries due to its excellent table support, tagging, search, and rich text formatting — all available on the free plan. Google Docs/Sheets also work well. The key is using whatever you'll actually maintain consistently."}
 ];
-let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
 function renderQ(){
   const box=document.getElementById('quizBox');
-  if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:4,score:sc,total:qData.length})})}catch(e){}
+  if(cq>=activeQuiz.length){
+    const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:4,score:sc,total:activeQuiz.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Expert Prompt Engineer!';tierColor='var(--brand)';msg='Outstanding. You\'ve mastered the advanced techniques. Now build your Prompt Playbook!';}
     else if(pct>=50){tier='Strong Skills!';tierColor='var(--c1)';msg='Good grasp of the concepts. Revisit CoT and Few-Shot sections to fill any gaps.';}
     else{tier='Keep Building!';tierColor='var(--c4)';msg='Advanced prompting takes practice. Re-read the sections and try each technique hands-on.';}
-    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
     return;
   }
-  const q=qData[cq];const ltr=['A','B','C','D'];
-  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
+  let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
   let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
-  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
 }
 function selAns(i){
   if(ans[cq])return;ans[cq]=true;
-  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
   opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
   if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
   else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}

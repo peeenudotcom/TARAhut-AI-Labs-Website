@@ -499,26 +499,26 @@ const qData=[
   {q:"What is Claude's 'Projects' feature?",o:["A code compiler","Dedicated workspaces that maintain context across multiple conversations","Image generation tool","A web browsing feature"],a:1,e:"Claude Projects are persistent workspaces for specific tasks. You can add files, set instructions, and Claude remembers context across all conversations within that project — ideal for ongoing client work."},
   {q:"What is the expert strategy for writing a long research article?",o:["Use only Claude for everything","Use only ChatGPT for everything","Use ChatGPT for real-time research facts, then Claude to write the article","Ask both and merge the outputs manually"],a:2,e:"The pro strategy: ChatGPT with web browsing gathers current data and statistics, then Claude uses those facts to write a well-structured, accurate long-form article. Each tool does what it does best."}
 ];
-let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
 function renderQ(){
   const box=document.getElementById('quizBox');
-  if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:5,score:sc,total:qData.length})})}catch(e){}
+  if(cq>=activeQuiz.length){
+    const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:5,score:sc,total:activeQuiz.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Outstanding!';tierColor='var(--brand)';msg='You truly understand both tools. You can now deploy them professionally.'}
     else if(pct>=50){tier='Solid Foundation!';tierColor='var(--c1)';msg='Good grasp of the concepts. Review the comparison table and try more real tasks.'}
     else{tier="Keep Practicing!";tierColor='var(--c4)';msg='Revisit sections 1-3 and run the actual tools side-by-side. Hands-on beats reading every time.'}
-    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
   }
-  const q=qData[cq];const ltr=['A','B','C','D'];
-  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
+  let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
   let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
-  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
 }
 function selAns(i){
   if(ans[cq])return;ans[cq]=true;
-  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
   opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
   if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
   else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}

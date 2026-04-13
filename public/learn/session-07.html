@@ -600,26 +600,26 @@ const qData=[
   {q:"According to the session, how long does the 3-step research workflow take to produce a professional report?",o:["5-6 hours","2-3 hours","45-90 minutes","15 minutes"],a:2,e:"The workflow takes approximately 45-90 minutes: Perplexity (~20 min), NotebookLM (~15 min), Claude writing (~10 min). Compare this to the old way: 6-10 hours of manual research and writing."},
   {q:"What should you save from Perplexity searches to use in later workflow steps?",o:["Only the final answers, not the sources","The answers AND the citation URLs","Only the URLs, not the text","Screenshots of the search results"],a:1,e:"Save both the synthesized answers AND the citation URLs. You'll need the answers to feed into NotebookLM and Claude, and the URLs to include as proper citations in your final report."}
 ];
-let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
 function renderQ(){
   const box=document.getElementById('quizBox');
-  if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:7,score:sc,total:qData.length})})}catch(e){}
+  if(cq>=activeQuiz.length){
+    const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:7,score:sc,total:activeQuiz.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Research Pro!';tierColor='var(--brand)';msg='You\'ve mastered the research stack. Run the workflow on a real topic this week to cement it.'}
     else if(pct>=50){tier='Good Foundation!';tierColor='var(--c1)';msg='Solid understanding. Try each tool hands-on to reinforce the concepts.'}
     else{tier='Keep Going!';tierColor='var(--c4)';msg='Go back and try the actual tools — Perplexity, NotebookLM, and Claude. Practice beats reading every time.'}
-    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up &rarr;</button></div>`;return;
   }
-  const q=qData[cq];const ltr=['A','B','C','D'];
-  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
+  let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
   let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
-  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
 }
 function selAns(i){
   if(ans[cq])return;ans[cq]=true;
-  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
   opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
   if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
   else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}

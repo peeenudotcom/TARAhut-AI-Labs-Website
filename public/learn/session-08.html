@@ -603,26 +603,26 @@ const qData=[
   {q:"What is Canva's 'Magic Edit' feature?",o:["It automatically fixes grammar in text elements","It lets you select any element in an image and replace it with AI-generated content","It edits videos automatically","It corrects color balance across all designs"],a:1,e:"Magic Edit lets you select any area of an image and type what you want to replace it with. AI regenerates that part of the image while keeping the rest intact — similar to AI inpainting in professional tools."},
   {q:"For bulk creating 500 personalized event certificates, which tool would you use and why?",o:["Gamma, because it's faster for document generation","Canva's Bulk Create, because you can generate all 500 from one template + Excel data in minutes","ChatGPT, to write each certificate individually","Claude, for its better document handling"],a:1,e:"Canva's Bulk Create is specifically designed for this. Upload your template + a spreadsheet with 500 rows of names/details, and Canva generates all 500 personalized certificates simultaneously. This would take hours manually."}
 ];
-let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
 function renderQ(){
   const box=document.getElementById('quizBox');
-  if(cq>=qData.length){
-    const pct=Math.round(sc/qData.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:8,score:sc,total:qData.length})})}catch(e){}
+  if(cq>=activeQuiz.length){
+    const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:8,score:sc,total:activeQuiz.length})})}catch(e){}
     let tier,tierColor,msg;
     if(pct>=75){tier='Design Pro!';tierColor='var(--brand)';msg='You\'ve mastered both tools. Now create your Week 2 Project — a pitch deck, 5 social posts, and more.'}
     else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Open Gamma and Canva and try both tools hands-on to reinforce the concepts.'}
     else{tier='Practice More!';tierColor='var(--c4)';msg='Create something in both Gamma and Canva today. The best learning happens when you actually use the tools.'}
-    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Week 2 Project &rarr;</button></div>`;return;
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Week 2 Project &rarr;</button></div>`;return;
   }
-  const q=qData[cq];const ltr=['A','B','C','D'];
-  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
+  let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
   let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
-  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
 }
 function selAns(i){
   if(ans[cq])return;ans[cq]=true;
-  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
   opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
   if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#10003; Correct! ${q.e}`}
   else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10007; Not quite. ${q.e}`}
