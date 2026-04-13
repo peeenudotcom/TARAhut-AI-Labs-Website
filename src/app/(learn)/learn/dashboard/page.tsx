@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { requireAuth } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
-import { learnModules } from '@/config/learn-modules';
+import { learnModules, getCourseConfig, courseConfigs } from '@/config/learn-modules';
 import { dailyChallenges } from '@/config/daily-challenges';
 import { CodeEntry } from './code-entry';
 import { NextSessionPreview } from './next-session-preview';
@@ -15,6 +15,7 @@ export const metadata = {
 
 // ── types ────────────────────────────────────────────────────────────────────
 
+interface EnrollmentRow { course_id: string; enrolled_at: string }
 interface UnlockRow { session_number: number }
 interface QuizRow   { score: number; session_number: number; percentage: number }
 interface AchievementRow { badge_type: string; badge_name: string; earned_at: string }
@@ -55,19 +56,46 @@ function formatCurrency(n: number) {
 
 // ── page ─────────────────────────────────────────────────────────────────────
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ course?: string }>;
+}) {
   const user = await requireAuth();
   const supabase = await createServerSupabase();
+  const resolvedParams = searchParams ? await searchParams : {};
+  const requestedCourse = resolvedParams.course;
+
+  // Detect enrolled courses (most recent active enrollment first)
+  const { data: enrollmentRows } = await supabase
+    .from('learn_enrollments')
+    .select('course_id, enrolled_at')
+    .eq('student_id', user.id)
+    .is('completed_at', null)
+    .order('enrolled_at', { ascending: false });
+
+  const enrollments: EnrollmentRow[] = enrollmentRows ?? [];
+  // Active course = requested via query param (if enrolled) or most recent enrollment
+  const enrolledIds = new Set(enrollments.map((e) => e.course_id));
+  const activeCourseId =
+    (requestedCourse && enrolledIds.has(requestedCourse) ? requestedCourse : null) ??
+    enrollments[0]?.course_id ??
+    'ai-tools-mastery-beginners';
+  const courseConfig = getCourseConfig(activeCourseId) ?? getCourseConfig('ai-tools-mastery-beginners')!;
+  const activeModules = courseConfig.modules;
+  const allCourseIds = enrollments.map((e) => e.course_id).filter((id) => id in courseConfigs);
 
   const [unlocksResult, quizResult, achievementsResult, streakResult] = await Promise.all([
     supabase
       .from('session_unlocks')
       .select('session_number')
-      .eq('student_id', user.id),
+      .eq('student_id', user.id)
+      .eq('course_id', activeCourseId),
     supabase
       .from('quiz_scores')
       .select('score, session_number, percentage')
       .eq('student_id', user.id)
+      .eq('course_id', activeCourseId)
       .order('session_number', { ascending: false }),
     supabase
       .from('achievements')
@@ -77,7 +105,7 @@ export default async function DashboardPage() {
       .from('learn_streaks')
       .select('current_streak, longest_streak, last_activity_date')
       .eq('student_id', user.id)
-      .eq('course_id', 'ai-tools-mastery-beginners')
+      .eq('course_id', activeCourseId)
       .maybeSingle(),
   ]);
 
@@ -99,8 +127,8 @@ export default async function DashboardPage() {
   const achievements: AchievementRow[] = achievementsResult.data ?? [];
   const streak: StreakRow | null = streakResult.data ?? null;
 
-  const completedCount = learnModules.filter((m) => unlockedSessions.has(m.session)).length;
-  const progressPct = Math.round((completedCount / 16) * 100);
+  const completedCount = activeModules.filter((m) => unlockedSessions.has(m.session)).length;
+  const progressPct = Math.round((completedCount / courseConfig.totalSessions) * 100);
 
   const displayName =
     user.user_metadata?.full_name ??
@@ -112,7 +140,7 @@ export default async function DashboardPage() {
   const earnings = getEarningsBracket(completedCount);
 
   // Next locked session (for the preview quiz)
-  const nextLockedModule = learnModules.find((m) => !unlockedSessions.has(m.session)) ?? null;
+  const nextLockedModule = activeModules.find((m) => !unlockedSessions.has(m.session)) ?? null;
 
   // Today's challenge — based on last completed session
   const todayChallenge =
@@ -163,7 +191,7 @@ export default async function DashboardPage() {
           <ShareProgress
             studentName={displayName}
             completedCount={completedCount}
-            totalSessions={16}
+            totalSessions={courseConfig.totalSessions}
             quizAverage={avgScore}
             streak={streak?.current_streak ?? 0}
           />
@@ -178,7 +206,7 @@ export default async function DashboardPage() {
         <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatCard
             label="Sessions completed"
-            value={`${completedCount} / 16`}
+            value={`${completedCount} / ${courseConfig.totalSessions}`}
             accent="#059669"
           />
           <StatCard
@@ -310,7 +338,7 @@ export default async function DashboardPage() {
 
         {/* ── Peer Pair + Teach Back (shown when at least 1 session completed) ── */}
         {lastCompletedSession !== null && (() => {
-          const mod = learnModules.find((m) => m.session === lastCompletedSession);
+          const mod = activeModules.find((m) => m.session === lastCompletedSession);
           if (!mod) return null;
           return (
             <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -327,15 +355,40 @@ export default async function DashboardPage() {
         })()}
 
         {/* ── Module grid ── */}
+        {/* ── Course switcher (shown when enrolled in multiple courses) ── */}
+        {allCourseIds.length > 1 && (
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">My courses:</span>
+            {allCourseIds.map((id) => {
+              const cfg = getCourseConfig(id);
+              if (!cfg) return null;
+              return (
+                <Link
+                  key={id}
+                  href={`/learn/dashboard?course=${id}`}
+                  className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                    id === activeCourseId
+                      ? 'bg-[#059669] text-white'
+                      : 'border border-[#1e1e3a] text-[#94a3b8] hover:border-[#059669] hover:text-[#059669]'
+                  }`}
+                >
+                  {cfg.title}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
         <h2 className="mb-6 text-lg font-bold text-[#e2e8f0]">All Sessions</h2>
         <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {learnModules.map((mod) => {
+          {activeModules.map((mod) => {
             const unlocked = unlockedSessions.has(mod.session);
             return (
               <ModuleCard
                 key={mod.session}
                 mod={mod}
                 unlocked={unlocked}
+                courseId={activeCourseId}
               />
             );
           })}
@@ -391,14 +444,17 @@ function StatCard({
 function ModuleCard({
   mod,
   unlocked,
+  courseId,
 }: {
   mod: (typeof learnModules)[number];
   unlocked: boolean;
+  courseId: string;
 }) {
+  const courseParam = courseId !== 'ai-tools-mastery-beginners' ? `?course=${courseId}` : '';
   if (unlocked) {
     return (
       <Link
-        href={`/learn/session/${mod.session}`}
+        href={`/learn/session/${mod.session}${courseParam}`}
         className="group flex flex-col rounded-xl border-2 border-[#00f0ff]/40 bg-[#0c0c1a] p-5 transition hover:border-[#00f0ff] hover:shadow-lg hover:shadow-[#00f0ff]/10"
       >
         <div className="mb-2 flex items-center justify-between">

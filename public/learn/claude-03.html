@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 3: The CRISP Framework — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* CRISP specific */
+.crisp-letter{display:flex;gap:1.25rem;margin:2rem 0;flex-direction:column}
+.crisp-item{display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .3s}
+.crisp-item:hover{border-color:rgba(0,240,255,.2);transform:translateX(4px)}
+.crisp-letter-badge{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;flex-shrink:0}
+.letter-c{background:rgba(0,240,255,.12);color:var(--c1)}
+.letter-r{background:rgba(168,85,247,.12);color:var(--c2)}
+.letter-i{background:rgba(255,61,139,.12);color:var(--c3)}
+.letter-s{background:rgba(251,191,36,.12);color:var(--c4)}
+.letter-p{background:rgba(52,211,153,.12);color:var(--c5)}
+.crisp-content h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.crisp-content p{color:var(--t2);font-size:.88rem;margin-bottom:.5rem}
+.crisp-example{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.12);border-radius:var(--rs);padding:.5rem .75rem;margin-top:.5rem}
+.crisp-assembled{background:var(--bg2);border:1px solid rgba(0,240,255,.2);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0}
+.crisp-assembled h4{font-family:'Syne',sans-serif;color:var(--c1);font-size:.9rem;font-weight:700;margin-bottom:.75rem;text-transform:uppercase;letter-spacing:1.5px}
+.crisp-assembled pre{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--t1);white-space:pre-wrap;line-height:1.8}
+.crisp-assembled pre .part-c{color:var(--c1)}
+.crisp-assembled pre .part-r{color:var(--c2)}
+.crisp-assembled pre .part-i{color:var(--c3)}
+.crisp-assembled pre .part-s{color:var(--c4)}
+.crisp-assembled pre .part-p{color:var(--c5)}
+/* Builder */
+.builder{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.builder h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.field{margin-bottom:1.25rem}
+.field label{display:block;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t2);margin-bottom:.4rem;letter-spacing:.5px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.9rem;outline:none;transition:all .3s;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--c1);box-shadow:0 0 12px rgba(0,240,255,.08)}
+.field textarea{min-height:72px}
+.builder-output{padding:1.25rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:60px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;line-height:1.8}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 03 &middot; Master Claude in 15 Days</div>
+  <h1>The CRISP<br><span class="gr">Framework</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Prompt quality is the single biggest variable in Claude's output. The CRISP framework gives you a systematic method for writing prompts that work consistently, not just sometimes.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 3 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Why Prompts Matter</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>CRISP Framework</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>CRISP in Action</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Prompt Builder</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: WHY PROMPTS MATTER -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Why <span class="gr">Prompts Matter</span></h2>
+    <p>The same Claude. The same model. Wildly different outputs. The variable is you.</p>
+  </div>
+
+  <div class="emotional-hook">
+    <p>Two users ask Claude the same underlying question: "Write me a business email." One gets a generic three-paragraph template. The other gets a precisely targeted, persuasively structured email ready to send. <strong>Same AI. Same moment. The prompt is the entire difference.</strong></p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Quality Gap — Same Question, Different Prompts</h3>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0" class="vs-grid">
+    <div style="background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.15);border-radius:var(--r);padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--c3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem">❌ Weak Prompt</div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--t2);margin-bottom:1rem">"Write me a business email."</p>
+      <p style="font-size:.85rem;color:var(--t3)">Result: Generic template. Unknown recipient, tone, purpose, or goal. Requires 5 rounds of editing. Practically useless.</p>
+    </div>
+    <div style="background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:var(--r);padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--c5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem">✅ CRISP Prompt</div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--t2);margin-bottom:1rem">"You are a senior sales consultant. Write a follow-up email to a retail buyer who attended our product demo last Tuesday but hasn't responded. Goal: re-engage and propose a 30-min call. Tone: professional but warm. Length: under 150 words. Subject line included."</p>
+      <p style="font-size:.85rem;color:var(--c5)">Result: Ready-to-send email. Correct tone, clear CTA, appropriate length. Maybe one small edit needed.</p>
+    </div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">📊</div><div class="call-body"><h4>The Numbers Behind Prompt Quality</h4><p>In our training cohorts, students with structured prompting frameworks produce outputs that require <strong>60-70% fewer revision rounds</strong> compared to ad-hoc prompting. On a typical workday with 10 Claude interactions, that's 3-4 hours saved per week just from better prompt structure. Compounded over a year: 150+ hours.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What Claude Needs to Succeed</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">🎭</span><h3>Role Clarity</h3><p>Who is Claude being asked to be? A consultant? A copywriter? A developer? The role sets the entire frame for expertise, tone, and approach.</p></div>
+    <div class="crd"><span class="crd-icon">🎯</span><h3>Goal Specificity</h3><p>What is the actual desired outcome? Not "write a report" but "write a 3-page executive summary for a board that has 10 minutes." Specificity enables precision.</p></div>
+    <div class="crd"><span class="crd-icon">🔍</span><h3>Context Richness</h3><p>Who is the audience? What do they already know? What constraints exist? Context transforms generic output into targeted, situationally appropriate output.</p></div>
+    <div class="crd"><span class="crd-icon">📐</span><h3>Format & Constraints</h3><p>Length, tone, format, what to avoid — constraints are features, not limitations. They guide Claude toward exactly what you need, cutting everything else.</p></div>
+  </div>
+
+  <div class="micro-win">You now understand why prompt quality is the highest-leverage skill in this entire course.</div>
+
+  <div class="micro-action">
+    <h4>Before-and-After Exercise</h4>
+    <p>Think of the last time Claude gave you a mediocre response. Write down the original prompt. Then identify: What role was missing? What context was absent? What constraints weren't specified? You'll immediately see why the output was weak — and know exactly how to fix it.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The CRISP framework — your systematic solution to prompt quality.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: CRISP Framework &rarr;</button></div>
+</div>
+
+<!-- S2: CRISP FRAMEWORK -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete. You know why prompts matter. Now: the systematic framework.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The <span class="gr">CRISP Framework</span></h2>
+    <p>Five components. Every component earns its place. When all five are present, output quality becomes predictable.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">📋</div><div class="call-body"><h4>CRISP: The Components</h4><p><strong>C</strong> — Context &nbsp;&bull;&nbsp; <strong>R</strong> — Role &nbsp;&bull;&nbsp; <strong>I</strong> — Instructions &nbsp;&bull;&nbsp; <strong>S</strong> — Specifics &nbsp;&bull;&nbsp; <strong>P</strong> — Parameters<br><br>Not every prompt needs all five. But knowing when to use each component — and why — is the skill this section builds.</p></div></div>
+
+  <div class="crisp-letter">
+    <div class="crisp-item">
+      <div class="crisp-letter-badge letter-c">C</div>
+      <div class="crisp-content">
+        <h4>Context — The Situation & Background</h4>
+        <p>Gives Claude the situational awareness it needs. Who is involved? What's the current state? What has already happened? Context answers "why am I doing this?" Good context prevents Claude from making assumptions that send the output in the wrong direction.</p>
+        <p style="color:var(--t2);font-size:.85rem"><strong>Without context:</strong> Claude writes for a generic audience<br><strong>With context:</strong> Claude writes for your specific situation</p>
+        <div class="crisp-example">Example: "I'm preparing for a quarterly review with our CEO, who is skeptical about our marketing ROI and prefers data-backed arguments..."</div>
+      </div>
+    </div>
+    <div class="crisp-item">
+      <div class="crisp-letter-badge letter-r">R</div>
+      <div class="crisp-content">
+        <h4>Role — Who Claude Is Being</h4>
+        <p>Assigns Claude a persona, expertise level, and perspective. The role shapes vocabulary, depth, tone, and the assumptions Claude makes. A "senior investment banker" and a "friendly financial advisor" will write very differently about the same stock.</p>
+        <p style="color:var(--t2);font-size:.85rem"><strong>Without role:</strong> Claude uses its default helpful-assistant voice<br><strong>With role:</strong> Claude brings specific domain expertise and perspective</p>
+        <div class="crisp-example">Example: "You are a senior McKinsey consultant with 15 years of retail industry experience..."</div>
+      </div>
+    </div>
+    <div class="crisp-item">
+      <div class="crisp-letter-badge letter-i">I</div>
+      <div class="crisp-content">
+        <h4>Instructions — What to Do</h4>
+        <p>The explicit task. Be specific, use action verbs, and break complex tasks into clear steps. "Write" is weak. "Write a 5-point executive summary that identifies the top risk, the key opportunity, and a recommended action" is strong.</p>
+        <p style="color:var(--t2);font-size:.85rem"><strong>Weak instructions:</strong> Vague verbs, multiple implicit assumptions<br><strong>Strong instructions:</strong> Action verbs, numbered steps, clear deliverable</p>
+        <div class="crisp-example">Example: "Analyze the following competitive landscape data. Identify the top 3 threats. For each threat, provide one strategic response. Use bullet points."</div>
+      </div>
+    </div>
+    <div class="crisp-item">
+      <div class="crisp-letter-badge letter-s">S</div>
+      <div class="crisp-content">
+        <h4>Specifics — The Details That Matter</h4>
+        <p>The details that constrain and focus the output. Industry terminology, audience characteristics, specific examples to include or avoid, tone descriptors, required sections. Specifics are what transform a good output into the right output.</p>
+        <p style="color:var(--t2);font-size:.85rem"><strong>Without specifics:</strong> Claude makes reasonable but generic choices<br><strong>With specifics:</strong> Claude targets your exact requirements</p>
+        <div class="crisp-example">Example: "The audience is non-technical business owners. Avoid jargon. Include at least one analogy from everyday life. Reference Indian market conditions where relevant."</div>
+      </div>
+    </div>
+    <div class="crisp-item">
+      <div class="crisp-letter-badge letter-p">P</div>
+      <div class="crisp-content">
+        <h4>Parameters — The Constraints & Format</h4>
+        <p>The output specifications: length, format, tone, what to exclude, response structure. Parameters are the guardrails that prevent Claude from going beyond what you need. They also signal that you've thought about the deliverable clearly — which itself improves output quality.</p>
+        <p style="color:var(--t2);font-size:.85rem"><strong>Without parameters:</strong> Claude defaults to its preferred length and format<br><strong>With parameters:</strong> Output is immediately deployable</p>
+        <div class="crisp-example">Example: "Under 300 words. Professional tone. No more than 3 sections. Include a subject line. End with a clear CTA. No filler phrases like 'I hope this email finds you well.'"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>When to Skip Components</h4><p>For quick, simple tasks, you don't need all five. A quick factual question needs only Instructions. A simple edit needs Context + Instructions. The full CRISP framework earns its complexity for high-stakes, nuanced outputs where the gap between good and great matters. Learn to calibrate which components to include based on task complexity.</p></div></div>
+
+  <div class="micro-win">You now have a systematic framework for prompting. The guesswork is gone.</div>
+
+  <p class="curiosity-hook">Next: See CRISP applied to 5 real professional scenarios.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: CRISP in Action &rarr;</button></div>
+</div>
+
+<!-- S3: CRISP IN ACTION -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% through Day 3. The examples here are the ones students save and reuse for months.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>CRISP <span class="gr">in Action</span></h2>
+    <p>Five real professional scenarios. See each CRISP component broken out, then assembled into the complete prompt.</p>
+  </div>
+
+  <!-- Example 1: Business Email -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 .75rem;color:var(--c1)">Example 1: Business Email — Client Re-Engagement</h3>
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem">
+    <p><span style="color:var(--c1);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">C —</span> <span style="color:var(--t2);font-size:.9rem">Client is Rajesh Mehta, owner of a Ludhiana textile business. He attended our software demo 2 weeks ago, was interested, but has gone silent.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c2);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">R —</span> <span style="color:var(--t2);font-size:.9rem">You are a senior B2B sales consultant who specializes in enterprise software for manufacturing.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c3);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">I —</span> <span style="color:var(--t2);font-size:.9rem">Write a re-engagement email that creates gentle urgency, references a specific benefit from the demo, and proposes a next step.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c4);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">S —</span> <span style="color:var(--t2);font-size:.9rem">He was most excited about the inventory automation feature. Q3 pricing ends in 10 days. He values directness over flattery.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c5);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">P —</span> <span style="color:var(--t2);font-size:.9rem">Under 120 words. Professional tone. Include subject line. End with a specific ask: 20-min call Thursday or Friday.</span></p>
+  </div>
+
+  <!-- Example 2: Research Report -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 .75rem;color:var(--c2)">Example 2: Research Report — Market Analysis</h3>
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem">
+    <p><span style="color:var(--c1);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">C —</span> <span style="color:var(--t2);font-size:.9rem">We're a Punjab-based startup considering entering the edtech space for Tier 2-3 city students in India. Pre-seed stage, team of 5.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c2);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">R —</span> <span style="color:var(--t2);font-size:.9rem">You are a market research analyst who has covered the Indian edtech sector since 2019.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c3);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">I —</span> <span style="color:var(--t2);font-size:.9rem">Provide a structured market overview covering: market size, key players, biggest gaps, and the most defensible niche for a bootstrapped entrant.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c4);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">S —</span> <span style="color:var(--t2);font-size:.9rem">Focus on vernacular language content gaps, mobile-first delivery, and affordable pricing. Reference BYJU's, Unacademy, and PhysicsWallah as context.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c5);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">P —</span> <span style="color:var(--t2);font-size:.9rem">500-700 words. Use headers. Include a "Key Insight" callout at the end. Data-driven tone. Flag any assumptions clearly.</span></p>
+  </div>
+
+  <!-- Example 3: Social Media -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 .75rem;color:var(--c4)">Example 3: Social Media — LinkedIn Post</h3>
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem">
+    <p><span style="color:var(--c1);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">C —</span> <span style="color:var(--t2);font-size:.9rem">I'm a business consultant sharing a lesson from a recent client engagement where a traditional family business nearly failed from ignoring digital tools.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c2);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">R —</span> <span style="color:var(--t2);font-size:.9rem">You are a LinkedIn content strategist who writes in a direct, insight-forward style that generates meaningful engagement from business owners.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c3);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">I —</span> <span style="color:var(--t2);font-size:.9rem">Write a LinkedIn post that opens with a hook, shares the story in 3-4 sentences, extracts a transferable lesson, and ends with a discussion question.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c4);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">S —</span> <span style="color:var(--t2);font-size:.9rem">The core insight: the business survived by implementing WhatsApp Business and Razorpay, adding ₹40L in annual revenue. Target audience: traditional SMB owners considering digital transformation.</span></p>
+    <p style="margin-top:.5rem"><span style="color:var(--c5);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700">P —</span> <span style="color:var(--t2);font-size:.9rem">200-250 words. Short paragraphs. No corporate jargon. 4-5 relevant hashtags at end. Hook must be in first 3 words.</span></p>
+  </div>
+
+  <!-- Assembled CRISP Prompt Example -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 .75rem;">Assembled CRISP Prompt — Business Email</h3>
+  <div class="crisp-assembled">
+    <h4>Complete CRISP Prompt (Ready to Copy into Claude)</h4>
+    <pre>[Context: Client is Rajesh Mehta, textile business owner in Ludhiana who attended our ERP software demo 2 weeks ago and has since gone silent. He showed strong interest in our inventory automation module.]
+
+[Role: You are a senior B2B SaaS sales consultant who specializes in serving manufacturing and retail businesses.]
+
+[Instructions: Write a re-engagement email that references his specific interest, creates gentle urgency, and proposes a clear next step. Do not be pushy or desperate.]
+
+[Specifics: He was most excited about reducing manual stock-taking time. Our Q3 pricing (₹15% discount) ends in 10 days. He values directness and practical value over flattery.]
+
+[Parameters: Under 120 words. Professional but warm tone. Include a compelling subject line. End with a specific CTA: proposing a 20-minute call on Thursday or Friday this week.]</pre>
+  </div>
+
+  <div class="micro-action">
+    <h4>CRISP Breakdown Exercise</h4>
+    <p>Take a real professional task you need to do this week. Write out the CRISP components separately before assembling the prompt. Notice how thinking through each component clarifies your own goals before you even involve Claude. That clarity alone improves the output.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Build your own CRISP prompt with our interactive builder.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Prompt Builder &rarr;</button></div>
+</div>
+
+<!-- S4: INTERACTIVE PROMPT BUILDER -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% done — the interactive builder is where learning becomes muscle memory.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive <span class="gr">Prompt Builder</span></h2>
+    <p>Fill in each CRISP field. Watch the complete prompt assemble in real time. Then use it in Claude.</p>
+  </div>
+
+  <div class="builder">
+    <h3>🔧 CRISP Prompt Builder</h3>
+    <div class="field">
+      <label>C — Context: What's the situation? Who's involved? What has already happened?</label>
+      <textarea id="fC" placeholder="Example: I'm a freelance graphic designer pitching a logo redesign project to a 50-year-old family restaurant owner in Amritsar who is skeptical about spending on branding..." oninput="buildPrompt()"></textarea>
+    </div>
+    <div class="field">
+      <label>R — Role: Who should Claude be? What expertise and perspective?</label>
+      <input id="fR" type="text" placeholder="Example: You are a seasoned brand consultant who has worked with 100+ small businesses..." oninput="buildPrompt()">
+    </div>
+    <div class="field">
+      <label>I — Instructions: What is the exact task? Use action verbs.</label>
+      <textarea id="fI" placeholder="Example: Write a compelling 3-paragraph pitch email that explains the value of logo redesign in business terms the owner can understand..." oninput="buildPrompt()"></textarea>
+    </div>
+    <div class="field">
+      <label>S — Specifics: What details, constraints, or requirements are unique to this situation?</label>
+      <textarea id="fS" placeholder="Example: Focus on customer perception, competitive differentiation. Reference how local competitor Sharma's Restaurant refreshed their brand. Avoid design jargon." oninput="buildPrompt()"></textarea>
+    </div>
+    <div class="field">
+      <label>P — Parameters: Length, format, tone, what to exclude?</label>
+      <input id="fP" type="text" placeholder="Example: Under 200 words. Conversational but professional. No industry jargon. End with a specific next step." oninput="buildPrompt()">
+    </div>
+    <div style="margin-top:1.5rem">
+      <h4 style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--c1);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:1.5px">Assembled CRISP Prompt:</h4>
+      <div class="builder-output" id="promptOutput">Fill in the fields above to see your prompt assembled here...</div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap">
+      <button class="btn btn-glow btn-sm" onclick="copyPrompt()">Copy Prompt</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearBuilder()">Clear All</button>
+    </div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>The Builder as a Thinking Tool</h4><p>Notice that filling in the CRISP fields forces you to think clearly about what you actually want. Many students report that the act of structuring CRISP components clarifies their own thinking <em>before</em> they even send the prompt. That's the meta-skill: CRISP makes you a clearer thinker, not just a better prompter.</p></div></div>
+
+  <div class="identity-shift">You now have a repeatable, systematic method for professional-grade prompting. This is the skill that compounds every day you use Claude.</div>
+
+  <div class="micro-action">
+    <h4>Day 3 Capstone</h4>
+    <p>Use the builder to create CRISP prompts for 3 real tasks from your work this week. Test each prompt in Claude. Rate the output quality from 1-10. Then refine the CRISP components for any prompt that scored below 7 — and notice what changes.</p>
+  </div>
+
+  <p class="curiosity-hook">Test your CRISP knowledge before moving to Day 4.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 3 Knowledge Check. The CRISP framework tested in 8 questions.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 3 <span class="gr">Quiz</span></h2>
+    <p>Prompting frameworks, CRISP components, quality indicators. 8 randomized questions.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">CRISP is your permanent prompting infrastructure. Every day you use it, you get better at it.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Builder</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 3</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Responsive grid
+const vsGrid=document.querySelector('.vs-grid');
+if(vsGrid&&window.innerWidth<600){vsGrid.style.gridTemplateColumns='1fr'}
+window.addEventListener('resize',()=>{if(vsGrid){vsGrid.style.gridTemplateColumns=window.innerWidth<600?'1fr':'1fr 1fr'}});
+
+// PROMPT BUILDER
+function buildPrompt(){
+  const c=document.getElementById('fC').value.trim();
+  const r=document.getElementById('fR').value.trim();
+  const i=document.getElementById('fI').value.trim();
+  const s=document.getElementById('fS').value.trim();
+  const p=document.getElementById('fP').value.trim();
+  const out=document.getElementById('promptOutput');
+  if(!c&&!r&&!i&&!s&&!p){out.textContent='Fill in the fields above to see your prompt assembled here...';return}
+  let prompt='';
+  if(c)prompt+=`[Context: ${c}]\n\n`;
+  if(r)prompt+=`[Role: ${r}]\n\n`;
+  if(i)prompt+=`[Instructions: ${i}]\n\n`;
+  if(s)prompt+=`[Specifics: ${s}]\n\n`;
+  if(p)prompt+=`[Parameters: ${p}]`;
+  out.textContent=prompt.trim();
+}
+function copyPrompt(){
+  const text=document.getElementById('promptOutput').textContent;
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>{const btn=event.target;const orig=btn.textContent;btn.textContent='Copied!';btn.style.background='var(--c5)';setTimeout(()=>{btn.textContent=orig;btn.style.background=''},2000)});
+}
+function clearBuilder(){
+  ['fC','fR','fI','fS','fP'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  document.getElementById('promptOutput').textContent='Fill in the fields above to see your prompt assembled here...';
+}
+
+// QUIZ
+const qData=[
+  {q:"What does the 'C' in CRISP stand for?",o:["Clarity","Context","Complexity","Commands"],a:1,e:"C = Context. Context provides Claude with the situational awareness it needs — who is involved, what has happened, why the task is being done."},
+  {q:"What does the 'R' in CRISP stand for?",o:["Request","Response","Role","Rules"],a:2,e:"R = Role. The role assigns Claude a persona, expertise level, and perspective that shapes vocabulary, depth, tone, and approach."},
+  {q:"What does the 'P' in CRISP stand for?",o:["Prompt","Purpose","Parameters","Precision"],a:2,e:"P = Parameters. Parameters specify output constraints: length, format, tone, what to exclude, and response structure."},
+  {q:"Which component of CRISP specifies length, format, and tone?",o:["Context","Role","Specifics","Parameters"],a:3,e:"Parameters (P) specify output constraints including length, format, tone, and what to exclude. They're the guardrails that make output immediately deployable."},
+  {q:"When is it appropriate to skip some CRISP components?",o:["Never — always include all 5","For quick, simple tasks where fewer components are needed","Only for personal (non-professional) tasks","When using Claude Haiku instead of Opus"],a:1,e:"For simple tasks (a quick factual question, a basic edit), you don't need all 5 components. CRISP is a framework to calibrate, not a rigid rule to follow mechanically."},
+  {q:"What is the 'I' in CRISP?",o:["Input","Instructions","Intent","Interface"],a:1,e:"I = Instructions. Instructions specify exactly what task to do, using action verbs and clear, specific directives. Vague instructions produce vague outputs."},
+  {q:"What is the 'S' in CRISP?",o:["Structure","System","Specifics","Style"],a:2,e:"S = Specifics. Specifics include the unique details that constrain and focus the output — audience characteristics, required examples, terminology, and contextual nuances."},
+  {q:"What is the primary difference between a weak prompt and a CRISP prompt?",o:["Length — CRISP prompts are always longer","Specificity, role clarity, and explicit constraints vs. vague generic requests","CRISP prompts use special formatting codes","CRISP prompts work only with Claude Opus"],a:1,e:"CRISP prompts have role clarity, situational context, specific instructions, unique details, and explicit output constraints. Weak prompts leave all of these for Claude to guess."},
+  {q:"In CRISP, which component answers 'who is the audience and what do they already know?'",o:["Role","Context","Specifics","Parameters"],a:2,e:"Specifics (S) includes audience characteristics — who will read/use the output, what they already know, and what assumptions can or can't be made."},
+  {q:"Which CRISP component most directly affects Claude's vocabulary and depth of expertise?",o:["Context","Role","Instructions","Parameters"],a:1,e:"Role (R) most directly affects vocabulary and expertise depth. A 'senior investment banker' persona will use different language and assumptions than a 'friendly financial advisor' for the same content."},
+  {q:"What is the benefit of filling in CRISP components before submitting a prompt?",o:["It makes the prompt shorter","It forces clear thinking about what you actually want, independent of Claude","It bypasses Claude's safety filters","It makes the response faster"],a:1,e:"The CRISP framework forces you to clarify your own thinking about what you want. Many users discover their goals are actually unclear when they try to fill in the components — which they then clarify before involving Claude."},
+  {q:"A prompt that says 'write a marketing email' is missing which CRISP components?",o:["Only Parameters","Context, Role, Specifics, and Parameters","Only Role","Only Instructions"],a:1,e:"'Write a marketing email' only has basic Instructions. It's missing Context (what situation?), Role (who is writing?), Specifics (what details matter?), and Parameters (what constraints apply?)."},
+  {q:"For a high-stakes board presentation, which CRISP components are most critical?",o:["Only Instructions and Parameters","All five components fully specified","Only Role and Instructions","Context and Specifics only"],a:1,e:"For high-stakes, nuanced outputs where good vs. great matters enormously, all five CRISP components should be fully specified. The cost of a weak board presentation justifies complete prompt investment."},
+  {q:"What does 'Parameters' help you avoid in Claude's responses?",o:["Offensive content","Generic outputs that go beyond what you need or use the wrong format","Factual errors","Long response times"],a:1,e:"Parameters prevent Claude from defaulting to its preferred length, format, and structure. Without parameters, Claude makes reasonable but often misaligned choices about what to include and how to present it."},
+  {q:"Which approach produces better final documents — asking for everything at once or section by section?",o:["Everything at once — for full context","Section by section — for editorial control","It makes no difference","Shorter is always better"],a:1,e:"Section-by-section requests give you editorial control over each section before Claude writes the next one. This consistently produces higher-quality final documents than one-shot full-document requests."},
+  {q:"Why do professionals use CRISP even for tasks they could describe informally?",o:["Because CRISP prompts get priority processing","Because it's required by Claude's terms of service","Because structured prompts produce consistently higher-quality outputs with fewer revision rounds","Because it makes prompts more interesting to read"],a:2,e:"CRISP produces outputs that require 60-70% fewer revision rounds in practice. On a typical day with 10 Claude interactions, that time saving compounds significantly. Consistency is the key advantage."},
+  {q:"What happens when you give Claude a role in the prompt?",o:["Nothing — Claude ignores persona instructions","Claude pretends to be that person","Claude adapts vocabulary, depth, tone, and assumptions to match the assigned expertise and perspective","Claude searches for information about that role"],a:2,e:"When given a role, Claude genuinely adapts its responses — changing vocabulary, adjusting depth of expertise, shifting tone, and making different assumptions appropriate to that persona."},
+  {q:"In the context of CRISP, what does 'Specifics' include?",o:["Only numerical data and statistics","Industry terminology, audience details, required examples, and unique contextual constraints","The exact format of the response","The job title of the intended user"],a:1,e:"Specifics (S) includes all the unique details that differentiate your situation from a generic scenario: terminology, audience characteristics, examples to include or avoid, and contextual constraints."},
+  {q:"What is the most common reason an experienced Claude user revises a prompt?",o:["Claude made factual errors","The output format was wrong","The prompt was missing critical context or role specification","Claude's response was too long"],a:1,e:"Missing context and role specification are the most common causes of prompt revision. When Claude doesn't know the situation or the expertise lens to use, it defaults to generic — which rarely fits professional needs."},
+  {q:"How does CRISP affect the number of revision rounds needed?",o:["It increases rounds because prompts are more complex","It has no measurable effect on revision rounds","It reduces revision rounds by 60-70% compared to unstructured prompting","It eliminates all need for revision"],a:2,e:"TARAhut training data shows CRISP prompts require 60-70% fewer revision rounds compared to ad-hoc prompting. The upfront investment in structure pays back in dramatically fewer iterations."},
+  {q:"Which CRISP component would you use to specify 'no corporate jargon' or 'avoid using bullet points'?",o:["Context","Role","Specifics","Parameters"],a:3,e:"Parameters (P) specify what to exclude and formatting constraints like 'no corporate jargon' or 'avoid bullet points.' These are output guardrails, not content details."},
+  {q:"For a LinkedIn post, which CRISP components are typically most important?",o:["Role and Parameters (voice + format constraints)","Context only (the story matters most)","Instructions only (just tell it what to write)","None — Claude handles LinkedIn posts without guidance"],a:0,e:"For social media, Role (what voice/persona) and Parameters (format, length, tone, hashtags) are typically the most impactful components because they define the style and platform-specific requirements."},
+  {q:"What is the meta-skill that CRISP develops beyond better prompting?",o:["Faster typing speed","Clearer thinking about goals and requirements before involving AI","Better understanding of Claude's code","The ability to use multiple AI tools simultaneously"],a:1,e:"CRISP develops clearer thinking — the process of filling in components forces you to articulate your goals, audience, and constraints precisely. This clarity improves outcomes even before the AI is involved."},
+  {q:"In the Interactive Prompt Builder, what happens as you fill in the fields?",o:["Claude generates a response in real-time","The prompt assembles in real-time in the output panel","The system validates your prompt quality","It sends the prompt automatically to Claude"],a:1,e:"The Interactive Prompt Builder assembles your CRISP prompt in real-time as you fill in each field, showing the complete structured prompt before you send it to Claude."},
+  {q:"Which describes the best use of CRISP for a simple factual question?",o:["Use all 5 components even for simple questions","Skip most components — only include what's needed for that complexity level","Never use CRISP for simple questions","Only use CRISP when getting paid for the work"],a:1,e:"CRISP is a framework to calibrate, not a rigid 5-step requirement. A simple factual question needs only basic Instructions. The framework scales with task complexity — use the components that matter for each situation."}
+];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='CRISP Mastery';col='var(--brand)'}else if(pct>=50){tier='Solid Foundation';col='var(--c1)'}else{tier='Keep Practicing';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:1rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">The CRISP framework is a permanent skill. Every day you apply it, you get more output from every Claude session.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-03-CRISP-Framework');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

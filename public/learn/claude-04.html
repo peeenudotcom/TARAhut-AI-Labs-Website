@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 4: Claude Projects — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p,.micro-action ul{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.step-flow{margin:2rem 0}
+.step{display:flex;gap:1.25rem;margin-bottom:1rem;padding:1.25rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .3s;cursor:default}
+.step:hover{border-color:rgba(0,240,255,.2);transform:translateX(4px)}
+.step-num{width:36px;height:36px;border-radius:50%;background:rgba(5,150,105,.15);border:1.5px solid var(--brand);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--brand);flex-shrink:0}
+.step-content h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.step-content p{color:var(--t2);font-size:.88rem}
+.instr-box{background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.12);border-radius:var(--r);padding:1.25rem;margin:.75rem 0}
+.instr-box h4{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:.4rem;color:var(--c1)}
+.instr-box p{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--t2);line-height:1.8;white-space:pre-wrap}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 04 &middot; Master Claude in 15 Days</div>
+  <h1>Claude<br><span class="gr">Projects</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Projects are the feature that separates casual Claude users from professional operators. Persistent context, custom instructions, and a knowledge base — all in one workspace.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 4 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What are Projects</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Setting Up</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Custom Instructions</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Knowledge Base</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT ARE PROJECTS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What Are <span class="gr">Claude Projects</span>?</h2>
+    <p>Projects transform Claude from a conversational tool into a persistent, context-aware professional workspace.</p>
+  </div>
+
+  <div class="emotional-hook">
+    <p>Without Projects: Every time you open Claude, you start from zero. You re-explain your business, re-set your tone preferences, re-upload your documents. <strong>With Projects: Claude already knows everything it needs to know before you type a single word.</strong></p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">🏠</span><h3>Persistent Workspace</h3>
+      <p>A Project is a dedicated workspace where Claude remembers context across all conversations within it. Custom instructions, uploaded documents, and conversation history stay in place.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">📋</span><h3>Custom Instructions Always Active</h3>
+      <p>Write instructions once — they apply to every conversation in the Project, automatically. No more repeating "always respond in formal English" or "I'm writing for a B2B SaaS audience."</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">📚</span><h3>Knowledge Base</h3>
+      <p>Upload documents, brand guides, SOPs, research papers, data files. Claude can reference this uploaded knowledge in every conversation, making responses highly context-specific.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c4)">
+      <span class="crd-icon">🔄</span><h3>Conversation History</h3>
+      <p>All conversations within a Project are accessible. You can reference previous work, build on prior outputs, and maintain continuity across days and weeks of work on the same project.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Without Projects vs With Projects</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Without Projects</th><th style="color:var(--brand)">With Projects</th></tr></thead>
+      <tbody>
+        <tr><td>Starting a new conversation</td><td>Re-explain your entire context</td><td>Claude already knows everything</td></tr>
+        <tr><td>Writing style consistency</td><td>Re-specify tone every time</td><td>Tone instructions always active</td></tr>
+        <tr><td>Referencing your documents</td><td>Re-upload every session</td><td>Documents always available</td></tr>
+        <tr><td>Working on a complex project</td><td>Fragmented across random chats</td><td>All conversations organized in one place</td></tr>
+        <tr><td>Onboarding Claude to your business</td><td>Repeat context daily</td><td>One-time setup, permanent benefit</td></tr>
+        <tr><td>Consistent role + persona</td><td>Re-assign role each time</td><td>Role baked into custom instructions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">💼</div><div class="call-body"><h4>Real-World Impact</h4><p>A content marketing consultant sets up a Client Project for each client. Each Project contains the client's brand voice guide, target audience notes, competitor positioning, and tone instructions. Every piece of content she creates for that client uses Claude with full brand context — no briefing required. What used to take 30 minutes of context-setting per session now takes zero.</p></div></div>
+
+  <div class="micro-win">You now understand why Projects are the most powerful feature in Claude for professional users.</div>
+
+  <p class="curiosity-hook">Next: Step-by-step Project setup — from blank canvas to operational workspace.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Setting Up &rarr;</button></div>
+</div>
+
+<!-- S2: SETTING UP -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done. Now: the exact setup sequence for a professional Project.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Setting Up <span class="gr">a Project</span></h2>
+    <p>Step-by-step. Name it, instruct it, load it with knowledge, and you're operational in under 20 minutes.</p>
+  </div>
+
+  <div class="step-flow">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Create the Project</h4><p>Click "New Project" in the left sidebar. Give it a clear, descriptive name that identifies the client, project, or use case. Example: "Sharma Textiles — Content & Marketing" not "My Project 1". Good naming matters for long-term usability.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Write Custom Instructions</h4><p>This is the most important step. Open Project Settings → Custom Instructions. Write everything Claude should know and do by default in this Project. Persona, tone, audience, constraints, output format preferences. We'll cover this in detail in Section 3.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Upload Knowledge Documents</h4><p>Add files to the Project's knowledge base: brand guides, SOPs, research reports, product specs, audience personas, competitor analysis. Claude will reference these in every conversation. File types: PDF, DOCX, TXT, CSV, code files.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Set Communication Style</h4><p>In custom instructions, specify your preferred communication style: length of responses, use of bullet points vs prose, how Claude should handle ambiguity (ask vs assume), preferred terminology. These parameters apply universally within the Project.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Test with a Calibration Prompt</h4><p>Start a conversation and send a calibration test. Ask Claude to summarize what it knows about the project and confirm its instructions. This surfaces any gaps or misinterpretations in your setup before you depend on it for real work.</p></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-content"><h4>Iterate and Refine</h4><p>Projects are living workspaces. After your first real work session, revise the custom instructions based on what worked and what didn't. Add documents as they become available. Projects improve with use, not just with time.</p></div></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">⏱️</div><div class="call-body"><h4>Time Investment vs Return</h4><p>A well-configured Project takes 20-30 minutes to set up initially. For an active use case (content creation, research, client work), this setup pays back in the <strong>first session</strong>. Over 30 days of regular use, a good Project saves 3-5 hours of repeated context-setting. Over a year: 40+ hours.</p></div></div>
+
+  <div class="callout call-1"><div class="call-ico">🗂️</div><div class="call-body"><h4>Project Architecture for Professionals</h4><p>Don't create one giant Project for everything. Structure Projects around:<br><strong>One per client</strong> — for consultants and agencies<br><strong>One per content type</strong> — blog writing, social media, proposals<br><strong>One per domain</strong> — research, coding, customer communications<br><br>Focused Projects with relevant instructions outperform generic Projects with everything.</p></div></div>
+
+  <div class="micro-action">
+    <h4>Create Your First Project</h4>
+    <p>Right now, identify one recurring use case where you re-explain context to Claude repeatedly. Create a Project for it. Even a basic Project with 3-4 instruction lines is dramatically better than no Project. You'll refine it as you use it.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: 10 custom instruction templates for different professional roles.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Custom Instructions &rarr;</button></div>
+</div>
+
+<!-- S3: CUSTOM INSTRUCTIONS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% through Day 4. The instruction templates in this section are used by TARAhut graduates daily.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Custom Instructions <span class="gr">That Work</span></h2>
+    <p>Ten battle-tested instruction templates across different professional roles. Adapt, not copy — your context is unique.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>📝 Business Writer / Content Creator</h4>
+    <p>You are a professional content writer for [Brand Name], a [industry] company targeting [audience]. Always write in [formal/conversational/warm] tone. Our brand voice is: [describe]. Default output: well-structured paragraphs, not bullet lists unless requested. Headlines should be clear and specific, not clever. When given a topic, ask for the target publication/platform before writing. Length default: 500-800 words unless specified.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>🔬 Research Analyst</h4>
+    <p>You are a senior research analyst. When analyzing documents or data, always: 1) State key findings first, 2) Note any limitations or gaps in the data, 3) Flag assumptions clearly. Do not overstate conclusions. When uncertain, say so explicitly. Preferred format: structured report with Executive Summary, Findings, and Implications sections. Always note your confidence level on key claims.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>💼 Business Analyst / Strategy Consultant</h4>
+    <p>You are a strategic business analyst supporting decisions for [Company Name], a [description]. Our primary decision-makers are [names/roles] who prefer [data-driven/narrative] presentations. When analyzing business questions: identify trade-offs, consider second-order effects, and recommend 1-3 specific actions. Frame everything around business impact, not academic theory. Output in structured formats suitable for executive communication.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>🎓 Teacher / Educator</h4>
+    <p>You are an expert educator creating learning materials for [audience: e.g., college students, working professionals, school teachers]. When explaining concepts: use a relatable analogy first, then the technical definition. Check understanding with 1-2 questions at the end. Avoid jargon unless you define it first. Adapt depth: foundational explanations unless I specify advanced. Always connect to real-world application.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>📊 Sales & Business Development</h4>
+    <p>You support sales and business development for [Company Name]. Our ICP (Ideal Customer Profile) is: [description]. Our value propositions are: [list]. Common objections and our responses: [list]. When writing outreach, proposals, or follow-ups: lead with the prospect's problem, not our product. Tone: confident and consultative, never pushy. Always include a specific, low-friction CTA.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>💻 Developer / Technical Writer</h4>
+    <p>You are a technical assistant for a [language/stack] development team. Our codebase uses [conventions/frameworks]. When writing code: follow [style guide], add inline comments for non-obvious logic, handle edge cases proactively. When documenting: use [standard], include code examples. If my request is ambiguous, ask rather than assume. Flag potential security implications in any code that handles user data or authentication.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>🌐 Digital Marketing Specialist</h4>
+    <p>You support digital marketing for [Brand]. Our primary channels: [list]. Current campaign goals: [describe]. Brand voice: [describe]. When writing ad copy, always provide 3 variations — one feature-focused, one benefit-focused, one emotion-focused. For SEO content: lead with the primary keyword naturally in first 100 words. When analyzing campaign data, focus on actionable insights, not just metric descriptions.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>🏢 Executive / Leadership Communications</h4>
+    <p>You support executive communications for [Name/Role]. When drafting communications: assume recipients are intelligent, time-constrained, and results-oriented. Lead with the bottom line, then supporting detail. Default: formal register. Never use filler phrases. For internal comms: direct and efficient. For external/public comms: professional and purposeful. Flag anything that could be misinterpreted or quoted out of context.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>🔍 Legal / Compliance Support</h4>
+    <p>You assist with legal and compliance research and drafting. Important: always note that outputs require review by a qualified legal professional before use. When analyzing regulations or contracts: identify key obligations, risks, and ambiguities. Use precise legal terminology. When drafting clauses: provide alternatives for key provisions. Flag jurisdiction-specific variations. Never present legal opinions as definitive advice.</p>
+  </div>
+
+  <div class="instr-box">
+    <h4>📱 Social Media Manager</h4>
+    <p>You manage social media content for [Brand]. Platform priorities: [list]. Posting schedule: [describe]. Brand voice: [describe]. Audience: [describe]. When writing posts: optimize for [engagement/reach/conversions]. Platform-specific rules: Twitter — punchy, under 250 chars; LinkedIn — professional insight, 150-300 words; Instagram — visual-first, emotional, heavy hashtags. Always suggest relevant hashtags. Avoid bandwagon trends that don't fit brand values.</p>
+  </div>
+
+  <div class="micro-win">You now have 10 instruction templates used by working professionals. One of these covers your use case today.</div>
+
+  <div class="micro-action">
+    <h4>Customize One Template Now</h4>
+    <p>Take the template closest to your role. Rewrite every bracketed placeholder with your actual context. Test it in a new Project. Compare Claude's responses with and without these instructions. The difference will be immediately obvious.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: What to upload, what not to upload, and how Claude uses your knowledge base.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Knowledge Base &rarr;</button></div>
+</div>
+
+<!-- S4: KNOWLEDGE BASE -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% done — knowledge base strategy is what separates good Projects from great ones.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Knowledge Base <span class="gr">Management</span></h2>
+    <p>What to upload, what to leave out, and how Claude actually uses the documents you provide.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🧠</div><div class="call-body"><h4>How Claude Uses Uploaded Documents</h4><p>Claude doesn't "remember" files the way a database does. When you upload documents to a Project, Claude reads and processes their content. When you ask questions or give tasks, Claude retrieves relevant information from those documents as context. Think of it as giving Claude a reference library for your specific domain — it can cross-reference, summarize, extract, and apply that knowledge in every response.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What to Upload — High-Value Documents</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Highest Value</span><h3>Brand Voice & Style Guide</h3><p>Your brand's communication principles, tone guidelines, vocabulary preferences, and examples of good vs bad writing in your brand's voice. Claude will apply these to every piece of content without being reminded.</p></div>
+    <div class="crd"><span class="tag tag-1">High Value</span><h3>Target Audience Personas</h3><p>Detailed descriptions of who your content/products are for — demographics, psychographics, pain points, goals, preferred language. Claude tailors outputs for these specific people, not a generic audience.</p></div>
+    <div class="crd"><span class="tag tag-2">High Value</span><h3>Standard Operating Procedures</h3><p>Your workflows, processes, standards. Claude can then generate outputs that fit within your existing systems, reference the correct steps, and flag deviations from standard practice.</p></div>
+    <div class="crd"><span class="tag tag-5">High Value</span><h3>Research & Reference Material</h3><p>Industry reports, competitor analysis, market data, technical documentation. Claude can cite, synthesize, and apply this material in research-intensive tasks without you re-uploading per session.</p></div>
+    <div class="crd"><span class="tag tag-4">Situational</span><h3>Product / Service Documentation</h3><p>Product specs, pricing sheets, FAQ documents. Particularly valuable for sales, customer support, and marketing Projects where accurate product information is critical.</p></div>
+    <div class="crd"><span class="tag tag-3">Situational</span><h3>Previous Work Examples</h3><p>Your best existing reports, proposals, or content. Claude can analyze patterns in your previous work and help you maintain consistency with your established quality and style.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What NOT to Upload</h3>
+  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>Security & Privacy Considerations</h4><p><strong>Never upload:</strong> Passwords, API keys, or credentials &bull; Personal data subject to GDPR/privacy regulations &bull; Confidential client information without authorization &bull; Sensitive financial data beyond what's necessary &bull; Documents with NDAs that prohibit third-party processing<br><br>Anthropic has strict data handling policies and Claude Pro/Team conversations are not used for model training by default. But always follow your organization's data policies.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Querying Your Knowledge Base Effectively</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Goal</th><th>Effective Query</th><th>Why It Works</th></tr></thead>
+      <tbody>
+        <tr><td>Find specific info</td><td>"Based on the brand guide I've uploaded, what tone should I use for complaint responses?"</td><td>Directs Claude to a specific document and specific question</td></tr>
+        <tr><td>Synthesize across docs</td><td>"Reviewing all uploaded documents, identify any conflicts between our stated brand values and our SOP for customer complaints."</td><td>Cross-referencing reveals gaps you might have missed</td></tr>
+        <tr><td>Apply to new task</td><td>"Using our target audience persona and brand voice guide, write an Instagram caption for our new product launch."</td><td>Claude applies multiple knowledge sources simultaneously</td></tr>
+        <tr><td>Check consistency</td><td>"Does this draft email follow the communication standards in our uploaded brand guide? Flag any deviations."</td><td>Claude audits your work against your own standards</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="identity-shift">A well-constructed Claude Project is like a specialist employee who has read everything about your business and never forgets it. That's the real value you're building today.</div>
+
+  <div class="micro-action">
+    <h4>Day 4 Capstone: Build a Real Project</h4>
+    <ul>
+      <li>Identify your top recurring Claude use case (content, research, client work, coding)</li>
+      <li>Create a Project with a descriptive name</li>
+      <li>Adapt the most relevant instruction template from Section 3</li>
+      <li>Upload 2-3 relevant documents from your work</li>
+      <li>Run a calibration test: ask Claude to summarize what it knows</li>
+      <li>Do one real task using this Project and compare with your previous ad-hoc approach</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Test your Projects knowledge before moving to Day 5.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 4 Quiz. Projects, custom instructions, knowledge base — 8 randomized questions.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 4 <span class="gr">Quiz</span></h2>
+    <p>Projects are the professional's power move. Let's confirm you can use them confidently.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Day 4 complete. You now build Claude workspaces, not just conversations.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Knowledge Base</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 4</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+const qData=[
+  {q:"What is the primary advantage of Claude Projects over regular conversations?",o:["Projects use more powerful AI models","Projects provide persistent context, custom instructions, and knowledge base across all conversations","Projects allow multiple users to chat simultaneously","Projects have longer context windows than regular chats"],a:1,e:"Projects provide persistent workspaces where custom instructions, uploaded documents, and conversation history remain active across all conversations within the Project — eliminating repeated context-setting."},
+  {q:"Where do you configure custom instructions for a Project?",o:["In each individual conversation","In Project Settings → Custom Instructions","In your account profile","In the model selector dropdown"],a:1,e:"Custom instructions are configured in Project Settings → Custom Instructions. Once set, they apply automatically to every conversation within that Project."},
+  {q:"Which document type provides the highest value when uploaded to a content creation Project?",o:["Random internet articles about your industry","Your brand voice and style guide","Your personal diary","Your browser bookmarks"],a:1,e:"A brand voice and style guide provides the highest value because it gives Claude explicit, structured information about tone, vocabulary, and communication standards — information it would otherwise have to guess."},
+  {q:"What is a 'calibration test' in the context of Claude Projects?",o:["A speed test of Claude's response time","Asking Claude to confirm what it knows and its instructions after Project setup","Testing which model performs best","Measuring word count accuracy"],a:1,e:"A calibration test involves asking Claude to summarize what it knows about the Project after setup. This surfaces gaps or misinterpretations in your instructions before you rely on them for real work."},
+  {q:"How should professionals structure their Claude Projects?",o:["One giant Project with all information","One Project per client, use case, or domain — focused and specific","One Project per day","No structure needed — ad-hoc is fine"],a:1,e:"Focused Projects with relevant instructions outperform generic Projects with everything. Structure around client, use case, or domain for maximum relevance and quality in each context."},
+  {q:"What should you NEVER upload to a Claude Project?",o:["Brand guidelines","Competitor analysis","Passwords, API keys, or confidential personal data","Product documentation"],a:2,e:"Never upload security credentials, sensitive personal data subject to privacy regulations, or confidential information without authorization. Always follow your organization's data policies."},
+  {q:"How does Claude use documents uploaded to a Project's knowledge base?",o:["It memorizes them word-for-word","It reads and processes content, retrieving relevant information when responding to queries","It uses them to train itself for future conversations","It converts them into conversation history"],a:1,e:"Claude processes uploaded documents as a reference library. When responding, it retrieves relevant information from these documents as context — cross-referencing, summarizing, and applying knowledge across conversations."},
+  {q:"Approximately how long does it take to set up a well-configured Project?",o:["5 minutes","20-30 minutes","2-3 hours","A full day"],a:1,e:"A well-configured Project takes 20-30 minutes to set up initially. This investment typically pays back in the very first session through eliminated context-setting time."},
+  {q:"Which is NOT a step in the recommended Project setup sequence?",o:["Create the Project with a descriptive name","Write custom instructions","Upload knowledge documents","Invite collaborators to edit Claude's responses"],a:3,e:"The setup sequence is: Create → Custom Instructions → Upload Documents → Set Communication Style → Calibration Test → Iterate. Inviting collaborators to edit responses is not part of Project setup."},
+  {q:"What is the benefit of uploading target audience personas to a Project?",o:["It makes Claude respond faster","It allows Claude to tailor outputs for specific people rather than a generic audience","It reduces Claude's word count","It enables web browsing within the Project"],a:1,e:"Uploading target audience personas allows Claude to tailor every output for your specific audience — their language, pain points, and goals — without you needing to re-describe the audience each time."},
+  {q:"What is the recommended file format for uploading spreadsheet data to Claude?",o:["XLSX","CSV","ODS","Google Sheets link"],a:1,e:"CSV (comma-separated values) is the cleanest format for Claude to parse. Excel formatting, formulas, and embedded charts can confuse parsing. Always export as CSV before uploading data."},
+  {q:"When should you update a Project's custom instructions?",o:["Never — set it once and forget","After every conversation","Whenever you identify gaps or improvements based on real usage","Only if Claude asks you to"],a:2,e:"Projects should be treated as living workspaces. After real usage sessions, update custom instructions based on what worked and what didn't. Projects improve with deliberate iteration."},
+  {q:"Which custom instruction element most affects Claude's vocabulary and expertise depth?",o:["Response length specification","Tone description","Role/persona assignment","Output format preferences"],a:2,e:"Role/persona assignment most directly affects vocabulary and expertise depth. 'You are a senior M&A attorney' produces fundamentally different language and analysis than 'You are a helpful assistant'."},
+  {q:"What happens to custom instructions when you start a new conversation within a Project?",o:["They reset to default","They must be re-entered manually","They apply automatically to every new conversation","They apply only if you reference them"],a:2,e:"Custom instructions apply automatically to every conversation within a Project — that's the core value of Projects. No re-entry or reference needed."},
+  {q:"Which scenario most justifies using a Project instead of a regular chat?",o:["A single one-off question","A multi-week client engagement with consistent brand and context requirements","Looking up today's weather","A quick grammar check"],a:1,e:"Multi-week client engagements with consistent brand and context requirements are exactly what Projects are designed for. The persistent context, custom instructions, and knowledge base are all relevant and valuable."},
+  {q:"What is 'knowledge base querying' in the context of Claude Projects?",o:["Searching Claude's training data","Asking Claude questions that reference your uploaded documents","Downloading Claude's conversation history","Searching the internet via Claude"],a:1,e:"Knowledge base querying means asking Claude questions that explicitly or implicitly draw on your uploaded documents — like 'based on the brand guide I uploaded, how should we handle complaint emails?'"},
+  {q:"For a content marketing consultant with multiple clients, what is the ideal Project structure?",o:["One Project for all clients","One Project per client, each with client-specific brand and audience information","One Project for content, one for email, one for social","A new Project for every single piece of content"],a:1,e:"One Project per client is the professional standard. Each Project contains that client's specific brand voice, audience personas, previous work, and instructions — ensuring all output is properly contextualized."},
+  {q:"How many files can you upload in a single Claude message within a Project?",o:["1","3","5","10"],a:2,e:"You can upload up to 5 files per message, with a maximum file size of approximately 10MB per file. Project knowledge base documents can be added separately through Project settings."},
+  {q:"What is 'cross-referencing' in Claude's knowledge base usage?",o:["Comparing Claude's response to Google search results","Claude finding connections or conflicts between multiple uploaded documents","Claude generating multiple responses to compare","Using Claude on two devices simultaneously"],a:1,e:"Cross-referencing means asking Claude to find connections, patterns, or conflicts across multiple uploaded documents simultaneously — a powerful capability for identifying inconsistencies in complex documentation sets."},
+  {q:"What does a well-designed custom instruction set give you that ad-hoc prompting cannot?",o:["Faster response times","Consistent, contextually appropriate outputs without repeated briefing","More creative responses","Access to newer AI models"],a:1,e:"Well-designed custom instructions deliver consistent, contextually appropriate outputs without repeated briefing — the key benefit. Every conversation starts with Claude already calibrated to your context, role, and standards."},
+  {q:"Which metric best measures a Project's effectiveness?",o:["Number of conversations created","Reduction in revision rounds and context-setting time per session","Total words generated","Number of documents uploaded"],a:1,e:"The best measure of a Project's effectiveness is the reduction in revision rounds and time spent on context-setting per session. Good Projects make outputs immediately closer to what you need, reducing iteration."},
+  {q:"What is the purpose of specifying 'how Claude should handle ambiguity' in custom instructions?",o:["To make Claude slower","To prevent Claude from ever asking questions","To define whether Claude should ask clarifying questions or make reasonable assumptions","To limit Claude's response length"],a:2,e:"Specifying ambiguity handling (ask vs assume) defines how Claude behaves when instructions are unclear. Some contexts benefit from Claude asking questions; others benefit from Claude proceeding with reasonable assumptions."},
+  {q:"Which uploaded document type is most useful for a sales and business development Project?",o:["Random competitor blog posts","ICP description, objection-handling guide, and value proposition document","Personal notes about your products","Generic sales tips from the internet"],a:1,e:"A sales Project's highest-value uploads are: ICP (Ideal Customer Profile) description, objection-handling guide, and value proposition documents. These give Claude the specific knowledge needed for relevant, targeted sales communications."},
+  {q:"What does 'iterate and refine' mean in the Project setup lifecycle?",o:["Delete and rebuild Projects regularly","Start entirely fresh Projects each month","Continuously improve custom instructions and upload new documents based on real usage experience","Change the Project name frequently"],a:2,e:"Iterating and refining means treating Projects as living workspaces — updating instructions when you identify gaps, adding new documents as they become available, and improving based on what real usage reveals about what works."},
+  {q:"For which professional scenario would you upload 'previous work examples' to a Project knowledge base?",o:["When you want Claude to copy your old work exactly","When you want Claude to analyze patterns in your established style and maintain consistency","When you've run out of other documents","Only for legal Projects"],a:1,e:"Uploading previous work examples allows Claude to understand your established quality standards, style patterns, and structural preferences — helping maintain consistency with your best existing work."}
+];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Projects Expert';col='var(--brand)'}else if(pct>=50){tier='Good Understanding';col='var(--c1)'}else{tier='Review & Retry';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Projects are the feature that compounds. Every day you use a well-configured Project, you save time and produce better outputs.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-04-Claude-Projects');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1: Understanding Claude — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.scenario-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem;cursor:pointer;transition:all .3s}
+.scenario-card:hover{border-color:rgba(0,240,255,.25)}
+.scenario-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.scenario-card p{color:var(--t2);font-size:.88rem}
+.model-reveal{margin-top:.75rem;padding:.75rem 1rem;border-radius:var(--rs);display:none;font-size:.88rem}
+.model-reveal.show{display:block;animation:fadeSlide .3s ease}
+.model-badge{display:inline-block;padding:3px 12px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;margin-right:6px}
+.badge-opus{background:rgba(168,85,247,.15);color:var(--c2)}
+.badge-sonnet{background:rgba(0,240,255,.12);color:var(--c1)}
+.badge-haiku{background:rgba(52,211,153,.12);color:var(--c5)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 01 &middot; Master Claude in 15 Days</div>
+  <h1>Understanding<br><span class="gr">Claude</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Claude is not just another chatbot. It's the most sophisticated AI assistant available today &mdash; and knowing how it thinks differently gives you an immediate advantage.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 1 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What is Claude</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Claude Models</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Claude vs ChatGPT</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Hands-On</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT IS CLAUDE -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What is <span class="gr">Claude</span>?</h2>
+    <p>Built by Anthropic with a fundamentally different philosophy. Not just a smarter chatbot &mdash; a different kind of AI entirely.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🏛️</div><div class="call-body"><h4>Anthropic: The Company Behind Claude</h4><p>Anthropic was founded in 2021 by Dario Amodei, Daniela Amodei, and several former OpenAI researchers who believed AI safety was being under-prioritized. Their mission: <strong>AI safety research and developing AI that is safe, beneficial, and understandable.</strong> This philosophical difference shapes every decision Claude makes.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Constitutional AI: How Claude Was Trained</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">The Foundation</span><span class="crd-icon">📜</span><h3>Constitutional AI (CAI)</h3><p>Claude wasn't just trained on data &mdash; it was trained with a written <em>constitution</em>: a set of principles that guide its behavior. This makes Claude's values explicit and auditable, unlike black-box systems.</p></div>
+    <div class="crd"><span class="tag tag-brand">Self-Critique</span><span class="crd-icon">🔍</span><h3>RLAIF Training</h3><p>Reinforcement Learning from AI Feedback. Claude critiques its own responses against its constitution, creating a self-improving feedback loop that reinforces good behavior at scale.</p></div>
+    <div class="crd"><span class="tag tag-5">The Result</span><span class="crd-icon">⚖️</span><h3>Calibrated Responses</h3><p>Claude genuinely weighs helpfulness against harm. It doesn't just pattern-match what sounds good. It reasons through consequences, which is why its responses often feel more thoughtful and nuanced.</p></div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🧠</div><div class="call-body"><h4>The Three H's: Helpful, Harmless, Honest</h4><p>These aren't marketing words &mdash; they're encoded principles.<br><br><strong>Helpful:</strong> Claude genuinely tries to assist with your actual goal, not just your literal request. If you ask for a recipe and mention a dietary restriction, Claude notices.<br><br><strong>Harmless:</strong> Claude avoids outputs that could cause real-world harm. This sometimes means declining requests or adding appropriate caveats.<br><br><strong>Honest:</strong> Claude acknowledges uncertainty, corrects itself, and doesn't pretend to know things it doesn't. This is rarer than you'd think.</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>Here's the uncomfortable truth about most AI tools:</strong> they're optimized for engagement, not accuracy. Claude is one of the few systems explicitly designed to tell you when it doesn't know something &mdash; and that intellectual honesty is worth more than confident-sounding wrong answers.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How Claude Thinks Differently</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Most AI Systems</th><th style="color:var(--brand)">Claude's Approach</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Goal Interpretation</strong></td><td>Answers the literal question</td><td>Understands the underlying intent</td></tr>
+        <tr><td><strong>Uncertainty</strong></td><td>Gives confident-sounding answers regardless</td><td>Explicitly states confidence levels</td></tr>
+        <tr><td><strong>Ethics</strong></td><td>Pattern-matched guardrails</td><td>Reason-based ethical reasoning</td></tr>
+        <tr><td><strong>Long Instructions</strong></td><td>Often loses context mid-task</td><td>Tracks complex, multi-part instructions reliably</td></tr>
+        <tr><td><strong>Refusals</strong></td><td>Binary: comply or refuse</td><td>Explains why, often offers alternatives</td></tr>
+        <tr><td><strong>Context Window</strong></td><td>Limited, often truncates</td><td>200K tokens — processes entire books</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="micro-win">You now understand why Claude behaves differently — not by accident, but by design.</div>
+
+  <div class="micro-action">
+    <h4>Immediate Action</h4>
+    <p>Go to <a href="https://claude.ai" target="_blank">claude.ai</a> and ask Claude: <code>"What are your core principles and how do they affect your responses?"</code> Read the answer carefully. Notice how it references its actual training philosophy, not just generic AI safety talk.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Not all Claudes are equal. Choosing the right model can 10x your results.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Claude Models &rarr;</button></div>
+</div>
+
+<!-- S2: CLAUDE MODELS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete. You understand why Claude exists. Now: which version to use when.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The <span class="gr">Claude Model Family</span></h2>
+    <p>Three models, three different cost/performance tradeoffs. Knowing when to use each is itself a professional skill.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="tag tag-2">Most Powerful</span><span class="crd-icon">👑</span>
+      <h3>Claude Opus 4</h3>
+      <p>The flagship. Best reasoning, best writing quality, best for complex analysis. Slower and costs more API credits. Use when quality is the only metric that matters.</p>
+      <p style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c2)">Best for: Deep research, complex code, nuanced writing, strategic analysis</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="tag tag-1">Balanced</span><span class="crd-icon">⚡</span>
+      <h3>Claude Sonnet 4</h3>
+      <p>The sweet spot. 80% of Opus quality at a fraction of the cost and latency. This is the model you'll use 90% of the time in production workflows and daily tasks.</p>
+      <p style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1)">Best for: Everyday tasks, content creation, business emails, data analysis</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c5)">
+      <span class="tag tag-5">Fastest</span><span class="crd-icon">🚀</span>
+      <h3>Claude Haiku</h3>
+      <p>Optimized for speed and cost. Responds in milliseconds. Perfect for high-volume tasks, classification, summarization, and applications where latency matters.</p>
+      <p style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c5)">Best for: Bulk processing, chatbots, quick summaries, classification tasks</p>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>The Pro Tip Most People Miss</h4><p>Don't always use Opus for everything. Professionals <strong>prototype with Haiku, refine with Sonnet, and finalize with Opus</strong> only when stakes are high. This workflow can cut your API costs by 80% while maintaining quality on deliverables that matter.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Scenario Trainer — Which Model Would You Use?</h3>
+  <p style="color:var(--t2);font-size:.9rem;margin-bottom:1.5rem">Click each scenario to reveal the recommended model and rationale.</p>
+
+  <div class="scenario-card" onclick="revealModel(this,'sonnet','Sonnet 4 is ideal here. This is a standard professional task — high enough stakes to need good quality, but not so complex that you need Opus. Sonnet handles business writing with ease and is fast enough to iterate quickly.')">
+    <h4>📧 Writing a client proposal for a ₹5 lakh consulting project</h4>
+    <p>You need professional quality but this is a fairly standard business document.</p>
+    <div class="model-reveal"><span class="model-badge badge-sonnet">Sonnet 4</span> — Click to see why</div>
+  </div>
+
+  <div class="scenario-card" onclick="revealModel(this,'opus','Opus 4 is the right choice. You need the deepest reasoning, multi-step analysis, and highest-quality synthesis. The cost premium is justified when the output will inform major business decisions.')">
+    <h4>📊 Analyzing 200 pages of competitor financials to find strategic weaknesses</h4>
+    <p>Deep analysis, complex reasoning, high-stakes output — this is board-level work.</p>
+    <div class="model-reveal"><span class="model-badge badge-opus">Opus 4</span> — Click to see why</div>
+  </div>
+
+  <div class="scenario-card" onclick="revealModel(this,'haiku','Haiku wins here. You\'re doing bulk processing — speed and cost are the metrics. Haiku can classify hundreds of emails per minute. Opus would be overkill and unnecessarily expensive.')">
+    <h4>📬 Automatically categorizing 500 customer support emails by topic</h4>
+    <p>High-volume, repetitive classification task. Speed and cost matter more than nuance.</p>
+    <div class="model-reveal"><span class="model-badge badge-haiku">Haiku</span> — Click to see why</div>
+  </div>
+
+  <div class="scenario-card" onclick="revealModel(this,'sonnet','Sonnet 4 is the pragmatic choice. Code generation for typical apps is well within Sonnet\'s capabilities. Save Opus for debugging complex architectural problems or reviewing security-critical code.')">
+    <h4>💻 Generating Python code for a data dashboard with charts</h4>
+    <p>Standard coding task. Functional output is the goal.</p>
+    <div class="model-reveal"><span class="model-badge badge-sonnet">Sonnet 4</span> — Click to see why</div>
+  </div>
+
+  <div class="micro-win">You now think like a professional AI operator — matching models to tasks strategically.</div>
+
+  <div class="micro-action">
+    <h4>Comparison Exercise</h4>
+    <p>Take a complex question you've been thinking about. Ask it to all 3 Claude models (switch via the model picker in Claude.ai). Compare the depth, tone, and quality of responses. You'll immediately feel the difference between Haiku's brevity and Opus's thoroughness.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The honest comparison nobody wants to make — Claude vs ChatGPT.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Claude vs ChatGPT &rarr;</button></div>
+</div>
+
+<!-- S3: CLAUDE VS CHATGPT -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; Halfway through Day 1. You're building a foundation most Claude users never get.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Claude vs ChatGPT — <span class="gr">Honest Comparison</span></h2>
+    <p>Both are exceptional tools. Knowing where each genuinely excels makes you more effective than people who pick sides.</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>No Tool Loyalty</h4><p>Professionals don't have "favorite" AI tools — they have the <strong>right tool for each context</strong>. This comparison is about competence, not fandom. You may end up using both regularly, and that's the correct answer.</p></div></div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Capability</th><th style="color:var(--c1)">Claude 4</th><th style="color:var(--c4)">ChatGPT (GPT-4o)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Long document analysis</strong></td><td>✅ 200K context, processes entire books</td><td>⚠️ 128K context, can lose detail</td></tr>
+        <tr><td><strong>Writing quality & nuance</strong></td><td>✅ More natural, better style following</td><td>⚠️ Good, slightly more formulaic</td></tr>
+        <tr><td><strong>Ethical reasoning</strong></td><td>✅ Constitutional AI, explains reasoning</td><td>⚠️ Rule-based, less transparent</td></tr>
+        <tr><td><strong>Following complex instructions</strong></td><td>✅ Excellent multi-constraint handling</td><td>⚠️ Good, can miss edge constraints</td></tr>
+        <tr><td><strong>Business analysis & strategy</strong></td><td>✅ Excellent depth and nuance</td><td>✅ Also excellent</td></tr>
+        <tr><td><strong>Image generation</strong></td><td>❌ Not available</td><td>✅ DALL-E 3 built-in</td></tr>
+        <tr><td><strong>Web browsing (real-time)</strong></td><td>❌ Knowledge cutoff only</td><td>✅ Real-time web search</td></tr>
+        <tr><td><strong>Custom GPTs / Bots</strong></td><td>⚠️ Projects (different approach)</td><td>✅ GPT Store with thousands of bots</td></tr>
+        <tr><td><strong>Memory across sessions</strong></td><td>⚠️ Projects only</td><td>✅ Memory feature (opt-in)</td></tr>
+        <tr><td><strong>Code execution (Artifacts)</strong></td><td>✅ Excellent HTML/React artifacts</td><td>✅ Code Interpreter</td></tr>
+        <tr><td><strong>Honesty / admitting uncertainty</strong></td><td>✅ Explicitly states confidence</td><td>⚠️ Sometimes overconfident</td></tr>
+        <tr><td><strong>API pricing</strong></td><td>✅ Competitive, especially Haiku</td><td>⚠️ Comparable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Professional's Verdict</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="tag tag-brand">Use Claude When</span>
+      <p style="margin-top:.5rem">📄 Working with long documents or PDFs<br>✍️ Writing that needs genuine voice and nuance<br>🔍 Deep analysis requiring multi-step reasoning<br>⚖️ You need transparent, explainable responses<br>💻 Creating HTML/interactive content<br>🏢 Enterprise-grade instruction following</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c4)">
+      <span class="tag tag-4">Use ChatGPT When</span>
+      <p style="margin-top:.5rem">🎨 You need image generation (DALL-E)<br>🌐 You need real-time web information<br>🛍️ You want pre-built GPTs from the GPT Store<br>🧠 You want persistent memory across sessions<br>📊 Running code in an integrated environment<br>🔌 Your tools already integrate with OpenAI</p>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p>The most effective AI practitioners we know use Claude for <em>thinking, writing, and analysis</em> and ChatGPT for <em>searching and creating images</em>. Using both isn't indecision &mdash; <strong>it's sophistication.</strong></p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Side-by-Side Test</h4>
+    <p>Take a complex writing task — a report outline, a detailed analysis, a strategic memo. Submit the identical prompt to Claude Sonnet and GPT-4o. Compare not just the content, but the <em>texture</em> of the responses. Notice which one feels more like a thoughtful colleague and which feels more like a capable assistant.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Let's get your hands on Claude. Theory is done — now we build.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Hands-On &rarr;</button></div>
+</div>
+
+<!-- S4: HANDS-ON -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% done! One section left before the quiz. This is the most important section.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Hands-On: <span class="gr">Your First Session</span></h2>
+    <p>Reading about Claude is worth 10%. Using Claude is worth 90%. This section gets you active.</p>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>What You'll Do in This Section</h4><p>Sign up for Claude Pro (or free tier to start) &rarr; Navigate the interface &rarr; Run the same prompt on all 3 models &rarr; See the differences firsthand &rarr; Build your first mental model of Claude's behavior.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Step 1: Get Access</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Plan</th><th>Cost</th><th>What You Get</th><th>Who It's For</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Free</strong></td><td>₹0</td><td>Limited messages/day, Sonnet model</td><td>Exploring, getting started</td></tr>
+        <tr><td><strong>Pro</strong></td><td>~₹1,700/month</td><td>5x more usage, all models, Projects, Priority</td><td>Serious learners & professionals</td></tr>
+        <tr><td><strong>Team</strong></td><td>~₹2,500/user/month</td><td>Pro + collaboration features</td><td>Small teams</td></tr>
+        <tr><td><strong>API</strong></td><td>Pay per token</td><td>Programmatic access, all models</td><td>Developers building products</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">💬</div><div class="call-body"><h4>Recommendation for This Course</h4><p>Start with the <strong>free tier</strong> to get familiar. If you're serious about the 15-day program, upgrade to Pro by Day 3 — you'll need Projects and model access for the practical exercises. The Pro subscription pays for itself the first time you save 2 hours of work.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Step 2: Your First Model Comparison</h3>
+  <p style="color:var(--t2);font-size:.95rem;margin-bottom:1.5rem">Use this exact prompt on all 3 Claude models. Study the differences:</p>
+
+  <div style="background:var(--bg2);border:1px solid rgba(0,240,255,.2);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);line-height:2">You are helping me prepare for a job interview at a fast-growing tech startup. I have 5 years of experience in digital marketing. The role is Head of Growth. Write me a 3-paragraph introduction that positions me as the ideal candidate, emphasizing data-driven thinking and cross-functional leadership. Keep it confident but not arrogant. Under 200 words.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-5">Haiku Response</span><h3>Expect: Fast & Functional</h3><p>Solid response. Gets the job done. May feel slightly generic. Good enough for a first draft. Response time: under 3 seconds.</p></div>
+    <div class="crd"><span class="tag tag-1">Sonnet Response</span><h3>Expect: Polished & Strategic</h3><p>Better word choices, more natural flow, stronger positioning language. This is what you'd actually use. Response time: 5-8 seconds.</p></div>
+    <div class="crd"><span class="tag tag-2">Opus Response</span><h3>Expect: Exceptional Depth</h3><p>May ask clarifying questions, or provide a response with subtle nuances that Sonnet misses. Like the difference between a good editor and a great one. Response time: 10-15 seconds.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Step 3: Test Claude's Honesty</h3>
+  <p style="color:var(--t2);font-size:.95rem;margin-bottom:1rem">Ask Claude something it might not know with certainty:</p>
+  <div style="background:var(--bg2);border:1px solid rgba(168,85,247,.2);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c2);line-height:2">"What is the current stock price of Tata Motors and should I buy it today?"</p>
+  </div>
+  <div class="callout call-1"><div class="call-ico">🔎</div><div class="call-body"><h4>What to Look For</h4><p>Claude will tell you it doesn't have real-time data (honest) and explain <em>why</em> it can't reliably answer the second part (ethical reasoning). This is Constitutional AI in action. Compare this to any model that just makes something up — the difference is stark and important.</p></div></div>
+
+  <div class="identity-shift">By the end of today, you understand what Claude is, why it thinks differently, which model to use, and how it compares to ChatGPT. That's Day 1 complete.</div>
+
+  <div class="micro-action">
+    <h4>Day 1 Capstone</h4>
+    <ul>
+      <li>Create your Claude account at <a href="https://claude.ai" target="_blank">claude.ai</a></li>
+      <li>Run the job interview prompt on all 3 models — screenshot the comparison</li>
+      <li>Ask Claude something it genuinely can't know — observe the honesty</li>
+      <li>Write one sentence: what surprised you most about Claude vs your expectations?</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Ready to test your understanding? The quiz awaits.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 1 Knowledge Check. 8 questions from a pool of 25. Randomly selected each time.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 1 <span class="gr">Quiz</span></h2>
+    <p>8 questions. Instant feedback. No pressure — this is formative, not summative.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question you answer builds neural pathways. The quiz is part of the learning.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Hands-On</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 1</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &mdash; Intermediate Program &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(()=>{
+    const navEl=document.getElementById('mainNav');
+    const navH=navEl?navEl.offsetHeight:50;
+    const secEl=document.getElementById(id);
+    if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  if(id==='s5'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === SCENARIO REVEAL ===
+function revealModel(card,model,reason){
+  const reveal=card.querySelector('.model-reveal');
+  reveal.classList.add('show');
+  reveal.innerHTML=`<span class="model-badge badge-${model}">${model==='opus'?'Opus 4':model==='sonnet'?'Sonnet 4':'Haiku'}</span> ${reason}`;
+  card.style.borderColor=model==='opus'?'rgba(168,85,247,.4)':model==='sonnet'?'rgba(0,240,255,.4)':'rgba(52,211,153,.4)';
+}
+
+// === QUIZ DATA (25 questions) ===
+const qData=[
+  {q:"What company created Claude?",o:["OpenAI","Google DeepMind","Anthropic","Meta AI"],a:2,e:"Claude was created by Anthropic, founded in 2021 by former OpenAI researchers including Dario and Daniela Amodei."},
+  {q:"What does 'Constitutional AI' mean in the context of Claude's training?",o:["Claude follows copyright law","Claude was trained using a written set of principles","Claude was built by a government body","Claude uses blockchain for transparency"],a:1,e:"Constitutional AI means Claude was trained with an explicit, written set of principles (a 'constitution') that guide its behavior — making its values auditable and transparent."},
+  {q:"Which Claude model is optimized for speed and cost-efficiency?",o:["Claude Opus 4","Claude Sonnet 4","Claude Haiku","Claude Nano"],a:2,e:"Claude Haiku is the fastest and most cost-efficient model, ideal for high-volume tasks, classification, and applications where latency matters."},
+  {q:"What is Claude's approximate maximum context window?",o:["32K tokens","128K tokens","200K tokens","500K tokens"],a:2,e:"Claude's context window is approximately 200,000 tokens, allowing it to process entire books or large documents in a single conversation."},
+  {q:"What does RLAIF stand for?",o:["Reinforcement Learning with AI Feedback","Rapid Language AI Framework","Recurrent Learning Artificial Intelligence Foundation","Real-time Language AI Fine-tuning"],a:0,e:"RLAIF stands for Reinforcement Learning from AI Feedback — a training technique where Claude critiques its own responses against its constitutional principles."},
+  {q:"Which of the 'Three H's' explains why Claude admits when it doesn't know something?",o:["Helpful","Harmless","Honest","Humble"],a:2,e:"'Honest' is the principle that drives Claude to acknowledge uncertainty and admit knowledge limitations rather than confabulating confident-sounding answers."},
+  {q:"ChatGPT has a significant advantage over Claude in which area?",o:["Long document analysis","Writing quality","Real-time web browsing","Complex instruction following"],a:2,e:"ChatGPT (with browsing enabled) can access real-time web information, while Claude operates from a knowledge cutoff. This is one of ChatGPT's clear advantages."},
+  {q:"Which Claude model would a professional use for bulk email classification?",o:["Opus 4 for maximum accuracy","Sonnet 4 as the balanced choice","Haiku for speed and cost","All models perform identically"],a:2,e:"Haiku is ideal for bulk, repetitive tasks like email classification. Speed and cost matter more than deep reasoning for these use cases."},
+  {q:"What is the primary reason Anthropic was founded by former OpenAI researchers?",o:["To create cheaper AI models","To compete with Google","Because they believed AI safety was being under-prioritized","To build AI for government use"],a:2,e:"Anthropic's founders left OpenAI because they believed AI safety was being under-prioritized. Safety research is Anthropic's core mission."},
+  {q:"Which scenario is Claude MOST suited for compared to ChatGPT?",o:["Generating a logo image","Browsing today's news","Analyzing a 150-page legal document","Building a custom GPT for customer service"],a:2,e:"Claude's 200K context window and strong reasoning make it particularly well-suited for analyzing large documents — a clear advantage over ChatGPT."},
+  {q:"What is the recommended professional workflow for using Claude models?",o:["Always use Opus for quality","Always use Haiku to save money","Prototype with Haiku, refine with Sonnet, finalize with Opus","Use only Sonnet for everything"],a:2,e:"Professionals prototype with Haiku (fast/cheap), refine with Sonnet (quality/cost balance), and use Opus only for high-stakes final outputs. This optimizes both quality and cost."},
+  {q:"Which pricing tier gives you access to all Claude models including Opus?",o:["Free tier","Claude Pro (~₹1,700/month)","Team plan only","Enterprise only"],a:1,e:"Claude Pro gives access to all models including Opus 4, plus 5x more usage, Projects, and priority access — making it essential for serious practitioners."},
+  {q:"What makes Claude's refusals different from most AI systems?",o:["Claude never refuses anything","Claude refuses more requests than other AIs","Claude explains its reasoning and often offers alternatives","Claude's refusals are random and unpredictable"],a:2,e:"Claude's Constitutional AI approach means it reasons through refusals — explaining why something is problematic and often suggesting alternative approaches, rather than simply blocking."},
+  {q:"What year was Anthropic founded?",o:["2019","2020","2021","2022"],a:2,e:"Anthropic was founded in 2021 by Dario Amodei, Daniela Amodei, and several colleagues from OpenAI."},
+  {q:"Which Claude model is best for a high-stakes board-level strategic analysis?",o:["Haiku for speed","Sonnet for balance","Opus 4 for maximum depth","All models give identical strategic analysis"],a:2,e:"Opus 4 is the right choice for high-stakes, complex analysis requiring the deepest reasoning. The cost premium is justified for board-level work."},
+  {q:"What is a key characteristic of Claude Sonnet 4?",o:["Fastest response times","Cheapest model available","Best balance of quality and cost — the everyday workhorse","Highest quality, no compromises"],a:2,e:"Sonnet 4 is the 'sweet spot' model — roughly 80% of Opus quality at significantly lower cost and latency. It's the right choice for 90% of professional tasks."},
+  {q:"How does Claude handle questions about things it's uncertain about?",o:["It gives a confident answer anyway","It refuses to answer","It explicitly states its confidence level and uncertainty","It searches the web for the answer"],a:2,e:"Claude explicitly acknowledges uncertainty — a key feature of its Honest principle. This is fundamentally different from models that generate confident-sounding answers regardless of accuracy."},
+  {q:"Which is NOT a current advantage of Claude over ChatGPT?",o:["Longer context window","Better instruction following for complex prompts","Built-in image generation","More natural writing quality"],a:2,e:"Claude does not have built-in image generation. ChatGPT has DALL-E 3 integration, which is a clear advantage in that specific use case."},
+  {q:"What is the Anthropic API primarily used for?",o:["Personal Claude conversations","Building applications that use Claude programmatically","Accessing the GPT Store","Team collaboration features"],a:1,e:"The Anthropic API gives developers programmatic access to Claude models for building applications, products, and automated workflows. It uses pay-per-token pricing."},
+  {q:"What does it mean that Claude's context window is 200K tokens?",o:["Claude can remember 200,000 previous conversations","Claude can process approximately 150,000 words in a single conversation","Claude has 200,000 potential answers stored","Claude takes 200,000 milliseconds to respond"],a:1,e:"A 200K token context window means Claude can process approximately 150,000 words (roughly 500 pages) in a single conversation — enabling analysis of entire books or large documents."},
+  {q:"Which training technique involves Claude critiquing its own outputs against principles?",o:["RLHF","Supervised Fine-Tuning","RLAIF","Instruction Tuning"],a:2,e:"RLAIF (Reinforcement Learning from AI Feedback) is the technique where Claude evaluates its own responses against its constitutional principles to improve itself."},
+  {q:"For which use case would you most likely use BOTH Claude and ChatGPT?",o:["Writing a research paper","Building a simple website","Creating an illustrated report (text + images)","Answering basic questions"],a:2,e:"For an illustrated report, you'd use Claude for the high-quality text/analysis and ChatGPT's DALL-E for images. This is the professional's approach — using the best tool for each component."},
+  {q:"What philosophy differentiates Anthropic from most AI companies?",o:["Speed to market above all","AI safety as a core mission, not an afterthought","Open-source AI development","Consumer entertainment focus"],a:1,e:"Anthropic was founded specifically on the belief that AI safety needed to be a primary mission, not a secondary consideration — which directly influences how Claude is built and trained."},
+  {q:"Which best describes Claude's approach to 'Helpful'?",o:["Completing the literal task requested","Understanding the underlying intent behind a request","Always saying yes to user requests","Providing the longest possible response"],a:1,e:"Claude's 'Helpful' principle means understanding the underlying goal, not just the literal request. If you ask for a recipe and mention an allergy, Claude notices and adjusts."},
+  {q:"What is the main reason the Free tier of Claude is limited?",o:["Anthropic wants to discourage casual users","API costs require some revenue from heavy users","The Free tier uses a worse model","Free users don't get support"]  ,a:1,e:"Free tier limits exist because AI inference is expensive. Claude Pro's ~₹1,700/month covers the infrastructure costs for heavier usage while keeping basic access free for everyone."}
+];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=8){
+    const pct=Math.round(sc/8*100);
+    let tier,col;
+    if(pct>=80){tier='Strong Understanding';col='var(--brand)'}
+    else if(pct>=50){tier='Solid Foundation';col='var(--c1)'}
+    else{tier='Keep Reviewing';col='var(--c4)'}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:1rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Day 1 covers foundational Claude knowledge. The concepts here will underpin everything in the next 14 days.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;
+    submitQuizResult(sc,8,'Day-01-Understanding-Claude');
+    return;
+  }
+  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
+  const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ()}
+
+async function submitQuizResult(score,total,module){
+  try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}
+}
+</script>
+</body>
+</html>

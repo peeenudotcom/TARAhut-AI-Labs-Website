@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
-
-const COURSE_ID = 'ai-tools-mastery-beginners';
+import { courseConfigs } from '@/config/learn-modules';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +14,8 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { code } = body;
+    const { code, courseId } = body;
+    const COURSE_ID = (courseId && courseId in courseConfigs) ? courseId : 'ai-tools-mastery-beginners';
 
     if (!code || typeof code !== 'string') {
       return NextResponse.json({ error: 'Code is required' }, { status: 400 });

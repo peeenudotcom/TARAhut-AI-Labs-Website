@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 12: Automation & Integration | TARAhut AI Labs</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#059669;--green-d:#047857;--accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;--radius:12px}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-user-select:none;user-select:none}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--green);animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
+nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
+.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 60%);padding:60px 24px 50px;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:var(--green);color:#fff;font-size:0.75em;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;line-height:1.2;margin-bottom:12px}
+.hero h1 span{color:var(--green)}
+.hero p{color:var(--muted);font-size:1.05em;max-width:580px;margin:0 auto 24px}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
+.hero-meta span{background:var(--bg2);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
+.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
+.section{display:none;animation:fadeIn .4s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800}
+.section-header p{color:var(--muted);margin-top:8px}
+.section-header{margin-bottom:28px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
+.card:hover{border-color:var(--green);transform:translateY(-2px)}
+.card-icon{font-size:1.8em;margin-bottom:10px}
+.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
+.card p{font-size:0.875em;color:var(--muted)}
+.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
+.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
+.callout strong{color:var(--green);display:block;margin-bottom:4px}
+.callout.amber strong{color:var(--accent)}
+.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative}
+.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
+.code-box span.hl{color:#79c0ff}.code-box span.gr{color:#3fb950}.code-box span.am{color:#e3b341}
+.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
+.copy-btn:hover{background:var(--green);color:#fff}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:0.875em}
+th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
+.steps{margin:20px 0}
+.step{display:flex;gap:16px;margin-bottom:16px}
+.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
+.step-body h4{font-weight:700;margin-bottom:4px}
+.step-body p{color:var(--muted);font-size:0.875em}
+.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
+.highlight-box h3{color:var(--green);margin-bottom:8px}
+.integration-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:16px 0}
+.int-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.int-icon{font-size:2em}
+.int-title{font-weight:700;font-size:1.05em}
+.int-subtitle{font-size:0.8em;color:var(--muted)}
+.int-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.flow-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:0.8em}
+.flow-arrow{color:var(--green);font-weight:700}
+.habit-card{background:var(--bg);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:12px 0}
+.habit-time{font-size:0.75em;font-weight:700;color:var(--green);margin-bottom:4px}
+.habit-name{font-weight:700;margin-bottom:4px}
+.habit-desc{font-size:0.875em;color:var(--muted)}
+.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.quiz-header h3{font-size:1.3em;font-weight:800}
+.quiz-progress{font-size:0.82em;color:var(--muted)}
+.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
+.q-text{font-weight:600;margin-bottom:14px}
+.q-num{font-size:0.75em;color:var(--green);font-weight:700;margin-bottom:6px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
+.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
+.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
+.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
+.option.disabled{cursor:default}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
+.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
+.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
+.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-d)}
+.btn-secondary{background:var(--bg3);color:var(--text)}
+.quiz-score{text-align:center;padding:28px;display:none}
+.quiz-score.show{display:block}
+.score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
+.score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
+.score-sub{color:var(--muted);font-size:0.9em}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div id="particles"></div>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">TARAhut AI Labs</div>
+    <button class="nav-btn active" onclick="showSection(0)">1. Claude in Your Workflow</button>
+    <button class="nav-btn" onclick="showSection(1)">2. Automation Ideas</button>
+    <button class="nav-btn" onclick="showSection(2)">3. Integration Concepts</button>
+    <button class="nav-btn" onclick="showSection(3)">4. Your Claude System</button>
+    <button class="nav-btn" onclick="showSection(4)">5. Quiz</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">DAY 12 — INTERMEDIATE</div>
+  <h1>Automation &amp;<br><span>Integration</span></h1>
+  <p>Make Claude a daily habit, not a one-off tool. Build your personal Claude system that saves hours every week — automatically.</p>
+  <div class="hero-meta"><span>5 Sections</span><span>25 Quiz Questions</span><span>~90 min</span><span>tarahutailabs.com</span></div>
+</div>
+
+<div class="container">
+
+<!-- S1 -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-tag">Section 1</div>
+    <h2>Claude in Your Workflow</h2>
+    <p>Most people use Claude reactively — when they think of it. Power users build it into their daily routine so it saves time automatically.</p>
+  </div>
+  <div class="callout">
+    <strong>Reactive vs Proactive Claude Use</strong>
+    Reactive: "Oh, I need to write an email — let me open Claude." Proactive: "Every Monday at 9am, I run my Weekly Briefing Prompt. Every Friday, I run my Client Report Prompt. Every time I get a tricky enquiry, I use my pre-built response template." The second approach saves 5-10 hours per week.
+  </div>
+
+  <h3 style="margin:24px 0 16px">The 3 Levels of Claude Integration</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-icon">🔰</div>
+      <h3>Level 1: On-Demand</h3>
+      <p>Open Claude when you remember it. Use it for specific tasks. Most people are here.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>Level 2: Habitual</h3>
+      <p>Pre-built prompts for recurring tasks. Morning briefing. Weekly reports. Response templates. Saves 3-5 hours/week.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Level 3: Systematic</h3>
+      <p>Claude Projects with full context. Custom instructions. Zapier/Make integrations. Claude as infrastructure, not a tool.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Building the Claude Habit</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Identify Your Repetitive Tasks</h4><p>List 5 tasks you do every week that involve writing, analysis, or information processing. These are your automation candidates.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Build a Saved Prompt for Each</h4><p>Write a CRISP prompt for each task. Save it in your notes app. Run it every time instead of starting from scratch.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Create a Daily Claude Ritual</h4><p>Block 15 minutes in the morning for your Claude workflow — morning brief, priority tasks, content plan for the day.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Set Up a Claude Project</h4><p>Upload your business context once. Every conversation starts with Claude already knowing who you are and what you do.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Review and Improve Weekly</h4><p>Every Friday, ask: which Claude interactions were most valuable this week? Improve those prompts for next week.</p></div></div>
+  </div>
+
+  <div class="callout amber">
+    <strong>The 15-Minute Morning Rule</strong>
+    The highest-ROI Claude habit: spend 15 minutes with Claude every morning before checking emails. Run your briefing prompt, plan your day, draft any urgent responses. This single habit changes your entire day.
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-tag">Section 2</div>
+    <h2>Automation Ideas</h2>
+    <p>Four ready-to-use prompt templates for your recurring business tasks.</p>
+  </div>
+
+  <h3 style="margin-bottom:16px">1. Morning Briefing Prompt</h3>
+  <div class="habit-card">
+    <div class="habit-time">Run Every Morning | 5 minutes</div>
+    <div class="habit-name">Daily Priority Briefing</div>
+    <div class="habit-desc">Clears your mind, sets your priorities, identifies your most important task.</div>
+  </div>
+  <div class="code-box">
+    <div class="code-label">Morning Briefing Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">I am:</span> [Your role] at [Your business]. Today is [Day, Date].<br><br>
+    <span class="am">My tasks for today:</span><br>
+    - [Task 1]<br>
+    - [Task 2]<br>
+    - [Task 3]<br><br>
+    <span class="hl">My current challenges:</span> [Any blockers or decisions pending]<br><br>
+    <span class="gr">Give me:</span><br>
+    1. My top 3 priorities for today (ranked by impact)<br>
+    2. The ONE thing I must complete no matter what<br>
+    3. Any task I should delegate or defer<br>
+    4. A motivating thought for the day (1 line)<br><br>
+    Be direct. No fluff. This is my morning briefing.
+  </div>
+
+  <h3 style="margin:24px 0 16px">2. Weekly Report Prompt</h3>
+  <div class="habit-card">
+    <div class="habit-time">Run Every Friday | 20 minutes</div>
+    <div class="habit-name">Weekly Business Review</div>
+    <div class="habit-desc">Synthesizes your week's work into a structured report for stakeholders or personal records.</div>
+  </div>
+  <div class="code-box">
+    <div class="code-label">Weekly Report Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    Create a professional weekly report for Week of [Date Range].<br><br>
+    <span class="gr">Accomplishments this week:</span><br>
+    [Paste your bullet points of what you did]<br><br>
+    <span class="am">Metrics/Numbers:</span><br>
+    - Enquiries received: [X]<br>
+    - Students enrolled: [X]<br>
+    - Revenue: [X]<br>
+    - Content pieces published: [X]<br><br>
+    <span class="hl">Challenges faced:</span> [List them]<br>
+    <span class="gr">Next week's focus:</span> [Your planned priorities]<br><br>
+    Format as: Executive Summary (3 lines) → This Week's Wins → Metrics → Challenges + Resolutions → Next Week Plan. Professional tone. Suitable to share with a team or mentor.
+  </div>
+
+  <h3 style="margin:24px 0 16px">3. Client Response Template</h3>
+  <div class="habit-card">
+    <div class="habit-time">Use For Every Complex Enquiry</div>
+    <div class="habit-name">Client Communication Generator</div>
+    <div class="habit-desc">Turn raw notes about a client situation into professional, warm, persuasive responses.</div>
+  </div>
+  <div class="code-box">
+    <div class="code-label">Client Response Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">Situation:</span> [Briefly describe what the client asked or what happened]<br><br>
+    <span class="am">Key points I need to communicate:</span><br>
+    - [Point 1]<br>
+    - [Point 2]<br>
+    - [Point 3]<br><br>
+    <span class="hl">Tone required:</span> [Professional/warm/empathetic/firm/reassuring]<br>
+    <span class="gr">Channel:</span> [WhatsApp message / Email / In-person script]<br>
+    <span class="am">Length:</span> [Short 3-4 lines / Medium paragraph / Detailed]<br><br>
+    Write the response. Include: greeting, the key message, any next steps, and a warm close. Sound human, not corporate.
+  </div>
+
+  <h3 style="margin:24px 0 16px">4. Meeting Prep Prompt</h3>
+  <div class="habit-card">
+    <div class="habit-time">Run 30 Minutes Before Any Meeting</div>
+    <div class="habit-name">Meeting Preparation Brief</div>
+    <div class="habit-desc">Enter any meeting fully prepared — questions, talking points, and anticipated objections ready.</div>
+  </div>
+  <div class="code-box">
+    <div class="code-label">Meeting Prep Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    I have a meeting in 30 minutes. Help me prepare.<br><br>
+    <span class="gr">Meeting type:</span> [Sales call / Partnership discussion / Student intake / Team review]<br>
+    <span class="am">With:</span> [Who — their background/context if known]<br>
+    <span class="hl">My goal from this meeting:</span> [What outcome do I want?]<br>
+    <span class="gr">What I know about them:</span> [Any context, previous interactions, their needs]<br><br>
+    Give me:<br>
+    1. 5 smart questions I should ask<br>
+    2. My key talking points (3-4 bullet points)<br>
+    3. Likely objections they might raise + my responses<br>
+    4. The one thing I must NOT forget to say<br>
+    5. A strong meeting opener (2-3 sentences)
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-tag">Section 3</div>
+    <h2>Integration Concepts</h2>
+    <p>Claude + Zapier, Claude + Make, Claude + Google Workspace. How automation platforms connect Claude to your existing tools.</p>
+  </div>
+
+  <div class="callout">
+    <strong>What Is Integration?</strong>
+    Integrations connect Claude to other tools so Claude can work automatically — without you opening the website. A new form submission triggers Claude to draft a response. A new email arrives and Claude categorizes it. A calendar event is created and Claude preps your briefing. This is the power level above manual use.
+  </div>
+
+  <div class="integration-card">
+    <div class="int-header">
+      <div class="int-icon">⚡</div>
+      <div>
+        <div class="int-title">Claude + Zapier</div>
+        <div class="int-subtitle">Connect Claude to 6,000+ apps without coding</div>
+      </div>
+    </div>
+    <p style="font-size:0.875em;color:var(--muted);margin-bottom:12px">Zapier is a no-code automation tool. You set up "Zaps" — triggers and actions. When X happens in App A, do Y in App B. With Claude as an action, you can automate content generation, responses, and analysis.</p>
+    <div class="int-flow">
+      <div class="flow-box">New form submission (Typeform)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Zapier trigger</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Claude drafts welcome email</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Gmail sends it</div>
+    </div>
+    <p style="font-size:0.8em;color:var(--muted);margin-top:8px">Example automation: Student fills registration form → Zapier triggers → Claude writes personalized welcome email with their name and course → Gmail sends automatically.</p>
+  </div>
+
+  <div class="integration-card">
+    <div class="int-header">
+      <div class="int-icon">🔧</div>
+      <div>
+        <div class="int-title">Claude + Make (Integromat)</div>
+        <div class="int-subtitle">More powerful visual automation builder</div>
+      </div>
+    </div>
+    <p style="font-size:0.875em;color:var(--muted);margin-bottom:12px">Make is similar to Zapier but more powerful for complex workflows. You build visual flowcharts of automation. Ideal for multi-step workflows with conditions (if this, then that, otherwise this other thing).</p>
+    <div class="int-flow">
+      <div class="flow-box">New Google Sheet row</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Make scenario</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Claude analyzes data</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">WhatsApp notification</div>
+    </div>
+    <p style="font-size:0.8em;color:var(--muted);margin-top:8px">Example: New lead in Google Sheets → Make triggers → Claude generates lead score and personalized pitch → WhatsApp message sent to your sales team.</p>
+  </div>
+
+  <div class="integration-card">
+    <div class="int-header">
+      <div class="int-icon">📊</div>
+      <div>
+        <div class="int-title">Claude + Google Workspace</div>
+        <div class="int-subtitle">AI inside Docs, Sheets, and Gmail</div>
+      </div>
+    </div>
+    <p style="font-size:0.875em;color:var(--muted);margin-bottom:12px">Google Workspace integration means Claude can read and write Google Docs and Sheets. Combined with Google Apps Script (which Claude writes for you), you can automate document creation, report generation, and data processing right inside Google's ecosystem.</p>
+    <div class="int-flow">
+      <div class="flow-box">Google Form submitted</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Apps Script triggers</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Claude via API</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Auto-generated Doc</div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <strong>Start Simple, Scale Later</strong>
+    Don't try to integrate everything on Day 1. Start with manual prompts saved in your notes. When you're running the same prompt 3x per week, that's your signal to automate it with Zapier/Make. Integration is the reward for mastering the manual process first.
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tool</th><th>Best For</th><th>Technical Level</th><th>Starting Cost</th></tr>
+      <tr><td>Zapier</td><td>Simple triggers between apps</td><td>No-code</td><td>Free tier available</td></tr>
+      <tr><td>Make</td><td>Complex multi-step workflows</td><td>Low-code</td><td>Free tier available</td></tr>
+      <tr><td>Google Apps Script</td><td>Google Workspace automation</td><td>Basic coding (Claude writes it)</td><td>Free</td></tr>
+      <tr><td>Claude API direct</td><td>Custom apps and tools</td><td>Developer needed</td><td>Pay per use</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-tag">Section 4</div>
+    <h2>Your Personal Claude System</h2>
+    <p>Build a Claude setup that knows your business and serves you better every day — using Projects, custom instructions, and your own SOPs.</p>
+  </div>
+
+  <div class="callout">
+    <strong>From Tool to System</strong>
+    A tool is something you pick up when needed. A system is infrastructure that works for you continuously. Building your Claude system transforms it from "that AI website" into your most important business asset.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Step 1: Create a Claude Project for Your Work</h3>
+  <div class="code-box">
+    <div class="code-label">Project Setup — System Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">## About My Business</span><br>
+    I am [Your Name], [Your Role] at [Business Name].<br>
+    We [what you do, for whom, in what location].<br>
+    Our core offering: [Your main products/services]<br>
+    Our pricing: [Rough range]<br>
+    Our target audience: [Describe your ideal customer]<br><br>
+    <span class="am">## My Communication Style</span><br>
+    When helping me write, use: [Professional/warm/direct/conversational]<br>
+    Our brand voice is: [3 adjectives]<br>
+    We always avoid: [jargon/certain phrases/excessive formality]<br><br>
+    <span class="hl">## Key Context</span><br>
+    Our main competitors: [List 2-3]<br>
+    Our differentiator: [What makes us unique]<br>
+    Current focus: [What you're working on this month]<br><br>
+    <span class="gr">## How I Use Claude</span><br>
+    Main tasks: content creation, client responses, planning, analysis<br>
+    Always give me: actionable outputs, not just analysis<br>
+    Format preference: [Bullet points / paragraphs / tables]
+  </div>
+
+  <h3 style="margin:24px 0 16px">Step 2: Upload Your SOPs</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>What SOPs to Upload</h3>
+      <p>Client onboarding process, response templates, course outlines, pricing sheets, FAQ documents, brand guidelines, team processes.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>Why This Changes Everything</h3>
+      <p>Claude reads your SOPs and follows your actual processes. Response templates match your real templates. Pricing is accurate. Processes are consistent.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Step 3: Build Your Saved Prompt Library</h3>
+  <div class="highlight-box">
+    <h3>Your Prompt Library Structure</h3>
+    <p style="color:var(--muted);margin-bottom:12px">Organize saved prompts in your notes app (Notion, Apple Notes, Google Keep) by category:</p>
+    <div class="table-wrap" style="margin:0">
+      <table>
+        <tr><th>Category</th><th>Prompts to Save</th></tr>
+        <tr><td>Daily Operations</td><td>Morning briefing, email responses, meeting prep, task prioritization</td></tr>
+        <tr><td>Content Creation</td><td>Blog post, Instagram caption, LinkedIn post, WhatsApp broadcast</td></tr>
+        <tr><td>Business Analysis</td><td>Competitor review, weekly report, monthly summary, decision analysis</td></tr>
+        <tr><td>Client Communication</td><td>Enquiry response, follow-up, pricing explanation, objection handling</td></tr>
+        <tr><td>Team & HR</td><td>Job descriptions, feedback templates, training outlines, meeting agendas</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Step 4: Weekly Prompt Improvement</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Track What Works</h4><p>Note which prompts gave you the best outputs this week. Star them in your library.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Refine What Doesn't</h4><p>If a prompt consistently gives mediocre output, update the Instructions or Specifics sections.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Add New Use Cases</h4><p>Every time you use Claude for something new that works well, add it to your library before you forget.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Share with Your Team</h4><p>A prompt library is a team asset. Share effective prompts so everyone benefits from each individual's discoveries.</p></div></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-tag">Section 5</div>
+    <h2>Knowledge Check</h2>
+    <p>Test your understanding of Claude Automation and Integration.</p>
+  </div>
+  <div class="quiz-section" id="quizContainer"></div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*8+4;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.12+0.04}`;c.appendChild(p)}})();
+function showSection(i){document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));document.querySelectorAll('.nav-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));window.scrollTo({top:0,behavior:'smooth'});if(i===4&&!quizStarted)initQuiz();}
+
+const ALL_QUESTIONS=[
+  {q:"What distinguishes 'reactive' Claude use from 'proactive' Claude use?",o:["Reactive use is faster","Proactive use involves pre-built prompts run on a schedule; reactive is ad-hoc when remembered","Reactive use requires API access","Proactive use costs more"],a:1,f:"Proactive Claude use = scheduled prompts, saved templates, daily rituals. Reactive = opening Claude when you happen to think of it. Proactive saves 5-10 hours/week."},
+  {q:"The '15-Minute Morning Rule' recommends using Claude for:",o:["Checking social media","Morning briefing, day planning, and drafting urgent responses — before opening emails","Writing all your emails for the day","Learning a new Claude feature"],a:1,f:"15 min with Claude each morning: briefing prompt, priority setting, urgent drafts. This sets your intention before email chaos takes over."},
+  {q:"Level 3 of Claude Integration involves:",o:["Occasionally using Claude for tasks","Saving prompts in your notes app","Claude Projects, custom instructions, and Zapier/Make integrations — Claude as infrastructure","Using Claude Desktop app"],a:2,f:"Level 3 (Systematic): Claude is infrastructure — Projects with full business context, custom instructions, and automation integrations running automatically."},
+  {q:"What is Zapier's primary function?",o:["A Claude alternative","A no-code tool that connects apps to automate workflows without coding","A website builder","A Python library"],a:1,f:"Zapier connects 6,000+ apps with no-code triggers and actions. When X happens in one app, do Y in another — including Claude-powered responses."},
+  {q:"The Weekly Report Prompt should be run:",o:["Every morning","Every Monday","Every Friday","Once a month"],a:2,f:"The Weekly Report is a Friday habit — synthesize the week's work while it's fresh, ready for Monday morning review or stakeholder sharing."},
+  {q:"What does uploading SOPs to a Claude Project accomplish?",o:["Makes Claude respond faster","Ensures Claude follows your actual business processes, uses your real templates, and gives accurate information about your services","Gives Claude internet access","Unlocks more Claude features"],a:1,f:"SOPs in Claude Projects mean Claude knows your actual processes — onboarding steps, pricing, response templates — not generic advice."},
+  {q:"The 'signal to automate' a manual prompt is:",o:["When you've used it once","When you run the same prompt 3+ times per week","When Claude asks you to automate it","When it's your longest prompt"],a:1,f:"If you're manually running the same prompt 3x per week, the ROI of setting up Zapier/Make automation is clearly positive — time to integrate."},
+  {q:"Make (Integromat) is described as better than Zapier for:",o:["Simple one-step automations","Complex multi-step workflows with conditions (if/then/else logic)","Sending emails","Creating content"],a:1,f:"Make handles complex workflows with branching logic. Zapier is simpler. For 'if this happens and X is true, do Y, otherwise do Z' — Make is better."},
+  {q:"What should a Claude Project System Prompt include?",o:["Your personal diary","Business description, communication style, key context, and how you use Claude","Only your name and company","Your competitors' strategies"],a:1,f:"The system prompt gives Claude permanent context: who you are, what you do, your brand voice, differentiators, and your workflow preferences."},
+  {q:"A Prompt Library should be organized by:",o:["Alphabetical order","Date created","Category: Operations, Content, Analysis, Communication, HR","Length of prompt"],a:2,f:"Organizing by category (Daily Operations, Content Creation, Business Analysis, Client Communication) makes prompts easy to find when needed."},
+  {q:"The Meeting Prep Prompt produces:",o:["A script for Claude to speak","Smart questions, talking points, anticipated objections, and a strong opener","A transcript of the meeting","A post-meeting summary"],a:1,f:"Meeting Prep: 5 smart questions + key talking points + anticipated objections + must-say point + strong opener. Everything to enter the meeting confidently."},
+  {q:"Google Apps Script automation is notable because:",o:["It requires no setup","Claude can write the scripts, making it accessible without knowing JavaScript","It's the cheapest option","It works on mobile"],a:1,f:"Google Apps Script is JavaScript-based, but Claude writes it for you. This makes Google Workspace automation accessible without coding knowledge."},
+  {q:"The Client Response Template prompt requires you to specify:",o:["The client's full history","The situation, key points, tone, channel, and desired length","Only the client's name","The legal terms"],a:1,f:"Client Response needs: situation (context), key points (what to communicate), tone (how), channel (where), length (how much). These 5 inputs produce a perfect response."},
+  {q:"Why is 'weekly prompt improvement' recommended?",o:["Because Claude changes its behavior each week","Because prompts that work well should be refined and poor-performing prompts improved over time","Because you must rewrite prompts weekly for legal reasons","Because saved prompts expire"],a:1,f:"Prompts are like recipes — they improve with iteration. Track what works, refine what doesn't, and your prompt library becomes more valuable each week."},
+  {q:"The integration example with Zapier + Typeform + Claude + Gmail creates:",o:["A data backup system","An automated personalized welcome email for every new form submission","A social media posting system","A meeting scheduling system"],a:1,f:"The integration chain: Form submitted → Zapier triggers → Claude writes personalized welcome email → Gmail sends it. Zero manual work after setup."},
+  {q:"What should you do BEFORE building Claude integrations?",o:["Buy enterprise software","Master the manual prompts first — integrations are the reward for mastering manual use","Learn Python","Set up a server"],a:1,f:"'Start Simple, Scale Later.' Integration is the reward for mastering manual use. If you don't have a working manual prompt, automating it won't help."},
+  {q:"The '3 Levels of Claude Integration' describe progression from:",o:["Free to paid tiers","On-Demand (reactive) → Habitual (saved prompts) → Systematic (integrated)","Beginner to advanced Claude features","Personal to team use"],a:1,f:"Level 1: On-Demand (ad-hoc). Level 2: Habitual (scheduled recurring prompts). Level 3: Systematic (integrated, automated, infrastructure)."},
+  {q:"What is the format of the Weekly Report Prompt output?",o:["Free-form narrative","Executive Summary → Wins → Metrics → Challenges → Next Week Plan","Bullet points only","Email format"],a:1,f:"The structured format: Executive Summary (3 lines) → Wins → Metrics → Challenges + Resolutions → Next Week Plan. Professional, shareable, consistently formatted."},
+  {q:"Sharing your prompt library with your team creates:",o:["Security risk","A team asset — everyone benefits from each individual's best prompt discoveries","More work for everyone","Competition between team members"],a:1,f:"A shared prompt library means Team Member A's great client response prompt benefits everyone. Collective intelligence that improves the whole team's output."},
+  {q:"Which is NOT a recommended category for a prompt library?",o:["Daily Operations","Content Creation","Competitor Secrets","Client Communication"],a:2,f:"'Competitor Secrets' is not a prompt category. Recommended categories: Operations, Content, Analysis, Communication, HR — actionable business functions."},
+  {q:"The Morning Briefing Prompt includes 'A motivating thought for the day' because:",o:["Claude enjoys writing motivational quotes","It sets positive intention that influences productivity throughout the day","It's required for CRISP prompts","It fills the word count"],a:1,f:"A motivating thought sets emotional tone for the day. Small ritual elements like this make the habit more enjoyable and sustainable long-term."},
+  {q:"What does 'Claude as infrastructure' mean?",o:["Claude is installed on your server","Claude is so embedded in your workflows it runs continuously, not just when you manually open it","Claude has replaced your employees","Claude manages your IT systems"],a:1,f:"Infrastructure = works in the background continuously. Level 3 Claude use means workflows trigger Claude automatically — it's not a tool you visit, it's a system that runs."},
+  {q:"The Project System Prompt section 'How I Use Claude' tells Claude:",o:["Your login credentials","Your main task types, output preferences, and format preferences — so every response is already calibrated to your style","Your company history","Your competitors"],a:1,f:"'How I Use Claude' pre-calibrates every conversation: task types, format preferences (bullets vs paragraphs), output style (analysis vs action). Saves time every single conversation."},
+  {q:"The strongest argument for building a Claude daily ritual is:",o:["Claude is only available for 15 minutes per day","A daily habit compounds — each day's use improves your prompts, and consistent use builds 5-10 hours of weekly time savings","Claude requires daily use to maintain access","It's required by the course"],a:1,f:"Compound benefit: daily use → better prompts → more time saved → reinvest that time → bigger results. The habit creates exponential returns over time."},
+  {q:"What is the ideal starting point for someone new to Claude integration?",o:["Set up Zapier immediately","Learn Python for API access","Save 5 CRISP prompts for your most recurring tasks in your notes app and run them consistently for 2 weeks","Subscribe to the enterprise plan"],a:2,f:"Start with saved prompts — low cost, immediate benefit. After 2 weeks of consistent use, you'll know exactly which workflows are worth automating with Zapier/Make."}
+];
+
+let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+function initQuiz(){quizStarted=true;currentQuestions=shuffle([...ALL_QUESTIONS]).slice(0,8);currentQ=0;score=0;renderQuiz();}
+function renderQuiz(){
+  const c=document.getElementById('quizContainer');
+  if(currentQ>=currentQuestions.length){showScore(c);return;}
+  answered=false;
+  const q=currentQuestions[currentQ];
+  c.innerHTML=`<div class="quiz-header"><h3>Day 12 Quiz</h3><div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div></div><div class="quiz-q"><div class="q-num">Q${currentQ+1}</div><div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb"></div></div><div class="quiz-controls"><div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div><button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next →</button></div>`;
+}
+function selectAnswer(i){
+  if(answered)return;answered=true;
+  const q=currentQuestions[currentQ];
+  const opts=document.querySelectorAll('.option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  opts[i].classList.add(i===q.a?'correct':'wrong');
+  if(i!==q.a)opts[q.a].classList.add('correct');
+  if(i===q.a)score++;
+  const fb=document.getElementById('qfb');
+  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
+  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
+  document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){currentQ++;renderQuiz();}
+function showScore(c){
+  const pct=Math.round((score/currentQuestions.length)*100);
+  const msg=pct>=80?'Excellent!':pct>=60?'Good work!':'Review and retry!';
+  c.innerHTML=`<div class="quiz-score show"><div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div><div class="score-msg">${msg}</div><div class="score-sub">${pct}% — ${score} of ${currentQuestions.length} correct</div><div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-secondary" onclick="showSection(0)">Review Content</button></div></div>`;
+}
+</script>
+</body>
+</html>

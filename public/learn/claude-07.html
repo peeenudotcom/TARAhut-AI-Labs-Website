@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 7: Business Writing — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p,.micro-action ul{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.writing-prompt{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin:1.25rem 0}
+.writing-prompt .wp-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--c4);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.writing-prompt h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.75rem}
+.crisp-breakdown{display:grid;grid-template-columns:auto 1fr;gap:.3rem .75rem;font-size:.85rem;margin-bottom:.75rem}
+.crisp-key{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;padding-top:2px}
+.crisp-val{color:var(--t2);line-height:1.5}
+.email-gen{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.email-gen h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.field label{display:block;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t2);margin-bottom:.4rem;margin-top:1rem}
+.field input,.field select,.field textarea{width:100%;padding:10px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.9rem;outline:none;transition:all .3s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--c1);box-shadow:0 0 12px rgba(0,240,255,.08)}
+.field select option{background:var(--bg2)}
+.gen-output{padding:1.25rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:80px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);white-space:pre-wrap;line-height:1.8;margin-top:1rem}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.crisp-breakdown{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 07 &middot; Master Claude in 15 Days</div>
+  <h1>Business<br><span class="gr">Writing</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Claude's greatest professional strength is business writing — nuanced, audience-aware, instruction-following prose that sounds like a senior professional wrote it. Today you master this capability.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 7 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Why Claude Excels</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Reports & Proposals</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Email Mastery</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Email Generator</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: WHY CLAUDE EXCELS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Why Claude Excels at <span class="gr">Business Writing</span></h2>
+    <p>Not all AI writes equally well. Claude's specific architecture and training make it particularly suited for professional business communication.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">✍️</div><div class="call-body"><h4>The Writing Quality Difference</h4><p>Claude was specifically trained to follow complex, multi-part writing instructions — and to produce nuanced, professional prose rather than templated-sounding output. Where other AI tools tend toward formulaic structure and generic phrasing, Claude produces writing that reads like it came from a senior professional who understood the assignment. That difference is the entire value proposition for business writing.</p></div></div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">Strength</span><span class="crd-icon">🎭</span><h3>Tone Nuance</h3><p>Claude understands the difference between "professional and warm," "assertive but not aggressive," and "formal but accessible." These are genuinely difficult tonal targets — Claude consistently hits them with proper instruction.</p></div>
+    <div class="crd"><span class="tag tag-1">Strength</span><span class="crd-icon">📋</span><h3>Instruction Following</h3><p>Claude reliably follows multi-part, constraint-heavy instructions. "Under 150 words, include a subject line, lead with the prospect's problem, end with a specific CTA, no filler phrases" — Claude executes all of these simultaneously.</p></div>
+    <div class="crd"><span class="tag tag-2">Strength</span><span class="crd-icon">🧠</span><h3>Contextual Intelligence</h3><p>Claude understands implicit context. If you say "write an email following up after a disappointing meeting," Claude understands the emotional dynamics involved without you spelling them out.</p></div>
+    <div class="crd"><span class="tag tag-5">Strength</span><span class="crd-icon">📏</span><h3>Long-form Coherence</h3><p>For documents over 2,000 words, Claude maintains structural coherence, consistent argument, and unified tone throughout — a capability that degrades significantly in other models beyond certain lengths.</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p>There's a threshold in business writing quality where "good enough" becomes "impressive." <strong>Claude consistently writes above that threshold when given proper CRISP prompts.</strong> The gap between your writing today and what you can produce with Claude tomorrow is not small — it's the difference between an acceptable email and one that people remark on positively.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Business Writing Claude Does Better Than Most AI</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">📊</span><h3>Executive Summaries</h3><p>Bottom-line first, supporting evidence second, recommendation last. Claude understands executive reading patterns and structures accordingly.</p></div>
+    <div class="crd"><span class="crd-icon">📝</span><h3>Client Proposals</h3><p>Problem-first framing, solution positioning, ROI justification, clear next steps. Claude handles the persuasion architecture naturally.</p></div>
+    <div class="crd"><span class="crd-icon">📧</span><h3>Sensitive Emails</h3><p>Complaint responses, difficult news, negotiation — Claude handles the emotional register of these communications with remarkable finesse.</p></div>
+    <div class="crd"><span class="crd-icon">📋</span><h3>Standard Operating Procedures</h3><p>Clear, numbered, unambiguous step-by-step processes. Claude writes SOPs that actually get followed because they're readable and complete.</p></div>
+  </div>
+
+  <div class="micro-win">You now understand the specific capabilities that make Claude the superior choice for professional business writing.</div>
+
+  <p class="curiosity-hook">Next: CRISP prompts for reports, proposals, and SOPs — with complete examples.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Reports & Proposals &rarr;</button></div>
+</div>
+
+<!-- S2: REPORTS & PROPOSALS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done. Now: the exact CRISP prompts for four major business document types.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Report & Proposal <span class="gr">Writing</span></h2>
+    <p>Four document types. Complete CRISP breakdowns for each. These are reusable templates — adapt them to your context.</p>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Document Type 01</div>
+    <h4>📊 Executive Summary</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Quarterly performance review for a digital marketing agency. Mixed results: revenue up 18%, client retention down to 82%, team expanding from 8 to 12 people. Board meets Friday.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a senior management consultant who writes executive summaries for board presentations.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write an executive summary that presents performance honestly, identifies the key issue (retention decline), frames the team expansion as the strategic response, and ends with a forward-looking recommendation.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">Board members are experienced business people. They appreciate direct, data-led communication. Do not bury the retention problem — address it upfront.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">350-400 words. Three sections: Performance Snapshot, Critical Issue, Strategic Response. Professional tone. No passive voice.</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Document Type 02</div>
+    <h4>📄 Client Proposal</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Proposing a 6-month brand identity and digital presence project to a Ludhiana manufacturing company (₹50Cr annual revenue) that has no digital presence. They've had an initial exploratory meeting and showed strong interest.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a senior brand strategist at a boutique branding agency with B2B manufacturing experience.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a proposal that opens with the client's business problem (invisible to their target buyers), presents the solution (brand identity + digital presence), outlines the 6-month project timeline, and states pricing clearly.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">Project value: ₹4.5 Lakh. Decision maker is the MD who is practical and ROI-focused. Avoid creative agency jargon. Include ROI framing: how visibility translates to inquiry volume.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">600-700 words. 4 sections: Problem, Solution, Timeline, Investment. Confident, consultative tone. End with a clear next step.</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Document Type 03</div>
+    <h4>📋 Standard Operating Procedure</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">E-commerce company with 10 customer service staff. Currently no standard process for handling refund requests — each staff member handles differently, causing inconsistency and customer complaints.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are an operations manager writing an SOP for the customer service team.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a complete SOP for handling customer refund requests, covering: receiving the request, verifying eligibility, approving or escalating, processing the refund, and following up with the customer.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">Refund policy: eligible within 7 days for product defects only. Orders over ₹5,000 require manager approval. All refunds logged in the CRM. Customer communication must be empathetic and within 24 hours.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">Numbered steps. Clear, unambiguous language. Include a decision tree for approval escalation. Include template customer communication scripts. Under 500 words main body.</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Document Type 04</div>
+    <h4>📈 Full Research Report</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Management team of a traditional retail chain evaluating whether to launch an online store. Need an internal research report to support or challenge the decision.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a retail industry research analyst who has covered Indian retail for 8 years.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a research report assessing the opportunity, risks, investment requirements, and success factors for a traditional retail chain launching D2C e-commerce in India.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">Company is a 3-store apparel chain in Tier 2 cities. Annual revenue ₹8 Cr. No current digital presence. Focus on realistic assessment — not promotional. Include both optimistic and conservative scenarios.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">5 sections: Market Context, Opportunity Assessment, Risk Analysis, Investment Requirements, Recommendation. 800-1000 words. Include specific numbers and percentages wherever possible. Professional, balanced tone.</span>
+    </div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">💡</div><div class="call-body"><h4>The Reusability Principle</h4><p>These CRISP templates are scaffolds, not scripts. Each time you use one, replace the bracketed context with your real situation. The structure stays constant; the content is always specific to your context. Over time, build your own library of tested CRISP templates for your most common document types.</p></div></div>
+
+  <div class="micro-action">
+    <h4>Document Writing Practice</h4>
+    <p>Pick one of the four document types above. Adapt the CRISP template to a real document you need to write this week. Run it in Claude. Compare what Claude produces with your typical first draft. Measure: time saved, revision rounds needed, quality rating from 1-10.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Email mastery — the document type you'll use most often.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Email Mastery &rarr;</button></div>
+</div>
+
+<!-- S3: EMAIL MASTERY -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% through Day 7. Email is the highest-frequency professional writing task — master it here.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Email <span class="gr">Mastery</span></h2>
+    <p>Four email categories with complete CRISP breakdowns. The most practical section in the business writing module.</p>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Email Category 01</div>
+    <h4>📩 Cold Outreach — B2B Lead Generation</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Reaching out cold to the owner of a Chandigarh-based restaurant chain (5 locations) to pitch social media management services. No prior contact.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a digital marketing consultant who has worked with 3 restaurant brands in Punjab.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a cold outreach email that leads with a relevant observation about their social media presence, connects it to a real business outcome (foot traffic, delivery orders), and proposes a 15-minute call.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">The restaurant has 2,300 Instagram followers and posts irregularly. Their competitor across the street has 15,000 followers and runs weekly promotions. Use this comparison without naming the competitor.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">Under 120 words. Subject line included. No filler phrases. End with a specific, low-friction CTA. Professional but personalized tone.</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Email Category 02</div>
+    <h4>🔄 Follow-Up — After No Response</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Sent a proposal 10 days ago to a manufacturer who was enthusiastic in the meeting. No response since. Third follow-up attempt.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a B2B sales consultant who follows up with respectful persistence and genuine curiosity, never desperation.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a follow-up email that acknowledges the silence without pressure, adds a new piece of value (a relevant insight or mini-resource), and re-opens the conversation naturally.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">The proposal was for a website redesign. Add value with a 2-sentence insight about how industrial B2B websites affect export inquiries. Make them want to respond because you gave them something useful.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">Under 100 words. No guilt-tripping. Subject line: reference of previous email. End with an easy yes/no question, not a long CTA.</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Email Category 03</div>
+    <h4>⚠️ Complaint Response — Handling Unhappy Customers</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">Customer received a damaged product and wrote an angry email. The damage occurred during shipping (third-party courier). This is their third order with us — a loyal customer.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a senior customer experience manager who handles escalations with empathy and efficiency.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a complaint response that acknowledges the frustration genuinely (not formulaically), takes clear responsibility without excessive apologizing, and proposes a concrete resolution.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">Resolution: full replacement product shipped within 3 days, no need to return damaged item. Customer should also receive a 15% discount code for next order as goodwill. Don't blame the courier — own the experience.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">Under 150 words. Warm, direct, no corporate language. Lead with empathy, close with the solution. No passive voice. Subject: "Your replacement is on its way."</span>
+    </div>
+  </div>
+
+  <div class="writing-prompt">
+    <div class="wp-label">Email Category 04</div>
+    <h4>🤝 Negotiation — Price Discussion</h4>
+    <div class="crisp-breakdown">
+      <span class="crisp-key" style="color:var(--c1)">C</span><span class="crisp-val">A potential long-term client has asked for a 25% discount on a ₹2 Lakh project. The budget has been presented as firm. You're willing to offer 10% or adjusted scope, not 25%.</span>
+      <span class="crisp-key" style="color:var(--c2)">R</span><span class="crisp-val">You are a confident, commercially-minded consultant who values long-term relationships but knows your worth.</span>
+      <span class="crisp-key" style="color:var(--c3)">I</span><span class="crisp-val">Write a negotiation response that respects their budget constraint, offers a genuine alternative (10% discount OR reduced scope), and keeps the relationship warm while firmly communicating your pricing rationale.</span>
+      <span class="crisp-key" style="color:var(--c4)">S</span><span class="crisp-val">The 10% offer equals ₹1.8L — this is your firm limit. The scope reduction alternative: remove the social media setup phase (save ₹35K) and keep core deliverables. Frame positively — give them a choice, not an ultimatum.</span>
+      <span class="crisp-key" style="color:var(--c5)">P</span><span class="crisp-val">Under 180 words. Confident but warm tone. No desperation, no over-explaining. Two clear paths forward, one ask for their decision. Professional subject line.</span>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">⚡</div><div class="call-body"><h4>The Business Email Productivity Multiplier</h4><p>The average professional writes 10-20 significant emails per week. With CRISP-structured Claude prompts, each email takes 2-3 minutes instead of 10-20 minutes. That's <strong>1-2 hours saved every week just on email</strong> — 50-100 hours per year, consistently.</p></div></div>
+
+  <p class="curiosity-hook">Next: Interactive Email Generator — fill in the details, get the CRISP prompt and a sample output.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Email Generator &rarr;</button></div>
+</div>
+
+<!-- S4: EMAIL GENERATOR -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% through Day 7. The interactive generator transforms your inputs into ready-to-use Claude prompts.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Interactive <span class="gr">Email Generator</span></h2>
+    <p>Fill in recipient, purpose, and tone. Get a complete CRISP prompt ready to paste into Claude.</p>
+  </div>
+
+  <div class="email-gen">
+    <h3>✉️ CRISP Email Prompt Generator</h3>
+    <div class="field">
+      <label>Recipient Role / Description</label>
+      <input id="eRecipient" type="text" placeholder="e.g., Owner of a textile factory in Ludhiana, 45 years old, practical, budget-conscious" oninput="genEmail()">
+    </div>
+    <div class="field">
+      <label>Email Type</label>
+      <select id="eType" onchange="genEmail()">
+        <option value="">Select email type...</option>
+        <option value="cold">Cold Outreach</option>
+        <option value="followup">Follow-Up (after no response)</option>
+        <option value="proposal">Proposal Submission</option>
+        <option value="complaint">Complaint Response</option>
+        <option value="negotiation">Negotiation / Counter-offer</option>
+        <option value="thankyou">Thank You / Post-meeting</option>
+        <option value="announcement">Announcement / Update</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Your Core Message / Goal</label>
+      <textarea id="eMessage" rows="3" placeholder="e.g., I want to schedule a 20-minute call to pitch our inventory management software — focus on how it reduces manual counting errors that cost them 2-3 hours daily" oninput="genEmail()"></textarea>
+    </div>
+    <div class="field">
+      <label>Key Context or Specific Details</label>
+      <input id="eContext" type="text" placeholder="e.g., We spoke briefly at the Ludhiana Trade Fair last month. They mentioned inventory tracking was their biggest pain point." oninput="genEmail()">
+    </div>
+    <div class="field">
+      <label>Tone</label>
+      <select id="eTone" onchange="genEmail()">
+        <option value="">Select tone...</option>
+        <option value="professional-warm">Professional and Warm</option>
+        <option value="formal">Formal / Corporate</option>
+        <option value="consultative">Consultative / Expert</option>
+        <option value="direct">Direct / Brief</option>
+        <option value="empathetic">Empathetic / Supportive</option>
+        <option value="confident">Confident / Assertive</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Length</label>
+      <select id="eLength" onchange="genEmail()">
+        <option value="under 80 words">Very Short (under 80 words)</option>
+        <option value="under 120 words" selected>Short (under 120 words)</option>
+        <option value="under 200 words">Medium (under 200 words)</option>
+        <option value="250-350 words">Detailed (250-350 words)</option>
+      </select>
+    </div>
+    <div>
+      <h4 style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--c1);margin:1.5rem 0 .5rem;text-transform:uppercase;letter-spacing:1.5px">Generated CRISP Prompt:</h4>
+      <div class="gen-output" id="emailOutput">Fill in the fields above to generate your CRISP email prompt...</div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap">
+      <button class="btn btn-glow btn-sm" onclick="copyEmail()">Copy CRISP Prompt</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearEmail()">Clear All</button>
+    </div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>How to Use This Generator</h4><p>1. Fill in all fields for your specific email<br>2. Copy the generated CRISP prompt<br>3. Paste it into Claude<br>4. Review Claude's email draft<br>5. If needed, iterate with specific adjustments: "Make the subject line more intriguing" or "Reduce by 30 words and make the CTA more specific"</p></div></div>
+
+  <div class="identity-shift">Business writing is the skill that makes every other professional skill visible. Claude makes you a stronger communicator from day one.</div>
+
+  <div class="micro-action">
+    <h4>Day 7 Capstone: Email Library</h4>
+    <p>Use the generator to create CRISP prompts for 5 emails you commonly write:<br>1. Your standard cold outreach email<br>2. Your follow-up after no response<br>3. A proposal cover email<br>4. A meeting request email<br>5. A client project update email<br><br>Run each in Claude. Save the best versions. You now have a personal email library that produces ready-to-send emails in under 2 minutes.</p>
+  </div>
+
+  <p class="curiosity-hook">Test your business writing knowledge before Day 8's research focus.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 7 Knowledge Check. Business writing, email strategies, CRISP for documents.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 7 <span class="gr">Quiz</span></h2>
+    <p>Business writing principles and strategies tested in 8 randomized questions.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Day 7 complete. Your business writing just got permanently better.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Generator</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 7</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// EMAIL GENERATOR
+const emailTypes={
+  cold:{role:'experienced B2B sales consultant',instruct:'Write a cold outreach email that leads with an insight about the recipient\'s situation, connects to a business outcome, and proposes a specific low-friction next step'},
+  followup:{role:'persistent but respectful sales professional',instruct:'Write a follow-up email that acknowledges the silence without pressure, adds a new piece of value or insight, and reopens the conversation naturally'},
+  proposal:{role:'senior consultant submitting a formal proposal',instruct:'Write a proposal submission email that summarizes the key value proposition, references the client\'s stated objectives, and makes the next step clear'},
+  complaint:{role:'senior customer experience manager',instruct:'Write a complaint response that acknowledges frustration genuinely, takes responsibility, and proposes a clear, immediate resolution'},
+  negotiation:{role:'confident consultant who values long-term relationships',instruct:'Write a negotiation response that respectfully addresses the budget constraint, offers an alternative, and keeps the relationship warm while being clear about your position'},
+  thankyou:{role:'professional relationship builder',instruct:'Write a post-meeting thank you that references specific conversation points, confirms next steps, and adds one piece of relevant value'},
+  announcement:{role:'professional communicator',instruct:'Write a clear, well-structured announcement that leads with the key information, provides necessary context, and specifies any action required'}
+};
+
+function genEmail(){
+  const rec=document.getElementById('eRecipient').value.trim();
+  const type=document.getElementById('eType').value;
+  const msg=document.getElementById('eMessage').value.trim();
+  const ctx2=document.getElementById('eContext').value.trim();
+  const tone=document.getElementById('eTone').value;
+  const len=document.getElementById('eLength').value;
+  const out=document.getElementById('emailOutput');
+  if(!rec||!type||!msg){out.textContent='Fill in recipient, email type, and your core message to generate the CRISP prompt...';return}
+  const et=emailTypes[type]||emailTypes.cold;
+  const toneMap={'professional-warm':'professional and warm','formal':'formal and corporate','consultative':'consultative and expert','direct':'direct and brief','empathetic':'empathetic and supportive','confident':'confident and assertive'};
+  const toneText=toneMap[tone]||'professional';
+  let prompt=`[Context: ${ctx2?ctx2+' ':''}I am writing to ${rec}.${msg?' My goal: '+msg:''}]\n\n`;
+  prompt+=`[Role: You are a ${et.role}.]\n\n`;
+  prompt+=`[Instructions: ${et.instruct}. Include a compelling subject line.]\n\n`;
+  prompt+=`[Specifics: Recipient is ${rec}. Tailor language and examples to their context specifically.]\n\n`;
+  prompt+=`[Parameters: ${len}. ${toneText} tone. No filler phrases. Clear CTA at the end. Subject line on first line.]`;
+  out.textContent=prompt;
+}
+function copyEmail(){const text=document.getElementById('emailOutput').textContent;if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>{const btn=event.target;const orig=btn.textContent;btn.textContent='Copied!';btn.style.background='var(--c5)';setTimeout(()=>{btn.textContent=orig;btn.style.background=''},2000)})}
+function clearEmail(){['eRecipient','eMessage','eContext'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});['eType','eTone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('eLength').value='under 120 words';document.getElementById('emailOutput').textContent='Fill in the fields above to generate your CRISP email prompt...'}
+
+const qData=[
+  {q:"What makes Claude specifically superior for business writing compared to generic AI tools?",o:["It writes faster","It follows complex multi-part writing instructions and produces nuanced professional prose rather than templated output","It uses more words in responses","It integrates with Microsoft Office"],a:1,e:"Claude's Constitutional AI training makes it particularly adept at following complex, multi-part writing instructions and producing contextually appropriate, professional prose — rather than the formulaic, template-like output common in other AI tools."},
+  {q:"In a client proposal written with Claude, what should lead the structure?",o:["Your company's credentials and history","The pricing and timeline first","The client's problem — before your solution","A list of all your past clients"],a:2,e:"The 'Problem-first' structure is the most persuasive approach for client proposals. Starting with the client's problem (before your solution) demonstrates that you understand their situation — which is the prerequisite for any credible solution."},
+  {q:"For a cold outreach email written with Claude, what is the most critical element?",o:["Length — it should be as long as possible","A relevant observation about the recipient's specific situation, not generic praise","Company credentials upfront","Multiple CTAs for maximum options"],a:1,e:"Cold outreach succeeds when it demonstrates you've done your research. A specific, relevant observation about the recipient's situation (their social media presence, a public challenge, a recent announcement) differentiates you from mass-blast emails immediately."},
+  {q:"What is the recommended structure for an executive summary?",o:["Background, history, details, conclusions","Supporting evidence first, main finding at the end","Bottom-line first, supporting evidence second, recommendation last","Introduction, body, conclusion in equal parts"],a:2,e:"Executives read top-down. Lead with the bottom line (key finding/decision), follow with supporting evidence, close with a specific recommendation. This respects their time and cognitive style."},
+  {q:"When writing a complaint response email with Claude, what should you NOT do?",o:["Acknowledge the frustration genuinely","Take clear responsibility","Blame the third-party courier even if they caused the problem","Propose a concrete resolution"],a:2,e:"Never blame third parties in a complaint response — the customer's experience with you is what matters, not whose fault it technically was. 'Own the experience' is the professional standard for customer communications."},
+  {q:"What is the CRISP component most likely to be omitted in a weak complaint response email prompt?",o:["Role","Instructions","Specifics (the actual resolution being offered)","Context"],a:2,e:"Weak complaint response prompts often lack Specifics — the actual resolution (what exactly is being offered: replacement, refund, discount, etc.). Without these details, Claude produces generic sympathy without actionable resolution."},
+  {q:"In a negotiation email, what is the professional approach when a client asks for a 25% discount you can't offer?",o:["Reject the request firmly and move on","Immediately match their number to close the deal","Offer two clear alternatives (10% discount OR adjusted scope) and let them choose","Never negotiate — stick to your original price with no options"],a:2,e:"Presenting two genuine alternatives gives the client agency and keeps the negotiation collaborative rather than adversarial. 'Take it or leave it' closes doors; 'here are two ways we can make this work' keeps them open."},
+  {q:"How many significant hours per year can CRISP-structured email prompting save a professional who writes 10-20 emails per week?",o:["5-10 hours","20-30 hours","50-100 hours","No meaningful time saving — email is fast anyway"],a:2,e:"If each email takes 10-20 minutes manually vs. 2-3 minutes with CRISP-structured Claude prompts, that's 8-17 minutes saved per email. At 15 emails/week, that's roughly 50-100 hours per year — a full week of working time."},
+  {q:"For a follow-up email after no response, what is the most effective strategy beyond simply resending?",o:["Increasing urgency by mentioning limited availability","Adding a new piece of relevant value or insight to earn the response","Making the email longer to show effort","Switching to a phone call immediately"],a:1,e:"The 'value-add' follow-up strategy — including a brief relevant insight the recipient didn't have before — gives them a reason to respond beyond courtesy. It positions you as a valuable resource, not someone chasing a deal."},
+  {q:"What CRISP component specifies 'no filler phrases' and 'professional tone' in an email prompt?",o:["Context","Role","Instructions","Parameters"],a:3,e:"Parameters (P) specify output constraints including tone, length, formatting requirements, and what to exclude — like 'no filler phrases' or 'no passive voice'. These guardrails shape the quality and style of the output."},
+  {q:"Which document type is most appropriate for providing operational guidance to staff?",o:["Executive Summary","Client Proposal","Standard Operating Procedure","Research Report"],a:2,e:"Standard Operating Procedures (SOPs) provide clear, numbered, step-by-step operational guidance. They're designed to be followed repeatedly by staff — which requires clarity, completeness, and unambiguous instructions."},
+  {q:"What does 'long-form coherence' mean as a Claude business writing strength?",o:["Claude uses many synonyms to avoid repetition","Claude maintains consistent argument, structure, and tone throughout documents over 2,000 words","Claude always writes exactly 2,000 words","Claude breaks long documents into exactly 5 sections"],a:1,e:"Long-form coherence means Claude maintains unified tone, consistent argument, and structural integrity throughout long documents — a capability that degrades in many models beyond certain lengths. This is critical for reports and proposals."},
+  {q:"For the Email Generator interactive tool, what does filling in 'Key Context' help Claude achieve?",o:["It makes the prompt shorter","It enables Claude to personalize the email with specific, relevant details that differentiate it from a generic template","It automatically sends the email","It selects the appropriate email type"],a:1,e:"Key context (prior meeting, specific pain point, shared reference) enables genuine personalization — the most important quality in effective business emails. Generic emails are ignored; specific, relevant emails get responses."},
+  {q:"What is the 'Reusability Principle' for CRISP writing templates?",o:["Use the exact same prompt every time for consistency","Templates are scaffolds — the structure stays constant, the specific content adapts to each new situation","Each template can only be used once","CRISP templates only work for email, not for longer documents"],a:1,e:"CRISP templates are scaffolds: the framework (role, structure, parameters) is reusable, but you replace the Context and Specifics with your real situation each time. This is why building a personal template library compounds in value over time."},
+  {q:"For a research report commissioned for internal decision-making, what tone is most appropriate?",o:["Promotional — make the opportunity sound attractive","Neutral and balanced — presenting both optimistic and conservative scenarios with flagged assumptions","Pessimistic — focus on risks to be cautious","Casual — make it easy to read for a general audience"],a:1,e:"Internal research reports for decision-making should be balanced — presenting realistic scenarios, flagging assumptions, and including both upside and downside. Promotional or biased reports undermine the decision-making process they're meant to support."},
+  {q:"What is the purpose of specifying 'no passive voice' in an email Parameters section?",o:["It makes the email longer","Passive voice is grammatically incorrect","Active voice creates clearer, more direct, more confident-sounding communication — especially important in business contexts","It reduces the word count by 30%"],a:2,e:"Active voice produces clearer, more confident, more direct communication. 'We will resolve this by Friday' (active) is stronger than 'This will be resolved by Friday' (passive). Specifying 'no passive voice' in Parameters consistently improves email quality."},
+  {q:"Which email type is the most delicate to write in terms of managing multiple emotional registers simultaneously?",o:["Cold outreach","Negotiation email — balancing confidence, respect, and commercial clarity without desperation or aggression","Thank you email","Project status update"],a:1,e:"Negotiation emails require the most tonal complexity: confident but not arrogant, firm but not aggressive, respectful but not pleading. Claude's Constitutional AI training makes it particularly good at holding multiple tonal constraints simultaneously."},
+  {q:"What does 'lead with the prospect's problem, not your product' mean in sales writing?",o:["Never mention your product in the email","Open with an insight about the recipient's challenge before introducing your solution","Include a problem statement in the PS","Use questions instead of statements"],a:1,e:"Problem-first structure is the foundation of effective B2B sales writing. When the opening sentence is about the reader's situation (not the writer's offering), it immediately signals relevance and earns continued reading."},
+  {q:"For the complaint response email, what is the strongest closing element?",o:["Apologizing extensively again at the end","A reminder of the return policy","A specific, concrete resolution with timeline — leaving the customer with certainty","Asking the customer if they'd like to speak to a manager"],a:2,e:"Specific resolution with timeline gives the customer certainty — which is what unhappy customers want most. 'Your replacement ships within 3 days' is far more satisfying than 'we'll look into this immediately'."},
+  {q:"What makes the follow-up after a disappointed meeting particularly challenging?",o:["It's always appropriate to apologize extensively","You must acknowledge what didn't land well while maintaining credibility and proposing a path forward","The email should never reference the meeting","It should always be sent the same day"],a:1,e:"Post-disappointing-meeting emails require acknowledging reality honestly (without over-explaining or apologizing excessively), maintaining credibility, and proposing a genuine path forward. This balance is exactly where Claude's tonal nuance becomes most valuable."},
+  {q:"For a client proposal, what should the 'next step' at the end be?",o:["'Please let me know if you have any questions'","A specific, actionable step with a clear owner and timeline","A list of all possible next steps","An invitation to review the proposal at their leisure"],a:1,e:"The next step should be specific (not vague), actionable (not passive), and ideally have a timeline. 'I'll call you Thursday morning to discuss any questions before we proceed' is far stronger than 'please reach out with any questions'."},
+  {q:"Which business document type requires Claude to 'maintain structural coherence and unified tone throughout' most critically?",o:["A short 80-word email","A tweet-length business message","A multi-section research report (800-1000 words)","A 3-bullet executive summary"],a:2,e:"Long research reports require coherence — consistent argument, unified tone, and structural integrity throughout. This is where Claude's long-form coherence capability delivers real value over models that drift in style and argument over longer outputs."},
+  {q:"In the CRISP framework for business writing, what does 'Specifics' most commonly include?",o:["The exact word count required","Audience characteristics, particular details that must be included, terminology preferences, and contextual nuances unique to this situation","The formatting template","The deadline for delivery"],a:1,e:"Specifics (S) includes audience characteristics (who will read this, what do they know), required details (numbers, references, inclusions), terminology, and contextual nuances that differentiate this situation from a generic scenario."},
+  {q:"What is the primary productivity benefit of building a personal CRISP email template library?",o:["Templates make emails look more professional","Each email is now unique and creative","Common email types take under 2 minutes from prompt to ready-to-send draft — compounding time savings daily","Templates ensure Claude never makes mistakes"],a:2,e:"A personal template library means common email types (outreach, follow-up, proposal, etc.) require only context-filling rather than prompt construction from scratch. This compression to under 2 minutes per email compounds significantly over a year of use."},
+  {q:"For an SOP written with Claude, what element most distinguishes a well-structured SOP from a poorly structured one?",o:["Length — longer SOPs are more comprehensive","The presence of a decision tree for escalation scenarios and template communication scripts, not just numbered steps","Using formal language throughout","Including references to industry standards"],a:1,e:"Well-structured SOPs go beyond numbered steps — they include decision trees for scenarios where staff must make judgment calls (e.g., 'orders over ₹5,000 require manager approval') and template scripts for communication. These elements make SOPs actually usable, not just informative."}
+];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Business Writing Pro';col='var(--brand)'}else if(pct>=50){tier='Good Foundation';col='var(--c1)'}else{tier='Review the Templates';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Day 8 shifts to research and analysis — Claude's long context superpower applied to knowledge work.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-07-Business-Writing');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

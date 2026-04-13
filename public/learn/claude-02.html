@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 2: Interface Mastery — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.ui-annotated{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0;position:relative}
+.ui-annotated .ui-mock{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1.5rem;margin-bottom:1.5rem;min-height:120px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.8rem}
+.annotation-list{display:flex;flex-direction:column;gap:.6rem}
+.annotation{display:flex;align-items:flex-start;gap:12px;padding:.75rem 1rem;background:rgba(0,240,255,.03);border-radius:var(--rs);border:1px solid rgba(0,240,255,.08)}
+.annotation .num{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--c1);background:rgba(0,240,255,.1);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.annotation p{font-size:.85rem;color:var(--t2)}
+.annotation strong{color:var(--t1)}
+.shortcut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.75rem;margin:1.5rem 0}
+.shortcut{display:flex;align-items:center;gap:12px;padding:.9rem 1.1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);transition:all .3s}
+.shortcut:hover{border-color:rgba(0,240,255,.2);background:var(--bg3)}
+.kbd{font-family:'JetBrains Mono',monospace;font-size:.72rem;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:2px 7px;color:var(--c1)}
+.shortcut-desc{font-size:.85rem;color:var(--t2)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 02 &middot; Master Claude in 15 Days</div>
+  <h1>Interface<br><span class="gr">Mastery</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Most users explore 20% of Claude's interface. Power users know every button, every shortcut, every hidden capability. Today you become a power user.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 2 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Interface Tour</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Conversation Features</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Power User Tips</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Mobile & Desktop</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: INTERFACE TOUR -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The Claude <span class="gr">Interface Tour</span></h2>
+    <p>A complete annotated walkthrough of every element in claude.ai. No guessing — know exactly what everything does.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🗺️</div><div class="call-body"><h4>Why Interface Mastery Matters</h4><p>Speed is leverage. A user who knows every shortcut and feature completes the same tasks in half the time. Over a year, interface mastery translates to <strong>hundreds of hours saved</strong>. This section is about deliberate competence, not accidental discovery.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Left Sidebar — Navigation & History</h3>
+  <div class="annotation-list">
+    <div class="annotation"><div class="num">1</div><p><strong>New Chat button</strong> — Starts a fresh conversation with no prior context. Use this when switching topics completely. Every new chat starts with Claude's full context window available.</p></div>
+    <div class="annotation"><div class="num">2</div><p><strong>Chat History</strong> — All previous conversations, searchable. Claude does not use previous chats unless you explicitly paste content into the current chat. Each conversation is isolated.</p></div>
+    <div class="annotation"><div class="num">3</div><p><strong>Projects</strong> — Persistent workspaces with custom instructions and uploaded documents. The most powerful feature for professional workflows. Covered in depth on Day 4.</p></div>
+    <div class="annotation"><div class="num">4</div><p><strong>Starred Conversations</strong> — Pin important conversations for quick access. Star your best prompt templates and reference conversations here.</p></div>
+    <div class="annotation"><div class="num">5</div><p><strong>Profile & Settings</strong> — Account, subscription, default model, and appearance. Check your usage limits here when approaching your plan's threshold.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Main Chat Area — The Core Interface</h3>
+  <div class="annotation-list">
+    <div class="annotation"><div class="num">6</div><p><strong>Model Selector</strong> — Top of chat. Click to switch between Haiku, Sonnet, and Opus mid-conversation. Model switches apply to the next message only; previous messages stay as-is.</p></div>
+    <div class="annotation"><div class="num">7</div><p><strong>Message Input Box</strong> — Supports markdown formatting as you type. Press Shift+Enter for new lines. The input box expands automatically with your text. Maximum single message: ~3,000 words.</p></div>
+    <div class="annotation"><div class="num">8</div><p><strong>Attach Files</strong> — Upload PDFs, documents, images, code files, data files. Claude reads and analyzes these inline. Supported formats: PDF, DOCX, TXT, CSV, most image formats, code files.</p></div>
+    <div class="annotation"><div class="num">9</div><p><strong>Send Button / Stop Button</strong> — The send button becomes a stop button while Claude is generating. Click stop to halt generation mid-response — useful when Claude goes in the wrong direction.</p></div>
+    <div class="annotation"><div class="num">10</div><p><strong>Response Actions</strong> — On every Claude response: Copy (copies full response), Thumbs Up/Down (sends feedback to Anthropic), Retry (regenerates with same prompt), Edit (modifies Claude's response directly).</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Response-Level Features</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">📋</span><h3>Copy Button</h3><p>Copies the entire response as clean text, stripping markdown formatting. Paste directly into Word, email, or any document. The formatting comes through cleanly.</p></div>
+    <div class="crd"><span class="crd-icon">🔄</span><h3>Retry / Regenerate</h3><p>Re-runs the same prompt for a different response. Use this when Claude's first response misses the mark. Different random seeds produce meaningfully different outputs.</p></div>
+    <div class="crd"><span class="crd-icon">✏️</span><h3>Edit Message</h3><p>Edit your previous message without starting a new chat. The conversation branches — both the original and edited versions coexist. Useful for testing prompt variations.</p></div>
+    <div class="crd"><span class="crd-icon">🔗</span><h3>Share</h3><p>Creates a shareable link to the conversation (read-only). Share with team members, clients, or include in reports. Link recipients can view but not edit the conversation.</p></div>
+  </div>
+
+  <div class="micro-win">You now know what every element in the Claude interface does. Most users never explore this deliberately.</div>
+
+  <div class="micro-action">
+    <h4>Interface Audit</h4>
+    <p>Open claude.ai and spend 5 minutes deliberately clicking every button and element you haven't used before. Find at least 3 things you didn't know existed. No reading required — just explore.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The conversation features that change how you work with Claude.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Conversation Features &rarr;</button></div>
+</div>
+
+<!-- S2: CONVERSATION FEATURES -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Interface tour complete. Now: conversation-level features that most users miss.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Conversation <span class="gr">Features</span></h2>
+    <p>How you structure and manage conversations directly affects output quality. These features give you professional-level control.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Starting & Managing Conversations</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>What It Does</th><th>When to Use It</th></tr></thead>
+      <tbody>
+        <tr><td><strong>New Chat</strong></td><td>Fresh session, full context window</td><td>New topic, fresh perspective, avoid contamination from previous conversation</td></tr>
+        <tr><td><strong>Continue Chat</strong></td><td>Add to existing conversation</td><td>Same project, building on prior context, iterating on work</td></tr>
+        <tr><td><strong>Edit Message</strong></td><td>Modify a prior message and regenerate</td><td>Testing prompt variations, fixing unclear instructions</td></tr>
+        <tr><td><strong>Retry</strong></td><td>Regenerate Claude's last response</td><td>Response quality was poor, need different angle, testing consistency</td></tr>
+        <tr><td><strong>Star Conversation</strong></td><td>Pin to sidebar for quick access</td><td>Reference templates, ongoing projects, useful conversation threads</td></tr>
+        <tr><td><strong>Rename Chat</strong></td><td>Give conversation a descriptive name</td><td>Always. Default names are useless. Name every important conversation immediately.</td></tr>
+        <tr><td><strong>Share Link</strong></td><td>Creates read-only shareable URL</td><td>Sharing work with team, sending to clients, documenting outputs</td></tr>
+        <tr><td><strong>Delete Chat</strong></td><td>Permanently removes from history</td><td>Sensitive conversations, test conversations, cleanup</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Model Switching Mid-Conversation</h3>
+  <div class="callout call-2"><div class="call-ico">⚡</div><div class="call-body"><h4>Professional Technique: Layered Model Use</h4><p>Start a conversation with <strong>Sonnet</strong> to draft and explore ideas quickly. When you have a refined question or need the highest quality for a specific output, <strong>switch to Opus</strong> for that message only. Then switch back to Sonnet to continue. This hybrid approach gives you quality where it matters without the speed/cost penalty throughout.</p></div></div>
+
+  <div class="callout call-1"><div class="call-ico">📎</div><div class="call-body"><h4>File Upload Strategy</h4><p>Claude accepts files up to 10MB. For best results:<br><strong>PDFs:</strong> Text-based PDFs work best. Scanned PDFs may have OCR limitations.<br><strong>Images:</strong> Claude can read text in images, describe visual content, and analyze charts.<br><strong>Code files:</strong> Paste into the message for better context, or upload for large codebases.<br><strong>Spreadsheets:</strong> Export as CSV for cleanest data analysis. Excel formatting can confuse parsing.<br><strong>Multiple files:</strong> You can upload up to 5 files per message.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Context Window Management</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-4">⚠️ Warning Sign</span><h3>Context Saturation</h3><p>Long conversations degrade quality. When a conversation has 20+ exchanges, Claude starts losing track of early instructions. Signs: repeating yourself, quality drops, ignoring constraints.</p></div>
+    <div class="crd"><span class="tag tag-5">Best Practice</span><h3>Fresh Start Strategy</h3><p>For long projects, don't continue one mega-conversation. Create fresh chats for each phase. Paste relevant prior output as context. This is counterintuitive but dramatically improves quality.</p></div>
+    <div class="crd"><span class="tag tag-1">Pro Move</span><h3>Context Compression</h3><p>Ask Claude: "Summarize the key decisions and context from this conversation in 200 words." Paste that summary into your next fresh chat. Full context, clean slate.</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p>The biggest mistake intermediate Claude users make is <strong>never starting a new chat.</strong> They keep adding to conversations until Claude is confused and context-saturated. Professional usage means being intentional about when to continue vs. when to start fresh.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Conversation Hygiene Practice</h4>
+    <p>Go through your Claude conversation history. Rename your 5 most useful conversations with descriptive names. Star 2-3 that you reference often. Delete any test or junk conversations. Treat your Claude history like a professional filing system.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Keyboard shortcuts and power techniques that make you 3x faster.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Power User Tips &rarr;</button></div>
+</div>
+
+<!-- S3: POWER USER TIPS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% through Day 2. This section contains the highest-leverage tips in the module.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Power User <span class="gr">Techniques</span></h2>
+    <p>Keyboard shortcuts, context management, handling long outputs — the techniques that separate casual users from productive professionals.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Keyboard Shortcuts</h3>
+  <div class="shortcut-grid">
+    <div class="shortcut"><span class="kbd">Shift + Enter</span><span class="shortcut-desc">New line without sending</span></div>
+    <div class="shortcut"><span class="kbd">Enter</span><span class="shortcut-desc">Send message</span></div>
+    <div class="shortcut"><span class="kbd">↑ Arrow</span><span class="shortcut-desc">Edit previous message (when input is empty)</span></div>
+    <div class="shortcut"><span class="kbd">Ctrl/⌘ + K</span><span class="shortcut-desc">New conversation</span></div>
+    <div class="shortcut"><span class="kbd">Ctrl/⌘ + /</span><span class="shortcut-desc">Open keyboard shortcut guide</span></div>
+    <div class="shortcut"><span class="kbd">Escape</span><span class="shortcut-desc">Stop generation mid-response</span></div>
+    <div class="shortcut"><span class="kbd">Ctrl/⌘ + C</span><span class="shortcut-desc">Copy selected response text</span></div>
+    <div class="shortcut"><span class="kbd">Tab</span><span class="shortcut-desc">Autocomplete in code blocks</span></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Handling Long Outputs</h3>
+  <div class="callout call-3"><div class="call-ico">📄</div><div class="call-body"><h4>When Claude Truncates (Stops Early)</h4><p>If Claude stops mid-response, simply type <code>continue</code> or <code>please continue from where you stopped</code>. Claude will pick up exactly where it left off. This works because the entire conversation stays in context. No need to repeat the original prompt.</p></div></div>
+
+  <div class="callout call-1"><div class="call-ico">🔢</div><div class="call-body"><h4>Requesting Structured Long-Form Output</h4><p>For documents over 1,000 words, ask Claude to write in <strong>sections</strong>:<br><code>"Write a 3,000-word report. Complete Section 1 first, then stop and wait for me to say 'continue' before proceeding to Section 2."</code><br><br>This gives you editorial control over each section before Claude writes the next one. The final document is far better than asking for everything at once.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Pro Prompting Techniques</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Technique</span><h3>The Clarifying Ask</h3><p>Before any complex task, tell Claude: <code>"Before you start, ask me any clarifying questions that would help you do this better."</code> Claude will ask 3-5 excellent questions that improve output quality dramatically.</p></div>
+    <div class="crd"><span class="tag tag-2">Technique</span><h3>Self-Critique</h3><p>After any important output: <code>"Now critique your response. What are the 3 weakest points? How would you improve them?"</code> Then ask Claude to revise based on its own critique. This consistently improves quality.</p></div>
+    <div class="crd"><span class="tag tag-5">Technique</span><h3>Temperature Control via Language</h3><p>Claude doesn't have a temperature slider in the UI. Use language instead: "Be more creative and unexpected" for higher variation, or "Be precise and conservative" for more consistent, reliable outputs.</p></div>
+    <div class="crd"><span class="tag tag-4">Technique</span><h3>Format Forcing</h3><p>Claude defaults to markdown. If you need plain text: <code>"Respond in plain text, no markdown formatting."</code> For tables: <code>"Format this as a clean table."</code> For JSON: <code>"Output as valid JSON only, no explanation."</code></p></div>
+    <div class="crd"><span class="tag tag-3">Technique</span><h3>The Persona Lock</h3><p>If you set a role, remind Claude mid-conversation: <code>"Remember, you're responding as a senior McKinsey consultant. Adjust your tone accordingly."</code> Long conversations can cause persona drift — reinforcement helps.</p></div>
+    <div class="crd"><span class="tag tag-brand">Technique</span><h3>Iteration via Comparison</h3><p>Ask Claude to give you 3 versions of something: <code>"Write 3 different versions of this intro paragraph — one formal, one conversational, one punchy."</code> Choose and refine from real options.</p></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">⚡</div><div class="call-body"><h4>The Single Most Underused Feature</h4><p>The <strong>Edit Message</strong> feature. Instead of retyping improved prompts as new messages, click edit on your original message and improve it. This keeps conversation history clean and gives you a direct A/B comparison of prompt versions. Professional Claude users edit prompts 3-4 times before accepting a response.</p></div></div>
+
+  <div class="identity-shift">A power user doesn't just use Claude — they direct Claude. Every technique here is about increasing your control over the output.</div>
+
+  <div class="micro-action">
+    <h4>Power User Practice</h4>
+    <p>Try this sequence on any work task today:<br>
+    1. Start with the clarifying ask — let Claude identify what it needs to know<br>
+    2. Answer its questions, then let it produce the output<br>
+    3. Ask for self-critique<br>
+    4. Request a revision based on the critique<br>
+    Compare the final result to what you'd have gotten without this process.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Mobile vs desktop — where and how to use Claude for different workflows.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Mobile & Desktop &rarr;</button></div>
+</div>
+
+<!-- S4: MOBILE & DESKTOP -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% complete. This section covers context-appropriate usage — when to use which platform.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Mobile App + <span class="gr">Desktop App</span></h2>
+    <p>Claude is available across platforms. Understanding the differences helps you choose the right access point for each task.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Capability</th><th>Web (claude.ai)</th><th>iOS / Android App</th><th>Desktop App (Mac/Win)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Full interface</strong></td><td>✅ Complete</td><td>⚠️ Simplified</td><td>✅ Complete</td></tr>
+        <tr><td><strong>Projects access</strong></td><td>✅ Yes</td><td>⚠️ View only</td><td>✅ Yes</td></tr>
+        <tr><td><strong>File uploads</strong></td><td>✅ All types</td><td>⚠️ Photos/docs only</td><td>✅ All types</td></tr>
+        <tr><td><strong>Voice input</strong></td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+        <tr><td><strong>System-level hotkey</strong></td><td>❌ No</td><td>❌ No</td><td>✅ Yes (summon anywhere)</td></tr>
+        <tr><td><strong>Artifacts display</strong></td><td>✅ Full render</td><td>⚠️ Limited</td><td>✅ Full render</td></tr>
+        <tr><td><strong>Offline access</strong></td><td>❌ No</td><td>❌ No</td><td>❌ No (needs internet)</td></tr>
+        <tr><td><strong>Best use case</strong></td><td>Deep work, long sessions</td><td>Quick queries, on-the-go</td><td>Integrated workflow, frequent switching</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Platform-Specific Best Practices</h3>
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">🌐</span><h3>Web App (Primary Workflow)</h3>
+      <p>Your main workstation for Claude. Use for:</p>
+      <ul style="margin-top:.5rem;padding-left:1.2rem;color:var(--t2);font-size:.88rem">
+        <li>Document analysis and research</li>
+        <li>Building and managing Projects</li>
+        <li>Creating and iterating Artifacts</li>
+        <li>Complex, multi-turn conversations</li>
+        <li>Long-form writing and editing</li>
+      </ul>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c5)">
+      <span class="crd-icon">📱</span><h3>Mobile App (On-The-Go)</h3>
+      <p>Best for quick, contextual tasks:</p>
+      <ul style="margin-top:.5rem;padding-left:1.2rem;color:var(--t2);font-size:.88rem">
+        <li>Quick question/answer during meetings</li>
+        <li>Voice-to-text prompting (use your phone's keyboard)</li>
+        <li>Reading and reviewing existing chats</li>
+        <li>Quick email or message drafts</li>
+        <li>Checking previous conversations on the go</li>
+      </ul>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">🖥️</span><h3>Desktop App (Power Users)</h3>
+      <p>The professional's choice for integrated workflows:</p>
+      <ul style="margin-top:.5rem;padding-left:1.2rem;color:var(--t2);font-size:.88rem">
+        <li>Global hotkey summons Claude from anywhere</li>
+        <li>Runs alongside other apps seamlessly</li>
+        <li>No browser tab management needed</li>
+        <li>Better for context switching between tools</li>
+        <li>Available for Mac; Windows version in development</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>The Desktop App Advantage</h4><p>The Claude desktop app's global hotkey means you can be in any application — Excel, Word, your browser, your email — and summon Claude instantly without switching tabs. This <strong>dramatically reduces friction</strong> for quick tasks. Set this up on Day 2 and never look back.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Setup Checklist</h3>
+  <div class="callout call-3"><div class="call-ico">✅</div><div class="call-body"><h4>Before Moving to Day 3</h4><p>
+  ☐ Bookmarked claude.ai in your browser<br>
+  ☐ Downloaded the Claude mobile app<br>
+  ☐ Explored every button in the interface<br>
+  ☐ Renamed at least 3 existing conversations with descriptive names<br>
+  ☐ Tried the Edit Message feature on at least one conversation<br>
+  ☐ Attempted the clarifying ask technique on a real task<br>
+  ☐ (Optional) Downloaded the Claude desktop app
+  </p></div></div>
+
+  <div class="micro-action">
+    <h4>Day 2 Capstone</h4>
+    <p>Take a real work task you have today. Run it through Claude using the power user sequence: clarifying ask → answer → output → self-critique → revision. Time yourself. Then compare: how long would this have taken without Claude? That time difference is your daily time savings compounding.</p>
+  </div>
+
+  <p class="curiosity-hook">Ready to test your interface knowledge? The quiz randomizes every time.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 2 Knowledge Check. 8 questions from a pool of 25.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 2 <span class="gr">Quiz</span></h2>
+    <p>Interface mastery, conversation features, power techniques. Let's see how much you retained.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Interface knowledge is the foundation. Everything in Days 3-15 builds on this.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Mobile & Desktop</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 2</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+const qData=[
+  {q:"What happens when you click 'Stop' while Claude is generating a response?",o:["The response is deleted","Generation halts immediately at that point","Claude starts over from the beginning","The conversation is closed"],a:1,e:"Clicking Stop halts generation at the current point. The partial response remains visible and usable. This is helpful when Claude is going in the wrong direction and you want to redirect."},
+  {q:"What is the recommended way to handle a conversation that has become too long?",o:["Continue adding messages indefinitely","Delete all old messages","Start a fresh chat and paste a summary of key context","Upgrade to a higher plan"],a:2,e:"Starting fresh chats with context summaries is the professional approach. Long conversations cause context saturation, reducing quality. Fresh starts with compressed context perform better."},
+  {q:"Which Claude platform offers a global hotkey to summon Claude from any application?",o:["Web app (claude.ai)","iOS app","Android app","Desktop app"],a:3,e:"The Claude desktop app provides a global system hotkey that lets you summon Claude from any application without switching windows or tabs — a significant productivity advantage."},
+  {q:"What keyboard shortcut creates a new line in Claude's message input without sending?",o:["Enter","Ctrl + Enter","Shift + Enter","Alt + Enter"],a:2,e:"Shift + Enter creates a new line in the input box without sending the message. Regular Enter sends the message."},
+  {q:"What is 'context saturation' in Claude conversations?",o:["When Claude's response is too long","When a conversation becomes so long that Claude loses track of early instructions","When you upload too many files","When Claude runs out of ideas"],a:1,e:"Context saturation occurs when long conversations cause Claude to lose track of earlier instructions and context, leading to quality degradation. The fix is starting a fresh conversation with compressed context."},
+  {q:"What does the Edit Message feature allow you to do?",o:["Edit Claude's response directly","Modify your previous prompt and regenerate","Delete specific messages from history","Share the conversation"],a:1,e:"Edit Message lets you modify a previous prompt and regenerate Claude's response from that point. Both the original and edited versions coexist, enabling direct prompt comparison."},
+  {q:"Which file format works best for spreadsheet analysis in Claude?",o:["XLSX (Excel)","DOCX with embedded tables","CSV","ODS"],a:2,e:"CSV (comma-separated values) provides the cleanest data for Claude to parse. Excel formatting and embedded charts can confuse parsing. Always export as CSV before uploading data files."},
+  {q:"What does the 'Retry' button do?",o:["Restarts Claude's servers","Regenerates Claude's last response with the same prompt","Sends the message again","Resets the conversation"],a:1,e:"Retry regenerates Claude's response to your last message using the same prompt. Different random seeds produce meaningfully different outputs, making it useful when the first response misses the mark."},
+  {q:"What is the 'Clarifying Ask' technique?",o:["Asking Claude to clarify its own response","Telling Claude to ask clarifying questions before starting a task","Asking the same question multiple times","Using Claude to clarify technical terms"],a:1,e:"The Clarifying Ask technique involves telling Claude to ask clarifying questions before starting a complex task. Claude typically asks 3-5 excellent questions that significantly improve output quality."},
+  {q:"How does the Share feature work in Claude?",o:["Exports the conversation as PDF","Creates a read-only URL that others can view","Emails the conversation to others","Uploads to Google Drive"],a:1,e:"The Share feature creates a read-only URL. Recipients can view the conversation but cannot edit it or continue the chat. Useful for sharing work with team members or clients."},
+  {q:"What is the maximum number of files you can upload in a single Claude message?",o:["1 file","3 files","5 files","10 files"],a:2,e:"You can upload up to 5 files per message in Claude. File size limit is 10MB per file."},
+  {q:"Which of these is NOT a valid way to control Claude's output format?",o:["Saying 'respond in plain text, no markdown'","Saying 'output as valid JSON only'","Setting a 'creativity slider' in settings","Saying 'format this as a table'"],a:2,e:"Claude doesn't have a creativity slider in the web interface. You control format and style through language instructions in your prompts, not through UI settings."},
+  {q:"What is 'persona drift' in Claude conversations?",o:["Claude switching between languages","Claude gradually abandoning an assigned role over a long conversation","Claude changing its opinion mid-response","The user forgetting what they asked"],a:1,e:"Persona drift occurs when Claude gradually abandons an assigned role or persona over a long conversation. The fix is periodic reinforcement: reminding Claude of its role mid-conversation."},
+  {q:"What is the recommended approach for requesting a 3,000-word report from Claude?",o:["Ask for the full report in one message","Ask for it in sections, reviewing each before proceeding","Break the task into 10 separate chats","Always use Opus for long documents"],a:1,e:"Requesting output section by section gives you editorial control. You can review and approve each section before Claude writes the next one, producing far better final documents than one-shot requests."},
+  {q:"What does typing 'continue' do when Claude stops generating mid-response?",o:["Starts a new conversation","Asks Claude to rewrite from the beginning","Prompts Claude to resume from where it stopped","Switches to a different model"],a:2,e:"Typing 'continue' (or 'please continue from where you stopped') prompts Claude to resume generation exactly where it left off. This works because the full context remains in the conversation."},
+  {q:"When should you use the mobile Claude app vs the web app?",o:["Always use mobile for everything","Mobile for quick queries on-the-go; web for deep, complex work","Web only — mobile app is inferior","Desktop only — web and mobile have no advantages"],a:1,e:"Mobile is optimal for quick queries, voice input, and on-the-go use. The web app (and desktop app) are better for deep work: document analysis, Projects, Artifacts, and long complex sessions."},
+  {q:"What is the self-critique technique in Claude?",o:["Asking Claude to rate your writing","Asking Claude to identify weaknesses in its own response and improve","Claude automatically fixing its errors","Using Claude to critique competitors' content"],a:1,e:"The self-critique technique involves asking Claude to identify the 3 weakest points in its own response, then requesting a revision based on that critique. This consistently improves output quality."},
+  {q:"Which technique gives you multiple variations to choose from?",o:["The Persona Lock","The Clarifying Ask","Iteration via Comparison","Format Forcing"],a:2,e:"Iteration via Comparison means asking Claude for multiple versions (e.g., formal, conversational, punchy) so you can choose and refine from real options rather than accepting the first output."},
+  {q:"What does renaming conversations in Claude help with?",o:["Improves Claude's understanding of your work","Allows sharing conversations publicly","Creates a professional filing system for quick reference","Unlocks premium features"],a:2,e:"Renaming conversations with descriptive names creates a searchable, professional filing system. Default auto-generated names are useless for finding specific conversations later."},
+  {q:"What is 'Format Forcing' in Claude?",o:["Making Claude write longer responses","Using language instructions to specify exact output formats like JSON, plain text, or tables","A paid feature that controls response structure","Forcing Claude to use specific terminology"],a:1,e:"Format Forcing means using explicit language instructions to control Claude's output format — 'respond in plain text', 'output as valid JSON', 'format as a table'. Claude defaults to markdown without instruction."},
+  {q:"Which feature in Claude allows persistent workspaces with custom instructions?",o:["Starred Conversations","Chat History","Projects","Model Selector"],a:2,e:"Projects are Claude's persistent workspace feature — they maintain custom instructions, uploaded knowledge documents, and conversation history across multiple sessions within the same project context."},
+  {q:"What is the hybrid model usage technique?",o:["Using both Claude and ChatGPT for the same task","Switching between models mid-conversation based on task needs","Using multiple Claude accounts","Running parallel conversations"],a:1,e:"Hybrid model usage means starting with Sonnet for exploration and drafting, then switching to Opus for specific high-stakes outputs within the same conversation. This optimizes quality and cost."},
+  {q:"What is the approximate maximum file size for uploads in Claude?",o:["1MB","5MB","10MB","50MB"],a:2,e:"The current file upload limit is approximately 10MB per file. For larger documents, consider splitting them into sections or using text extraction tools to paste content directly."},
+  {q:"What appears on every Claude response to send feedback to Anthropic?",o:["A report button","Thumbs Up and Thumbs Down buttons","A rating slider","An email button"],a:1,e:"Every Claude response includes Thumbs Up and Thumbs Down feedback buttons. This feedback goes directly to Anthropic and helps train future model versions."},
+  {q:"What does 'Temperature Control via Language' mean in Claude?",o:["Adjusting response speed","Using language descriptions to influence creativity/consistency since there's no UI temperature slider","Setting a word count limit","Controlling response length"]  ,a:1,e:"Since Claude's web interface has no temperature slider, you control creativity/consistency through language: 'be more creative and unexpected' increases variation; 'be precise and conservative' produces more reliable outputs."}
+];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Power User Ready';col='var(--brand)'}else if(pct>=50){tier='Good Foundation';col='var(--c1)'}else{tier='Keep Practicing';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:1rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Interface mastery is the foundation of everything that follows. The power user techniques covered here will save you hours every week.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-02-Interface-Mastery');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

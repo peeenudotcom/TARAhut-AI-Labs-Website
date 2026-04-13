@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 13: Vernacular AI — Hindi & Punjabi | TARAhut AI Labs</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#059669;--green-d:#047857;--accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;--radius:12px;--saffron:#FF9933;--hindi:#1a56db}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-user-select:none;user-select:none}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--green);animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
+nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
+.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 60%);padding:60px 24px 50px;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:var(--green);color:#fff;font-size:0.75em;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;line-height:1.2;margin-bottom:12px}
+.hero h1 span{color:var(--green)}
+.hero p{color:var(--muted);font-size:1.05em;max-width:580px;margin:0 auto 24px}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
+.hero-meta span{background:var(--bg2);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
+.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
+.section{display:none;animation:fadeIn .4s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800}
+.section-header p{color:var(--muted);margin-top:8px}
+.section-header{margin-bottom:28px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
+.card:hover{border-color:var(--green);transform:translateY(-2px)}
+.card-icon{font-size:1.8em;margin-bottom:10px}
+.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
+.card p{font-size:0.875em;color:var(--muted)}
+.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
+.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
+.callout.saffron{background:rgba(255,153,51,0.1);border-color:var(--saffron)}
+.callout strong{color:var(--green);display:block;margin-bottom:4px}
+.callout.amber strong{color:var(--accent)}
+.callout.saffron strong{color:var(--saffron)}
+.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative}
+.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
+.code-box span.hl{color:#79c0ff}.code-box span.gr{color:#3fb950}.code-box span.am{color:#e3b341}
+.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
+.copy-btn:hover{background:var(--green);color:#fff}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:0.875em}
+th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
+.steps{margin:20px 0}
+.step{display:flex;gap:16px;margin-bottom:16px}
+.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
+.step-body h4{font-weight:700;margin-bottom:4px}
+.step-body p{color:var(--muted);font-size:0.875em}
+.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
+.highlight-box h3{color:var(--green);margin-bottom:8px}
+.lang-demo{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:12px 0}
+.lang-label{font-size:0.72em;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.lang-label.en{color:var(--accent)}
+.lang-label.hi{color:var(--hindi)}
+.lang-label.pa{color:var(--saffron)}
+.lang-text{font-size:0.92em;line-height:1.8}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:24px 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.stat-num{font-size:2em;font-weight:900;color:var(--green)}
+.stat-label{font-size:0.82em;color:var(--muted);margin-top:4px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.compare-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.compare-box.west{border-color:#60a5fa}
+.compare-box.india{border-color:var(--saffron)}
+.compare-label{font-size:0.75em;font-weight:700;margin-bottom:10px}
+.compare-box.west .compare-label{color:#60a5fa}
+.compare-box.india .compare-label{color:var(--saffron)}
+.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.quiz-header h3{font-size:1.3em;font-weight:800}
+.quiz-progress{font-size:0.82em;color:var(--muted)}
+.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
+.q-text{font-weight:600;margin-bottom:14px}
+.q-num{font-size:0.75em;color:var(--green);font-weight:700;margin-bottom:6px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
+.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
+.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
+.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
+.option.disabled{cursor:default}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
+.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
+.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
+.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-d)}
+.btn-secondary{background:var(--bg3);color:var(--text)}
+.quiz-score{text-align:center;padding:28px;display:none}
+.quiz-score.show{display:block}
+.score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
+.score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
+.score-sub{color:var(--muted);font-size:0.9em}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div id="particles"></div>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">TARAhut AI Labs</div>
+    <button class="nav-btn active" onclick="showSection(0)">1. AI Beyond English</button>
+    <button class="nav-btn" onclick="showSection(1)">2. Hindi with Claude</button>
+    <button class="nav-btn" onclick="showSection(2)">3. Punjabi with Claude</button>
+    <button class="nav-btn" onclick="showSection(3)">4. Cultural Adaptation</button>
+    <button class="nav-btn" onclick="showSection(4)">5. Quiz</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">DAY 13 — INTERMEDIATE</div>
+  <h1>Vernacular <span>AI</span></h1>
+  <p>Hindi. Punjabi. The languages 90% of India's internet users prefer. Claude speaks them — and with the right prompts, speaks them brilliantly.</p>
+  <div class="hero-meta"><span>5 Sections</span><span>25 Quiz Questions</span><span>~90 min</span><span>tarahutailabs.com</span></div>
+</div>
+
+<div class="container">
+
+<!-- S1 -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-tag">Section 1</div>
+    <h2>AI Beyond English</h2>
+    <p>The most important market opportunity in Indian digital content — and why Claude is uniquely positioned to help you capture it.</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">90%</div><div class="stat-label">of India's internet users prefer regional language content</div></div>
+    <div class="stat-card"><div class="stat-num">600M+</div><div class="stat-label">Hindi speakers in India — the world's largest language group</div></div>
+    <div class="stat-card"><div class="stat-num">30M+</div><div class="stat-label">Punjabi speakers worldwide, with growing digital presence</div></div>
+    <div class="stat-card"><div class="stat-num">3x</div><div class="stat-label">higher engagement for vernacular content vs English in tier-2/3 cities</div></div>
+  </div>
+
+  <div class="callout">
+    <strong>The Vernacular Gap</strong>
+    Every business in India has a website in English. Almost none have quality Hindi or Punjabi content. This is your competitive advantage. Claude can produce quality vernacular content at scale — something that previously required expensive specialized writers or translation agencies.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Why Vernacular Content Wins</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-icon">❤️</div><h3>Emotional Trust</h3><p>People buy from businesses that speak their language. A Hindi ad feels like a friend talking. An English ad feels like a corporation.</p></div>
+    <div class="card"><div class="card-icon">📱</div><h3>Mobile-First Audience</h3><p>India's next 500 million internet users are coming from villages and small towns — Hindi, Punjabi, Tamil, Telugu first.</p></div>
+    <div class="card"><div class="card-icon">🎯</div><h3>Less Competition</h3><p>English content is saturated. Quality Hindi and Punjabi content has far less competition. Rank faster, stand out easier.</p></div>
+    <div class="card"><div class="card-icon">🔄</div><h3>WhatsApp Economy</h3><p>80%+ of small business communication in India happens in Hindi/Punjabi on WhatsApp. Vernacular content is native to this channel.</p></div>
+  </div>
+
+  <div class="callout amber">
+    <strong>The Opportunity Window</strong>
+    The businesses that invest in vernacular AI content NOW will own those audiences for years. This is where India's internet growth is happening. Claude gives you a 12-month head start over businesses still thinking about it.
+  </div>
+
+  <div class="highlight-box">
+    <h3>What Claude Can Create in Hindi and Punjabi</h3>
+    <div class="grid-2" style="margin:12px 0 0">
+      <ul style="padding-left:18px;color:var(--muted);font-size:0.875em">
+        <li>Social media captions (Instagram, Facebook)</li>
+        <li>WhatsApp broadcast messages</li>
+        <li>Blog posts and articles</li>
+        <li>Business emails and letters</li>
+      </ul>
+      <ul style="padding-left:18px;color:var(--muted);font-size:0.875em">
+        <li>Course content and study material</li>
+        <li>Ad copy (Facebook/Instagram ads)</li>
+        <li>Customer support scripts</li>
+        <li>Video scripts for Reels and YouTube</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-tag">Section 2</div>
+    <h2>Hindi Content with Claude</h2>
+    <p>Prompts for Hindi blogs, social media, business emails — with quality comparison examples and CRISP templates.</p>
+  </div>
+
+  <div class="callout">
+    <strong>Claude's Hindi Quality Level</strong>
+    Claude writes natural, grammatically correct Hindi with proper Devanagari script. Its vocabulary is modern, and it understands the mix of Hindi and English (Hinglish) that Indian audiences actually use. Quality: 85-90% production-ready. Always human-review before publishing.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Hindi Social Media — CRISP Template</h3>
+  <div class="code-box">
+    <div class="code-label">Hindi Instagram Caption Prompt</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">Context:</span> Instagram post for TARAhut AI Labs, Kotkapura. Audience: Punjab and North India entrepreneurs, 25-45 years old, Hindi-comfortable.<br>
+    <span class="gr">Role:</span> Expert Hindi social media copywriter who writes in natural, modern Hindi — not formal textbook Hindi. Uses Hinglish naturally where it fits.<br>
+    <span class="am">Instructions:</span> Write an Instagram caption in Hindi (Devanagari script). Start with a strong hook. Include a relatable scenario. End with a question that drives comments. Add 15 relevant hashtags (mix of Hindi and English). Length: 150-200 words.<br>
+    <span class="hl">Topic:</span> "AI सीखने का सही समय अभी है" (The right time to learn AI is now)<br>
+    <span class="gr">Tone:</span> Motivational, warm, like a successful friend giving advice. Use "आप" (aap) for respect.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Example: Hindi Caption Quality Comparison</h3>
+  <div class="compare">
+    <div class="compare-box west">
+      <div class="compare-label">WITHOUT CRISP (Generic Prompt)</div>
+      <div style="font-size:0.85em;line-height:1.7">
+        AI सीखें। हमारा कोर्स जॉइन करें। आज ही रजिस्टर करें।
+        <div style="color:var(--muted);font-size:0.8em;margin-top:8px">Feels like a translation. No emotion. No hook. Reads like machine text.</div>
+      </div>
+    </div>
+    <div class="compare-box india">
+      <div class="compare-label">WITH CRISP (Culturally Briefed)</div>
+      <div style="font-size:0.85em;line-height:1.7">
+        क्या आपने भी सोचा है कि AI सिर्फ बड़ी कंपनियों के लिए है? 🤔 गलत! आज छोटे बिज़नेस वाले भी AI से अपना काम 3 गुना तेज कर रहे हैं...
+        <div style="color:var(--muted);font-size:0.8em;margin-top:8px">Feels native. Opens with a question. Relatable. Conversational Hindi.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Hindi Blog Post — CRISP Template</h3>
+  <div class="code-box">
+    <div class="code-label">Hindi Blog Post Prompt</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">Context:</span> Hindi blog for Indian small business owners and entrepreneurs. Published on our website and shared on social media.<br>
+    <span class="gr">Role:</span> Expert Hindi content writer specializing in business and technology topics for the Indian market.<br>
+    <span class="am">Instructions:</span> Write a 800-1000 word Hindi blog post. Use Devanagari script. Structure: compelling title (H1) → hook paragraph → 3-4 main sections with H2 headings → practical examples → conclusion with CTA. Use simple language — Class 10 Hindi level, not academic.<br>
+    <span class="hl">Topic:</span> "5 तरीके जिनसे AI आपके छोटे बिज़नेस को बड़ा बना सकता है"<br>
+    <span class="gr">Include:</span> At least 2 examples from Indian small businesses (kiryana store, coaching center, local medical clinic). Use numbers and facts where possible.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Hindi Business Email — CRISP Template</h3>
+  <div class="code-box">
+    <div class="code-label">Hindi Business Email Prompt</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    Write a professional Hindi business email.<br><br>
+    <span class="gr">Scenario:</span> Following up with a potential student who enquired about our AI course 3 days ago but hasn't responded.<br>
+    <span class="am">Tone:</span> Warm, respectful, not pushy. Like a helpful senior colleague reaching out.<br>
+    <span class="hl">Key points to include:</span><br>
+    - Remind them of their enquiry warmly<br>
+    - Briefly mention the course's main benefit (save 10 hours/week)<br>
+    - Mention only 3 seats remaining (urgency without pressure)<br>
+    - Offer a free 15-minute call to answer their questions<br>
+    - End with ধन্যবাদ/धन्यवाद and your WhatsApp number<br><br>
+    <span class="gr">Length:</span> Short — under 150 words. Easy to read on mobile.
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-tag">Section 3</div>
+    <h2>Punjabi Content with Claude</h2>
+    <p>Gurmukhi script, cultural references, community tone — Punjabi content that feels genuinely native.</p>
+  </div>
+
+  <div class="callout saffron">
+    <strong>Punjabi Content: The Underserved Market</strong>
+    Punjab has 30M+ speakers and is one of India's most economically active states. Yet quality Punjabi digital content is extremely rare. Businesses in Kotkapura, Ludhiana, Amritsar, Jalandhar — all underserved. Your Punjabi content is a direct competitive moat.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Example: Punjabi Social Media Content</h3>
+  <div class="lang-demo">
+    <div class="lang-label pa">Punjabi Instagram Caption (Gurmukhi)</div>
+    <div class="lang-text">
+      ਕੀ ਤੁਸੀਂ ਵੀ ਸੋਚਦੇ ਹੋ ਕਿ AI ਸਿਰਫ਼ ਵੱਡੀਆਂ ਕੰਪਨੀਆਂ ਲਈ ਹੈ? 🤔<br><br>
+      ਨਹੀਂ ਜੀ! ਅੱਜ ਸਾਡੇ ਕੋਟਕਪੂਰੇ ਦੇ ਛੋਟੇ ਦੁਕਾਨਦਾਰ ਵੀ AI ਨਾਲ ਆਪਣਾ ਕੰਮ 3 ਗੁਣਾ ਵਧਾ ਰਹੇ ਨੇ।<br><br>
+      ਸਾਡੇ 15-ਦਿਨਾਂ ਕੋਰਸ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ ਅਤੇ ਸਿੱਖੋ Claude AI। ਅਗਲੀ ਬੈਚ ਵਿੱਚ ਸਿਰਫ਼ 5 ਸੀਟਾਂ ਬਾਕੀ ਨੇ। ਹੁਣੇ DM ਕਰੋ। 🙏
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Punjabi Content — CRISP Template</h3>
+  <div class="code-box">
+    <div class="code-label">Punjabi Social Post Prompt</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="gr">Context:</span> Facebook/Instagram post for TARAhut AI Labs targeting Punjabi-speaking entrepreneurs in Punjab, primarily Kotkapura, Faridkot, Bathinda region.<br>
+    <span class="gr">Role:</span> Expert Punjabi content writer. Native Punjabi speaker writing in Gurmukhi script. Understands local culture, uses respectful community-oriented language.<br>
+    <span class="am">Instructions:</span> Write the post in Punjabi Gurmukhi script. Feel should be: community member sharing advice, not brand advertising. Use ਤੁਸੀਂ (tuseen) for respectful address. Include a relatable local reference. End with a gentle CTA. Add emoji naturally.<br>
+    <span class="hl">Topic:</span> [Your topic here — e.g., benefits of AI for local business]<br>
+    <span class="gr">Avoid:</span> Overly formal language, corporate tone, excessive English words (keep English only for unavoidable technical terms like "AI," "WhatsApp").
+  </div>
+
+  <h3 style="margin:24px 0 16px">Gurmukhi Script Translation Accuracy</h3>
+  <div class="callout amber">
+    <strong>Claude's Punjabi Accuracy</strong>
+    Claude writes grammatically correct Gurmukhi Punjabi. However, regional dialects (Malwa, Doaba, Majha) have differences. Claude defaults to standard Punjabi. For hyper-local content targeting a specific district, specify the dialect and have a native speaker review. Claude's Punjabi is 80-85% production-ready.
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Content Type</th><th>Claude Punjabi Quality</th><th>Review Needed?</th><th>Best Use Case</th></tr>
+      <tr><td>Social media captions</td><td>Excellent (85-90%)</td><td>Quick review</td><td>Facebook, Instagram</td></tr>
+      <tr><td>WhatsApp messages</td><td>Very good (85%)</td><td>Yes — personal tone</td><td>Customer communication</td></tr>
+      <tr><td>Blog posts</td><td>Good (80%)</td><td>Full review</td><td>Website content</td></tr>
+      <tr><td>Formal letters</td><td>Good (80%)</td><td>Full review</td><td>Government/official</td></tr>
+      <tr><td>Gurmukhi transliteration</td><td>Very good</td><td>Script check</td><td>Converting Roman Punjabi</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-tag">Section 4</div>
+    <h2>Cultural Adaptation</h2>
+    <p>Not just translation — adapting tone, references, and examples for Indian audiences. Western prompt vs Indian prompt comparison.</p>
+  </div>
+
+  <div class="callout">
+    <strong>The Adaptation Principle</strong>
+    Translation converts words. Cultural adaptation converts meaning. A motivational post about "work-life balance" in English might fall flat in Punjabi where the cultural value is "family first, business for family." The same message, reframed for cultural values, resonates 10x more.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Western Prompt vs Indian Prompt Comparison</h3>
+
+  <div class="compare">
+    <div class="compare-box west">
+      <div class="compare-label">WESTERN FRAMING</div>
+      <p style="font-size:0.85em;color:var(--muted)">"Use AI to optimize your personal productivity and achieve your individual success goals through automation of repetitive tasks."</p>
+      <p style="font-size:0.78em;color:#60a5fa;margin-top:8px">Emphasis: Individual, productivity, optimization, self-achievement</p>
+    </div>
+    <div class="compare-box india">
+      <div class="compare-label">INDIAN/PUNJABI FRAMING</div>
+      <p style="font-size:0.85em;color:var(--muted)">"AI से अपना बिज़नेस बढ़ाओ और परिवार के लिए ज़्यादा समय निकालो" (Grow your business with AI and find more time for your family)</p>
+      <p style="font-size:0.78em;color:var(--saffron);margin-top:8px">Emphasis: Business growth, family, community, collective benefit</p>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Cultural Adaptation Principles for Indian Content</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">👨‍👩‍👧‍👦</div>
+      <h3>Family-Centered Framing</h3>
+      <p>Connect business success to family wellbeing. "Earn more for your family" resonates more than "achieve personal success" in Indian markets.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <h3>Community Trust Signals</h3>
+      <p>Mention local references — Kotkapura, Punjab, North India. "Other businesses in your area are using AI" creates peer trust more effectively than global statistics.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🙏</div>
+      <h3>Respectful Language</h3>
+      <p>Always use आप (aap) in Hindi, ਤੁਸੀਂ (tuseen) in Punjabi. These are not optional — using informal pronouns in business content is disrespectful in Indian culture.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>ROI Over Lifestyle</h3>
+      <p>Indian audiences respond to "save money," "earn more," "grow your business" over lifestyle messaging. Be concrete about financial benefits.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌾</div>
+      <h3>Local Examples</h3>
+      <p>Use kiryana stores, coaching centers, clinics, farms — not "coffee shops" or "startup founders." Examples must be recognizable to your audience.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📿</div>
+      <h3>Seasonal & Cultural References</h3>
+      <p>Reference Lohri, Diwali, Baisakhi, harvest seasons in your content calendar. These cultural touchpoints create instant resonance.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">The Adaptation Prompt</h3>
+  <div class="code-box">
+    <div class="code-label">Cultural Adaptation Prompt Template</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    Take this English content and culturally adapt it for [Hindi-speaking / Punjabi-speaking] Indian audience.<br><br>
+    <span class="gr">ORIGINAL CONTENT:</span><br>
+    [Paste your English content here]<br><br>
+    <span class="am">ADAPTATION RULES:</span><br>
+    1. Do NOT just translate — rewrite for cultural relevance<br>
+    2. Replace Western examples with Indian equivalents (coffee shop → chai dukan, startup → small business, CEO → business owner)<br>
+    3. Use family/community framing where relevant (individual success → family benefit)<br>
+    4. Add local references where natural (mention Punjab/North India context)<br>
+    5. Use the appropriate respectful pronoun (आप / ਤੁਸੀਂ)<br>
+    6. Adjust idioms — replace Western idioms with Indian equivalents<br>
+    7. Concrete financial benefits over abstract lifestyle messaging<br><br>
+    <span class="hl">Output in:</span> [Devanagari Hindi / Gurmukhi Punjabi]<br>
+    <span class="gr">Tone:</span> [Motivational / Professional / Community / Warm]
+  </div>
+
+  <div class="callout amber">
+    <strong>The 90/10 Rule for Vernacular Content</strong>
+    Claude does 90% of the cultural work. The final 10% — the regional idiom, the perfectly-placed local reference, the emotional nuance — comes from a human native speaker. The partnership of AI scale and human cultural intelligence creates content no individual translator can match for speed and no AI can match for depth. Use both.
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-tag">Section 5</div>
+    <h2>Knowledge Check</h2>
+    <p>Test your understanding of Vernacular AI — Hindi and Punjabi content with Claude.</p>
+  </div>
+  <div class="quiz-section" id="quizContainer"></div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*8+4;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.12+0.04}`;c.appendChild(p)}})();
+function showSection(i){document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));document.querySelectorAll('.nav-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));window.scrollTo({top:0,behavior:'smooth'});if(i===4&&!quizStarted)initQuiz();}
+
+const ALL_QUESTIONS=[
+  {q:"What percentage of India's internet users prefer regional language content?",o:["50%","70%","90%","100%"],a:2,f:"90% of India's internet users prefer regional language content — making vernacular AI content one of the biggest digital opportunities in India."},
+  {q:"What is the key difference between 'translation' and 'cultural adaptation'?",o:["Translation is longer","Cultural adaptation converts meaning, tone, and references — not just words","Translation is more accurate","Cultural adaptation is only for Punjabi"],a:1,f:"Translation converts words. Cultural adaptation converts meaning — adapting framing, examples, idioms, and cultural values so content resonates natively."},
+  {q:"Which pronoun should be used for respectful address in Hindi business content?",o:["तू (tu)","तुम (tum)","आप (aap)","वो (vo)"],a:2,f:"आप (aap) is the respectful second-person pronoun. Using तू or तुम in business communications is considered disrespectful in Indian culture."},
+  {q:"Claude's Hindi content quality is approximately:",o:["50-60% production ready","70-75% production ready","85-90% production ready","100% production ready"],a:2,f:"Claude's Hindi is 85-90% production ready. Always have a human native speaker review the final 10% — especially idioms and cultural references."},
+  {q:"The Gurmukhi script is used for:",o:["Hindi language","Punjabi language","Bengali language","Urdu language"],a:1,f:"Gurmukhi is the script used for Punjabi language, specifically developed for the Punjabi language and associated with Sikh religious texts."},
+  {q:"What is the 'WhatsApp Economy' relevance for vernacular content?",o:["WhatsApp only works in English","80%+ of small business communication in India happens in Hindi/Punjabi on WhatsApp","WhatsApp doesn't support Devanagari script","Only large businesses use WhatsApp for business"],a:1,f:"Most Indian small business communication happens in Hindi/Punjabi via WhatsApp. Vernacular content is perfectly native to this dominant communication channel."},
+  {q:"In the Western vs Indian framing comparison, what is the key Indian emphasis?",o:["Individual achievement and personal productivity","Family benefit, community trust, and concrete business ROI","Work-life balance and wellness","Technology adoption and innovation"],a:1,f:"Indian content resonates more with: family benefit (grow business for family), community (local peer examples), and concrete ROI (save money, earn more)."},
+  {q:"The Cultural Adaptation Prompt rule about examples says:",o:["Keep all Western examples unchanged","Replace Western examples with Indian equivalents (coffee shop → chai dukan, startup → small business)","Add more Western examples for credibility","Remove all examples from the adapted content"],a:1,f:"Examples must be culturally recognizable. A Punjabi entrepreneur relates to chai dukan or kiryana store — not Silicon Valley startup or coffee shop."},
+  {q:"Which Indian market represents the biggest vernacular content opportunity?",o:["Metro cities like Mumbai and Delhi with established English content","Tier-2 and tier-3 cities with the next 500 million internet users preferring regional languages","The NRI market in the UK and USA","Corporate enterprises in Bangalore"],a:1,f:"India's next 500 million internet users are from smaller cities and villages — primarily Hindi, Punjabi, Tamil, Telugu first. This is where vernacular content wins."},
+  {q:"The respectful Punjabi pronoun for 'you' in business content is:",o:["ਤੂ (tu)","ਤੂੰ (toon)","ਤੁਸੀਂ (tuseen)","ਉਹ (oh)"],a:2,f:"ਤੁਸੀਂ (tuseen) is the respectful second-person plural used for polite/formal address in Punjabi, equivalent to आप (aap) in Hindi."},
+  {q:"Why should you specify 'not formal textbook Hindi' in your Hindi content prompts?",o:["To make the content shorter","Textbook Hindi sounds unnatural to modern audiences — conversational, modern Hindi is more engaging and authentic","Because formal Hindi is grammatically incorrect","To avoid using Sanskrit words"],a:1,f:"Modern Indian audiences communicate in natural, conversational Hindi that mixes with English (Hinglish). Formal textbook Hindi sounds stiff and academic — not how people actually talk."},
+  {q:"According to the module, vernacular content creates what competitive advantage?",o:["Lower cost of production","SEO benefits only","A competitive moat — quality Hindi/Punjabi content is extremely rare, so early movers own those audiences","Faster content creation"],a:2,f:"Quality Punjabi digital content is extremely rare. Businesses that invest now create a competitive moat — owning vernacular audiences before competitors catch up."},
+  {q:"The '90/10 Rule for Vernacular Content' means:",o:["90% Hindi, 10% English content","Claude does 90% of the cultural work; human native speakers add the final 10% of cultural nuance","90% production ready, 10% needs rewriting","90% grammar, 10% tone"],a:1,f:"Claude scales the 90% — grammatically correct, culturally sensitive content. Human native speakers perfect the 10% — regional idioms, emotional nuance, local references."},
+  {q:"Which content type requires the MOST human review for Punjabi content?",o:["Social media captions","Formal business or official letters","WhatsApp messages","Blog post headlines"],a:1,f:"Formal letters have the highest stakes — sent to government, banks, or official bodies. An idiom error in casual social media is minor. In formal letters, it's a serious mistake."},
+  {q:"What seasonal references improve Indian vernacular content?",o:["Christmas and Thanksgiving","Lohri, Diwali, Baisakhi, harvest seasons — culturally relevant Indian celebrations","New Year's and Valentine's Day","Summer holidays and back-to-school"],a:1,f:"Lohri (Punjab harvest festival), Diwali (lights festival), Baisakhi (Punjabi New Year/harvest) — these cultural touchpoints create instant emotional resonance with Indian audiences."},
+  {q:"A Hindi business email prompt should specify what to ensure mobile readability?",o:["Use formal letterhead format","Keep under 150 words for easy mobile reading","Include HTML formatting","Use attached PDF instead of email body"],a:1,f:"Most Indian business communication is read on mobile phones. Short emails (under 150 words) are essential — long emails get abandoned on small screens."},
+  {q:"What does 'Hinglish' mean in the context of Hindi content?",o:["A mistake in Hindi writing","The natural mixing of Hindi and English that modern Indian audiences actually use","A formal style of Hindi","Regional dialect of Punjab"],a:1,f:"Hinglish is the natural code-switching between Hindi and English that modern Indian speakers use daily — 'आज का meeting कैसा था?' Claude understands and can write this style."},
+  {q:"For Punjabi content in Kotkapura specifically, what does Claude default to?",o:["Malwa dialect of Punjabi","Standard Punjabi (not hyper-local dialect)","Doaba dialect","English transliteration"],a:1,f:"Claude defaults to standard Punjabi. For hyper-local content targeting specific districts (Malwa region includes Kotkapura), specify the dialect and have a native speaker review."},
+  {q:"The Indian framing for motivational content should emphasize:",o:["Personal achievement and self-actualization","Disrupting the status quo and thinking differently","Family benefit — 'grow your business so your family prospers'","Competitive advantage over peers"],a:2,f:"Indian cultural values center on family. 'Grow your business for your family' is more motivating than 'achieve personal success' — it connects to the deeper cultural value."},
+  {q:"What makes vernacular AI content a 'head start' opportunity?",o:["AI tools are only available for English content","Quality vernacular content is rare now, so businesses creating it today will own those digital spaces before the majority even starts","Vernacular content gets government subsidies","AI can only write in English"],a:1,f:"Very few businesses invest in quality vernacular content today. Creating it now means you own the SEO, the audience, and the brand recognition before competitors catch up."},
+  {q:"The 3x engagement statistic for vernacular content applies in:",o:["Metro cities and English-educated audiences","Tier-2 and tier-3 cities where regional language is the primary communication medium","Only rural villages","Only for specific industries"],a:1,f:"In tier-2/3 cities (like Kotkapura, Bathinda, Faridkot), vernacular content generates 3x more engagement than English — because English feels foreign, vernacular feels like family."},
+  {q:"Which Indian cultural value should be emphasized in business content over 'individual success'?",o:["National pride","Celebrity endorsement","Family benefit and community belonging","Luxury and status"],a:2,f:"Indian business audiences relate most to content about family prosperity and community benefit. 'Join thousands of businesses in Punjab' outperforms 'achieve your personal goals.'"},
+  {q:"What type of local references build trust most effectively in Punjabi content?",o:["References to global brands and international success stories","References to local businesses in the same region (Kotkapura, Ludhiana, Amritsar) achieving results","References to government schemes","References to Bollywood celebrities"],a:1,f:"'Other businesses in Kotkapura are using AI' is far more compelling than 'businesses worldwide use AI.' Local social proof builds local trust."},
+  {q:"What does the Cultural Adaptation Prompt rule about idioms specify?",o:["Keep all original English idioms","Remove all idioms from the adapted content","Replace Western idioms with Indian equivalents","Only use Sanskrit-origin idioms"],a:2,f:"Idioms must be culturally replaced, not just translated. 'Killing two birds with one stone' → 'एक पंथ दो काज' (ek path do kaaj) or a Punjabi equivalent that the audience actually uses."},
+  {q:"What is the primary reason Hindi blog posts have 'less competition' than English ones?",o:["Hindi content is harder to write","English content is saturated; quality Hindi content creators are far fewer, making it easier to rank and stand out","Hindi SEO doesn't work","Hindi readers don't use Google"],a:1,f:"English content is produced by millions of creators worldwide. Quality Hindi content is produced by far fewer. Less competition = easier to rank on Google, faster to build audience authority."}
+];
+
+let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+function initQuiz(){quizStarted=true;currentQuestions=shuffle([...ALL_QUESTIONS]).slice(0,8);currentQ=0;score=0;renderQuiz();}
+function renderQuiz(){
+  const c=document.getElementById('quizContainer');
+  if(currentQ>=currentQuestions.length){showScore(c);return;}
+  answered=false;
+  const q=currentQuestions[currentQ];
+  c.innerHTML=`<div class="quiz-header"><h3>Day 13 Quiz</h3><div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div></div><div class="quiz-q"><div class="q-num">Q${currentQ+1}</div><div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb"></div></div><div class="quiz-controls"><div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div><button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next →</button></div>`;
+}
+function selectAnswer(i){
+  if(answered)return;answered=true;
+  const q=currentQuestions[currentQ];
+  const opts=document.querySelectorAll('.option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  opts[i].classList.add(i===q.a?'correct':'wrong');
+  if(i!==q.a)opts[q.a].classList.add('correct');
+  if(i===q.a)score++;
+  const fb=document.getElementById('qfb');
+  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
+  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
+  document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){currentQ++;renderQuiz();}
+function showScore(c){
+  const pct=Math.round((score/currentQuestions.length)*100);
+  const msg=pct>=80?'Excellent!':pct>=60?'Good work!':'Review and retry!';
+  c.innerHTML=`<div class="quiz-score show"><div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div><div class="score-msg">${msg}</div><div class="score-sub">${pct}% — ${score} of ${currentQuestions.length} correct</div><div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-secondary" onclick="showSection(0)">Review Content</button></div></div>`;
+}
+</script>
+</body>
+</html>

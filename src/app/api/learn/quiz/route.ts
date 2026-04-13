@@ -4,9 +4,7 @@ import { createServiceClient } from '@/lib/supabase';
 import { Resend } from 'resend';
 import { renderSessionRecapHtml } from '@/lib/email/session-recap-template';
 import { dailyChallenges } from '@/config/daily-challenges';
-import { learnModules } from '@/config/learn-modules';
-
-const COURSE_ID = 'ai-tools-mastery-beginners';
+import { courseConfigs, getCourseConfig } from '@/config/learn-modules';
 
 type AchievementCheck = {
   badge_type: string;
@@ -58,7 +56,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { session, score, total } = body;
+    const { session, score, total, courseId } = body;
+    const COURSE_ID = (courseId && courseId in courseConfigs) ? courseId : 'ai-tools-mastery-beginners';
+    const courseConfig = getCourseConfig(COURSE_ID)!;
 
     if (
       typeof session !== 'number' ||
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
 
     // 7. Send session recap email
     try {
-      const mod = learnModules.find((m) => m.session === session);
+      const mod = courseConfig.modules.find((m) => m.session === session);
       const challenge = dailyChallenges.find((c) => c.session === session);
       // Re-read streak to get the current value after the upsert above
       const { data: freshStreak } = await db

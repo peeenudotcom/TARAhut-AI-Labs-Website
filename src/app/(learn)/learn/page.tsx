@@ -1,16 +1,17 @@
 import Link from 'next/link';
-import { learnModules } from '@/config/learn-modules';
+import { courseConfigs } from '@/config/learn-modules';
+import type { LearnModule } from '@/config/learn-modules';
 
 export const metadata = {
   title: 'TARAhut Learning Engine',
-  description: 'Master AI tools in 4 weeks. 16 interactive sessions, hands-on projects, and a recognised certificate.',
+  description: 'Master AI tools with TARAhut. Interactive sessions, hands-on projects, and a recognised certificate.',
 };
 
 const WHATSAPP_ENROLL_URL =
   'https://wa.me/919999999999?text=Hi%2C%20I%20want%20to%20enroll%20in%20the%20TARAhut%20AI%20course';
 
 export default function LearnLandingPage() {
-  const weekGroups = [1, 2, 3, 4];
+  const courses = Object.values(courseConfigs);
 
   return (
     <div className="min-h-screen bg-[#06060e] text-[#e2e8f0]">
@@ -30,14 +31,14 @@ export default function LearnLandingPage() {
 
         <h1 className="relative mx-auto mb-6 max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
           <span className="bg-gradient-to-r from-[#00f0ff] via-[#059669] to-[#a78bfa] bg-clip-text text-transparent">
-            Master AI Tools
+            Master AI
           </span>
           <br />
-          in 4 Weeks
+          with TARAhut
         </h1>
 
         <p className="mx-auto mb-10 max-w-xl text-lg text-[#94a3b8]">
-          16 interactive sessions. Hands-on projects. A certificate employers recognise.
+          Choose your course. Hands-on sessions, real projects, and a certificate employers recognise.
           Start free — no credit card required.
         </p>
 
@@ -60,33 +61,53 @@ export default function LearnLandingPage() {
         </div>
       </section>
 
-      {/* ── Session Grid ── */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <h2 className="mb-10 text-center text-2xl font-bold text-[#e2e8f0]">
-          All 16 Sessions
-        </h2>
+      {/* ── Course sections ── */}
+      {courses.map((course) => {
+        const weekNums = [...new Set(course.modules.map((m) => m.week))].sort((a, b) => a - b);
+        const freeSession = course.modules.find((m) => m.isFree);
+        const courseParam = course.id !== 'ai-tools-mastery-beginners' ? `?course=${course.id}` : '';
 
-        {weekGroups.map((week) => {
-          const weekModules = learnModules.filter((m) => m.week === week);
-          return (
-            <div key={week} className="mb-12">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#059669]">
-                Week {week}
-              </p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {weekModules.map((mod) => (
-                  <SessionCard key={mod.session} mod={mod} />
-                ))}
+        return (
+          <section key={course.id} className="mx-auto max-w-6xl px-6 pb-24">
+            {/* Course header */}
+            <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-[#1e1e3a] pb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-[#e2e8f0]">{course.title}</h2>
+                <p className="mt-1 text-sm text-[#94a3b8]">{course.totalSessions} sessions</p>
               </div>
+              {freeSession && (
+                <Link
+                  href={`/learn/session/${freeSession.session}${courseParam}`}
+                  className="text-sm font-semibold text-[#059669] hover:underline"
+                >
+                  Try Session 1 free →
+                </Link>
+              )}
             </div>
-          );
-        })}
-      </section>
+
+            {weekNums.map((week) => {
+              const weekModules = course.modules.filter((m) => m.week === week);
+              return (
+                <div key={week} className="mb-12">
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#059669]">
+                    Week {week}
+                  </p>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {weekModules.map((mod) => (
+                      <SessionCard key={mod.session} mod={mod} courseParam={courseParam} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        );
+      })}
 
       {/* ── Enroll CTA ── */}
       <section className="border-t border-[#1e1e3a] bg-[#0c0c1a] px-6 py-20 text-center">
         <h2 className="mb-4 text-3xl font-bold text-[#e2e8f0]">
-          Ready to unlock all 16 modules?
+          Ready to enroll?
         </h2>
         <p className="mb-8 text-[#94a3b8]">
           Join the next cohort. Limited seats available.
@@ -115,13 +136,11 @@ export default function LearnLandingPage() {
   );
 }
 
-function SessionCard({ mod }: { mod: (typeof learnModules)[number] }) {
-  const sessionStr = String(mod.session).padStart(2, '0');
-
+function SessionCard({ mod, courseParam }: { mod: LearnModule; courseParam: string }) {
   if (mod.isFree) {
     return (
       <Link
-        href="/learn/session/1"
+        href={`/learn/session/${mod.session}${courseParam}`}
         className="group relative flex flex-col rounded-xl border-2 border-[#059669] bg-[#0c0c1a] p-5 transition hover:border-[#10b981] hover:shadow-lg hover:shadow-[#059669]/20"
       >
         <span className="mb-1 inline-flex w-fit rounded-full bg-[#059669]/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#059669]">

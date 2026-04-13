@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 6: Projects + Artifacts Workshop — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,7vw,4.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p,.micro-action ul{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.build-step{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem;position:relative;transition:all .3s}
+.build-step:hover{border-color:rgba(0,240,255,.2)}
+.build-step .step-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--brand);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.build-step h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.build-step p{color:var(--t2);font-size:.88rem;margin-bottom:.75rem}
+.build-step .prompt-box{background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);line-height:1.8}
+.checklist{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:2rem 0}
+.checklist h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.25rem}
+.check-item{display:flex;align-items:center;gap:14px;padding:.9rem 0;border-bottom:1px solid var(--bd);cursor:pointer;transition:all .3s}
+.check-item:last-child{border-bottom:none}
+.check-item:hover{padding-left:.5rem}
+.check-box{width:24px;height:24px;border-radius:6px;border:2px solid var(--bd);background:var(--bg);transition:all .3s;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.check-item.checked .check-box{background:var(--brand);border-color:var(--brand)}
+.check-item.checked .check-label{color:var(--t3);text-decoration:line-through}
+.check-label{font-size:.9rem;transition:all .3s}
+.check-progress{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--brand);margin-top:1rem;text-align:center;padding:.5rem;background:rgba(5,150,105,.04);border-radius:var(--rs)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 06 &middot; Master Claude in 15 Days</div>
+  <h1>Projects + Artifacts<br><span class="gr">Workshop</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Day 6 is pure application. Take everything from Days 4-5 and build something real. A training guide for a Kotkapura retail store — from zero to deliverable.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Workshop &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>The Client Brief</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Step-by-Step Build</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Quality Checklist</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Showcase Your Work</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: CLIENT BRIEF -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The <span class="gr">Client Brief</span></h2>
+    <p>A real business scenario. Your task: use Claude Projects + Artifacts to create an internal training guide for a Kotkapura retail store.</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:2rem;margin:2rem 0">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--brand);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">CLIENT BRIEF — Day 6 Workshop</div>
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:1rem">Gupta Electronics — Kotkapura</h3>
+    <p style="color:var(--t2);font-size:.95rem;margin-bottom:1.25rem">Gupta Electronics is a 15-year-old consumer electronics retail shop in Kotkapura, Punjab. They sell phones, laptops, appliances, and accessories. Recently hired 4 new staff members who need to be onboarded. The owner, Mr. Gupta, wants a professional internal training guide covering: product knowledge basics, customer service standards, upselling techniques, and store SOPs.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem">
+      <div style="background:var(--bg2);border-radius:var(--rs);padding:1rem">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);margin-bottom:.3rem">DELIVERABLES</p>
+        <p style="color:var(--t2);font-size:.85rem">• Complete training guide (Document Artifact)<br>• Staff welcome letter<br>• Quick-reference SOP checklist<br>• Product knowledge cards</p>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--rs);padding:1rem">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c4);margin-bottom:.3rem">CONSTRAINTS</p>
+        <p style="color:var(--t2);font-size:.85rem">• Professional but accessible tone<br>• No jargon — staff has varying education levels<br>• In English, with Hindi phrases where helpful<br>• Practical, actionable — not theoretical</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎯</div><div class="call-body"><h4>The Workshop Goal</h4><p>By the end of today's workshop, you will have produced a complete set of professional deliverables using Claude Projects + Artifacts. You'll experience the full workflow: setup → upload → instruct → generate → iterate → finalize. This is a real portfolio piece you can show to potential clients or employers.</p></div></div>
+
+  <div class="emotional-hook">
+    <p>This scenario isn't hypothetical. Small retailers across Punjab, Haryana, and Gujarat are currently hiring new staff and trying to standardize their operations. <strong>A consultant who can deliver this kind of professional training package using AI, in hours instead of days, is extraordinarily valuable.</strong></p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">📋</div><div class="call-body"><h4>What You'll Learn by Doing</h4><p>This workshop teaches something no amount of reading can: <strong>the feel of a professional AI workflow.</strong> How to structure a Project for client work, how to prompt for different document types, how to iterate intelligently, how to know when something is "done enough" to deliver. This is professional judgment — and it only develops through doing.</p></div></div>
+
+  <p class="curiosity-hook">Next: The exact step-by-step build — follow along in Claude as you read.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Step-by-Step Build &rarr;</button></div>
+</div>
+
+<!-- S2: STEP-BY-STEP BUILD -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Brief understood. Now: open Claude alongside this page and build.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Step-by-Step <span class="gr">Build</span></h2>
+    <p>Follow these steps exactly in Claude. This is an active workshop — the learning is in the doing.</p>
+  </div>
+
+  <div class="build-step">
+    <div class="step-label">Step 01 — Project Setup</div>
+    <h4>Create the Gupta Electronics Project</h4>
+    <p>In Claude, click "New Project". Name it "Gupta Electronics — Staff Training". In Project Settings → Custom Instructions, paste the following:</p>
+    <div class="prompt-box">You are a professional HR consultant and business writer creating internal training materials for Gupta Electronics, a consumer electronics retail store in Kotkapura, Punjab. The staff has varying education levels. Always use clear, practical language — no jargon. Write in English but include Hindi phrases where they naturally fit (customer greetings, common product names). Tone: professional, supportive, encouraging. Default output format: well-structured documents with clear headings and numbered steps where applicable. Always prioritize actionability over theory.</div>
+  </div>
+
+  <div class="build-step">
+    <div class="step-label">Step 02 — Knowledge Upload</div>
+    <h4>Upload Store Context (Create a Quick Reference Doc)</h4>
+    <p>Create a simple text file with this content and upload it to the Project knowledge base:</p>
+    <div class="prompt-box">GUPTA ELECTRONICS — STORE FACTS
+Location: Near Bus Stand, Kotkapura, Faridkot District, Punjab
+Founded: 2010 | Owner: Mr. Raj Gupta | Staff Size: 8 (including 4 new hires)
+Products: Smartphones, Laptops, TVs, Refrigerators, ACs, Kitchen Appliances, Accessories
+Brands: Samsung, Apple, Realme, OnePlus, LG, Whirlpool, Havells
+Store Hours: 10am-9pm Mon-Sat, 11am-7pm Sunday
+Payment: Cash, UPI (GPay, PhonePe, Paytm), EMI available
+Warranty: Standard manufacturer warranty. Store-level troubleshooting support.
+Key selling points: Competitive pricing, EMI options, local trust, after-sales support</div>
+  </div>
+
+  <div class="build-step">
+    <div class="step-label">Step 03 — Generate Main Training Guide</div>
+    <h4>Create the Primary Document Artifact</h4>
+    <p>In your first conversation within the Project, send this prompt:</p>
+    <div class="prompt-box">Create a complete Staff Training Guide for Gupta Electronics as a structured document. Include these 5 sections:
+
+1. Welcome & Culture — Why Gupta Electronics, what we stand for, what good service looks like
+2. Product Knowledge Basics — How to quickly learn about a new product category, key specs customers ask about for phones, laptops, and appliances
+3. Customer Service Standards — Greeting, consultation process, handling objections, closing the sale professionally
+4. Upselling Techniques — How to recommend accessories and extended protection ethically and effectively
+5. Store SOPs — Opening/closing checklist, billing process, return/exchange policy, escalation to Mr. Gupta
+
+Make this warm, practical, and immediately useful on day one. Use Hindi greetings where natural (e.g., "Namaste, main aapki kaise help kar sakta hoon?"). Include at least 2 real customer scenarios in the Customer Service section.</div>
+  </div>
+
+  <div class="build-step">
+    <div class="step-label">Step 04 — Generate Supporting Artifacts</div>
+    <h4>Create Companion Documents</h4>
+    <p>After the main guide, create these additional Artifacts in separate conversations within the same Project:</p>
+    <div class="prompt-box">Artifact 2 — Welcome Letter:
+"Write a warm, professional welcome letter from Mr. Raj Gupta to new staff members. Reference Gupta Electronics' 15-year history. Set expectations clearly. End with an encouraging call to action. Under 250 words."
+
+Artifact 3 — Quick Reference Card:
+"Create an HTML quick-reference card that new staff can keep at the counter. Include: top 5 customer FAQ responses, opening/closing checklist, billing steps, common Hindi phrases, and Mr. Gupta's contact for escalations. Style it clean and printable."
+
+Artifact 4 — Product Knowledge Flash Cards:
+"Create 4 product knowledge cards as HTML — one each for: Smartphones, Laptops, Refrigerators, TVs. Each card: key specs customers ask about, top 3 selling points, common objection + response."</div>
+  </div>
+
+  <div class="build-step">
+    <div class="step-label">Step 05 — Iterate</div>
+    <h4>Refine Each Artifact Through Targeted Feedback</h4>
+    <p>For each Artifact, do at least one meaningful iteration. Use these prompts:</p>
+    <div class="prompt-box">For the Training Guide:
+"The Customer Service section is good but needs more depth on handling price objections. Add a 5-step objection handling script specifically for when customers say 'bahut mehenga hai' (it's too expensive)."
+
+For the HTML Quick Reference Card:
+"Make this more visually organized. Add color-coded sections: green for SOP steps, blue for customer interactions, orange for escalation. Add the store address and phone number in the header."
+
+For the Product Flash Cards:
+"Add a 'Don't Say / Do Say' section to each card showing the difference between amateur and professional product descriptions."</div>
+  </div>
+
+  <div class="micro-win">You just experienced a complete professional AI workflow — from brief to deliverable set.</div>
+
+  <div class="callout call-3"><div class="call-ico">⏱️</div><div class="call-body"><h4>Time Reality Check</h4><p>Without AI: A consultant would charge ₹15,000-25,000 and take 2-3 days to produce this package. With Projects + Artifacts, a skilled practitioner completes equivalent quality in 2-3 hours. That's not a small efficiency gain — <strong>it's a fundamentally different business model.</strong></p></div></div>
+
+  <p class="curiosity-hook">Next: Use the interactive checklist to track your progress and ensure quality.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Quality Checklist &rarr;</button></div>
+</div>
+
+<!-- S3: QUALITY CHECKLIST -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% done. Use this checklist to track your workshop progress.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Quality <span class="gr">Checklist</span></h2>
+    <p>Check off each milestone as you complete it. This is your workshop progress tracker.</p>
+  </div>
+
+  <div class="checklist">
+    <h3>🏗️ Project Setup Milestones</h3>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Project created with descriptive name: "Gupta Electronics — Staff Training"</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Custom instructions written and saved in Project Settings</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Store facts document uploaded to Project knowledge base</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Calibration test completed — Claude confirmed understanding of context</span></div>
+    <div class="check-progress" id="prog1">0 / 4 complete</div>
+  </div>
+
+  <div class="checklist">
+    <h3>📄 Artifact Generation Milestones</h3>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Main Training Guide generated (5 sections, includes customer scenarios)</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Welcome Letter from Mr. Gupta created (warm, under 250 words)</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">HTML Quick Reference Card created and renders correctly in preview</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Product Knowledge Flash Cards created (4 cards, all products covered)</span></div>
+    <div class="check-progress" id="prog2">0 / 4 complete</div>
+  </div>
+
+  <div class="checklist">
+    <h3>🔄 Iteration Quality Milestones</h3>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Training Guide iterated at least once (objection handling script added)</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Quick Reference Card visually improved (color-coded sections)</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Product Cards enhanced with "Don't Say / Do Say" section</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">All Artifacts reviewed for consistency with custom instructions</span></div>
+    <div class="check-progress" id="prog3">0 / 4 complete</div>
+  </div>
+
+  <div class="checklist">
+    <h3>✅ Delivery Readiness</h3>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">All documents reviewed for accuracy (no placeholder text remaining)</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">HTML Artifacts tested interactively in preview panel</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Training Guide reads coherently as a standalone document</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Deliverable set complete — ready for client presentation</span></div>
+    <div class="check-progress" id="prog4">0 / 4 complete</div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🏆</div><div class="call-body"><h4>What Completion Means</h4><p>A fully checked list means you've produced a complete, professional training package using AI. This is a portfolio-worthy output. It demonstrates to any client or employer that you can use Claude Projects + Artifacts for real, high-value work — not just simple tasks.</p></div></div>
+
+  <p class="curiosity-hook">Next: How to present your work to maximum effect.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Showcase Your Work &rarr;</button></div>
+</div>
+
+<!-- S4: SHOWCASE -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% complete. The work is done. Now: how to present it effectively.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Showcase <span class="gr">Your Work</span></h2>
+    <p>Producing the deliverable is 70% of the job. Presenting it effectively is the other 30%. Both matter.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What to Show in a Client Presentation</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">📋</span><h3>The Project Structure</h3><p>Open the Claude Project and show the client how it's organized. Custom instructions visible. Documents uploaded. They see that their business context is permanently embedded — not a one-time magic trick.</p></div>
+    <div class="crd"><span class="crd-icon">🎬</span><h3>The Generation Process</h3><p>If they're skeptical, show them live generation. Ask a relevant question in the Project and let them watch Claude respond with full business context. This converts skeptics to believers instantly.</p></div>
+    <div class="crd"><span class="crd-icon">📄</span><h3>The Deliverables</h3><p>Walk through each Artifact: the main guide, the welcome letter, the HTML card, the product flash cards. Explain what each does and how it's used. Let them interact with the HTML Artifact.</p></div>
+    <div class="crd"><span class="crd-icon">⚡</span><h3>The Iteration Capability</h3><p>Show one live iteration: "Mr. Gupta, what would you like to change?" Take their feedback, type it into Claude, and show the update in under 60 seconds. This real-time capability is often the most impressive part.</p></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Presenting Your AI Workflow as a Professional Service</h3>
+  <div class="callout call-2"><div class="call-ico">💼</div><div class="call-body"><h4>How to Position This Work</h4><p>Don't say "I used AI to write this." Say: <strong>"I built a custom AI workspace for your business that maintains your brand, your products, and your standards across all content."</strong><br><br>The former sounds like you took a shortcut. The latter — which is accurate — positions you as a technology-enabled professional who delivers more value faster. That's worth more, not less.</p></div></div>
+
+  <div class="callout call-1"><div class="call-ico">📊</div><div class="call-body"><h4>Portfolio Presentation Tips</h4><p>When showing this work to potential clients or employers:<br><strong>Lead with the outcome:</strong> "Here's a complete training package I built for a retail business."<br><strong>Show the diversity:</strong> Different artifact types demonstrate versatility<br><strong>Show speed:</strong> Mention time-to-delivery — that's your competitive advantage<br><strong>Show iteration:</strong> Show before/after — the guide got better because you refined it</p></div></div>
+
+  <div class="identity-shift">You completed a professional-grade workflow today. That's not a training exercise — it's a sample of your new professional capability.</div>
+
+  <div class="micro-action">
+    <h4>Day 6 Capstone: Your Own Client Scenario</h4>
+    <p>Now replicate this workflow for a business or use case relevant to YOUR work:</p>
+    <ul>
+      <li>Pick a real or realistic client scenario from your professional context</li>
+      <li>Set up a Project with appropriate custom instructions and any available documents</li>
+      <li>Generate a minimum of 2 Artifacts relevant to the client's needs</li>
+      <li>Iterate each Artifact at least once</li>
+      <li>Save the Claude conversation share link — that's your portfolio evidence</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Ready for the workshop knowledge check?</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 6 Knowledge Check — Workshop concepts and professional workflow.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 6 <span class="gr">Quiz</span></h2>
+    <p>Workshop methodology, professional workflow, and presentation skills. 8 randomized questions.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Workshop complete. You're building a professional portfolio one day at a time.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Showcase</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 6</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// CHECKLIST
+const checklists=[{id:'prog1',total:4},{id:'prog2',total:4},{id:'prog3',total:4},{id:'prog4',total:4}];
+function toggleCheck(item){
+  item.classList.toggle('checked');
+  if(item.classList.contains('checked'))item.querySelector('.check-box').textContent='✓';
+  else item.querySelector('.check-box').textContent='';
+  updateProgress();
+}
+function updateProgress(){
+  document.querySelectorAll('.checklist').forEach((cl,idx)=>{
+    const items=cl.querySelectorAll('.check-item');
+    const done=[...items].filter(i=>i.classList.contains('checked')).length;
+    const progEl=cl.querySelector('.check-progress');
+    if(progEl){progEl.textContent=`${done} / ${items.length} complete${done===items.length?' — ✅ Section Complete!':''}`;if(done===items.length)progEl.style.color='var(--c5)';else progEl.style.color='var(--brand)'}
+  });
+}
+
+const qData=[
+  {q:"In the workshop scenario, what is the first step after creating the Project?",o:["Generate all Artifacts immediately","Write and save custom instructions in Project Settings","Upload all possible documents","Start the first conversation"],a:1,e:"Custom instructions come first. They establish the context, tone, expertise, and approach Claude uses for every conversation within the Project. Without them, the Project is just a folder."},
+  {q:"What type of Artifact is most appropriate for the main Gupta Electronics Training Guide?",o:["React Component","SVG Artifact","Document Artifact","Code Artifact"],a:2,e:"A Document Artifact is ideal for long-form structured content like a training guide — it renders clean Markdown with proper headers, bullet points, and sectioning in the preview panel."},
+  {q:"What is the recommended positioning when presenting AI-assisted work to clients?",o:["'I used ChatGPT to write this quickly'","'I built a custom AI workspace that maintains your brand, products, and standards across all content'","'This was generated automatically, no human input needed'","'AI did 100% of the work — I just supervised'"],a:1,e:"'I built a custom AI workspace' is accurate and positions you as a technology-enabled professional. This framing emphasizes the craft and setup work you did, not the automation — which is both honest and strategically better."},
+  {q:"How many Artifact iterations are specified in the workshop's Step 05?",o:["No iterations — first version is final","One iteration for each main Artifact","One overall iteration for the whole package","Five iterations for the training guide only"],a:1,e:"The workshop specifies one meaningful iteration for each main Artifact: objection handling for the Training Guide, color-coding for the Quick Reference Card, 'Don't Say / Do Say' sections for the Product Cards."},
+  {q:"What is the professional time advantage of using Projects + Artifacts for client work?",o:["Marginally faster, maybe 10-20% time savings","The quality is lower so it's not faster overall","A full deliverable set that might take 2-3 days manually can be produced in 2-3 hours — a fundamentally different business model","AI always makes mistakes that take longer to fix"],a:2,e:"The time compression is dramatic: 2-3 days of manual work to 2-3 hours with AI. This isn't incremental efficiency — it changes the economics of consulting and content services fundamentally."},
+  {q:"What is the purpose of uploading a store facts document in Step 02?",o:["To train Claude specifically on this client","To give Claude specific, accurate context about the business that it can reference in all conversations within the Project","To test if Claude can read documents","To fulfill a regulatory requirement"],a:1,e:"Uploading store facts gives Claude specific, accurate business context — products, brands, hours, policies — that it references in every conversation within the Project without needing to be re-briefed."},
+  {q:"What does a 'calibration test' confirm after Project setup?",o:["The API connection is working","Claude understood and correctly interpreted the custom instructions and uploaded context","The Project subscription is active","The file upload was successful"],a:1,e:"A calibration test — asking Claude to summarize what it knows about the Project — confirms that custom instructions and uploaded documents were correctly understood. It catches misinterpretations before they affect real work."},
+  {q:"What is the most impressive single element to demonstrate during a live client presentation of AI-produced work?",o:["The speed of the initial generation","Real-time iteration: taking the client's feedback and showing an update in under 60 seconds","The length of the final document","The number of Artifacts produced"],a:1,e:"Real-time iteration is consistently the most impressive demonstration. When a client gives feedback ('can you add X?') and sees the change appear in 60 seconds, the capability becomes tangible and credible — not theoretical."},
+  {q:"In the workshop checklist, what marks 'Delivery Readiness'?",o:["All Artifacts reviewed, HTML tested, guide reads coherently, and deliverable set is complete","Only the main Training Guide is finished","The client has approved the work","The project has been billed"],a:0,e:"Delivery Readiness requires: all documents reviewed for accuracy, HTML Artifacts tested interactively, Training Guide reads coherently as a standalone document, and the complete deliverable set is ready for client presentation."},
+  {q:"What should you do if you want to show a client the generation process live?",o:["Use a pre-recorded video to avoid errors","Ask a relevant question in the Project context and let them watch Claude respond with full business context","Tell them Claude is too slow for live demos","Only show them the final Artifacts, never the process"],a:1,e:"Live generation in the Project context is highly effective for skeptical clients. They see Claude responding with specific knowledge of their business — using the right product names, the right tone — which immediately demonstrates the value of the Project setup."},
+  {q:"What is the correct language for the HTML Quick Reference Card's audience?",o:["Technical developer documentation","Marketing-speak with extensive brand language","Clear, practical language with Hindi phrases where natural, optimized for counter use by retail staff","Academic language with footnotes"],a:2,e:"The Quick Reference Card is for retail staff of varying education levels who need it at the counter. Clear, practical language with helpful Hindi phrases (greetings, common terms) makes it immediately useful in the real working context."},
+  {q:"Which Artifact in the workshop is most directly useful for a customer-facing context?",o:["The main Training Guide","The Welcome Letter","The HTML Quick Reference Card (product knowledge, FAQs, Hindi phrases)","The Welcome Letter from Mr. Gupta"],a:2,e:"The HTML Quick Reference Card with product knowledge, FAQs, SOPs, and Hindi phrases is the most customer-facing artifact — it's designed for staff to reference during actual customer interactions at the counter."},
+  {q:"What does 'portfolio evidence' mean in the context of this workshop?",o:["Publishing your work publicly","Saving the Claude conversation share link as proof of your professional AI workflow capability","Getting a certificate from Claude","Recording the entire session on video"],a:1,e:"Portfolio evidence is the Claude conversation share link — a read-only URL showing your complete workflow: Project setup, Artifact generation, and iteration. This is shareable proof of professional AI capability for potential clients or employers."},
+  {q:"What is the correct framing for the business value of Projects + Artifacts?",o:["A shortcut that produces lower quality work","A technology that eliminates the need for professional judgment","A capability that enables professionals to deliver more value faster — fundamentally changing the economics of knowledge work","An entertaining tool for creating content quickly"],a:2,e:"The correct framing is capability amplification: same professional judgment, dramatically compressed timelines. This isn't about replacing expertise — it's about extending it. The economics change: you can serve more clients, at higher quality, faster."},
+  {q:"For the Product Knowledge Flash Cards, what specific enhancement does the iteration in Step 05 add?",o:["More product images","A 'Don't Say / Do Say' section showing the difference between amateur and professional product descriptions","A quiz section","A link to Amazon product pages"],a:1,e:"The iteration adds a 'Don't Say / Do Say' section to each product card — the most practical learning element. Real examples of what makes product descriptions sound amateur vs. professional give staff an immediately applicable standard."},
+  {q:"What is the purpose of including Hindi phrases in the training materials?",o:["To make the documents look more authentic","To make Claude translate everything to Hindi","To meet customer service needs naturally — most customers in Kotkapura converse in a mix of Hindi and Punjabi","To comply with government language requirements"],a:2,e:"Hindi phrases serve a genuine practical purpose: Kotkapura's retail customers commonly use Hindi/Punjabi for everyday interactions. Equipping staff with natural phrases ('Namaste, kaise help kar sakta hoon?') improves real customer service quality."},
+  {q:"In terms of consultant positioning, what does 'I built a custom AI workspace' communicate that 'I used AI' does not?",o:["They communicate the same thing","'Built a workspace' implies customization, expertise, and ongoing value — not just one-time content generation","'I used AI' is more transparent and therefore more trusted","'Built a workspace' is dishonest because Claude does the actual work"],a:1,e:"'Built a custom AI workspace' communicates craft, technical expertise, and ongoing value. It implies the workspace itself is a deliverable that continues to benefit the client. 'Used AI' implies a one-time generation with no lasting infrastructure — a very different value proposition."},
+  {q:"What is the ideal first conversation to have within a newly configured Project?",o:["Immediately request the most complex deliverable","A calibration test: ask Claude to summarize what it knows and confirm its instructions","Ask Claude to search the web for industry information","Request a project plan for all future deliverables"],a:1,e:"The calibration test is always the ideal first conversation. It confirms that custom instructions and uploaded documents were correctly interpreted before you depend on them for real work — catching any misinterpretations early."},
+  {q:"Which step in the Build sequence uploads context that Claude will reference in all Project conversations?",o:["Step 1 — Project Creation","Step 2 — Knowledge Upload","Step 3 — Main Guide Generation","Step 5 — Iteration"],a:1,e:"Step 2 — Knowledge Upload — is where the store facts document gets added to the Project knowledge base. This gives Claude specific, accurate business context (products, brands, hours, policies) that it references throughout all Project conversations."},
+  {q:"What makes the workshop deliverable a 'portfolio piece'?",o:["It was reviewed by a professional editor","It demonstrates the complete Project+Artifacts workflow on a real business scenario — showing capability to potential clients or employers","It was produced without any AI assistance","It has a TARAhut certificate attached"],a:1,e:"A complete, professional deliverable set built through a structured workflow demonstrates end-to-end capability. Any client or employer can review the output and the process and see what you can deliver — which is the core value of portfolio evidence."},
+  {q:"For a professional AI consultant presenting to a skeptical client, what is the most effective demonstration technique?",o:["Showing them research papers about AI","Asking them a business question and letting them see Claude respond with full knowledge of their specific context in real time","Explaining the technical training process","Showing them competitor AI tools first"],a:1,e:"Real-time contextual response is the most effective demonstration. When a skeptical client sees Claude using their actual product names, their specific constraints, and their brand tone — without the consultant re-briefing — the value of the Project setup becomes immediately tangible and credible."},
+  {q:"What is the significance of the ₹15,000-25,000 / 2-3 days comparison in Section 2?",o:["It shows that AI work is always overpriced","It establishes a benchmark for manual work cost and time, making the AI productivity gain concrete and business-relevant","It indicates Claude is replacing consultants entirely","It is a hypothetical with no real application"],a:1,e:"The comparison makes the productivity gain concrete: work that previously required 2-3 days and ₹15,000-25,000 in manual consulting can be produced in 2-3 hours with Projects + Artifacts. This translates abstract 'AI efficiency' into real business economics."},
+  {q:"How does the workshop approach differ from traditional training exercises?",o:["The workshop is easier and requires no real effort","The workshop produces actual deliverables using a real business scenario — creating both skill and portfolio evidence simultaneously","The workshop uses pre-built templates rather than real AI generation","The workshop is purely theoretical with no hands-on component"],a:1,e:"The workshop simultaneously builds skills and produces portfolio evidence. It's not a simulation — it's a real workflow producing real deliverables from a realistic scenario. The learning and the output are the same thing."},
+  {q:"What quality check is most important before delivering Artifacts to a client?",o:["Checking the word count","Reviewing for placeholder text and ensuring all details reflect the actual client — no generic content remaining","Getting Claude to score the quality","Running a grammar checker"],a:1,e:"Checking for placeholder text is the most critical pre-delivery review. Generic placeholders left in a client deliverable are unprofessional and signal a rushed process. Every detail should reflect the actual client context."},
+  {q:"What does 'custom AI workspace' mean in practical terms for a client?",o:["A specially configured laptop running AI software","A Claude Project with the client's custom instructions, uploaded documents, and conversation history — enabling contextually appropriate outputs without repeated briefing","A custom-trained AI model built specifically for the client","A subscription to a premium AI service"]  ,a:1,e:"A 'custom AI workspace' is exactly a Claude Project: configured with the client's custom instructions, uploaded knowledge documents, and organized conversation history. This enables contextually appropriate, on-brand outputs for every subsequent interaction — without starting from zero each time."}
+];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Workshop Certified';col='var(--brand)'}else if(pct>=50){tier='Solid Execution';col='var(--c1)'}else{tier='Revisit the Build';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Day 7 moves into professional business writing — where Projects and CRISP combine for maximum quality.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-06-Projects-Artifacts-Workshop');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

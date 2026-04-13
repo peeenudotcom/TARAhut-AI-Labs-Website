@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 5: Claude Artifacts — Master Claude in 15 Days | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+pre{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.12);border-radius:var(--rs);padding:1rem 1.25rem;font-size:.8rem;color:var(--c5);overflow-x:auto;margin:1rem 0;line-height:1.8}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:640px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p,.micro-action ul{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.artifact-type{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin-bottom:1.25rem;transition:all .3s}
+.artifact-type:hover{border-color:rgba(0,240,255,.2)}
+.artifact-type h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.artifact-type p{color:var(--t2);font-size:.9rem;margin-bottom:.75rem}
+.artifact-examples{display:flex;flex-wrap:wrap;gap:.5rem}
+.artifact-ex{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:3px 10px;border-radius:99px;background:rgba(0,240,255,.08);color:var(--c1)}
+.prompt-trigger{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15);border-radius:var(--rs);padding:.75rem 1rem;margin:.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 05 &middot; Master Claude in 15 Days</div>
+  <h1>Claude<br><span class="gr">Artifacts</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Artifacts are Claude's ability to create interactive, deployable outputs — not just text. Functional code, rendered HTML, visual diagrams, and live React components. Today you learn to create them.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 5 &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What are Artifacts</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Creating Artifacts</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Types of Artifacts</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Iterating</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT ARE ARTIFACTS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What Are <span class="gr">Artifacts</span>?</h2>
+    <p>Artifacts are the feature that makes Claude a creative production tool, not just a conversational assistant.</p>
+  </div>
+
+  <div class="emotional-hook">
+    <p>Ask Claude to "explain how a bubble sort works" and you get text. Ask Claude to "build me an interactive bubble sort visualization" and you get a <strong>live, clickable, animated tool</strong> — running in your browser, ready to embed in a presentation or share with a team. That's the difference Artifacts make.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">✨</div><div class="call-body"><h4>Artifacts Defined</h4><p>An Artifact is any Claude output that is substantive enough to stand alone as an independent piece of work. It appears in a dedicated side panel — separate from the conversation — with its own preview, edit, and copy functionality. Artifacts are <strong>interactive, not just text</strong>: code runs, HTML renders, SVGs display visually.</p></div></div>
+
+  <div class="cgrid">
+    <div class="crd" style="border-top:3px solid var(--c1)">
+      <span class="crd-icon">💻</span><h3>Code Artifacts</h3>
+      <p>Python, JavaScript, SQL, and more. Syntax highlighted, copyable, and for some languages, directly executable. The standard output for any substantial code request.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c2)">
+      <span class="crd-icon">🌐</span><h3>HTML/Interactive Artifacts</h3>
+      <p>Full HTML pages that render in the preview panel. Includes CSS and JavaScript. Create calculators, forms, dashboards, games, and interactive tools — all in a single prompt.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c5)">
+      <span class="crd-icon">⚛️</span><h3>React Component Artifacts</h3>
+      <p>Full React components that render live in the preview. State, effects, and interactivity all work. Especially powerful for UI prototypes and data visualization.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c4)">
+      <span class="crd-icon">📊</span><h3>SVG/Visual Artifacts</h3>
+      <p>Scalable vector graphics, diagrams, charts, and visual representations. SVG artifacts render as actual images, not code — you see the visual output immediately.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--brand)">
+      <span class="crd-icon">📄</span><h3>Document Artifacts</h3>
+      <p>Long-form documents, reports, and structured content that benefit from a dedicated view. Markdown renders cleanly. Useful for reports, proposals, and structured guides.</p>
+    </div>
+    <div class="crd" style="border-top:3px solid var(--c3)">
+      <span class="crd-icon">🔧</span><h3>Tool Artifacts</h3>
+      <p>Functional tools built from a prompt: budget calculators, quiz builders, form validators, data processors. These are complete, deployable micro-applications created in minutes.</p>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>Why Artifacts Change the Game</h4><p>Before Artifacts, using Claude for anything that needed to <em>do</em> something required copy-pasting code into an editor, setting up environments, and debugging. Artifacts remove that friction. Claude writes the code and runs it in the same interface. For non-developers, this is transformative — you get functional tools without technical setup.</p></div></div>
+
+  <div class="micro-win">You now know what Artifacts are and why they represent Claude's most powerful output mode.</div>
+
+  <p class="curiosity-hook">Next: The exact prompts that trigger Artifact creation — and the ones that don't.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Creating Artifacts &rarr;</button></div>
+</div>
+
+<!-- S2: CREATING ARTIFACTS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done. Now: the prompts that create Artifacts vs those that don't.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Creating <span class="gr">Artifacts</span></h2>
+    <p>Artifact creation is triggered by the nature and specificity of your request. Understanding the trigger patterns is the key skill.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🔑</div><div class="call-body"><h4>What Triggers Artifact Mode</h4><p>Claude creates an Artifact when the output is <strong>substantial, self-contained, and likely to be used independently from the conversation.</strong> Requests that are clearly asking for something to build, create, generate, or produce — rather than explain or describe — typically trigger Artifact mode.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Prompts That Trigger Artifacts vs Those That Don't</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Intent</th><th style="color:var(--c3)">Conversational (No Artifact)</th><th style="color:var(--c5)">Artifact-Triggering Prompt</th></tr></thead>
+      <tbody>
+        <tr><td>HTML page</td><td>"Explain how to make a landing page"</td><td>"Create a complete HTML landing page for a consulting firm with contact form"</td></tr>
+        <tr><td>Python code</td><td>"How do I sort a list in Python?"</td><td>"Write a complete Python script that reads a CSV, sorts by date, and outputs a summary"</td></tr>
+        <tr><td>Calculator</td><td>"Tell me how EMI is calculated"</td><td>"Build an interactive EMI calculator with sliders for loan amount, rate, and tenure"</td></tr>
+        <tr><td>Document</td><td>"What should a business proposal include?"</td><td>"Write a complete 5-section business proposal for a digital marketing agency pitching to a retail brand"</td></tr>
+        <tr><td>Chart/Visual</td><td>"Describe the market share data"</td><td>"Create an SVG pie chart showing these 5 market share percentages: [data]"</td></tr>
+        <tr><td>React UI</td><td>"How would you structure a task manager UI?"</td><td>"Build a React task manager component with add, complete, and delete functionality"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Artifact Trigger Keywords</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0">
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">build</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">create</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">generate</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">write a complete</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">make me</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">produce</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">develop</span>
+    <span style="padding:5px 14px;background:rgba(5,150,105,.12);color:var(--brand);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">implement</span>
+    <span style="padding:5px 14px;background:rgba(0,240,255,.08);color:var(--c1);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">interactive</span>
+    <span style="padding:5px 14px;background:rgba(0,240,255,.08);color:var(--c1);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">functional</span>
+    <span style="padding:5px 14px;background:rgba(0,240,255,.08);color:var(--c1);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">working</span>
+    <span style="padding:5px 14px;background:rgba(0,240,255,.08);color:var(--c1);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.75rem">complete</span>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">💡</div><div class="call-body"><h4>Force Artifact Mode When Needed</h4><p>If Claude is producing a conversational response when you want an Artifact, be explicit: <code>"Create this as an artifact"</code> or <code>"Generate a complete, standalone HTML file"</code>. You can also ask mid-conversation: <code>"Can you put that code into an artifact so I can see it rendered?"</code></p></div></div>
+
+  <div class="micro-action">
+    <h4>First Artifact Challenge</h4>
+    <p>Create your first Artifact right now. Go to Claude and use this prompt:<br><br>
+    <em>"Build an interactive HTML business card for [Your Name], [Your Role], including your contact details, a clean dark design, and a 'Copy Email' button that works."</em><br><br>
+    Watch the Artifact panel open. See it render. Click 'Copy Email'. You just created a deployable micro-tool in 30 seconds.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: Deep dive into each Artifact type with specific use cases and prompts.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Types of Artifacts &rarr;</button></div>
+</div>
+
+<!-- S3: TYPES OF ARTIFACTS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 60% through Day 5. The artifact type guide is your reference for the next 10 days of practical work.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Types of <span class="gr">Artifacts</span></h2>
+    <p>Each artifact type has its own trigger prompts, use cases, and professional applications. Here's your complete reference.</p>
+  </div>
+
+  <div class="artifact-type">
+    <h3>💻 Code Artifacts</h3>
+    <p>Supports Python, JavaScript, TypeScript, SQL, R, Bash, and more. Best for: data processing scripts, automation, analysis functions, API integrations.</p>
+    <div class="artifact-examples">
+      <span class="artifact-ex">Data Analysis</span><span class="artifact-ex">Automation Scripts</span><span class="artifact-ex">API Calls</span><span class="artifact-ex">Database Queries</span><span class="artifact-ex">File Processing</span>
+    </div>
+    <div class="prompt-trigger">✅ "Write a Python script that reads a CSV file, calculates monthly revenue trends, and outputs a formatted summary report with percentage changes."</div>
+    <div class="prompt-trigger">✅ "Create a JavaScript function that validates Indian phone numbers, email addresses, and PAN card numbers with proper error messages."</div>
+  </div>
+
+  <div class="artifact-type">
+    <h3>🌐 HTML/Interactive Artifacts</h3>
+    <p>Full HTML documents with embedded CSS and JavaScript. These render live in the preview panel. Best for: calculators, forms, dashboards, landing pages, interactive presentations, games.</p>
+    <div class="artifact-examples">
+      <span class="artifact-ex">Calculators</span><span class="artifact-ex">Forms</span><span class="artifact-ex">Dashboards</span><span class="artifact-ex">Landing Pages</span><span class="artifact-ex">Presentations</span>
+    </div>
+    <div class="prompt-trigger">✅ "Build an interactive compound interest calculator with sliders for principal (1L-1Cr), annual rate (5-20%), and tenure (1-30 years). Show growth visualization as a bar chart."</div>
+    <div class="prompt-trigger">✅ "Create a client onboarding form for a digital marketing agency with sections for business details, goals, budget range, and preferred contact method. Style it professionally."</div>
+  </div>
+
+  <div class="artifact-type">
+    <h3>⚛️ React Component Artifacts</h3>
+    <p>Live React components with full state management. Best for: UI prototypes, data visualizations, interactive dashboards, component libraries, form builders.</p>
+    <div class="artifact-examples">
+      <span class="artifact-ex">UI Components</span><span class="artifact-ex">Data Viz</span><span class="artifact-ex">Prototypes</span><span class="artifact-ex">Dashboards</span>
+    </div>
+    <div class="prompt-trigger">✅ "Build a React expense tracker with categories, add/delete functionality, a running total, and a monthly breakdown by category. Include sample data."</div>
+    <div class="prompt-trigger">✅ "Create a React quiz component with 5 questions, multiple choice answers, immediate feedback, and a final score screen with retry functionality."</div>
+  </div>
+
+  <div class="artifact-type">
+    <h3>📊 SVG/Visual Artifacts</h3>
+    <p>Scalable vector graphics that render as actual visuals — not code. Best for: diagrams, flowcharts, org charts, data visualizations, icons, illustrations.</p>
+    <div class="artifact-examples">
+      <span class="artifact-ex">Flowcharts</span><span class="artifact-ex">Org Charts</span><span class="artifact-ex">Diagrams</span><span class="artifact-ex">Charts</span>
+    </div>
+    <div class="prompt-trigger">✅ "Create an SVG flowchart showing a customer onboarding process: Lead → Qualification Call → Demo → Proposal → Contract → Onboarding → Success Review. Use green for completed stages."</div>
+    <div class="prompt-trigger">✅ "Generate an SVG organizational chart for a 20-person startup with CEO, CTO, CMO, and their reports clearly shown with connecting lines."</div>
+  </div>
+
+  <div class="artifact-type">
+    <h3>📄 Document Artifacts</h3>
+    <p>Long-form structured documents with rendered Markdown. Best for: reports, proposals, SOPs, training guides, research summaries, playbooks.</p>
+    <div class="artifact-examples">
+      <span class="artifact-ex">Reports</span><span class="artifact-ex">Proposals</span><span class="artifact-ex">SOPs</span><span class="artifact-ex">Playbooks</span>
+    </div>
+    <div class="prompt-trigger">✅ "Write a complete go-to-market strategy document for a B2B SaaS product targeting small retail businesses in India. Include market analysis, positioning, pricing strategy, and 90-day launch plan."</div>
+  </div>
+
+  <div class="micro-win">You now have a complete map of Artifact types and the exact prompts that create each one.</div>
+
+  <div class="callout call-brand"><div class="call-ico">🏆</div><div class="call-body"><h4>The Professional Advantage</h4><p>A consultant who can produce a working ROI calculator in 10 minutes (via HTML Artifact) instead of days (via developer request) has a massive advantage in client responsiveness. A teacher who can create an interactive quiz without coding knowledge delivers better learning experiences. Artifacts democratize tool creation.</p></div></div>
+
+  <p class="curiosity-hook">Next: Iterating on Artifacts — how to evolve from good to excellent through conversation.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Iterating &rarr;</button></div>
+</div>
+
+<!-- S4: ITERATING ON ARTIFACTS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127919; 80% done — iteration is where Artifacts go from useful to exceptional.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Iterating on <span class="gr">Artifacts</span></h2>
+    <p>The first version is rarely the final version. Mastering the iteration conversation is what separates professionals from beginners.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🔄</div><div class="call-body"><h4>The Iteration Mindset</h4><p>Don't aim for a perfect first prompt. Aim for a <strong>good starting point</strong> that you can refine through conversation. Professional Artifact workflows typically involve 3-7 iterations. Each round gets more specific, targeting exactly what's wrong or missing. This is a collaborative creative process, not a single-shot request.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Artifact Iteration Conversation Pattern</h3>
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:1.5rem 0">
+    <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--bd)">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:.3rem">ITERATION 1 — Initial Request</p>
+      <p style="font-size:.9rem;color:var(--t2)">"Build an interactive pricing calculator for a web design agency. Include tiers: Basic, Professional, Enterprise. Show monthly and annual pricing."</p>
+    </div>
+    <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--bd)">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c1);margin-bottom:.3rem">ITERATION 2 — Structural Refinement</p>
+      <p style="font-size:.9rem;color:var(--t2)">"Good start. Now add a feature comparison table below each pricing tier. Features for Basic: 5 pages, mobile responsive. Professional: 15 pages, blog, contact form. Enterprise: unlimited pages, e-commerce, SEO setup."</p>
+    </div>
+    <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--bd)">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c2);margin-bottom:.3rem">ITERATION 3 — Visual Polish</p>
+      <p style="font-size:.9rem;color:var(--t2)">"Change the color scheme to dark background (#0a0a1a) with green accents (#059669). Make the Professional tier stand out with a 'Most Popular' badge. Add a toggle between monthly and annual pricing with 20% discount shown on annual."</p>
+    </div>
+    <div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c5);margin-bottom:.3rem">ITERATION 4 — Functional Enhancement</p>
+      <p style="font-size:.9rem;color:var(--t2)">"Add a 'Get Started' button to each tier that links to a WhatsApp message pre-filled with 'Hi, I'm interested in the [Tier Name] plan.' Replace the placeholder links with: wa.me/919200882008"</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Effective Iteration Commands</h3>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-1">Structural</span><h3>Add / Remove</h3><p>Add a section, remove an element, restructure the layout. Be specific: "Add a monthly cost breakdown below the main calculator" works better than "add more features."</p></div>
+    <div class="crd"><span class="tag tag-2">Visual</span><h3>Style Adjustments</h3><p>Specific colors, fonts, spacing. Reference exact values when possible: "Change the button background to #059669 and make it full-width on mobile."</p></div>
+    <div class="crd"><span class="tag tag-5">Functional</span><h3>Behavior Changes</h3><p>How the artifact responds to interaction. "When the user clicks submit, show a success message. After 3 seconds, reset the form." Functional iteration turns static into dynamic.</p></div>
+    <div class="crd"><span class="tag tag-4">Data</span><h3>Content Updates</h3><p>Replace placeholder content with real data. "Replace the sample client names with: Sharma Textiles, Kotkapura Foods, Punjab Transport." Separating structure from content makes iteration cleaner.</p></div>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>When to Start Fresh vs Iterate</h4><p>Iterate when: You want changes to the existing structure &bull; The foundation is correct but details need refinement &bull; You're adding functionality.<br><br>Start fresh when: The fundamental approach is wrong &bull; You realize you need a completely different structure &bull; The conversation has accumulated confusing contradictions. A fresh start with refined requirements often beats trying to fix a deeply broken first attempt.</p></div></div>
+
+  <div class="identity-shift">After today, you don't just use Claude — you produce interactive tools, functional code, and professional documents. Artifacts make you a creator, not just a prompter.</div>
+
+  <div class="micro-action">
+    <h4>Day 5 Capstone: 4-Round Artifact Build</h4>
+    <ul>
+      <li>Round 1: Create an HTML calculator relevant to your work (EMI, ROI, pricing, tax, etc.)</li>
+      <li>Round 2: Add a feature you need (comparison table, additional input, reset button)</li>
+      <li>Round 3: Apply your brand colors and style preferences</li>
+      <li>Round 4: Add a functional element (WhatsApp link, email CTA, print button)</li>
+    </ul>
+    <p style="margin-top:.5rem">At the end, you have a deployable business tool you created in under 30 minutes without writing a single line of code yourself.</p>
+  </div>
+
+  <p class="curiosity-hook">Test your Artifacts knowledge. Tomorrow we combine Projects + Artifacts in a real workshop.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Day 5 Quiz. Artifacts — types, triggers, and iteration strategies.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Day 5 <span class="gr">Quiz</span></h2>
+    <p>Artifacts mastery tested in 8 randomized questions.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Day 5 complete. You now create interactive tools, not just text responses.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Iterating</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 5</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+const qData=[
+  {q:"What is a Claude Artifact?",o:["Any message from Claude","A substantial, self-contained output that appears in a dedicated side panel and can include interactive elements","A template Claude fills in","A saved conversation bookmark"],a:1,e:"An Artifact is any Claude output substantial enough to stand alone as independent work. It appears in a dedicated side panel with preview, edit, and copy functionality — and for HTML/React, it renders live."},
+  {q:"Which prompt would trigger an Artifact for a calculator?",o:["'Explain how EMI is calculated'","'What formula is used for compound interest?'","'Build an interactive EMI calculator with sliders for loan amount, rate, and tenure'","'Tell me about financial calculators'"],a:2,e:"'Build an interactive EMI calculator' triggers Artifact mode because it's a clear request to create something functional and self-contained. Explanatory or informational requests produce conversational responses."},
+  {q:"What type of Artifact would you request for an interactive UI component with state management?",o:["SVG Artifact","Document Artifact","React Component Artifact","Code Artifact"],a:2,e:"React Component Artifacts support full state management, effects, and interactivity. They render live in the preview panel — ideal for UI prototypes, interactive dashboards, and component libraries."},
+  {q:"How many iterations do professional Artifact workflows typically involve?",o:["1 — get it perfect first time","2-3 maximum","3-7 iterations","10-20 iterations"],a:2,e:"Professional Artifact workflows typically involve 3-7 iterations. The first version is a good starting point; subsequent rounds refine structure, visuals, functionality, and content progressively."},
+  {q:"What should you do when Claude produces a conversational response instead of an Artifact?",o:["Accept the conversational response","Start a completely new conversation","Explicitly ask: 'Create this as an artifact' or specify 'Create a complete, standalone HTML file'","Switch to a different Claude model"],a:2,e:"You can force Artifact mode by explicitly saying 'Create this as an artifact' or being very specific about wanting a complete, standalone file. Claude responds to clear build/create intent."},
+  {q:"Which is NOT a trigger keyword for Artifact creation?",o:["build","create","explain","generate"],a:2,e:"'Explain' typically triggers a conversational response — Claude will explain the concept in prose. Artifact triggers include 'build', 'create', 'generate', 'write a complete', 'make me', 'develop', 'implement'."},
+  {q:"What is an SVG Artifact best used for?",o:["Running Python code","Interactive form submissions","Diagrams, flowcharts, org charts, and visual representations that render as actual images","Storing large amounts of text"],a:2,e:"SVG Artifacts render as actual visual images in the preview panel — perfect for diagrams, flowcharts, organizational charts, and data visualizations where you need a rendered graphic output."},
+  {q:"When is it better to start fresh rather than iterate on an existing Artifact?",o:["After every second iteration","When you want to change a color","When the fundamental approach is wrong or the structure needs to be completely different","When the Artifact has more than 100 lines"],a:2,e:"Start fresh when the fundamental approach is wrong or you need a completely different structure. Trying to fix a deeply broken first attempt through iteration often takes longer than a fresh start with refined requirements."},
+  {q:"What makes HTML/Interactive Artifacts particularly powerful for non-developers?",o:["They automatically deploy to the web","They render live in the preview panel and create functional tools without requiring any technical setup or coding knowledge","They integrate with external APIs","They work without internet connection"],a:1,e:"HTML Artifacts render live in Claude's preview panel, letting non-developers see and use functional tools (calculators, forms, dashboards) without any technical setup. This democratizes tool creation."},
+  {q:"For a data analysis script that processes CSV files, which Artifact type is most appropriate?",o:["React Component","SVG","Document","Code Artifact"],a:3,e:"Code Artifacts are ideal for Python, JavaScript, SQL, and other programming languages. For data processing scripts, a Code Artifact provides syntax highlighting, clean copy functionality, and appropriate structure."},
+  {q:"Which iteration type is described as 'targeting how the artifact responds to user interaction'?",o:["Structural iteration","Visual iteration","Functional iteration","Data iteration"],a:2,e:"Functional iteration targets behavior — how the artifact responds to user actions. Examples: 'When the user clicks submit, show a success message. After 3 seconds, reset the form.' This turns static into dynamic."},
+  {q:"What is the recommended approach for specifying style changes during Artifact iteration?",o:["Describe changes vaguely and let Claude decide","Provide specific values: exact colors (#hex codes), precise spacing, named elements","Ask Claude to improve the design generally","Always use the same style as the original"],a:1,e:"For visual iteration, specificity is key: exact hex color codes, precise element names, specific layout descriptions. 'Change the button to #059669 and make it full-width on mobile' works far better than 'improve the button style'."},
+  {q:"What happens to the Artifact when you continue iterating in the conversation?",o:["A new Artifact is created alongside the old one","The old Artifact is deleted","Claude updates the existing Artifact in the side panel, maintaining the iteration history","The conversation resets"],a:2,e:"Claude updates the existing Artifact in the side panel. The conversation thread shows your iteration requests and Claude's responses, while the Artifact panel always shows the current version."},
+  {q:"For which professional scenario would you create a Document Artifact?",o:["Quick 2-sentence answer","A 5-section go-to-market strategy with market analysis, positioning, pricing, and launch plan","A simple color selection","A short list of steps"],a:1,e:"Document Artifacts are for long-form, structured content — reports, proposals, SOPs, playbooks — that benefit from a dedicated rendering environment with proper Markdown formatting."},
+  {q:"What is the business value of being able to create working tools via Artifacts?",o:["It eliminates the need for any professional skills","It creates competitive advantage through faster delivery — tools that might take days via developer requests can be produced in minutes","It replaces the need for project management","It allows unlimited API calls"],a:1,e:"Artifact-created tools dramatically compress delivery timelines. A consultant who can produce a working ROI calculator in 10 minutes instead of waiting days for a developer request has meaningful competitive advantage in client responsiveness."},
+  {q:"Which Artifact type is ideal for creating an organization chart?",o:["Code Artifact","HTML Artifact","SVG Artifact","Document Artifact"],a:2,e:"SVG Artifacts render as actual visual graphics and are ideal for organizational charts, flowcharts, and structural diagrams where you need a clean visual output rather than code or prose."},
+  {q:"What does 'Data iteration' mean in the context of Artifact refinement?",o:["Analyzing data inside the Artifact","Replacing placeholder content with real, specific data (names, numbers, links)","Adding new data charts","Connecting to external databases"],a:1,e:"Data iteration means replacing placeholder content with real, specific data — like replacing sample client names with actual client names, or updating generic pricing with your real pricing. Separating structure from content makes this cleaner."},
+  {q:"When creating an interactive form as an HTML Artifact, what would be the most impactful fourth-round iteration?",o:["Change the font size","Adding functional integration like a pre-filled WhatsApp CTA or mailto link","Making the form shorter","Translating it to Hindi"],a:1,e:"Adding functional integration (WhatsApp CTA, email links, Google Analytics) is the highest-value fourth-round iteration — it transforms a static visual form into an actual lead capture or communication tool."},
+  {q:"What is the primary difference between a Code Artifact and an HTML Artifact?",o:["Code Artifacts are only for Python","HTML Artifacts render visually in the preview panel with full interactivity; Code Artifacts show syntax-highlighted code","Code Artifacts cost more to generate","HTML Artifacts require external hosting"],a:1,e:"HTML Artifacts render live in Claude's preview panel — you see the visual output with full interactivity. Code Artifacts display syntax-highlighted code appropriate for languages like Python, SQL, and JavaScript."},
+  {q:"How many files can you create in a single Artifact session?",o:["Only one Artifact per conversation","Multiple Artifacts can be created in the same conversation, each appearing in the side panel","Maximum 3 Artifacts per conversation","No limit, but each starts a new chat"],a:1,e:"Multiple Artifacts can be created within the same conversation. Each substantial request produces or updates an Artifact. You can create different types of Artifacts in the same conversation session."},
+  {q:"What is the 'good starting point' philosophy for Artifacts?",o:["Always aim for perfection in the first prompt","Accept whatever Claude produces first","Aim for a reasonable first version, then refine systematically through 3-7 iterations","Spend 2 hours writing the perfect first prompt"],a:2,e:"The 'good starting point' philosophy says the first version should be a reasonable foundation, not perfect. The professional skill is systematic iteration — each round targets specific improvements. This beats trying to specify everything in one prompt."},
+  {q:"For a pricing page Artifact, what would be an effective structural iteration in round 2?",o:["Change the colors","Add a 'Most Popular' badge to the middle tier and a feature comparison table below each tier","Switch from HTML to React","Remove the pricing information"],a:1,e:"Round 2 structural iteration adds meaningful content elements: feature comparison tables, badges, additional sections. These structural improvements give users the information they need to make decisions."},
+  {q:"What is the recommended way to share an HTML Artifact with a client or team member?",o:["Screenshot it and email the image","Use the Claude Share feature to create a read-only conversation link, or copy the HTML code and host it","Ask the client to log into your Claude account","Export it as PDF only"],a:1,e:"For HTML Artifacts, you can either share the Claude conversation link (read-only) or copy the raw HTML code and host it yourself. The code is standard HTML/CSS/JS that works in any browser."},
+  {q:"Which prompt structure most reliably produces a high-quality first Artifact?",o:["Short, vague requests to give Claude creative freedom","Very detailed CRISP-structured prompts specifying the exact type, purpose, features, and style of the Artifact","One-word requests like 'calculator'","Copy-pasting code from Stack Overflow"],a:1,e:"CRISP-structured Artifact prompts — specifying type, purpose, audience, required features, and visual style upfront — produce significantly better first versions, reducing the number of iterations needed to reach the final result."},
+  {q:"After creating a React Artifact, what does clicking the preview icon show you?",o:["The JavaScript source code","The live, rendered, interactive component running in the preview panel","A static screenshot","An error message"],a:1,e:"Clicking the preview icon in a React Artifact shows the live, rendered component — with full state management and interactivity running in Claude's preview panel. You can interact with it just as a user would."}
+];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let activeQuiz=shuffle([...qData]).slice(0,8);
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Artifact Creator';col='var(--brand)'}else if(pct>=50){tier='Building Confidence';col='var(--c1)'}else{tier='Review & Practice';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">Artifacts compound with Projects — tomorrow you combine both in a real client workshop scenario.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-05-Claude-Artifacts');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function nxtQ(){cq++;renderQ()}
+async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+</script>
+</body>
+</html>

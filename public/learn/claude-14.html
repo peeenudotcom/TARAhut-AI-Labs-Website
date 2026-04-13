@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 14: Claude API | TARAhut AI Labs</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#059669;--green-d:#047857;--accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;--radius:12px}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-user-select:none;user-select:none}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--green);animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
+nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
+.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 60%);padding:60px 24px 50px;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:var(--green);color:#fff;font-size:0.75em;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;line-height:1.2;margin-bottom:12px}
+.hero h1 span{color:var(--green)}
+.hero p{color:var(--muted);font-size:1.05em;max-width:580px;margin:0 auto 24px}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
+.hero-meta span{background:var(--bg2);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
+.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
+.section{display:none;animation:fadeIn .4s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800}
+.section-header p{color:var(--muted);margin-top:8px}
+.section-header{margin-bottom:28px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
+.card:hover{border-color:var(--green);transform:translateY(-2px)}
+.card-icon{font-size:1.8em;margin-bottom:10px}
+.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
+.card p{font-size:0.875em;color:var(--muted)}
+.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
+.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
+.callout strong{color:var(--green);display:block;margin-bottom:4px}
+.callout.amber strong{color:var(--accent)}
+.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative}
+.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
+.code-box span.hl{color:#79c0ff}.code-box span.gr{color:#3fb950}.code-box span.am{color:#e3b341}.code-box span.cm{color:#8b949e}.code-box span.pk{color:#d2a8ff}
+.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
+.copy-btn:hover{background:var(--green);color:#fff}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:0.875em}
+th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
+.steps{margin:20px 0}
+.step{display:flex;gap:16px;margin-bottom:16px}
+.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
+.step-body h4{font-weight:700;margin-bottom:4px}
+.step-body p{color:var(--muted);font-size:0.875em}
+.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
+.highlight-box h3{color:var(--green);margin-bottom:8px}
+.analogy-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:20px 0;position:relative;overflow:hidden}
+.analogy-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--accent))}
+.analogy-label{font-size:0.72em;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
+.param-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.param-name{font-family:'Courier New',monospace;font-size:0.85em;color:#79c0ff;font-weight:700;margin-bottom:4px}
+.param-type{font-size:0.72em;color:var(--muted);margin-bottom:8px}
+.param-desc{font-size:0.82em;color:var(--text)}
+.build-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0;transition:.2s}
+.build-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.build-header{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px}
+.build-icon{font-size:2.5em}
+.build-title{font-weight:800;font-size:1.1em;margin-bottom:4px}
+.build-sub{font-size:0.82em;color:var(--muted)}
+.build-features{display:flex;flex-direction:column;gap:8px}
+.build-feature{display:flex;gap:10px;align-items:flex-start;font-size:0.875em}
+.build-feature::before{content:'→';color:var(--green);font-weight:700;flex-shrink:0}
+.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.quiz-header h3{font-size:1.3em;font-weight:800}
+.quiz-progress{font-size:0.82em;color:var(--muted)}
+.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
+.q-text{font-weight:600;margin-bottom:14px}
+.q-num{font-size:0.75em;color:var(--green);font-weight:700;margin-bottom:6px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
+.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
+.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
+.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
+.option.disabled{cursor:default}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
+.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
+.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
+.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-d)}
+.btn-secondary{background:var(--bg3);color:var(--text)}
+.quiz-score{text-align:center;padding:28px;display:none}
+.quiz-score.show{display:block}
+.score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
+.score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
+.score-sub{color:var(--muted);font-size:0.9em}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div id="particles"></div>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">TARAhut AI Labs</div>
+    <button class="nav-btn active" onclick="showSection(0)">1. What is an API?</button>
+    <button class="nav-btn" onclick="showSection(1)">2. Get Your API Key</button>
+    <button class="nav-btn" onclick="showSection(2)">3. Your First API Call</button>
+    <button class="nav-btn" onclick="showSection(3)">4. What You Can Build</button>
+    <button class="nav-btn" onclick="showSection(4)">5. Quiz</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">DAY 14 — INTERMEDIATE</div>
+  <h1>The Claude <span>API</span></h1>
+  <p>Your app talks directly to Claude's brain — without the website. Build chatbots, automation tools, and AI-powered applications on your own terms.</p>
+  <div class="hero-meta"><span>5 Sections</span><span>25 Quiz Questions</span><span>~90 min</span><span>tarahutailabs.com</span></div>
+</div>
+
+<div class="container">
+
+<!-- S1 -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-tag">Section 1</div>
+    <h2>What is an API?</h2>
+    <p>The simplest explanation: your app talks to Claude's brain directly, without using the website. Here's exactly what that means.</p>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">The Phone Call Analogy</div>
+    <p style="font-size:1em;line-height:1.8">
+      <strong style="color:var(--green)">Using Claude.ai = Visiting someone's house.</strong> You go to their location, ring the doorbell, they answer, you talk, you leave. It's great for casual conversations and exploration.<br><br>
+      <strong style="color:var(--accent)">Using Claude API = Calling them on the phone.</strong> You dial their number from anywhere. They answer. You get what you need. The call can be made from your app, your website, your script — anywhere. And you can set it up to call automatically, without you being there.
+    </p>
+  </div>
+
+  <div class="callout">
+    <strong>The API in Plain Language</strong>
+    An API (Application Programming Interface) is a way for software to talk to other software. The Claude API is Claude's "phone number" — your code dials it, sends a message, and Claude responds. Your website, app, or script handles the conversation — you just set the rules.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Why Does the API Matter?</h3>
+  <div class="grid-2">
+    <div class="card"><div class="card-icon">🌐</div><h3>Claude on YOUR Website</h3><p>Instead of sending customers to Claude.ai, Claude lives inside your website. Your branding, your interface, your control.</p></div>
+    <div class="card"><div class="card-icon">🤖</div><h3>Automatic Without You</h3><p>API-powered Claude can respond to customer enquiries at 3am while you sleep. No human needed in the loop for routine responses.</p></div>
+    <div class="card"><div class="card-icon">🔗</div><h3>Connected to Your Data</h3><p>Your app can send Claude context from your database — customer name, purchase history, course enrollment — for truly personalized responses.</p></div>
+    <div class="card"><div class="card-icon">⚡</div><h3>Speed at Scale</h3><p>One Claude API integration can handle hundreds of conversations simultaneously. No waiting. No queue. Instant AI for every user.</p></div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">API vs Claude.ai: When to Use Which</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Scenario</th><th>Use Claude.ai</th><th>Use Claude API</th></tr>
+      <tr><td>Writing content for yourself</td><td>Yes</td><td>No need</td></tr>
+      <tr><td>Chatbot on your website</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Automated customer responses</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Brainstorming and exploration</td><td>Yes</td><td>Overkill</td></tr>
+      <tr><td>Custom AI tool for your team</td><td>Possible but limited</td><td>Yes</td></tr>
+      <tr><td>Building a product to sell</td><td>No</td><td>Yes</td></tr>
+    </table>
+  </div>
+
+  <div class="callout amber">
+    <strong>You Don't Need to Code to Understand This</strong>
+    Day 14 is about understanding the API conceptually — what it is, how it works, what's possible. Day 15 and beyond cover actually building with it. Today: understand the landscape. Tomorrow: learn to build on it.
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-tag">Section 2</div>
+    <h2>Getting Your API Key</h2>
+    <p>Your API key is your access credential — the unique identifier that lets Claude know it's your app making the request.</p>
+  </div>
+
+  <div class="callout">
+    <strong>What is an API Key?</strong>
+    Think of it as your personal password for the Claude phone line. Every time your app calls Claude, it presents this key. Anthropic uses it to: (1) verify you're authorized, (2) track your usage, and (3) apply your billing. Keep it secret — never share it publicly.
+  </div>
+
+  <h3 style="margin:24px 0 16px">Getting Your Key: Step by Step</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Go to console.anthropic.com</h4><p>This is Anthropic's developer console — separate from claude.ai. Create an account or sign in with your existing Anthropic account.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Navigate to API Keys</h4><p>In the left sidebar, find "API Keys." Click "Create Key." Give it a descriptive name like "TARAhut Website Chatbot."</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Copy and Store Securely</h4><p>The key is shown ONCE. Copy it immediately and store in a secure place (password manager, not a Google Doc). Anthropic cannot show it again.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Add a Payment Method</h4><p>Go to Billing. Add a credit or debit card. You only pay for what you use — no monthly subscription for the API itself.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Set Usage Limits</h4><p>In Settings → Billing, set a monthly spending limit (e.g., ₹2,000/month) so you're never surprised by a large bill.</p></div></div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">Pricing Explained</h3>
+  <div class="analogy-box">
+    <div class="analogy-label">How API Pricing Works</div>
+    <p style="font-size:0.9em;line-height:1.8">Claude API is priced per "token" — roughly 1 token = 0.75 words. You pay for both what you SEND (input) and what Claude RESPONDS with (output).<br><br>
+    <strong style="color:var(--green)">Claude 3.5 Haiku</strong> (fast, economical): ~$0.80 per million input tokens, ~$4 per million output tokens<br>
+    <strong style="color:var(--green)">Claude Sonnet</strong> (balanced): ~$3 per million input, ~$15 per million output<br><br>
+    <strong style="color:var(--accent)">Real example:</strong> A customer support chatbot handling 100 conversations/day, each ~300 words total: costs approximately ₹100-300 per month. Very affordable for the value delivered.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Model</th><th>Best For</th><th>Speed</th><th>Cost Level</th></tr>
+      <tr><td>Claude Haiku 3.5</td><td>High-volume, simple tasks (FAQ, classification)</td><td>Very fast</td><td>Lowest</td></tr>
+      <tr><td>Claude Sonnet 4</td><td>Balanced quality and speed (most use cases)</td><td>Fast</td><td>Medium</td></tr>
+      <tr><td>Claude Opus 4</td><td>Complex reasoning, high-stakes tasks</td><td>Slower</td><td>Highest</td></tr>
+    </table>
+  </div>
+
+  <div class="callout amber">
+    <strong>API Key Security Rules</strong>
+    NEVER put your API key directly in a website's HTML/JavaScript (visible to anyone who views source). NEVER commit it to GitHub. NEVER share it in WhatsApp. Store it as an environment variable on your server or use a backend service. Claude will explain the correct way when you ask it.
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-tag">Section 3</div>
+    <h2>Your First API Call</h2>
+    <p>The structure of a Claude API request — parameters explained in plain language. Understanding this unlocks everything.</p>
+  </div>
+
+  <div class="callout">
+    <strong>What a Request Looks Like</strong>
+    Every API call to Claude has the same structure: you send a JSON message with specific parameters, and Claude sends back a JSON response. Understanding each parameter gives you complete control over Claude's behavior in your application.
+  </div>
+
+  <h3 style="margin:24px 0 16px">A Simple API Request</h3>
+  <div class="code-box">
+    <div class="code-label">Claude API Request Structure (Python)</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    <span class="cm"># Install: pip install anthropic</span><br>
+    <span class="pk">import</span> <span class="hl">anthropic</span><br><br>
+    client = anthropic.<span class="hl">Anthropic</span>(<span class="gr">api_key</span>=<span class="am">"your-api-key-here"</span>)<br><br>
+    message = client.messages.<span class="hl">create</span>(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">model</span>=<span class="am">"claude-sonnet-4-5"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">max_tokens</span>=<span class="hl">1024</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">system</span>=<span class="am">"You are a helpful customer support assistant for TARAhut AI Labs. Be warm, professional, and concise."</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">messages</span>=[<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<span class="am">"role"</span>: <span class="am">"user"</span>, <span class="am">"content"</span>: <span class="am">"What courses do you offer?"</span>}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;]<br>
+    )<br><br>
+    <span class="cm"># Claude's response:</span><br>
+    <span class="pk">print</span>(message.content[<span class="hl">0</span>].text)
+  </div>
+
+  <h3 style="margin:24px 0 16px">Parameters Explained</h3>
+  <div class="param-grid">
+    <div class="param-card">
+      <div class="param-name">model</div>
+      <div class="param-type">string — required</div>
+      <div class="param-desc">Which version of Claude to use. "claude-sonnet-4-5" is the recommended balanced model. Use Haiku for speed, Opus for complex tasks.</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">max_tokens</div>
+      <div class="param-type">integer — required</div>
+      <div class="param-desc">Maximum length of Claude's response. 1 token ≈ 0.75 words. 1024 = ~750 words. Set based on how long responses need to be in your app.</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">system</div>
+      <div class="param-type">string — optional but crucial</div>
+      <div class="param-desc">The system prompt — Claude's "identity" for this application. Define its role, tone, knowledge, and constraints here. This shapes every response.</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">messages</div>
+      <div class="param-type">array — required</div>
+      <div class="param-desc">The conversation history. Each message has "role" (user or assistant) and "content" (the text). Include previous messages for multi-turn conversations.</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">temperature</div>
+      <div class="param-type">float 0-1 — optional</div>
+      <div class="param-desc">Controls creativity. 0 = very consistent, predictable. 1 = more creative, varied. For support bots: 0.3. For creative writing: 0.8-1.0.</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">stop_sequences</div>
+      <div class="param-type">array — optional</div>
+      <div class="param-desc">Words that tell Claude to stop generating. Useful for structured outputs — stop when Claude writes "END" or "---". Controls output format precisely.</div>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px">What the Response Looks Like</h3>
+  <div class="code-box">
+    <div class="code-label">Claude API Response Structure</div>
+    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+    {<br>
+    &nbsp;&nbsp;<span class="gr">"id"</span>: <span class="am">"msg_01XFDUDYJgAACzvnptvVoYEL"</span>,<br>
+    &nbsp;&nbsp;<span class="gr">"type"</span>: <span class="am">"message"</span>,<br>
+    &nbsp;&nbsp;<span class="gr">"role"</span>: <span class="am">"assistant"</span>,<br>
+    &nbsp;&nbsp;<span class="gr">"content"</span>: [{<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">"type"</span>: <span class="am">"text"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">"text"</span>: <span class="am">"We offer Master Claude in 15 Days, ChatGPT for Business, and our upcoming AI Builder 90 Days program..."</span><br>
+    &nbsp;&nbsp;}],<br>
+    &nbsp;&nbsp;<span class="gr">"model"</span>: <span class="am">"claude-sonnet-4-5"</span>,<br>
+    &nbsp;&nbsp;<span class="gr">"usage"</span>: {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">"input_tokens"</span>: <span class="hl">45</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="gr">"output_tokens"</span>: <span class="hl">87</span><br>
+    &nbsp;&nbsp;}<br>
+    }
+  </div>
+
+  <div class="highlight-box">
+    <h3>The System Prompt is Your Superpower</h3>
+    <p style="color:var(--muted);margin-bottom:12px">The system parameter shapes every single response in your application. A well-written system prompt means Claude stays on-brand, on-topic, and helpful — no matter what users ask.</p>
+    <div class="code-box" style="margin:0">
+      <div class="code-label">Powerful System Prompt Example</div>
+      <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
+      You are the AI assistant for TARAhut AI Labs, an AI training institute in Kotkapura, Punjab.<br><br>
+      Your role: Help website visitors understand our courses, pricing, and enrollment process.<br>
+      Tone: Warm, knowledgeable, helpful — like a friendly admission counselor.<br><br>
+      What you know:<br>
+      - We offer: Master Claude 15 Days (₹2999), ChatGPT Business (₹1999)<br>
+      - Next batch starts: [DATE]<br>
+      - Contact: WhatsApp 9876543210<br>
+      - We're based in Kotkapura, with online options available<br><br>
+      Rules:<br>
+      - Never make up information not listed above<br>
+      - For complex questions, say "Let me connect you with our team"<br>
+      - Always end with a gentle nudge to WhatsApp for enrollment
+    </div>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-tag">Section 4</div>
+    <h2>What You Can Build</h2>
+    <p>Real possibilities that start from "I have an API key." Inspiration for your next project — from chatbots to content tools.</p>
+  </div>
+
+  <div class="callout">
+    <strong>The Builder's Mindset</strong>
+    Every tool you use daily started as an API call. Your bank app calls bank APIs. Zomato calls restaurant APIs. Now you have access to one of the world's most powerful AI APIs. What will you build?
+  </div>
+
+  <div class="build-card">
+    <div class="build-header">
+      <div class="build-icon">💬</div>
+      <div>
+        <div class="build-title">AI Chatbot on Your Website</div>
+        <div class="build-sub">Estimated cost: ₹500-2000/month | Impact: High</div>
+      </div>
+    </div>
+    <div class="build-features">
+      <div class="build-feature">Answers visitor questions 24/7 — course info, pricing, enrollment, location</div>
+      <div class="build-feature">Speaks in Hindi or Punjabi based on visitor preference</div>
+      <div class="build-feature">Collects leads: "Would you like us to call you?" captures phone number</div>
+      <div class="build-feature">Handoff to WhatsApp for complex queries — seamless transition</div>
+      <div class="build-feature">Never says "I don't know" — always guides visitor to next step</div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-header">
+      <div class="build-icon">📧</div>
+      <div>
+        <div class="build-title">Automated Email Responder</div>
+        <div class="build-sub">Estimated cost: ₹200-800/month | Impact: High</div>
+      </div>
+    </div>
+    <div class="build-features">
+      <div class="build-feature">New enquiry email arrives → Claude reads it → drafts a personalized response in seconds</div>
+      <div class="build-feature">Categorizes emails by type: enquiry, complaint, partnership, spam</div>
+      <div class="build-feature">For routine enquiries: sends response automatically. For complex ones: flags for human review</div>
+      <div class="build-feature">Maintains your brand voice across every single response</div>
+      <div class="build-feature">Works in Hindi and English — detects language of incoming email</div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-header">
+      <div class="build-icon">✍️</div>
+      <div>
+        <div class="build-title">Content Generation Tool</div>
+        <div class="build-sub">Estimated cost: ₹300-1000/month | Impact: Medium</div>
+      </div>
+    </div>
+    <div class="build-features">
+      <div class="build-feature">Your team fills a simple form: topic, platform, tone, language</div>
+      <div class="build-feature">Claude generates: Instagram caption, LinkedIn post, WhatsApp broadcast in one click</div>
+      <div class="build-feature">Outputs in Hindi, Punjabi, and English simultaneously</div>
+      <div class="build-feature">Saves generated content to a Google Sheet for team review</div>
+      <div class="build-feature">Entire content team productivity multiplied without extra hires</div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-header">
+      <div class="build-icon">📊</div>
+      <div>
+        <div class="build-title">Student Progress Analysis Tool</div>
+        <div class="build-sub">Estimated cost: ₹200-600/month | Impact: Medium</div>
+      </div>
+    </div>
+    <div class="build-features">
+      <div class="build-feature">Upload student quiz scores and attendance → Claude identifies at-risk students</div>
+      <div class="build-feature">Generates personalized study recommendations for each student</div>
+      <div class="build-feature">Drafts parent communication in Hindi with progress updates</div>
+      <div class="build-feature">Weekly batch analysis report for instructors with actionable insights</div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <strong>Start with the Problem, Not the Technology</strong>
+    Don't think "I have an API, what should I build?" Think: "What problem costs me the most time or money every week?" That's your first API project. The technology serves the problem. The best builds are the simplest ones that solve a real, painful problem.
+  </div>
+
+  <div class="highlight-box">
+    <h3>Your 90-Day API Roadmap</h3>
+    <div class="steps" style="margin-top:12px">
+      <div class="step"><div class="step-num">30</div><div class="step-body"><h4>Day 1-30: Learn and Experiment</h4><p>Get your API key. Run simple test calls with Claude's help. Build one simple tool (content generator or FAQ responder). Understand costs.</p></div></div>
+      <div class="step"><div class="step-num">60</div><div class="step-body"><h4>Day 31-60: Build Your First Real Tool</h4><p>Identify your biggest time-sink. Build a simple API-powered solution. Test with 5 real users. Iterate based on feedback.</p></div></div>
+      <div class="step"><div class="step-num">90</div><div class="step-body"><h4>Day 61-90: Scale and Integrate</h4><p>Connect your tool to other systems (website, email, WhatsApp). Automate fully. Consider offering it as a service to other businesses.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-tag">Section 5</div>
+    <h2>Knowledge Check</h2>
+    <p>Test your understanding of the Claude API.</p>
+  </div>
+  <div class="quiz-section" id="quizContainer"></div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*8+4;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.12+0.04}`;c.appendChild(p)}})();
+function showSection(i){document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));document.querySelectorAll('.nav-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));window.scrollTo({top:0,behavior:'smooth'});if(i===4&&!quizStarted)initQuiz();}
+
+const ALL_QUESTIONS=[
+  {q:"The 'phone call analogy' for the Claude API means:",o:["Claude speaks to you on the phone","Your code can call Claude's AI directly from anywhere, automatically, without visiting the website","The API costs like a phone plan","You need a phone to use the API"],a:1,f:"API = phone call to Claude's brain. Your app dials the number, Claude answers, you get the response. Works from anywhere, automatically, at scale."},
+  {q:"What is an API key?",o:["Your Claude.ai password","A unique credential that identifies your application and authorizes API access","A type of encryption","The name of your Claude project"],a:1,f:"The API key is your unique access credential — presented with every request so Anthropic can verify you're authorized and track your usage for billing."},
+  {q:"Where do you get a Claude API key?",o:["claude.ai","console.anthropic.com","anthropic.com/api-keys","Your email after signing up"],a:1,f:"Anthropic's developer console is at console.anthropic.com — separate from the claude.ai chat interface. This is where API keys, billing, and usage are managed."},
+  {q:"The 'system' parameter in an API call is:",o:["The server the API runs on","Claude's 'identity' for your application — defines role, tone, knowledge, and rules for every response","The language to respond in","A required security token"],a:1,f:"The system prompt is the most powerful API parameter. It shapes every response — who Claude is in your app, what it knows, how it responds, what rules it follows."},
+  {q:"What is a 'token' in Claude API pricing?",o:["A form of cryptocurrency","Approximately 0.75 words — the unit of text that determines API cost","A user license","A session time limit"],a:1,f:"Tokens are the pricing unit: 1 token ≈ 0.75 words. You pay for input tokens (what you send) and output tokens (what Claude responds). 1 million tokens ≈ 750,000 words."},
+  {q:"For a high-volume FAQ chatbot needing fast, economical responses, which model is recommended?",o:["Claude Opus","Claude Sonnet","Claude Haiku","Claude Pro"],a:2,f:"Claude Haiku is the fastest and most economical model — perfect for high-volume, straightforward tasks like FAQ bots, classification, and simple responses."},
+  {q:"What does 'max_tokens' control in an API call?",o:["The maximum number of conversations per day","The maximum length of Claude's response","The maximum cost per request","The maximum file size you can upload"],a:1,f:"max_tokens sets the response length limit. 1024 ≈ 750 words. Set it based on how long responses need to be in your application."},
+  {q:"The critical API key security rule is:",o:["Share it only with your team","Never put it in website HTML/JavaScript or commit it to GitHub — store as a server-side environment variable","Keep it in a Google Doc for easy access","Change it every month"],a:1,f:"API keys in client-side code (HTML/JS) are visible to anyone who views source. Store keys server-side as environment variables. Never in public code repositories."},
+  {q:"The 'temperature' parameter controls:",o:["Server response speed","Claude's creativity level — 0 for consistent/predictable, 1 for more creative/varied","The number of responses generated","Language detection"],a:1,f:"Temperature: 0 = very consistent, predictable responses (good for support bots). 1 = more creative, varied (good for content generation). Most apps use 0.3-0.7."},
+  {q:"For a website chatbot that needs to stay on-topic and not make up information, the best temperature setting would be:",o:["1.0 — maximum creativity","0.8 — high creativity","0.2-0.3 — low, consistent, predictable","Temperature doesn't matter for chatbots"],a:2,f:"Support chatbots need low temperature (0.2-0.3) for consistent, predictable, accurate responses. High temperature would make them give varied and potentially inaccurate information."},
+  {q:"What does the 'messages' parameter in an API call contain?",o:["The list of API keys","The conversation history — user and assistant messages in order","The billing information","The model selection"],a:1,f:"The messages array contains the conversation history: [{role:'user',content:'...'},{role:'assistant',content:'...'},{role:'user',content:'...'}]. This enables multi-turn conversations."},
+  {q:"What is the 'usage' field in the API response used for?",o:["Showing Claude's confidence level","Tracking how many input and output tokens were used (for cost calculation)","The time taken to respond","The number of topics covered"],a:1,f:"The usage field shows input_tokens and output_tokens consumed. Multiply by the token price to calculate the exact cost of each API call."},
+  {q:"'Start with the problem, not the technology' means:",o:["Learn the technology first, then find problems","Identify your most painful time/cost problem first, then build an API solution for it","Buy the API plan first","Technology problems are more important than business problems"],a:1,f:"The best API projects solve real, painful problems. 'What wastes most of my time every week?' is the right starting question — not 'what can I build with an API?'"},
+  {q:"A website chatbot powered by the Claude API can:",o:["Only answer in English","Answer questions 24/7 in multiple languages, collect leads, and hand off to WhatsApp for complex queries","Replace all human staff","Only work during business hours"],a:1,f:"API chatbots work 24/7, can be programmed to speak multiple languages, collect visitor information, and seamlessly hand off complex conversations to human staff via WhatsApp."},
+  {q:"The automated email responder API use case includes which capability?",o:["Sending emails from Claude's email address","Detecting email language and responding in kind (Hindi/English), categorizing email types, and flagging complex ones for human review","Deleting all spam automatically","Forwarding all emails to Claude.ai"],a:1,f:"The email responder: reads incoming emails, detects language, categorizes by type, drafts personalized responses for routine emails, and flags complex ones for human review."},
+  {q:"Approximately how much would a customer support chatbot handling 100 conversations/day cost?",o:["₹10,000-50,000 per month","₹5,000-10,000 per month","₹100-300 per month","Free with the free tier"],a:2,f:"Real calculation: 100 conversations × ~300 words total ≈ 30,000 tokens/day × ~$0.003/1000 tokens ≈ $0.09/day ≈ ₹3-7/day = ₹90-210/month. Very affordable."},
+  {q:"Why is the system prompt described as the 'superpower' of the API?",o:["It makes Claude faster","It shapes every single response — Claude's identity, tone, knowledge, and behavior in your app across all conversations","It reduces token costs","It unlocks premium features"],a:1,f:"The system prompt defines Claude's entire behavior in your application — role, tone, what it knows, what it won't say. One well-crafted system prompt improves every response automatically."},
+  {q:"What is the recommended first API project according to the 90-day roadmap?",o:["Build a complex enterprise system","Create a social media management platform","A simple content generator or FAQ responder — learn while building something immediately useful","Nothing — just study the documentation"],a:2,f:"First 30 days: get the key, run test calls, build one simple real tool (content generator or FAQ responder). Learning by doing beats learning by studying documentation alone."},
+  {q:"The 'Content Generation Tool' API use case generates content in:",o:["English only","Hindi only","Hindi, Punjabi, and English simultaneously from one form submission","Random languages"],a:2,f:"A well-built content tool: team fills one form → Claude generates Instagram caption, LinkedIn post, and WhatsApp broadcast in all three languages simultaneously."},
+  {q:"What does 'stop_sequences' control in the API?",o:["When Claude stops responding to certain users","Specific words that trigger Claude to stop generating text — used for controlled, structured outputs","The end of a billing period","The session timeout"],a:1,f:"stop_sequences: when Claude encounters these words/strings, it stops generating. Used for structured outputs — 'stop when you write END' ensures Claude outputs exactly what your format requires."},
+  {q:"Using Claude API vs Claude.ai: which is appropriate for 'brainstorming and personal exploration'?",o:["Claude API — it's always more powerful","Claude.ai — API is overkill for personal, non-automated use cases","Neither — use ChatGPT for brainstorming","Both are equally appropriate"],a:1,f:"Claude.ai (the website) is perfect for personal use, brainstorming, and exploration. API is for automated, programmatic, and scalable use cases where you're building applications."},
+  {q:"The Student Progress Analysis Tool API use case helps instructors by:",o:["Replacing all instructor responsibilities","Identifying at-risk students, generating personalized recommendations, and drafting parent communications","Only grading assignments","Scheduling classes"],a:1,f:"The analysis tool: processes quiz scores and attendance → identifies at-risk students → generates personalized recommendations → drafts Hindi parent communications → creates instructor insight reports."},
+  {q:"A Claude API request is priced based on:",o:["Time duration of the request","Monthly subscription regardless of usage","Number of input tokens (text sent) plus output tokens (response received)","Number of API requests regardless of length"],a:2,f:"API pricing is per-token: input tokens (what you send Claude) + output tokens (Claude's response). Longer prompts and longer responses cost more. Shorter = cheaper."},
+  {q:"The 'API vs Claude.ai' decision for 'building a product to sell' should be:",o:["Claude.ai — it's easier to use","Claude API — you need programmatic control, scalability, and your own branding","Neither — you can't build products with Claude","Depends on the price of the product"],a:1,f:"Building a product requires: API for scalability (serve many users), your own branding (not Claude.ai's interface), programmatic control, and the ability to integrate with your systems."},
+  {q:"What is the correct way to include a multi-turn conversation in a Claude API call?",o:["Send only the latest user message","Include all previous messages as alternating user/assistant role objects in the messages array","Send the conversation as a single string","Use a separate 'history' parameter"],a:1,f:"Multi-turn: include all previous messages in the messages array: [{role:'user',content:'Hi'},{role:'assistant',content:'Hello!'},{role:'user',content:'What courses?'}]. Claude reads the full context."}
+];
+
+let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+function initQuiz(){quizStarted=true;currentQuestions=shuffle([...ALL_QUESTIONS]).slice(0,8);currentQ=0;score=0;renderQuiz();}
+function renderQuiz(){
+  const c=document.getElementById('quizContainer');
+  if(currentQ>=currentQuestions.length){showScore(c);return;}
+  answered=false;
+  const q=currentQuestions[currentQ];
+  c.innerHTML=`<div class="quiz-header"><h3>Day 14 Quiz</h3><div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div></div><div class="quiz-q"><div class="q-num">Q${currentQ+1}</div><div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb"></div></div><div class="quiz-controls"><div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div><button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next →</button></div>`;
+}
+function selectAnswer(i){
+  if(answered)return;answered=true;
+  const q=currentQuestions[currentQ];
+  const opts=document.querySelectorAll('.option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  opts[i].classList.add(i===q.a?'correct':'wrong');
+  if(i!==q.a)opts[q.a].classList.add('correct');
+  if(i===q.a)score++;
+  const fb=document.getElementById('qfb');
+  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
+  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
+  document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){currentQ++;renderQuiz();}
+function showScore(c){
+  const pct=Math.round((score/currentQuestions.length)*100);
+  const msg=pct>=80?'Excellent!':pct>=60?'Good work!':'Review and retry!';
+  c.innerHTML=`<div class="quiz-score show"><div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div><div class="score-msg">${msg}</div><div class="score-sub">${pct}% — ${score} of ${currentQuestions.length} correct</div><div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-secondary" onclick="showSection(0)">Review Content</button></div></div>`;
+}
+</script>
+</body>
+</html>

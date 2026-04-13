@@ -2,13 +2,14 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getUser } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
-import { learnModules } from '@/config/learn-modules';
+import { getCourseConfig } from '@/config/learn-modules';
 import { SessionViewer } from './session-viewer';
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
 interface Props {
   params: Promise<{ n: string }>;
+  searchParams: Promise<{ course?: string }>;
 }
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -19,22 +20,33 @@ function padSession(n: number) {
 
 // ── page ──────────────────────────────────────────────────────────────────────
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params, searchParams }: Props) {
   const { n } = await params;
+  const { course } = await searchParams;
+  const courseId = course || 'ai-tools-mastery-beginners';
+  const config = getCourseConfig(courseId);
   const sessionNum = parseInt(n, 10);
-  const mod = learnModules.find((m) => m.session === sessionNum);
+  const mod = config?.modules.find((m) => m.session === sessionNum);
   return {
     title: mod ? `Session ${sessionNum}: ${mod.title}` : 'Session not found',
   };
 }
 
-export default async function SessionPage({ params }: Props) {
+export default async function SessionPage({ params, searchParams }: Props) {
   const { n } = await params;
+  const { course } = await searchParams;
+  const courseId = course || 'ai-tools-mastery-beginners';
+  const config = getCourseConfig(courseId);
+
+  if (!config) {
+    redirect('/learn');
+  }
+
   const sessionNum = parseInt(n, 10);
 
   // Validate session number
-  const mod = learnModules.find((m) => m.session === sessionNum);
-  if (!mod || sessionNum < 1 || sessionNum > 16) {
+  const mod = config.modules.find((m) => m.session === sessionNum);
+  if (!mod || sessionNum < 1 || sessionNum > config.totalSessions) {
     redirect('/learn');
   }
 
@@ -72,9 +84,10 @@ export default async function SessionPage({ params }: Props) {
     user?.email?.split('@')[0] ??
     'Guest';
 
-  const sessionFile = `/learn/session-${padSession(sessionNum)}.html`;
+  const sessionFile = `/learn/${config.filePrefix}-${padSession(sessionNum)}.html`;
   const prevSession = sessionNum > 1 ? sessionNum - 1 : null;
-  const nextSession = sessionNum < 16 ? sessionNum + 1 : null;
+  const nextSession = sessionNum < config.totalSessions ? sessionNum + 1 : null;
+  const courseParam = courseId !== 'ai-tools-mastery-beginners' ? `?course=${courseId}` : '';
 
   return (
     <div
@@ -101,7 +114,7 @@ export default async function SessionPage({ params }: Props) {
           {/* Prev / Next navigation */}
           {prevSession && (
             <Link
-              href={`/learn/session/${prevSession}`}
+              href={`/learn/session/${prevSession}${courseParam}`}
               className="rounded-lg border border-[#1e1e3a] px-3 py-1.5 text-xs font-medium text-[#94a3b8] transition hover:border-[#059669] hover:text-[#059669]"
             >
               ← Prev
@@ -109,7 +122,7 @@ export default async function SessionPage({ params }: Props) {
           )}
           {nextSession && (
             <Link
-              href={`/learn/session/${nextSession}`}
+              href={`/learn/session/${nextSession}${courseParam}`}
               className="rounded-lg border border-[#1e1e3a] px-3 py-1.5 text-xs font-medium text-[#94a3b8] transition hover:border-[#059669] hover:text-[#059669]"
             >
               Next →

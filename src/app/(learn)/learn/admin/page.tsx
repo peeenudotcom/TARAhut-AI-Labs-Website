@@ -1,12 +1,23 @@
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { createServiceClient } from '@/lib/supabase';
 import GenerateCodeForm from './GenerateCodeForm';
 import { TRAINER_EMAILS } from '@/config/trainers';
+import { courseConfigs } from '@/config/learn-modules';
 
-const COURSE_ID = 'ai-tools-mastery-beginners';
-
-export default async function LearnAdminPage() {
+export default async function LearnAdminPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ course?: string }>;
+}) {
+  const resolvedParams = searchParams ? await searchParams : {};
+  const requestedCourse = resolvedParams.course;
+  const COURSE_ID =
+    requestedCourse && requestedCourse in courseConfigs
+      ? requestedCourse
+      : 'ai-tools-mastery-beginners';
+  const courseConfig = courseConfigs[COURSE_ID];
   // Auth + trainer check
   const supabase = await createServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
@@ -119,11 +130,28 @@ export default async function LearnAdminPage() {
       <div className="max-w-5xl mx-auto px-4 py-10">
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-900">Trainer Dashboard</h1>
           <p className="text-slate-500 text-sm mt-1">
             TARAhut Learning Engine — internal trainer view
           </p>
+        </div>
+
+        {/* Course tabs */}
+        <div className="mb-6 flex gap-2 flex-wrap">
+          {Object.values(courseConfigs).map((cfg) => (
+            <Link
+              key={cfg.id}
+              href={`/learn/admin?course=${cfg.id}`}
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                cfg.id === COURSE_ID
+                  ? 'bg-slate-900 text-white'
+                  : 'border border-slate-200 text-slate-600 hover:border-slate-400'
+              }`}
+            >
+              {cfg.title}
+            </Link>
+          ))}
         </div>
 
         {/* Batch info */}
@@ -223,7 +251,7 @@ export default async function LearnAdminPage() {
                       <td className="px-5 py-3 text-slate-500">{student.email}</td>
                       <td className="px-5 py-3 text-center">
                         <span className="inline-block bg-emerald-50 text-emerald-700 font-semibold rounded-full px-3 py-0.5 text-xs">
-                          {student.sessionsUnlocked} / 16
+                          {student.sessionsUnlocked} / {courseConfig.totalSessions}
                         </span>
                       </td>
                       <td className="px-5 py-3 text-center">
