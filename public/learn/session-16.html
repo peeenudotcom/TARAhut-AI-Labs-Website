@@ -189,6 +189,24 @@ tr:hover td{background:var(--bg3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid,.price-grid,.month-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi span[data-lang-hi],body.lang-pa span[data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
@@ -196,16 +214,37 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Week 4 &middot; Session 16 &middot; FINAL SESSION</div>
-  <h1>Freelancing <span class="gr">Launchpad</span><br>+ <span class="gr2">Graduation</span></h1>
+  <h1>
+    <span data-lang-en>Freelancing <span class="gr">Launchpad</span><br>+ <span class="gr2">Graduation</span></span>
+    <span data-lang-hi style="display:none">फ्रीलांसिंग <span class="gr">लॉन्चपैड</span><br>+ <span class="gr2">ग्रेजुएशन</span></span>
+    <span data-lang-pa style="display:none">ਫ੍ਰੀਲਾਂਸਿੰਗ <span class="gr">ਲਾਂਚਪੈਡ</span><br>+ <span class="gr2">ਗ੍ਰੈਜੂਏਸ਼ਨ</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>You made it to the last session. Today you launch your freelance career, take the graduation quiz, and receive your TARAhut AI Labs certification. This is just the beginning.</p>
+  <div data-lang-en><p>You made it to the last session. Today you launch your freelance career, take the graduation quiz, and receive your TARAhut AI Labs certification. This is just the beginning.</p></div>
+  <div data-lang-hi><p>आप आखिरी सेशन तक पहुंच गए। आज आप अपना फ्रीलांस करियर लॉन्च करें, ग्रेजुएशन क्विज़ दें, और TARAhut AI Labs सर्टिफिकेशन पाएं। यह बस शुरुआत है।</p></div>
+  <div data-lang-pa><p>ਤੁਸੀਂ ਆਖ਼ਰੀ ਸੈਸ਼ਨ ਤੱਕ ਪਹੁੰਚ ਗਏ। ਅੱਜ ਤੁਸੀਂ ਆਪਣਾ ਫ੍ਰੀਲਾਂਸ ਕਰੀਅਰ ਲਾਂਚ ਕਰੋ, ਗ੍ਰੈਜੂਏਸ਼ਨ ਕੁਇਜ਼ ਦਿਓ, ਅਤੇ TARAhut AI Labs ਸਰਟੀਫਿਕੇਸ਼ਨ ਪਾਓ। ਇਹ ਬੱਸ ਸ਼ੁਰੂਆਤ ਐ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Launch My Career &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#127891; Take Final Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Launch My Career &rarr;</span>
+      <span data-lang-hi style="display:none">मेरा करियर लॉन्च करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਮੇਰਾ ਕਰੀਅਰ ਲਾਂਚ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#127891;
+      <span data-lang-en>Take Final Quiz</span>
+      <span data-lang-hi style="display:none">फाइनल क्विज़ दें</span>
+      <span data-lang-pa style="display:none">ਫਾਈਨਲ ਕੁਇਜ਼ ਦਿਓ</span>
+    </button>
   </div>
 </section>
 
@@ -226,7 +265,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>Freelancing <span class="gr">101</span></h2>
+    <div data-lang-en><h2>Freelancing <span class="gr">101</span></h2></div>
+    <div data-lang-hi><h2>फ्रीलांसिंग <span class="gr">101</span></h2></div>
+    <div data-lang-pa><h2>ਫ੍ਰੀਲਾਂਸਿੰਗ <span class="gr">101</span></h2></div>
     <p>Where to find clients, how to position yourself, and what to do in your first 30 days. The honest, practical guide to starting your AI freelance career.</p>
   </div>
 
@@ -291,7 +332,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128170; Your profile is your 24/7 sales pitch. Let's make it great.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Your Fiverr/Upwork <span class="gr">Profile</span></h2>
+    <div data-lang-en><h2>Your Fiverr/Upwork <span class="gr">Profile</span></h2></div>
+    <div data-lang-hi><h2>आपकी Fiverr/Upwork <span class="gr">प्रोफ़ाइल</span></h2></div>
+    <div data-lang-pa><h2>ਤੁਹਾਡੀ Fiverr/Upwork <span class="gr">ਪ੍ਰੋਫ਼ਾਈਲ</span></h2></div>
     <p>Use AI to write a profile so compelling that clients choose you before they even look at your competitors.</p>
   </div>
 
@@ -355,7 +398,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s3">
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>Pricing Your <span class="gr">Services</span></h2>
+    <div data-lang-en><h2>Pricing Your <span class="gr">Services</span></h2></div>
+    <div data-lang-hi><h2>अपनी सर्विसेज़ की <span class="gr">प्राइसिंग</span></h2></div>
+    <div data-lang-pa><h2>ਆਪਣੀਆਂ ਸਰਵਿਸਿਜ਼ ਦੀ <span class="gr">ਪ੍ਰਾਈਸਿੰਗ</span></h2></div>
     <p>Realistic Indian market rates for 2026. Not what you hope to charge someday — what you can charge right now, as a certified AI tools professional.</p>
   </div>
 
@@ -447,7 +492,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128170; This is the roadmap. Follow it. Adjust as needed. Go.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Your <span class="gr">90-Day Career Plan</span></h2>
+    <div data-lang-en><h2>Your <span class="gr">90-Day Career Plan</span></h2></div>
+    <div data-lang-hi><h2>आपका <span class="gr">90-दिन करियर प्लान</span></h2></div>
+    <div data-lang-pa><h2>ਤੁਹਾਡਾ <span class="gr">90-ਦਿਨ ਕਰੀਅਰ ਪਲਾਨ</span></h2></div>
     <p>Month by month — exactly what to focus on in your first 90 days as an AI tools professional. Print this. Stick it to your wall.</p>
   </div>
 
@@ -526,7 +573,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s5">
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Final Graduation <span class="gr">Quiz</span></h2>
+    <div data-lang-en><h2>Final Graduation <span class="gr">Quiz</span></h2></div>
+    <div data-lang-hi><h2>फाइनल ग्रेजुएशन <span class="gr">क्विज़</span></h2></div>
+    <div data-lang-pa><h2>ਫਾਈਨਲ ਗ੍ਰੈਜੂਏਸ਼ਨ <span class="gr">ਕੁਇਜ਼</span></h2></div>
     <p>10 comprehensive questions spanning all 4 weeks of the AI Tools Mastery course. This is your graduation assessment. Show everything you've learned.</p>
   </div>
   <div class="callout call-2">
@@ -545,7 +594,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s6">
   <div class="sec-head">
     <div class="over">Section 06</div>
-    <h2>You Did It. <span class="gr">Congratulations.</span></h2>
+    <div data-lang-en><h2>You Did It. <span class="gr">Congratulations.</span></h2></div>
+    <div data-lang-hi><h2>आपने कर दिखाया। <span class="gr">बधाई हो।</span></h2></div>
+    <div data-lang-pa><h2>ਤੁਸੀਂ ਕਰ ਦਿਖਾਇਆ। <span class="gr">ਵਧਾਈਆਂ।</span></h2></div>
     <p>Take a moment. This is real. You earned it.</p>
   </div>
 
@@ -803,6 +854,21 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+// Language toggle
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
