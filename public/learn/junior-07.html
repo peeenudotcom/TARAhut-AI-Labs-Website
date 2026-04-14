@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 7: Smart Searching! 🔍 | TARAhut AI Labs</title>
+<style>
+  :root {
+    --green: #059669;
+    --green-light: #34d399;
+    --green-dark: #047857;
+    --yellow: #fbbf24;
+    --orange: #f97316;
+    --purple: #7c3aed;
+    --blue: #3b82f6;
+    --pink: #ec4899;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #162032;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* PARTICLES */
+  #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.18;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.18; }
+    90% { opacity: 0.18; }
+    100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, #059669 0%, #0f766e 50%, #1d4ed8 100%);
+    padding: 60px 40px 50px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.05) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 14px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .hero p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-pills {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  }
+  .hero-pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* SECTION */
+  .section {
+    padding: 50px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 30px;
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(5,150,105,0.35);
+  }
+  .section-title { font-size: 26px; font-weight: 800; color: white; }
+  .section-subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--green-light); }
+  .card p { color: var(--muted); font-size: 15px; }
+
+  /* REAL OR FAKE GAME */
+  .game-container { background: var(--card); border-radius: 16px; padding: 28px; border: 1px solid var(--border); }
+  .game-title { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 8px; }
+  .game-subtitle { text-align: center; color: var(--muted); margin-bottom: 24px; font-size: 15px; }
+  .score-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg); border-radius: 10px; padding: 12px 20px; margin-bottom: 24px;
+  }
+  .score-label { font-size: 14px; color: var(--muted); }
+  .score-value { font-size: 24px; font-weight: 900; color: var(--yellow); }
+  .claim-card {
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  .claim-emoji { font-size: 40px; margin-bottom: 10px; display: block; }
+  .claim-text { font-size: 18px; font-weight: 600; margin-bottom: 16px; line-height: 1.5; }
+  .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-real, .btn-fake {
+    padding: 12px 32px; border: none; border-radius: 50px;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-real { background: var(--green); color: white; }
+  .btn-real:hover { background: var(--green-dark); transform: scale(1.05); }
+  .btn-fake { background: #dc2626; color: white; }
+  .btn-fake:hover { background: #b91c1c; transform: scale(1.05); }
+  .claim-feedback {
+    display: none; margin-top: 16px; padding: 14px; border-radius: 10px;
+    font-size: 15px; font-weight: 600; text-align: center;
+  }
+  .feedback-correct { background: rgba(5,150,105,0.2); color: var(--green-light); border: 1px solid var(--green); }
+  .feedback-wrong { background: rgba(220,38,38,0.2); color: #fca5a5; border: 1px solid #dc2626; }
+  .btn-next {
+    display: none; margin: 16px auto 0; padding: 12px 36px;
+    background: var(--blue); color: white; border: none; border-radius: 50px;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-next:hover { transform: scale(1.05); }
+  .game-complete { display: none; text-align: center; padding: 20px; }
+  .game-complete .big-score { font-size: 64px; font-weight: 900; color: var(--yellow); }
+  .game-complete p { font-size: 18px; margin-top: 10px; color: var(--muted); }
+  .progress-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+  .dot.done { background: var(--green); }
+  .dot.current { background: var(--yellow); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; color: white;
+    box-shadow: 0 4px 12px rgba(5,150,105,0.4);
+  }
+  .step-content h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .step-content p { color: var(--muted); font-size: 15px; }
+
+  /* QUIZ */
+  .quiz-container { }
+  .quiz-progress { display: flex; gap: 8px; margin-bottom: 24px; }
+  .q-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .q-dot.answered { background: var(--green); }
+  .q-dot.current { background: var(--yellow); }
+  .question-block { display: none; }
+  .question-block.active { display: block; }
+  .question-text {
+    font-size: 20px; font-weight: 700; margin-bottom: 20px;
+    padding: 20px; background: var(--card); border-radius: 14px;
+    border-left: 4px solid var(--green);
+  }
+  .options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .option {
+    padding: 14px 20px; background: var(--card2); border: 2px solid var(--border);
+    border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: 500;
+    transition: all 0.2s; text-align: left;
+  }
+  .option:hover:not(.locked) { border-color: var(--green); background: rgba(5,150,105,0.1); }
+  .option.correct { border-color: var(--green); background: rgba(5,150,105,0.2); color: var(--green-light); }
+  .option.wrong { border-color: #dc2626; background: rgba(220,38,38,0.15); color: #fca5a5; }
+  .q-feedback { display: none; padding: 14px; border-radius: 10px; font-size: 15px; margin-bottom: 16px; font-weight: 600; }
+  .q-feedback.correct { background: rgba(5,150,105,0.15); color: var(--green-light); border: 1px solid var(--green); }
+  .q-feedback.wrong { background: rgba(220,38,38,0.15); color: #fca5a5; border: 1px solid #dc2626; }
+  .btn-quiz-next {
+    display: none; padding: 12px 36px; background: var(--green); color: white;
+    border: none; border-radius: 50px; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-quiz-next:hover { background: var(--green-dark); transform: scale(1.05); }
+  .quiz-result { display: none; text-align: center; padding: 30px; background: var(--card); border-radius: 16px; }
+  .quiz-result .result-score { font-size: 72px; font-weight: 900; color: var(--yellow); }
+  .quiz-result p { font-size: 18px; color: var(--muted); margin-top: 10px; }
+  .quiz-result .result-emoji { font-size: 48px; margin-top: 16px; display: block; }
+
+  /* MISSION */
+  .mission-box {
+    background: linear-gradient(135deg, rgba(5,150,105,0.2), rgba(29,78,216,0.15));
+    border: 2px solid var(--green);
+    border-radius: 20px; padding: 32px; text-align: center;
+  }
+  .mission-box h3 { font-size: 26px; font-weight: 900; margin-bottom: 16px; }
+  .mission-tasks { display: flex; flex-direction: column; gap: 14px; text-align: left; margin: 20px 0; }
+  .mission-task {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px;
+  }
+  .mission-task input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; margin-top: 2px; flex-shrink: 0; accent-color: var(--green); }
+  .mission-task label { font-size: 16px; font-weight: 500; cursor: pointer; }
+  .mission-note { color: var(--muted); font-size: 14px; margin-top: 16px; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--card); border-top: 1px solid var(--border);
+    padding: 28px; text-align: center; position: relative; z-index: 1;
+    margin-top: 20px;
+  }
+  .footer p { color: var(--muted); font-size: 13px; }
+  .footer strong { color: var(--green-light); }
+
+  /* HIGHLIGHT BOX */
+  .highlight { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.4); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+  .highlight p { color: var(--yellow); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">TARAhut AI Labs · AI Explorer Junior Track</div>
+  <h1>Session 7: Smart Searching! 🔍</h1>
+  <p>Learn how to find REAL facts online — and spot the fake ones! 🕵️</p>
+  <div class="hero-pills">
+    <span class="hero-pill">📚 Class 5–7</span>
+    <span class="hero-pill">⏱️ 60 Minutes</span>
+    <span class="hero-pill">🎯 4 Activities</span>
+    <span class="hero-pill">🎮 Interactive Game</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: REAL OR FAKE GAME -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🕵️</div>
+      <div>
+        <div class="section-title">Not Everything Online is True!</div>
+        <div class="section-subtitle">Some things you read online are totally made up. Let's practice spotting them!</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>🤔 Did you know?</h3>
+      <p>Anyone can post ANYTHING online. That means there are lots of <strong style="color:var(--orange)">fake facts</strong> mixed in with real ones. Even grown-ups get fooled sometimes! But YOU can learn to check before you believe! 💪</p>
+    </div>
+
+    <div class="game-container">
+      <div class="game-title">🎮 Real or Fake? — The Game!</div>
+      <div class="game-subtitle">Read each claim. Is it REAL or FAKE? Click your answer!</div>
+
+      <div class="score-bar">
+        <span class="score-label">⭐ Your Score</span>
+        <span class="score-value" id="gameScore">0 / 5</span>
+        <span class="score-label">Claim <span id="claimNum">1</span> of 5</span>
+      </div>
+
+      <div class="progress-dots">
+        <div class="dot current" id="d0"></div>
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+        <div class="dot" id="d4"></div>
+      </div>
+
+      <div id="gameArea">
+        <div class="claim-card">
+          <span class="claim-emoji" id="claimEmoji">🐙</span>
+          <div class="claim-text" id="claimText">Octopuses have 3 hearts and blue blood!</div>
+          <div class="btn-row">
+            <button class="btn-real" onclick="checkAnswer(true)">✅ REAL</button>
+            <button class="btn-fake" onclick="checkAnswer(false)">❌ FAKE</button>
+          </div>
+          <div class="claim-feedback" id="claimFeedback"></div>
+        </div>
+        <button class="btn-next" id="btnNext" onclick="nextClaim()">Next Claim ➡️</button>
+      </div>
+
+      <div class="game-complete" id="gameComplete">
+        <div class="big-score" id="finalScore">0/5</div>
+        <p id="finalMsg">Great job playing!</p>
+        <button class="btn-next" style="display:block;margin:16px auto 0;" onclick="restartGame()">🔄 Play Again!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: HOW TO CHECK FACTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">✅</div>
+      <div>
+        <div class="section-title">How to Check Facts Like a Pro!</div>
+        <div class="section-subtitle">3 simple steps to know if something is true or false</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>📖 READ It Carefully</h4>
+          <p>Read the whole thing — not just the headline! Sometimes the headline sounds scary but the full story is totally normal. Don't share something until you've actually read it!</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>🔎 CHECK with Google or Perplexity</h4>
+          <p>Open Google or Perplexity AI and search for the same fact. Does a trusted website (like BBC, National Geographic, or your school website) say the same thing? If yes — it's probably real!</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>🙋 VERIFY with a Grown-Up</h4>
+          <p>Still not sure? Ask a parent or teacher! They can help you figure out if something is true. Two brains are better than one! 🧠🧠</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:24px;">
+      <p>💡 <strong>Top Tip:</strong> If something sounds TOO amazing or TOO scary — it's probably fake! Real facts are usually interesting but not super shocking.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px;">
+      <div class="card">
+        <h3>🟢 Trust These Sites</h3>
+        <p>BBC, National Geographic, NASA, Wikipedia (for basic facts), your school's website, government websites (.gov)</p>
+      </div>
+      <div class="card">
+        <h3>🔴 Be Careful With</h3>
+        <p>WhatsApp forwards, unknown blogs, websites with lots of pop-ups, anything that says "SHARE THIS NOW!" in big letters</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: QUIZ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧠</div>
+      <div>
+        <div class="section-title">Quick Quiz!</div>
+        <div class="section-subtitle">Test what you've learned today — 5 questions!</div>
+      </div>
+    </div>
+
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="q-dot current" id="qd0"></div>
+        <div class="q-dot" id="qd1"></div>
+        <div class="q-dot" id="qd2"></div>
+        <div class="q-dot" id="qd3"></div>
+        <div class="q-dot" id="qd4"></div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="question-block active" id="q0">
+        <div class="question-text">Q1: If you see something shocking on WhatsApp, what should you do FIRST? 📱</div>
+        <div class="options">
+          <button class="option" onclick="answerQ(0,0,false)">A) Share it with all your friends immediately!</button>
+          <button class="option" onclick="answerQ(0,1,true)">B) Read it carefully and check if it's true</button>
+          <button class="option" onclick="answerQ(0,2,false)">C) Ignore all WhatsApp messages forever</button>
+          <button class="option" onclick="answerQ(0,3,false)">D) Delete WhatsApp from your phone</button>
+        </div>
+        <div class="q-feedback" id="qf0"></div>
+        <button class="btn-quiz-next" id="qn0" onclick="nextQuestion(0)">Next Question ➡️</button>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-block" id="q1">
+        <div class="question-text">Q2: Which website is a TRUSTED source for facts? 🌐</div>
+        <div class="options">
+          <button class="option" onclick="answerQ(1,0,false)">A) randomcoolstuff123.blogspot.com</button>
+          <button class="option" onclick="answerQ(1,1,false)">B) WhatsApp group messages</button>
+          <button class="option" onclick="answerQ(1,2,true)">C) BBC or National Geographic</button>
+          <button class="option" onclick="answerQ(1,3,false)">D) Any website with colourful pictures</button>
+        </div>
+        <div class="q-feedback" id="qf1"></div>
+        <button class="btn-quiz-next" id="qn1" onclick="nextQuestion(1)">Next Question ➡️</button>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-block" id="q2">
+        <div class="question-text">Q3: What does the 3-step fact-checking process start with? 📋</div>
+        <div class="options">
+          <button class="option" onclick="answerQ(2,0,false)">A) Share it straight away</button>
+          <button class="option" onclick="answerQ(2,1,false)">B) Ask your friend if it's true</button>
+          <button class="option" onclick="answerQ(2,2,true)">C) READ it carefully first</button>
+          <button class="option" onclick="answerQ(2,3,false)">D) Believe everything you read</button>
+        </div>
+        <div class="q-feedback" id="qf2"></div>
+        <button class="btn-quiz-next" id="qn2" onclick="nextQuestion(2)">Next Question ➡️</button>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-block" id="q3">
+        <div class="question-text">Q4: A message says "SHARE THIS NOW or something bad will happen!" What is it? 😬</div>
+        <div class="options">
+          <button class="option" onclick="answerQ(3,0,true)">A) Probably fake — real facts don't threaten you!</button>
+          <button class="option" onclick="answerQ(3,1,false)">B) Definitely true, share it fast!</button>
+          <button class="option" onclick="answerQ(3,2,false)">C) True, because it sounds serious</button>
+          <button class="option" onclick="answerQ(3,3,false)">D) Only share with 5 friends, not more</button>
+        </div>
+        <div class="q-feedback" id="qf3"></div>
+        <button class="btn-quiz-next" id="qn3" onclick="nextQuestion(3)">Next Question ➡️</button>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-block" id="q4">
+        <div class="question-text">Q5: What can Perplexity AI or Google help you do? 🤖</div>
+        <div class="options">
+          <button class="option" onclick="answerQ(4,0,false)">A) Make your homework disappear</button>
+          <button class="option" onclick="answerQ(4,1,true)">B) Check if a fact is true by searching for it</button>
+          <button class="option" onclick="answerQ(4,2,false)">C) Write messages to your friends</button>
+          <button class="option" onclick="answerQ(4,3,false)">D) Order food for you</button>
+        </div>
+        <div class="q-feedback" id="qf4"></div>
+        <button class="btn-quiz-next" id="qn4" onclick="showResult()">See My Score! 🎉</button>
+      </div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="result-score" id="resultScore">0/5</div>
+        <p id="resultMsg">Well done!</p>
+        <span class="result-emoji" id="resultEmoji">🌟</span>
+        <button class="btn-quiz-next" style="display:inline-block;margin-top:20px;" onclick="restartQuiz()">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MISSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🚀</div>
+      <div>
+        <div class="section-title">Your Mission This Week!</div>
+        <div class="section-subtitle">Become a real-life fact-checking superhero 🦸</div>
+      </div>
+    </div>
+
+    <div class="mission-box">
+      <h3>🔍 Mission: Fact-Checker!</h3>
+      <p style="color:var(--muted);margin-bottom:16px;">Your mission, should you choose to accept it... is to fact-check 3 WhatsApp forwards you receive this week!</p>
+
+      <div class="mission-tasks">
+        <div class="mission-task">
+          <input type="checkbox" id="m1">
+          <label for="m1">📱 <strong>Forward #1:</strong> Find one WhatsApp forward. Use Google to check if it's true or false. Tell your parent what you found!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m2">
+          <label for="m2">📱 <strong>Forward #2:</strong> Check a second forward using Perplexity AI. Compare what you found with what the message said!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m3">
+          <label for="m3">📱 <strong>Forward #3:</strong> Check one more. Was it real or fake? Share your finding with your whole family — be their fact-checker hero! 🦸</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m4">
+          <label for="m4">📝 <strong>Bonus:</strong> Write down your 3 facts in your notebook — was each one REAL or FAKE? Bring it to next class!</label>
+        </div>
+      </div>
+
+      <div class="mission-note">
+        🌟 Remember: Being a smart searcher is a superpower! Not many people have it — but YOU do now!<br>
+        💚 <strong>TARAhut AI Labs</strong> · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>TARAhut AI Labs</strong> · AI Explorer Junior Track · Session 7 of 12</p>
+  <p style="margin-top:6px;">Building young AI explorers, one session at a time! 🚀 · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a></p>
+</div>
+
+<script>
+// PARTICLES
+const pContainer = document.getElementById('particles');
+const colors = ['#059669','#34d399','#3b82f6','#fbbf24','#7c3aed','#ec4899'];
+for(let i=0;i<30;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=Math.random()*20+8;
+  p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;
+  pContainer.appendChild(p);
+}
+
+// REAL OR FAKE GAME
+const claims = [
+  { emoji:'🐙', text:'Octopuses have 3 hearts and blue blood!', real:true, feedback:'✅ REAL! Octopuses actually do have 3 hearts and their blood is blue because it contains copper (not iron like ours)! Amazing but true! 🎉' },
+  { emoji:'🦒', text:'Giraffes have no vocal cords and cannot make any sound at all!', real:false, feedback:'❌ FAKE! Giraffes CAN make sounds — they hum, grunt, and even make a sound like a flute at night! This is a common myth! 🦒' },
+  { emoji:'🍕', text:'Pizza was invented in India in the 1800s!', real:false, feedback:'❌ FAKE! Pizza was invented in Naples, ITALY! Though lots of countries have their own versions now. India just loves eating it! 🍕' },
+  { emoji:'🐝', text:'Honey never goes bad — archaeologists found 3000-year-old honey in Egyptian tombs!', real:true, feedback:'✅ REAL! Honey lasts forever if stored properly. Real honey found in ancient Egyptian tombs was still edible! 🍯' },
+  { emoji:'🌙', text:'The moon is made of cheese!', real:false, feedback:"❌ FAKE! The moon is made of rock and dust. This is a very old joke — but some people actually believed it! Always check your facts! 🌙" }
+];
+
+let currentClaim = 0;
+let gameScore = 0;
+let answered = false;
+
+function updateDots(idx){
+  for(let i=0;i<5;i++){
+    const d=document.getElementById('d'+i);
+    d.className='dot';
+    if(i<idx) d.classList.add('done');
+    else if(i===idx) d.classList.add('current');
+  }
+}
+
+function checkAnswer(userSaidReal){
+  if(answered) return;
+  answered = true;
+  const claim = claims[currentClaim];
+  const feedback = document.getElementById('claimFeedback');
+  feedback.style.display='block';
+  if(userSaidReal === claim.real){
+    gameScore++;
+    feedback.className='claim-feedback feedback-correct';
+    feedback.textContent = claim.feedback;
+  } else {
+    feedback.className='claim-feedback feedback-wrong';
+    feedback.textContent = claim.feedback;
+  }
+  document.getElementById('gameScore').textContent = gameScore + ' / 5';
+  document.getElementById('btnNext').style.display='block';
+}
+
+function nextClaim(){
+  currentClaim++;
+  answered=false;
+  if(currentClaim>=5){
+    document.getElementById('gameArea').style.display='none';
+    const gc=document.getElementById('gameComplete');
+    gc.style.display='block';
+    document.getElementById('finalScore').textContent=gameScore+'/5';
+    const msgs=['Keep practising! 💪','Good effort! Try again! 😊','Not bad! You\'re learning! 🌟','Great job! You\'re sharp! 🎯','Perfect score! You\'re a Fact-Checking Hero! 🏆'];
+    document.getElementById('finalMsg').textContent=msgs[gameScore];
+    return;
+  }
+  const c=claims[currentClaim];
+  document.getElementById('claimEmoji').textContent=c.emoji;
+  document.getElementById('claimText').textContent=c.text;
+  document.getElementById('claimFeedback').style.display='none';
+  document.getElementById('btnNext').style.display='none';
+  document.getElementById('claimNum').textContent=currentClaim+1;
+  updateDots(currentClaim);
+}
+
+function restartGame(){
+  currentClaim=0; gameScore=0; answered=false;
+  document.getElementById('gameArea').style.display='block';
+  document.getElementById('gameComplete').style.display='none';
+  const c=claims[0];
+  document.getElementById('claimEmoji').textContent=c.emoji;
+  document.getElementById('claimText').textContent=c.text;
+  document.getElementById('claimFeedback').style.display='none';
+  document.getElementById('btnNext').style.display='none';
+  document.getElementById('gameScore').textContent='0 / 5';
+  document.getElementById('claimNum').textContent='1';
+  updateDots(0);
+}
+
+// QUIZ
+let quizScore = 0;
+const feedbacks = [
+  ['🎉 Correct! Always read and check before sharing! Smart move!','❌ Nope! Never share without checking — it could spread fake news!'],
+  ['🎉 Correct! BBC and National Geographic are trusted sources!','❌ Not quite! Always use trusted sources like BBC or National Geographic!'],
+  ['🎉 Correct! READ is the first step — always read the whole thing!','❌ Not quite! The first step is READ — read the whole thing carefully!'],
+  ['🎉 Correct! Messages that threaten you are almost always fake!','❌ Not quite! Real facts never threaten you. It\'s almost certainly fake!'],
+  ['🎉 Correct! Search engines help you fact-check by finding trusted info!','❌ Not quite! Google and Perplexity are great for checking if facts are true!']
+];
+
+function answerQ(qNum, optIdx, isCorrect){
+  const opts=document.querySelectorAll('#q'+qNum+' .option');
+  opts.forEach(o=>o.classList.add('locked'));
+  opts.forEach((o,i)=>{
+    if(i===optIdx) o.classList.add(isCorrect?'correct':'wrong');
+  });
+  const fb=document.getElementById('qf'+qNum);
+  fb.style.display='block';
+  if(isCorrect){
+    quizScore++;
+    fb.className='q-feedback correct';
+    fb.textContent=feedbacks[qNum][0];
+  } else {
+    fb.className='q-feedback wrong';
+    fb.textContent=feedbacks[qNum][1];
+  }
+  document.getElementById('qn'+qNum).style.display='inline-block';
+  const qd=document.getElementById('qd'+qNum);
+  qd.className='q-dot answered';
+}
+
+function nextQuestion(current){
+  document.getElementById('q'+current).classList.remove('active');
+  const next=current+1;
+  document.getElementById('q'+next).classList.add('active');
+  document.getElementById('qd'+next).className='q-dot current';
+}
+
+function showResult(){
+  document.getElementById('q4').classList.remove('active');
+  const res=document.getElementById('quizResult');
+  res.style.display='block';
+  document.getElementById('resultScore').textContent=quizScore+'/5';
+  const emojis=['😅','🤔','😊','🌟','🏆'];
+  const msgs=['Keep practising! You\'ll get it! 💪','Good try! Review the sections again! 📖','Nice work! You\'re getting it! 😊','Almost perfect! Great job! 🌟','Perfect score! You\'re a Smart Searching STAR! 🏆'];
+  document.getElementById('resultEmoji').textContent=emojis[quizScore];
+  document.getElementById('resultMsg').textContent=msgs[quizScore];
+}
+
+function restartQuiz(){
+  quizScore=0;
+  document.getElementById('quizResult').style.display='none';
+  for(let i=0;i<5;i++){
+    document.getElementById('q'+i).classList.remove('active');
+    document.getElementById('qd'+i).className='q-dot';
+    document.getElementById('qf'+i).style.display='none';
+    document.getElementById('qn'+i).style.display='none';
+    const opts=document.querySelectorAll('#q'+i+' .option');
+    opts.forEach(o=>{ o.className='option'; });
+  }
+  document.getElementById('q0').classList.add('active');
+  document.getElementById('qd0').className='q-dot current';
+}
+</script>
+</body>
+</html>

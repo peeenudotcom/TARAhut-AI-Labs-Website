@@ -336,6 +336,144 @@ export const courseConfigs: Record<string, CourseConfig> = {
       ]},
     ],
   },
+  'ai-explorer-junior': {
+    id: 'ai-explorer-junior',
+    title: 'AI Explorer for School Kids — Junior',
+    slug: 'ai-explorer-junior',
+    totalSessions: 12,
+    filePrefix: 'junior',
+    modules: [
+      { session: 1, title: 'Meet Your AI Friend', description: 'Introduction to AI with fun activities', week: 1, tools: ['ChatGPT'], isFree: true, deliverable: 'First AI conversation', previewQuestions: [
+        { q: 'What does AI stand for?', options: ['Automatic Intelligence', 'Artificial Intelligence', 'Amazing Internet'], answer: 1 },
+        { q: 'Which of these uses AI?', options: ['A calculator', 'Google Search', 'A pencil'], answer: 1 },
+        { q: 'Can AI think like humans?', options: ['Yes, exactly like us', 'No, it finds patterns in data', 'Only at night'], answer: 1 },
+      ]},
+      { session: 2, title: 'AI Study Buddy', description: 'Using AI to help with homework and learning', week: 1, tools: ['ChatGPT', 'Gemini'], isFree: false, deliverable: 'AI-assisted homework solutions', previewQuestions: [
+        { q: 'Is it OK to copy AI answers directly?', options: ['Yes, always', 'No, use it to learn and write in your own words', 'Only for math'], answer: 1 },
+        { q: 'AI can help you with...', options: ['Only English', 'Any subject you ask about', 'Only coding'], answer: 1 },
+        { q: 'The best way to use AI for study is...', options: ['Ask it to do your homework', 'Ask it to explain concepts you don\'t understand', 'Never use it'], answer: 1 },
+      ]},
+      { session: 3, title: 'Prompt Power', description: 'Learning to ask AI better questions', week: 1, tools: ['ChatGPT'], isFree: false, deliverable: '10 well-written prompts', previewQuestions: [
+        { q: 'A good prompt is...', options: ['Very short like "help me"', 'Clear and specific about what you want', 'As long as possible'], answer: 1 },
+        { q: 'If AI gives a wrong answer, you should...', options: ['Give up', 'Ask again with a better prompt', 'Trust it anyway'], answer: 1 },
+        { q: 'Which prompt is better?', options: ['"Write something"', '"Write a funny poem about mangoes for my class"', '"Do something"'], answer: 1 },
+      ]},
+      { session: 4, title: 'AI Artist', description: 'Creating images and art with AI', week: 2, tools: ['Canva AI', 'Bing Image Creator'], isFree: false, deliverable: '5 AI-generated artworks', previewQuestions: [
+        { q: 'AI can create images by...', options: ['Taking photos', 'Understanding your text description', 'Scanning your brain'], answer: 1 },
+        { q: 'A good image prompt includes...', options: ['Just "make a picture"', 'Subject, style, colors, and mood', 'Only the color you want'], answer: 1 },
+        { q: 'Can you use AI art in school projects?', options: ['Never', 'Yes, with proper credit to the AI tool', 'Only for art class'], answer: 1 },
+      ]},
+      { session: 5, title: 'AI Storyteller', description: 'Writing stories and creative content with AI', week: 2, tools: ['ChatGPT'], isFree: false, deliverable: 'An AI-collaborative short story', previewQuestions: [
+        { q: 'AI can help with creative writing by...', options: ['Writing the whole story for you', 'Giving you ideas, characters, and helping you improve your draft', 'Only checking spelling'], answer: 1 },
+        { q: 'The best stories combine...', options: ['Only AI writing', 'Your imagination + AI assistance', 'Copying from a book'], answer: 1 },
+        { q: 'What makes AI-assisted writing special?', options: ['It\'s faster than thinking', 'You can explore many ideas quickly and pick the best ones', 'It doesn\'t need editing'], answer: 1 },
+      ]},
+      { session: 6, title: 'English & Languages', description: 'Using AI for language learning', week: 2, tools: ['ChatGPT', 'Gemini'], isFree: false, deliverable: 'Bilingual content in English + Hindi/Punjabi', previewQuestions: [
+        { q: 'Can AI help you learn English?', options: ['No', 'Yes, it can correct grammar, teach vocabulary, and practice conversation', 'Only with expensive apps'], answer: 1 },
+        { q: 'AI can translate between...', options: ['Only English and Hindi', 'Many languages including Punjabi', 'Only 2 languages'], answer: 1 },
+        { q: 'The best way to improve English with AI is...', options: ['Let AI write everything for you', 'Practice writing, then ask AI to check and explain mistakes', 'Only read AI outputs'], answer: 1 },
+      ]},
+      { session: 7, title: 'Smart Searching', description: 'Research and finding information with AI', week: 3, tools: ['Perplexity', 'ChatGPT'], isFree: false, deliverable: 'Research report on a topic of choice', previewQuestions: [
+        { q: 'How is AI search different from Google?', options: ['It\'s the same', 'AI summarizes and explains, not just links', 'AI is slower'], answer: 1 },
+        { q: 'Should you trust everything AI says?', options: ['Yes, always', 'No, always verify important facts', 'Only if it sounds right'], answer: 1 },
+        { q: 'Perplexity AI is useful because it...', options: ['Has games', 'Shows sources for its answers', 'Only works on phones'], answer: 1 },
+      ]},
+      { session: 8, title: 'Presentation Pro', description: 'Making amazing presentations with AI', week: 3, tools: ['Gamma', 'Canva AI'], isFree: false, deliverable: 'A 10-slide AI-powered presentation', previewQuestions: [
+        { q: 'Gamma AI can create a presentation from...', options: ['A photo', 'A text description of your topic', 'A video'], answer: 1 },
+        { q: 'Good slides should have...', options: ['As much text as possible', 'One main idea per slide with visuals', 'Only images, no text'], answer: 1 },
+        { q: 'After AI creates slides, you should...', options: ['Submit them immediately', 'Review, customize, and make them yours', 'Delete them and start over'], answer: 1 },
+      ]},
+      { session: 9, title: 'AI Safety', description: 'Staying safe and responsible with AI', week: 3, tools: [], isFree: false, deliverable: 'AI Safety pledge + quiz', previewQuestions: [
+        { q: 'You should NEVER share with AI...', options: ['Your homework questions', 'Your passwords, address, or phone number', 'Your favorite color'], answer: 1 },
+        { q: 'If AI generates something inappropriate, you should...', options: ['Share it with friends', 'Stop and tell a parent or teacher', 'Ignore it'], answer: 1 },
+        { q: 'AI-generated images should be...', options: ['Shared as if you drew them', 'Labeled as AI-generated', 'Kept secret'], answer: 1 },
+      ]},
+      { session: 10, title: 'My AI Project — Part 1', description: 'Start building your showcase project', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Project plan + first draft', previewQuestions: [
+        { q: 'A good project starts with...', options: ['Opening AI immediately', 'A clear plan of what you want to create', 'Copying someone else'], answer: 1 },
+        { q: 'Which is a good AI project idea?', options: ['Making AI do all your homework forever', 'Using AI to create a guide about your city for tourists', 'Just chatting with AI'], answer: 1 },
+        { q: 'Your project should show...', options: ['That AI did all the work', 'That YOU used AI as a tool to create something amazing', 'Nothing special'], answer: 1 },
+      ]},
+      { session: 11, title: 'My AI Project — Part 2', description: 'Complete and polish your project', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Completed project ready for showcase', previewQuestions: [
+        { q: 'Before presenting, you should...', options: ['Not practice at all', 'Practice explaining your project out loud', 'Only focus on visuals'], answer: 1 },
+        { q: 'A great project presentation includes...', options: ['Reading everything from slides', 'Explaining what you made, how AI helped, and what you learned', 'Only showing pictures'], answer: 1 },
+        { q: 'What makes your project unique is...', options: ['Using the most AI tools', 'YOUR ideas and creativity combined with AI', 'Making it the longest'], answer: 1 },
+      ]},
+      { session: 12, title: 'Showcase & Graduation', description: 'Present your project and celebrate!', week: 4, tools: [], isFree: false, deliverable: 'Project presentation + certificate', previewQuestions: [
+        { q: 'After this course, you can use AI to...', options: ['Only play games', 'Help with studies, creativity, and learning new things', 'Replace teachers'], answer: 1 },
+        { q: 'The most important AI skill is...', options: ['Typing fast', 'Asking good questions and thinking critically about answers', 'Memorizing all AI tools'], answer: 1 },
+        { q: 'You are now...', options: ['An AI expert', 'An AI Explorer who knows how to learn with AI responsibly', 'A robot'], answer: 1 },
+      ]},
+    ],
+  },
+  'ai-explorer-senior': {
+    id: 'ai-explorer-senior',
+    title: 'AI Explorer for School Kids — Senior',
+    slug: 'ai-explorer-senior',
+    totalSessions: 12,
+    filePrefix: 'senior',
+    modules: [
+      { session: 1, title: 'The AI Revolution', description: 'How AI is changing everything — and why you need to know', week: 1, tools: ['ChatGPT', 'Claude'], isFree: true, deliverable: 'AI landscape map + first conversations', previewQuestions: [
+        { q: 'What is a Large Language Model (LLM)?', options: ['A big dictionary', 'AI trained on massive text data to understand and generate language', 'A search engine'], answer: 1 },
+        { q: 'ChatGPT was created by...', options: ['Google', 'OpenAI', 'Microsoft'], answer: 1 },
+        { q: 'AI is best used as...', options: ['A replacement for thinking', 'A tool that augments your abilities', 'Entertainment only'], answer: 1 },
+      ]},
+      { session: 2, title: 'Prompt Power-Ups', description: 'Advanced prompting techniques for better results', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Prompt library with 20+ structured prompts', previewQuestions: [
+        { q: 'Chain-of-thought prompting means...', options: ['Writing a very long prompt', 'Asking AI to think step by step', 'Using multiple AI tools'], answer: 1 },
+        { q: 'Few-shot prompting means...', options: ['Using AI rarely', 'Giving AI examples to follow', 'Short prompts only'], answer: 1 },
+        { q: 'The RCTF framework stands for...', options: ['Role, Context, Task, Format', 'Read, Create, Test, Fix', 'Run, Check, Try, Finish'], answer: 0 },
+      ]},
+      { session: 3, title: 'AI Exam Prep', description: 'Using AI to prepare for board exams', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Study plan + mock test questions for 2 subjects', previewQuestions: [
+        { q: 'AI can help with board exam prep by...', options: ['Giving you the actual exam paper', 'Creating study plans, mock questions, and explaining concepts', 'Replacing your textbooks'], answer: 1 },
+        { q: 'The best way to use AI for revision is...', options: ['Ask it to memorize for you', 'Generate practice questions and test yourself', 'Only the night before the exam'], answer: 1 },
+        { q: 'AI-generated study plans should be...', options: ['Followed blindly', 'Customized to your weak areas and schedule', 'Ignored'], answer: 1 },
+      ]},
+      { session: 4, title: 'AI Detective', description: 'Research, fact-checking, and critical thinking', week: 2, tools: ['Perplexity', 'ChatGPT'], isFree: false, deliverable: 'Research report with verified sources', previewQuestions: [
+        { q: 'AI hallucination means...', options: ['AI sees things', 'AI generates false information confidently', 'AI crashes'], answer: 1 },
+        { q: 'To verify AI information, you should...', options: ['Trust it completely', 'Cross-check with reliable sources', 'Ask AI if it\'s correct'], answer: 1 },
+        { q: 'Perplexity is better than ChatGPT for research because...', options: ['It\'s faster', 'It provides sources and citations', 'It\'s more creative'], answer: 1 },
+      ]},
+      { session: 5, title: 'AI Design Studio', description: 'Creating professional visuals with AI', week: 2, tools: ['Canva AI', 'Ideogram'], isFree: false, deliverable: 'Brand kit + 5 social media graphics', previewQuestions: [
+        { q: 'Canva AI\'s Magic Design...', options: ['Requires design skills', 'Generates designs from your description', 'Only makes logos'], answer: 1 },
+        { q: 'A good brand kit includes...', options: ['Just a logo', 'Logo, colors, fonts, and consistent style', 'Only social media posts'], answer: 1 },
+        { q: 'AI-generated images work best when...', options: ['You use vague prompts', 'You describe style, mood, composition, and subject clearly', 'You don\'t edit them'], answer: 1 },
+      ]},
+      { session: 6, title: 'AI Code Lab', description: 'Building simple projects with AI-assisted coding', week: 2, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Simple web page + calculator built with AI', previewQuestions: [
+        { q: 'You need to know coding to use AI for code?', options: ['Yes, expert level', 'No, describe what you want in plain English', 'Only Python'], answer: 1 },
+        { q: 'HTML is used for...', options: ['Making apps', 'Building web page structure', 'Creating databases'], answer: 1 },
+        { q: 'If AI code has an error, you should...', options: ['Give up', 'Paste the error back to AI and ask it to fix it', 'Start over completely'], answer: 1 },
+      ]},
+      { session: 7, title: 'Career & Branding', description: 'Building your professional identity with AI', week: 3, tools: ['ChatGPT', 'Canva AI'], isFree: false, deliverable: 'LinkedIn-ready profile + AI resume', previewQuestions: [
+        { q: 'A LinkedIn profile helps students by...', options: ['Getting likes', 'Building a professional network for internships and opportunities', 'Playing games'], answer: 1 },
+        { q: 'AI can improve your resume by...', options: ['Adding fake experience', 'Optimizing keywords and making it professional', 'Making it very long'], answer: 1 },
+        { q: 'Your personal brand is...', options: ['Your social media follower count', 'How people perceive your skills and value', 'Your school name'], answer: 1 },
+      ]},
+      { session: 8, title: 'Build Your Brand', description: 'Content creation and social media with AI', week: 3, tools: ['ChatGPT', 'Canva AI', 'CapCut'], isFree: false, deliverable: '7-day content plan + 5 posts created', previewQuestions: [
+        { q: 'A content calendar helps you...', options: ['Post randomly', 'Plan consistent, varied content', 'Copy others'], answer: 1 },
+        { q: 'The best social media content...', options: ['Is always promotional', 'Mixes education, inspiration, and personal stories', 'Is only selfies'], answer: 1 },
+        { q: 'AI helps with content creation by...', options: ['Posting for you automatically', 'Writing captions, generating ideas, and creating visuals', 'Replacing creativity'], answer: 1 },
+      ]},
+      { session: 9, title: 'AI Ethics & Deepfakes', description: 'Understanding AI risks and responsible use', week: 3, tools: [], isFree: false, deliverable: 'Ethics case study analysis', previewQuestions: [
+        { q: 'A deepfake is...', options: ['A fake website', 'AI-generated video or audio that looks/sounds real', 'A broken AI tool'], answer: 1 },
+        { q: 'AI bias means...', options: ['AI has opinions', 'AI can reflect and amplify human prejudices from training data', 'AI is always fair'], answer: 1 },
+        { q: 'Responsible AI use means...', options: ['Using AI for everything', 'Being transparent, checking facts, and considering impact', 'Avoiding AI completely'], answer: 1 },
+      ]},
+      { session: 10, title: 'Capstone — Part 1', description: 'Plan and start your capstone project', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Project plan + first deliverables', previewQuestions: [
+        { q: 'A capstone project should demonstrate...', options: ['Speed only', 'Your ability to solve a real problem using AI tools', 'That AI did all the work'], answer: 1 },
+        { q: 'Good project topics come from...', options: ['Random selection', 'Real problems you\'ve noticed in your school or community', 'Copying someone else'], answer: 1 },
+        { q: 'The first step of any project is...', options: ['Opening AI', 'Defining the problem and planning your approach', 'Making slides'], answer: 1 },
+      ]},
+      { session: 11, title: 'Capstone — Part 2', description: 'Complete, polish, and prepare to present', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Completed capstone project', previewQuestions: [
+        { q: 'Polishing a project means...', options: ['Starting over', 'Reviewing quality, fixing issues, and improving details', 'Adding more pages'], answer: 1 },
+        { q: 'A strong presentation...', options: ['Is very long', 'Tells a clear story: problem → solution → impact', 'Has no visuals'], answer: 1 },
+        { q: 'Feedback from others helps because...', options: ['They are smarter than you', 'Fresh eyes catch things you missed', 'You have to change everything they say'], answer: 1 },
+      ]},
+      { session: 12, title: 'Showcase & Graduation', description: 'Present to parents and teachers, earn your certificate', week: 4, tools: [], isFree: false, deliverable: 'Final presentation + certificate', previewQuestions: [
+        { q: 'After this course, you should...', options: ['Stop learning about AI', 'Keep exploring and applying AI to new challenges', 'Only use one AI tool'], answer: 1 },
+        { q: 'The most important skill in the AI era is...', options: ['Memorizing facts', 'Critical thinking and adaptability', 'Typing speed'], answer: 1 },
+        { q: 'Your next step should be...', options: ['Wait for someone to tell you what to do', 'Identify a problem and start solving it with AI', 'Forget everything you learned'], answer: 1 },
+      ]},
+    ],
+  },
 };
 
 // Backward-compatible export for existing code that imports learnModules

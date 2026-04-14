@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9: AI Courtroom — Ethics & Deepfakes — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Deepfake Detective */
+.df-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+.df-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.df-card:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3)}
+.df-card .df-img{font-size:3rem;margin-bottom:.75rem;display:block}
+.df-card .df-label{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:.4rem}
+.df-card .df-desc{color:var(--t2);font-size:.78rem;margin-bottom:.75rem}
+.df-card .df-btns{display:flex;gap:.4rem;justify-content:center}
+.df-card .df-btn{padding:6px 14px;border-radius:99px;border:none;cursor:pointer;font-size:.75rem;font-family:'Syne',sans-serif;font-weight:700;transition:all .3s}
+.df-btn-real{background:rgba(52,211,153,.1);color:var(--c5);border:1px solid rgba(52,211,153,.3)}
+.df-btn-real:hover{background:rgba(52,211,153,.2)}
+.df-btn-fake{background:rgba(255,61,139,.1);color:var(--c3);border:1px solid rgba(255,61,139,.3)}
+.df-btn-fake:hover{background:rgba(255,61,139,.2)}
+.df-reveal{margin-top:.6rem;padding:.5rem;border-radius:var(--rs);font-size:.75rem;font-weight:700;display:none}
+.df-reveal.show{display:block;animation:fadeSlide .3s ease}
+.df-reveal.correct{background:rgba(52,211,153,.1);color:var(--c5)}
+.df-reveal.wrong{background:rgba(255,61,139,.1);color:var(--c3)}
+.df-score{text-align:center;padding:1rem;margin-top:1rem;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand)}
+/* Debate Cards */
+.debate-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.debate-crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .3s}
+.debate-crd:hover{border-color:rgba(168,85,247,.3);transform:translateY(-4px)}
+.debate-crd h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem}
+.debate-side{margin-bottom:.75rem}
+.debate-side .ds-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.3rem}
+.ds-for{color:var(--c5)}.ds-against{color:var(--c3)}
+.debate-side p{color:var(--t2);font-size:.83rem}
+/* AI Rules */
+.rules-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin:2rem 0}
+.rule-card{display:flex;gap:16px;align-items:flex-start;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.4rem;transition:all .3s}
+.rule-card:hover{border-color:rgba(5,150,105,.3);transform:translateX(4px)}
+.rule-num{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--brand);flex-shrink:0;min-width:36px}
+.rule-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.rule-body p{color:var(--t2);font-size:.85rem}
+/* Takehome */
+.takehome{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.takehome h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c4);margin-bottom:1rem}
+.takehome p{color:var(--t2);font-size:.9rem;margin-bottom:.6rem}
+.takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
+.takehome li{margin-bottom:.4rem}
+@media(max-width:768px){.sec{padding:2rem 1rem 4rem}.debate-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 9 of 12</div>
+  <h1>Session 9: AI Courtroom —<br><span class="gr">Ethics &amp; Deepfakes ⚖️</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Can you spot a fake? Should AI do your homework? Today we debate, detect, and decide the rules of responsible AI use.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Enter the Courtroom ⚖️</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Deepfake Detective</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>AI Courtroom</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>My AI Rules</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Take-Home</button>
+  </div>
+</nav>
+
+<!-- S1: Deepfake Detective -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Deepfake <span class="gr">Detective</span> 🔍</h2>
+    <p>Can you tell what's real and what's AI-generated? Study each case carefully — then make your call. Your score is tracked!</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>What Is a Deepfake?</h4><p>A deepfake is a <strong>fake video, image, or audio</strong> created by AI that looks or sounds real. The name comes from "deep learning" + "fake". They can make people appear to say or do things they never did — and they're getting harder to detect.</p></div></div>
+
+  <p style="font-family:'Syne',sans-serif;font-weight:700;margin:1.5rem 0 .5rem">🕵️ Examine each scenario — Real or AI-Generated?</p>
+  <div id="dfScoreTracker" class="df-score" style="display:none"></div>
+
+  <div class="df-grid" id="dfGrid">
+    <!-- Filled by JS -->
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔎</div><div class="call-body"><h4>Real Deepfake Warning Signs</h4><p><strong>Blurry edges</strong> around face and hair • <strong>Unnatural blinking</strong> (too fast or too slow) • <strong>Weird lighting</strong> on face vs background • <strong>Mouth sync</strong> doesn't match words perfectly • <strong>Glitchy ears/teeth</strong> in photos • <strong>Too perfect</strong> skin with no pores or texture • Background details look "dreamlike"</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎯 Class Challenge</h4>
+    <p>Find one image online that you think might be AI-generated. Describe the clues that made you suspicious. Share it in class — can the group agree?</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: AI Courtroom →</button></div>
+</div>
+
+<!-- S2: AI Courtroom -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ You're now a trained deepfake spotter. Time to DEBATE the big AI questions!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The AI <span class="gr">Courtroom</span> 🏛️</h2>
+    <p>Big questions need good arguments. Read BOTH sides of each debate — then decide where YOU stand!</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">⚖️</div><div class="call-body"><h4>How to Debate Well</h4><p>Good debaters don't just shout opinions — they give <strong>reasons and evidence</strong>. Even if you disagree, try to understand the other side. The best thinkers can argue BOTH sides convincingly.</p></div></div>
+
+  <div class="debate-cards">
+    <div class="debate-crd">
+      <h3>🤖 "Should AI do your homework?"</h3>
+      <div class="debate-side"><div class="ds-label ds-for">✅ For</div><p>AI accelerates learning, teaches research skills, and mirrors real-world work where professionals use every tool available. The skill is knowing how to use AI, not memorising answers.</p></div>
+      <div class="debate-side"><div class="ds-label ds-against">❌ Against</div><p>Doing homework builds critical thinking and independent problem-solving. If AI does it all, you miss the struggle that creates real understanding. Submitting AI work as your own is dishonest.</p></div>
+      <p style="font-size:.78rem;color:var(--brand);margin-top:.75rem;font-family:'JetBrains Mono',monospace">🎯 MIDDLE GROUND: Use AI to understand, not to replace your effort.</p>
+    </div>
+    <div class="debate-crd">
+      <h3>👩‍🏫 "Should AI replace teachers?"</h3>
+      <div class="debate-side"><div class="ds-label ds-for">✅ For</div><p>AI tutors are available 24/7, never lose patience, can personalise to each student's level, and can teach any subject at any pace. In underserved areas, AI could democratise great education.</p></div>
+      <div class="debate-side"><div class="ds-label ds-against">❌ Against</div><p>Teachers provide mentorship, emotional support, and human connection that AI cannot replicate. Teaching is not just information transfer — it's inspiration, belonging, and human relationship.</p></div>
+      <p style="font-size:.78rem;color:var(--brand);margin-top:.75rem;font-family:'JetBrains Mono',monospace">🎯 REALITY: AI assists great teachers, not replaces them.</p>
+    </div>
+    <div class="debate-crd">
+      <h3>🎨 "Should AI create art?"</h3>
+      <div class="debate-side"><div class="ds-label ds-for">✅ For</div><p>AI makes art creation accessible to millions who can't draw or afford training. It's a tool — like a camera was once considered "cheating" in photography. Great art is about ideas, not just technique.</p></div>
+      <div class="debate-side"><div class="ds-label ds-against">❌ Against</div><p>AI art is trained on human artists' work without consent. It devalues human creativity, takes jobs from working artists, and produces output without genuine emotion or lived experience.</p></div>
+      <p style="font-size:.78rem;color:var(--brand);margin-top:.75rem;font-family:'JetBrains Mono',monospace">🎯 KEY ISSUE: Consent, credit, and compensation for original artists.</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🏛️ Classroom Debate</h4>
+    <p>Split into two teams. Pick ONE topic above. Team A argues FOR, Team B argues AGAINST — even if you personally disagree! Then switch. The best team gives reasons, not just opinions.</p>
+  </div>
+
+  <div class="emotional-hook"><p>The students who understand BOTH sides of AI ethics will be the ones trusted to lead AI projects. <strong>Nuance is a superpower that AI cannot learn.</strong></p></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: My AI Rules →</button></div>
+</div>
+
+<!-- S3: My AI Rules -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ Great debating! Now let's build YOUR personal rulebook for AI use.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>My <span class="gr">AI Rules</span> 📋</h2>
+    <p>5 personal rules every responsible AI user should follow. Read them, memorise them, live them.</p>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-num">01</div><div class="rule-body"><h4>🔒 Safety First — Protect Your Privacy</h4><p>Never share your real name, school, address, or phone number with AI chatbots. Don't upload photos of yourself or others to unknown AI tools. Read privacy policies before using new apps.</p></div></div>
+    <div class="rule-card"><div class="rule-num">02</div><div class="rule-body"><h4>🕵️ Always Verify — Don't Trust Blindly</h4><p>AI can be confidently wrong (this is called "hallucination"). Always double-check AI-generated facts using reliable sources like Wikipedia, news sites, or textbooks before sharing or using them.</p></div></div>
+    <div class="rule-card"><div class="rule-num">03</div><div class="rule-body"><h4>✅ Be Honest — Disclose AI Use</h4><p>If you used AI to help write something, say so. Don't submit AI work as entirely your own without acknowledgement. Honesty builds trust — and in school and work, trust is everything.</p></div></div>
+    <div class="rule-card"><div class="rule-num">04</div><div class="rule-body"><h4>💜 Be Kind — Don't Use AI to Harm</h4><p>Never use AI to create fake content about real people. Never use AI to bully, spread rumours, or create embarrassing images of others. What feels like a joke can destroy someone's life. Choose kindness.</p></div></div>
+    <div class="rule-card"><div class="rule-num">05</div><div class="rule-body"><h4>🧠 Stay in Control — AI Assists, You Decide</h4><p>AI is your assistant, not your boss. Always review AI outputs critically. Don't let AI make important decisions for you — about friendships, health, or beliefs. Your judgment matters more than an algorithm.</p></div></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🌟 My Personal Pledge</h4>
+    <p>Write these 5 rules in your own words in your notebook. Then add a 6th rule of your own — something you personally commit to as an AI user.</p>
+  </div>
+
+  <div class="identity-shift">A person who uses AI responsibly is more powerful than one who uses it recklessly. Power comes with wisdom. 🧠</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz →</button></div>
+</div>
+
+<!-- S4: Quiz -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Session 9 <span class="gr">Quiz</span> 🧠</h2>
+    <p>6 questions on ethics, deepfakes, and responsible AI. Show what you know!</p>
+  </div>
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take-Home →</button></div>
+</div>
+
+<!-- S5: Take-Home -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Take-Home: <span class="gr">AI Rules Poster</span> 🎨</h2>
+    <p>Make these rules visible — and teach someone else what you learned!</p>
+  </div>
+
+  <div class="takehome">
+    <h3>📋 Your Take-Home Assignments</h3>
+    <p><strong>Assignment 1 — AI Rules Poster:</strong></p>
+    <ul>
+      <li>Create a poster (on paper, Canva, or any tool) with your 5 AI rules</li>
+      <li>Make it colourful and readable — design it to go on your bedroom wall</li>
+      <li>Include a title: "My AI Pledge" or "Rules I Live By"</li>
+      <li>Add your own 6th rule at the bottom</li>
+    </ul>
+    <p style="margin-top:1rem"><strong>Assignment 2 — Teach a Friend:</strong></p>
+    <ul>
+      <li>Explain deepfakes to 1 friend or family member who doesn't know about them</li>
+      <li>Show them the warning signs from Section 1</li>
+      <li>Tell them: "Next time you see a viral video that seems shocking, verify it first"</li>
+    </ul>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🚀</div><div class="call-body"><h4>Up Next: Capstone Project!</h4><p>Session 10 begins your <strong>Capstone Project</strong> — the biggest thing you'll do in this course. Choose your project, plan your approach, and start building something real. It all starts next session!</p></div></div>
+
+  <div class="identity-shift">You now understand AI ethics better than most adults. Use that knowledge to protect yourself and others. 🛡️</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 9 &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas');const ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+const sections=['s1','s2','s3','s4','s5'];let cur='s1';
+function go(id){document.getElementById(cur).classList.remove('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');cur=id;window.scrollTo({top:0,behavior:'smooth'});const idx=sections.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Deepfake Detective
+const dfData=[
+  {emoji:'🖼️',label:'Mountain Landscape Photo',desc:'A stunning, perfectly symmetrical mountain scene. Every peak is mirrored, the water is absolutely smooth, and there are no shadows anywhere.',isReal:false,explain:'AI-generated! Real mountains are asymmetric. The perfect symmetry, shadowless environment, and dreamlike "smoothness" are classic AI art tells.'},
+  {emoji:'📸',label:'Street Market Photo',desc:'A busy Indian street market with blurry motion, uneven lighting, dirt on the ground, and a vendor\'s hand partially cut off at the edge.',isReal:true,explain:'Real photo! The imperfections — motion blur, uneven light, cut-off hand, visible dirt — are exactly what AI struggles to generate naturally.'},
+  {emoji:'🎤',label:'Politician\'s Speech Video',desc:'A viral video of a politician saying something extreme. It was shared 50,000 times. The lip sync is slightly off and teeth look unnaturally perfect.',isReal:false,explain:'Deepfake! Lip sync errors and unnaturally perfect teeth are major red flags. Always verify viral political content on reliable news sources before sharing.'},
+  {emoji:'🌅',label:'Sunset Over the Sea',desc:'A gorgeous sunset photo with slight lens flare, a smudge on what looks like a camera lens, and uneven horizon.',isReal:true,explain:'Real photo! Lens flares, smudges, and imperfect horizons are human photography markers. AI tends to produce "too clean" and perfect images.'},
+  {emoji:'👤',label:'Profile Photo',desc:'A person\'s LinkedIn profile photo. The background is perfectly blurred, the face is symmetrical with no skin texture, and both eyes are exactly the same size.',isReal:false,explain:'AI-generated face! Real faces have slight asymmetry, visible pores, and natural skin texture. AI faces are often "too perfect" with identical eyes and smooth skin.'}
+];
+let dfScore=0,dfAnswered=0;
+function buildDF(){
+  const grid=document.getElementById('dfGrid');
+  grid.innerHTML=dfData.map((d,i)=>`
+    <div class="df-card" id="dfc${i}">
+      <span class="df-img">${d.emoji}</span>
+      <div class="df-label">${d.label}</div>
+      <div class="df-desc">${d.desc}</div>
+      <div class="df-btns">
+        <button class="df-btn df-btn-real" onclick="dfGuess(${i},true)">✅ Real</button>
+        <button class="df-btn df-btn-fake" onclick="dfGuess(${i},false)">🤖 Fake</button>
+      </div>
+      <div class="df-reveal" id="dfr${i}"></div>
+    </div>`).join('');
+}
+function dfGuess(i,isReal){
+  const d=dfData[i];
+  const reveal=document.getElementById('dfr'+i);
+  const card=document.getElementById('dfc'+i);
+  card.querySelectorAll('.df-btn').forEach(b=>{b.disabled=true;b.style.opacity='.5'});
+  const correct=isReal===d.isReal;
+  if(correct)dfScore++;
+  dfAnswered++;
+  reveal.className='df-reveal show '+(correct?'correct':'wrong');
+  reveal.textContent=(correct?'✓ Correct! ':'✗ Wrong! ')+d.explain;
+  if(dfAnswered===dfData.length){
+    const st=document.getElementById('dfScoreTracker');
+    st.style.display='block';
+    st.textContent=`🕵️ Detective Score: ${dfScore}/${dfData.length} — ${dfScore>=4?'Expert Deepfake Detective! 🏆':dfScore>=3?'Good eye! Keep practising 👀':'Study the warning signs and try again! 📚'}`;
+  }
+}
+buildDF();
+
+// Quiz
+const quizData=[
+  {q:'What is a "deepfake"?',opts:['A very deep philosophical fake story','AI-generated fake video, audio, or image that looks real','A low-quality photo filter','A hacked social media account'],ans:1,fb:'Deepfakes use deep learning AI to create convincing fake media — videos, audio, or images of people saying or doing things they never did.'},
+  {q:'Which of these is a WARNING SIGN that an image might be AI-generated?',opts:['The photo has slight motion blur','The background has a smudge from the camera lens','The face has perfectly symmetrical features and no visible skin texture','The colours are slightly overexposed'],ans:2,fb:'AI-generated faces are often "too perfect" — perfectly symmetrical, smooth skin with no pores or texture. Real faces always have small imperfections.'},
+  {q:'If you see a viral video of a famous person saying something extreme, you should:',opts:['Share it immediately so others know','Like and comment to show support','Verify it on reliable news sources before believing or sharing','Ignore it completely — all viral videos are fake'],ans:2,fb:'Always verify shocking content before sharing! Check reliable news sites. If major news outlets aren\'t reporting it, it may be a deepfake or misinformation.'},
+  {q:'What does "AI hallucination" mean?',opts:['AI seeing things that aren\'t there in photos','When AI confidently gives false or made-up information as fact','AI creating visual art with too many colours','When an AI app crashes and shows errors'],ans:1,fb:'AI hallucination happens when AI generates confident, convincing-sounding answers that are completely wrong or made up. Always fact-check important AI-generated information!'},
+  {q:'According to the 5 AI Rules, what should you do when using AI to help with schoolwork?',opts:['Never mention it — nobody needs to know','Disclose your AI use honestly if asked','Let AI do everything and just submit it','Always refuse to use AI for any school task'],ans:1,fb:'Honesty about AI use builds trust and is the ethical choice. Using AI without disclosure when it\'s not allowed is academic dishonesty — similar to plagiarism.'},
+  {q:'Why is it harmful to create deepfakes of real people, even as a joke?',opts:['It is not really harmful if it\'s clearly a joke','It can damage reputations, spread misinformation, and cause serious emotional harm','It\'s only harmful if shared publicly','It\'s only harmful for famous people, not regular students'],ans:1,fb:'Even "joke" deepfakes can destroy reputations, spread as misinformation when taken out of context, and cause serious psychological harm. The impact is real — always choose kindness over "humour" at others\' expense.'}
+];
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');renderQ();}
+function renderQ(){if(qCur>=quizData.length){showScore();return}const d=quizData[qCur];qAnswered=false;document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${qCur+1} of ${quizData.length}</span>${d.q}</div><div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;}
+function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];const opts=document.querySelectorAll('.q-opt');opts[d.ans].classList.add('ok');const fb=document.getElementById('qFb');if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}document.getElementById('qNextBtn').style.display='inline-flex';}
+function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
+function showScore(){const pct=Math.round(qScore/quizData.length*100);const msg=pct>=80?'AI Ethics Expert! You\'re ready to make responsible decisions. ⚖️':pct>=60?'Good work! Review the AI Rules section. 💪':'Review Sections 2–3 and try again. 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;}
+buildQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1: Meet Your AI Friend! 🤖 | TARAhut AI Labs</title>
+<style>
+  :root { --green: #059669; --dark: #0a0a0a; --card: #111827; --border: #1f2937; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--dark); color: #e5e7eb; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+  canvas#particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { color: var(--green); font-weight: 800; font-size: 1.1rem; }
+  .nav-badge { background: var(--green); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+  main { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+  .hero { text-align: center; padding: 50px 20px 36px; }
+  .hero-emoji { font-size: 4rem; display: block; margin-bottom: 12px; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .hero h1 { font-size: 2.2rem; font-weight: 900; color: #fff; line-height: 1.2; }
+  .hero h1 span { color: var(--green); }
+  .hero p { margin-top: 12px; font-size: 1.1rem; color: #9ca3af; }
+  .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-num { background: var(--green); color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+  .section-card h2 { font-size: 1.4rem; font-weight: 800; color: #fff; }
+  .section-card p { color: #d1d5db; line-height: 1.7; font-size: 1rem; }
+  .fun-box { background: #0d2b1e; border: 1px solid #065f46; border-radius: 12px; padding: 18px; margin: 16px 0; }
+  .fun-box h3 { color: var(--green); font-size: 1rem; margin-bottom: 8px; }
+  .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+  .activity-btn { background: #1f2937; border: 2px solid var(--border); border-radius: 12px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.25s; font-size: 0.9rem; color: #e5e7eb; }
+  .activity-btn:hover, .activity-btn.active { border-color: var(--green); background: #0d2b1e; color: #fff; transform: scale(1.04); }
+  .activity-result { background: #111; border-left: 4px solid var(--green); border-radius: 8px; padding: 14px; margin-top: 14px; display: none; color: #d1d5db; font-size: 0.95rem; line-height: 1.6; }
+  .activity-result.show { display: block; animation: fadeIn 0.4s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .prompt-cards { display: grid; gap: 12px; margin: 16px 0; }
+  .prompt-card { background: #1f2937; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+  .prompt-card:hover { border-color: var(--green); background: #0d2b1e; }
+  .prompt-card .emoji { font-size: 1.5rem; }
+  .prompt-card .text { font-size: 0.95rem; color: #d1d5db; }
+  .prompt-output { background: #0a1a0f; border: 1px solid #065f46; border-radius: 10px; padding: 16px; margin-top: 12px; display: none; }
+  .prompt-output.show { display: block; animation: fadeIn 0.4s; }
+  .prompt-output .label { color: var(--green); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .prompt-output p { color: #d1d5db; font-size: 0.95rem; line-height: 1.65; font-style: italic; }
+  .quiz-area { margin-top: 8px; }
+  .q-block { background: #0d1117; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .q-block p { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .options { display: grid; gap: 8px; }
+  .opt { background: #1f2937; border: 2px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; font-size: 0.9rem; color: #d1d5db; transition: all 0.2s; }
+  .opt:hover { border-color: #6b7280; }
+  .opt.correct { border-color: #059669; background: #0d2b1e; color: #6ee7b7; }
+  .opt.wrong { border-color: #dc2626; background: #1a0808; color: #fca5a5; }
+  .feedback { margin-top: 10px; font-size: 0.85rem; padding: 8px 12px; border-radius: 6px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.good { background: #0d2b1e; color: #6ee7b7; }
+  .feedback.bad { background: #1a0808; color: #fca5a5; }
+  .score-box { background: var(--green); color: #fff; border-radius: 12px; padding: 20px; text-align: center; margin-top: 16px; display: none; }
+  .score-box h3 { font-size: 1.5rem; font-weight: 900; }
+  .score-box p { font-size: 1rem; margin-top: 6px; }
+  .mission-box { background: linear-gradient(135deg, #0d2b1e, #111827); border: 2px solid var(--green); border-radius: 16px; padding: 28px; text-align: center; }
+  .mission-box .big-emoji { font-size: 3rem; margin-bottom: 12px; }
+  .mission-box h2 { color: var(--green); font-size: 1.4rem; font-weight: 900; margin-bottom: 12px; }
+  .mission-box p { color: #d1d5db; font-size: 1rem; line-height: 1.7; }
+  .mission-steps { list-style: none; margin: 16px 0; text-align: left; display: inline-block; }
+  .mission-steps li { color: #d1d5db; padding: 6px 0; font-size: 0.95rem; }
+  .mission-steps li::before { content: "✅ "; }
+  footer { text-align: center; padding: 20px; color: #4b5563; font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px; }
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<nav>
+  <div class="logo">🤖 TARAhut AI Labs</div>
+  <div class="nav-badge">Junior Track · Session 1</div>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-emoji">🤖</span>
+    <h1>Session 1: Meet Your <span>AI Friend!</span></h1>
+    <p>Get ready for the coolest adventure in school! 🚀</p>
+  </div>
+
+  <!-- SECTION 1: What is AI? -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>What is AI? 🧠</h2>
+    </div>
+    <p>AI stands for <strong>Artificial Intelligence</strong>. That's a fancy way of saying — a <strong>super-smart computer helper</strong> that learned from millions of books, websites, and pictures!</p>
+    <div class="fun-box">
+      <h3>🐶 Think of it like training a puppy!</h3>
+      <p style="color:#d1d5db; margin-top:6px; line-height:1.6;">When you teach a puppy "sit" — you show it, reward it, and practice again and again. AI works the same way! People showed AI <em>billions</em> of examples until it got really good at helping. Just like your puppy learned tricks, AI learned how to talk, write, and create!</p>
+    </div>
+    <p style="margin: 14px 0 8px; font-weight: 700; color: #fff;">👇 Click to discover 5 awesome things AI can do!</p>
+    <div class="activity-grid">
+      <div class="activity-btn" onclick="showAIThing(0, this)">✍️ Write Stories</div>
+      <div class="activity-btn" onclick="showAIThing(1, this)">🎨 Create Art</div>
+      <div class="activity-btn" onclick="showAIThing(2, this)">🌍 Translate</div>
+      <div class="activity-btn" onclick="showAIThing(3, this)">🎵 Make Music</div>
+      <div class="activity-btn" onclick="showAIThing(4, this)">💬 Answer Questions</div>
+    </div>
+    <div class="activity-result" id="aiResult"></div>
+  </div>
+
+  <!-- SECTION 2: Talk to AI! -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Talk to AI! 💬</h2>
+    </div>
+    <p>Your very first AI conversation! These are called <strong>prompts</strong> — questions or instructions you give to AI. Click a fun prompt below to see what AI might say! 👇</p>
+    <div class="prompt-cards" id="promptCards">
+      <div class="prompt-card" onclick="showPrompt(0)">
+        <span class="emoji">📝</span>
+        <span class="text">"Write a funny poem about my school!"</span>
+      </div>
+      <div class="prompt-card" onclick="showPrompt(1)">
+        <span class="emoji">🦕</span>
+        <span class="text">"Explain dinosaurs to a 5-year-old!"</span>
+      </div>
+      <div class="prompt-card" onclick="showPrompt(2)">
+        <span class="emoji">🐱</span>
+        <span class="text">"What if cats could fly?"</span>
+      </div>
+    </div>
+    <div class="prompt-output" id="promptOutput">
+      <div class="label">🤖 AI Says...</div>
+      <p id="promptText"></p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Quiz -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Quiz Time! 🎉</h2>
+    </div>
+    <p style="margin-bottom: 16px;">Let's see what you learned! Pick the best answer for each question. You've got this! 💪</p>
+    <div class="quiz-area">
+      <div class="q-block">
+        <p>1. 🤔 What does "AI" stand for?</p>
+        <div class="options">
+          <div class="opt" onclick="answer(this,false,'q1')">Amazing Invention</div>
+          <div class="opt" onclick="answer(this,true,'q1')">Artificial Intelligence</div>
+          <div class="opt" onclick="answer(this,false,'q1')">Awesome Internet</div>
+        </div>
+        <div class="feedback" id="q1">⭐ Yes! Artificial Intelligence — a computer brain that learned from tons of examples!</div>
+      </div>
+      <div class="q-block">
+        <p>2. 🐶 In the puppy analogy, how does AI learn?</p>
+        <div class="options">
+          <div class="opt" onclick="answer(this,false,'q2')">By going to school like you</div>
+          <div class="opt" onclick="answer(this,false,'q2')">By watching YouTube videos</div>
+          <div class="opt" onclick="answer(this,true,'q2')">By looking at billions of examples again and again</div>
+        </div>
+        <div class="feedback" id="q2">🎯 Exactly! Just like training a puppy — practice, practice, practice!</div>
+      </div>
+      <div class="q-block">
+        <p>3. ✍️ Can AI write stories and poems?</p>
+        <div class="options">
+          <div class="opt" onclick="answer(this,true,'q3')">Yes! That's one of its superpowers!</div>
+          <div class="opt" onclick="answer(this,false,'q3')">No, only humans can write</div>
+          <div class="opt" onclick="answer(this,false,'q3')">Only in English</div>
+        </div>
+        <div class="feedback" id="q3">🌟 Correct! AI can write in hundreds of languages too!</div>
+      </div>
+      <div class="q-block">
+        <p>4. 💬 What is the instruction you give to AI called?</p>
+        <div class="options">
+          <div class="opt" onclick="answer(this,false,'q4')">A command code</div>
+          <div class="opt" onclick="answer(this,true,'q4')">A prompt</div>
+          <div class="opt" onclick="answer(this,false,'q4')">A message blast</div>
+        </div>
+        <div class="feedback" id="q4">🏆 Yes! Your instruction to AI is called a PROMPT! Remember that word!</div>
+      </div>
+      <div class="q-block">
+        <p>5. 🤖 AI is like a friend who has read...</p>
+        <div class="options">
+          <div class="opt" onclick="answer(this,false,'q5')">10 books</div>
+          <div class="opt" onclick="answer(this,false,'q5')">One million books</div>
+          <div class="opt" onclick="answer(this,true,'q5')">Billions of pages of text from the internet!</div>
+        </div>
+        <div class="feedback" id="q5">🚀 That's right! More than any human could read in a thousand lifetimes!</div>
+      </div>
+      <div class="score-box" id="scoreBox">
+        <h3 id="scoreText">🎊 You scored 5/5!</h3>
+        <p id="scoreMsg">Amazing! You're ready to explore AI!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Mission -->
+  <div class="section-card mission-box">
+    <div class="big-emoji">🎯</div>
+    <h2>Your Take-Home Mission!</h2>
+    <p>You're an AI Explorer now! Here's your first mission:</p>
+    <ul class="mission-steps">
+      <li>Ask AI 5 funny questions (be creative!)</li>
+      <li>Write down your favourite answer</li>
+      <li>Share it with a friend or family member</li>
+      <li>Try asking the same question in Hindi or Punjabi!</li>
+      <li>Bring your favourite answer to next class 📝</li>
+    </ul>
+    <p style="margin-top: 12px; color: var(--green); font-weight: 700;">Suggested tools: ChatGPT, Google Gemini, or Microsoft Copilot (free!)</p>
+  </div>
+</main>
+
+<footer>
+  <p>TARAhut AI Labs · AI Explorer Junior Track · Session 1 of 6 · <a href="https://tarahutailabs.com" style="color:var(--green);">tarahutailabs.com</a></p>
+</footer>
+
+<script>
+// Particles
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for (let i = 0; i < 55; i++) {
+  particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+    vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.8+0.5, a: Math.random()*0.5+0.1 });
+}
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x<0||p.x>canvas.width) p.vx*=-1;
+    if (p.y<0||p.y>canvas.height) p.vy*=-1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(5,150,105,${p.a})`; ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+// AI Things
+const aiThings = [
+  "✍️ <strong>Write Stories!</strong><br>AI can write adventure stories, funny tales, poems, songs, and even whole books! Just tell it what you want and it will create something amazing for you!",
+  "🎨 <strong>Create Art!</strong><br>Describe a picture in words — like 'a purple elephant flying over a rainbow' — and AI image tools will actually DRAW it for you! Magic!",
+  "🌍 <strong>Translate Languages!</strong><br>AI can translate between over 100 languages instantly! Type something in English and get it in Hindi, Punjabi, Spanish, Japanese... you name it!",
+  "🎵 <strong>Make Music!</strong><br>AI can compose songs, suggest melodies, write song lyrics, and even generate actual music audio! Future musicians love this!",
+  "💬 <strong>Answer Any Question!</strong><br>Ask AI anything — homework help, cool facts, how things work, why the sky is blue — it will explain things clearly and simply, just for you!"
+];
+function showAIThing(i, btn) {
+  document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const r = document.getElementById('aiResult');
+  r.innerHTML = aiThings[i]; r.classList.add('show');
+}
+
+// Prompts
+const prompts = [
+  "School is pretty cool,<br>With pencils and rulers and chairs,<br>The teacher says 'listen!'<br>But math makes me scared!<br>At lunch we eat chapati,<br>Sometimes rice with dal,<br>AI wrote this poem —<br>For you, my school pal! 😄",
+  "Okay little buddy, listen up! A LONG time ago — like, super duper long ago — there were giant animals called dinosaurs. Some were as big as your house! T-Rex had tiny arms but a HUGE mouth full of sharp teeth. Triceratops had three horns on its head, like a rhino went to a party. They all disappeared when a giant rock from space crashed into Earth. The end! 🦕💥",
+  "Ooh, flying cats! Imagine waking up and your cat is just... floating on the ceiling, judging you. Cat airlines would exist, but they'd ignore all the flight rules. Birds would be SO nervous. Cats would knock things off clouds instead of shelves. Meow would echo from the sky at 3 AM. And your cat would STILL not come when you call it! 😂🐱✈️"
+];
+function showPrompt(i) {
+  const out = document.getElementById('promptOutput');
+  document.getElementById('promptText').innerHTML = prompts[i];
+  out.classList.add('show');
+}
+
+// Quiz
+let answers = {}; let correct = 0;
+function answer(el, isCorrect, qId) {
+  if (answers[qId]) return;
+  answers[qId] = true;
+  const fb = document.getElementById(qId);
+  if (isCorrect) {
+    el.classList.add('correct'); correct++;
+    fb.classList.add('good', 'show');
+  } else {
+    el.classList.add('wrong');
+    fb.classList.add('bad', 'show');
+    fb.textContent = "❌ Not quite — try to remember for next time!";
+  }
+  if (Object.keys(answers).length === 5) {
+    const box = document.getElementById('scoreBox');
+    const msgs = ["Keep trying! AI learning takes practice! 💪","Good effort! Review and try again! 📖","Not bad! You're getting there! 🌱","Great job! You really paid attention! 🌟","PERFECT! You're a future AI Expert! 🏆"];
+    document.getElementById('scoreText').textContent = `🎊 You scored ${correct}/5!`;
+    document.getElementById('scoreMsg').textContent = msgs[correct-1] || msgs[0];
+    box.style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>

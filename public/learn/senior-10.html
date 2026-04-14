@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 10: Capstone Project Part 1 — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Project Cards */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.proj-crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.proj-crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.proj-crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.proj-crd:hover::after{transform:scaleX(1)}
+.proj-crd.selected{border-color:var(--brand);box-shadow:0 0 30px rgba(5,150,105,.15)}
+.proj-crd.selected::after{transform:scaleX(1);background:var(--gbrand)}
+.proj-emoji{font-size:2rem;margin-bottom:.8rem;display:block}
+.proj-crd h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.proj-crd p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.proj-brief{background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--rs);padding:1rem;margin-top:.75rem;display:none;font-size:.83rem;color:var(--t2)}
+.proj-brief.show{display:block;animation:fadeSlide .3s ease}
+.proj-brief h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:.4rem}
+.proj-brief ul{padding-left:1rem}
+.proj-brief li{margin-bottom:.25rem}
+/* Steps */
+.steps-wrap{margin:2rem 0}
+.step-item{display:flex;gap:16px;margin-bottom:1.5rem;align-items:flex-start}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--gbrand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0}
+.step-body{flex:1;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem}
+.step-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.step-body p{color:var(--t2);font-size:.87rem}
+/* Tips */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:2rem 0}
+.tip-crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.4rem;transition:all .3s}
+.tip-crd:hover{border-color:rgba(0,240,255,.25);transform:translateY(-3px)}
+.tip-crd .tip-ico{font-size:1.6rem;margin-bottom:.6rem;display:block}
+.tip-crd h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.4rem}
+.tip-crd p{color:var(--t2);font-size:.83rem}
+/* Takehome */
+.takehome{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.takehome h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c4);margin-bottom:1rem}
+.takehome p{color:var(--t2);font-size:.9rem;margin-bottom:.6rem}
+.takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
+.takehome li{margin-bottom:.4rem}
+@media(max-width:768px){.sec{padding:2rem 1rem 4rem}.proj-grid,.tips-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 10 of 12</div>
+  <h1>Session 10: Capstone Project<br><span class="gr">Part 1 🏗️</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Choose your project. Make your plan. Start building. This is what 9 sessions of learning have been leading to!</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Choose My Project 🏗️</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Choose Project</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Research & Plan</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Start Building</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Take-Home</button>
+  </div>
+</nav>
+
+<!-- S1: Choose Project -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Choose Your <span class="gr">Project</span> 🎯</h2>
+    <p>6 project options — each one meaningful, buildable, and worth showing off. Click any card to see the full brief!</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🏆</div><div class="call-body"><h4>What Makes a Good Capstone?</h4><p>A great capstone project shows <strong>what you've learned</strong>, solves a <strong>real problem</strong>, and is something you're <strong>proud to present</strong>. Choose the one that excites YOU the most — passion shows in the final result!</p></div></div>
+
+  <div class="proj-grid" id="projGrid">
+    <!-- Filled by JS -->
+  </div>
+
+  <div id="selectedProject" style="display:none;margin-top:1rem">
+    <div class="callout call-3"><div class="call-ico">✅</div><div class="call-body"><h4 id="selProjTitle">Project Selected!</h4><p id="selProjMsg"></p></div></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🎯 Decision Time</h4>
+    <p>Read all 6 options. Pick ONE. Write down your choice and why you picked it. You'll stick with this project for the next 2 sessions — choose wisely and enthusiastically!</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Research & Plan →</button></div>
+</div>
+
+<!-- S2: Research & Plan -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ Project chosen! Now let's break it down into manageable steps.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Research &amp; <span class="gr">Plan</span> 📋</h2>
+    <p>Big projects feel overwhelming until you break them into small steps. Here's how to plan like a pro.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🧠</div><div class="call-body"><h4>The Project Planning Formula</h4><p>Every successful project follows this pattern:<br><strong>Choose topic → Research → Outline → Create → Review → Present</strong><br>Don't skip steps. Rushing to "create" without research is why most projects fail.</p></div></div>
+
+  <div class="steps-wrap">
+    <div class="step-item"><div class="step-num">1</div><div class="step-body"><h4>Define Your Goal Clearly</h4><p>In one sentence: "My project will [do/show/teach] [what] to [who]." Example: "My project will create an AI awareness poster campaign for students at my school." If you can't say it in one sentence, you haven't decided yet.</p></div></div>
+    <div class="step-item"><div class="step-num">2</div><div class="step-body"><h4>Research (20% of your time)</h4><p>Spend time understanding your topic before creating. Use Google, ChatGPT, and YouTube. Take notes. Find 3–5 good sources. This makes your final product much stronger.</p></div></div>
+    <div class="step-item"><div class="step-num">3</div><div class="step-body"><h4>Choose Your Tools</h4><p>What will you use to build this? Google Slides/Canva (presentations), Notion/Google Docs (reports), Canva AI/Adobe Express (designs), ChatGPT (writing/ideas). Pick simple tools you know.</p></div></div>
+    <div class="step-item"><div class="step-num">4</div><div class="step-body"><h4>Set Mini Deadlines</h4><p>Break into 3 chunks: Today → Outline done. Before Session 11 → First draft done. Session 11 → Peer review. Session 12 → Final presentation. Work backwards from the showcase!</p></div></div>
+    <div class="step-item"><div class="step-num">5</div><div class="step-body"><h4>Ask for Help When Stuck</h4><p>Being stuck is normal. When stuck for more than 10 minutes: ask a classmate, ask the teacher, or ask ChatGPT. Never spend 30 minutes spinning on the same problem alone.</p></div></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>AI Prompt for Project Planning</h4><p>Type this into ChatGPT: <strong>"I'm a 14-year-old student working on a [your project type]. Help me break it into 5 clear steps I can complete in 1 week. Be specific."</strong><br>Use the response as your starter plan — then customise it!</p></div></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Start Building →</button></div>
+</div>
+
+<!-- S3: Start Building -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ You have a plan. Now comes the exciting part — actually building it!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Start <span class="gr">Building</span> 🔨</h2>
+    <p>Tips for getting into the zone and making progress every single day.</p>
+  </div>
+
+  <div class="tips-grid">
+    <div class="tip-crd"><span class="tip-ico">🎯</span><h4>Use Focus Mode</h4><p>Phone face down, notifications off, 25-minute Pomodoro timer on. One task at a time. Your brain can't multitask — don't try.</p></div>
+    <div class="tip-crd"><span class="tip-ico">🤖</span><h4>AI is Your Assistant</h4><p>Use AI to brainstorm, draft, and suggest — but YOU make the final decisions. AI is a helper, not a replacement. Your voice and ideas must shine through.</p></div>
+    <div class="tip-crd"><span class="tip-ico">📝</span><h4>Rough Draft First</h4><p>Don't try to make it perfect on the first attempt. Get SOMETHING on paper/screen first. "Done is better than perfect" — you can edit later.</p></div>
+    <div class="tip-crd"><span class="tip-ico">🙋</span><h4>Ask for Help</h4><p>Stuck? Ask. Nobody builds great things alone. Your teacher, classmates, and even AI are resources. Using them is smart, not weak.</p></div>
+    <div class="tip-crd"><span class="tip-ico">⏰</span><h4>Work in Daily Sessions</h4><p>30 minutes every day beats 3 hours one night before the deadline. Consistency creates quality. Set a daily project time.</p></div>
+    <div class="tip-crd"><span class="tip-ico">🌟</span><h4>Think About Your Audience</h4><p>Who will see this? What do they care about? Design everything for THEM. A project that helps your audience is always better than one that just ticks boxes.</p></div>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">🏗️</div><div class="call-body"><h4>Start Right Now</h4><p>Open a new document/slide/canvas RIGHT NOW. Write your project title, your name, and one sentence describing what you're building. That's your start. Progress beats perfection.</p></div></div>
+
+  <div class="emotional-hook"><p>The students who start today will have something to show next session. The ones who wait until "later" will be scrambling. <strong>Your future self is watching what you do in the next 10 minutes.</strong></p></div>
+
+  <div class="identity-shift">You're not just a student doing homework. You're a creator, building something real. 🏗️</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz →</button></div>
+</div>
+
+<!-- S4: Quiz -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Session 10 <span class="gr">Quiz</span> 🧠</h2>
+    <p>6 questions on project planning. Think carefully!</p>
+  </div>
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take-Home →</button></div>
+</div>
+
+<!-- S5: Take-Home -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Take-Home: <span class="gr">Keep Building</span> 🚀</h2>
+    <p>Your project doesn't stop when the session ends. Here's what to do before Session 11!</p>
+  </div>
+
+  <div class="takehome">
+    <h3>📋 Between Session 10 and 11</h3>
+    <p><strong>Your mission:</strong> Complete at least 60% of your capstone project before Session 11 (Peer Review).</p>
+    <ul>
+      <li>Complete your research (at least 3 solid sources)</li>
+      <li>Create a first draft of your main content</li>
+      <li>Build your presentation structure (intro, body, conclusion)</li>
+      <li>Have at least 5 slides or equivalent content ready</li>
+      <li>Bring your laptop or printed version to Session 11 for peer review</li>
+    </ul>
+    <p style="margin-top:1rem">📌 <strong>Time estimate:</strong> 2–3 hours total spread across multiple days. Don't cram it all the night before!</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">👥</div><div class="call-body"><h4>Peer Review is Coming</h4><p>In Session 11, your classmates will give you feedback on your project. Come prepared! The better your draft, the more useful feedback you'll get. This is your chance to make it great before the final showcase.</p></div></div>
+
+  <div class="micro-action">
+    <h4>🌟 Daily Commitment</h4>
+    <p>Work on your project for at least 30 minutes every day between now and Session 11. Set a daily reminder on your phone. Use this prompt if stuck: "Help me write the next section of my [project type] about [your topic]."</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 10 &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas');const ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+const sections=['s1','s2','s3','s4','s5'];let cur='s1';
+function go(id){document.getElementById(cur).classList.remove('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');cur=id;window.scrollTo({top:0,behavior:'smooth'});const idx=sections.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Projects
+const projects=[
+  {emoji:'📚',title:'AI Study Guide',desc:'Create a complete AI-powered study guide for one school subject.',brief:{what:'Build a comprehensive study guide for any subject (Maths, Science, History, etc.) using AI tools to explain concepts, generate practice questions, and create visual summaries.',deliverables:['5–8 page guide or 10+ slide presentation','3 AI-generated explanations of key concepts','10 practice questions with answers','1 visual mind map or concept diagram'],tools:'ChatGPT (explanations), Canva (design), Google Docs/Slides'}},
+  {emoji:'📢',title:'School AI Awareness Campaign',desc:'Design a campaign to teach your school about AI — posters, social posts, and a 2-minute explainer.',brief:{what:'Create materials that could actually be used in your school to raise awareness about AI — what it is, how to use it responsibly, and why it matters for students.',deliverables:['3 poster designs (can be digital)','5 social media posts with captions','1 short "what is AI?" explainer (written or visual)','1 quiz for other students'],tools:'Canva (design), ChatGPT (copy), Instagram/Slides'}},
+  {emoji:'🌆',title:'Smart Kotkapura Solutions',desc:'Identify 3 real problems in your city and propose AI-powered solutions.',brief:{what:'Become a local problem solver! Research 3 real challenges in Kotkapura (traffic, education, farming, healthcare, etc.) and design how AI could help solve them.',deliverables:['3 problem statements with research','3 AI solution proposals','1 "ideal future city" visual or infographic','A realistic implementation plan for 1 solution'],tools:'Google Research, ChatGPT, Canva, Maps'}},
+  {emoji:'📰',title:'AI Magazine',desc:'Create a 6-page digital magazine about AI in everyday life — for students your age.',brief:{what:'Design an engaging magazine that students would actually want to read! Cover topics like AI in entertainment, jobs, education, and the future. Include interviews, tips, and features.',deliverables:['Cover page with magazine branding','4–5 article pages (500+ words total)','At least 3 original graphics or infographics','"Ask an AI" Q&A column'],tools:'Canva (design), ChatGPT (writing), Google Slides'}},
+  {emoji:'🌟',title:'Personal Brand Kit',desc:'Build a complete personal brand kit — bio, social template, 5 posts, and a 1-pager.',brief:{what:'Using everything from Sessions 7 and 8, create a professional personal brand kit that represents YOU. This could be used for internships, competitions, or social media.',deliverables:['1 personal bio (short and long versions)','5 ready-to-post content pieces','3 Canva post templates in your brand colours','1 personal "one-pager" (like a student resume)'],tools:'Canva, ChatGPT, Google Docs'}},
+  {emoji:'🔬',title:'Career Research Report',desc:'Deep-dive into 3 AI-era careers — research, salary, skills, and how to start at age 14.',brief:{what:'Become an expert on 3 careers from Session 7. Interview someone if possible, research extensively, and create a guide other students could use to plan their future.',deliverables:['3 career deep-dives (300+ words each)','Salary comparison table','"How to start at 14" guide for each career','1 personal career plan for yourself'],tools:'Google, LinkedIn research, ChatGPT, Google Slides'}}
+];
+
+function buildProjects(){
+  const grid=document.getElementById('projGrid');
+  grid.innerHTML=projects.map((p,i)=>`
+    <div class="proj-crd" id="pc${i}" onclick="toggleProj(${i})">
+      <span class="proj-emoji">${p.emoji}</span>
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);margin-bottom:.4rem">▼ Click to see full brief</div>
+      <div class="proj-brief" id="pb${i}">
+        <h4>What you'll create:</h4>
+        <p style="margin-bottom:.5rem">${p.brief.what}</p>
+        <h4 style="margin-top:.5rem">Deliverables:</h4>
+        <ul>${p.brief.deliverables.map(d=>`<li>${d}</li>`).join('')}</ul>
+        <p style="margin-top:.5rem;color:var(--brand);font-family:'JetBrains Mono',monospace;font-size:.72rem">🛠️ Tools: ${p.brief.tools}</p>
+        <button class="btn btn-glow btn-sm" style="margin-top:.75rem;width:100%" onclick="selectProject(${i},event)">✅ Choose This Project</button>
+      </div>
+    </div>`).join('');
+}
+function toggleProj(i){
+  const brief=document.getElementById('pb'+i);
+  brief.classList.toggle('show');
+}
+function selectProject(i,e){
+  e.stopPropagation();
+  const p=projects[i];
+  document.querySelectorAll('.proj-crd').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('pc'+i).classList.add('selected');
+  document.getElementById('selectedProject').style.display='block';
+  document.getElementById('selProjTitle').textContent='✅ You chose: '+p.emoji+' '+p.title;
+  document.getElementById('selProjMsg').textContent='Great choice! Proceed to Section 2 to plan your approach. Remember to bring progress to Session 11!';
+}
+buildProjects();
+
+// Quiz
+const quizData=[
+  {q:'What is the BEST first step when starting a big project?',opts:['Jump straight into creating content','Define your goal in one clear sentence','Ask AI to do the whole project','Wait for inspiration to strike'],ans:1,fb:'Defining your goal in one sentence forces clarity. If you can\'t explain what you\'re building in one sentence, you haven\'t decided yet. Clarity drives everything else.'},
+  {q:'What is the recommended time to spend on RESEARCH before creating?',opts:['No time — just start creating','About 20% of your total project time','At least 80% of your time','Research isn\'t important for student projects'],ans:1,fb:'Spending about 20% of project time on research gives you a strong foundation without over-planning. Good research makes the creation phase much faster and higher quality.'},
+  {q:'Why is breaking a big project into small steps important?',opts:['It makes the project shorter','Small steps feel manageable, prevent overwhelm, and help track progress','Teachers require it for grading','It helps you skip difficult parts'],ans:1,fb:'Large projects feel overwhelming as a whole. Breaking them into steps creates achievable daily targets and helps you see progress — which keeps you motivated to continue!'},
+  {q:'How should you use AI when working on a project?',opts:['Let AI do all the work and submit it','Use AI to replace your own thinking entirely','Use AI as an assistant — for ideas and drafts — but make final decisions yourself','Avoid AI completely to show original thinking'],ans:2,fb:'AI is a powerful assistant — use it to brainstorm, draft, and get unstuck. But YOUR ideas, voice, and judgment should guide the final product. The goal is to work WITH AI, not FOR AI.'},
+  {q:'What does "done is better than perfect" mean for student projects?',opts:['Submit incomplete work is fine','It\'s better to have a complete rough draft to improve than to not start because you\'re scared of imperfection','Quality doesn\'t matter in school','Always choose the easiest option'],ans:1,fb:'"Done is better than perfect" means getting a complete first draft done (even if rough) is more valuable than spending all your time planning and never starting. You can always revise and improve!'},
+  {q:'When is the best time to ask for help during a project?',opts:['Only at the very end','Never — figuring it out alone builds character','After being stuck on the same problem for more than 10 minutes','Only if you completely give up'],ans:2,fb:'The rule is: don\'t spin on the same problem for more than 10 minutes. Ask a classmate, teacher, or AI. Using available resources intelligently is a skill — not a weakness!'}
+];
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');renderQ();}
+function renderQ(){if(qCur>=quizData.length){showScore();return}const d=quizData[qCur];qAnswered=false;document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${qCur+1} of ${quizData.length}</span>${d.q}</div><div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;}
+function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];const opts=document.querySelectorAll('.q-opt');opts[d.ans].classList.add('ok');const fb=document.getElementById('qFb');if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}document.getElementById('qNextBtn').style.display='inline-flex';}
+function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
+function showScore(){const pct=Math.round(qScore/quizData.length*100);const msg=pct>=80?'Project planning expert! Your capstone is going to be great. 🏆':pct>=60?'Good grasp of the basics! Review Section 2 for planning tips. 💪':'Re-read Section 2 carefully before starting your project. 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;}
+buildQuiz();
+</script>
+</body>
+</html>

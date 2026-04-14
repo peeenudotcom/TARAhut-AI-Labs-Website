@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3: AI for Exam Prep 📚 — TARAhut AI Labs | Senior Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1));}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6.5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Prompt Recipe Box */
+.prompt-recipe{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1.25rem;margin:.75rem 0;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);line-height:1.8;position:relative}
+.prompt-recipe::before{content:'💬 Prompt:';display:block;font-size:.65rem;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+/* Study Kit Generator */
+.kit-gen{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.kit-input{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.95rem;outline:none;transition:all .3s;margin-bottom:1rem}
+.kit-input:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.kit-select{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.95rem;outline:none;margin-bottom:1rem;appearance:none;cursor:pointer}
+.kit-output{padding:1.5rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);display:none;margin-top:1rem}
+.kit-output.show{display:block;animation:fadeSlide .4s ease}
+.kit-tab-row{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.kit-tab{padding:8px 16px;border-radius:99px;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:transparent;color:var(--t3);transition:all .3s}
+.kit-tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.kit-content{display:none}.kit-content.on{display:block}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 3 &middot; 2026</div>
+  <h1>AI for Exam Prep<br><span class="gr">📚 Your AI Study Buddy</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Exam stress is real. But what if you had a tutor who never gets tired, never judges you, and is available 24/7 for FREE? That's AI — and today you learn to use it! 🎯</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Study Smarter! 📚</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Study Buddy</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>MCQ Machine</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Instant Study Kit</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Mission</button>
+  </div>
+</nav>
+
+<!-- S1: STUDY BUDDY -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>AI as Your <span class="gr">Study Buddy 🤝</span></h2>
+    <p>Imagine having a tutor who knows every subject, speaks your language, and is free forever. That's exactly what AI can be — if you use it right!</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">😅</div>
+    <div class="call-body">
+      <h4>Real Talk: The Exam Struggle is Real</h4>
+      <p>Boards are coming. 500+ pages to cover. Notes are missing. Teacher explained it but you didn't get it. YouTube videos are 45 mins long. Sound familiar? 🙋 Here's the thing — <strong>AI can solve all of these in minutes.</strong> Not by doing your work FOR you. By helping you understand FASTER.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">📝 What AI Can Create For You Instantly</h3>
+  <div class="cgrid">
+    <div class="crd">
+      <span class="crd-icon">📋</span>
+      <h3>Smart Notes</h3>
+      <p>AI reads a chapter description and creates clean, organized bullet-point notes. 30 pages → 1 page summary. Boom! ⚡</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🗺️</span>
+      <h3>Mind Maps</h3>
+      <p>AI creates text-based mind maps showing how concepts connect. Great for visual learners before drawing on paper!</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🃏</span>
+      <h3>Flashcards</h3>
+      <p>AI creates Question-Answer flashcard pairs from any chapter. Study them on the bus, between classes, anywhere! 🚌</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">📅</span>
+      <h3>Revision Schedule</h3>
+      <p>Tell AI your exam date and subjects — it creates a day-by-day revision plan! No more last-minute panic. 😤</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🔥 Copy-Paste These Prompts!</h3>
+
+  <div class="prompt-recipe">"You are my Class [10] [Science] teacher. Create 10 bullet-point notes on the chapter '[Heredity and Evolution]'. Use simple language. Include the most important definitions and facts."</div>
+
+  <div class="prompt-recipe">"Create a mind map for the chapter '[The French Revolution]' from Class 9 History. Show main events, key people, and causes/effects. Format it as a text tree structure."</div>
+
+  <div class="prompt-recipe">"Create 15 flashcards (Q&A format) for the chapter '[Quadratic Equations]' Class 10 Maths. Start with easy ones and get harder. Mark each with difficulty: Easy/Medium/Hard."</div>
+
+  <div class="prompt-recipe">"My exams start on [15 March]. I have 6 subjects: [list them]. Create a day-by-day revision schedule starting today. 4 hours study per day. Include breaks and buffer days."</div>
+
+  <div class="micro-action">
+    <h4>⚡ Try It Now!</h4>
+    <p>Pick ONE subject you have an upcoming test in. Use the Notes prompt above. Change [Subject] and [Chapter]. Open ChatGPT and paste it. Share the result with the class! 📱</p>
+  </div>
+
+  <div class="identity-shift">📚 Students who use AI for studying score 15-20% higher because they understand — not memorize!</div>
+  <p class="curiosity-hook">Next: The MCQ Machine — infinite practice papers, on demand! →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: MCQ Machine &rarr;</button></div>
+</div>
+
+<!-- S2: MCQ MACHINE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">📚 25% done! MCQ time!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>🎯 The MCQ Machine<br><span class="gr">Infinite Practice Papers</span></h2>
+    <p>Forget buying expensive practice books! AI can generate 100 MCQs on any chapter in 30 seconds. And explain every wrong answer. For FREE! 🤯</p>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Why MCQs Are the Secret to Exam Success</h4>
+      <p>Research shows students who practice MCQs outperform students who just read notes by <strong>40%</strong> in exams. Why? Because MCQs force you to ACTIVELY think, not passively read. AI can give you unlimited practice — any chapter, any difficulty, any time. <strong>This is a cheat code for board exams!</strong> 🎯</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🔥 Power Prompts for Practice Papers</h3>
+
+  <div class="prompt-recipe">"Create 20 MCQ questions on '[Chemical Reactions and Equations]' Class 10 Science. 4 options each. Mark the correct answer. Include 5 easy, 10 medium, and 5 hard questions."</div>
+
+  <div class="prompt-recipe">"I got [Question 5] wrong: '[A substance that donates electrons is called...]'. My answer was [B]. The correct answer is [A]. Explain WHY in simple terms with 2 real-life examples."</div>
+
+  <div class="prompt-recipe">"Create a mixed MCQ test of 25 questions covering: [Chapter 1 - Real Numbers], [Chapter 2 - Polynomials], [Chapter 3 - Pair of Equations]. Class 10 Maths. CBSE level difficulty."</div>
+
+  <div class="prompt-recipe">"After my practice test on [Electricity] I got 14/20. Based on my wrong answers: [list wrong Q numbers and topics], identify my weak areas and give me 10 targeted questions on just those topics."</div>
+
+  <div class="callout call-4">
+    <div class="call-ico">⚠️</div>
+    <div class="call-body">
+      <h4>Important Warning! Read This!</h4>
+      <p>AI sometimes creates MCQs with slightly wrong answers or outdated information. <strong>Always cross-check with your NCERT textbook</strong> before treating AI-generated questions as 100% correct. Use it to understand concepts, but verify facts from your book. This is especially true for science and history! 🕵️</p>
+    </div>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">🚀</div>
+    <div class="call-body">
+      <h4>Level Up: AI as Your Personal Examiner</h4>
+      <p>Try this advanced technique: Write your answers to 5 questions. Copy-paste them to AI with the original questions and ask: "Grade these answers like a CBSE examiner. Give marks out of 5. Explain what's missing."<br><strong>You get instant, personalized feedback — something teachers can't do for 40 students!</strong></p>
+    </div>
+  </div>
+
+  <div class="micro-win">You now have an infinite practice paper generator. No more buying guide books! 🎉</div>
+  <p class="curiosity-hook">Now let's build a complete study kit interactively — type your chapter, get everything! →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Study Kit Generator &rarr;</button></div>
+</div>
+
+<!-- S3: INSTANT STUDY KIT -->
+<div class="sec" id="s3">
+  <div class="progress-marker">⚡ 50% done! Build your kit!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>🛠️ Instant Study Kit<br><span class="gr">Generator</span></h2>
+    <p>Type a chapter name below and see exactly what prompts to copy-paste into ChatGPT for a complete study kit! 📦</p>
+  </div>
+
+  <div class="kit-gen">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.25rem">🎯 Build Your Instant Study Kit</h3>
+    <label style="display:block;font-size:.82rem;color:var(--t2);margin-bottom:.5rem;font-family:'Syne',sans-serif;font-weight:600">Enter Chapter Name</label>
+    <input type="text" class="kit-input" id="kitChapter" placeholder="e.g. Heredity and Evolution, The French Revolution, Quadratic Equations..." />
+
+    <label style="display:block;font-size:.82rem;color:var(--t2);margin-bottom:.5rem;font-family:'Syne',sans-serif;font-weight:600">Select Subject & Class</label>
+    <select class="kit-select" id="kitSubject">
+      <option value="Class 10 Science (CBSE)">Class 10 Science (CBSE)</option>
+      <option value="Class 10 Maths (CBSE)">Class 10 Maths (CBSE)</option>
+      <option value="Class 10 Social Science (CBSE)">Class 10 SST (CBSE)</option>
+      <option value="Class 10 English (CBSE)">Class 10 English (CBSE)</option>
+      <option value="Class 9 Science (CBSE)">Class 9 Science (CBSE)</option>
+      <option value="Class 9 Maths (CBSE)">Class 9 Maths (CBSE)</option>
+      <option value="Class 9 Social Science (CBSE)">Class 9 SST (CBSE)</option>
+      <option value="Class 8 Science (CBSE)">Class 8 Science (CBSE)</option>
+    </select>
+
+    <button class="btn btn-glow" onclick="generateKit()">🚀 Generate My Study Kit!</button>
+
+    <div class="kit-output" id="kitOutput">
+      <div class="kit-tab-row">
+        <button class="kit-tab on" onclick="switchTab('notes',this)">📋 Notes Prompt</button>
+        <button class="kit-tab" onclick="switchTab('mcq',this)">🎯 MCQ Prompt</button>
+        <button class="kit-tab" onclick="switchTab('flash',this)">🃏 Flashcard Prompt</button>
+      </div>
+      <div class="kit-content on" id="tab-notes"></div>
+      <div class="kit-content" id="tab-mcq"></div>
+      <div class="kit-content" id="tab-flash"></div>
+      <p style="color:var(--t3);font-size:.8rem;margin-top:1.25rem;font-family:'JetBrains Mono',monospace">📋 Copy each prompt → Paste into ChatGPT → Get your study material instantly!</p>
+    </div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🏆</div>
+    <div class="call-body">
+      <h4>Student Who Did This: Real Story</h4>
+      <p>A Class 10 student in Chandigarh used ChatGPT for 2 weeks before boards. For every chapter, she generated notes, 20 MCQs, and 10 flashcards. She spent 50% less time studying but understood 2x more. Result? <strong>95% in Science.</strong> The tool didn't study for her — it helped her study SMARTER. 🎯</p>
+    </div>
+  </div>
+
+  <div class="micro-win">You now have a complete study system. Board exams just got less scary! 💪</div>
+  <p class="curiosity-hook">Quiz time — test your AI study skills! 🧠</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S4: QUIZ -->
+<div class="sec" id="s4">
+  <div class="progress-marker">🎯 75% done! Quiz time!</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>🧠 Session Quiz<br><span class="gr">AI Study Mastery Check!</span></h2>
+    <p>6 questions to see how well you'll use AI for your studies. No pressure — learn from every answer! 😊</p>
+  </div>
+  <div class="quiz-box" id="quizBox"><div class="q-prog" id="qProg"></div><div id="qContent"></div></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Mission &rarr;</button></div>
+</div>
+
+<!-- S5: MISSION -->
+<div class="sec" id="s5">
+  <div class="progress-marker">🎉 Almost done! Final mission!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>🎯 Take-Home Mission<br><span class="gr">Complete Revision Kit</span></h2>
+    <p>Tonight, create a complete AI-powered revision kit for ONE chapter. Here's exactly how! 📦</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">📋</div>
+    <div class="call-body">
+      <h4>Your Mission (If You Choose to Accept It 😎)</h4>
+      <p>Pick ANY chapter you have an upcoming test on. Tonight, use AI to create: <strong>Notes (bullet points) + 20 MCQs + 10 Flashcard pairs.</strong> Print or write it down. Bring it to class tomorrow. That's your complete revision kit — built in under 30 minutes! 🚀</p>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.25rem">📋 Step-by-Step: Your 30-Minute Kit</h3>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.9rem">1</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.95rem;margin-bottom:.3rem">Choose Your Chapter (2 min)</h4><p style="color:var(--t2);font-size:.88rem">Pick the chapter your next test is on. Write its name at the top of a new page.</p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--c1);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.9rem;color:var(--bg)">2</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.95rem;margin-bottom:.3rem">Generate Notes (5 min)</h4><p style="color:var(--t2);font-size:.88rem">Use the Notes prompt from Section 1. Copy the output. That's your summary sheet!</p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.9rem;color:#fff">3</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.95rem;margin-bottom:.3rem">Generate 20 MCQs (5 min)</h4><p style="color:var(--t2);font-size:.88rem">Use the MCQ prompt. Get 20 questions. Attempt them WITHOUT looking at your notes first!</p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.9rem;color:var(--bg)">4</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.95rem;margin-bottom:.3rem">Create Flashcards (5 min)</h4><p style="color:var(--t2);font-size:.88rem">Use the Flashcard prompt. Cut them out if you have paper. Study on the bus tomorrow!</p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--c5);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.9rem;color:var(--bg)">5</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.95rem;margin-bottom:.3rem">Review Wrong Answers (13 min)</h4><p style="color:var(--t2);font-size:.88rem">For any MCQ you got wrong, ask AI to explain. This is the most important step! 🎯</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎉</div>
+    <div class="call-body">
+      <h4>Session 3 Complete! Study Buddy Unlocked! 📚</h4>
+      <p>Next session: <strong>AI Detective & Smart Writing</strong> — how to fact-check AI, why copy-pasting is risky, and how to write opinion paragraphs that impress your teachers! 🕵️</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:2rem">
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a> &nbsp;|&nbsp; 🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built by <span class="brand">TARAhut AI Labs</span> — AI Education for India's Future</p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Senior Track: AI Explorer (Class 8-10) &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const secIds=['s1','s2','s3','s4','s5'],navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';window.scrollTo({top:0,behavior:'smooth'});if(id==='s4'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Kit Generator
+function generateKit(){
+  const ch=document.getElementById('kitChapter').value.trim()||'Your Chapter';
+  const sub=document.getElementById('kitSubject').value;
+  document.getElementById('tab-notes').innerHTML=`<div style="background:var(--bg3);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);line-height:1.9">"You are my ${sub} teacher. Create 15 bullet-point notes for the chapter '${ch}'. Use simple language. Include key definitions in bold. Add 3 important facts students often forget. End with a one-line memory tip."</div>`;
+  document.getElementById('tab-mcq').innerHTML=`<div style="background:var(--bg3);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);line-height:1.9">"Create 20 MCQ questions on '${ch}' for ${sub}. 4 options each (A, B, C, D). Mark the correct answer with ✓. Include: 5 definition-type, 8 application-type, 5 diagram/concept-type, 2 tricky ones. After all 20 questions, list all correct answers."</div>`;
+  document.getElementById('tab-flash').innerHTML=`<div style="background:var(--bg3);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);line-height:1.9">"Create 15 flashcards for '${ch}' (${sub}). Format each as:\nQ: [question]\nA: [short answer — max 2 lines]\n---\nStart with basic definitions, then key concepts, then tricky facts. Number them 1-15."</div>`;
+  const out=document.getElementById('kitOutput');
+  out.classList.add('show');
+}
+function switchTab(tab,btn){
+  document.querySelectorAll('.kit-content').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('.kit-tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+tab).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Quiz
+const qData=[
+  {q:"What is the BEST use of AI for exam preparation?",o:["Copy-paste AI answers directly into your exam","Use AI to understand concepts, then write in your own words","Let AI take the exam for you online","Use AI only to generate flashcards, nothing else"],a:1,e:"AI is a learning tool — use it to understand concepts, generate practice questions, and explain things you don't get. Always write your exam answers in YOUR OWN words! 📝"},
+  {q:"A student creates 20 MCQs with AI on 'Electricity'. She gets 12 right. What should she do next?",o:["Celebrate 60% and move on","Ask AI to explain all 8 wrong answers, then redo those specific topics","Delete the test and start a new subject","Ask AI to make easier questions"],a:1,e:"The best learning happens from mistakes! Ask AI to explain wrong answers, identify weak areas, and give targeted practice on those topics. That's how you improve! 🎯"},
+  {q:"Why should you VERIFY AI-generated MCQs with your NCERT textbook?",o:["Because AI charges for corrections later","Because AI can make factual errors or create questions that don't match your syllabus","Because NCERT books have more MCQs","Because AI only works for arts subjects"],a:1,e:"AI can hallucinate — make up confident-sounding but incorrect information. Always verify important facts, especially in Science and History, with your textbook! 🕵️"},
+  {q:"Which prompt would generate the MOST useful study notes?",o:["'Give me notes on photosynthesis'","'You are my Class 10 Science teacher. Create 12 bullet-point notes on photosynthesis. Bold key terms. Add 2 tips students often forget.'","'Notes about plants please'","'Photosynthesis information'"],a:1,e:"The best notes prompt includes: who AI should be (teacher role), what level (Class 10), what format (bullet points, bold terms), and extras (memory tips). Specific = useful! 📋"},
+  {q:"What is a 'Flashcard' and why is it effective for studying?",o:["A digital credit card for buying study books","A Q&A card that you test yourself with — forces active recall","A colorful poster of key concepts","A list of definitions written in flash speed"],a:1,e:"Flashcards force ACTIVE RECALL — you try to remember before seeing the answer. Research shows this is 3x more effective than re-reading notes. AI can create hundreds of them instantly! 🃏"},
+  {q:"A student creates an AI revision schedule. Her boards start in 30 days, she has 6 subjects. What should the ideal prompt include?",o:["'Make me a study plan'","'Board exams in 30 days. 6 subjects: [list]. 4 hours/day. Create day-by-day schedule with buffer days and revision slots. Prioritize weaker subjects.'","'Schedule for my exams'","'Help me study for boards'"],a:1,e:"A great scheduling prompt includes: deadline, subjects, daily time available, priority areas, and mentions buffer days for revision. The more detail you give, the more realistic the plan! 📅"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  if(cq>=qData.length){const pct=Math.round(sc/qData.length*100);document.getElementById('qContent').innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><div style="font-size:1.5rem;margin:.5rem 0">${pct>=80?'🏆':pct>=50?'📚':'💪'}</div><p style="color:var(--t2);font-size:1rem">${pct>=80?'Study master! Boards, here you come! 🎉':pct>=50?'Good! Go back and review the prompts section! 😊':'Review Sections 1 & 2 and try again! 💪'}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="initQuiz()">Try Again 🔄</button></div>`;return;}
+  const d=qData[cq];
+  document.getElementById('qContent').innerHTML=`<div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${d.q}</div><div class="q-opts">${d.o.map((o,i)=>`<div class="q-opt" onclick="pickAns(${i})"><div class="ol">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div>`;
+}
+function pickAns(i){const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.style.pointerEvents='none');const d=qData[cq];const correct=i===d.a;if(correct)sc++;opts[i].classList.add(correct?'ok':'no');opts[d.a].classList.add('ok');const fb=document.getElementById('qFb');fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Results 🏆'}</button>`;}
+function nextQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

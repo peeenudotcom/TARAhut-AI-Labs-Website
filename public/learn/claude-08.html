@@ -3,516 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 8: Research & Analysis — Master Claude in 15 Days | TARAhut AI Labs</title>
+<title>Day 8: Research &amp; Analysis — Master Claude in 15 Days · TARAhut AI Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
-a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
-code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
-@media print{body{display:none!important}}
-#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
-.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
-.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
-.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
-.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
-.hero>p{max-width:640px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
-.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
-.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
-.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
-.btn-sm{padding:10px 22px;font-size:.85rem}
-.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
-.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
-.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
-.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
-@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
-.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
-.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
-.nav-inner::-webkit-scrollbar{display:none}
-.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
-.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
-.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
-.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
-.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
-.sec.on{display:block;animation:secIn .45s ease-out}
-@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.sec-head{margin-bottom:3rem}
-.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
-.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
-.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
-.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
-.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin:2rem 0}
-.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
-.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
-.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3)}
-.crd:hover::after{transform:scaleX(1)}
-.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
-.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
-.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
-.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
-.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
-.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
-.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
-.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
-.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
-.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
-.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
-.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
-.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
-.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
-.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
-.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
-.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
-.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
-.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
-.micro-action h4::before{content:'🎯  '}
-.micro-action p,.micro-action ul{color:var(--t2);font-size:.9rem}
-.micro-action ul{padding-left:1.2rem;margin-top:.5rem}
-.micro-action li{margin-bottom:.3rem}
-.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
-.emotional-hook strong{color:var(--t1)}
-.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
-.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
-.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
-.micro-win::before{content:'✓ ';color:var(--brand)}
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}
 .curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
-.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
-table{width:100%;border-collapse:collapse;min-width:520px}
-th,td{padding:.9rem 1.1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.87rem}
-th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
-td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
-.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
-.q-prog{display:flex;gap:5px;margin-bottom:2rem}
-.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
-.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
-.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
-.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
-.q-opts{display:flex;flex-direction:column;gap:.65rem}
-.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
-.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
-.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
-.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
-.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
-.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
-.q-fb.show{display:block;animation:fadeSlide .3s ease}
-.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
-.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
-.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
-.q-score-box{text-align:center;padding:3rem 2rem}
-.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
-.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
-.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
-.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
-.prompt-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin:1.25rem 0;transition:all .3s}
-.prompt-card:hover{border-color:rgba(0,240,255,.2)}
-.prompt-card .pc-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--c1);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem}
-.prompt-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.6rem}
-.prompt-card .pc-prompt{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);background:rgba(52,211,153,.04);border:1px dashed rgba(52,211,153,.12);border-radius:var(--rs);padding:.75rem 1rem;line-height:1.8;margin-top:.5rem;white-space:pre-wrap}
-.workflow-step{display:flex;gap:1rem;padding:1.25rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:.75rem;transition:all .3s}
-.workflow-step:hover{border-color:rgba(0,240,255,.2);transform:translateX(3px)}
-.ws-num{width:32px;height:32px;border-radius:50%;background:rgba(5,150,105,.15);border:1.5px solid var(--brand);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;color:var(--brand);flex-shrink:0}
-.ws-content h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.25rem}
-.ws-content p{color:var(--t2);font-size:.87rem}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
-
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
-  <div class="hero-chip"><span class="live"></span>Day 08 &middot; Master Claude in 15 Days</div>
-  <h1>Research &<br><span class="gr">Analysis</span></h1>
+  <div class="hero-chip"><span class="live"></span>Day 08 &middot; Master Claude in 15 Days &middot; 2026</div>
+  <h1>Research &amp; <span class="gr">Analysis</span></h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Claude's 200K context window is the research superpower that changes how professionals handle information. Upload a 50-page report. Ask anything. Get synthesis, not summaries.</p>
-  <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 8 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
-  </div>
+  <p>Harness Claude's 200K context window to analyse entire documents, perform SWOT analysis, build competitive frameworks, size markets, and chain multi-step research workflows.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Day 8 &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button></div>
 </section>
+<nav class="nav" id="mainNav"><div class="nav-inner"><span class="nav-brand">Master Claude</span><button class="nav-btn on" data-s="s1"><span class="nn">01</span>200K Context Advantage</button><button class="nav-btn" data-s="s2"><span class="nn">02</span>Document Analysis &amp; SWOT</button><button class="nav-btn" data-s="s3"><span class="nn">03</span>Competitive &amp; Market</button><button class="nav-btn" data-s="s4"><span class="nn">04</span>Research Chains</button><button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button><button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button></div></nav>
 
-<nav class="nav" id="mainNav">
-  <div class="nav-inner">
-    <span class="nav-brand">TARAhut AI Labs</span>
-    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Deep Research</button>
-    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Market Research</button>
-    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Data Interpretation</button>
-    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Research Workflow</button>
-    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
-  </div>
-</nav>
-
-<!-- S1: DEEP RESEARCH -->
+<!-- S1 -->
 <div class="sec on" id="s1">
-  <div class="sec-head">
-    <div class="over">Section 01</div>
-    <h2>Claude for <span class="gr">Deep Research</span></h2>
-    <p>The 200K context window is not a specification — it's a capability that redefines what research means for professionals.</p>
-  </div>
-
-  <div class="callout call-brand"><div class="call-ico">📚</div><div class="call-body"><h4>The Context Window as Research Superpower</h4><p>200,000 tokens is approximately <strong>150,000 words — roughly 500 pages of text.</strong> This means you can upload an entire annual report, a complete industry survey, a lengthy legal document, or a PhD thesis, and ask Claude questions about it. Claude doesn't skim. It reads everything, holds it in context simultaneously, and answers with full document awareness. This is fundamentally different from summarization tools.</p></div></div>
-
-  <div class="emotional-hook">
-    <p>The previous standard for processing a 50-page industry report: 4-6 hours of reading, highlighting, note-taking, and analysis. <strong>With Claude: upload the PDF, ask targeted questions, get precise answers with page references in 20 minutes.</strong> That's not an exaggeration. That's what 200K context does.</p>
-  </div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What Claude Can Do With Long Documents</h3>
+  <div class="sec-head"><div class="over">Section 01</div><h2>The 200K <span class="gr">Context Advantage</span></h2><p>Claude can process 200,000 tokens in a single conversation. Here is what that means in real terms and why it makes Claude the best research tool available today.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What Fits in 200K Tokens?</h4><p>200,000 tokens equals approximately <strong>150,000 words</strong>. In practical terms:<br><strong>1 full novel</strong> (Harry Potter = 77,000 words) &mdash; fits with room to spare<br><strong>An entire annual report</strong> (50-80 pages) &mdash; fits completely<br><strong>3 legal contracts</strong> (20 pages each) &mdash; all three in one conversation<br><strong>6 months of meeting minutes</strong> &mdash; paste them all and ask for trends<br><strong>A complete business plan</strong> with appendices &mdash; fits easily<br>You can give Claude your ENTIRE document and ask questions &mdash; no chunking, no summarising, no missing context.</p></div></div>
   <div class="cgrid">
-    <div class="crd"><span class="tag tag-brand">Extraction</span><span class="crd-icon">🔍</span><h3>Find Specific Information</h3><p>Ask for specific facts, figures, or claims from within a long document. Claude locates them precisely, with context — unlike keyword search which gives you the word but not the meaning.</p></div>
-    <div class="crd"><span class="tag tag-1">Synthesis</span><span class="crd-icon">🔗</span><h3>Cross-Reference & Connect</h3><p>Ask Claude to find connections between different parts of a document, or contradictions between sections. This cross-document reasoning is where most analysts miss insights.</p></div>
-    <div class="crd"><span class="tag tag-2">Analysis</span><span class="crd-icon">📊</span><h3>Pattern Recognition</h3><p>Ask Claude to identify recurring themes, patterns, or trends across a lengthy document. "What assumptions does this report consistently make?" reveals underlying biases most readers miss.</p></div>
-    <div class="crd"><span class="tag tag-5">Summary</span><span class="crd-icon">📝</span><h3>Structured Summaries</h3><p>Not just a summary — a structured summary tailored to a specific audience. "Summarize this 40-page report for a non-technical board in 500 words" produces board-ready output.</p></div>
-    <div class="crd"><span class="tag tag-4">Critique</span><span class="crd-icon">⚖️</span><h3>Critical Evaluation</h3><p>Ask Claude to critique the methodology, flag assumptions, or identify gaps. "What evidence is missing from the author's argument?" is a powerful research prompt.</p></div>
-    <div class="crd"><span class="tag tag-3">Comparison</span><span class="crd-icon">↔️</span><h3>Compare Multiple Sources</h3><p>Upload multiple documents and ask Claude to compare positions, find agreements and disagreements, or create a comparative analysis. Multi-document reasoning at scale.</p></div>
+    <div class="crd"><span class="tag tag-brand">CONTEXT</span><span class="crd-icon">&#128218;</span><h3>Full Document Analysis</h3><p>Upload or paste an entire report and ask Claude to extract insights, find patterns, identify risks, summarise findings. <strong>Claude reads every word</strong> &mdash; it does not skim like humans do with 80-page documents.</p></div>
+    <div class="crd"><span class="tag tag-1">COMPARE</span><span class="crd-icon">&#128202;</span><h3>Multi-Document Review</h3><p>Paste 2-3 documents in one conversation and ask Claude to <strong>compare, contrast, and synthesise</strong>. Compare vendor proposals, financial years, or competing products all at once.</p></div>
+    <div class="crd"><span class="tag tag-2">CHAIN</span><span class="crd-icon">&#128270;</span><h3>Deep Research Chains</h3><p>Build multi-step workflows: Step 1 researches, Step 2 analyses, Step 3 recommends. Claude maintains context through the entire chain because of the massive context window.</p></div>
   </div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">High-Value Research Prompts for Long Documents</h3>
-  <div class="prompt-card">
-    <div class="pc-label">Extraction Prompt</div>
-    <h4>Finding Key Data Points</h4>
-    <div class="pc-prompt">"Reading the uploaded report, extract all statistics and data points related to market growth. Present them as a bullet list with the context of each statistic and which section it appears in."</div>
-  </div>
-  <div class="prompt-card">
-    <div class="pc-label">Analysis Prompt</div>
-    <h4>Understanding Underlying Assumptions</h4>
-    <div class="pc-prompt">"Based on the uploaded industry report, identify the 3-5 key assumptions the authors make about the market. For each assumption, quote the relevant section and evaluate whether the assumption is supported by the evidence presented."</div>
-  </div>
-  <div class="prompt-card">
-    <div class="pc-label">Synthesis Prompt</div>
-    <h4>Executive-Ready Summary</h4>
-    <div class="pc-prompt">"Summarize the key findings of this 50-page report for a CFO with no time to read it. Format: 3 key findings, 3 risks, 2 recommended actions. Under 400 words. Business language, no academic jargon."</div>
-  </div>
-  <div class="prompt-card">
-    <div class="pc-label">Critical Evaluation Prompt</div>
-    <h4>Methodological Review</h4>
-    <div class="pc-prompt">"Review the research methodology in this document. What are the limitations of the data collection approach? Are the sample sizes adequate? Are there any survivorship bias or selection bias concerns? Be specific with examples from the text."</div>
-  </div>
-
-  <div class="micro-win">You now have a systematic set of prompts for extracting maximum value from any long document.</div>
-
-  <div class="micro-action">
-    <h4>Research Practice</h4>
-    <p>Find a publicly available industry report (NASSCOM, IBEF, RBI annual report, any government sector report) relevant to your work. Upload it to Claude. Run all four prompt types above. Notice how Claude's responses go beyond what surface-level reading would catch.</p>
-  </div>
-
-  <p class="curiosity-hook">Next: Market research — the prompts that produce competitive intelligence.</p>
+  <div class="emotional-hook"><p><strong>A chartered accountant in Faridkot</strong> has a client with a 60-page GST audit report. Reading it manually takes 3 hours. With Claude, he pastes the entire document and asks for the top 5 compliance risks with corrective actions. <strong>He gets a comprehensive analysis in 45 seconds.</strong> That is not efficiency. That is a different paradigm of professional work.</p></div>
+  <div class="callout call-2"><div class="call-ico">&#128293;</div><div class="call-body"><h4>Claude vs ChatGPT for Research</h4><p><strong>Context window:</strong> Claude 200K vs ChatGPT 128K &mdash; 50% more capacity<br><strong>Document fidelity:</strong> Claude reads the ENTIRE document without truncation<br><strong>Analysis depth:</strong> Claude provides nuanced, balanced analysis with multiple perspectives<br><strong>Honesty:</strong> Claude flags when its training data may be outdated rather than guessing</p></div></div>
+  <div class="micro-action"><h4>Right Now</h4><p>Find the longest document you have. Open <a href="https://claude.ai" target="_blank">claude.ai</a>, paste the entire document, and ask: "Summarise this in 5 bullet points, then list 3 things that surprised you." Experience the 200K advantage first-hand.</p></div>
+  <div class="micro-win">You now understand what 200K tokens means in practice. This is Claude's biggest differentiator for professional work.</div>
+  <div class="identity-shift">You are not reading documents anymore. You are deploying an AI analyst to read them while you focus on decisions.</div>
+  <p class="curiosity-hook">Next: Document analysis and SWOT for a real Kotkapura business.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
-  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Market Research &rarr;</button></div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Document Analysis &amp; SWOT &rarr;</button></div>
 </div>
 
-<!-- S2: MARKET RESEARCH -->
+<!-- S2 -->
 <div class="sec" id="s2">
-  <div class="progress-marker">&#9989; Section 1 done. Now: market research prompts that produce actionable intelligence.</div>
-  <div class="sec-head">
-    <div class="over">Section 02</div>
-    <h2>Market <span class="gr">Research</span></h2>
-    <p>Three high-value market research prompt frameworks: competitive analysis, industry overview, and SWOT. Each produces structured, decision-ready outputs.</p>
-  </div>
-
-  <div class="callout call-2"><div class="call-ico">⚠️</div><div class="call-body"><h4>Important: Claude's Knowledge Cutoff</h4><p>Claude's knowledge extends to its training cutoff — not real-time. For current market data, pricing, or recent events, combine Claude's analytical capability with current sources: upload recent news articles, industry reports, or company announcements, then let Claude analyze them. Use Claude for reasoning and synthesis; use web search for current facts.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Competitive Analysis Framework</h3>
-  <div class="prompt-card">
-    <div class="pc-label">Competitive Analysis Prompt</div>
-    <h4>5-Competitor Market Map</h4>
-    <div class="pc-prompt">You are a market research analyst with expertise in [industry].
-
-Conduct a structured competitive analysis for [your company/product] against the following competitors: [Competitor 1], [Competitor 2], [Competitor 3].
-
-For each competitor, analyze:
-1. Primary positioning and target customer
-2. Pricing approach (premium/mid-market/budget)
-3. Key strengths (max 3 bullets)
-4. Key weaknesses (max 3 bullets)
-5. Most significant differentiator
-
-End with a "White Space" section: What market position or customer need is currently underserved by all competitors?
-
-Base your analysis on the documents I've uploaded plus your training knowledge. Clearly flag which claims come from uploaded sources vs. general knowledge.</div>
-  </div>
-
-  <div class="prompt-card">
-    <div class="pc-label">Industry Overview Prompt</div>
-    <h4>Structured Industry Landscape</h4>
-    <div class="pc-prompt">Provide a structured industry overview for [industry name] in India, covering:
-
-1. Market Size & Growth: Current estimated size, growth rate, and 5-year trajectory
-2. Key Drivers: Top 3 factors driving growth
-3. Key Constraints: Top 3 factors limiting growth or creating friction
-4. Major Players: Brief description of market leaders and their positioning
-5. Emerging Trends: 3-5 trends reshaping the industry in the next 3 years
-6. Regulatory Environment: Key regulations or policy factors affecting the market
-
-Format as a structured report with a one-paragraph executive summary at the top. Flag all statistics with "(based on training data)" or "(from uploaded source)" so I know the confidence level of each data point.</div>
-  </div>
-
-  <div class="prompt-card">
-    <div class="pc-label">SWOT Analysis Prompt</div>
-    <h4>Strategic SWOT for Decision-Making</h4>
-    <div class="pc-prompt">Conduct a strategic SWOT analysis for [company/product/initiative] in the context of [specific market/scenario].
-
-Constraints:
-- Each SWOT quadrant: maximum 5 points
-- Each point: one specific, actionable insight (not vague statements like "strong brand")
-- Under Threats and Weaknesses: for each item, suggest one mitigation approach
-- Under Opportunities: for each item, suggest one specific way to capture it
-- End with: Top 2 strategic priorities based on the SWOT
-
-Context to use: [paste any relevant context, financials, or market situation here]
-
-Format as a clean 4-quadrant table followed by the strategic priorities section.</div>
-  </div>
-
-  <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>Making Market Research Actionable</h4><p>The failure mode of most market research is that it describes without prescribing. Always end research prompts with a "So What?" requirement: <code>"End with 2-3 specific strategic implications for [your company/role]."</code> This forces Claude to connect market data to decisions — which is the only reason market research exists.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Research Prompts That Produce Decision-Ready Output</h3>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Research Goal</th><th>Prompt Pattern</th><th>Output Type</th></tr></thead>
-      <tbody>
-        <tr><td>Understand a new market</td><td>"Provide an industry primer on X, assuming I have no prior knowledge. Include key terminology, major players, and the 3 things I need to know to have an intelligent conversation about this market."</td><td>Orientation brief</td></tr>
-        <tr><td>Evaluate an opportunity</td><td>"Assess the opportunity for [company profile] to enter [market segment]. Provide realistic upsides, realistic risks, and the single most important factor that will determine success or failure."</td><td>Decision memo</td></tr>
-        <tr><td>Profile a competitor</td><td>"Based on the uploaded material, build a competitive intelligence profile of [competitor]. Focus on: business model, revenue sources, key vulnerabilities, and recent strategic moves."</td><td>Intelligence brief</td></tr>
-        <tr><td>Benchmark performance</td><td>"Given these performance metrics [paste data], how do they compare to industry benchmarks for [sector]? What does this suggest about our competitive position?"</td><td>Benchmark analysis</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="micro-action">
-    <h4>Market Research Live Exercise</h4>
-    <p>Choose a market or industry relevant to your current work or interests. Run the Industry Overview prompt above in Claude. When you receive the output, follow up with: "Which of these trends creates the most urgent opportunity for a bootstrapped Indian startup? Give me a specific, practical recommendation." Notice how Claude transitions from description to prescription with the right follow-up.</p>
-  </div>
-
-  <p class="curiosity-hook">Next: Data interpretation — turning numbers into narratives with Claude.</p>
+  <div class="progress-marker">&#9989; Section 1 complete! Now let us apply the 200K advantage.</div>
+  <div class="sec-head"><div class="over">Section 02</div><h2>Document Analysis &amp; <span class="gr">SWOT</span></h2><p>Two practical research skills: extracting insights from documents and performing SWOT analysis for real businesses.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 1: Document Insight Extraction</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">After uploading a document, use this structured prompt to extract maximum value:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I have uploaded [describe your document]. Analyse it thoroughly and provide:\n\n1. EXECUTIVE SUMMARY: 3-sentence overview of the main message\n2. TOP 5 INSIGHTS: Most important findings ranked by business impact, with section references\n3. HIDDEN PATTERNS: 3 things not explicitly stated but inferred from the data\n4. RED FLAGS: Risks, inconsistencies, or concerning trends\n5. ACTION ITEMS: 5 specific actions the reader should take\n\nFor each insight, rate importance as HIGH/MEDIUM/LOW. Reference actual numbers and data points. Flag anything inconsistent.')">&#128203; Click to copy: Structured document analysis — extracts insights, hidden patterns, red flags, and action items from any document</div><p style="color:var(--t3);font-size:.8rem">Works for annual reports, audit reports, contracts, research papers. Claude analyses the entire document, not just the first pages.</p></div>
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Hidden Patterns Superpower</h4><p>Asking Claude for "things not explicitly stated but inferred" is a research superpower. Claude spots trends humans miss: declining margins hidden in growing revenue, customer concentration risk, seasonal patterns in monthly data. <strong>This is where AI analysis adds the most value.</strong></p></div></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 2: SWOT Analysis for Kotkapura Business</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate a thorough SWOT with actionable recommendations for a real local business:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ਕੋਟਕਪੂਰੇ ਦੇ ਇੱਕ ਕੱਪੜੇ ਦੀ ਦੁਕਾਨ ਲਈ SWOT analysis ਕਰੋ ਜੀ।\n\nBusiness: \"Sahni Cloth House\" — 20-year-old fabric shop in Kotkapura main market.\nOwner: Rajesh Sahni, 2nd generation. Staff: 4 sales + 1 tailor.\nRevenue: ₹45 lakhs/year. Inventory: ₹12 lakhs.\nCompetition: 8 local shops + Myntra/Flipkart online.\nNo website, no Instagram. WhatsApp groups for regulars.\nBest season: Oct-Dec. Worst: July-Aug.\n\nProvide:\n1. STRENGTHS (6+ with explanations)\n2. WEAKNESSES (6+, brutally honest)\n3. OPPORTUNITIES (6+, specific to Kotkapura/Punjab)\n4. THREATS (6+, including online competition)\n5. TOP 5 STRATEGIC RECOMMENDATIONS ranked by ROI\n6. 3 QUICK WINS doable this week with zero budget\n\nBe specific to Kotkapura. Use ₹ throughout.')">&#128203; Click to copy: Full SWOT for Sahni Cloth House Kotkapura with Punjabi header, 6 sections, strategic recommendations and quick wins</div><p style="color:var(--t3);font-size:.8rem">Consultant-grade SWOT with local specifics. The Punjabi header shows Claude switches languages naturally.</p></div>
+  <div class="micro-win">You can extract insights from any document and perform SWOT for any business. MBA-level analytical skills in seconds.</div>
+  <div class="emotional-hook"><p><strong>Rajesh Sahni has run his shop for 20 years by instinct.</strong> When he sees the SWOT &mdash; the online threat from Myntra, the missed Instagram opportunity, the quick win of WhatsApp Business catalogue &mdash; <strong>it changes how he sees his business.</strong> Structured analysis applied to local businesses is transformative.</p></div>
+  <div class="progress-marker">&#128170; 33% done! Competitive analysis and market sizing next.</div>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
-  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Data Interpretation &rarr;</button></div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Competitive &amp; Market &rarr;</button></div>
 </div>
 
-<!-- S3: DATA INTERPRETATION -->
+<!-- S3 -->
 <div class="sec" id="s3">
-  <div class="progress-marker">&#128170; 60% through Day 8. Data interpretation is where Claude's analytical reasoning is most impressive.</div>
-  <div class="sec-head">
-    <div class="over">Section 03</div>
-    <h2>Data <span class="gr">Interpretation</span></h2>
-    <p>Upload a spreadsheet or paste data. Ask Claude to analyze trends, create summaries, identify anomalies. No formula writing required.</p>
-  </div>
-
-  <div class="callout call-1"><div class="call-ico">📊</div><div class="call-body"><h4>Claude's Data Capability</h4><p>Claude can read, interpret, and reason about structured data — tables, CSV content, financial figures, survey results. It doesn't execute code in the standard interface (for that, use the API with code execution), but it can reason about data patterns, identify trends, flag anomalies, and explain what the numbers mean in business terms. This is often more valuable than raw computation.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How to Work with Data in Claude</h3>
-  <div class="cgrid">
-    <div class="crd"><span class="tag tag-1">Input Method 1</span><h3>Paste CSV Content</h3><p>Copy data from Excel/Google Sheets and paste it directly into Claude. Works for tables up to a few thousand rows. Claude parses the structure automatically and can reason about all columns.</p></div>
-    <div class="crd"><span class="tag tag-2">Input Method 2</span><h3>Upload CSV File</h3><p>Upload a CSV file directly to Claude (up to 10MB). Best for datasets that are too large to paste. Claude reads the entire file and can reference specific rows, columns, and values.</p></div>
-    <div class="crd"><span class="tag tag-5">Input Method 3</span><h3>Paste Summary Statistics</h3><p>For very large datasets, paste summary statistics (totals, averages, percentages, ranges). Claude can reason about patterns and implications even from pre-aggregated data.</p></div>
-  </div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">High-Value Data Analysis Prompts</h3>
-
-  <div class="prompt-card">
-    <div class="pc-label">Trend Analysis Prompt</div>
-    <h4>Monthly Sales Performance Review</h4>
-    <div class="pc-prompt">I'm uploading 12 months of sales data [attach CSV]. Please analyze:
-
-1. Overall trend: Is revenue growing, declining, or flat? Quantify the change.
-2. Best and worst months: Identify the top 3 and bottom 3 months with possible explanations for variance.
-3. Seasonality: Are there recurring patterns across quarters?
-4. Product mix: Which categories are growing fastest and which are declining?
-5. Red flags: Are there any anomalies or data points that require management attention?
-
-Format as an executive-ready analysis with a one-paragraph summary, followed by 5 numbered findings. End with 2 recommended actions based on the data.</div>
-  </div>
-
-  <div class="prompt-card">
-    <div class="pc-label">Customer Analysis Prompt</div>
-    <h4>Customer Cohort Insights</h4>
-    <div class="pc-prompt">Here is our customer data for the last 6 months [paste or upload data]. Analyze:
-
-1. Customer segments: What distinct segments exist based on purchase frequency and value?
-2. Top customers: Who are our top 10% by revenue? What do they have in common?
-3. Churn signals: Which customers haven't purchased in 60+ days who previously purchased regularly?
-4. Upsell opportunities: Which customers show patterns suggesting they'd respond to premium tier offers?
-
-For each finding, provide one specific action the sales/marketing team should take. Keep the analysis practical, not academic.</div>
-  </div>
-
-  <div class="prompt-card">
-    <div class="pc-label">Financial Summary Prompt</div>
-    <h4>P&L Narrative for Non-Finance Audience</h4>
-    <div class="pc-prompt">Here is our quarterly P&L data [paste data]. Please:
-
-1. Write a plain English narrative explaining performance — as if you were briefing someone with no accounting background.
-2. Identify the single most significant cost increase and evaluate whether it's concerning.
-3. Calculate the key ratios: gross margin, operating margin, and revenue per employee (headcount: [X]).
-4. Compare to last quarter if data is available and quantify the change.
-
-End with: "If I were the CFO, I would be most focused on [X] because [reason]." Use plain business language, not accounting jargon.</div>
-  </div>
-
-  <div class="prompt-card">
-    <div class="pc-label">Survey/Feedback Analysis Prompt</div>
-    <h4>Customer Survey Synthesis</h4>
-    <div class="pc-prompt">I'm uploading survey responses from 150 customers [attach file]. Analyze:
-
-1. Sentiment distribution: What percentage are positive, neutral, negative?
-2. Top themes: What are the 5 most frequently mentioned topics or issues?
-3. Most actionable complaints: Which complaints, if addressed, would have the highest impact on customer satisfaction?
-4. Verbatim highlights: Select 5 quotes (positive and negative) that best represent the full response set.
-5. NPS signal: Based on the language used, estimate an approximate NPS direction (improving/declining).
-
-Present findings as a brief report a product team would immediately act on.</div>
-  </div>
-
-  <div class="callout call-4"><div class="call-ico">⚠️</div><div class="call-body"><h4>Important Limitations to Acknowledge</h4><p>Claude reasons about data but doesn't execute statistical calculations with the same precision as dedicated tools like Excel, Python, or R. For critical financial analysis, always verify Claude's calculations manually or use proper analytical tools. Claude excels at <strong>interpretation and narrative</strong> around data — not as a replacement for statistical software.</p></div></div>
-
-  <div class="micro-win">You now have a systematic toolkit for turning raw data into business intelligence using Claude.</div>
-
-  <p class="curiosity-hook">Next: The complete research workflow — from gathering sources to synthesized report.</p>
+  <div class="progress-marker">&#128293; Halfway! Competitive intelligence and market sizing time.</div>
+  <div class="sec-head"><div class="over">Section 03</div><h2>Competitive &amp; <span class="gr">Market Analysis</span></h2><p>Competitive analysis to understand rivals and market sizing to quantify opportunity. Essential for business planning and investor conversations.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 3: Competitive Analysis Framework</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Build a structured competitive analysis comparing your business to key rivals:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Competitive analysis for an AI training institute in Chandigarh.\n\nMy Business: \"TARAhut AI Labs\" — offline + online AI courses. Price: ₹5K-15K. Focus: practical, Punjab-local.\n\nCompetitors:\n1. Coursera/Udemy (global online)\n2. Simplilearn (Indian online+offline)\n3. Local institutes (NIIT, Aptech)\n4. YouTube free tutorials\n5. College courses (PU, Thapar)\n\nFor EACH: Pricing, Strengths, Weaknesses, Target audience overlap, Threat level (HIGH/MED/LOW).\n\nThen provide:\n- COMPETITIVE ADVANTAGE MAP: where we win, lose, and tie\n- OUR MOAT: 5 things competitors cannot easily replicate\n- POSITIONING STATEMENT: 2 sentences differentiating us\n- PRICE POSITIONING: where to price vs each competitor and why\n\nBe honest — flag where competitors beat us. Use ₹.')">&#128203; Click to copy: Competitive analysis for TARAhut AI Labs vs 5 competitors with advantage map, moat, positioning, and pricing strategy</div><p style="color:var(--t3);font-size:.8rem">Structured competitive landscape that a market research firm would take days to compile.</p></div>
+  <div class="callout call-3"><div class="call-ico">&#128200;</div><div class="call-body"><h4>Why This Matters for Small Businesses</h4><p>Most Punjab business owners compete on instinct. <strong>Structured analysis reveals hidden opportunities:</strong> Maybe no competitor offers Punjabi-language courses. Maybe all are online-only and you win with offline presence. Maybe their pricing leaves a gap. <strong>You cannot exploit advantages you have not identified.</strong></p></div></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 4: Market Sizing (TAM/SAM/SOM)</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Quantify your market opportunity using top-down and bottom-up approaches:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Market sizing for a food delivery service in Bathinda, Punjab.\n\nConcept: \"Bathinda Bites\" — hyperlocal food delivery app. Commission: 20%/order.\n\nCalculate BOTH:\n1. TOP-DOWN: India market → Punjab → Bathinda → serviceable market with Tier-3 penetration rates\n2. BOTTOM-UP: Restaurants in Bathinda × orders/day × avg order value × market share Year 1-3\n\nProvide:\n- TAM, SAM, SOM with calculations shown\n- Revenue projections Year 1, 2, 3\n- Key assumptions listed explicitly\n- Reality check: what could make these numbers wrong?\n\nAll in ₹ (lakhs/crores). Be realistic about Tier-3 dynamics. Flag uncertain assumptions.')">&#128203; Click to copy: Market sizing for Bathinda food delivery — TAM/SAM/SOM, top-down and bottom-up, 3-year projections</div><p style="color:var(--t3);font-size:.8rem">Investor-grade market analysis. TAM/SAM/SOM is the language every startup pitch deck uses.</p></div>
+  <div class="micro-action"><h4>Why Market Sizing Matters</h4><ul><li><strong>Loan applications:</strong> Banks need to see the market supports your business</li><li><strong>Investor pitches:</strong> TAM/SAM/SOM is the first slide investors expect</li><li><strong>Business decisions:</strong> SAM tells you whether to expand or go deeper</li><li><strong>Pricing:</strong> Market size determines premium vs volume strategy</li></ul></div>
+  <div class="micro-win">You can now do competitive analysis and market sizing for any business. Frameworks used by McKinsey and BCG.</div>
+  <div class="identity-shift">You are not guessing about your market. You are quantifying it with world-class strategic frameworks.</div>
+  <p class="curiosity-hook">Next: The most powerful technique &mdash; research chains that compound intelligence.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
-  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Research Workflow &rarr;</button></div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Research Chains &rarr;</button></div>
 </div>
 
-<!-- S4: RESEARCH WORKFLOW -->
+<!-- S4 -->
 <div class="sec" id="s4">
-  <div class="progress-marker">&#127919; 80% done — the research workflow ties everything together into a repeatable professional process.</div>
-  <div class="sec-head">
-    <div class="over">Section 04</div>
-    <h2>The Research <span class="gr">Workflow</span></h2>
-    <p>A systematic, repeatable process: gather sources → upload to Project → systematic questioning → synthesize report. This is how professionals use Claude for research at scale.</p>
+  <div class="progress-marker">&#128293; 67% done! The advanced technique: research chains.</div>
+  <div class="sec-head"><div class="over">Section 04</div><h2>Research <span class="gr">Chains</span> &amp; Workshop</h2><p>Chain prompts so output of Step 1 feeds Step 2, which feeds Step 3. This produces analysis no single prompt can match.</p></div>
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What is a Research Chain?</h4><p>Break research into 3 stages in the SAME conversation:<br><strong>Step 1 — Research:</strong> Gather facts, statistics, trends, key players<br><strong>Step 2 — Analyse:</strong> Identify patterns, gaps, implications from Step 1<br><strong>Step 3 — Recommend:</strong> Provide actionable recommendations grounded in analysis<br><br>Each step builds on the previous. <strong>Step 3 is dramatically better because it is informed by Steps 1 and 2.</strong></p></div></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 5: 3-Step Research Chain</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Send these three prompts in sequence in the SAME conversation. Wait for each response before sending the next:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 1 — RESEARCH:\nResearch EV adoption in Punjab, India. Cover:\n- EVs registered in Punjab (numbers)\n- Government subsidies (state + central)\n- Charging infrastructure (stations, locations)\n- Popular EV models in Punjab\n- Key challenges specific to Punjab\n- Comparison with Haryana, Rajasthan, HP\n\nBe thorough. Flag what you are estimating vs confident about.')">&#128203; Click to copy: STEP 1 — Research EV landscape in Punjab (send first)</div>
+    <div style="padding:1rem;background:rgba(168,85,247,.03);border:1px dashed rgba(168,85,247,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c2);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 2 — ANALYSE:\nBased on your research above:\n1. 5 biggest patterns in Punjab EV adoption\n2. Gaps that could accelerate adoption\n3. Winners and losers in this transition\n4. Punjab EV market projection for 2028\n5. Counter-intuitive surprises in the data\n\nConnect dots between Step 1 data points. Find non-obvious insights.')">&#128203; Click to copy: STEP 2 — Analyse patterns and gaps (send after Step 1)</div>
+    <div style="padding:1rem;background:rgba(52,211,153,.03);border:1px dashed rgba(52,211,153,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 3 — RECOMMEND:\nI am an entrepreneur in Kotkapura considering EV business. Provide:\n\n1. TOP 5 OPPORTUNITIES ranked by feasibility for ₹20 lakh investment (describe each with investment, timeline to profitability, risk level)\n2. THE ONE TO START WITH — pick the best and explain why in detail\n3. 90-DAY ACTION PLAN to launch it\n4. TOP 3 RISKS with mitigation strategies\n\nSpecific to Kotkapura/Punjab. Use ₹. Be honest about risks.')">&#128203; Click to copy: STEP 3 — Recommendations for Kotkapura entrepreneur (send after Step 2)</div>
+    <p style="color:var(--t3);font-size:.8rem">By Step 3, Claude has built a comprehensive mental model. Recommendations are grounded in research, not generic advice.</p></div>
+  <div class="callout call-4"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Critical: Same Conversation Only</h4><p>Research chains ONLY work in the same conversation. New chat for Step 2 = Claude loses all Step 1 context. <strong>Same conversation = compounding intelligence. New conversation = starting from zero.</strong></p></div></div>
+  <div class="micro-action"><h4>Your Research Workshop</h4><p>Draft your own Step 1 research prompt below:</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Your Research Chain Starter</h4></div><textarea class="demo-in" id="freePrompt" placeholder="STEP 1 — RESEARCH: Research [your topic] in [your location]. Cover: [list 5-6 areas]. Flag estimates vs confirmed data."></textarea><button class="btn btn-glow btn-sm" onclick="copyFreePrompt()" style="margin-bottom:.75rem">&#128203; Copy Step 1</button><div class="demo-out" id="freeOut">Your prompt appears here. After Claude responds, follow with Step 2 (analyse) and Step 3 (recommend).</div></div>
+  <div class="micro-win">You know how to chain research prompts for consulting-quality analysis.</div>
+  <div class="progress-marker">&#128640; Workshop complete! Checklist and quiz time.</div>
+  <div class="checklist">
+    <h4>&#9989; Day 8 Research Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand what fits in 200K tokens (books, reports, contracts)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Uploaded a real document and extracted 5 insights</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Performed a SWOT analysis for a real or example business</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created a competitive analysis comparing 3+ competitors</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Did a market sizing exercise with TAM/SAM/SOM</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Completed a 3-step research chain in one conversation</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand why chains must stay in the same conversation</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Asked Claude to find hidden patterns in a document</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created my own research chain starter prompt</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Can explain Claude's context advantage over ChatGPT</label></div>
+    <div class="check-score" id="checkScore">Tap each item &rarr; progress score appears here</div>
   </div>
-
-  <div class="callout call-brand"><div class="call-ico">🔄</div><div class="call-body"><h4>Why Workflow Matters</h4><p>Ad-hoc research with Claude produces ad-hoc results. A systematic workflow produces consistent, high-quality research outputs every time. This workflow is designed to be used as a template — adapt it to any research project without reinventing the process.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The 4-Phase Professional Research Workflow</h3>
-
-  <div class="workflow-step"><div class="ws-num">1</div><div class="ws-content"><h4>Phase 1: Source Gathering</h4><p>Before opening Claude, gather your sources: industry reports (NASSCOM, IBEF, World Bank), academic papers, company annual reports, news articles, survey data. Target: 5-10 high-quality, relevant sources. Download as PDFs or save as text files. Quality over quantity — 5 strong sources beat 20 weak ones.</p></div></div>
-
-  <div class="workflow-step"><div class="ws-num">2</div><div class="ws-content"><h4>Phase 2: Project Setup & Upload</h4><p>Create a dedicated Claude Project for the research topic. Write custom instructions: "You are a research analyst helping me synthesize information on [topic]. When answering questions, cite the specific document you're drawing from. Distinguish clearly between information from uploaded sources and your general training knowledge. Always flag claims that would benefit from additional primary source verification."</p></div></div>
-
-  <div class="workflow-step"><div class="ws-num">3</div><div class="ws-content"><h4>Phase 3: Systematic Questioning</h4><p>Don't start with synthesis. Start with systematic extraction. Run these questions sequentially:<br><br>→ "What do the uploaded documents say about [main topic]?"<br>→ "What are the key statistics and data points across all documents?"<br>→ "Where do the uploaded sources agree? Where do they conflict?"<br>→ "What does the evidence suggest about [specific question]?"<br>→ "What important questions are NOT answered by the current sources?"<br><br>Each question builds on the last. By the fourth question, Claude has processed all sources systematically.</p></div></div>
-
-  <div class="workflow-step"><div class="ws-num">4</div><div class="ws-content"><h4>Phase 4: Synthesis & Report</h4><p>After systematic questioning, request the final synthesis: "Based on everything we've discussed and the uploaded sources, write a [format] research report on [topic]. Structure: [specify]. Audience: [describe]. Length: [specify]. Cite sources where possible. Include a limitations section noting what additional research would strengthen these conclusions."<br><br>The synthesis prompt comes last — after Claude has already processed and surfaced all the relevant material through systematic questioning.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Research Workflow — Quick Reference</h3>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Phase</th><th>Time Investment</th><th>Output</th><th>Common Mistake</th></tr></thead>
-      <tbody>
-        <tr><td><strong>1. Gather Sources</strong></td><td>30-60 mins</td><td>5-10 relevant documents</td><td>Using too many weak sources instead of fewer strong ones</td></tr>
-        <tr><td><strong>2. Project Setup</strong></td><td>10-15 mins</td><td>Configured Claude Project with uploaded documents</td><td>Skipping custom instructions — results in generic responses</td></tr>
-        <tr><td><strong>3. Systematic Questioning</strong></td><td>20-30 mins</td><td>Extracted insights from all sources</td><td>Jumping directly to "write me a report" without extraction first</td></tr>
-        <tr><td><strong>4. Synthesis & Report</strong></td><td>15-20 mins</td><td>Structured research report</td><td>Not specifying format, audience, and length — getting generic output</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="callout call-1"><div class="call-ico">⚡</div><div class="call-body"><h4>Total Time: ~2 Hours for Professional-Grade Research</h4><p>This workflow produces research that would have taken 2-3 days manually. The critical insight: most time savings come from systematic questioning (Phase 3), not from the final report generation. Knowing what to ask, in what sequence, is the professional skill this workflow teaches.</p></div></div>
-
-  <div class="identity-shift">After Day 8, you approach research systematically — not reactively. Every research project has a clear workflow from sources to insight.</div>
-
-  <div class="micro-action">
-    <h4>Day 8 Capstone: Research a Real Topic</h4>
-    <ul>
-      <li>Choose a research topic relevant to your work (market, competitor, technology, regulation)</li>
-      <li>Gather 3-5 sources (publicly available reports, articles, data)</li>
-      <li>Create a Research Project in Claude with appropriate custom instructions</li>
-      <li>Run the systematic questioning sequence (Phase 3)</li>
-      <li>Request a final synthesis report in your required format and audience</li>
-      <li>Review: what insights did you uncover that you wouldn't have found through surface reading?</li>
-    </ul>
-  </div>
-
-  <p class="curiosity-hook">Test your research and analysis knowledge. You're now past the halfway point of the 15-day program.</p>
+  <div class="identity-shift">You now have a personal research analyst. Documents, SWOT, competitive analysis, market sizing, research chains &mdash; all in minutes.</div>
+  <p class="curiosity-hook">Next: 8 quiz questions to lock in your research skills.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
-  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
 </div>
 
-<!-- S5: QUIZ -->
+<!-- S5 -->
 <div class="sec" id="s5">
-  <div class="progress-marker">&#129504; Day 8 Quiz. Research methodology, data interpretation, and workflow strategy.</div>
-  <div class="sec-head">
-    <div class="over">Section 05</div>
-    <h2>Day 8 <span class="gr">Quiz</span></h2>
-    <p>Research techniques, analytical frameworks, and workflow strategy. 8 randomized questions.</p>
-  </div>
+  <div class="progress-marker">&#129504; Quiz time &mdash; research and analysis mastery test.</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Test Your <span class="gr">Understanding</span></h2><p>8 questions from a pool of 18. Instant feedback.</p></div>
   <div class="quiz-box" id="quizBox"></div>
-  <div class="micro-win">Day 8 complete. You've crossed the midpoint of Master Claude in 15 Days.</div>
+  <div class="micro-win">Every question reinforced your research and analysis skills.</div>
+  <p class="curiosity-hook">Next: Homework, takeaways, Day 9 preview.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
-  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Workflow</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 8</button></div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
 </div>
 
-<div class="foot" id="mainFoot" style="display:none">
-  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
-  <p style="margin-top:.3rem;font-size:.72rem">Master Claude in 15 Days &middot; tarahutailabs.com &middot; +91 92008-82008</p>
-  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2>Day 8 <span class="gr">Complete!</span></h2><p>What you mastered, homework, and tomorrow's preview.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>3 Key Takeaways</h4><p>&#9989; <strong>200K tokens = 150,000 words</strong> &mdash; entire books and reports in one conversation<br>&#9989; <strong>Structured frameworks</strong> (SWOT, competitive, market sizing) produce consulting-grade outputs<br>&#9989; <strong>Research chains compound intelligence</strong> &mdash; 3 steps produce dramatically better results than 1 prompt</p></div></div>
+  <div class="micro-action"><h4>Homework Before Day 9</h4><ul><li>Upload a <strong>real document</strong> and extract 5 insights</li><li>Perform <strong>SWOT</strong> for your own business</li><li>Do a <strong>competitive analysis</strong> vs 3 rivals</li><li>Complete a full <strong>3-step research chain</strong></li><li>Share your best output in the <strong>WhatsApp group</strong></li></ul></div>
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Day 9 &mdash; Content Creation</h4><p>Tomorrow: a complete <strong>content creation system</strong> &mdash; 5-step blog pipeline, trilingual social posts (English + Hindi + Punjabi), YouTube scripts, newsletters, and a content calendar. <strong>You become a one-person content team.</strong></p></div></div>
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=I%20completed%20Day%208!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a><a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a></div>
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem"><h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3><p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a></p><p style="color:var(--t2)">&#127760; <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p><p style="color:var(--t2)">&#128205; Kotkapura, Punjab</p></div>
+  <div class="identity-shift">Day 8 done. You deploy AI to analyse documents. You are a researcher who uses Claude as your analyst.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
 </div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Master Claude in 15 Days &middot; Day 08 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p></div>
 
 <script>
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
-document.addEventListener('copy',e=>e.preventDefault());
-document.addEventListener('cut',e=>e.preventDefault());
-const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
-function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
-window.addEventListener('resize',resizeCvs);resizeCvs();
-for(let i=0;i<55;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
-function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
-drawPts();
-const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
-const secIds=['s1','s2','s3','s4','s5'];
-function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(()=>{const navEl=document.getElementById('mainNav');const navH=navEl?navEl.offsetHeight:50;const secEl=document.getElementById(id);if(secEl){const top=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(top,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';if(id==='s5'&&!quizStarted)initQuiz()}
-navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
-function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}
-function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}
-window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
-
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pctDone=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Complete!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore()}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked}/${total} (${pct}%) — ${checked===total?'Ready for Day 9!':'Keep going!'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Paste into Claude →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+function copyFreePrompt(){const txt=document.getElementById('freePrompt').value.trim();if(!txt){document.getElementById('freeOut').textContent='⚠️ Type prompt first.';return;}document.getElementById('freeOut').textContent='✅ Copied! Paste as Step 1, then follow with Steps 2 and 3.';navigator.clipboard.writeText(txt).catch(()=>{});}
 const qData=[
-  {q:"Approximately how many words can fit within Claude's 200,000-token context window?",o:["10,000 words","50,000 words","150,000 words (roughly 500 pages)","1,000,000 words"],a:2,e:"200,000 tokens equals approximately 150,000 words — about 500 pages of standard text. This allows Claude to hold entire books, comprehensive reports, or large document sets in a single context."},
-  {q:"What is the recommended order of operations in the 4-Phase Research Workflow?",o:["Synthesis first, then questioning, then upload","Gather sources → Upload to Project → Systematic questioning → Final synthesis","Ask for a report immediately, then upload sources","Upload documents → Write report → Gather more sources"],a:1,e:"The correct sequence is: Gather sources (quality over quantity) → Upload to a configured Project → Systematic questioning to extract insights → Final synthesis prompt. Jumping to synthesis before systematic extraction consistently produces lower-quality research."},
-  {q:"What is the critical limitation of using Claude for data analysis compared to dedicated tools?",o:["Claude can't read CSV files","Claude reasons about data patterns and produces interpretation/narrative, but doesn't execute statistical calculations with the same precision as Excel, Python, or R","Claude makes up data that doesn't exist","Claude can only analyze data with fewer than 100 rows"],a:1,e:"Claude excels at data interpretation and narrative — explaining what numbers mean in business terms, identifying patterns, and synthesizing insights. For precise statistical computation or critical financial analysis, always verify with dedicated tools."},
-  {q:"When doing competitive analysis, what does asking for the 'White Space' section reveal?",o:["The empty space in a competitor's website design","Market positions or customer needs that are underserved by all competitors — revealing opportunity","Pricing information competitors haven't published","The physical location of competitor offices"],a:1,e:"'White Space' analysis identifies market positions or customer needs not currently addressed by any competitor. This is often the highest-value output of competitive analysis — revealing where an uncontested opportunity exists."},
-  {q:"For the research workflow, what should custom instructions in Phase 2 specify?",o:["Only the response language preference","Nothing — custom instructions are optional for research","That Claude should cite sources, distinguish uploaded vs. training knowledge, and flag claims needing additional verification","Only the output format preference"],a:2,e:"Research Project custom instructions should include: citing specific documents, distinguishing uploaded source knowledge from general training knowledge, and flagging claims that need additional primary source verification. These instructions dramatically improve research reliability."},
-  {q:"What is the most common mistake researchers make when using Claude for the first time?",o:["Uploading too many documents","Jumping directly to 'write me a report' without systematic extraction questioning first","Using too many follow-up questions","Not specifying the competitor names precisely enough"],a:1,e:"Jumping directly to synthesis without systematic extraction is the most common and costly mistake. The extraction phase (systematic questioning) surfaces all relevant material before synthesis — producing far more comprehensive and accurate final reports."},
-  {q:"Which question type is most effective in Phase 3 (Systematic Questioning)?",o:["'Write me a report on everything you found'","'What is your opinion on this topic?'","'Where do the uploaded sources agree? Where do they conflict?'","'Search the internet for more information on this topic'"],a:2,e:"Asking where sources agree and conflict is among the most powerful systematic research questions. It forces Claude to cross-reference all documents, identifying consensus (what's reliable) and contradiction (what needs further investigation)."},
-  {q:"For a SWOT analysis prompt to be most actionable, what should each threat and weakness include?",o:["Only the threat/weakness statement, no solutions","A mitigation approach for each weakness/threat, and a specific way to capture each opportunity","A historical case study from another industry","The name of a responsible team member"],a:1,e:"Actionable SWOT items include: for weaknesses and threats — a mitigation approach; for opportunities — a specific way to capture them. This transforms SWOT from a descriptive exercise into a strategic action plan."},
-  {q:"What should you do with Claude's knowledge cutoff limitation for current market research?",o:["Avoid using Claude for any market research","Use Claude only for historical analysis, never current markets","Combine Claude's analytical capability with current sources you upload — let Claude reason while you provide current facts","Wait for Claude's next model update"],a:2,e:"The professional approach is hybrid: gather current data yourself (news, recent reports, company announcements) and upload to Claude, then use Claude's analytical capability to reason about and synthesize that current information. This overcomes the cutoff limitation."},
-  {q:"In the financial summary prompt, what is the key instruction that makes the output accessible to non-finance audiences?",o:["Include all accounting entries","Write in plain English and avoid accounting jargon","Use more technical terminology to appear credible","Keep the summary under 50 words"],a:1,e:"'Write in plain English, avoid accounting jargon' transforms a technical financial summary into a communication tool usable by non-finance decision-makers — which is often the most important audience for financial analysis."},
-  {q:"What does 'systematic questioning' produce that going directly to synthesis does not?",o:["A faster research process","Complete extraction of relevant insights from all sources before the synthesis phase, producing more comprehensive and accurate final reports","Shorter research outputs","Better formatted documents"],a:1,e:"Systematic questioning forces Claude to process each source category by category before synthesis. The extraction phase surfaces insights that a direct 'write me a report' prompt would miss — because Claude hasn't been explicitly guided to look for specific types of information."},
-  {q:"What is the purpose of specifying a 'limitations section' in the final synthesis prompt?",o:["To make the report look more academic","To identify what additional research would strengthen the conclusions — maintaining intellectual honesty about the report's boundaries","To keep the report shorter","To give Claude permission to speculate"],a:1,e:"A limitations section maintains intellectual honesty — it explicitly flags where the current evidence is thin, what sources would improve confidence, and where conclusions are more speculative. This is the mark of rigorous professional research."},
-  {q:"For analyzing customer survey responses with Claude, what is the most actionable final output?",o:["A full transcript of all 150 responses","The statistical distribution of response lengths","Most actionable complaints by impact on satisfaction + verbatim quotes representing the full response set","A word frequency count"],a:2,e:"The most actionable survey analysis identifies which complaints, if addressed, would most improve satisfaction (prioritization) and includes verbatim quotes that capture the voice of the customer. This gives product/service teams something concrete to act on."},
-  {q:"For the competitive analysis prompt, what is the significance of asking Claude to 'clearly flag which claims come from uploaded sources vs. general knowledge'?",o:["It makes the report longer","It allows you to assess confidence levels — uploaded source claims are verifiable; general training knowledge should be independently verified","It prevents Claude from using its training data","It improves the formatting of the final report"],a:1,e:"Source flagging allows you to assess the confidence level of each claim. Information from your uploaded documents is verifiable and primary; information from Claude's training data should be treated as a starting point that needs independent verification — especially for recent market data."},
-  {q:"What is 'Phase 3: Systematic Questioning' designed to accomplish before final synthesis?",o:["To test Claude's general knowledge on the topic","To exhaust Claude's patience so it gives more detailed answers","To extract and surface all relevant material from uploaded sources through directed questions before attempting to synthesize everything","To determine which source is most credible"],a:2,e:"Systematic questioning uses a sequence of directed prompts to extract, compare, and evaluate information from all uploaded sources before synthesis. This ensures the final synthesis is based on complete extraction — not Claude's first-pass impression of the documents."},
-  {q:"What is the approximate total time investment for the complete 4-phase research workflow?",o:["30-45 minutes","2 hours","8-12 hours","2-3 days"],a:1,e:"The complete workflow takes approximately 2 hours: Source Gathering (30-60 min) + Project Setup (10-15 min) + Systematic Questioning (20-30 min) + Synthesis & Report (15-20 min). This produces research that would previously take 2-3 days manually."},
-  {q:"For processing very large datasets that can't be uploaded, what is the recommended input method?",o:["Split into 100-row chunks over multiple conversations","Paste summary statistics — Claude can reason about patterns and implications from pre-aggregated data","Convert to a different file format","Use the API instead of the web interface"],a:1,e:"For very large datasets, paste summary statistics (totals, averages, percentages, key ranges) into Claude. Claude can reason about patterns and draw meaningful insights even from pre-aggregated data — you don't need raw row-level data for good analytical output."},
-  {q:"What does 'quality over quantity' mean in the context of Phase 1 (Source Gathering)?",o:["Write shorter research reports","Use fewer sources from high-credibility, primary sources rather than many weak secondary sources","Spend less time on research","Avoid industry reports and use only news articles"],a:1,e:"Five high-credibility, relevant sources (government reports, academic research, primary data, authoritative industry publications) consistently outperform 20 low-quality sources. Claude's reasoning is only as good as the sources it reasons about."},
-  {q:"What is the 'So What?' principle for making market research actionable?",o:["Always end research with a rhetorical question","Always include a section linking market findings to specific implications and decisions for your organization or role","Never share market research without a coda","Include a personal opinion at the end"],a:1,e:"The 'So What?' principle requires every research output to explicitly connect findings to decisions. Always end with specific implications or recommended actions — not just description. This is what separates useful research from academic exercises."},
-  {q:"For trend analysis of sales data, what is the highest-value element to include after the quantitative findings?",o:["A longer list of data points","A statistical confidence interval","2 specific recommended management actions based on the data","A comparison to global averages"],a:2,e:"2 specific recommended actions based on the data is the highest-value element — it transforms data analysis from reporting to decision support. Presenting data without recommendations leaves the 'So What?' question unanswered for busy managers."},
-  {q:"What distinguishes Claude's research capability from a simple document summarization tool?",o:["Claude produces longer summaries","Claude can only read one document at a time","Claude can cross-reference multiple documents, identify patterns across sources, evaluate methodology, flag gaps, and synthesize insights — not just summarize individual documents","Claude always uses external internet sources"],a:2,e:"Claude's research capability goes far beyond summarization: it cross-references multiple documents, finds agreements and contradictions across sources, evaluates research methodology, identifies gaps, and synthesizes complex insights — capabilities that fundamentally change professional research workflows."},
-  {q:"In the research workflow, why should the synthesis request come in Phase 4 rather than at the beginning?",o:["Claude needs time to prepare its answer","Claude's API costs more for synthesis queries","Systematic extraction questions in Phase 3 ensure all relevant material has been surfaced before synthesis, producing more comprehensive and accurate final reports","Claude produces better formatting on later requests"],a:2,e:"Synthesis after systematic extraction produces far better outputs than immediate synthesis. By Phase 4, Claude has already been guided through the specific types of information present in all sources — producing synthesis that reflects the full depth of the uploaded material, not just the most obvious surface-level content."},
-  {q:"For a customer cohort analysis, what is the most strategically valuable segment to identify?",o:["Customers who have purchased exactly once","The most recently acquired customers","Customers showing signs of churn who previously purchased regularly — they represent recoverable revenue","The top 10% by volume of transactions"],a:2,e:"At-risk regular customers represent recoverable revenue — they've demonstrated value (purchase history) and are showing warning signs (recent inactivity). Identifying and engaging them before full churn is consistently more cost-effective than acquiring new customers."},
-  {q:"What is the professional rationale for creating a dedicated Claude Project for each major research engagement?",o:["It's required by Anthropic's terms of service","It ensures research context (sources, instructions, conversation history) is organized and persistent across multiple work sessions — not fragmented across random conversations","It gives Claude access to more computing power","It reduces the cost of each query"],a:1,e:"A dedicated Project for each research engagement ensures all uploaded sources, custom instructions, and conversation history are organized and persistent. This enables multi-session research work without losing context — essential for complex research that spans multiple days or topics."},
-  {q:"What makes 'critical evaluation' prompts particularly valuable in a research workflow?",o:["They make Claude write more words","They produce longer reports","They surface methodological limitations, assumptions, and evidentiary gaps that surface-level reading misses — producing more rigorous and defensible analysis","They always reveal that the research is poorly done"],a:2,e:"Critical evaluation prompts — asking about methodology, assumptions, sample sizes, and bias — reveal the structural limitations of research that surface reading misses. A skilled analyst reviews not just what research says, but how confidently we should believe it."}
+  {q:"How many words can Claude process in one conversation?",o:["10,000","50,000","Approximately 150,000 (200K tokens)","500 max"],a:2,e:"Claude's 200K token window holds ~150,000 words — enough for entire novels, annual reports, or multiple contracts."},
+  {q:"What does SWOT stand for?",o:["Speed, Workflow, Output, Technology","Strengths, Weaknesses, Opportunities, Threats","Software, Web, Online, Tech","Sales, Workers, Ops, Tracking"],a:1,e:"SWOT = Strengths, Weaknesses, Opportunities, Threats. A strategic framework evaluating a business from all four angles."},
+  {q:"What is TAM?",o:["Total Annual Marketing","Total Addressable Market","Technology Assessment Model","Target Audience Map"],a:1,e:"TAM = Total Addressable Market — the total revenue opportunity if you captured 100% of the market."},
+  {q:"Why must research chains stay in one conversation?",o:["Does not matter","Claude maintains context so each step builds on the last","New chats are faster","Saves API costs"],a:1,e:"Research chains work because Claude keeps full context. Step 2 is grounded in Step 1. New conversation = lost context = generic output."},
+  {q:"What is the most valuable part of document analysis?",o:["Executive summary","Hidden patterns — things implied but not explicitly stated","Formatting","Word count"],a:1,e:"Hidden patterns are uniquely valuable — Claude spots trends, correlations, and implications humans miss in long documents."},
+  {q:"Claude vs ChatGPT context window?",o:["Identical at 128K","Claude 200K vs ChatGPT 128K — 50% more","ChatGPT is larger","Neither has context"],a:1,e:"Claude's 200K tokens vs ChatGPT's 128K means ~50% more capacity for longer documents."},
+  {q:"What makes SWOT actionable vs generic?",o:["Fancy formatting","Specific local details, real competitors, concrete recommendations ranked by ROI","Under 100 words","Only listing strengths"],a:1,e:"Actionable SWOT uses specific details (real names, local dynamics, numbers) and ends with prioritised strategic recommendations."},
+  {q:"What is SOM?",o:["System of Management","Serviceable Obtainable Market — realistic capture","Software Operations","Standard Operating Model"],a:1,e:"SOM = the realistic market share you can actually capture given competition, resources, and conditions."},
+  {q:"The 3-step research chain sequence is:",o:["Write, Edit, Publish","Research → Analyse → Recommend","Read, Summarise, Copy","Plan, Build, Launch"],a:1,e:"Research gathers facts, Analyse finds patterns, Recommend provides actionable steps. Each compounds on the previous."},
+  {q:"Why is Claude better for 60-page document analysis?",o:["Always better at everything","Reads entire document without truncating, provides nuanced analysis, flags uncertainty","ChatGPT is better","Identical results"],a:1,e:"Claude's larger context, full processing, analytical depth, and honest uncertainty flagging make it superior for long documents."},
+  {q:"What should you request beyond obvious insights?",o:["Nothing","Red flags, inconsistencies, hidden patterns, implied conclusions","Only word count","Just title"],a:1,e:"Red flags, inconsistencies, and hidden patterns extract maximum value — finding what quick reads miss."},
+  {q:"What is a competitive 'moat'?",o:["Water feature","Capabilities competitors cannot easily replicate","Marketing strategy","Financial metric"],a:1,e:"A moat is a sustainable advantage — local relationships, proprietary data, brand trust — that protects against competition."},
+  {q:"For Kotkapura cloth shop, most urgent SWOT element?",o:["Strengths","Threats — online competition actively growing","Opportunities can wait","Weaknesses irrelevant"],a:1,e:"Online commerce threat is most urgent for traditional retail — actively eroding local sales and requires immediate digital response."},
+  {q:"Top-down vs bottom-up market sizing?",o:["Same thing","Top-down narrows total market; bottom-up scales unit economics","Top-down better","Only for large companies"],a:1,e:"Top-down filters from total market down. Bottom-up builds from unit economics up. Both together validate the estimate."},
+  {q:"Claude's honesty value in research?",o:["Not valuable","Flags estimates vs facts, preventing costly mistakes from treating guesses as data","Slows research","Academic only"],a:1,e:"Flagging uncertain data prevents business decisions based on AI guesses rather than verified facts."},
+  {q:"Professional competitive analysis cost?",o:["₹500","₹5,000-50,000+ from consulting firms","₹10","Always free"],a:1,e:"Professional market research costs ₹5K-50K+. Claude generates comparable analysis in minutes at a fraction."},
+  {q:"Best way to monitor competitors ongoing?",o:["Ask once","Create a Project with competitor data, update regularly","Ignore competitors","Once per year"],a:1,e:"A dedicated Project with regularly updated competitor information gives Claude persistent context for improving intelligence."},
+  {q:"When Claude says 'I am estimating', you should:",o:["Accept as fact","Verify from primary source before important decisions","Ignore everything","Assume all wrong"],a:1,e:"Verify flagged estimates from primary sources before using in business plans, loans, or pitches."}
 ];
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-let activeQuiz=shuffle([...qData]).slice(0,8);
-let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){cq=0;sc=0;activeQuiz=shuffle([...qData]).slice(0,8);ans=new Array(8).fill(false);quizStarted=true;renderQ()}
-function renderQ(){const box=document.getElementById('quizBox');if(cq>=8){const pct=Math.round(sc/8*100);let tier,col;if(pct>=80){tier='Research Professional';col='var(--brand)'}else if(pct>=50){tier='Solid Analyst';col='var(--c1)'}else{tier='Review the Workflow';col='var(--c4)'}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${col}">${tier}</p><p style="color:var(--t2);margin-bottom:1rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:2rem;font-size:.9rem">You've completed Days 1-8 of Master Claude in 15 Days. Days 9-15 build on everything you've learned — more advanced, more specialized, more powerful. Stay the course.</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button></div>`;submitQuizResult(sc,8,'Day-08-Research-Analysis');return}const q=activeQuiz[cq];const ltr=['A','B','C','D'];const prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');const opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`}
-function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq];const opts=document.querySelectorAll('.q-opt');const fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=activeQuiz.length){const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:'claude-08',score:sc,total:activeQuiz.length})})}catch(e){}let tier,tierColor,msg;if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='Research mastered. Day 9 next!';}else if(pct>=50){tier='Good!';tierColor='var(--c1)';msg='Try the research chain to strengthen.';}else{tier='Keep at it!';tierColor='var(--c4)';msg='Do the demos hands-on.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}%</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=activeQuiz[cq];const ltr=['A','B','C','D'];let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
 function nxtQ(){cq++;renderQ()}
-async function submitQuizResult(score,total,module){try{await fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({module,score,total,percentage:Math.round(score/total*100),timestamp:new Date().toISOString()})})}catch(e){}}
+document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
+<div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
 </body>
 </html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1: AI Revolution — TARAhut AI Labs | Senior Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6.5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+/* Timeline */
+.tl{position:relative;margin:2.5rem 0;padding-left:36px}
+.tl::before{content:'';position:absolute;top:0;left:12px;width:2px;height:100%;background:linear-gradient(180deg,var(--brand),var(--c1),var(--c2),var(--c4))}
+.tl-item{position:relative;margin-bottom:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .35s;cursor:pointer}
+.tl-item:hover{border-color:rgba(0,240,255,.3);transform:translateX(6px)}
+.tl-item::before{content:'';position:absolute;left:-30px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--c1);border:3px solid var(--bg);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.tl-item h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.35rem}
+.tl-item p{color:var(--t2);font-size:.88rem}
+.tl-item .tl-year{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);margin-bottom:.5rem}
+/* Battle of the bots */
+.bots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0}
+.bot-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;transition:all .3s;cursor:pointer;position:relative}
+.bot-card:hover{border-color:rgba(0,240,255,.3);transform:translateY(-4px)}
+.bot-card .bot-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.3rem;display:flex;align-items:center;gap:8px}
+.bot-card .bot-ans{color:var(--t2);font-size:.82rem;line-height:1.6;margin:8px 0}
+.bot-card .star-row{display:flex;gap:4px;margin-top:8px}
+.star{font-size:1.2rem;cursor:pointer;transition:transform .2s;filter:grayscale(1);opacity:.4}
+.star.lit{filter:grayscale(0);opacity:1;transform:scale(1.1)}
+.bot-result{text-align:center;padding:1rem;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15);border-radius:var(--rs);margin-top:1rem;font-family:'Syne',sans-serif;font-size:.9rem;color:var(--brand);display:none}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Mission */
+.mission-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.mission-box h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1rem}
+.mission-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0}
+.mission-list li{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:.75rem 1rem;font-size:.88rem;color:var(--t2);display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .3s}
+.mission-list li:hover{border-color:rgba(5,150,105,.4);color:var(--t1)}
+.mission-list li.checked{border-color:var(--c5);color:var(--c5);background:rgba(52,211,153,.04)}
+.mission-list li span{font-size:1.1rem}
+/* Section footer */
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){
+  .cgrid{grid-template-columns:1fr}
+  .bots-grid{grid-template-columns:1fr}
+  .mission-list{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Class 8-10 &middot; 2026</div>
+  <h1>Session 1: AI Revolution<br><span class="gr">Where Are We? 🚀</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>From calculators to AI — understand the biggest tech revolution of your lifetime. No boring lectures. Just cool stuff. 😎</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Let's Go! &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>The Journey</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>How AI Works</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Battle of Bots</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Mission</button>
+  </div>
+</nav>
+
+<!-- S1: THE JOURNEY -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The Journey 🕰️<br><span class="gr">From Calculators to AI</span></h2>
+    <p>Technology changed really slowly for thousands of years. Then suddenly... BOOM. Let's trace the journey.</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🤔</div>
+    <div class="call-body">
+      <h4>Think About This First</h4>
+      <p>Your grandparents used a <strong>calculator</strong> to do math. Your parents used a <strong>computer</strong> to type documents. You use a <strong>smartphone</strong> for everything. And now? AI can write your essay, generate images, compose music, and even code apps. This all happened in about 70 years. Wild, right? 🤯</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">📅 Click the milestones to explore</h3>
+  <div class="tl">
+    <div class="tl-item" onclick="revealFact(this)">
+      <div class="tl-year">1970s</div>
+      <h4>🔢 The Calculator Era</h4>
+      <p>Doing multiplication felt like a superpower. Calculators cost more than a smartphone does today! Students had to memorize everything — no shortcuts.</p>
+    </div>
+    <div class="tl-item" onclick="revealFact(this)">
+      <div class="tl-year">1990s</div>
+      <h4>💾 The Personal Computer</h4>
+      <p>Suddenly you could type, edit, delete — no more Tipp-Ex! MS Paint was the Photoshop of the era. The internet arrived and everything changed.</p>
+    </div>
+    <div class="tl-item" onclick="revealFact(this)">
+      <div class="tl-year">2007</div>
+      <h4>📱 The Smartphone Revolution</h4>
+      <p>Steve Jobs launched the iPhone and said "this is a revolutionary product." He was right. A supercomputer in your pocket. Maps, music, camera — all in one. Your parents' generation was blown away.</p>
+    </div>
+    <div class="tl-item" onclick="revealFact(this)">
+      <div class="tl-year">2016–2022</div>
+      <h4>🤖 AI Goes Mainstream</h4>
+      <p>Siri, Alexa, Google Assistant. Recommendation engines on YouTube and Netflix. AI quietly entered everyone's life — most people didn't even notice.</p>
+    </div>
+    <div class="tl-item" onclick="revealFact(this)" style="border-color:rgba(5,150,105,.4);">
+      <div class="tl-year">Nov 2022 — NOW</div>
+      <h4>🔥 The ChatGPT Moment</h4>
+      <p>ChatGPT launched and hit 1 MILLION users in 5 days. (Netflix took 3.5 years to get that many.) This is the moment YOU are living in. The AI revolution isn't coming — it's here.</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">🎯 You're not just learning about history — you're living in it. This is YOUR era.</div>
+
+  <div class="callout call-1">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Fun Fact: AI is Already On Your Phone!</h4>
+      <p>Every time Instagram shows you a Reel you love → <strong>AI did that.</strong><br>
+      Every time Google autocorrects your typo → <strong>AI did that.</strong><br>
+      Every time Google Maps says "traffic jam ahead" → <strong>AI did that.</strong><br>
+      You use AI 50+ times a day without realizing it! 🤯</p>
+    </div>
+  </div>
+
+  <div class="micro-win">You just learned the history of technology in 3 minutes. Your history teacher would be impressed. 😄</div>
+  <p class="curiosity-hook">But HOW does AI actually work? It's simpler than you think... →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: How AI Works &rarr;</button></div>
+</div>
+
+<!-- S2: HOW AI WORKS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">🔥 25% done! You're crushing it!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>How AI <span class="gr">Actually Works 🧠</span></h2>
+    <p>No scary math. No boring formulas. We'll use the "teaching a puppy" analogy and everything will click. 🐶</p>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">🐶</div>
+    <div class="call-body">
+      <h4>The Dog Recognition Analogy</h4>
+      <p>Imagine you're teaching a little kid to recognize dogs. You show them 1000 pictures and say "dog" or "not a dog." After seeing enough examples, they start recognizing dogs on their own — even ones they've never seen! <strong>AI learns EXACTLY the same way.</strong> Show it millions of examples. It finds patterns. It gets better. That's machine learning in a nutshell. 🎉</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🎓 How ChatGPT Was Trained (Simplified)</h3>
+  <div class="cgrid">
+    <div class="crd">
+      <span class="crd-icon">📚</span>
+      <h3>Step 1: Feed It Books</h3>
+      <p>OpenAI fed ChatGPT BILLIONS of web pages, books, articles, and code. It's like the AI went to school for 1000 years in a few months. 😂</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🔍</span>
+      <h3>Step 2: Find Patterns</h3>
+      <p>The AI learned patterns — what words usually come after other words, how sentences are structured, how to answer questions. It didn't "understand" — it found PATTERNS.</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🎯</span>
+      <h3>Step 3: Get Feedback</h3>
+      <p>Real humans rated the AI's answers. Good answers got rewarded, bad ones got corrected. Like your teacher marking your exam and helping you improve! ✏️</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🚀</span>
+      <h3>Step 4: Launch!</h3>
+      <p>After training (which cost millions of dollars and weeks of time), it was ready for the world. Now you can talk to it instantly, for free!</p>
+    </div>
+  </div>
+
+  <div class="callout call-4">
+    <div class="call-ico">⚠️</div>
+    <div class="call-body">
+      <h4>Why AI Sometimes Gets Things Wrong</h4>
+      <p>AI doesn't actually "know" things — it predicts the most likely answer based on patterns. Sometimes the pattern it learned was wrong! It's like if you only ever read wrong history textbooks — you'd repeat those mistakes. That's why AI can "hallucinate" — make up facts confidently. <strong>Always verify important information!</strong> 🕵️</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🎮 Quick Challenge</h4>
+    <p>Open ChatGPT (or ask your teacher to show you). Type: <strong>"What is 2+2? Now explain why 2+2=5."</strong><br>
+    See how AI responds to a wrong instruction. Does it correct you or go along with it? Share what you found with the class!</p>
+  </div>
+
+  <div class="micro-win">You now understand how AI works better than most adults. No joke. 🧠</div>
+  <p class="curiosity-hook">Now the fun part — let's compare the top AI bots head to head! 🥊</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Battle of Bots &rarr;</button></div>
+</div>
+
+<!-- S3: BATTLE OF THE BOTS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">⚡ 50% done! Halfway there!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>⚔️ Battle of the Bots<br><span class="gr">ChatGPT vs Claude vs Gemini</span></h2>
+    <p>We asked all 3 AI bots the SAME question. Read their answers. Rate them with stars ⭐. You decide who wins!</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">❓</div>
+    <div class="call-body">
+      <h4>The Question We Asked All 3 Bots</h4>
+      <p style="font-size:1rem;color:var(--t1);font-weight:600;">"Explain photosynthesis to a 14-year-old student in 3 lines using a simple analogy."</p>
+    </div>
+  </div>
+
+  <div class="bots-grid" id="botsGrid">
+    <div class="bot-card">
+      <div class="bot-name">🤖 ChatGPT <span style="font-size:.7rem;color:var(--t3);font-weight:400;">by OpenAI</span></div>
+      <div class="bot-ans">"Think of a plant as a solar-powered kitchen. The leaves are the solar panels that capture sunlight, the water and CO₂ are the ingredients, and glucose (sugar) is the food the plant makes. All day, every sunny day, the plant is literally cooking with sunlight! 🌞"</div>
+      <div class="star-row" id="stars0">
+        <span class="star" onclick="rateStar(0,1)">⭐</span>
+        <span class="star" onclick="rateStar(0,2)">⭐</span>
+        <span class="star" onclick="rateStar(0,3)">⭐</span>
+        <span class="star" onclick="rateStar(0,4)">⭐</span>
+        <span class="star" onclick="rateStar(0,5)">⭐</span>
+      </div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-name">🔮 Claude <span style="font-size:.7rem;color:var(--t3);font-weight:400;">by Anthropic</span></div>
+      <div class="bot-ans">"Imagine plants have tiny factories inside their leaves. These factories take in sunlight (energy), water (from the roots), and CO₂ (from air), then produce glucose (plant food) and release oxygen as a byproduct. So basically, every time you breathe, you're benefiting from a plant's factory! 🌿"</div>
+      <div class="star-row" id="stars1">
+        <span class="star" onclick="rateStar(1,1)">⭐</span>
+        <span class="star" onclick="rateStar(1,2)">⭐</span>
+        <span class="star" onclick="rateStar(1,3)">⭐</span>
+        <span class="star" onclick="rateStar(1,4)">⭐</span>
+        <span class="star" onclick="rateStar(1,5)">⭐</span>
+      </div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-name">💎 Gemini <span style="font-size:.7rem;color:var(--t3);font-weight:400;">by Google</span></div>
+      <div class="bot-ans">"Plants are basically nature's chefs! They use sunlight as their stove, water and carbon dioxide as ingredients, and create glucose (their food) while releasing the oxygen we breathe. It's like a restaurant where the only bill is CO₂, and the tip is fresh air! 🌱"</div>
+      <div class="star-row" id="stars2">
+        <span class="star" onclick="rateStar(2,1)">⭐</span>
+        <span class="star" onclick="rateStar(2,2)">⭐</span>
+        <span class="star" onclick="rateStar(2,3)">⭐</span>
+        <span class="star" onclick="rateStar(2,4)">⭐</span>
+        <span class="star" onclick="rateStar(2,5)">⭐</span>
+      </div>
+    </div>
+  </div>
+  <div class="bot-result" id="botResult"></div>
+
+  <div class="callout call-brand" style="margin-top:1.5rem">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Key Insight: Same Prompt, Different Results!</h4>
+      <p>Notice how all 3 gave <strong>different</strong> answers to the same question? They each have different "personalities" and styles. There's no single "best" AI — each is great for different tasks. The real skill is knowing WHICH bot to use for WHAT task. That's what you'll learn in this course! 🎯</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🏆 Class Discussion</h4>
+    <p>Which answer did you prefer? Why? Think about: Which was easiest to understand? Which had the best analogy? Which would work best in an exam answer? Share your ratings and discuss!</p>
+  </div>
+
+  <div class="micro-win">You just evaluated AI like a pro. That's a real skill companies pay for! 💰</div>
+  <p class="curiosity-hook">Time to test yourself! Let's see how much you've absorbed → 🧠</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S4: QUIZ -->
+<div class="sec" id="s4">
+  <div class="progress-marker">🎯 75% done! Quiz time — you've got this!</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>🧠 Session Quiz<br><span class="gr">Test Your AI Knowledge!</span></h2>
+    <p>6 fun questions. No pressure. Learn from the ones you get wrong — that's the real goal! 😊</p>
+  </div>
+
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qContent"></div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Mission &rarr;</button></div>
+</div>
+
+<!-- S5: TAKE-HOME MISSION -->
+<div class="sec" id="s5">
+  <div class="progress-marker">🎉 Almost done! One last challenge!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>🎯 Take-Home Mission<br><span class="gr">10 New-Age Careers</span></h2>
+    <p>Your mission: explore 10 careers that didn't exist 5 years ago — and tell your family about them tonight! 🏠</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">💼</div>
+    <div class="call-body">
+      <h4>Why This Matters</h4>
+      <p>Your parents probably want you to become a doctor, engineer, or CA. And those are great! But there are now <strong>new careers that pay just as well</strong> (sometimes more!) that require AI skills — not traditional degrees. Here are 10 to explore. Click each one to learn more!</p>
+    </div>
+  </div>
+
+  <div class="mission-box">
+    <h3>🚀 10 New-Age Careers — Click to Explore</h3>
+    <ul class="mission-list" id="careerList">
+      <li onclick="toggleCareer(this)"><span>🤖</span> AI Prompt Engineer<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Write instructions for AI systems. Companies pay ₹8-25 LPA for this!</div></li>
+      <li onclick="toggleCareer(this)"><span>🎨</span> AI Content Creator<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Create videos, posts, and ads using AI tools. Earn through brand deals!</div></li>
+      <li onclick="toggleCareer(this)"><span>📊</span> AI Data Analyst<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Help businesses understand their data using AI. Entry-level: ₹6-12 LPA.</div></li>
+      <li onclick="toggleCareer(this)"><span>🎬</span> AI Video Producer<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Create videos with AI avatars, voiceovers, and editing. Massive demand!</div></li>
+      <li onclick="toggleCareer(this)"><span>🧠</span> AI Trainer / Evaluator<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Rate AI responses to make models better. Work from home, flexible hours!</div></li>
+      <li onclick="toggleCareer(this)"><span>💻</span> No-Code App Builder<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Build apps with AI tools — no traditional coding needed! High demand.</div></li>
+      <li onclick="toggleCareer(this)"><span>🔍</span> AI Research Assistant<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Help businesses research markets using AI. Great for curious minds!</div></li>
+      <li onclick="toggleCareer(this)"><span>🎓</span> AI Educator / Tutor<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Teach others how to use AI tools. Teachers are in huge demand right now!</div></li>
+      <li onclick="toggleCareer(this)"><span>🛒</span> AI E-commerce Specialist<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Use AI to grow online stores on Meesho, Amazon, Flipkart. Very lucrative!</div></li>
+      <li onclick="toggleCareer(this)"><span>🏥</span> AI Healthcare Assistant<div class="career-detail" style="display:none;margin-top:.5rem;font-size:.8rem;color:var(--brand)">Support doctors with AI diagnostics and patient data. Growing fast in India!</div></li>
+    </ul>
+  </div>
+
+  <div class="micro-action">
+    <h4>🏠 Tonight's Mission</h4>
+    <p>Pick your <strong>top 3 careers</strong> from the list above. At dinner tonight, tell your family:</p>
+    <ul>
+      <li>"I learned about 10 new careers today that use AI."</li>
+      <li>"My top 3 are... because..."</li>
+      <li>"Did you know AI is already on our phones 50+ times a day?"</li>
+    </ul>
+    <p style="margin-top:.75rem">Bonus: Ask your parents which job on the list surprises them most! 😄</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎉</div>
+    <div class="call-body">
+      <h4>Session 1 Complete! Amazing Work!</h4>
+      <p>You now understand the AI revolution, how AI learns, and the careers it's creating. See you in Session 2 where we learn the superpower of <strong>Prompt Engineering</strong> — how to get AI to do exactly what you want! ⚡</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:2rem 0">
+    <a href="https://wa.me/919200882008?text=Hi%2C%20I%20completed%20Session%201%20of%20AI%20Explorer%20at%20TARAhut!" target="_blank" class="btn btn-glow">WhatsApp TARAhut 📱</a>
+  </div>
+
+  <div style="text-align:center;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)">
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a> &nbsp;|&nbsp; 🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built by <span class="brand">TARAhut AI Labs</span> — AI Education for India's Future</p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Senior Track: AI Explorer (Class 8-10) &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// Particles
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+
+// Nav
+const secIds=['s1','s2','s3','s4','s5'];
+const navBtns=document.querySelectorAll('.nav-btn');
+const secs=document.querySelectorAll('.sec');
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='s4'&&!quizStarted)initQuiz();
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Timeline click
+function revealFact(el){el.style.borderColor='rgba(0,240,255,.4)';}
+
+// Star rating
+const ratings=[0,0,0];
+function rateStar(botIdx,stars){
+  ratings[botIdx]=stars;
+  const row=document.getElementById('stars'+botIdx);
+  row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<stars));
+  checkAllRated();
+}
+function checkAllRated(){
+  if(ratings.every(r=>r>0)){
+    const names=['ChatGPT','Claude','Gemini'];
+    const winner=ratings.indexOf(Math.max(...ratings));
+    const res=document.getElementById('botResult');
+    res.style.display='block';
+    res.innerHTML=`🏆 Your Winner: <strong>${names[winner]}</strong> with ${Math.max(...ratings)}⭐!<br><span style="font-size:.82rem;color:var(--t2)">Great — there's no wrong answer. Different people prefer different AI styles. That's the point!</span>`;
+  }
+}
+
+// Career toggle
+function toggleCareer(el){
+  el.classList.toggle('checked');
+  const detail=el.querySelector('.career-detail');
+  if(detail)detail.style.display=el.classList.contains('checked')?'block':'none';
+}
+
+// Quiz
+const qData=[
+  {q:"ChatGPT hit 1 million users in how many days?",o:["50 days","30 days","5 days","1 day"],a:2,e:"ChatGPT reached 1 million users in just 5 days! Netflix took 3.5 years to reach the same milestone. That's the speed of the AI revolution! 🚀"},
+  {q:"How does AI learn? Which analogy matches best?",o:["Like reading a textbook once","Like a baby learning from examples and feedback","Like downloading an app","Like copying answers from a friend"],a:1,e:"AI learns just like a child — by seeing MANY examples and getting feedback on what's right and wrong. It's called machine learning! 🧠"},
+  {q:"If AI says '2+2=5' with confidence, what should you do?",o:["Trust it — AI is never wrong","Question it and verify independently","Agree to be polite","Report it to OpenAI"],a:1,e:"Always verify! AI can 'hallucinate' — make up wrong answers very confidently. Critical thinking is MORE important in the AI age, not less! 🕵️"},
+  {q:"What does the 'recommendation algorithm' on Instagram do?",o:["Randomly shows posts","Shows posts only from friends","Uses AI to show content you'll probably like","Alphabetically sorts posts"],a:2,e:"Instagram's recommendation engine is powered by AI! It analyzes what you watch, like, and skip to predict what you'll enjoy next. That's why you can scroll for hours! 😅"},
+  {q:"Which of these is NOT a reason AI sometimes gives wrong answers?",o:["It learned from incorrect data","It's deliberately trying to deceive you","It predicts patterns, not 'truth'","The training data was limited"],a:1,e:"AI isn't trying to deceive — it just finds patterns. If the patterns were flawed, the answers will be too. AI doesn't have intentions! 🤖"},
+  {q:"Which career from the session interests YOU most?",o:["AI Prompt Engineer","AI Content Creator","AI Data Analyst","They ALL sound interesting!"],a:3,e:"Trick question — they all sound great! 😄 The best career is the one that matches YOUR interests AND uses AI skills. That combo is the future! 🚀"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    const emoji=pct>=80?'🏆':pct>=50?'👍':'💪';
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><div style="font-size:1.5rem;margin:.5rem 0">${emoji}</div><p style="color:var(--t2);font-size:1rem">${pct>=80?'Outstanding! You crushed it! 🎉':pct>=50?'Great job! Keep learning! 😊':'Good try! Review the sections and try again! 💪'}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="initQuiz()">Try Again 🔄</button></div>`;
+    return;
+  }
+  const d=qData[cq];
+  document.getElementById('qContent').innerHTML=`<div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${d.q}</div><div class="q-opts">${d.o.map((o,i)=>`<div class="q-opt" onclick="pickAns(${i})"><div class="ol">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><span style="font-size:.85rem;color:var(--t3)">Score: ${sc}/${cq}</span><span></span></div>`;
+}
+function pickAns(i){
+  const opts=document.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.style.pointerEvents='none');
+  const d=qData[cq];
+  const correct=i===d.a;
+  if(correct)sc++;
+  opts[i].classList.add(correct?'ok':'no');
+  opts[d.a].classList.add('ok');
+  const fb=document.getElementById('qFb');
+  fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;
+  fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Results 🏆'}</button>`;
+}
+function nextQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2: Prompt Power-Ups ⚡ — TARAhut AI Labs | Senior Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1));}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6.5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Power-Up Cards */
+.power-grid{display:flex;flex-direction:column;gap:1.5rem;margin:2rem 0}
+.power-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .3s}
+.power-card:hover{border-color:rgba(0,240,255,.25)}
+.power-header{display:flex;align-items:center;gap:12px;padding:1.25rem 1.5rem;cursor:pointer}
+.power-num{width:36px;height:36px;border-radius:50%;background:var(--gbrand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0}
+.power-header h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.power-header .power-icon{font-size:1.3rem;margin-left:auto}
+.power-body{padding:0 1.5rem;max-height:0;overflow:hidden;transition:max-height .4s ease}
+.power-card.open .power-body{max-height:500px}
+.power-body-inner{padding-bottom:1.5rem}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.ba-box{border-radius:var(--rs);padding:1rem}
+.ba-before{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.15)}
+.ba-after{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15)}
+.ba-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.ba-before .ba-label{color:var(--c3)}.ba-after .ba-label{color:var(--c5)}
+.ba-box p{font-size:.85rem;color:var(--t2);font-style:italic;line-height:1.6}
+/* Makeover Game */
+.makeover-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.bad-prompt-list{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
+.bad-prompt-item{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.15);border-radius:var(--rs);padding:1rem}
+.bad-prompt-item .bad-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c3);letter-spacing:2px;margin-bottom:.4rem}
+.bad-prompt-item p{font-size:.88rem;color:var(--t2);font-style:italic}
+.prompt-input{width:100%;padding:12px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.9rem;outline:none;transition:all .3s;margin-top:.75rem;resize:vertical;min-height:70px}
+.prompt-input:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.score-bar{height:8px;background:var(--bd);border-radius:9px;margin-top:.75rem;overflow:hidden}
+.score-fill{height:100%;border-radius:9px;transition:width .5s ease;background:var(--gbrand);width:0}
+.score-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3);margin-top:.3rem}
+.makeover-btn{margin-top:1rem}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media(max-width:768px){.before-after{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 2 &middot; 2026</div>
+  <h1>Prompt Power-Ups<br><span class="gr">⚡ Talk to AI Like a Pro</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>The secret to getting amazing results from AI isn't the tool — it's how you TALK to it. Master these 5 power-ups and you'll be 10x better than your classmates. 🚀</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Power Up! ⚡</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What's a Prompt?</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>5 Power-Ups</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Makeover Game</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Mission</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT'S A PROMPT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What's a <span class="gr">Prompt? 🗣️</span></h2>
+    <p>If AI is a genie, a prompt is your wish. And just like with a genie — HOW you say your wish matters EVERYTHING!</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🧞</div>
+    <div class="call-body">
+      <h4>The Genie Rule: Garbage In = Garbage Out</h4>
+      <p>Imagine asking a genie: <strong>"Give me something good."</strong> The genie is confused. What did you get? Random stuff. Now ask: <strong>"Give me a cold Thums Up, a plate of momos, and help with my Maths homework."</strong> PERFECT! AI works exactly the same way. <strong>Vague prompt = vague answer. Specific prompt = specific answer.</strong> 🎯</p>
+    </div>
+  </div>
+
+  <div class="before-after" style="margin:2rem 0">
+    <div class="ba-box ba-before">
+      <div class="ba-label">❌ Bad Prompt</div>
+      <p>"Write something about cricket."</p>
+    </div>
+    <div class="ba-box ba-after">
+      <div class="ba-label">✅ Good Prompt</div>
+      <p>"Write a 100-word paragraph about Virat Kohli's batting technique for my Class 9 English assignment. Use simple language."</p>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Why Does This Matter For You?</h4>
+      <p>Two students ask AI for help with the same assignment. One types 5 words. The other types 30 specific words. The second student gets a <strong>10x better answer</strong>. Same AI, same question, completely different results. The skill of writing good prompts is called <strong>Prompt Engineering</strong> — and companies pay lakhs for it! 💰</p>
+    </div>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">📋</div>
+    <div class="call-body">
+      <h4>The 3 Parts of Every Great Prompt</h4>
+      <p><strong>Context:</strong> Tell AI who you are and what situation you're in.<br>
+      <strong>Task:</strong> Tell AI exactly what you want it to do.<br>
+      <strong>Format:</strong> Tell AI how you want the answer — bullet points, paragraph, table, etc.</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">⚡ Learning good prompts = learning the most valuable skill of the next decade.</div>
+  <p class="curiosity-hook">Ready to learn the 5 Power-Ups? Each one makes your prompts 2x better! →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: 5 Power-Ups &rarr;</button></div>
+</div>
+
+<!-- S2: 5 POWER-UPS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">🔥 25% done — Power-Ups loading...</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The 5 Prompt <span class="gr">Power-Ups ⚡</span></h2>
+    <p>Click each power-up to see before & after examples. These 5 techniques will transform your AI results immediately!</p>
+  </div>
+
+  <div class="power-grid">
+    <div class="power-card" onclick="togglePower(this)">
+      <div class="power-header">
+        <div class="power-num">1</div>
+        <h3>🎯 Be Specific — Kill the Vagueness</h3>
+        <span class="power-icon">+</span>
+      </div>
+      <div class="power-body"><div class="power-body-inner">
+        <p style="color:var(--t2);font-size:.9rem">The more specific you are, the better the answer. Add: age, subject, word count, level, purpose.</p>
+        <div class="before-after">
+          <div class="ba-box ba-before"><div class="ba-label">❌ Vague</div><p>"Help me with science."</p></div>
+          <div class="ba-box ba-after"><div class="ba-label">✅ Specific</div><p>"Explain Newton's 3rd law for a Class 9 student in 5 bullet points with one real-life example."</p></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="power-card" onclick="togglePower(this)">
+      <div class="power-header">
+        <div class="power-num">2</div>
+        <h3>📝 Give Examples — Show, Don't Just Tell</h3>
+        <span class="power-icon">+</span>
+      </div>
+      <div class="power-body"><div class="power-body-inner">
+        <p style="color:var(--t2);font-size:.9rem">Show AI one example of what you want. It will follow that pattern perfectly.</p>
+        <div class="before-after">
+          <div class="ba-box ba-before"><div class="ba-label">❌ No Example</div><p>"Write a fun caption for my Instagram photo."</p></div>
+          <div class="ba-box ba-after"><div class="ba-label">✅ With Example</div><p>"Write 5 Instagram captions like this one: 'Chasing sunsets and good vibes ✨' — funny and relatable for Indian teens."</p></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="power-card" onclick="togglePower(this)">
+      <div class="power-header">
+        <div class="power-num">3</div>
+        <h3>🎭 Set a Role — Give AI a Character</h3>
+        <span class="power-icon">+</span>
+      </div>
+      <div class="power-body"><div class="power-body-inner">
+        <p style="color:var(--t2);font-size:.9rem">Tell AI to BECOME someone — a teacher, a friend, a scientist. The answers change dramatically!</p>
+        <div class="before-after">
+          <div class="ba-box ba-before"><div class="ba-label">❌ No Role</div><p>"Explain photosynthesis."</p></div>
+          <div class="ba-box ba-after"><div class="ba-label">✅ With Role</div><p>"You are a fun science teacher who loves cricket. Explain photosynthesis using a cricket match analogy for Class 8 students."</p></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="power-card" onclick="togglePower(this)">
+      <div class="power-header">
+        <div class="power-num">4</div>
+        <h3>📊 Choose a Format — Control the Output</h3>
+        <span class="power-icon">+</span>
+      </div>
+      <div class="power-body"><div class="power-body-inner">
+        <p style="color:var(--t2);font-size:.9rem">Tell AI how to structure the answer — bullet points, numbered list, table, story, etc.</p>
+        <div class="before-after">
+          <div class="ba-box ba-before"><div class="ba-label">❌ No Format</div><p>"What are the causes of World War 1?"</p></div>
+          <div class="ba-box ba-after"><div class="ba-label">✅ With Format</div><p>"List the 5 main causes of WW1 in a table with columns: Cause | Brief Explanation | Impact. Keep each row under 20 words."</p></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="power-card" onclick="togglePower(this)">
+      <div class="power-header">
+        <div class="power-num">5</div>
+        <h3>🚧 Add Constraints — Set the Limits</h3>
+        <span class="power-icon">+</span>
+      </div>
+      <div class="power-body"><div class="power-body-inner">
+        <p style="color:var(--t2);font-size:.9rem">Add constraints: word limit, no jargon, no introduction needed, only use given information, etc.</p>
+        <div class="before-after">
+          <div class="ba-box ba-before"><div class="ba-label">❌ No Constraints</div><p>"Write a Bollywood movie review."</p></div>
+          <div class="ba-box ba-after"><div class="ba-label">✅ Constrained</div><p>"Write a 150-word review of Dangal for a school magazine. No spoilers. No complex words. End with a star rating out of 5."</p></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="micro-win">You now know 5 techniques that most AI users never discover. Serious superpower unlocked! ⚡</div>
+  <p class="curiosity-hook">Now let's PRACTICE with the Prompt Makeover Game! 🎮</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Makeover Game &rarr;</button></div>
+</div>
+
+<!-- S3: PROMPT MAKEOVER GAME -->
+<div class="sec" id="s3">
+  <div class="progress-marker">⚡ 50% done! Game time! 🎮</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>🎮 Prompt Makeover<br><span class="gr">Game</span></h2>
+    <p>See a bad prompt. Fix it. Click Score to see how good your improved prompt is! Try to get above 80 on all 5! 🎯</p>
+  </div>
+
+  <div class="makeover-wrap">
+    <div class="bad-prompt-list">
+      <div class="bad-prompt-item">
+        <div class="bad-label">❌ Bad Prompt #1</div>
+        <p>"Help me with my homework."</p>
+        <textarea class="prompt-input" id="fix0" placeholder="Rewrite this as a great prompt using the 5 Power-Ups..."></textarea>
+        <div class="score-bar"><div class="score-fill" id="fill0"></div></div>
+        <div class="score-label" id="label0">Click Score to rate your prompt</div>
+      </div>
+
+      <div class="bad-prompt-item">
+        <div class="bad-label">❌ Bad Prompt #2</div>
+        <p>"Tell me about India."</p>
+        <textarea class="prompt-input" id="fix1" placeholder="Make it specific — what about India? For what purpose? What format?"></textarea>
+        <div class="score-bar"><div class="score-fill" id="fill1"></div></div>
+        <div class="score-label" id="label1">Click Score to rate your prompt</div>
+      </div>
+
+      <div class="bad-prompt-item">
+        <div class="bad-label">❌ Bad Prompt #3</div>
+        <p>"Write a story."</p>
+        <textarea class="prompt-input" id="fix2" placeholder="What kind? Who for? How long? What genre? Set a role for the AI!"></textarea>
+        <div class="score-bar"><div class="score-fill" id="fill2"></div></div>
+        <div class="score-label" id="label2">Click Score to rate your prompt</div>
+      </div>
+
+      <div class="bad-prompt-item">
+        <div class="bad-label">❌ Bad Prompt #4</div>
+        <p>"Explain maths."</p>
+        <textarea class="prompt-input" id="fix3" placeholder="Which topic? Which class? What format? Add examples? Set constraints!"></textarea>
+        <div class="score-bar"><div class="score-fill" id="fill3"></div></div>
+        <div class="score-label" id="label3">Click Score to rate your prompt</div>
+      </div>
+
+      <div class="bad-prompt-item">
+        <div class="bad-label">❌ Bad Prompt #5</div>
+        <p>"Make my essay better."</p>
+        <textarea class="prompt-input" id="fix4" placeholder="Better how? Shorter? More formal? Fix grammar? Add examples? Role?"></textarea>
+        <div class="score-bar"><div class="score-fill" id="fill4"></div></div>
+        <div class="score-label" id="label4">Click Score to rate your prompt</div>
+      </div>
+    </div>
+
+    <button class="btn btn-glow makeover-btn" onclick="scoreAll()">⚡ Score All Prompts!</button>
+    <div id="scoreResult" style="margin-top:1rem;display:none;padding:1rem;background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--rs);font-family:'Syne',sans-serif;text-align:center"></div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Scoring Method: What We Check</h4>
+      <p>Your improved prompt scores points for: <strong>length</strong> (longer = more specific), <strong>keywords</strong> (class, format, role, example, word count, style), and <strong>question marks</strong> replaced with clear instructions. Aim for 75+ on each! 🎯</p>
+    </div>
+  </div>
+
+  <div class="micro-win">You just practiced the skill companies pay ₹8-25 LPA for. Not bad for a 15-year-old! 😄</div>
+  <p class="curiosity-hook">Quiz time — let's see what stuck! 🧠</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S4: QUIZ -->
+<div class="sec" id="s4">
+  <div class="progress-marker">🎯 75% done! Quiz time!</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>🧠 Session Quiz<br><span class="gr">Prompt Power Check!</span></h2>
+    <p>6 questions to test your prompt engineering knowledge. You've got this! 💪</p>
+  </div>
+  <div class="quiz-box" id="quizBox"><div class="q-prog" id="qProg"></div><div id="qContent"></div></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Mission &rarr;</button></div>
+</div>
+
+<!-- S5: MISSION -->
+<div class="sec" id="s5">
+  <div class="progress-marker">🎉 Almost done! Final mission!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>🎯 Take-Home Mission<br><span class="gr">My Top 10 Prompt Recipes</span></h2>
+    <p>Create your personal "Prompt Recipe Card" — a cheat sheet you can use every day! 📋</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">📖</div>
+    <div class="call-body">
+      <h4>What's a Prompt Recipe?</h4>
+      <p>A prompt recipe is a template you save and reuse. Instead of thinking from scratch every time, you just fill in the blanks. <strong>Professional prompt engineers earn lakhs by selling their recipe books!</strong> Tonight, you'll create your own personal one. 🚀</p>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.25rem">📝 Your Prompt Recipe Starter Pack</h3>
+    <p style="color:var(--t2);font-size:.9rem;margin-bottom:1.25rem">Here are 5 ready-made recipes. Tonight, create 5 MORE for YOUR subjects and interests!</p>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--brand);margin-bottom:.4rem">RECIPE 1 — EXAM PREP</div>
+        <p style="font-size:.85rem;color:var(--t1)">"Act as a Class [X] [Subject] teacher. Create 10 MCQ questions on [Chapter Name] with 4 options each. Mark the correct answer. Difficulty: medium."</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);margin-bottom:.4rem">RECIPE 2 — NOTE MAKING</div>
+        <p style="font-size:.85rem;color:var(--t1)">"Summarize the chapter '[Chapter Name]' from [Subject] Class [X] in 10 bullet points. Use simple language. Include key terms in bold."</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c2);margin-bottom:.4rem">RECIPE 3 — INSTAGRAM CAPTION</div>
+        <p style="font-size:.85rem;color:var(--t1)">"Write 5 Instagram captions for a photo of [describe photo]. Tone: [funny/inspiring/aesthetic]. Audience: Indian teens aged 14-17. Include 3 relevant hashtags."</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c4);margin-bottom:.4rem">RECIPE 4 — EXPLAIN ANYTHING</div>
+        <p style="font-size:.85rem;color:var(--t1)">"Explain [concept] to me like I'm [age] years old. Use a [cricket/Bollywood/food] analogy. Keep it under 100 words. No technical jargon."</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c5);margin-bottom:.4rem">RECIPE 5 — DEBATE PREP</div>
+        <p style="font-size:.85rem;color:var(--t1)">"Give me 5 strong arguments FOR [topic] and 5 strong arguments AGAINST it. Format as two columns. Class [X] level language."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🏠 Tonight's Mission</h4>
+    <p>In your notebook, write your <strong>"My Top 10 Prompt Recipes" card</strong> — the 5 above, plus 5 you create for YOUR needs:</p>
+    <ul>
+      <li>Think about your 5 favorite subjects</li>
+      <li>Think about how you use your phone (Instagram, music, studies)</li>
+      <li>Create one recipe for each — test it on ChatGPT</li>
+      <li>Share your best recipe with the class tomorrow!</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎉</div>
+    <div class="call-body">
+      <h4>Session 2 Complete! You're a Prompt Engineer Now! ⚡</h4>
+      <p>Next session: <strong>AI for Exam Prep</strong> — turn ChatGPT into your personal tutor that never gets tired, never judges, and is always available. 📚</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:2rem">
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a> &nbsp;|&nbsp; 🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built by <span class="brand">TARAhut AI Labs</span> — AI Education for India's Future</p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Senior Track: AI Explorer (Class 8-10) &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const secIds=['s1','s2','s3','s4','s5'];
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';window.scrollTo({top:0,behavior:'smooth'});if(id==='s4'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function togglePower(card){const isOpen=card.classList.contains('open');document.querySelectorAll('.power-card').forEach(c=>c.classList.remove('open'));if(!isOpen){card.classList.add('open');card.querySelector('.power-icon').textContent='−';}else{card.querySelector('.power-icon').textContent='+';}document.querySelectorAll('.power-card:not(.open) .power-icon').forEach(i=>i.textContent='+');}
+
+// Score prompts
+function scorePrompt(txt){
+  if(!txt||txt.length<20)return{score:5,msg:'Too short — add more detail!'};
+  let sc=0;
+  if(txt.length>50)sc+=20;if(txt.length>100)sc+=15;if(txt.length>150)sc+=10;
+  const kw=['class','format','example','role','word','style','bullet','table','paragraph','act as','you are','limit','simple','explain','create','list','give me','write a','in',words];
+  const keys=['class','format','example','role','word','style','bullet','table','paragraph','act as','you are','limit','simple'];
+  keys.forEach(k=>{if(txt.toLowerCase().includes(k))sc+=5;});
+  if(txt.includes('?')===false)sc+=5;
+  sc=Math.min(sc,100);
+  const msg=sc>=80?'🏆 Excellent prompt! Professional level!':sc>=60?'👍 Good prompt! Add a format or role to improve.':sc>=40?'💪 Getting there! Be more specific and add constraints.':'🔄 Try again — add who, what, how long, and format.';
+  return{score:sc,msg};
+}
+function scoreAll(){
+  let total=0;
+  for(let i=0;i<5;i++){
+    const txt=document.getElementById('fix'+i).value;
+    const {score,msg}=scorePrompt(txt);
+    document.getElementById('fill'+i).style.width=score+'%';
+    document.getElementById('label'+i).textContent=`${score}/100 — ${msg}`;
+    total+=score;
+  }
+  const avg=Math.round(total/5);
+  const res=document.getElementById('scoreResult');
+  res.style.display='block';
+  res.innerHTML=`🎯 Average Score: <strong style="font-size:1.3rem;color:var(--brand)">${avg}/100</strong><br><span style="font-size:.85rem;color:var(--t2)">${avg>=70?'Amazing! You have real prompt engineering talent! 🚀':avg>=50?'Good progress! Practice makes perfect! 💪':'Keep trying — review the Power-Ups and improve each prompt! 🔄'}</span>`;
+}
+
+// Quiz
+const qData=[
+  {q:"What does 'Garbage In, Garbage Out' mean for AI prompts?",o:["AI produces garbage accidentally","A vague prompt produces a vague, unhelpful answer","AI dumps old data when overloaded","You should delete bad conversations"],a:1,e:"If your prompt is vague and unclear, the AI's answer will also be vague and unhelpful. Quality input = quality output! 🎯"},
+  {q:"Which Power-Up means telling AI to become a character, like 'You are a science teacher'?",o:["Be Specific","Give Examples","Set a Role","Add Constraints"],a:2,e:"'Set a Role' (Power-Up #3) means giving AI a persona to embody. This dramatically changes the tone, style, and depth of the answer! 🎭"},
+  {q:"A student types: 'Write a 200-word summary of the French Revolution for my Class 10 History notes. Use bullet points.' What Power-Ups are used?",o:["Be Specific only","Be Specific + Choose Format","Give Examples + Set a Role","Add Constraints only"],a:1,e:"This prompt uses 'Be Specific' (Class 10, History, French Revolution) AND 'Choose Format' (bullet points, 200 words). Great combo! ✅"},
+  {q:"Which of these is the BEST improved version of 'Help me with English'?",o:["Help me with English please","You are my English teacher. Correct my essay about climate change for Class 9. Fix grammar only. Don't rewrite it completely.","Write English things for me to read","English essay ideas please"],a:1,e:"The best prompt sets a role, specifies the task exactly, names the level, and adds a key constraint (fix grammar only, don't rewrite). 🏆"},
+  {q:"What is a Prompt Recipe?",o:["A prompt about cooking","A reusable prompt template with blank spaces to fill in","A secret prompt only AI can read","A prompt that costs money"],a:1,e:"A prompt recipe is a template you create once and reuse. Fill in the blanks each time. It saves time and consistently gives great results! 📖"},
+  {q:"Why do companies pay lakhs for Prompt Engineers?",o:["They build the AI models","They write code for apps","They write prompts that get consistently better results, saving time and money","They design the AI's user interface"],a:2,e:"Prompt Engineers write and test prompts that reliably produce high-quality AI output. This saves companies enormous time and money — which is why they pay so well! 💰"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    document.getElementById('qContent').innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><div style="font-size:1.5rem;margin:.5rem 0">${pct>=80?'🏆':pct>=50?'👍':'💪'}</div><p style="color:var(--t2);font-size:1rem">${pct>=80?'Prompt Engineer in the making! 🎉':pct>=50?'Good work! Review the Power-Ups! 😊':'Practice more prompts and try again! 💪'}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="initQuiz()">Try Again 🔄</button></div>`;
+    return;
+  }
+  const d=qData[cq];
+  document.getElementById('qContent').innerHTML=`<div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${d.q}</div><div class="q-opts">${d.o.map((o,i)=>`<div class="q-opt" onclick="pickAns(${i})"><div class="ol">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><span style="font-size:.85rem;color:var(--t3)">Score: ${sc}/${cq}</span><span></span></div>`;
+}
+function pickAns(i){const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.style.pointerEvents='none');const d=qData[cq];const correct=i===d.a;if(correct)sc++;opts[i].classList.add(correct?'ok':'no');opts[d.a].classList.add('ok');const fb=document.getElementById('qFb');fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Results 🏆'}</button>`;}
+function nextQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

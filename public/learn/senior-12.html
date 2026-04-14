@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 12: Showcase Day + Graduation — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.8rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .gr2{background:var(--g2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.btn-grad{background:linear-gradient(135deg,var(--c4),var(--c3));color:#fff;box-shadow:0 0 30px rgba(251,191,36,.25)}
+.btn-grad:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(251,191,36,.4)}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:600px;height:600px;background:rgba(5,150,105,.08);top:-15%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:500px;height:500px;background:rgba(168,85,247,.07);bottom:-10%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:400px;height:400px;background:rgba(251,191,36,.05);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Journey Timeline */
+.journey-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+.journey-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .3s}
+.journey-card:hover{border-color:rgba(5,150,105,.3);transform:translateY(-3px)}
+.journey-card .jc-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--brand);margin-bottom:.4rem;display:block}
+.journey-card .jc-icon{font-size:1.8rem;margin-bottom:.4rem;display:block}
+.journey-card h4{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:.25rem}
+.journey-card p{color:var(--t2);font-size:.75rem}
+/* Showcase Order */
+.showcase-order{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:2rem 0}
+.so-item{display:flex;gap:14px;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--bd)}
+.so-item:last-child{border-bottom:none}
+.so-num{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--brand);background:rgba(5,150,105,.1);padding:4px 8px;border-radius:6px;flex-shrink:0;min-width:36px;text-align:center}
+.so-text h4{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:.15rem}
+.so-text p{color:var(--t2);font-size:.8rem}
+/* Level Progression */
+.level-track{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:2rem 0}
+.level-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .4s;position:relative;overflow:hidden}
+.level-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.level-card:nth-child(1)::before{background:var(--c5)}
+.level-card:nth-child(2)::before{background:var(--c1)}
+.level-card:nth-child(3)::before{background:var(--c2)}
+.level-card:nth-child(4)::before{background:var(--c4)}
+.level-card.current{border-color:rgba(5,150,105,.4);box-shadow:0 0 20px rgba(5,150,105,.1)}
+.level-card:hover{transform:translateY(-4px)}
+.lc-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;display:block}
+.lc-badge.done{color:var(--c5)}.lc-badge.now{color:var(--brand)}.lc-badge.next{color:var(--t3)}
+.level-card .lc-icon{font-size:2rem;margin-bottom:.5rem;display:block}
+.level-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.35rem}
+.level-card p{color:var(--t2);font-size:.82rem}
+/* Graduation Section */
+.grad-hero{text-align:center;padding:3rem 2rem;background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(251,191,36,.04),rgba(168,85,247,.04));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);margin:2rem 0;position:relative;overflow:hidden}
+.grad-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(5,150,105,.03),rgba(0,240,255,.03));pointer-events:none}
+.grad-hero h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;margin-bottom:.8rem;background:linear-gradient(135deg,var(--c4),var(--brand),var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-hero p{font-size:1.05rem;color:var(--t2);max-width:600px;margin:0 auto}
+.grad-confetti{font-size:2rem;margin-bottom:1rem;display:block;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.achievements{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:2rem 0}
+.achievement{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;text-align:center;transition:all .3s}
+.achievement:hover{border-color:rgba(251,191,36,.3);transform:translateY(-3px);box-shadow:0 10px 30px rgba(251,191,36,.06)}
+.achievement .ach-icon{font-size:2rem;margin-bottom:.5rem;display:block}
+.achievement h4{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--c4);margin-bottom:.25rem}
+.achievement p{color:var(--t2);font-size:.78rem}
+/* Share Box */
+.share-box{background:linear-gradient(135deg,rgba(37,211,102,.06),rgba(5,150,105,.04));border:1px solid rgba(37,211,102,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.share-box h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c5);margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.share-msg{background:var(--bg);border:1px solid rgba(37,211,102,.2);border-radius:var(--rs);padding:1.25rem;font-size:.88rem;color:var(--t2);line-height:1.7;font-family:'Nunito Sans',sans-serif;margin:1rem 0;position:relative}
+.share-msg em{color:var(--t1);font-style:normal}
+.share-copy-btn{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:var(--c5);padding:8px 20px;border-radius:99px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;transition:all .3s;margin-top:.5rem}
+.share-copy-btn:hover{background:rgba(37,211,102,.2)}
+/* Level 2 CTA */
+.level2-cta{background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:2px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2.5rem;text-align:center;margin:2rem 0}
+.level2-cta h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.6rem;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.level2-cta p{color:var(--t2);font-size:.92rem;max-width:520px;margin:0 auto 1.5rem}
+@media(max-width:768px){.sec{padding:2rem 1rem 4rem}.journey-grid,.level-track,.achievements{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.journey-grid,.level-track,.achievements{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Final Session &middot; 12 of 12 🎓</div>
+  <h1>Session 12:<br><span class="gr">Showcase Day</span><br><span class="gr2">+ Graduation 🎓</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>You started as a curious student. Today, you leave as an AI Explorer. This moment belongs to YOU.</p>
+  <div class="hero-btns">
+    <button class="btn btn-grad" onclick="startLearning()">Begin Your Final Session 🎓</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Final Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>You Made It!</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Showcase Guide</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>What's Next</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Final Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Graduation 🎓</button>
+  </div>
+</nav>
+
+<!-- S1: You Made It! -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>You <span class="gr">Made It!</span> 🌟</h2>
+    <p>12 sessions. 4 weeks. One journey that changed the way you see the world.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">💚</div><div class="call-body"><h4>A Message Before We Start</h4><p>Take a breath. Look around at your classmates. Every single one of you showed up, learned hard things, built real projects, and gave feedback that made each other better. <strong>That's not nothing — that's everything.</strong> Most adults never do that.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:2rem 0 .75rem">Your 12-Session Journey — Look how far you've come! 🗺️</h3>
+  <div class="journey-grid">
+    <div class="journey-card"><span class="jc-num">SESSION 1</span><span class="jc-icon">🤖</span><h4>What is AI?</h4><p>The basics — you didn't know what AI really was</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 2</span><span class="jc-icon">⚙️</span><h4>How AI Works</h4><p>Data, training, neural networks</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 3</span><span class="jc-icon">💬</span><h4>Prompt Engineering</h4><p>How to actually talk to AI</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 4</span><span class="jc-icon">🎨</span><h4>AI Tools Lab</h4><p>Hands-on with real tools</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 5</span><span class="jc-icon">💼</span><h4>AI in Business</h4><p>How companies use AI</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 6</span><span class="jc-icon">💰</span><h4>Earn with AI</h4><p>Real ways to create value</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 7</span><span class="jc-icon">🚀</span><h4>Career Explorer</h4><p>10 new careers and your portfolio</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 8</span><span class="jc-icon">📱</span><h4>Build Your Brand</h4><p>Content, social media, AI-powered</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 9</span><span class="jc-icon">⚖️</span><h4>AI Ethics</h4><p>Deepfakes, debate, AI rules</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 10</span><span class="jc-icon">🏗️</span><h4>Capstone Part 1</h4><p>Chose your project, made your plan</p></div>
+    <div class="journey-card"><span class="jc-num">SESSION 11</span><span class="jc-icon">🎯</span><h4>Capstone Part 2</h4><p>Peer review, presentation coaching</p></div>
+    <div class="journey-card" style="border-color:rgba(5,150,105,.4);box-shadow:0 0 20px rgba(5,150,105,.1)"><span class="jc-num" style="color:var(--brand)">SESSION 12</span><span class="jc-icon">🎓</span><h4>Showcase + Graduation</h4><p style="color:var(--brand)"><strong>TODAY!</strong></p></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">📊</div><div class="call-body"><h4>What You've Actually Learned</h4><p><strong>Technical:</strong> How AI works, prompt engineering, AI tools, data basics<br><strong>Creative:</strong> Content creation, personal branding, portfolio building<br><strong>Critical:</strong> Ethics, deepfake detection, responsible AI use<br><strong>Professional:</strong> Project management, peer feedback, public presentations<br>That's not a school curriculum. That's a life curriculum.</p></div></div>
+
+  <div class="emotional-hook"><p>Twelve sessions ago, most of you didn't know what a "prompt" was. Today you're building projects, giving presentations, and thinking about careers that didn't exist 5 years ago. <strong>You grew — and growth is the only thing that matters.</strong></p></div>
+
+  <div class="identity-shift">You started as a curious student. You're leaving as an AI Explorer. That title is earned — not given. 🌟</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Showcase Guide →</button></div>
+</div>
+
+<!-- S2: Showcase Guide -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ You know how far you've come. Now let's make the Showcase count!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Showcase <span class="gr">Guide</span> 🎤</h2>
+    <p>Everything you need to know for the next few hours. This is your moment — own it!</p>
+  </div>
+
+  <div class="showcase-order">
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:1rem;color:var(--c1)">📋 Showcase Format</h3>
+    <div class="so-item"><div class="so-num">1</div><div class="so-text"><h4>Welcome & Introduction (5 min)</h4><p>Your teacher/facilitator opens the Showcase and introduces the format</p></div></div>
+    <div class="so-item"><div class="so-num">2</div><div class="so-text"><h4>Student Presentations (3–5 min each)</h4><p>Each student presents their Capstone Project. Listen and support your classmates!</p></div></div>
+    <div class="so-item"><div class="so-num">3</div><div class="so-text"><h4>Q&A After Each Presentation (2 min)</h4><p>Audience and judges can ask questions. Be ready — and be brave!</p></div></div>
+    <div class="so-item"><div class="so-num">4</div><div class="so-text"><h4>Peer Recognition (5 min)</h4><p>Classmates nominate each other for achievements — most creative, most useful, most improved</p></div></div>
+    <div class="so-item"><div class="so-num">5</div><div class="so-num" style="background:rgba(251,191,36,.1);color:var(--c4)"></div><div class="so-text"><h4>🎓 Graduation Ceremony</h4><p>Certificate presentation, photos, celebrate TOGETHER!</p></div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎤</div><div class="call-body"><h4>When It's YOUR Turn</h4><p>Walk to the front confidently. Take one deep breath. Start with your hook — the opening that grabs attention. Remember: <strong>speak slowly, make eye contact, smile</strong>. The audience wants you to succeed. They're rooting for you.</p></div></div>
+
+  <div class="callout call-3"><div class="call-ico">👂</div><div class="call-body"><h4>When Others Are Presenting</h4><p><strong>Be the audience you wish you had.</strong> Put your phone away. Listen genuinely. Give encouragement (a nod, a smile). Think of ONE question to ask. Being a good audience member is as important as being a good presenter.</p></div></div>
+
+  <div class="callout call-4"><div class="call-ico">😅</div><div class="call-body"><h4>If You Feel Nervous</h4><p>Take three slow, deep breaths before you start. Remember: <strong>it's OK to be nervous — everyone is</strong>. Your classmates are not judging you — they know exactly how you feel because they feel it too. If you lose your place, pause, take a breath, and continue. Nobody will mind the pause.</p></div></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: What's Next →</button></div>
+</div>
+
+<!-- S3: What's Next -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ Showcase ready. Now let's look at your future as an AI learner!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>What's <span class="gr">Next?</span> 🚀</h2>
+    <p>Today is an ending. But it's also a beginning. Here's what comes after AI Explorer!</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:1.5rem 0 .75rem">The TARAhut AI Learning Path — Your Journey Ahead:</h3>
+  <div class="level-track">
+    <div class="level-card current"><span class="lc-badge done">✓ COMPLETED</span><span class="lc-icon">🔭</span><h4>AI Explorer</h4><p>Sessions 1–12. You understand AI, built projects, learned to create. <strong>That's you — right now.</strong></p></div>
+    <div class="level-card"><span class="lc-badge next">→ LEVEL 2</span><span class="lc-icon">🛠️</span><h4>AI Creator</h4><p>Build real AI-powered tools, start a side income, deeper prompt engineering, no-code development</p></div>
+    <div class="level-card"><span class="lc-badge next">→ LEVEL 3</span><span class="lc-icon">🏗️</span><h4>AI Builder</h4><p>Launch a project or product, work with clients, build an audience, entrepreneurship basics</p></div>
+    <div class="level-card"><span class="lc-badge next">→ LEVEL 4</span><span class="lc-icon">🚀</span><h4>AI Innovator</h4><p>Advanced specialisation, career launch, build a startup, contribute to the AI ecosystem</p></div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">📱</div><div class="call-body"><h4>Stay Connected — TARAhut Alumni Group</h4><p>Join our WhatsApp alumni group for AI Explorer graduates! Get:<br>• Regular AI news and updates<br>• New tool recommendations<br>• Internship and opportunity alerts<br>• Support from seniors who've been where you are<br><strong>Ask your facilitator for the join link today!</strong></p></div></div>
+
+  <div class="callout call-2"><div class="call-ico">🌟</div><div class="call-body"><h4>Keep the Momentum Going</h4><p>The biggest risk after graduation is <strong>stopping</strong>. The AI world changes every week. Commit to:<br>• 30 minutes of AI learning or practice every week<br>• One new AI tool to try per month<br>• Following 2–3 AI creators/educators online<br>• Sharing what you learn with at least one person</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎯 Today's Commitment</h4>
+    <p>Write down ONE thing you're going to do in the next 7 days to continue your AI journey. Be specific. Put a date on it. Tell one classmate about it — accountability works!</p>
+  </div>
+
+  <div class="emotional-hook"><p>The gap between you and your peers started closing the day you joined this programme. It continues to close every time you open a new AI tool, try something new, or teach someone else what you know. <strong>Keep going. The world needs AI-literate young people who also have good values. That's you.</strong></p></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Final Quiz →</button></div>
+</div>
+
+<!-- S4: Final Quiz - 8 questions -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Final Quiz — <span class="gr">Course Review</span> 🏆</h2>
+    <p>8 questions spanning all 12 sessions. This is your final challenge — show everything you've learned!</p>
+  </div>
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">To Graduation →</button></div>
+</div>
+
+<!-- S5: Graduation -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>🎓 <span class="gr">Graduation</span></h2>
+    <p>This moment is yours. You earned it.</p>
+  </div>
+
+  <div class="grad-hero">
+    <span class="grad-confetti">🎊</span>
+    <h2>You are now AI-Literate!</h2>
+    <p>You started as a curious student. You're leaving as an AI Explorer who understands, uses, and thinks critically about artificial intelligence. That's not just a certificate — it's a superpower.</p>
+    <div style="margin-top:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--brand);letter-spacing:2px">TARAhut AI Labs &middot; AI Explorer Program &middot; 2026</div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:2rem 0 .75rem">Your Graduation Achievements 🏆</h3>
+  <div class="achievements">
+    <div class="achievement"><span class="ach-icon">🧠</span><h4>AI Understanding</h4><p>Understand what AI is, how it works, and how it thinks</p></div>
+    <div class="achievement"><span class="ach-icon">🎤</span><h4>Prompt Engineer</h4><p>Know how to write prompts that get real results from AI</p></div>
+    <div class="achievement"><span class="ach-icon">🛡️</span><h4>Ethics Guardian</h4><p>Understand deepfakes, privacy, and responsible AI use</p></div>
+    <div class="achievement"><span class="ach-icon">📱</span><h4>Personal Brand Builder</h4><p>Know how to create content and build an online presence</p></div>
+    <div class="achievement"><span class="ach-icon">🔭</span><h4>Career Explorer</h4><p>Aware of 10+ AI-era careers and how to start building toward them</p></div>
+    <div class="achievement"><span class="ach-icon">🏗️</span><h4>Project Maker</h4><p>Completed a full Capstone Project from idea to presentation</p></div>
+    <div class="achievement"><span class="ach-icon">🎭</span><h4>Confident Presenter</h4><p>Presented your work to an audience — and survived! (Better than survived — you thrived.)</p></div>
+    <div class="achievement"><span class="ach-icon">🤝</span><h4>Peer Collaborator</h4><p>Gave and received feedback that made others' work better</p></div>
+  </div>
+
+  <div class="share-box">
+    <h3>📲 Share Your Achievement!</h3>
+    <p style="color:var(--t2);font-size:.88rem;margin-bottom:.5rem">Copy this message and send it on WhatsApp or post it to your social media:</p>
+    <div class="share-msg" id="shareMsg">
+🎓 <em>I just graduated from the TARAhut AI Explorer Program!</em>
+
+Over 12 sessions, I learned:
+🤖 How AI actually works
+🎤 Prompt engineering
+⚖️ AI ethics and how to spot deepfakes
+📱 Content creation and personal branding
+🏗️ Built my own Capstone Project and presented it live!
+
+I'm now an <em>AI Explorer</em> — and I'm just getting started.
+
+Thank you <em>TARAhut AI Labs</em> for making AI education real, relevant, and fun.
+
+👉 Learn AI for your future: <em>tarahutailabs.com</em>
+📞 <em>+91 92008-82008</em>
+
+#TARAhutAILabs #AIExplorer #AIEducation #FutureReady
+    </div>
+    <button class="share-copy-btn" onclick="copyShare()">📋 Copy Message</button>
+    <span id="copyConfirm" style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c5);margin-left:10px;display:none">✓ Copied!</span>
+  </div>
+
+  <div class="level2-cta">
+    <h3>Ready for Level 2? 🚀</h3>
+    <p>The AI Creator track picks up where you left off — build real tools, earn real income, and go deeper into the tech you just fell in love with. Registration opens soon!</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+      <a href="https://tarahutailabs.com" class="btn btn-glow">Join Level 2 →</a>
+      <a href="tel:+919200882008" class="btn btn-ghost">📞 Call Us</a>
+    </div>
+    <p style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)">tarahutailabs.com &middot; +91 92008-82008</p>
+  </div>
+
+  <div style="text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:2rem">
+    <div style="font-size:3rem;margin-bottom:1rem">🎓</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--brand);margin-bottom:.5rem">Congratulations, AI Explorer!</div>
+    <p style="color:var(--t2);font-size:.92rem;max-width:500px;margin:0 auto;line-height:1.75">The world's most important technology is now something you understand. Use that knowledge kindly, honestly, and bravely. The future is being built by people exactly like you.</p>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3);margin-top:1.5rem">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Final Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 12 — Final Session &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+  <p style="margin-top:.75rem;color:var(--brand);font-family:'Syne',sans-serif;font-weight:700">🎓 Congratulations to every AI Explorer who completed this journey. You did it.</p>
+</footer>
+
+<script>
+// Particles — enhanced for graduation
+const canvas=document.getElementById('particleCanvas');const ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+const colors=['rgba(0,240,255,','rgba(5,150,105,','rgba(251,191,36,','rgba(168,85,247,'];
+for(let i=0;i<80;i++){const c=colors[Math.floor(Math.random()*colors.length)];particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:Math.random()*2+.5,o:Math.random()*.35+.1,c})}
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c+p.o+')';ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+const sections=['s1','s2','s3','s4','s5'];let cur='s1';
+function go(id){document.getElementById(cur).classList.remove('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');cur=id;window.scrollTo({top:0,behavior:'smooth'});const idx=sections.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Copy share message
+function copyShare(){
+  const msg=document.getElementById('shareMsg').innerText;
+  navigator.clipboard.writeText(msg).then(()=>{
+    const conf=document.getElementById('copyConfirm');
+    conf.style.display='inline';
+    setTimeout(()=>{conf.style.display='none'},3000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    const conf=document.getElementById('copyConfirm');conf.style.display='inline';setTimeout(()=>{conf.style.display='none'},3000);
+  });
+}
+
+// Final Quiz — 8 questions spanning all 12 sessions
+const quizData=[
+  {q:'What is the best way to describe AI in simple terms?',opts:['A robot that thinks exactly like a human','A very smart program that finds patterns in data to complete tasks','A computer virus that runs automatically','Software only engineers can understand and use'],ans:1,fb:'AI is pattern recognition at massive scale — it finds patterns in huge amounts of data and uses them to complete tasks like writing, translating, or identifying images. It\'s not a thinking human — it\'s an incredibly powerful pattern machine.'},
+  {q:'What is "prompt engineering"?',opts:['Building physical AI hardware','Writing code for AI models from scratch','Crafting effective instructions to get the best results from AI tools','Engineering electrical signals for robots'],ans:2,fb:'Prompt engineering is the skill of writing clear, specific instructions (prompts) that get AI tools to produce the best possible outputs. It\'s one of the most in-demand AI skills that doesn\'t require coding knowledge!'},
+  {q:'A deepfake is MOST dangerous because:',opts:['It makes images look blurry','It can convincingly show real people saying or doing things they never did','It crashes social media platforms','It always has an obvious watermark'],ans:1,fb:'Deepfakes can put real words in real people\'s mouths — making politicians appear to say things they didn\'t, spreading misinformation, and damaging reputations. The danger is how convincing they look to untrained eyes.'},
+  {q:'Which of these is a new AI-era career that barely existed 5 years ago?',opts:['Teacher','Doctor','AI Prompt Engineer','Bus Driver'],ans:2,fb:'AI Prompt Engineer is a genuinely new career created by the rise of large language models (LLMs) like ChatGPT. These professionals write and optimise the instructions that make AI tools work effectively for businesses.'},
+  {q:'What does "content pillar" mean in personal branding?',opts:['A literal column in a building','3–5 core topics you consistently create content about','The number of followers you have','A paid promotion from a brand'],ans:1,fb:'Content pillars are your core topics — the 3–5 themes your audience knows you for. Consistently creating content around pillars builds a recognisable personal brand and keeps your creative focus clear.'},
+  {q:'According to the 5 AI Rules, what should you ALWAYS do before sharing AI-generated information?',opts:['Share it immediately because AI is always correct','Delete it and create your own information instead','Verify it using reliable sources because AI can hallucinate (make things up)','Only share it with close friends'],ans:2,fb:'AI hallucination — when AI confidently states wrong information — is a real risk. Always fact-check important AI outputs using reliable sources before sharing or using them in work. Even the best AI models make factual errors!'},
+  {q:'What is the recommended presentation structure for a student Showcase?',opts:['Introduction → Content → Conclusion','Hook → Problem → Solution → Demo → Call to Action','Title Slide → Facts → Thank You','About Me → Research → Recommendations'],ans:1,fb:'The Hook → Problem → Solution → Demo → Call to Action structure creates a compelling narrative that makes the audience care, understand, and remember your work. It\'s used by TED Talks, startup pitches, and the world\'s best communicators!'},
+  {q:'Completing the TARAhut AI Explorer Program means you can now:',opts:['Build AI from scratch in any programming language','Understand AI, use AI tools effectively, think critically about AI ethics, and build AI-powered projects','Only use ChatGPT for school homework','Work as a professional AI engineer immediately'],ans:1,fb:'You\'ve built real literacy in AI — you understand how it works, you can use tools effectively, you know how to use it responsibly, and you\'ve built a real project. That\'s not just a certificate — it\'s a genuine skill foundation for the AI-powered future.'}
+];
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');renderQ();}
+function renderQ(){if(qCur>=quizData.length){showScore();return}const d=quizData[qCur];qAnswered=false;document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Final Quiz — Question ${qCur+1} of ${quizData.length}</span>${d.q}</div><div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;}
+function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];const opts=document.querySelectorAll('.q-opt');opts[d.ans].classList.add('ok');const fb=document.getElementById('qFb');if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}document.getElementById('qNextBtn').style.display='inline-flex';}
+function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
+function showScore(){
+  const pct=Math.round(qScore/quizData.length*100);
+  let msg,emoji;
+  if(pct>=90){msg='OUTSTANDING! You mastered the entire AI Explorer curriculum. You are truly AI-literate! 🏆';emoji='🌟'}
+  else if(pct>=75){msg='Excellent work! You have strong AI literacy across all 12 sessions. Keep growing! 🚀';emoji='🎯'}
+  else if(pct>=60){msg='Good job! A few topics to revisit, but you have solid foundations. The journey continues! 💪';emoji='👍'}
+  else{msg='The learning doesn\'t stop here! Revisit the sessions and keep exploring. Every expert was once a beginner. 📚';emoji='🌱'}
+  document.getElementById('qArea').innerHTML=`
+    <div class="q-score-box">
+      <div style="font-size:3rem;margin-bottom:.5rem">${emoji}</div>
+      <div class="big">${qScore}/${quizData.length}</div>
+      <p style="font-size:1.2rem;font-family:'Syne',sans-serif;font-weight:800;margin:.5rem 0;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${pct}% — Final Score</p>
+      <p style="color:var(--t2);font-size:.92rem;max-width:400px;margin:0 auto .75rem">${msg}</p>
+      <div style="background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:1rem;margin:1rem auto;max-width:400px">
+        <p style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;color:var(--brand)">🎓 You are now officially an AI Explorer</p>
+        <p style="font-size:.82rem;color:var(--t2);margin-top:.3rem">Certificate of completion from TARAhut AI Labs</p>
+      </div>
+      <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1rem">
+        <button class="btn btn-glow" onclick="go('s5')">Go to Graduation 🎓</button>
+        <button class="btn btn-ghost btn-sm" onclick="qCur=0;qScore=0;buildQuiz()">Retry Quiz</button>
+      </div>
+    </div>`;
+}
+buildQuiz();
+</script>
+</body>
+</html>

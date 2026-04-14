@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 11: Capstone Project Part 2 — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Feedback Cards */
+.feedback-frame{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.fb-starters{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem}
+.fb-starter{display:flex;gap:14px;align-items:flex-start;padding:1rem;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);transition:all .3s;cursor:default}
+.fb-starter:hover{border-color:rgba(5,150,105,.3)}
+.fb-badge{font-size:1.5rem;flex-shrink:0}
+.fb-text h4{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--brand);margin-bottom:.2rem}
+.fb-text p{color:var(--t2);font-size:.83rem}
+.fb-text .example{color:var(--c1);font-style:italic;font-size:.8rem;margin-top:.2rem}
+/* Story Structure */
+.story-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin:2rem 0}
+.story-step{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .3s;position:relative}
+.story-step:hover{border-color:rgba(0,240,255,.3);transform:translateY(-3px)}
+.step-arrow{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:1.2rem;color:var(--t3);z-index:2}
+.story-step .ss-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);margin-bottom:.5rem;display:block}
+.story-step .ss-ico{font-size:1.8rem;margin-bottom:.5rem;display:block}
+.story-step h4{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:.3rem}
+.story-step p{color:var(--t2);font-size:.78rem}
+/* Checklist */
+.checklist{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.checklist h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:1.25rem;color:var(--c1)}
+.cl-item{display:flex;align-items:center;gap:14px;padding:1rem;border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:.6rem;cursor:pointer;transition:all .3s;user-select:none}
+.cl-item:hover{border-color:rgba(5,150,105,.25);background:rgba(5,150,105,.02)}
+.cl-item.done{border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04)}
+.cl-box{width:24px;height:24px;border:2px solid var(--bd);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;font-size:.9rem}
+.cl-item.done .cl-box{background:var(--c5);border-color:var(--c5)}
+.cl-item.done .cl-box::after{content:'✓';color:var(--bg);font-weight:900}
+.cl-label{font-size:.9rem;font-family:'Syne',sans-serif;font-weight:600}
+.cl-item.done .cl-label{color:var(--c5);text-decoration:line-through;opacity:.8}
+.cl-progress{text-align:center;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--brand)}
+/* Takehome */
+.takehome{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.takehome h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c4);margin-bottom:1rem}
+.takehome p{color:var(--t2);font-size:.9rem;margin-bottom:.6rem}
+.takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
+.takehome li{margin-bottom:.4rem}
+@media(max-width:768px){.sec{padding:2rem 1rem 4rem}.story-steps{grid-template-columns:1fr 1fr}.step-arrow{display:none}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 11 of 12</div>
+  <h1>Session 11: Capstone Project<br><span class="gr">Part 2 🎯</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Peer review, presentation coaching, and final preparations. Showcase Day is tomorrow — let's make sure you're ready!</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Let's Finish Strong 🎯</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Peer Review</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Presentation Coach</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Final Checklist</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Take-Home</button>
+  </div>
+</nav>
+
+<!-- S1: Peer Review -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Peer Review <span class="gr">Workshop</span> 🤝</h2>
+    <p>Giving great feedback is a skill. Learning to receive it gracefully is another. Both will help you your whole life.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">💡</div><div class="call-body"><h4>Why Peer Review?</h4><p>Your brain is blind to its own mistakes — you know what you MEANT to say, so you don't notice what's missing. <strong>A fresh pair of eyes catches what you can't.</strong> The best companies in the world use peer review for everything — code, writing, design. You're learning a professional skill today.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:2rem 0 .75rem">The 3 Feedback Starters — Use these EXACT phrases:</h3>
+
+  <div class="feedback-frame">
+    <div class="fb-starters">
+      <div class="fb-starter"><div class="fb-badge">❤️</div><div class="fb-text"><h4>"I like..." — The Strength</h4><p>Start with something genuine you appreciate about their work. Specific is better than vague.</p><div class="example">Example: "I like how you explained AI in simple words — I actually understood it!"</div></div></div>
+      <div class="fb-starter"><div class="fb-badge">🤔</div><div class="fb-text"><h4>"What if you..." — The Suggestion</h4><p>Offer an improvement as a question or idea, not a command. Keep it actionable and doable.</p><div class="example">Example: "What if you added one real-life example here? It would make this section stronger."</div></div></div>
+      <div class="fb-starter"><div class="fb-badge">✨</div><div class="fb-text"><h4>"This would be even better with..." — The Polish</h4><p>A specific upgrade that could take it from good to great. Think about what the audience would love.</p><div class="example">Example: "This would be even better with a visual/graph showing the data instead of just numbers."</div></div></div>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">⚠️</div><div class="call-body"><h4>Feedback Rules</h4><p><strong>DO:</strong> Be specific, be kind, be honest, focus on the work (not the person), ask clarifying questions<br><strong>DON'T:</strong> Say "it's great!" without explanation, criticise without suggesting improvement, compare to others' projects, be harsh or dismissive</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎯 Class Activity — Peer Review Round</h4>
+    <p>Pair up with someone whose project is DIFFERENT from yours. Use the 3 feedback starters above to give them written feedback (at least 3 lines each). Then swap!</p>
+    <ul>
+      <li>Review time: 5 minutes to read their work</li>
+      <li>Write feedback: 3 minutes using the starters</li>
+      <li>Share and discuss: 2 minutes each</li>
+    </ul>
+  </div>
+
+  <div class="emotional-hook"><p>The best version of your project isn't what YOU think is good — it's what your <strong>audience</strong> finds clear, interesting, and useful. Peer review helps you see through their eyes before the real presentation.</p></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Presentation Coach →</button></div>
+</div>
+
+<!-- S2: Presentation Coaching -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ Peer review done! Now let's nail your presentation delivery.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Presentation <span class="gr">Coaching</span> 🎤</h2>
+    <p>A great project presented badly is a missed opportunity. Learn the structure that makes every presentation memorable.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🎭</div><div class="call-body"><h4>The Golden Rule of Presenting</h4><p>People don't remember <strong>facts</strong>. They remember <strong>feelings and stories</strong>. Your presentation should make the audience FEEL something — curious, inspired, surprised. Structure your story to create that feeling.</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:2rem 0 .75rem">The 5-Part Presentation Structure — Click each stage!</h3>
+
+  <div class="story-steps">
+    <div class="story-step" onclick="storyClick(0)">
+      <div class="step-arrow">→</div>
+      <span class="ss-num">PART 1</span>
+      <span class="ss-ico">🪝</span>
+      <h4>HOOK</h4>
+      <p>Grab attention in the first 15 seconds</p>
+    </div>
+    <div class="story-step" onclick="storyClick(1)">
+      <div class="step-arrow">→</div>
+      <span class="ss-num">PART 2</span>
+      <span class="ss-ico">❓</span>
+      <h4>PROBLEM</h4>
+      <p>What problem does your project solve?</p>
+    </div>
+    <div class="story-step" onclick="storyClick(2)">
+      <div class="step-arrow">→</div>
+      <span class="ss-num">PART 3</span>
+      <span class="ss-ico">💡</span>
+      <h4>SOLUTION</h4>
+      <p>How does your project solve it?</p>
+    </div>
+    <div class="story-step" onclick="storyClick(3)">
+      <div class="step-arrow">→</div>
+      <span class="ss-num">PART 4</span>
+      <span class="ss-ico">🎬</span>
+      <h4>DEMO</h4>
+      <p>Show the actual work you built</p>
+    </div>
+    <div class="story-step" onclick="storyClick(4)">
+      <span class="ss-num">PART 5</span>
+      <span class="ss-ico">📢</span>
+      <h4>CALL TO ACTION</h4>
+      <p>What do you want the audience to do or remember?</p>
+    </div>
+  </div>
+  <div id="storyDetail" style="background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;display:none;animation:fadeSlide .3s ease"></div>
+
+  <div class="callout call-3"><div class="call-ico">⏱️</div><div class="call-body"><h4>Timing Guide</h4><p><strong>Total time: 3–5 minutes max</strong><br>Hook (15–30 sec) → Problem (30 sec) → Solution (1 min) → Demo (1–2 min) → Call to Action (30 sec)<br>Practise with a timer. If it goes over 5 minutes, cut something. Less is always more!</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎤 Rehearsal Mode</h4>
+    <ul>
+      <li>Set a 4-minute timer on your phone</li>
+      <li>Stand up and present your FULL project to yourself (or to a friend/family member)</li>
+      <li>Record yourself on your phone and watch it back — note 1 thing to improve</li>
+      <li>Repeat until it feels comfortable, not perfect</li>
+    </ul>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">😬</div><div class="call-body"><h4>About Nervousness</h4><p>Here's the truth: <strong>every single presenter gets nervous</strong>, including experienced speakers. Nervousness means you care. Channel it into energy. Take a deep breath before you start. Speak slightly slower than you think you need to. Make eye contact with one friendly face in the room.</p></div></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Final Checklist →</button></div>
+</div>
+
+<!-- S3: Final Checklist -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ Presentation structure mastered! Now let's make sure everything is ready.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Final <span class="gr">Checklist</span> ✅</h2>
+    <p>Tick each item as you complete it. Don't show up to the Showcase without all boxes checked!</p>
+  </div>
+
+  <div class="checklist">
+    <h3>Pre-Showcase Checklist 🚀</h3>
+    <div id="checklistItems">
+      <!-- Filled by JS -->
+    </div>
+    <div class="cl-progress" id="clProgress">0 of 8 complete</div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>Preparing for Q&A</h4><p>After your presentation, the audience and judges may ask questions. Don't panic!<br><strong>Tips for Q&A:</strong><br>• It's OK to say "That's a great question — I hadn't thought about that yet"<br>• Repeat the question before answering (gives you time to think)<br>• "I'd like to explore that in the future" is a valid answer<br>• Never make up an answer you don't know</p></div></div>
+
+  <div class="micro-action">
+    <h4>🌟 Predict 3 Questions</h4>
+    <p>Think about your project and write down 3 questions someone might ask about it. Prepare short, clear answers for each. This is how professional speakers prepare for Q&A!</p>
+  </div>
+
+  <div class="identity-shift">You have worked hard for 11 sessions. Tomorrow is your moment to show what you've learned. You're ready. 🌟</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz →</button></div>
+</div>
+
+<!-- S4: Quiz -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Session 11 <span class="gr">Quiz</span> 🧠</h2>
+    <p>6 questions about presentations and feedback. Let's go!</p>
+  </div>
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take-Home →</button></div>
+</div>
+
+<!-- S5: Take-Home -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Take-Home: <span class="gr">Final Rehearsal</span> 🎤</h2>
+    <p>Tonight is your last chance to prepare. Make it count!</p>
+  </div>
+
+  <div class="takehome">
+    <h3>📋 Tonight's Mission — Before Showcase Day</h3>
+    <ul>
+      <li><strong>Rehearse out loud</strong> at least 2 more times — once alone, once in front of a family member</li>
+      <li><strong>Time yourself</strong> — aim for 3–5 minutes</li>
+      <li><strong>Fix any feedback</strong> you got from peer review today</li>
+      <li><strong>Prepare 3 answers</strong> to likely questions about your project</li>
+      <li><strong>Set everything up</strong> — slides, documents, any props ready to go</li>
+      <li><strong>Sleep early</strong> — seriously, a rested brain performs better</li>
+    </ul>
+    <p style="margin-top:1rem">🎽 <strong>Dress smart for tomorrow.</strong> First impressions matter. Wear something you feel confident and comfortable in.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🌟</div><div class="call-body"><h4>See You at the Showcase!</h4><p>Tomorrow is <strong>Session 12 — Showcase Day + Graduation</strong>. You've worked hard for 4 weeks. Tomorrow you get to show the world (and yourself) what you're capable of. Every great presenter was once a nervous beginner. <strong>You've already started — that makes you braver than most.</strong></p></div></div>
+
+  <div class="emotional-hook"><p>Nerves mean you care. Caring means you'll do well. You've put in the work. <strong>Tomorrow, just show up and be YOU.</strong> That's always enough.</p></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 11 &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas');const ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+const sections=['s1','s2','s3','s4','s5'];let cur='s1';
+function go(id){document.getElementById(cur).classList.remove('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');cur=id;window.scrollTo({top:0,behavior:'smooth'});const idx=sections.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Story Steps
+const storyDetails=[
+  {title:'🪝 HOOK — Grab Attention Immediately',body:'Start with a bold statement, a surprising fact, or a question. Examples: "What if I told you that AI could...", "In 2030, this problem will affect...", "Imagine if your school could..." — You have 15 seconds to make them care. Don\'t waste them with "Hi, I\'m [name], today I\'ll present about..."'},
+  {title:'❓ PROBLEM — Make Them Feel It',body:'Clearly explain what problem your project addresses. Use a real example or story. Make the audience understand WHY this matters. Without a clear problem, your solution means nothing. Keep this to 30 seconds.'},
+  {title:'💡 SOLUTION — Your Big Reveal',body:'This is where you explain YOUR project. What did you build/research/create? How does it solve the problem? Be clear and confident. Don\'t rush — this is the heart of your presentation. Aim for 1 minute here.'},
+  {title:'🎬 DEMO — Show, Don\'t Just Tell',body:'This is the most powerful part. Show your actual slides, poster, app, article, or creation. Let people SEE the work. Walk them through it. Point to specific things. A demo makes everything more real. Aim for 1–2 minutes.'},
+  {title:'📢 CALL TO ACTION — Leave Them Doing Something',body:'End with: "What I want you to remember is..." or "Try this yourself by..." or "The next step I\'m taking is..." — Give the audience something to THINK, FEEL, or DO after your presentation ends. This is what makes presentations memorable.'}
+];
+function storyClick(i){
+  const d=storyDetails[i];
+  const el=document.getElementById('storyDetail');
+  el.style.display='block';
+  el.innerHTML=`<strong style="font-family:'Syne',sans-serif;color:var(--brand);font-size:.95rem">${d.title}</strong><p style="color:var(--t2);font-size:.87rem;margin-top:.5rem">${d.body}</p>`;
+}
+
+// Checklist
+const clItems=['Project is fully complete (all deliverables done)','Presentation slides/materials are ready and organised','I have rehearsed at least ONCE out loud','Presentation is timed to 3–5 minutes','I have prepared answers to 3 likely questions','All equipment/devices are charged and ready','I know the presentation order for the showcase','I am dressed smart and feeling confident 🎽'];
+let clDone=0;
+function buildChecklist(){
+  const wrap=document.getElementById('checklistItems');
+  wrap.innerHTML=clItems.map((item,i)=>`
+    <div class="cl-item" id="cli${i}" onclick="toggleCL(${i})">
+      <div class="cl-box" id="clb${i}"></div>
+      <div class="cl-label">${item}</div>
+    </div>`).join('');
+}
+function toggleCL(i){
+  const item=document.getElementById('cli'+i);
+  const isDone=item.classList.toggle('done');
+  clDone+=isDone?1:-1;
+  const prog=document.getElementById('clProgress');
+  prog.textContent=`${clDone} of ${clItems.length} complete`;
+  if(clDone===clItems.length)prog.textContent='🚀 All done! You are READY for the Showcase! 🏆';
+}
+buildChecklist();
+
+// Quiz
+const quizData=[
+  {q:'What is the correct structure for a great presentation?',opts:['Introduction → Content → Conclusion','Hook → Problem → Solution → Demo → Call to Action','About Me → Main Topic → Thank You','Title → Facts → Summary'],ans:1,fb:'The Hook → Problem → Solution → Demo → Call to Action structure creates a compelling story that makes your audience care and remember. It\'s used by the world\'s best presenters — from TED Talks to startup pitches!'},
+  {q:'Which feedback starter is most helpful for improving a project?',opts:['"It\'s great, well done!"','"This is bad — completely rethink it"','"What if you... [specific suggestion]?"','"I don\'t really understand what you\'re doing"'],ans:2,fb:'"What if you..." offers a specific, actionable improvement without being harsh. Good feedback is specific, kind, and focused on the work — not the person.'},
+  {q:'How long should a student Showcase presentation ideally be?',opts:['As long as possible to show all your hard work','Exactly 10 minutes','3–5 minutes','Less than 1 minute'],ans:2,fb:'3–5 minutes is the ideal range — long enough to cover the key points, short enough to keep the audience engaged. If you\'re going over 5 minutes, cut something!'},
+  {q:'If someone in the audience asks a question you don\'t know the answer to, you should:',opts:['Make up an answer confidently','Say "That\'s a great question — I hadn\'t thought about that yet" honestly','Ignore the question and move on','Get angry that they asked something difficult'],ans:1,fb:'Honesty is always the best answer. "I hadn\'t thought about that — I\'d like to explore it" shows intellectual humility and curiosity, which is actually IMPRESSIVE to judges and audiences.'},
+  {q:'Why do people feel nervous before presenting?',opts:['They haven\'t prepared enough','Only unprepared people get nervous','Nervousness is normal and means you care about doing well — even experts feel it','Nervousness means you should avoid public speaking'],ans:2,fb:'Nervousness is completely normal — even experienced speakers feel it. It\'s a sign you care. The trick is to channel nervousness into energy, speak slowly, breathe, and focus on helping your audience rather than impressing them.'},
+  {q:'What is the MOST important thing to do the night before the Showcase?',opts:['Stay up late to add more content to your slides','Relax completely and don\'t prepare at all','Rehearse your presentation 1–2 more times, fix feedback, and sleep early','Ask AI to rewrite your whole presentation'],ans:2,fb:'One final rehearsal locks in your content, fixing peer review feedback improves quality, and sleeping early ensures your brain performs at its best. Don\'t cram or over-edit the night before — trust your preparation!'}
+];
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');renderQ();}
+function renderQ(){if(qCur>=quizData.length){showScore();return}const d=quizData[qCur];qAnswered=false;document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${qCur+1} of ${quizData.length}</span>${d.q}</div><div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;}
+function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];const opts=document.querySelectorAll('.q-opt');opts[d.ans].classList.add('ok');const fb=document.getElementById('qFb');if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}document.getElementById('qNextBtn').style.display='inline-flex';}
+function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
+function showScore(){const pct=Math.round(qScore/quizData.length*100);const msg=pct>=80?'You are READY for the Showcase! Go show them what you\'ve got. 🏆':pct>=60?'Good job! Review Section 2 for presentation tips. 💪':'Re-read Sections 1–2 before the showcase tomorrow. 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;}
+buildQuiz();
+</script>
+</body>
+</html>

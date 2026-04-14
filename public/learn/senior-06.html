@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 6: Your First Web Page 💻 — TARAhut AI Labs | Senior Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1));}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6.5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Code snippets */
+.code-block{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.9;overflow-x:auto;margin:1rem 0;position:relative}
+.code-block .cb-label{font-size:.65rem;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;display:block}
+.html-tag{color:var(--c1)}.html-attr{color:var(--c4)}.html-val{color:var(--c5)}.html-text{color:var(--t2)}
+.copy-btn{position:absolute;top:.75rem;right:.75rem;padding:4px 12px;border-radius:99px;border:1px solid var(--bd);background:transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.65rem;cursor:pointer;transition:all .3s}
+.copy-btn:hover{border-color:var(--c1);color:var(--c1)}
+/* Prompt steps */
+.prompt-step{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin:1rem 0;display:flex;gap:1rem;align-items:flex-start}
+.ps-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;flex-shrink:0;color:#fff}
+.ps-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.ps-body p{color:var(--t2);font-size:.88rem}
+.ps-prompt{background:var(--bg3);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);padding:.75rem 1rem;margin-top:.75rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);line-height:1.8}
+/* Customize game */
+.customize-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.color-picker-row{display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0}
+.color-chip{width:40px;height:40px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.color-chip:hover{transform:scale(1.15)}.color-chip.selected{border-color:var(--t1)}
+.preview-page{background:#fff;border-radius:var(--rs);padding:1.5rem;margin-top:1.25rem;color:#111;font-family:'Nunito Sans',sans-serif;min-height:200px;transition:all .4s;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.preview-page h1{font-family:'Syne',sans-serif;margin-bottom:.5rem;font-size:1.4rem}
+.preview-page p{font-size:.88rem;line-height:1.6;margin-bottom:.5rem;opacity:.8}
+.preview-name{font-weight:700;font-size:1rem;margin-bottom:.25rem}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.prompt-step{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 6 &middot; Final Session!</div>
+  <h1>Your First<br><span class="gr">Web Page 💻</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Every app, game, and website is just code. Today, you'll build your very own web page using AI — no coding experience needed. By the end, you'll have a REAL link to share! 🔗</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Let's Build! 💻</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What is Code?</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>AI Builds It</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Customize It</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Mission</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT IS CODE -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>💻 What is Code?<br><span class="gr">The Language of Computers</span></h2>
+    <p>Instagram, PUBG Mobile, Google, WhatsApp — they're all just code! And today you'll understand the basics in 10 minutes. No scary stuff, promise! 🤙</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🏗️</div>
+    <div class="call-body">
+      <h4>The Best Analogy: Building a House</h4>
+      <p>Think of a website like a house:<br>
+      🧱 <strong>HTML = The Skeleton/Structure</strong> — walls, rooms, doors. It defines WHAT is on the page (headings, paragraphs, images, buttons).<br>
+      🎨 <strong>CSS = The Paint & Decoration</strong> — colors, fonts, spacing. It makes it LOOK good.<br>
+      ⚡ <strong>JavaScript = The Electricity</strong> — makes things move, click, and respond. Adds BEHAVIOR.<br>
+      For your first web page, you mainly need HTML + some CSS. AI does the rest! 🚀</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">👀 What HTML Actually Looks Like</h3>
+  <div class="code-block">
+    <span class="cb-label">📝 A tiny piece of HTML — this creates a heading and a paragraph</span>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    <div><span class="html-tag">&lt;h1&gt;</span><span class="html-text">My Name is Priya!</span><span class="html-tag">&lt;/h1&gt;</span></div>
+    <div><span class="html-tag">&lt;p&gt;</span><span class="html-text">I am 15 years old and I love cricket and coding.</span><span class="html-tag">&lt;/p&gt;</span></div>
+    <div><span class="html-tag">&lt;p&gt;</span><span class="html-text">My dream is to become an AI engineer at Google.</span><span class="html-tag">&lt;/p&gt;</span></div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">✨</div>
+    <div class="call-body">
+      <h4>The Magic Rule of HTML</h4>
+      <p>Everything in HTML uses <strong>tags</strong>. A tag opens with <code>&lt;tagname&gt;</code> and closes with <code>&lt;/tagname&gt;</code>. Common tags:<br>
+      <code>&lt;h1&gt;</code> = Big heading &nbsp;|&nbsp; <code>&lt;p&gt;</code> = Paragraph<br>
+      <code>&lt;img&gt;</code> = Image &nbsp;|&nbsp; <code>&lt;a&gt;</code> = Link<br>
+      <code>&lt;button&gt;</code> = Clickable button &nbsp;|&nbsp; <code>&lt;div&gt;</code> = A container box<br>
+      You just learned half of what you need to read HTML! 🎉</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🌟 Where Coding Skills Take You</h3>
+  <div class="cgrid">
+    <div class="crd">
+      <span class="crd-icon">💰</span>
+      <h3>Freelancing</h3>
+      <p>Build simple websites for local businesses. Typical rate: ₹5,000-25,000 per site. Even Class 10 students do this! 💸</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🎮</span>
+      <h3>Game Development</h3>
+      <p>Simple games are built with JavaScript. Roblox creators earn millions. The journey starts with "Hello World." 🚀</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">📱</span>
+      <h3>App Building</h3>
+      <p>AI tools now let you build real apps with simple descriptions. Web dev skills + AI = apps that actually work!</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🏢</span>
+      <h3>Tech Careers</h3>
+      <p>Software engineers earn ₹8-40 LPA in India. The demand is growing FASTER with AI, not slower. Start now! 🎯</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">💻 Every coder once typed their first tag. Today is YOUR first tag day!</div>
+  <p class="curiosity-hook">Next: Let's get AI to build your complete personal web page → 🤖</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: AI Builds It &rarr;</button></div>
+</div>
+
+<!-- S2: AI BUILDS IT -->
+<div class="sec" id="s2">
+  <div class="progress-marker">💻 25% done! Let's build!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>🤖 AI Builds It<br><span class="gr">You Direct It</span></h2>
+    <p>You don't need to write code from scratch. You tell AI what you want, it writes the code, you paste it and your web page appears! Magic? No — AI! 🎩</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎯</div>
+    <div class="call-body">
+      <h4>The Plan: Your Personal Profile Page</h4>
+      <p>We're going to build a personal profile page with: your name and photo, a short "About Me," your hobbies, your favourite subjects, and links to your social media. This is like having your own mini-website! And it's yours to show colleges, competitions, and relatives. 😎</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">📋 Step-by-Step: Use These Prompts!</h3>
+
+  <div class="prompt-step">
+    <div class="ps-num" style="background:var(--brand)">1</div>
+    <div class="ps-body">
+      <h4>Start: Generate the Basic Page</h4>
+      <p>Open ChatGPT. Copy this prompt (fill in YOUR details):</p>
+      <div class="ps-prompt">"Build a complete personal profile HTML page for me. My name is [YOUR NAME], I'm [AGE] years old, studying in Class [X] at [SCHOOL NAME]. My hobbies are [HOBBIES]. My favourite subject is [SUBJECT]. My favourite movie/show is [MOVIE]. My dream career is [CAREER]. Use a [DARK BLUE / PURPLE / GREEN] color theme. Make it look modern, clean, and mobile-friendly. Include a fake profile picture placeholder."</div>
+    </div>
+  </div>
+
+  <div class="prompt-step">
+    <div class="ps-num" style="background:var(--c1);color:var(--bg)">2</div>
+    <div class="ps-body">
+      <h4>Copy the Code</h4>
+      <p>ChatGPT will give you a block of HTML code. Click "Copy" in the top right of the code block.</p>
+    </div>
+  </div>
+
+  <div class="prompt-step">
+    <div class="ps-num" style="background:var(--c2)">3</div>
+    <div class="ps-body">
+      <h4>See It Live — Instantly!</h4>
+      <p>Go to <strong>codepen.io</strong> (free, no signup needed). Paste the code in the "HTML" box on the left. Your page appears on the right — INSTANTLY! 🎉</p>
+      <p style="font-size:.82rem;color:var(--t3);margin-top:.5rem">Alternative: Use notepad.exe → paste code → save as "mypage.html" → open in browser.</p>
+    </div>
+  </div>
+
+  <div class="prompt-step">
+    <div class="ps-num" style="background:var(--c4);color:var(--bg)">4</div>
+    <div class="ps-body">
+      <h4>Share it Online (Optional Bonus!)</h4>
+      <p>Sign up at <strong>netlify.com</strong> or <strong>github.io</strong> (free). Upload your HTML file. Get a real web link like <code>yourname.netlify.app</code>. Share it everywhere! 🔗</p>
+    </div>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>What If Something Looks Wrong?</h4>
+      <p>Go back to ChatGPT and type exactly what's wrong:<br>
+      <strong>"The heading color is too dark, change it to bright cyan."</strong><br>
+      <strong>"Add a section for my favourite quotes."</strong><br>
+      <strong>"Make the page look more like Instagram's profile page."</strong><br>
+      AI is your developer — just give clear instructions! 🎯</p>
+    </div>
+  </div>
+
+  <div class="micro-win">You just learned how to direct AI to build a real web page. That's a developer skill! 💻</div>
+  <p class="curiosity-hook">Let's customize it and make it totally YOU! →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Customize It &rarr;</button></div>
+</div>
+
+<!-- S3: CUSTOMIZE -->
+<div class="sec" id="s3">
+  <div class="progress-marker">🎨 50% done! Customization time!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>🎨 Customize &<br><span class="gr">Make It Yours</span></h2>
+    <p>Your page exists. Now make it look like YOUR style! Play with the mini page designer below, then use AI to apply the changes! 🎨</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">✏️</div>
+    <div class="call-body">
+      <h4>The Power of CSS (Plain English Version)</h4>
+      <p>CSS is how you change looks. You write: <code>color: blue;</code> to change text color. <code>background: #000;</code> for black background. <code>font-size: 24px;</code> for text size. You don't need to memorize these — just describe changes to AI in plain language and it writes the CSS for you! 🎯</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🎮 Mini Page Designer — Choose Your Style!</h3>
+  <div class="customize-box">
+    <p style="color:var(--t2);font-size:.88rem;margin-bottom:1rem">Pick a color theme below. See a live preview of your page. Then use the AI prompt to apply it!</p>
+    <label style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;color:var(--t2);display:block;margin-bottom:.5rem">Background Color</label>
+    <div class="color-picker-row" id="bgPicker">
+      <div class="color-chip selected" style="background:#0f0c29" onclick="pickColor('bg','#0f0c29','#e8e8ff',this)" title="Deep Purple"></div>
+      <div class="color-chip" style="background:#001a2c" onclick="pickColor('bg','#001a2c','#e0f7ff',this)" title="Deep Ocean"></div>
+      <div class="color-chip" style="background:#0d1f0d" onclick="pickColor('bg','#0d1f0d','#e8ffe8',this)" title="Dark Forest"></div>
+      <div class="color-chip" style="background:#1a0010" onclick="pickColor('bg','#1a0010','#ffe8f5',this)" title="Dark Cherry"></div>
+      <div class="color-chip" style="background:#111111" onclick="pickColor('bg','#111111','#f5f5f5',this)" title="Pure Dark"></div>
+      <div class="color-chip" style="background:#f5f5f5;border:2px solid #ddd" onclick="pickColor('bg','#f5f5f5','#111111',this)" title="Light Mode"></div>
+    </div>
+    <label style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;color:var(--t2);display:block;margin-bottom:.5rem;margin-top:1rem">Accent Color</label>
+    <div class="color-picker-row" id="accentPicker">
+      <div class="color-chip selected" style="background:#00f0ff" onclick="pickAccent('#00f0ff',this)"></div>
+      <div class="color-chip" style="background:#a855f7" onclick="pickAccent('#a855f7',this)"></div>
+      <div class="color-chip" style="background:#059669" onclick="pickAccent('#059669',this)"></div>
+      <div class="color-chip" style="background:#ff3d8b" onclick="pickAccent('#ff3d8b',this)"></div>
+      <div class="color-chip" style="background:#fbbf24" onclick="pickAccent('#fbbf24',this)"></div>
+      <div class="color-chip" style="background:#f97316" onclick="pickAccent('#f97316',this)"></div>
+    </div>
+
+    <label style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;color:var(--t2);display:block;margin-top:1rem;margin-bottom:.5rem">Preview (Your Name Here)</label>
+    <input type="text" id="previewName" placeholder="Type your name..." style="width:100%;max-width:300px;padding:8px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;outline:none;margin-bottom:1rem" oninput="updatePreview()">
+
+    <div class="preview-page" id="previewPage">
+      <h1 id="pvName" style="color:#00f0ff;font-family:'Syne',sans-serif">Your Name</h1>
+      <p style="font-size:.8rem;margin-bottom:.75rem;opacity:.6;font-family:'JetBrains Mono',monospace">Class 10 Student | AI Explorer</p>
+      <p id="pvAbout">About me: I love learning, cricket, and now — building web pages with AI! 🚀</p>
+      <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap">
+        <span id="pvBtn" style="display:inline-block;padding:6px 14px;border-radius:99px;background:#00f0ff;color:#000;font-size:.75rem;font-weight:700">Connect 👋</span>
+        <span style="display:inline-block;padding:6px 14px;border-radius:99px;border:1px solid #333;color:#777;font-size:.75rem">Portfolio</span>
+      </div>
+    </div>
+
+    <div style="margin-top:1.25rem;padding:1rem;background:var(--bg3);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--brand);margin-bottom:.4rem">AI PROMPT TO APPLY THIS STYLE</div>
+      <p id="stylePrompt" style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);line-height:1.8">"Change my web page's background color to #0f0c29, text color to #e8e8ff, and make all buttons and headings use the color #00f0ff. Keep everything else the same."</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">⚡ More Customization Prompts</h3>
+
+  <div class="callout call-1">
+    <div class="call-ico">💬</div>
+    <div class="call-body">
+      <h4>Tell AI Exactly What You Want</h4>
+      <p>"Add a section to my page called 'My Achievements' with 3 bullet points."<br>
+      "Make my name bigger — at least 3x larger than normal text."<br>
+      "Add a Spotify-style music section with my 3 favourite songs listed."<br>
+      "Add emojis next to each section title to make it more fun."<br>
+      "Make the page look like Instagram Dark Mode."</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>⚡ In-Class Challenge: Customization Race!</h4>
+    <p>Everyone has 10 minutes. Make 5 customizations to your page using AI prompts. Count how many you can do! Most customizations wins. Changes to try:</p>
+    <ul>
+      <li>Change the color theme</li>
+      <li>Add a new section</li>
+      <li>Add an emoji to every heading</li>
+      <li>Add a "Contact Me" button</li>
+      <li>Change the font style</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You can now direct AI to build and modify real web pages. That's a developer skill! 💻</div>
+  <p class="curiosity-hook">Final quiz of the course — let's go! 🏆</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Final Quiz &rarr;</button></div>
+</div>
+
+<!-- S4: QUIZ -->
+<div class="sec" id="s4">
+  <div class="progress-marker">🎯 75% done! Final Quiz!</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>🧠 Final Session Quiz<br><span class="gr">Coding & AI Dev Check!</span></h2>
+    <p>The LAST quiz of the AI Explorer course! 6 questions to finish strong. You've got this! 🏆</p>
+  </div>
+  <div class="quiz-box" id="quizBox"><div class="q-prog" id="qProg"></div><div id="qContent"></div></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Final Mission &rarr;</button></div>
+</div>
+
+<!-- S5: MISSION -->
+<div class="sec" id="s5">
+  <div class="progress-marker">🎉 COURSE COMPLETE! Final mission!</div>
+  <div class="sec-head">
+    <div class="over">Section 05 — FINAL</div>
+    <h2>🏆 Take-Home Mission<br><span class="gr">Your Personal Web Page!</span></h2>
+    <p>Tonight: build your complete personal web page and share the link! This is your first digital portfolio — start it now! 🌐</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🚀</div>
+    <div class="call-body">
+      <h4>Your Final Project: Personal Web Page</h4>
+      <p>Use the prompts from Section 2 to build your complete personal page. Must include:<br>
+      ✅ Your name and "About Me" (3-4 lines)<br>
+      ✅ Your hobbies and interests<br>
+      ✅ Your academic goals / dream career<br>
+      ✅ Your favourite books, movies, or sports<br>
+      ✅ A custom color theme that feels like YOU<br>
+      ✅ At least one extra creative section (Achievements, Bucket List, Playlist, etc.)</p>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.25rem">🔗 How to Get a REAL Live Link</h3>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.85rem">1</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.92rem;margin-bottom:.2rem">Save Your Code</h4><p style="color:var(--t2);font-size:.85rem">Copy the HTML from ChatGPT. Open Notepad. Paste. Save as <code>index.html</code></p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--c1);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.85rem;color:var(--bg)">2</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.92rem;margin-bottom:.2rem">Sign up at Netlify</h4><p style="color:var(--t2);font-size:.85rem">Go to <a href="https://netlify.com" target="_blank">netlify.com</a>. Sign up free with Google. Drop your <code>index.html</code> file. Done!</p></div>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--c4);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;font-size:.85rem;color:var(--bg)">3</div>
+        <div><h4 style="font-family:'Syne',sans-serif;font-size:.92rem;margin-bottom:.2rem">Get Your Link!</h4><p style="color:var(--t2);font-size:.85rem">Netlify gives you a link like <code>yourname.netlify.app</code>. Share it everywhere! 🔗</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSE COMPLETION CELEBRATION -->
+  <div style="background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2.5rem;margin:2rem 0;text-align:center">
+    <div style="font-size:3rem;margin-bottom:1rem">🎊🏆🎊</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:.75rem">AI Explorer Course Complete!</h2>
+    <p style="color:var(--t2);font-size:1rem;max-width:500px;margin:0 auto 1.5rem">You've learned: AI basics, prompt engineering, study with AI, critical thinking, design, and web building. You're now in the top 1% of students your age for AI skills. Seriously! 🚀</p>
+    <div style="display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-bottom:1.5rem">
+      <div style="padding:.5rem 1rem;background:rgba(0,240,255,.1);border-radius:99px;font-size:.82rem;color:var(--c1)">✅ AI Revolution</div>
+      <div style="padding:.5rem 1rem;background:rgba(168,85,247,.1);border-radius:99px;font-size:.82rem;color:var(--c2)">✅ Prompt Engineering</div>
+      <div style="padding:.5rem 1rem;background:rgba(52,211,153,.1);border-radius:99px;font-size:.82rem;color:var(--c5)">✅ AI for Exams</div>
+      <div style="padding:.5rem 1rem;background:rgba(251,191,36,.1);border-radius:99px;font-size:.82rem;color:var(--c4)">✅ Critical Thinking</div>
+      <div style="padding:.5rem 1rem;background:rgba(255,61,139,.1);border-radius:99px;font-size:.82rem;color:var(--c3)">✅ AI Design</div>
+      <div style="padding:.5rem 1rem;background:rgba(5,150,105,.1);border-radius:99px;font-size:.82rem;color:var(--brand)">✅ Web Building</div>
+    </div>
+    <a href="https://wa.me/919200882008?text=Hi%2C%20I%20completed%20the%20AI%20Explorer%20Senior%20Track%20at%20TARAhut!" target="_blank" class="btn btn-glow" style="margin-right:.75rem;margin-bottom:.75rem">Share on WhatsApp 🎉</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost">Explore More Courses →</a>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">🔥</div>
+    <div class="call-body">
+      <h4>What's Next? (Advanced Paths)</h4>
+      <p><strong>If you loved Design:</strong> Learn more Canva, explore Midjourney, take a Graphic Design course 🎨<br>
+      <strong>If you loved Coding:</strong> Try Python basics, explore app development with AI 💻<br>
+      <strong>If you loved Content:</strong> Start an Instagram page on any topic, use AI to create content 📱<br>
+      <strong>For ALL paths:</strong> TARAhut AI Labs has advanced courses — same fun style, deeper skills! 🚀</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:2rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.75rem">📞 Stay Connected with TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a> &nbsp;|&nbsp; 🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t3);font-size:.82rem;margin-top:.5rem">Empowering India's Students with AI Skills Since 2024</p>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built by <span class="brand">TARAhut AI Labs</span> — AI Education for India's Future</p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Senior Track: AI Explorer (Class 8-10) &middot; Session 6 of 6 — Course Complete! 🎊</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const secIds=['s1','s2','s3','s4','s5'],navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';window.scrollTo({top:0,behavior:'smooth'});if(id==='s4'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Copy code
+function copyCode(btn){btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);}
+
+// Color picker
+let currBg='#0f0c29',currText='#e8e8ff',currAccent='#00f0ff';
+function pickColor(type,bg,text,el){
+  currBg=bg;currText=text;
+  document.querySelectorAll('#bgPicker .color-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  updatePagePreview();
+}
+function pickAccent(accent,el){
+  currAccent=accent;
+  document.querySelectorAll('#accentPicker .color-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  updatePagePreview();
+}
+function updatePagePreview(){
+  const page=document.getElementById('previewPage');
+  page.style.background=currBg;
+  page.style.color=currText;
+  document.getElementById('pvName').style.color=currAccent;
+  document.getElementById('pvBtn').style.background=currAccent;
+  document.getElementById('pvBtn').style.color=currBg;
+  document.getElementById('stylePrompt').textContent=`"Change my web page's background color to ${currBg}, text color to ${currText}, and make all buttons and headings use the color ${currAccent}. Keep everything else the same."`;
+}
+function updatePreview(){
+  const name=document.getElementById('previewName').value||'Your Name';
+  document.getElementById('pvName').textContent=name;
+}
+
+// Quiz
+const qData=[
+  {q:"In web development, HTML is like the _____ of a house.",o:["Paint and decoration","Electrical wiring","Skeleton/structure (walls and rooms)","Furniture inside"],a:2,e:"HTML = Skeleton/Structure. It defines WHAT is on the page. CSS = Paint (how it looks). JavaScript = Electricity (how it behaves). 🏗️"},
+  {q:"What does the HTML tag <h1> create?",o:["A hyperlink","The biggest heading on the page","A horizontal line","A hidden element"],a:1,e:"<h1> creates the biggest heading. <h2> is slightly smaller, down to <h6> which is smallest. Headings tell browsers (and search engines) what's important on your page! 📝"},
+  {q:"Which website lets you paste HTML code and see it live instantly?",o:["canva.com","chatgpt.com","codepen.io","google.com"],a:2,e:"CodePen.io is a free online code editor where you paste HTML, CSS, and JavaScript and see the result instantly on the right side. No download needed! 💻"},
+  {q:"What is the BEST way to get AI to fix a problem with your web page?",o:["Delete the code and start again","Describe exactly what's wrong and ask AI to fix it with a specific instruction","Post the problem on social media","Ask a friend who doesn't know coding either"],a:1,e:"Specific instructions work best! Instead of 'fix it', say 'The heading text is too small. Make it 3x bigger and change it to bright green.' AI follows precise directions perfectly! 🎯"},
+  {q:"Which FREE website lets you host your HTML file and get a real link?",o:["Instagram.com","netlify.com","whatsapp.com","youtube.com"],a:1,e:"Netlify is a free hosting platform. Drag your index.html file onto it, get a live link like yourname.netlify.app. Share it on your CV, LinkedIn, or with family! 🔗"},
+  {q:"What is the REAL skill you developed in this session?",o:["Writing HTML code from memory","Understanding and directing AI to build things you want","Memorizing CSS properties","Typing very fast"],a:1,e:"The real skill is DIRECTING AI! You don't need to memorize code — you need to clearly describe what you want. That's called 'vibe coding' and it's the future of software development! 🚀"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  if(cq>=qData.length){const pct=Math.round(sc/qData.length*100);document.getElementById('qContent').innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><div style="font-size:2rem;margin:.5rem 0">${pct>=80?'🏆🎊':'pct>=50?👨‍💻:💪'}</div><p style="color:var(--t2);font-size:1rem">${pct>=80?'Web Developer mode: UNLOCKED! 🎉':pct>=50?'Great finish! You have the fundamentals! 😊':'Review Sections 1-2 and you\'ve got it! 💪'}</p><p style="color:var(--brand);font-family:\'Syne\',sans-serif;font-weight:700;margin-top:.75rem">You finished the ENTIRE AI Explorer Course! 🚀</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="go(\'s5\')">See Course Completion 🏆</button></div>`;return;}
+  const d=qData[cq];
+  document.getElementById('qContent').innerHTML=`<div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length} — FINAL QUIZ!</span>${d.q}</div><div class="q-opts">${d.o.map((o,i)=>`<div class="q-opt" onclick="pickAns(${i})"><div class="ol">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div>`;
+}
+function pickAns(i){const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.style.pointerEvents='none');const d=qData[cq];const correct=i===d.a;if(correct)sc++;opts[i].classList.add(correct?'ok':'no');opts[d.a].classList.add('ok');const fb=document.getElementById('qFb');fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Final Score 🏆'}</button>`;}
+function nextQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

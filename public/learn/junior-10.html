@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 10: My AI Project — Part 1! 🏗️ | TARAhut AI Labs</title>
+<style>
+  :root {
+    --green: #059669;
+    --green-light: #34d399;
+    --green-dark: #047857;
+    --yellow: #fbbf24;
+    --orange: #f97316;
+    --purple: #7c3aed;
+    --blue: #3b82f6;
+    --pink: #ec4899;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #162032;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.7; color:var(--text); background:var(--bg); min-height:100vh; overflow-x:hidden; }
+  #particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle { position:absolute; border-radius:50%; opacity:0.15; animation:float linear infinite; }
+  @keyframes float { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:.15} 90%{opacity:.15} 100%{transform:translateY(-100px) rotate(720deg);opacity:0} }
+
+  .hero { position:relative;z-index:1;background:linear-gradient(135deg,#f97316 0%,#059669 50%,#7c3aed 100%);padding:60px 40px 50px;text-align:center;overflow:hidden; }
+  .hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 60%); }
+  .hero-badge { display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:50px;margin-bottom:20px; }
+  .hero h1 { font-size:clamp(32px,5vw,56px);font-weight:900;color:white;margin-bottom:14px;text-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .hero p { font-size:18px;color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 24px; }
+  .hero-pills { display:flex;flex-wrap:wrap;gap:10px;justify-content:center; }
+  .hero-pill { background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px; }
+
+  .container { max-width:900px;margin:0 auto;padding:0 20px;position:relative;z-index:1; }
+  .section { padding:50px 0;border-bottom:1px solid var(--border); }
+  .section-header { display:flex;align-items:center;gap:14px;margin-bottom:30px; }
+  .section-icon { width:52px;height:52px;background:linear-gradient(135deg,var(--orange),var(--yellow));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 15px rgba(249,115,22,0.35); }
+  .section-title { font-size:26px;font-weight:800;color:white; }
+  .section-subtitle { font-size:14px;color:var(--muted);margin-top:2px; }
+
+  /* PROJECT CHOOSER */
+  .projects-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px; }
+  .project-btn {
+    background:var(--card);border:2px solid var(--border);border-radius:16px;padding:22px 16px;
+    text-align:center;cursor:pointer;transition:all 0.3s;
+  }
+  .project-btn:hover { border-color:var(--orange);transform:translateY(-4px);box-shadow:0 8px 30px rgba(249,115,22,0.2); }
+  .project-btn.selected { border-color:var(--orange);background:linear-gradient(135deg,rgba(249,115,22,0.2),rgba(251,191,36,0.1)); }
+  .project-btn .proj-emoji { font-size:40px;margin-bottom:10px;display:block; }
+  .project-btn h3 { font-size:15px;font-weight:800;margin-bottom:6px; }
+  .project-btn p { font-size:13px;color:var(--muted); }
+
+  .project-detail { display:none; background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-top:8px; }
+  .project-detail.visible { display:block; }
+  .project-detail h3 { font-size:20px;font-weight:800;margin-bottom:16px;color:var(--yellow); }
+  .pd-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px; }
+  .pd-item { background:var(--bg);border-radius:12px;padding:16px; }
+  .pd-item h4 { font-size:14px;font-weight:700;margin-bottom:6px;color:var(--green-light); }
+  .pd-item p { font-size:14px;color:var(--muted); }
+
+  /* PLANNING TEMPLATE */
+  .plan-template { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px; }
+  .plan-header { text-align:center;margin-bottom:24px; }
+  .plan-steps { display:flex;flex-direction:column;gap:16px; }
+  .plan-step { display:flex;gap:16px;align-items:flex-start; }
+  .plan-num { width:48px;height:48px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:white;box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+  .plan-content { flex:1; }
+  .plan-content h4 { font-size:18px;font-weight:800;margin-bottom:6px; }
+  .plan-content p { color:var(--muted);font-size:15px;margin-bottom:12px; }
+  .plan-input { width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;resize:none;font-family:inherit; }
+  .plan-input:focus { outline:none;border-color:var(--orange); }
+
+  /* CARD */
+  .card { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px; }
+  .card h3 { font-size:17px;font-weight:700;margin-bottom:8px;color:var(--yellow); }
+  .card p { color:var(--muted);font-size:15px; }
+  .highlight { background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);border-radius:12px;padding:16px 20px;margin:16px 0; }
+  .highlight p { color:var(--yellow);font-size:15px; }
+
+  /* QUIZ */
+  .quiz-progress { display:flex;gap:8px;margin-bottom:24px; }
+  .q-dot { flex:1;height:6px;border-radius:3px;background:var(--border);transition:background 0.3s; }
+  .q-dot.answered { background:var(--green); }
+  .q-dot.current { background:var(--orange); }
+  .question-block { display:none; }
+  .question-block.active { display:block; }
+  .question-text { font-size:20px;font-weight:700;margin-bottom:20px;padding:20px;background:var(--card);border-radius:14px;border-left:4px solid var(--orange); }
+  .options { display:flex;flex-direction:column;gap:12px;margin-bottom:20px; }
+  .option { padding:14px 20px;background:var(--card2);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-size:16px;font-weight:500;transition:all 0.2s;text-align:left; }
+  .option:hover:not(.locked) { border-color:var(--orange);background:rgba(249,115,22,0.1); }
+  .option.correct { border-color:var(--green);background:rgba(5,150,105,0.2);color:var(--green-light); }
+  .option.wrong { border-color:#dc2626;background:rgba(220,38,38,0.15);color:#fca5a5; }
+  .q-feedback { display:none;padding:14px;border-radius:10px;font-size:15px;margin-bottom:16px;font-weight:600; }
+  .q-feedback.correct { background:rgba(5,150,105,0.15);color:var(--green-light);border:1px solid var(--green); }
+  .q-feedback.wrong { background:rgba(220,38,38,0.15);color:#fca5a5;border:1px solid #dc2626; }
+  .btn-quiz-next { display:none;padding:12px 36px;background:var(--orange);color:white;border:none;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s; }
+  .btn-quiz-next:hover { background:#ea580c;transform:scale(1.05); }
+  .quiz-result { display:none;text-align:center;padding:30px;background:var(--card);border-radius:16px; }
+  .quiz-result .result-score { font-size:72px;font-weight:900;color:var(--yellow); }
+  .quiz-result p { font-size:18px;color:var(--muted);margin-top:10px; }
+  .quiz-result .result-emoji { font-size:48px;margin-top:16px;display:block; }
+
+  /* MISSION */
+  .mission-box { background:linear-gradient(135deg,rgba(249,115,22,0.2),rgba(251,191,36,0.1));border:2px solid var(--orange);border-radius:20px;padding:32px;text-align:center; }
+  .mission-box h3 { font-size:26px;font-weight:900;margin-bottom:16px; }
+  .mission-tasks { display:flex;flex-direction:column;gap:14px;text-align:left;margin:20px 0; }
+  .mission-task { display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border-radius:12px;padding:16px; }
+  .mission-task input[type="checkbox"] { width:22px;height:22px;cursor:pointer;margin-top:2px;flex-shrink:0;accent-color:var(--orange); }
+  .mission-task label { font-size:16px;font-weight:500;cursor:pointer; }
+  .mission-note { color:var(--muted);font-size:14px;margin-top:16px; }
+  .footer { background:var(--card);border-top:1px solid var(--border);padding:28px;text-align:center;position:relative;z-index:1;margin-top:20px; }
+  .footer p { color:var(--muted);font-size:13px; }
+
+  .save-btn { padding:12px 28px;background:var(--green);color:white;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;transition:all 0.2s; }
+  .save-btn:hover { background:var(--green-dark);transform:scale(1.05); }
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<div class="hero">
+  <div class="hero-badge">TARAhut AI Labs · AI Explorer Junior Track</div>
+  <h1>Session 10: My AI Project — Part 1! 🏗️</h1>
+  <p>Time to create something amazing using AI! Pick your project and start building! 🚀</p>
+  <div class="hero-pills">
+    <span class="hero-pill">📚 Class 5–7</span>
+    <span class="hero-pill">⏱️ 60 Minutes</span>
+    <span class="hero-pill">🎯 4 Activities</span>
+    <span class="hero-pill">🎮 Project Planner</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: CHOOSE YOUR PROJECT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-title">Choose Your Project!</div>
+        <div class="section-subtitle">Pick one project you'll create and present in Session 12!</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>🎉 <strong>This is the big one!</strong> Over the next 3 sessions, you'll CREATE your very own AI project and PRESENT it to the class. Choose the one that excites you most! There's no wrong choice!</p>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-btn" onclick="selectProject(0)">
+        <span class="proj-emoji">📖</span>
+        <h3>My AI Storybook</h3>
+        <p>Write a story with AI and add AI-generated illustrations!</p>
+      </div>
+      <div class="project-btn" onclick="selectProject(1)">
+        <span class="proj-emoji">🎴</span>
+        <h3>AI Greeting Card Collection</h3>
+        <p>Design 5 unique cards for birthdays, festivals, or friends!</p>
+      </div>
+      <div class="project-btn" onclick="selectProject(2)">
+        <span class="proj-emoji">📄</span>
+        <h3>My School Report with AI</h3>
+        <p>Research a school topic using AI tools and make a great report!</p>
+      </div>
+      <div class="project-btn" onclick="selectProject(3)">
+        <span class="proj-emoji">🖼️</span>
+        <h3>AI Art Gallery</h3>
+        <p>Create 6+ AI artworks with a theme and write about each one!</p>
+      </div>
+    </div>
+
+    <!-- PROJECT DETAILS -->
+    <div class="project-detail" id="pd0">
+      <h3>📖 My AI Storybook</h3>
+      <div class="pd-row">
+        <div class="pd-item">
+          <h4>📝 What You'll Do</h4>
+          <p>Write a short story (6–10 pages) using ChatGPT to help with ideas and wording. Add AI-generated pictures using tools like Canva's AI!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🛠️ Tools to Use</h4>
+          <p>ChatGPT (for story), Canva AI Image Generator (for pictures), Google Docs or Word (to put it all together)</p>
+        </div>
+        <div class="pd-item">
+          <h4>🎯 What You'll Present</h4>
+          <p>Read 2–3 pages of your story aloud. Show 3 of your AI images. Explain how you used AI to create it!</p>
+        </div>
+        <div class="pd-item">
+          <h4>⭐ Why It's Great</h4>
+          <p>Stories are fun to make AND to share! Your family will love hearing your story. Perfect if you love writing and art!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-detail" id="pd1">
+      <h3>🎴 AI Greeting Card Collection</h3>
+      <div class="pd-row">
+        <div class="pd-item">
+          <h4>📝 What You'll Do</h4>
+          <p>Design 5 beautiful greeting cards for different occasions: birthday, Eid, Diwali, New Year, and a friendship card!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🛠️ Tools to Use</h4>
+          <p>Canva (design templates), ChatGPT (for the messages/poems inside each card), your own creativity!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🎯 What You'll Present</h4>
+          <p>Show each card on screen, read the message inside, and explain which AI tool helped you make it!</p>
+        </div>
+        <div class="pd-item">
+          <h4>⭐ Why It's Great</h4>
+          <p>You'll actually USE your cards after — give them to family and friends! Perfect if you love design and making people happy!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-detail" id="pd2">
+      <h3>📄 My School Report with AI</h3>
+      <div class="pd-row">
+        <div class="pd-item">
+          <h4>📝 What You'll Do</h4>
+          <p>Pick any school subject (animals, space, history, science) and use AI to research and write a well-organised 1-page report!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🛠️ Tools to Use</h4>
+          <p>Perplexity AI or ChatGPT (research), Gamma (to present it nicely), Canva (for visuals)</p>
+        </div>
+        <div class="pd-item">
+          <h4>🎯 What You'll Present</h4>
+          <p>Share 3 facts you learned, show your report, and explain how AI helped you learn this topic faster!</p>
+        </div>
+        <div class="pd-item">
+          <h4>⭐ Why It's Great</h4>
+          <p>You'll actually learn something new AND learn how to use AI for studying! Perfect if you're curious about a topic!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-detail" id="pd3">
+      <h3>🖼️ AI Art Gallery</h3>
+      <div class="pd-row">
+        <div class="pd-item">
+          <h4>📝 What You'll Do</h4>
+          <p>Create 6+ pieces of AI art using prompts you write yourself. Give each artwork a name and a short description!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🛠️ Tools to Use</h4>
+          <p>Canva AI Image Generator, Adobe Firefly (free), or Bing Image Creator. Use Canva to display them in a gallery layout!</p>
+        </div>
+        <div class="pd-item">
+          <h4>🎯 What You'll Present</h4>
+          <p>Show your gallery, read the prompt you used for 3 artworks, and explain what you were trying to create!</p>
+        </div>
+        <div class="pd-item">
+          <h4>⭐ Why It's Great</h4>
+          <p>You can make STUNNING art even if you can't draw! Learning to write good prompts is a real AI skill! Perfect if you love creativity!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PLAN IT OUT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">Plan It Out!</div>
+        <div class="section-subtitle">Great projects start with a great plan. Fill in your planner below!</div>
+      </div>
+    </div>
+
+    <div class="plan-template">
+      <div class="plan-header">
+        <h3 style="font-size:20px;font-weight:800;margin-bottom:6px;">📋 My Project Planner</h3>
+        <p style="color:var(--muted);">Every explorer needs a plan! Fill in each section below. You can print this page!</p>
+      </div>
+
+      <div class="plan-steps">
+        <div class="plan-step">
+          <div class="plan-num" style="background:linear-gradient(135deg,#f97316,#fbbf24);">1</div>
+          <div class="plan-content">
+            <h4>🔎 RESEARCH — Find Information</h4>
+            <p>What will you search for? Which AI tool will you use to research? What are the 3 main things you want to include?</p>
+            <textarea class="plan-input" rows="3" placeholder="Example: I will use Perplexity AI to search for facts about space. I want to include facts about black holes, the sun, and Mars..."></textarea>
+          </div>
+        </div>
+
+        <div class="plan-step">
+          <div class="plan-num" style="background:linear-gradient(135deg,#059669,#34d399);">2</div>
+          <div class="plan-content">
+            <h4>🎨 CREATE — Make Your Project</h4>
+            <p>Which tool will you use to CREATE? What will your project look like? How will you organise it?</p>
+            <textarea class="plan-input" rows="3" placeholder="Example: I will use Canva to design my 5 greeting cards. Each card will have a different colour theme and a poem written with ChatGPT..."></textarea>
+          </div>
+        </div>
+
+        <div class="plan-step">
+          <div class="plan-num" style="background:linear-gradient(135deg,#7c3aed,#ec4899);">3</div>
+          <div class="plan-content">
+            <h4>🎤 PRESENT — Show Your Work</h4>
+            <p>What will you say when presenting? What are you most proud of in your project?</p>
+            <textarea class="plan-input" rows="3" placeholder="Example: I will start by saying what my project is. Then I will show each card and explain the AI tool I used. I am most proud of my Eid card!..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button class="save-btn" onclick="savePlan()">💾 Save My Plan!</button>
+        <p style="color:var(--muted);font-size:13px;margin-top:10px;" id="saveMsg"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: QUIZ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧠</div>
+      <div>
+        <div class="section-title">Project Planning Quiz!</div>
+        <div class="section-subtitle">5 questions about planning your project!</div>
+      </div>
+    </div>
+
+    <div class="quiz-progress">
+      <div class="q-dot current" id="qd0"></div>
+      <div class="q-dot" id="qd1"></div>
+      <div class="q-dot" id="qd2"></div>
+      <div class="q-dot" id="qd3"></div>
+      <div class="q-dot" id="qd4"></div>
+    </div>
+
+    <div class="question-block active" id="q0">
+      <div class="question-text">Q1: What are the 3 steps of the project plan? 📋</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(0,0,false)">A) Write, Draw, Submit</button>
+        <button class="option" onclick="answerQ(0,1,true)">B) Research → Create → Present</button>
+        <button class="option" onclick="answerQ(0,2,false)">C) Think, Sleep, Hope for the best</button>
+        <button class="option" onclick="answerQ(0,3,false)">D) Copy, Paste, Print</button>
+      </div>
+      <div class="q-feedback" id="qf0"></div>
+      <button class="btn-quiz-next" id="qn0" onclick="nextQuestion(0)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q1">
+      <div class="question-text">Q2: Which tool is best for designing cards and presentations? 🎨</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(1,0,false)">A) Calculator</button>
+        <button class="option" onclick="answerQ(1,1,true)">B) Canva</button>
+        <button class="option" onclick="answerQ(1,2,false)">C) Microsoft Paint (only basic drawing)</button>
+        <button class="option" onclick="answerQ(1,3,false)">D) YouTube</button>
+      </div>
+      <div class="q-feedback" id="qf1"></div>
+      <button class="btn-quiz-next" id="qn1" onclick="nextQuestion(1)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q2">
+      <div class="question-text">Q3: Which project would suit someone who loves to read and write? ✍️</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(2,0,true)">A) My AI Storybook</button>
+        <button class="option" onclick="answerQ(2,1,false)">B) AI Art Gallery</button>
+        <button class="option" onclick="answerQ(2,2,false)">C) AI Greeting Card Collection</button>
+        <button class="option" onclick="answerQ(2,3,false)">D) None of them</button>
+      </div>
+      <div class="q-feedback" id="qf2"></div>
+      <button class="btn-quiz-next" id="qn2" onclick="nextQuestion(2)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q3">
+      <div class="question-text">Q4: Why is planning your project BEFORE starting important? 🤔</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(3,0,false)">A) It's not — just start and see what happens!</button>
+        <button class="option" onclick="answerQ(3,1,true)">B) A plan helps you know what to do and not waste time!</button>
+        <button class="option" onclick="answerQ(3,2,false)">C) Because the teacher will mark your plan too</button>
+        <button class="option" onclick="answerQ(3,3,false)">D) Plans are only for adults</button>
+      </div>
+      <div class="q-feedback" id="qf3"></div>
+      <button class="btn-quiz-next" id="qn3" onclick="nextQuestion(3)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q4">
+      <div class="question-text">Q5: If you want to create AI art without knowing how to draw, which project should you pick? 🖼️</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(4,0,false)">A) My School Report with AI</button>
+        <button class="option" onclick="answerQ(4,1,false)">B) My AI Storybook</button>
+        <button class="option" onclick="answerQ(4,2,false)">C) AI Greeting Card Collection</button>
+        <button class="option" onclick="answerQ(4,3,true)">D) AI Art Gallery</button>
+      </div>
+      <div class="q-feedback" id="qf4"></div>
+      <button class="btn-quiz-next" id="qn4" onclick="showResult()">See My Score! 🎉</button>
+    </div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="result-score" id="resultScore">0/5</div>
+      <p id="resultMsg"></p>
+      <span class="result-emoji" id="resultEmoji"></span>
+      <br><button class="btn-quiz-next" style="display:inline-block;margin-top:20px;" onclick="restartQuiz()">🔄 Try Again</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MISSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏠</div>
+      <div>
+        <div class="section-title">Your Mission This Week!</div>
+        <div class="section-subtitle">Keep building at home — your masterpiece is underway! 🏗️</div>
+      </div>
+    </div>
+
+    <div class="mission-box">
+      <h3>🏗️ Mission: Keep Building!</h3>
+      <p style="color:var(--muted);margin-bottom:16px;">You started your project today! Now continue at home. Next session, you'll FINISH it!</p>
+
+      <div class="mission-tasks">
+        <div class="mission-task">
+          <input type="checkbox" id="m1">
+          <label for="m1">✅ <strong>Confirm your project choice</strong> — tell your parent which project you picked and why!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m2">
+          <label for="m2">🔎 <strong>Do your research</strong> — use the AI tools from class to gather content for your project!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m3">
+          <label for="m3">🎨 <strong>Start creating</strong> — open Canva, ChatGPT, or whichever tool fits your project and begin!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m4">
+          <label for="m4">📝 <strong>Bring your work to next class</strong> — save your project (screenshot or link) to show your teacher!</label>
+        </div>
+      </div>
+
+      <div class="mission-note">
+        🌟 Remember: Good projects take effort. Even 20 minutes each day adds up to something amazing!<br>
+        💚 <strong>TARAhut AI Labs</strong> · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>TARAhut AI Labs</strong> · AI Explorer Junior Track · Session 10 of 12</p>
+  <p style="margin-top:6px;">Building young AI explorers, one session at a time! 🚀 · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a></p>
+</div>
+
+<script>
+// PARTICLES
+const pContainer=document.getElementById('particles');
+const colors=['#059669','#34d399','#f97316','#fbbf24','#7c3aed','#ec4899'];
+for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const size=Math.random()*20+8;p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;pContainer.appendChild(p);}
+
+// PROJECT SELECTOR
+let selectedProject = -1;
+function selectProject(idx) {
+  document.querySelectorAll('.project-btn').forEach((b,i)=>b.classList.toggle('selected',i===idx));
+  document.querySelectorAll('.project-detail').forEach((d,i)=>d.classList.toggle('visible',i===idx));
+  selectedProject=idx;
+  document.getElementById('pd'+idx).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// PLAN SAVE
+function savePlan() {
+  const inputs = document.querySelectorAll('.plan-input');
+  let allFilled = true;
+  inputs.forEach(i=>{ if(!i.value.trim()) allFilled=false; });
+  const msg = document.getElementById('saveMsg');
+  if(allFilled){
+    msg.textContent='✅ Plan saved! Great job — you\'re ready to build your project!';
+    msg.style.color='#34d399';
+  } else {
+    msg.textContent='📝 Fill in all 3 sections first, then save!';
+    msg.style.color='#fbbf24';
+  }
+}
+
+// QUIZ
+let quizScore=0;
+const feedbacks=[
+  ['🎉 Correct! Research → Create → Present is the perfect project plan!','❌ Not quite! The 3 steps are Research → Create → Present!'],
+  ['🎉 Correct! Canva is perfect for designing cards, galleries, and presentations!','❌ Not quite! Canva (canva.com) is the best tool for beautiful designs!'],
+  ['🎉 Correct! The AI Storybook is perfect for writers and readers!','❌ Not quite! The AI Storybook suits people who love reading and writing!'],
+  ['🎉 Correct! Planning saves time and helps you do a much better job!','❌ Not quite! Planning helps you use your time wisely and do a better job!'],
+  ['🎉 Correct! The AI Art Gallery lets you make stunning art using AI prompts!','❌ Not quite! The AI Art Gallery is perfect — you don\'t need to know how to draw!']
+];
+
+function answerQ(qNum,optIdx,isCorrect){
+  const opts=document.querySelectorAll('#q'+qNum+' .option');
+  opts.forEach(o=>o.classList.add('locked'));
+  opts.forEach((o,i)=>{if(i===optIdx)o.classList.add(isCorrect?'correct':'wrong');});
+  const fb=document.getElementById('qf'+qNum);
+  fb.style.display='block';
+  if(isCorrect){quizScore++;fb.className='q-feedback correct';fb.textContent=feedbacks[qNum][0];}
+  else{fb.className='q-feedback wrong';fb.textContent=feedbacks[qNum][1];}
+  document.getElementById('qn'+qNum).style.display='inline-block';
+  document.getElementById('qd'+qNum).className='q-dot answered';
+}
+
+function nextQuestion(current){
+  document.getElementById('q'+current).classList.remove('active');
+  const next=current+1;
+  document.getElementById('q'+next).classList.add('active');
+  document.getElementById('qd'+next).className='q-dot current';
+}
+
+function showResult(){
+  document.getElementById('q4').classList.remove('active');
+  document.getElementById('quizResult').style.display='block';
+  document.getElementById('resultScore').textContent=quizScore+'/5';
+  const emojis=['😅','🤔','😊','🌟','🏆'];
+  const msgs=['Keep going! Review the project options again! 💪','Good try! Review the planning steps! 📖','Nice work! Your planning skills are growing! 😊','Almost perfect! Great project knowledge! 🌟','Perfect! You\'re ready to build an AMAZING project! 🏆'];
+  document.getElementById('resultEmoji').textContent=emojis[quizScore];
+  document.getElementById('resultMsg').textContent=msgs[quizScore];
+}
+
+function restartQuiz(){
+  quizScore=0;
+  document.getElementById('quizResult').style.display='none';
+  for(let i=0;i<5;i++){
+    document.getElementById('q'+i).classList.remove('active');
+    document.getElementById('qd'+i).className='q-dot';
+    document.getElementById('qf'+i).style.display='none';
+    document.getElementById('qn'+i).style.display='none';
+    document.querySelectorAll('#q'+i+' .option').forEach(o=>{o.className='option';});
+  }
+  document.getElementById('q0').classList.add('active');
+  document.getElementById('qd0').className='q-dot current';
+}
+</script>
+</body>
+</html>

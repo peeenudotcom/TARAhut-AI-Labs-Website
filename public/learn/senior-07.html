@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 7: Career Explorer & Personal Branding — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:.8rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.crd p{color:var(--t2);font-size:.88rem;line-height:1.65}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.6rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Career Quiz */
+.career-quiz{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.cq-step{display:none}
+.cq-step.on{display:block;animation:secIn .3s ease}
+.cq-q{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:1.2rem}
+.cq-opts{display:flex;flex-direction:column;gap:.6rem}
+.cq-opt{padding:12px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;font-size:.9rem;transition:all .3s}
+.cq-opt:hover{border-color:var(--brand);background:rgba(5,150,105,.05);color:var(--t1)}
+.cq-opt.sel{border-color:var(--brand);background:rgba(5,150,105,.1);color:var(--brand)}
+.cq-result{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:1.75rem;margin-top:1.5rem;display:none}
+.cq-result.show{display:block;animation:fadeSlide .4s ease}
+.cq-result h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:.5rem}
+.cq-result p{color:var(--t2);font-size:.9rem}
+/* Tbl */
+.tbl-wrap{overflow-x:auto;margin:2rem 0;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:.85rem 1rem;text-align:left;border-bottom:1px solid var(--bd);font-size:.85rem}
+th{background:rgba(5,150,105,.06);font-family:'Syne',sans-serif;font-weight:600;font-size:.72rem;color:var(--brand);letter-spacing:1.2px;text-transform:uppercase}
+td{color:var(--t2);background:var(--bg2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+/* Portfolio */
+.portfolio-block{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:1.5rem 0}
+.portfolio-block h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--c1)}
+.portfolio-item{display:flex;gap:12px;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--bd)}
+.portfolio-item:last-child{border-bottom:none}
+.pi-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--brand);background:rgba(5,150,105,.1);padding:4px 8px;border-radius:6px;flex-shrink:0}
+.pi-text h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.2rem}
+.pi-text p{color:var(--t2);font-size:.83rem}
+/* Takehome */
+.takehome{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.takehome h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c4);margin-bottom:1rem}
+.takehome p{color:var(--t2);font-size:.9rem;margin-bottom:.6rem}
+.takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
+.takehome li{margin-bottom:.4rem}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 7 of 12</div>
+  <h1>Session 7: Career Explorer &amp;<br><span class="gr">Personal Branding 🚀</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Discover what career actually fits YOU, explore 10 jobs that barely existed 5 years ago, and start building your personal portfolio today.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Let's Explore 🚀</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Career Quiz</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>New Careers</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Your Portfolio</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Take-Home</button>
+  </div>
+</nav>
+
+<!-- S1: Career Assessment -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What Career <span class="gr">Suits You?</span> 🎯</h2>
+    <p>Answer 5 quick questions and discover which AI-era career paths match your personality and strengths!</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🧠</div><div class="call-body"><h4>Why This Matters</h4><p>Most people pick careers based on what their parents did or what sounds cool. But the best career is one that matches <strong>how YOUR brain naturally works</strong>. Let's find yours.</p></div></div>
+
+  <div class="career-quiz" id="careerQuiz">
+    <div class="cq-step on" id="cqS0">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:1rem">QUESTION 1 of 5</p>
+      <div class="cq-q">When you get a free afternoon, what do you naturally do?</div>
+      <div class="cq-opts">
+        <div class="cq-opt" onclick="cqSelect(0,'creator')">🎨 Draw, make videos, write stories, or create something</div>
+        <div class="cq-opt" onclick="cqSelect(0,'analyst')">📊 Research things, watch documentaries, or solve puzzles</div>
+        <div class="cq-opt" onclick="cqSelect(0,'social')">💬 Hang out with friends, organise plans, or lead activities</div>
+        <div class="cq-opt" onclick="cqSelect(0,'builder')">🔧 Build, code, fix things, or experiment with tech</div>
+      </div>
+    </div>
+    <div class="cq-step" id="cqS1">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:1rem">QUESTION 2 of 5</p>
+      <div class="cq-q">Which school subject do you actually enjoy (even a little)?</div>
+      <div class="cq-opts">
+        <div class="cq-opt" onclick="cqSelect(1,'creator')">✏️ Art, English, or Drama</div>
+        <div class="cq-opt" onclick="cqSelect(1,'analyst')">📐 Maths, Science, or Commerce</div>
+        <div class="cq-opt" onclick="cqSelect(1,'social')">🌍 Social Studies, History, or Economics</div>
+        <div class="cq-opt" onclick="cqSelect(1,'builder')">💻 Computer Science or anything hands-on</div>
+      </div>
+    </div>
+    <div class="cq-step" id="cqS2">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:1rem">QUESTION 3 of 5</p>
+      <div class="cq-q">You're doing a group project. What role do you naturally take?</div>
+      <div class="cq-opts">
+        <div class="cq-opt" onclick="cqSelect(2,'creator')">🎬 Making it look good — designs, slides, presentation</div>
+        <div class="cq-opt" onclick="cqSelect(2,'analyst')">🔍 Researching, checking facts, and organising information</div>
+        <div class="cq-opt" onclick="cqSelect(2,'social')">🗣️ Presenting it, getting the team together, leading</div>
+        <div class="cq-opt" onclick="cqSelect(2,'builder')">⚙️ Building the actual thing — prototype, website, product</div>
+      </div>
+    </div>
+    <div class="cq-step" id="cqS3">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:1rem">QUESTION 4 of 5</p>
+      <div class="cq-q">What kind of work sounds most exciting to you?</div>
+      <div class="cq-opts">
+        <div class="cq-opt" onclick="cqSelect(3,'creator')">🎯 Making content, ads, or media that people see</div>
+        <div class="cq-opt" onclick="cqSelect(3,'analyst')">📈 Finding patterns in data to help companies decide</div>
+        <div class="cq-opt" onclick="cqSelect(3,'social')">🤝 Working with people to solve problems or sell ideas</div>
+        <div class="cq-opt" onclick="cqSelect(3,'builder')">🛠️ Building apps, tools, or systems that people use</div>
+      </div>
+    </div>
+    <div class="cq-step" id="cqS4">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);margin-bottom:1rem">QUESTION 5 of 5</p>
+      <div class="cq-q">If you could be famous for one thing, what would it be?</div>
+      <div class="cq-opts">
+        <div class="cq-opt" onclick="cqSelect(4,'creator')">📱 My YouTube/Instagram content that millions follow</div>
+        <div class="cq-opt" onclick="cqSelect(4,'analyst')">🏆 The person who spotted a trend before anyone else</div>
+        <div class="cq-opt" onclick="cqSelect(4,'social')">🌟 The leader who built something that helped people</div>
+        <div class="cq-opt" onclick="cqSelect(4,'builder')">💡 The person who built a product that changed the world</div>
+      </div>
+    </div>
+    <div class="cq-result" id="cqResult">
+      <h3 id="cqResultTitle">Your Career Match: 🎨 The Creator</h3>
+      <p id="cqResultDesc"></p>
+    </div>
+  </div>
+
+  <div class="micro-win">Knowing yourself is the first step to building a career you love.</div>
+
+  <div class="callout call-1"><div class="call-ico">💡</div><div class="call-body"><h4>No Career is "Wrong"</h4><p>Different brains thrive in different careers. The key is matching what you naturally enjoy with skills the world will pay for. <strong>AI makes all career paths more powerful</strong> — whatever you choose.</p></div></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: New Careers →</button></div>
+</div>
+
+<!-- S2: 10 New Careers -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ Section 1 done! You're discovering careers that textbooks haven't caught up with yet.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>10 Careers That <span class="gr">Didn't Exist 5 Years Ago</span> 🔥</h2>
+    <p>These are REAL jobs people are getting paid for right now. Your parents may have never heard of them. You should.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Career</th><th>What They Do</th><th>Avg. Salary (India)</th><th>Skills Needed</th></tr></thead>
+      <tbody>
+        <tr><td>🤖 AI Prompt Engineer</td><td>Write instructions that make AI tools work perfectly for businesses</td><td>₹8–25 LPA</td><td>Writing, logical thinking, curiosity</td></tr>
+        <tr><td>📹 Content Creator</td><td>Make videos, reels, posts that build an audience and earn through brands</td><td>₹3–50+ LPA</td><td>Creativity, consistency, storytelling</td></tr>
+        <tr><td>📊 Data Analyst</td><td>Read data to tell companies what customers want and what's trending</td><td>₹5–18 LPA</td><td>Excel/Python, logic, communication</td></tr>
+        <tr><td>🏋️ AI Trainer</td><td>Test and improve AI models by giving them feedback (humans in the loop)</td><td>₹4–15 LPA</td><td>Attention to detail, domain expertise</td></tr>
+        <tr><td>🖥️ No-Code Developer</td><td>Build apps and websites without writing code using tools like Bubble, Glide</td><td>₹4–20 LPA</td><td>Problem solving, logic, design sense</td></tr>
+        <tr><td>🎙️ Podcast Producer</td><td>Create, edit, and grow audio shows for brands and individuals</td><td>₹3–12 LPA</td><td>Audio editing, storytelling, marketing</td></tr>
+        <tr><td>🛡️ AI Ethics Researcher</td><td>Study whether AI is fair, safe, and unbiased — advise companies on rules</td><td>₹8–30 LPA</td><td>Philosophy, law, tech understanding</td></tr>
+        <tr><td>🌐 Community Manager</td><td>Build and manage online communities for brands, games, and creators</td><td>₹4–14 LPA</td><td>Communication, empathy, social media</td></tr>
+        <tr><td>📦 D2C Brand Manager</td><td>Build and run direct-to-consumer brands using AI tools for marketing</td><td>₹6–20 LPA</td><td>Marketing, branding, analytics</td></tr>
+        <tr><td>🎮 Game Story Designer</td><td>Write storylines, character arcs, and dialogue for video games using AI</td><td>₹5–22 LPA</td><td>Creative writing, gaming knowledge</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">⚡</div><div class="call-body"><h4>The Common Thread</h4><p>Every single career above uses <strong>AI as a tool</strong>. You don't need to build AI. You need to learn to USE it better than everyone else in your field. That's your advantage.</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎯 Quick Action</h4>
+    <p>Pick 2 careers from the table above that excite you. Write them down. We'll use them to build your Career Map in Section 5.</p>
+  </div>
+
+  <div class="emotional-hook"><p>Five years from now, students who started learning these skills at age 14 will be earning more than adults with 10 years of "traditional" experience. <strong>The gap is already forming. Which side are you on?</strong></p></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Your Portfolio →</button></div>
+</div>
+
+<!-- S3: Portfolio -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ You now know more about AI careers than most adults. Seriously.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Build Your <span class="gr">Student Portfolio</span> 💼</h2>
+    <p>A portfolio is proof that you can do what you say you can. Even as a student, you can build one that impresses anyone.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🌟</div><div class="call-body"><h4>What Is a Portfolio?</h4><p>It's your highlight reel — a collection of <strong>things you've made, learned, or achieved</strong>. It's like a resume, but for the real world. Companies and colleges both look at portfolios now.</p></div></div>
+
+  <div class="portfolio-block">
+    <h3>What to Include in Your Student Portfolio</h3>
+    <div class="portfolio-item"><div class="pi-num">01</div><div class="pi-text"><h4>About Me (Self-Introduction)</h4><p>2–3 sentences: who you are, what you're passionate about, and what you're learning. Keep it confident and clear.</p></div></div>
+    <div class="portfolio-item"><div class="pi-num">02</div><div class="pi-text"><h4>Your Skills</h4><p>List tools you know (Canva, ChatGPT, Google Slides), subjects you're good at, languages you speak. Even basic skills count!</p></div></div>
+    <div class="portfolio-item"><div class="pi-num">03</div><div class="pi-text"><h4>Projects & Work Samples</h4><p>Any project from school, this course, or personal time. A blog post, an infographic, a presentation, a short video — all count.</p></div></div>
+    <div class="portfolio-item"><div class="pi-num">04</div><div class="pi-text"><h4>Achievements & Certificates</h4><p>School awards, sports achievements, online course certificates (like TARAhut AI Explorer!), anything that shows you've done something.</p></div></div>
+    <div class="portfolio-item"><div class="pi-num">05</div><div class="pi-text"><h4>Goals & What You're Learning Next</h4><p>Shows that you're ambitious and always growing. "Currently learning data analysis" sounds more impressive than a blank space.</p></div></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;font-size:1.1rem">📝 Example Self-Introduction</h3>
+  <div style="background:var(--bg2);border:1px solid rgba(0,240,255,.15);border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem;font-size:.9rem;color:var(--t2)">
+    <p style="color:var(--c1);font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-bottom:.75rem">EXAMPLE — FILL IN YOUR OWN DETAILS</p>
+    <p>"Hi! I'm <strong style="color:var(--t1)">[Your Name]</strong>, a Class 9 student from <strong style="color:var(--t1)">Kotkapura</strong>. I'm passionate about <strong style="color:var(--t1)">[your interest — e.g., data, content creation, tech]</strong> and I'm currently completing the TARAhut AI Explorer course to build real AI skills. My goal is to become a <strong style="color:var(--t1)">[your dream career]</strong> and I'm building my portfolio one project at a time."</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>🎯 Do This Now</h4>
+    <p>Open your notebook. Write your own self-introduction using the template above. Then write down 5 things that could go in your portfolio (projects, skills, anything you've done).</p>
+  </div>
+
+  <div class="identity-shift">You don't need experience to build a portfolio. You need evidence of LEARNING. This course is evidence. 🏆</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz →</button></div>
+</div>
+
+<!-- S4: Quiz -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Session 7 <span class="gr">Quiz</span> 🧠</h2>
+    <p>6 questions. Test what you learned today. You've got this!</p>
+  </div>
+
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take-Home →</button></div>
+</div>
+
+<!-- S5: Take-Home -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Take-Home: <span class="gr">Your Career Map</span> 🗺️</h2>
+    <p>This is your homework — but make it yours. Show it to your parents tonight!</p>
+  </div>
+
+  <div class="takehome">
+    <h3>📋 Career Map Assignment</h3>
+    <p>Create a Career Map with <strong>3 careers you're excited about</strong>. For each career, write:</p>
+    <ul>
+      <li><strong>Career Name</strong> — what is it called?</li>
+      <li><strong>What they do</strong> — in 1–2 sentences</li>
+      <li><strong>Skills I need</strong> — list 3–5 skills to build</li>
+      <li><strong>First step I can take NOW</strong> — one thing you can do this week</li>
+      <li><strong>Where I'll be in 3 years</strong> — imagine your future self</li>
+    </ul>
+    <p style="margin-top:1rem">📌 <strong>Share with your parents:</strong> Show them the career table from Section 2. Explain one career to them in your own words. Teaching = learning.</p>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>Bring It Next Session</h4><p>Bring your Career Map to Session 8. We'll use it when building your personal brand. This is the foundation of everything that comes next.</p></div></div>
+
+  <div class="micro-action">
+    <h4>🌟 Bonus Challenge</h4>
+    <p>Find ONE person in your city/town who works in a modern career (content creator, designer, tech worker). Follow them on YouTube or Instagram. Study what they do for 5 minutes. Write 1 thing you learned.</p>
+  </div>
+
+  <div class="identity-shift">You showed up. You learned. You're one session closer to being an AI Explorer. See you at Session 8! 🚀</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 7 &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas');
+const ctx=canvas.getContext('2d');
+let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+// Nav & Progress
+const sections=['s1','s2','s3','s4','s5'];
+let cur='s1';
+function go(id){
+  document.getElementById(cur).classList.remove('on');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  cur=id;window.scrollTo({top:0,behavior:'smooth'});
+  const idx=sections.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';
+}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Career Quiz
+let cqAnswers=[];
+let cqCurrentStep=0;
+function cqSelect(step, type){
+  if(cqAnswers[step]===type)return;
+  cqAnswers[step]=type;
+  document.querySelectorAll(`#cqS${step} .cq-opt`).forEach(o=>o.classList.remove('sel'));
+  event.target.classList.add('sel');
+  setTimeout(()=>{
+    if(step<4){
+      document.getElementById('cqS'+step).classList.remove('on');
+      document.getElementById('cqS'+(step+1)).classList.add('on');
+    } else {
+      showCQResult();
+    }
+  },400);
+}
+const cqResults={
+  creator:{title:'🎨 The Creator',desc:'You think visually and love making things! Your ideal careers: Content Creator, AI Prompt Engineer (for creative writing), Game Story Designer, Podcast Producer. You\'ll thrive using AI tools like Canva, ChatGPT, and video editors. Start by creating one piece of content today!'},
+  analyst:{title:'📊 The Analyst',desc:'You love understanding WHY things work! Your ideal careers: Data Analyst, AI Ethics Researcher, Market Researcher. You\'ll thrive with tools like Excel, Python basics, and research platforms. Your superpower: you see patterns others miss.'},
+  social:{title:'🤝 The Leader',desc:'You\'re great with people and love making things happen! Your ideal careers: Community Manager, D2C Brand Manager, Product Manager, AI Business Consultant. You\'ll lead teams and strategies. Your superpower: you inspire others.'},
+  builder:{title:'🔧 The Builder',desc:'You love creating systems and solving technical problems! Your ideal careers: No-Code Developer, AI Product Builder, Tech Entrepreneur, Software Engineer. You\'ll build things with tools like Bubble, Glide, and eventually code. Your superpower: you make ideas real.'}
+};
+function showCQResult(){
+  const counts={creator:0,analyst:0,social:0,builder:0};
+  cqAnswers.forEach(a=>{if(a)counts[a]++});
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const r=cqResults[top];
+  document.getElementById('cqResultTitle').textContent='Your Career Match: '+r.title;
+  document.getElementById('cqResultDesc').textContent=r.desc;
+  document.getElementById('cqResult').classList.add('show');
+}
+
+// Quiz
+const quizData=[
+  {q:'What is a "Prompt Engineer" in AI?',opts:['Someone who builds AI hardware','A person who writes smart instructions for AI tools','An AI that writes its own code','A teacher who trains robots'],ans:1,fb:'Prompt engineers write instructions (prompts) that help AI tools do specific tasks really well. It\'s one of the most in-demand new jobs!'},
+  {q:'Which of these is NOT yet a real AI career?',opts:['AI Trainer','Data Analyst','AI Consciousness Expert','No-Code Developer'],ans:2,fb:'"AI Consciousness Expert" is not an established career yet. The others (AI Trainer, Data Analyst, No-Code Developer) are real, in-demand jobs right now!'},
+  {q:'What should a student portfolio include?',opts:['Only exam marks and grades','About me, skills, projects, achievements, and goals','Just a photo and name','A list of all textbooks you\'ve read'],ans:1,fb:'A great portfolio includes: About Me, Skills, Projects/Work Samples, Achievements, and Future Goals. It shows who you are, not just your marks!'},
+  {q:'Why is learning AI important for ALL careers today?',opts:['Only tech people need AI','AI is only for engineers and scientists','AI tools are used in every modern career to work faster and smarter','AI will replace all jobs anyway so there\'s no point'],ans:2,fb:'AI is used in every industry now — marketing, medicine, law, design, education. Learning to use AI tools makes you more valuable in ANY career you choose.'},
+  {q:'What is the first step to building a student portfolio?',opts:['Waiting until you\'re in college','Getting a professional photographer','Writing a clear self-introduction and listing your skills','Having 10 years of work experience'],ans:2,fb:'Start with a simple self-introduction and list your current skills. You don\'t need experience — you need evidence of LEARNING. Even this course counts!'},
+  {q:'The term "No-Code Developer" means someone who:',opts:['Doesn\'t know how to code at all','Uses visual tools to build apps without traditional programming','Only fixes coding bugs','Develops content for social media'],ans:1,fb:'No-code developers use tools like Bubble, Glide, and Webflow to build real apps and websites without writing traditional code. It\'s a powerful and growing career!'}
+];
+
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');
+  renderQ();
+}
+function renderQ(){
+  if(qCur>=quizData.length){showScore();return}
+  const d=quizData[qCur];qAnswered=false;
+  document.getElementById('qArea').innerHTML=`
+    <div class="q-head"><span class="qn">Question ${qCur+1} of ${quizData.length}</span>${d.q}</div>
+    <div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div>
+    <div class="q-fb" id="qFb"></div>
+    <div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;
+}
+function answerQ(i){
+  if(qAnswered)return;qAnswered=true;
+  const d=quizData[qCur];
+  const opts=document.querySelectorAll('.q-opt');
+  opts[d.ans].classList.add('ok');
+  const fb=document.getElementById('qFb');
+  if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}
+  else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}
+  document.getElementById('qNextBtn').style.display='inline-flex';
+}
+function nextQ(){
+  document.getElementById('qd'+qCur).className='q-dot done';
+  qCur++;
+  if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';
+  renderQ();
+}
+function showScore(){
+  const pct=Math.round(qScore/quizData.length*100);
+  const msg=pct>=80?'Amazing! You\'re a career explorer pro! 🚀':pct>=60?'Good job! Review the careers section again. 💪':'Keep going! Re-read Sections 1–3 and try again. 📚';
+  document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;
+}
+buildQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9: AI Safety Hero! 🛡️ | TARAhut AI Labs</title>
+<style>
+  :root {
+    --green: #059669;
+    --green-light: #34d399;
+    --green-dark: #047857;
+    --yellow: #fbbf24;
+    --orange: #f97316;
+    --purple: #7c3aed;
+    --blue: #3b82f6;
+    --pink: #ec4899;
+    --red: #dc2626;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #162032;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.7; color:var(--text); background:var(--bg); min-height:100vh; overflow-x:hidden; }
+  #particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle { position:absolute; border-radius:50%; opacity:0.15; animation:float linear infinite; }
+  @keyframes float { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:.15} 90%{opacity:.15} 100%{transform:translateY(-100px) rotate(720deg);opacity:0} }
+
+  .hero { position:relative;z-index:1;background:linear-gradient(135deg,#1d4ed8 0%,#059669 50%,#7c3aed 100%);padding:60px 40px 50px;text-align:center;overflow:hidden; }
+  .hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 60%); }
+  .hero-badge { display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:50px;margin-bottom:20px; }
+  .hero h1 { font-size:clamp(32px,5vw,56px);font-weight:900;color:white;margin-bottom:14px;text-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .hero p { font-size:18px;color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 24px; }
+  .hero-pills { display:flex;flex-wrap:wrap;gap:10px;justify-content:center; }
+  .hero-pill { background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px; }
+
+  .container { max-width:900px;margin:0 auto;padding:0 20px;position:relative;z-index:1; }
+  .section { padding:50px 0;border-bottom:1px solid var(--border); }
+  .section-header { display:flex;align-items:center;gap:14px;margin-bottom:30px; }
+  .section-icon { width:52px;height:52px;background:linear-gradient(135deg,#1d4ed8,#7c3aed);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 15px rgba(29,78,216,0.35); }
+  .section-title { font-size:26px;font-weight:800;color:white; }
+  .section-subtitle { font-size:14px;color:var(--muted);margin-top:2px; }
+
+  /* SHARE OR NOT SHARE GAME */
+  .game-container { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px; }
+  .game-header { text-align:center;margin-bottom:24px; }
+  .game-header h3 { font-size:22px;font-weight:800;margin-bottom:8px; }
+  .game-header p { color:var(--muted);font-size:15px; }
+  .game-score-bar { display:flex;justify-content:space-between;background:var(--bg);border-radius:10px;padding:12px 20px;margin-bottom:20px; }
+  .items-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px; }
+  .item-card { background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:16px;text-align:center;transition:all 0.3s; }
+  .item-card.safe-chosen { border-color:var(--green);background:rgba(5,150,105,0.15); }
+  .item-card.unsafe-chosen { border-color:var(--red);background:rgba(220,38,38,0.15); }
+  .item-card.revealed-safe { border-color:var(--green);background:rgba(5,150,105,0.1); }
+  .item-card.revealed-unsafe { border-color:var(--red);background:rgba(220,38,38,0.1); }
+  .item-emoji { font-size:32px;margin-bottom:8px;display:block; }
+  .item-label { font-size:14px;font-weight:700;margin-bottom:12px; }
+  .btn-safe, .btn-unsafe {
+    padding:7px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;
+  }
+  .btn-safe { background:var(--green);color:white;margin-right:6px; }
+  .btn-unsafe { background:var(--red);color:white; }
+  .btn-safe:disabled, .btn-unsafe:disabled { opacity:0.4;cursor:not-allowed; }
+  .item-result { display:none;font-size:12px;font-weight:700;margin-top:8px; }
+  .item-result.correct { color:var(--green-light); }
+  .item-result.wrong { color:#fca5a5; }
+  .game-tally { text-align:center;margin-top:20px;padding:16px;background:var(--bg);border-radius:12px;display:none; }
+  .game-tally h4 { font-size:20px;font-weight:900;color:var(--yellow); }
+
+  /* RULES POSTER */
+  .rules-poster { background:linear-gradient(135deg,rgba(29,78,216,0.2),rgba(124,58,237,0.15));border:2px solid var(--blue);border-radius:20px;padding:28px;text-align:center; }
+  .rules-poster h3 { font-size:24px;font-weight:900;margin-bottom:20px; }
+  .rules-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;text-align:left;margin-bottom:20px; }
+  .rule { display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.05);border-radius:12px;padding:14px; }
+  .rule-icon { font-size:24px;flex-shrink:0; }
+  .rule-text h4 { font-size:14px;font-weight:800;margin-bottom:2px; }
+  .rule-text p { font-size:13px;color:var(--muted); }
+
+  /* CARD */
+  .card { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px; }
+  .card h3 { font-size:17px;font-weight:700;margin-bottom:8px;color:var(--green-light); }
+  .card p { color:var(--muted);font-size:15px; }
+  .card-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px; }
+  .highlight { background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);border-radius:12px;padding:16px 20px;margin:16px 0; }
+  .highlight p { color:var(--yellow);font-size:15px; }
+
+  /* QUIZ */
+  .quiz-progress { display:flex;gap:8px;margin-bottom:24px; }
+  .q-dot { flex:1;height:6px;border-radius:3px;background:var(--border);transition:background 0.3s; }
+  .q-dot.answered { background:var(--green); }
+  .q-dot.current { background:var(--yellow); }
+  .question-block { display:none; }
+  .question-block.active { display:block; }
+  .question-text { font-size:20px;font-weight:700;margin-bottom:20px;padding:20px;background:var(--card);border-radius:14px;border-left:4px solid var(--blue); }
+  .options { display:flex;flex-direction:column;gap:12px;margin-bottom:20px; }
+  .option { padding:14px 20px;background:var(--card2);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-size:16px;font-weight:500;transition:all 0.2s;text-align:left; }
+  .option:hover:not(.locked) { border-color:var(--blue);background:rgba(59,130,246,0.1); }
+  .option.correct { border-color:var(--green);background:rgba(5,150,105,0.2);color:var(--green-light); }
+  .option.wrong { border-color:#dc2626;background:rgba(220,38,38,0.15);color:#fca5a5; }
+  .q-feedback { display:none;padding:14px;border-radius:10px;font-size:15px;margin-bottom:16px;font-weight:600; }
+  .q-feedback.correct { background:rgba(5,150,105,0.15);color:var(--green-light);border:1px solid var(--green); }
+  .q-feedback.wrong { background:rgba(220,38,38,0.15);color:#fca5a5;border:1px solid #dc2626; }
+  .btn-quiz-next { display:none;padding:12px 36px;background:var(--blue);color:white;border:none;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s; }
+  .btn-quiz-next:hover { background:#1d4ed8;transform:scale(1.05); }
+  .quiz-result { display:none;text-align:center;padding:30px;background:var(--card);border-radius:16px; }
+  .quiz-result .result-score { font-size:72px;font-weight:900;color:var(--yellow); }
+  .quiz-result p { font-size:18px;color:var(--muted);margin-top:10px; }
+  .quiz-result .result-emoji { font-size:48px;margin-top:16px;display:block; }
+
+  /* MISSION */
+  .mission-box { background:linear-gradient(135deg,rgba(29,78,216,0.2),rgba(5,150,105,0.15));border:2px solid var(--blue);border-radius:20px;padding:32px;text-align:center; }
+  .mission-box h3 { font-size:26px;font-weight:900;margin-bottom:16px; }
+  .mission-tasks { display:flex;flex-direction:column;gap:14px;text-align:left;margin:20px 0; }
+  .mission-task { display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border-radius:12px;padding:16px; }
+  .mission-task input[type="checkbox"] { width:22px;height:22px;cursor:pointer;margin-top:2px;flex-shrink:0;accent-color:var(--blue); }
+  .mission-task label { font-size:16px;font-weight:500;cursor:pointer; }
+  .mission-note { color:var(--muted);font-size:14px;margin-top:16px; }
+  .footer { background:var(--card);border-top:1px solid var(--border);padding:28px;text-align:center;position:relative;z-index:1;margin-top:20px; }
+  .footer p { color:var(--muted);font-size:13px; }
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<div class="hero">
+  <div class="hero-badge">TARAhut AI Labs · AI Explorer Junior Track</div>
+  <h1>Session 9: AI Safety Hero! 🛡️</h1>
+  <p>Learn how to stay safe online and spot fake AI content! You're the hero! 🦸</p>
+  <div class="hero-pills">
+    <span class="hero-pill">📚 Class 5–7</span>
+    <span class="hero-pill">⏱️ 60 Minutes</span>
+    <span class="hero-pill">🎯 4 Activities</span>
+    <span class="hero-pill">🎮 Safety Game</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: SHARE OR NOT SHARE GAME -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🛡️</div>
+      <div>
+        <div class="section-title">Stay Safe Online!</div>
+        <div class="section-subtitle">Know what to NEVER share — even with AI tools you trust!</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>🤖 AI tools are helpful — but they're not your friend!</h3>
+      <p>AI chatbots store what you type. That means if you share personal information, it could be saved or seen by others. Always protect your private details — it's one of the MOST important rules of the internet! 🔒</p>
+    </div>
+
+    <div class="game-container">
+      <div class="game-header">
+        <h3>🎮 Share or Not Share? — The Safety Game!</h3>
+        <p>Click SAFE ✅ or UNSAFE ❌ for each item. Would you share this with an AI chatbot?</p>
+      </div>
+
+      <div class="game-score-bar">
+        <span style="color:var(--muted);font-size:14px;">⭐ Your Score</span>
+        <span style="font-size:22px;font-weight:900;color:var(--yellow);" id="safetyScore">0 / 8</span>
+        <span style="color:var(--muted);font-size:14px;" id="safetyAnswered">0 answered</span>
+      </div>
+
+      <div class="items-grid" id="itemsGrid">
+        <!-- Items generated by JS -->
+      </div>
+
+      <div class="game-tally" id="gameTally">
+        <h4 id="tallyScore">You got 0/8!</h4>
+        <p id="tallyMsg" style="color:var(--muted);margin-top:8px;"></p>
+        <button onclick="restartSafetyGame()" style="margin-top:14px;padding:10px 28px;background:var(--blue);color:white;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;">🔄 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: SPOT THE FAKE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🔍</div>
+      <div>
+        <div class="section-title">Spot the Fake!</div>
+        <div class="section-subtitle">AI can create fake photos, videos, and text — here's how to stay sharp!</div>
+      </div>
+    </div>
+
+    <div class="rules-poster">
+      <h3>🛡️ Your AI Safety Rules</h3>
+      <div class="rules-grid">
+        <div class="rule">
+          <div class="rule-icon">📸</div>
+          <div class="rule-text">
+            <h4>Fake Photos Exist!</h4>
+            <p>AI can make photos of things that NEVER happened. Always ask: "Is this from a real news site?"</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-icon">🎙️</div>
+          <div class="rule-text">
+            <h4>Fake Voices Too!</h4>
+            <p>AI can copy someone's voice. If you get a scary phone call from an "unknown relative" — tell an adult!</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-icon">📰</div>
+          <div class="rule-text">
+            <h4>Fake News is Real!</h4>
+            <p>AI can write fake news articles that look totally real. Always check if a trusted website reports the same story!</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-icon">🤝</div>
+          <div class="rule-text">
+            <h4>Fake "Friends" Online!</h4>
+            <p>Some online accounts are AI bots pretending to be people. Never share personal details with people you only know online!</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-icon">🔒</div>
+          <div class="rule-text">
+            <h4>Private = Private!</h4>
+            <p>Your full name, school, address, and phone number are PRIVATE. Keep them that way — online and offline!</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-icon">👩‍👧</div>
+          <div class="rule-text">
+            <h4>Tell a Grown-Up!</h4>
+            <p>If anything online makes you uncomfortable or scared — ALWAYS tell a parent or teacher. Never keep it a secret!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px;">
+      <div class="card">
+        <h3>🟢 3 Signs Something is REAL</h3>
+        <p>• It's from a website you know and trust<br>• Other news sources report the same thing<br>• The photos look normal (not perfect or weird)</p>
+      </div>
+      <div class="card">
+        <h3>🔴 3 Signs Something is FAKE</h3>
+        <p>• It sounds too shocking or too good<br>• Only ONE website or message says it<br>• The photo looks strange (extra fingers, blurry edges)</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>💡 <strong>Fun Fact:</strong> AI-generated faces often have blurry teeth or extra fingers! Look carefully at photos — nature's details are hard for AI to get perfectly right! 🖐️</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: QUIZ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧠</div>
+      <div>
+        <div class="section-title">AI Safety Quiz!</div>
+        <div class="section-subtitle">5 questions — are you a real AI Safety Hero?</div>
+      </div>
+    </div>
+
+    <div class="quiz-progress">
+      <div class="q-dot current" id="qd0"></div>
+      <div class="q-dot" id="qd1"></div>
+      <div class="q-dot" id="qd2"></div>
+      <div class="q-dot" id="qd3"></div>
+      <div class="q-dot" id="qd4"></div>
+    </div>
+
+    <div class="question-block active" id="q0">
+      <div class="question-text">Q1: Which of these should you NEVER share with an AI chatbot? 🚫</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(0,0,false)">A) Your favourite subject in school</button>
+        <button class="option" onclick="answerQ(0,1,false)">B) The name of a cartoon you like</button>
+        <button class="option" onclick="answerQ(0,2,true)">C) Your home address and phone number</button>
+        <button class="option" onclick="answerQ(0,3,false)">D) Your favourite colour</button>
+      </div>
+      <div class="q-feedback" id="qf0"></div>
+      <button class="btn-quiz-next" id="qn0" onclick="nextQuestion(0)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q1">
+      <div class="question-text">Q2: You see a shocking photo online. How do you check if it's real? 🔍</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(1,0,false)">A) Share it with 10 friends to warn them</button>
+        <button class="option" onclick="answerQ(1,1,true)">B) Check if a trusted news website also reports it</button>
+        <button class="option" onclick="answerQ(1,2,false)">C) Believe it because it has lots of likes</button>
+        <button class="option" onclick="answerQ(1,3,false)">D) Check if the picture looks beautiful</button>
+      </div>
+      <div class="q-feedback" id="qf1"></div>
+      <button class="btn-quiz-next" id="qn1" onclick="nextQuestion(1)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q2">
+      <div class="question-text">Q3: What's a CLUE that a photo might be AI-generated (fake)? 🖼️</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(2,0,false)">A) It has bright colours</button>
+        <button class="option" onclick="answerQ(2,1,false)">B) There are people in it</button>
+        <button class="option" onclick="answerQ(2,2,true)">C) Hands look weird — too many fingers or blurry!</button>
+        <button class="option" onclick="answerQ(2,3,false)">D) It was taken outside</button>
+      </div>
+      <div class="q-feedback" id="qf2"></div>
+      <button class="btn-quiz-next" id="qn2" onclick="nextQuestion(2)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q3">
+      <div class="question-text">Q4: If something online makes you feel scared or uncomfortable, what should you do? 😟</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(3,0,false)">A) Keep it a secret and delete the message</button>
+        <button class="option" onclick="answerQ(3,1,false)">B) Reply to the message to find out more</button>
+        <button class="option" onclick="answerQ(3,2,true)">C) Tell a parent or teacher straight away!</button>
+        <button class="option" onclick="answerQ(3,3,false)">D) Ignore it and hope it goes away</button>
+      </div>
+      <div class="q-feedback" id="qf3"></div>
+      <button class="btn-quiz-next" id="qn3" onclick="nextQuestion(3)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q4">
+      <div class="question-text">Q5: AI can create which of these fake things? 🤖</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(4,0,false)">A) Only fake text articles</button>
+        <button class="option" onclick="answerQ(4,1,false)">B) Only fake photos</button>
+        <button class="option" onclick="answerQ(4,2,false)">C) Only fake voices</button>
+        <button class="option" onclick="answerQ(4,3,true)">D) ALL of the above — text, photos AND voices!</button>
+      </div>
+      <div class="q-feedback" id="qf4"></div>
+      <button class="btn-quiz-next" id="qn4" onclick="showResult()">See My Score! 🎉</button>
+    </div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="result-score" id="resultScore">0/5</div>
+      <p id="resultMsg"></p>
+      <span class="result-emoji" id="resultEmoji"></span>
+      <br><button class="btn-quiz-next" style="display:inline-block;margin-top:20px;" onclick="restartQuiz()">🔄 Try Again</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MISSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎨</div>
+      <div>
+        <div class="section-title">Your Mission This Week!</div>
+        <div class="section-subtitle">Become the AI Safety Hero of your home! 🦸</div>
+      </div>
+    </div>
+
+    <div class="mission-box">
+      <h3>🛡️ Mission: Make Your Safety Poster!</h3>
+      <p style="color:var(--muted);margin-bottom:16px;">Design your own AI Safety Rules poster and hang it in your room! Teach your family what you've learned!</p>
+
+      <div class="mission-tasks">
+        <div class="mission-task">
+          <input type="checkbox" id="m1">
+          <label for="m1">📝 <strong>List your 5 safety rules</strong> — use the ones from class as a guide. Write them in YOUR words!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m2">
+          <label for="m2">🎨 <strong>Make your poster</strong> — use colours, drawings, and emojis to make it fun and easy to read!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m3">
+          <label for="m3">📌 <strong>Hang it in your room</strong> — or near the computer/tablet at home so everyone can see it!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m4">
+          <label for="m4">👨‍👩‍👧 <strong>Teach your family</strong> — explain each rule. You're the AI Safety Expert of the house now! 🏠</label>
+        </div>
+      </div>
+
+      <div class="mission-note">
+        🛡️ Remember: Staying safe online is a skill. You now have it!<br>
+        💚 <strong>TARAhut AI Labs</strong> · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>TARAhut AI Labs</strong> · AI Explorer Junior Track · Session 9 of 12</p>
+  <p style="margin-top:6px;">Building young AI explorers, one session at a time! 🚀 · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a></p>
+</div>
+
+<script>
+// PARTICLES
+const pContainer=document.getElementById('particles');
+const colors=['#059669','#34d399','#1d4ed8','#7c3aed','#fbbf24','#ec4899'];
+for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const size=Math.random()*20+8;p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;pContainer.appendChild(p);}
+
+// SHARE OR NOT SHARE GAME
+const safetyItems = [
+  { emoji:'📛', label:'Your Full Name', safe:false, reason:'❌ UNSAFE — Never share your real name with AI tools or strangers online!' },
+  { emoji:'🏫', label:'Your School Name', safe:false, reason:'❌ UNSAFE — Your school name helps strangers figure out where to find you!' },
+  { emoji:'🎨', label:'Your Favourite Hobby', safe:true, reason:'✅ SAFE — Hobbies are fine to share! Nothing personal about them.' },
+  { emoji:'🏠', label:'Your Home Address', safe:false, reason:'❌ UNSAFE — NEVER share your address with anyone online! Very private!' },
+  { emoji:'📱', label:'Your Phone Number', safe:false, reason:'❌ UNSAFE — Your phone number is private. Only family should have it!' },
+  { emoji:'📚', label:'A Book You Love', safe:true, reason:'✅ SAFE — Sharing books you enjoy is totally fine!' },
+  { emoji:'🤳', label:'Your Photo', safe:false, reason:'❌ UNSAFE — Never share photos of yourself with AI tools or strangers online!' },
+  { emoji:'🎵', label:'Your Favourite Song', safe:true, reason:'✅ SAFE — Music preferences are fine to share!' }
+];
+
+let safetyScore=0, safetyAnswered=0;
+
+function buildSafetyGame(){
+  const grid=document.getElementById('itemsGrid');
+  grid.innerHTML='';
+  safetyItems.forEach((item,i)=>{
+    grid.innerHTML+=`<div class="item-card" id="ic${i}">
+      <span class="item-emoji">${item.emoji}</span>
+      <div class="item-label">${item.label}</div>
+      <button class="btn-safe" id="sb${i}" onclick="safetyAnswer(${i},true)">✅ Safe</button>
+      <button class="btn-unsafe" id="ub${i}" onclick="safetyAnswer(${i},false)">❌ Unsafe</button>
+      <div class="item-result" id="ir${i}"></div>
+    </div>`;
+  });
+}
+
+function safetyAnswer(idx, userSaidSafe){
+  const item=safetyItems[idx];
+  document.getElementById('sb'+idx).disabled=true;
+  document.getElementById('ub'+idx).disabled=true;
+  const res=document.getElementById('ir'+idx);
+  res.style.display='block';
+  const correct=(userSaidSafe===item.safe);
+  if(correct){
+    safetyScore++;
+    document.getElementById('ic'+idx).classList.add(item.safe?'revealed-safe':'revealed-unsafe');
+    res.className='item-result correct';
+  } else {
+    document.getElementById('ic'+idx).classList.add(item.safe?'revealed-safe':'revealed-unsafe');
+    res.className='item-result wrong';
+  }
+  res.textContent=item.reason;
+  safetyAnswered++;
+  document.getElementById('safetyScore').textContent=safetyScore+' / 8';
+  document.getElementById('safetyAnswered').textContent=safetyAnswered+' answered';
+  if(safetyAnswered===8){
+    const tally=document.getElementById('gameTally');
+    tally.style.display='block';
+    document.getElementById('tallyScore').textContent='You got '+safetyScore+'/8!';
+    const msgs=['Keep studying the safety rules! 📖','Good start! Review the unsafe items! 🔍','Nice work! You\'re learning online safety! 😊','Great job! You know your privacy rules! 🌟','Perfect! You\'re a true AI Safety Hero! 🏆'];
+    document.getElementById('tallyMsg').textContent=msgs[Math.min(Math.floor(safetyScore/2),4)];
+  }
+}
+
+function restartSafetyGame(){
+  safetyScore=0; safetyAnswered=0;
+  document.getElementById('safetyScore').textContent='0 / 8';
+  document.getElementById('safetyAnswered').textContent='0 answered';
+  document.getElementById('gameTally').style.display='none';
+  buildSafetyGame();
+}
+
+buildSafetyGame();
+
+// QUIZ
+let quizScore=0;
+const feedbacks=[
+  ['🎉 Correct! Home address and phone number are VERY private — never share them!','❌ Not quite! Your home address and phone number are private. NEVER share them with AI!'],
+  ['🎉 Correct! Always check trusted news sites — if only one place says it, be suspicious!','❌ Not quite! Always verify with a trusted news website before believing or sharing!'],
+  ['🎉 Correct! AI struggles with hands — look for weird fingers or blurry edges as clues!','❌ Not quite! AI-generated images often have wrong-looking hands — too many fingers or blurry!'],
+  ['🎉 Correct! Always tell a grown-up! Never keep scary online experiences a secret!','❌ Not quite! Always tell a parent or teacher — never keep scary online stuff a secret!'],
+  ['🎉 Correct! AI can fake text, photos AND voices — always be alert!','❌ Not quite! AI can create ALL of these — text, photos, and even voices! Stay alert!']
+];
+
+function answerQ(qNum,optIdx,isCorrect){
+  const opts=document.querySelectorAll('#q'+qNum+' .option');
+  opts.forEach(o=>o.classList.add('locked'));
+  opts.forEach((o,i)=>{if(i===optIdx)o.classList.add(isCorrect?'correct':'wrong');});
+  const fb=document.getElementById('qf'+qNum);
+  fb.style.display='block';
+  if(isCorrect){quizScore++;fb.className='q-feedback correct';fb.textContent=feedbacks[qNum][0];}
+  else{fb.className='q-feedback wrong';fb.textContent=feedbacks[qNum][1];}
+  document.getElementById('qn'+qNum).style.display='inline-block';
+  document.getElementById('qd'+qNum).className='q-dot answered';
+}
+
+function nextQuestion(current){
+  document.getElementById('q'+current).classList.remove('active');
+  const next=current+1;
+  document.getElementById('q'+next).classList.add('active');
+  document.getElementById('qd'+next).className='q-dot current';
+}
+
+function showResult(){
+  document.getElementById('q4').classList.remove('active');
+  document.getElementById('quizResult').style.display='block';
+  document.getElementById('resultScore').textContent=quizScore+'/5';
+  const emojis=['😅','🤔','😊','🌟','🏆'];
+  const msgs=['Keep practising! Safety is super important! 💪','Good try! Review the safety rules again! 📖','Nice work! You\'re getting safer online! 😊','Almost perfect! Great safety awareness! 🌟','Perfect! You\'re a true AI Safety Hero! 🏆'];
+  document.getElementById('resultEmoji').textContent=emojis[quizScore];
+  document.getElementById('resultMsg').textContent=msgs[quizScore];
+}
+
+function restartQuiz(){
+  quizScore=0;
+  document.getElementById('quizResult').style.display='none';
+  for(let i=0;i<5;i++){
+    document.getElementById('q'+i).classList.remove('active');
+    document.getElementById('qd'+i).className='q-dot';
+    document.getElementById('qf'+i).style.display='none';
+    document.getElementById('qn'+i).style.display='none';
+    document.querySelectorAll('#q'+i+' .option').forEach(o=>{o.className='option';});
+  }
+  document.getElementById('q0').classList.add('active');
+  document.getElementById('qd0').className='q-dot current';
+}
+</script>
+</body>
+</html>

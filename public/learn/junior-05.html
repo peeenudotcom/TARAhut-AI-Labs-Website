@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5: Storyteller & Comic Creator! 📖 — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--brand);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--brand);letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7vw,4.8rem);font-weight:800;line-height:1.1;margin-bottom:1rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:1.15rem;color:var(--t2);max-width:560px;margin-bottom:.8rem;animation:fadeSlide .7s .2s ease both}
+.hero .brand-tag{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--brand);margin-bottom:2rem;animation:fadeSlide .7s .25s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbF 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbF 22s ease-in-out infinite alternate-reverse}
+@keyframes orbF{0%{transform:translate(0,0)}100%{transform:translate(30px,-25px)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 28px rgba(5,150,105,.3)}.btn-glow:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(5,150,105,.5)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 20px;font-size:.88rem}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1100px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 16px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.sec{display:none;max-width:960px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .4s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:22px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:640px}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.5rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.8rem;flex-shrink:0}.call-body h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.95rem}.call-body strong{color:var(--t1)}
+.fun-tip{background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(0,240,255,.04));border:1px solid rgba(168,85,247,.2);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.5rem 0}
+.fun-tip h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--c2);margin-bottom:.4rem}.fun-tip p{color:var(--t2);font-size:.95rem}
+/* Story Generator */
+.story-gen{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0}
+.story-gen h4{font-family:'Syne',sans-serif;font-weight:800;margin-bottom:1rem;color:var(--c4)}
+.story-field{margin-bottom:.8rem}
+.story-field label{display:block;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t2);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:1px}
+.story-field input{width:100%;padding:10px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s}
+.story-field input:focus{border-color:var(--c1);box-shadow:0 0 12px rgba(0,240,255,.1)}
+.story-field input::placeholder{color:var(--t3)}
+.story-result{padding:1.2rem;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.15);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c4);margin-top:1rem;display:none}
+/* Comic Strip */
+.comic-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.5rem 0}
+.comic-panel{background:var(--bg2);border:2px solid var(--bd);border-radius:var(--rs);padding:1rem;text-align:center;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:pointer}
+.comic-panel:hover{border-color:rgba(168,85,247,.4);transform:translateY(-3px)}
+.comic-panel .panel-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c2);margin-bottom:.4rem;letter-spacing:1px;text-transform:uppercase}
+.comic-panel .panel-emoji{font-size:2.2rem;display:block;margin-bottom:.4rem}
+.comic-panel .panel-text{font-size:.78rem;color:var(--t2);line-height:1.4}
+/* Step Guide */
+.step{display:flex;gap:1rem;align-items:flex-start;padding:1.2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:.8rem;transition:all .3s}
+.step:hover{border-color:rgba(5,150,105,.3);transform:translateX(4px)}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--brand);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-body h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:.2rem;font-size:.95rem}
+.step-body p{color:var(--t2);font-size:.88rem}
+.mission{background:linear-gradient(135deg,rgba(5,150,105,.1),rgba(0,240,255,.05));border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:2rem;margin:1.5rem 0;text-align:center}
+.mission .big-emoji{font-size:3.5rem;display:block;margin-bottom:.8rem}
+.mission h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--brand);margin-bottom:.8rem}
+.mission p{color:var(--t2);font-size:1rem;max-width:480px;margin:0 auto .6rem}
+.mission ul{list-style:none;padding:0;margin:.8rem 0}
+.mission ul li{font-size:.95rem;color:var(--t1);padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.mission ul li:last-child{border:none}
+.quiz-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:5px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem;line-height:1.4}
+.q-emoji{font-size:2rem;display:block;margin-bottom:.5rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1.5px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.95rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:1rem;border-radius:var(--rs);font-size:.9rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.07);border:1px solid rgba(255,61,139,.2);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:2.5rem 1rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:600px){.comic-strip{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="hero-chip"><span class="live"></span>AI Explorer · Junior Track · Session 5</div>
+  <h1>Storyteller &<br><span class="gr">Comic Creator! 📖</span></h1>
+  <div class="brand-tag">by TARAhut AI Labs</div>
+  <p class="sub">Write amazing stories and make your own comic strips — with AI as your co-author! 🦜✨</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Creating! →</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s3')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1" onclick="go('s1')">📖 AI Stories!</button>
+    <button class="nav-btn" data-s="s2" onclick="go('s2')">🎭 Comic Strip!</button>
+    <button class="nav-btn" data-s="s3" onclick="go('s3')">🧠 Quiz Time!</button>
+    <button class="nav-btn" data-s="s4" onclick="go('s4')">🚀 Your Mission</button>
+  </div>
+</nav>
+
+<!-- S1: AI STORIES -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>AI Writes <span class="gr">Stories! 📖</span></h2>
+    <p>Become the author of your own adventures — with AI doing the writing for you! 🦜</p>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">✍️</div>
+    <div class="call-body">
+      <h4>You're the Director, AI is the Writer!</h4>
+      <p>You give AI the idea — <strong>characters, setting, and what happens</strong>. AI writes the full story! You can edit it, add to it, or ask AI to change anything. It's YOUR story! 🌟</p>
+    </div>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🦜</div>
+    <div class="call-body">
+      <h4>Try This Amazing Story Prompt!</h4>
+      <p><strong>"Write a funny adventure story about [YOUR NAME] who finds a talking parrot in Kotkapura market. The parrot knows a treasure map. Make it exciting and funny, about 10 sentences."</strong><br>Replace [YOUR NAME] with your actual name! 🎉</p>
+    </div>
+  </div>
+
+  <div class="story-gen">
+    <h4>🎲 Build Your Own Story Prompt!</h4>
+    <div class="story-field">
+      <label>Your Character's Name</label>
+      <input type="text" id="charName" placeholder="E.g. Arjun, Priya, Riya..." oninput="buildStoryPrompt()">
+    </div>
+    <div class="story-field">
+      <label>What Do They Find?</label>
+      <input type="text" id="magicThing" placeholder="E.g. a talking parrot, magic pencil, time machine..." oninput="buildStoryPrompt()">
+    </div>
+    <div class="story-field">
+      <label>Where Does It Happen?</label>
+      <input type="text" id="location" placeholder="E.g. Kotkapura market, school, a jungle..." oninput="buildStoryPrompt()">
+    </div>
+    <div class="story-result" id="storyResult"></div>
+  </div>
+
+  <div class="fun-tip">
+    <h4>💡 Story Pro Tips!</h4>
+    <p>After AI writes your story, ask: <em>"Make it funnier!"</em> or <em>"Add a twist at the end!"</em> or <em>"Make the hero braver!"</em> — AI will keep improving it! 🚀</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs · tarahutailabs.com · +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Comic Strip! →</button></div>
+</div>
+
+<!-- S2: COMIC STRIP -->
+<div class="sec" id="s2">
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Make a <span class="gr">Comic Strip! 🎭</span></h2>
+    <p>Create your own 4-panel comic with AI writing the story and AI drawing the art!</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:1rem;">📋 How to Make Your Comic Strip</h3>
+  <div>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Write the Story</h4><p>Tell AI: "Write a 4-panel comic story about a superhero student who saves their school from a homework monster. Give me Panel 1, 2, 3, 4 descriptions."</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Create Each Panel Image</h4><p>Take each panel description to Canva or Bing Image Creator. Type it as an art prompt to generate the picture for that panel. 🎨</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Arrange in Canva</h4><p>Open Canva → Create a new design → "Comic Strip" template → Add your 4 images in order → Add the text/speech bubbles!</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Your Comic is Ready!</h4><p>Download, print, or share on WhatsApp. You're now a real comic creator! 🦸‍♂️✨</p></div></div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin:2rem 0 .8rem;">🎭 Example Comic: "The Homework Monster" — Click panels to see the story!</h3>
+  <div class="comic-strip">
+    <div class="comic-panel" onclick="revealPanel(this,'🏫','Panel 1: Normal Day','Student Arjun sits in class. Teacher gives HUGE pile of homework. Arjun thinks: Too much!')">
+      <div class="panel-num">Panel 1</div>
+      <span class="panel-emoji">🏫</span>
+      <div class="panel-text">Click to reveal!</div>
+    </div>
+    <div class="comic-panel" onclick="revealPanel(this,'👾','Panel 2: The Monster Appears!','Suddenly, a giant green Homework Monster jumps out of the homework pile! Everyone screams!')">
+      <div class="panel-num">Panel 2</div>
+      <span class="panel-emoji">👾</span>
+      <div class="panel-text">Click to reveal!</div>
+    </div>
+    <div class="comic-panel" onclick="revealPanel(this,'🤖','Panel 3: Hero to the Rescue!','Arjun types on his phone: ChatGPT! Help me! AI appears as a superhero robot with glowing eyes!')">
+      <div class="panel-num">Panel 3</div>
+      <span class="panel-emoji">🤖</span>
+      <div class="panel-text">Click to reveal!</div>
+    </div>
+    <div class="comic-panel" onclick="revealPanel(this,'🎉','Panel 4: Victory!','AI superhero answers all homework questions in 1 second! Monster shrinks and disappears! School cheers! THE END!')">
+      <div class="panel-num">Panel 4</div>
+      <span class="panel-emoji">🎉</span>
+      <div class="panel-text">Click to reveal!</div>
+    </div>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🌟</div>
+    <div class="call-body">
+      <h4>Your Comic Ideas!</h4>
+      <p>Try: "A cat who becomes class monitor", "A student who discovers AI and becomes the smartest in school", "A cricket match where a robot joins the team"! 🏏</p>
+    </div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs · tarahutailabs.com · +91 92008-82008</div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Quiz Time! →</button>
+  </div>
+</div>
+
+<!-- S3: QUIZ -->
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Quiz <span class="gr">Time!</span> 🧠</h2>
+    <p>Test your storytelling and comic creating knowledge!</p>
+  </div>
+  <div class="quiz-box" id="quizBox">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs · tarahutailabs.com · +91 92008-82008</div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Your Mission →</button>
+  </div>
+</div>
+
+<!-- S4: MISSION -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Your <span class="gr">Take-Home Mission! 🚀</span></h2>
+    <p>Write a story with AI help — then read it to someone at bedtime!</p>
+  </div>
+  <div class="mission">
+    <span class="big-emoji">📖</span>
+    <h3>Mission: Write Your Own 1-Page Story!</h3>
+    <p>Use AI to help you write a 1-page adventure story — then read it aloud to someone before bed!</p>
+    <ul>
+      <li>✏️ Give the main character YOUR name</li>
+      <li>🦜 Include something magical or funny that happens</li>
+      <li>🏙️ Set it in your city or school</li>
+      <li>🔄 Ask AI to improve it until it sounds perfect</li>
+      <li>🌙 Read it to a family member before bed — they'll love it!</li>
+    </ul>
+  </div>
+  <div class="callout call-2">
+    <div class="call-ico">🏆</div>
+    <div class="call-body">
+      <h4>Bonus: Start Your Story Diary!</h4>
+      <p>Keep a notebook called "My AI Story Diary". Write one new story every week with AI help. By the end of the year, you'll have 50+ stories! 📚</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin:2rem 0">
+    <div style="font-size:3rem;margin-bottom:.5rem">🏆</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--brand)">Session 5 Complete!</div>
+    <div style="color:var(--t2);font-size:.9rem;margin-top:.3rem">Next up: Session 6 — English Power-Up! 🗣️</div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs · tarahutailabs.com · +91 92008-82008</div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Again</button>
+  </div>
+</div>
+
+<footer class="foot">
+  <p>Made with ❤️ by <span class="brand">TARAhut AI Labs</span> · tarahutailabs.com · +91 92008-82008</p>
+  <p style="margin-top:.3rem">AI Explorer Junior Track · Session 5 · Ages 10–12</p>
+</footer>
+
+<script>
+const canvas=document.getElementById('particleCanvas'),ctx=canvas.getContext('2d');
+let pts=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<55;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.5,o:Math.random()*.4+.1});
+function animP(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(5,150,105,${p.o})`;ctx.fill()});requestAnimationFrame(animP);}
+animP();
+function startLearning(){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('heroSection').style.display='none';document.getElementById('mainNav').style.display='block';go(id);}
+function go(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.s===id));window.scrollTo({top:0,behavior:'smooth'});const map={s1:25,s2:50,s3:75,s4:100};document.getElementById('progBar').style.width=(map[id]||25)+'%';}
+
+function buildStoryPrompt(){
+  const name=document.getElementById('charName').value.trim();
+  const thing=document.getElementById('magicThing').value.trim();
+  const loc=document.getElementById('location').value.trim();
+  const result=document.getElementById('storyResult');
+  if(name||thing||loc){
+    result.style.display='block';
+    result.textContent=`Write a funny adventure story about ${name||'a brave student'} who finds ${thing||'something magical'} in ${loc||'their city'}. Make it exciting and funny, about 10-12 sentences. Include a surprising ending!`;
+  }
+}
+
+function revealPanel(el,emoji,title,text){
+  el.querySelector('.panel-emoji').textContent=emoji;
+  el.querySelector('.panel-text').textContent=text;
+  el.style.borderColor='var(--c2)';
+  el.style.background='rgba(168,85,247,.06)';
+}
+
+const questions=[
+  {emoji:'📖',q:'When you ask AI to write a story, what is YOUR job?',opts:['Do nothing — AI does everything','Give the idea: characters, setting, and what happens','Type random letters','Copy someone else\'s story'],ans:1,fb:'You\'re the director! You give AI the idea and details. AI does the writing, but the creative idea comes from YOU! 🌟'},
+  {emoji:'✍️',q:'What makes a great story prompt for AI?',opts:['Just "write a story"','Names, location, what happens, and what style (funny, scary, exciting)','Only one word','Using capital letters only'],ans:1,fb:'A great story prompt has the character name, location, what happens, and the style! More details = better story! 🎉'},
+  {emoji:'🎭',q:'In a 4-panel comic strip, what does each panel contain?',opts:['Just a picture with no words','One part of the story — one scene or moment','The entire story in one image','Only the ending of the story'],ans:1,fb:'Each panel in a comic shows one moment or scene of the story. Together, 4 panels tell the whole story! 🎭'},
+  {emoji:'🔄',q:'After AI writes your story, what can you do to make it better?',opts:['Nothing — you have to accept it as-is','Ask AI to make it funnier, add a twist, or change something you don\'t like','Delete it and start completely over','Print it immediately without reading'],ans:1,fb:'You can keep improving your story! Ask AI: "Make it funnier!" or "Add a twist!" or "Change the ending!" AI will happily revise! 🚀'},
+  {emoji:'🦜',q:'What is the best thing about having AI help with storytelling?',opts:['AI completely replaces your creativity','AI writes the story so you never need to think','AI helps bring YOUR ideas to life quickly, so you can focus on creativity','AI only writes boring stories'],ans:2,fb:'AI is your creative partner! Your imagination + AI\'s writing speed = amazing stories! You bring the ideas, AI brings them to life! ✨'}
+];
+let qIdx=0,score=0,answered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=questions.map((_,i)=>`<div class="q-dot ${i===0?'cur':''}"></div>`).join('');renderQ();}
+function renderQ(){if(qIdx>=questions.length){showScore();return;}const q=questions[qIdx];const area=document.getElementById('qArea');area.innerHTML=`<div class="q-head"><span class="q-emoji">${q.emoji}</span>Question ${qIdx+1} of ${questions.length}<br>${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="answer(this,${i},${q.ans},'${q.fb.replace(/'/g,"&#39;")}')"><span class="ol">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div></div><button class="btn btn-glow btn-sm" id="nextBtn" onclick="nextQ()" style="display:none">Next →</button></div>`;answered=false;}
+function answer(el,chosen,correct,fb){if(answered)return;answered=true;document.querySelectorAll('.q-opt').forEach((o,i)=>{o.classList.add(i===correct?'ok':'no')});if(chosen===correct)score++;const fbEl=document.getElementById('qFb');fbEl.className='q-fb show '+(chosen===correct?'fb-ok':'fb-no');fbEl.innerHTML=(chosen===correct?'🎉 ':'😅 ')+fb;document.getElementById('nextBtn').style.display='inline-flex';const dots=document.querySelectorAll('.q-dot');dots[qIdx].classList.remove('cur');dots[qIdx].classList.add('done');if(qIdx+1<questions.length)dots[qIdx+1].classList.add('cur');}
+function nextQ(){qIdx++;renderQ();}
+function showScore(){const stars=score>=5?'🌟🌟🌟':score>=3?'⭐⭐':'⭐';const msg=score>=5?'Story Master! You\'re incredible! 📖':score>=3?'Great storyteller! Keep it up! 💪':'Good try! Review and try again! ✍️';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/5</div><div style="font-size:2rem;margin:.5rem 0">${stars}</div><p style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">${msg}</p><p style="color:var(--t2)">You answered ${score} out of 5 correctly!</p><br><button class="btn btn-glow btn-sm" onclick="qIdx=0;score=0;buildQuiz()">Try Again 🔄</button></div>`;}
+buildQuiz();
+</script>
+</body>
+</html>

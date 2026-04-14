@@ -171,16 +171,104 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .foot p{font-size:.82rem;color:var(--t3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 
+/* ===== NEW: Visual Flow Diagrams ===== */
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(0,240,255,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+/* Compare Side-by-Side */
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+
+/* Icon Grid (dark visual grid like book) */
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+/* Animated reveal on scroll */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+/* Stagger delays for children */
+.stagger>*:nth-child(1){transition-delay:.05s}
+.stagger>*:nth-child(2){transition-delay:.12s}
+.stagger>*:nth-child(3){transition-delay:.19s}
+.stagger>*:nth-child(4){transition-delay:.26s}
+.stagger>*:nth-child(5){transition-delay:.33s}
+.stagger>*:nth-child(6){transition-delay:.4s}
+.stagger>*:nth-child(7){transition-delay:.47s}
+.stagger>*:nth-child(8){transition-delay:.54s}
+.stagger>*:nth-child(9){transition-delay:.61s}
+.stagger>*:nth-child(10){transition-delay:.68s}
+.stagger>*:nth-child(11){transition-delay:.75s}
+.stagger>*:nth-child(12){transition-delay:.82s}
+
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+/* Floating lang button for hero */
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
+
 @media(max-width:768px){
   .cgrid,.tool-grid{grid-template-columns:1fr}
   .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .lang-btn{padding:5px 8px;font-size:.65rem}
 }
-body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
+<!-- Floating language switcher (visible before nav appears) -->
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -206,7 +294,12 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s3"><span class="nn">03</span>3 AI Assistants</button>
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>First Conversation</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
-    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span><span data-t="nav_wrap">Wrap-Up</span></button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -218,18 +311,96 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p>No textbooks. No jargon. Just a clear, honest explanation of the technology shaping every job, every city, and every phone on earth right now.</p>
   </div>
 
-  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Simplest Definition Ever</h4><p>AI is a <strong>computer system trained to do tasks that normally require human intelligence</strong> &mdash; like understanding language, recognising images, making decisions, and generating content. Think of it as a tireless assistant that has read millions of books and can respond instantly. It doesn't "think" like you do, but it's incredibly good at finding patterns in data and generating useful output.</p></div></div>
-
-  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The 3 Types of AI — Only One Exists Today</h3>
-  <div class="cgrid">
-    <div class="crd"><span class="tag tag-brand">EXISTS TODAY</span><span class="crd-icon">🎯</span><h3>Narrow AI (ANI)</h3><p>AI designed to do <strong>one specific thing</strong> exceptionally well. ChatGPT writes text. Google Maps finds routes. Spotify curates playlists. Every single AI tool you'll learn in this course is Narrow AI.</p></div>
-    <div class="crd"><span class="tag tag-4">IN RESEARCH</span><span class="crd-icon">🧠</span><h3>General AI (AGI)</h3><p>AI that can learn and reason <strong>across all tasks</strong>, just like a human. It doesn't exist yet. OpenAI, Google, and Anthropic are all racing to build it. Scientists estimate it could arrive in 5-15 years.</p></div>
-    <div class="crd"><span class="tag tag-3">SCI-FI (FOR NOW)</span><span class="crd-icon">🌌</span><h3>Super AI (ASI)</h3><p>AI smarter than all of humanity combined. This is pure science fiction for now &mdash; think Terminator or Avengers. We are nowhere close. Don't let movies scare you.</p></div>
+  <!-- NEW: Visual Flow — How AI Works -->
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; How AI Works — The Simple Version</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">📚</div>
+        <div class="vn-label">Massive Data</div>
+        <div class="vn-sub">Books, images, websites</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🧠</div>
+        <div class="vn-label">Finds Patterns</div>
+        <div class="vn-sub">Learns relationships</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">💡</div>
+        <div class="vn-label">Generates Output</div>
+        <div class="vn-sub">Text, images, decisions</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>AI is a computer system trained on millions of examples.</strong> It doesn't "think" like you — but it's incredibly good at finding patterns and generating useful output.</div>
   </div>
 
-  <div class="micro-win">You just learned something most MBA graduates don't know. Seriously.</div>
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Simplest Definition Ever</h4><p>AI is a <strong>computer system trained to do tasks that normally require human intelligence</strong> &mdash; like understanding language, recognising images, making decisions, and generating content. Think of it as a tireless assistant that has read millions of books and can respond instantly.</p></div></div>
 
-  <div class="callout call-2"><div class="call-ico">&#128205;</div><div class="call-body"><h4>Everyday Examples You Already Know</h4><p><strong>YouTube's "Up Next"</strong> &mdash; AI watches your viewing history and predicts your next interest.<br><strong>Google Translate</strong> &mdash; Translates between 100+ languages using a deep-learning model.<br><strong>Zomato delivery time</strong> &mdash; AI calculates estimated delivery time based on traffic, kitchen load, weather.<br><strong>Your phone's autocorrect</strong> &mdash; A language model predicts the next word you'll type.<br><strong>Instagram's Explore page</strong> &mdash; AI analyses 30+ signals to decide what you see.<br><strong>UPI fraud detection</strong> &mdash; AI checks every transaction in under 50 milliseconds.</p></div></div>
+  <!-- NEW: Misconception vs Reality -->
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Misconception vs Reality</h3>
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">🤖</div>
+      <h4>What People Think</h4>
+      <p>AI is a conscious robot that thinks, feels, and will replace all human jobs. Terminator is coming.</p>
+      <div class="vc-badge">&#10005; Myth</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">🧩</div>
+      <h4>The Reality</h4>
+      <p>AI is a pattern-finding tool. Incredibly good at specific tasks, but doesn't "think." It assists humans — not replaces them.</p>
+      <div class="vc-badge">&#10003; Fact</div>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The 3 Types of AI — Only One Exists Today</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-brand">EXISTS TODAY</span><span class="crd-icon">🎯</span><h3>Narrow AI (ANI)</h3><p>AI designed to do <strong>one specific thing</strong> exceptionally well. ChatGPT writes text. Google Maps finds routes. Spotify curates playlists. Every single AI tool you'll learn in this course is Narrow AI.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">IN RESEARCH</span><span class="crd-icon">🧠</span><h3>General AI (AGI)</h3><p>AI that can learn and reason <strong>across all tasks</strong>, just like a human. It doesn't exist yet. OpenAI, Google, and Anthropic are all racing to build it. Scientists estimate it could arrive in 5-15 years.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">SCI-FI (FOR NOW)</span><span class="crd-icon">🌌</span><h3>Super AI (ASI)</h3><p>AI smarter than all of humanity combined. This is pure science fiction for now &mdash; think Terminator or Avengers. We are nowhere close. Don't let movies scare you.</p></div>
+  </div>
+
+  <!-- NEW: Visual Timeline of AI Types -->
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128337; Timeline of AI Evolution</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">🎯</div>
+        <div class="vn-label">Narrow AI</div>
+        <div class="vn-sub">NOW — 2026</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">🧠</div>
+        <div class="vn-label">General AI</div>
+        <div class="vn-sub">Maybe 2035-2045?</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">🌌</div>
+        <div class="vn-label">Super AI</div>
+        <div class="vn-sub">Sci-Fi / Unknown</div>
+      </div>
+    </div>
+    <div class="vflow-caption">We are here: <strong style="color:var(--c5)">Narrow AI</strong>. Everything in this course lives in this era.</div>
+  </div>
+
+  <div class="micro-win reveal-scale">You just learned something most MBA graduates don't know. Seriously.</div>
+
+  <!-- NEW: Everyday AI as Icon Grid -->
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">AI You Use Every Day (Without Realising)</h3>
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">📺</span><div class="vi-label">YouTube</div><div class="vi-desc">Predicts your next video</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🌍</span><div class="vi-label">Google Translate</div><div class="vi-desc">100+ languages via deep learning</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🍕</span><div class="vi-label">Zomato ETA</div><div class="vi-desc">Traffic + weather + kitchen load</div></div>
+    <div class="vigrid-item"><span class="vi-icon">⌨️</span><div class="vi-label">Autocorrect</div><div class="vi-desc">Predicts your next word</div></div>
+    <div class="vigrid-item"><span class="vi-icon">📸</span><div class="vi-label">Instagram</div><div class="vi-desc">30+ signals for Explore page</div></div>
+    <div class="vigrid-item"><span class="vi-icon">💸</span><div class="vi-label">UPI Fraud</div><div class="vi-desc">Scans every transaction in 50ms</div></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128205;</div><div class="call-body"><h4>More Examples You Already Know</h4><p><strong>Google Maps</strong> &mdash; AI predicts traffic and finds the fastest route in real-time.<br><strong>Your phone's autocorrect</strong> &mdash; A language model predicts the next word you'll type.<br><strong>Spotify</strong> &mdash; AI curates Discover Weekly based on your listening patterns.</p></div></div>
 
   <div class="micro-action">
     <h4>60-Second Action</h4>
@@ -257,6 +428,22 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p>You interact with AI dozens of times before breakfast. Let's prove it with an interactive checklist.</p>
   </div>
 
+  <!-- NEW: How Phone AI Works — Visual -->
+  <div class="vcompare reveal">
+    <div class="vcompare-card" style="border:1px solid rgba(0,240,255,.2);">
+      <div class="vc-icon">📱</div>
+      <h4 style="color:var(--c1);">On-Device AI</h4>
+      <p>Runs on your phone's AI chip. Portrait mode, face unlock, autocorrect. <strong style="color:var(--t1)">No internet needed.</strong></p>
+      <div class="vc-badge" style="background:rgba(0,240,255,.1);color:var(--c1);">Local &amp; Fast</div>
+    </div>
+    <div class="vcompare-card" style="border:1px solid rgba(168,85,247,.2);">
+      <div class="vc-icon">☁️</div>
+      <h4 style="color:var(--c2);">Cloud AI</h4>
+      <p>Runs on massive servers. ChatGPT, Gemini, Google Search. Phone sends request, gets reply in <strong style="color:var(--t1)">milliseconds.</strong></p>
+      <div class="vc-badge" style="background:rgba(168,85,247,.1);color:var(--c2);">Powerful &amp; Complex</div>
+    </div>
+  </div>
+
   <div class="callout call-3"><div class="call-ico">📱</div><div class="call-body"><h4>The Average Smartphone User Has 50+ AI Interactions Per Day</h4><p>Most people think AI is something new and far away. The truth is it's been silently living in your phone for years. Every time you search, scroll, or pay — AI is doing the heavy lifting behind the scenes.</p></div></div>
 
   <div class="checklist">
@@ -278,11 +465,43 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 
   <div class="micro-win">Most people never stop to realise how much AI they already use. You just did.</div>
 
+  <!-- NEW: How Apps Learn From You — Visual Flow -->
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How Apps Get Smarter About You</h3>
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128260; The AI Learning Loop</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">👤</div>
+        <div class="vn-label">You Use App</div>
+        <div class="vn-sub">Watch, scroll, tap</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">📊</div>
+        <div class="vn-label">AI Observes</div>
+        <div class="vn-sub">Tracks your patterns</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">🎯</div>
+        <div class="vn-label">Better Results</div>
+        <div class="vn-sub">More relevant content</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">🔄</div>
+        <div class="vn-label">Repeats Daily</div>
+        <div class="vn-sub">Gets smarter over time</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>You are training AI just by using it.</strong> Every scroll, like, and search teaches it more about you.</div>
+  </div>
+
   <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">How Does AI in Your Phone Actually Work?</h3>
   <div class="cgrid">
-    <div class="crd"><span class="crd-icon">📸</span><h3>On-Device AI</h3><p>Your phone has a dedicated AI chip (Apple Neural Engine, Snapdragon's NPU). It runs simple AI locally — portrait mode, face unlock, autocorrect — without needing internet.</p></div>
-    <div class="crd"><span class="crd-icon">☁️</span><h3>Cloud AI</h3><p>Complex AI (Google Search, ChatGPT, Gemini) runs on massive servers. Your phone sends a request, the server processes it using powerful GPUs, and sends back the result in milliseconds.</p></div>
-    <div class="crd"><span class="crd-icon">🔄</span><h3>Learning from You</h3><p>Apps get smarter about your preferences over time. YouTube refines its understanding of you every video. Spotify gets better at knowing your mood. <strong>You are training AI just by using it.</strong></p></div>
+    <div class="crd reveal"><span class="crd-icon">📸</span><h3>On-Device AI</h3><p>Your phone has a dedicated AI chip (Apple Neural Engine, Snapdragon's NPU). It runs simple AI locally — portrait mode, face unlock, autocorrect — without needing internet.</p></div>
+    <div class="crd reveal"><span class="crd-icon">☁️</span><h3>Cloud AI</h3><p>Complex AI (Google Search, ChatGPT, Gemini) runs on massive servers. Your phone sends a request, the server processes it using powerful GPUs, and sends back the result in milliseconds.</p></div>
+    <div class="crd reveal"><span class="crd-icon">🔄</span><h3>Learning from You</h3><p>Apps get smarter about your preferences over time. YouTube refines its understanding of you every video. Spotify gets better at knowing your mood. <strong>You are training AI just by using it.</strong></p></div>
   </div>
 
   <div class="micro-action">
@@ -308,7 +527,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="tool-grid">
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <span class="tag tag-1">Most Popular</span>
       <h3>🟢 ChatGPT</h3>
       <p>Made by OpenAI. The AI that started the revolution. Incredibly versatile — writing, coding, brainstorming, analysis, creative work. GPT-4o handles text, images, and voice.</p>
@@ -316,7 +535,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
       <p><strong style="color:var(--t1)">Free tier:</strong> Yes (GPT-4o with limits) | <strong style="color:var(--t1)">Paid:</strong> $20/month</p>
       <a class="tool-link" href="https://chat.openai.com" target="_blank">→ chat.openai.com</a>
     </div>
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <span class="tag tag-2">Best at Writing</span>
       <h3>🟣 Claude</h3>
       <p>Made by Anthropic. Known for being thoughtful, nuanced, and excellent at long documents. Handles 100,000+ words in one conversation. Great for ethics, safety, and precise writing.</p>
@@ -324,7 +543,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
       <p><strong style="color:var(--t1)">Free tier:</strong> Yes (Claude 3.5 Sonnet) | <strong style="color:var(--t1)">Paid:</strong> $20/month</p>
       <a class="tool-link" href="https://claude.ai" target="_blank">→ claude.ai</a>
     </div>
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <span class="tag tag-4">Best Search Integration</span>
       <h3>🔵 Gemini</h3>
       <p>Made by Google. Deeply integrated with Google Search, Gmail, Docs, and YouTube. Best for research with real-time web access, summarising YouTube videos, and working in Google tools.</p>
@@ -334,7 +553,30 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="callout call-1"><div class="call-ico">⚡</div><div class="call-body"><h4>Which One Should You Use?</h4><p>Start with all three — they're all free. Over time you'll develop preferences. A good rule: <strong>ChatGPT for speed and creativity, Claude for depth and writing, Gemini for research and Google tools.</strong> Most professionals use all three depending on the task.</p></div></div>
+  <!-- NEW: Visual — When to Use Which -->
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9889; Which AI For Which Task?</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">🟢</div>
+        <div class="vn-label">ChatGPT</div>
+        <div class="vn-sub">Speed &amp; Creativity</div>
+      </div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🟣</div>
+        <div class="vn-label">Claude</div>
+        <div class="vn-sub">Depth &amp; Writing</div>
+      </div>
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">🔵</div>
+        <div class="vn-label">Gemini</div>
+        <div class="vn-sub">Research &amp; Google</div>
+      </div>
+    </div>
+    <div class="vflow-caption">Start with all three — they're free. <strong>Most professionals use all three depending on the task.</strong></div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">⚡</div><div class="call-body"><h4>Which One Should You Use?</h4><p>Start with all three — they're all free. Over time you'll develop preferences. A good rule: <strong>ChatGPT for speed and creativity, Claude for depth and writing, Gemini for research and Google tools.</strong></p></div></div>
 
   <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Quick Comparison</h3>
   <div style="overflow-x:auto;margin:1rem 0;border:1px solid var(--bd);border-radius:var(--r)">
@@ -374,6 +616,37 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <div class="over">Section 04</div>
     <h2>Your First <span class="gr">AI Conversation</span></h2>
     <p>The best way to understand AI is to talk to it. Here are 5 guided prompts to try right now — copy, paste, and experience AI for yourself.</p>
+  </div>
+
+  <!-- NEW: Visual — How a Prompt Works -->
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128172; How an AI Conversation Works</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">✍️</div>
+        <div class="vn-label">You Write</div>
+        <div class="vn-sub">A prompt (question)</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🧠</div>
+        <div class="vn-label">AI Processes</div>
+        <div class="vn-sub">Finds patterns in data</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">💬</div>
+        <div class="vn-label">AI Responds</div>
+        <div class="vn-sub">Tailored to your question</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">🔄</div>
+        <div class="vn-label">You Follow Up</div>
+        <div class="vn-sub">AI remembers context</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>Better prompts = better answers.</strong> That's why prompt engineering is a real skill (Session 3).</div>
   </div>
 
   <div class="callout call-brand"><div class="call-ico">💡</div><div class="call-body"><h4>How This Works</h4><p>Copy each prompt below, open ChatGPT (or Claude or Gemini), paste it in, and hit Enter. Read the response carefully. Notice how the AI understands context. After each one, ask a follow-up question to dig deeper.</p></div></div>
@@ -447,6 +720,14 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <div class="over">Section 06</div>
     <h2>Session 1 <span class="gr">Complete!</span></h2>
     <p>Here's what you learned, your homework, and what's coming in Session 2.</p>
+  </div>
+
+  <!-- NEW: Visual Summary Grid -->
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">🎯</span><div class="vi-label" style="color:var(--c5)">3 Types of AI</div><div class="vi-desc">Only Narrow AI exists today</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">📱</span><div class="vi-label" style="color:var(--c1)">AI in Your Phone</div><div class="vi-desc">50+ daily interactions</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">🤖</span><div class="vi-label" style="color:var(--c2)">3 Free AI Tools</div><div class="vi-desc">ChatGPT, Claude, Gemini</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">💬</span><div class="vi-label" style="color:var(--c4)">First AI Chat</div><div class="vi-desc">You actually used it!</div></div>
   </div>
 
   <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Learned Today</h4><p>✅ The 3 types of AI and which one exists today (Narrow AI)<br>✅ How AI is already living in your phone (50+ interactions/day)<br>✅ Three free AI tools: ChatGPT, Claude, and Gemini<br>✅ You had your first real AI conversation<br>✅ AI understands your language, context, and local needs</p></div></div>
@@ -523,11 +804,75 @@ function go(id){
   pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;
   pt.style.display='block';
   if(id==='s5'&&!quizStarted)initQuiz();
+  // Reset reveals in new section so they animate fresh, then observe
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    // Immediately reveal elements already in viewport
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
 }
 navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
 function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
 function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
 window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+// Auto-add reveal classes to all content blocks
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade')){
+      el.classList.add('reveal');
+    }
+  });
+  // Add stagger to grids
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{
+    if(!el.classList.contains('stagger'))el.classList.add('stagger');
+  });
+  // Make children of stagger grids also reveal
+  document.querySelectorAll('.stagger').forEach(parent=>{
+    parent.querySelectorAll(':scope > *').forEach(child=>{
+      if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right')){
+        child.classList.add('reveal');
+      }
+    });
+  });
+  // Add left/right to comparison cards
+  document.querySelectorAll('.vcompare').forEach(comp=>{
+    const cards=comp.children;
+    if(cards[0]&&!cards[0].classList.contains('reveal-left')){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}
+    if(cards[1]&&!cards[1].classList.contains('reveal-right')){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}
+  });
+  // Scale for identity shifts and micro wins
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{
+    el.classList.remove('reveal');el.classList.add('reveal-scale');
+  });
+  // Fade for curiosity hooks
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{
+    el.classList.remove('reveal');el.classList.add('reveal-fade');
+  });
+}
+initReveals();
+
+// Scroll observer for reveals
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // Also reveal stagger children
+      if(e.target.classList.contains('stagger')){
+        e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));
+      }
+    }
+  });
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+
+function observeReveals(){
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));
+}
+observeReveals();
+
+// Initial reveal for visible elements
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
 
 // === CHECKLIST ===
 function toggleCheck(item){
@@ -568,30 +913,29 @@ const qData=[
   {q:"Which AI tool is known for excellent long-form writing and document analysis?",o:["ChatGPT","Claude","Gemini","Bing AI"],a:1,e:"Claude, made by Anthropic, is widely praised for thoughtful, nuanced long-form writing. It can handle extremely long documents — up to 100,000+ words in one conversation."},
   {q:"When you ask YouTube's algorithm 'Up Next' shows you a video — what technology decides this?",o:["A human editor at YouTube","Random selection","A recommendation AI model","Your internet speed"],a:2,e:"YouTube uses a sophisticated recommendation AI that analyses your watch history, likes, search terms, and even how long you pause on thumbnails to decide what to recommend next."},
   {q:"In AI terminology, what is a 'Prompt'?",o:["A computer program","The instruction or question you give to an AI","A type of neural network","A data storage method"],a:1,e:"A prompt is the text instruction or question you give to an AI. Better prompts produce better AI responses — this is why prompt engineering is a valuable skill we'll learn in Session 3."},
-  {q:"What is the most honest description of AI's intelligence?",o:["It thinks exactly like a human brain","It is conscious and has feelings","It finds patterns in training data and generates outputs based on those patterns","It can do everything a human can do"]
-  ,a:2,e:"AI doesn't truly 'think' or 'feel' — it finds patterns in the massive data it was trained on and generates statistically likely outputs. Understanding this helps you use AI more effectively and spot its limitations."}
+  {q:"What is the most honest description of AI's intelligence?",o:["It thinks exactly like a human brain","It is conscious and has feelings","It finds patterns in training data and generates outputs based on those patterns","It can do everything a human can do"],a:2,e:"AI doesn't truly 'think' or 'feel' — it finds patterns in the massive data it was trained on and generates statistically likely outputs. Understanding this helps you use AI more effectively and spot its limitations."}
 ];
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
-function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ()}
 function renderQ(){
   const box=document.getElementById('quizBox');
-  if(cq>=activeQuiz.length){
-    const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:1,score:sc,total:activeQuiz.length})})}catch(e){}
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
     let tier,tierColor,msg;
     if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You\'ve nailed the Session 1 fundamentals. You\'re ready for Session 2!';}
     else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid understanding. A quick review of any missed sections will lock it in.';}
     else{tier='Keep Learning!';tierColor='var(--c4)';msg='AI takes time to absorb. Re-reading the sections will make everything click.';}
-    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
     return;
   }
-  const q=activeQuiz[cq];const ltr=['A','B','C','D'];
-  let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
   let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
-  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
 }
 function selAns(i){
   if(ans[cq])return;ans[cq]=true;
-  const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
   opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
   if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
   else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
@@ -599,8 +943,293 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
-document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+
+// Translation map: CSS selector → {en, hi, pa} (innerHTML preserved)
+// For selectors matching multiple elements, use arrays
+const langMap={
+  // ---- HERO ----
+  '.hero h1':{
+    en:'What Is<br><span class="gr">Artificial Intelligence</span>?',
+    hi:'<span class="gr">आर्टिफिशियल इंटेलिजेंस</span><br>क्या है?',
+    pa:'<span class="gr">ਆਰਟੀਫਿਸ਼ੀਅਲ ਇੰਟੈਲੀਜੈਂਸ</span><br>ਕੀ ਹੈ?'
+  },
+  '.hero>p':{
+    en:'Your very first AI session. No jargon, no intimidation \u2014 just honest answers and your first real AI conversation.',
+    hi:'AI के बारे में आपका पहला सेशन। कोई कठिन शब्द नहीं, कोई डर नहीं \u2014 बस सीधे जवाब और AI से आपकी पहली असली बातचीत।',
+    pa:'AI ਬਾਰੇ ਤੁਹਾਡਾ ਪਹਿਲਾ ਸੈਸ਼ਨ। ਕੋਈ ਔਖੇ ਸ਼ਬਦ ਨਹੀਂ, ਕੋਈ ਡਰ ਨਹੀਂ \u2014 ਬੱਸ ਸਿੱਧੇ ਜਵਾਬ ਅਤੇ AI ਨਾਲ ਤੁਹਾਡੀ ਪਹਿਲੀ ਅਸਲੀ ਗੱਲਬਾਤ।'
+  },
+  '.hero-btns .btn-glow':{
+    en:'Start Session \u2192',hi:'सेशन शुरू करें \u2192',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ \u2192'
+  },
+  '.hero-btns .btn-ghost':{
+    en:'\u26A1 Jump to Quiz',hi:'\u26A1 क्विज़ पर जाएं',pa:'\u26A1 ਕੁਇਜ਼ ਤੇ ਜਾਓ'
+  },
+
+  // ---- S1: WHAT IS AI ----
+  '#s1 .sec-head h2':{
+    en:'What is <span class="gr">Artificial Intelligence</span>?',
+    hi:'<span class="gr">आर्टिफिशियल इंटेलिजेंस</span> क्या है?',
+    pa:'<span class="gr">ਆਰਟੀਫਿਸ਼ੀਅਲ ਇੰਟੈਲੀਜੈਂਸ</span> ਕੀ ਹੈ?'
+  },
+  '#s1 .sec-head>p':{
+    en:'No textbooks. No jargon. Just a clear, honest explanation of the technology shaping every job, every city, and every phone on earth right now.',
+    hi:'कोई किताबें नहीं। कोई कठिन शब्द नहीं। बस उस टेक्नोलॉजी की सीधी, ईमानदार समझ जो अभी दुनिया की हर नौकरी, हर शहर और हर फ़ोन को बदल रही है।',
+    pa:'ਕੋਈ ਕਿਤਾਬਾਂ ਨਹੀਂ। ਕੋਈ ਔਖੇ ਸ਼ਬਦ ਨਹੀਂ। ਬੱਸ ਉਸ ਟੈਕਨਾਲੋਜੀ ਦੀ ਸਿੱਧੀ, ਇਮਾਨਦਾਰ ਸਮਝ ਜੋ ਹੁਣ ਦੁਨੀਆ ਦੀ ਹਰ ਨੌਕਰੀ, ਹਰ ਸ਼ਹਿਰ ਅਤੇ ਹਰ ਫ਼ੋਨ ਨੂੰ ਬਦਲ ਰਹੀ ਹੈ।'
+  },
+  '#s1 .vflow-title':[
+    {en:'\u2699 How AI Works \u2014 The Simple Version',hi:'\u2699 AI ਕੈਸੇ काम करता है \u2014 आसान भाषा में',pa:'\u2699 AI ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ \u2014 ਸੌਖੀ ਭਾਸ਼ਾ ਵਿੱਚ'},
+    {en:'\uD83D\uDD51 Timeline of AI Evolution',hi:'\uD83D\uDD51 AI ਦੇ ਵਿकास की समयरेखा',pa:'\uD83D\uDD51 AI ਦੇ ਵਿਕਾਸ ਦੀ ਸਮਾਂ-ਰੇਖਾ'}
+  ],
+  '#s1 .vn-label':[
+    {en:'Massive Data',hi:'बहुत सारा डेटा',pa:'ਬਹੁਤ ਸਾਰਾ ਡੇਟਾ'},
+    {en:'Finds Patterns',hi:'पैटर्न ढूंढता है',pa:'ਪੈਟਰਨ ਲੱਭਦਾ ਹੈ'},
+    {en:'Generates Output',hi:'आउटपुट बनाता है',pa:'ਆਉਟਪੁੱਟ ਬਣਾਉਂਦਾ ਹੈ'},
+    {en:'Narrow AI',hi:'नैरो AI',pa:'ਨੈਰੋ AI'},
+    {en:'General AI',hi:'जनरल AI',pa:'ਜਨਰਲ AI'},
+    {en:'Super AI',hi:'सुपर AI',pa:'ਸੁਪਰ AI'}
+  ],
+  '#s1 .vn-sub':[
+    {en:'Books, images, websites',hi:'किताबें, तस्वीरें, वेबसाइट',pa:'ਕਿਤਾਬਾਂ, ਤਸਵੀਰਾਂ, ਵੈੱਬਸਾਈਟਾਂ'},
+    {en:'Learns relationships',hi:'संबंध सीखता है',pa:'ਸੰਬੰਧ ਸਿੱਖਦਾ ਹੈ'},
+    {en:'Text, images, decisions',hi:'टेक्स्ट, तस्वीरें, फैसले',pa:'ਟੈਕਸਟ, ਤਸਵੀਰਾਂ, ਫੈਸਲੇ'},
+    {en:'NOW \u2014 2026',hi:'अभी \u2014 2026',pa:'ਹੁਣ \u2014 2026'},
+    {en:'Maybe 2035-2045?',hi:'शायद 2035-2045?',pa:'ਸ਼ਾਇਦ 2035-2045?'},
+    {en:'Sci-Fi / Unknown',hi:'साइंस फिक्शन / अज्ञात',pa:'ਸਾਇੰਸ ਫਿਕਸ਼ਨ / ਅਣਜਾਣ'}
+  ],
+  '#s1 .vflow-caption':[
+    {en:'<strong>AI is a computer system trained on millions of examples.</strong> It doesn\'t "think" like you \u2014 but it\'s incredibly good at finding patterns and generating useful output.',
+     hi:'<strong>AI एक कंप्यूटर सिस्टम है जो लाखों उदाहरणों पर ट्रेन किया गया है।</strong> यह आपकी तरह "सोचता" नहीं \u2014 लेकिन पैटर्न ढूंढने और उपयोगी आउटपुट बनाने में बेहद माहिर है।',
+     pa:'<strong>AI ਇੱਕ ਕੰਪਿਊਟਰ ਸਿਸਟਮ ਹੈ ਜੋ ਲੱਖਾਂ ਉਦਾਹਰਨਾਂ ਤੇ ਟ੍ਰੇਨ ਕੀਤਾ ਗਿਆ ਹੈ।</strong> ਇਹ ਤੁਹਾਡੇ ਵਾਂਗ "ਸੋਚਦਾ" ਨਹੀਂ \u2014 ਪਰ ਪੈਟਰਨ ਲੱਭਣ ਅਤੇ ਉਪਯੋਗੀ ਆਉਟਪੁੱਟ ਬਣਾਉਣ ਵਿੱਚ ਬਹੁਤ ਮਾਹਿਰ ਹੈ।'},
+    {en:'We are here: <strong style="color:var(--c5)">Narrow AI</strong>. Everything in this course lives in this era.',
+     hi:'ਅਸੀਂ ਇੱਥੇ ਹਾਂ: <strong style="color:var(--c5)">ਨੈਰੋ AI</strong>। ਇਸ ਕੋਰਸ ਦੀ ਹਰ ਚੀਜ਼ ਇਸੇ ਯੁੱਗ ਵਿੱਚ ਹੈ।',
+     pa:'ਅਸੀਂ ਇੱਥੇ ਹਾਂ: <strong style="color:var(--c5)">ਨੈਰੋ AI</strong>। ਇਸ ਕੋਰਸ ਦੀ ਹਰ ਚੀਜ਼ ਇਸੇ ਯੁੱਗ ਵਿੱਚ ਹੈ।'}
+  ],
+  '#s1 .call-body h4':[
+    {en:'The Simplest Definition Ever',hi:'सबसे आसान परिभाषा',pa:'ਸਭ ਤੋਂ ਸੌਖੀ ਪਰਿਭਾਸ਼ਾ'},
+    {en:'More Examples You Already Know',hi:'और उदाहरण जो आप पहले से जानते हैं',pa:'ਹੋਰ ਉਦਾਹਰਨਾਂ ਜੋ ਤੁਸੀਂ ਪਹਿਲਾਂ ਤੋਂ ਜਾਣਦੇ ਹੋ'}
+  ],
+  '#s1 .call-body p':[
+    {en:'AI is a <strong>computer system trained to do tasks that normally require human intelligence</strong> \u2014 like understanding language, recognising images, making decisions, and generating content. Think of it as a tireless assistant that has read millions of books and can respond instantly.',
+     hi:'AI एक <strong>कंप्यूटर सिस्टम है जो उन कामों को करने के लिए ट्रेन किया गया है जिनमें आमतौर पर इंसानी बुद्धि चाहिए</strong> \u2014 जैसे भाषा समझना, तस्वीरें पहचानना, फैसले लेना और कंटेंट बनाना। इसे एक ऐसा थकान-रहित सहायक समझें जिसने लाखों किताबें पढ़ी हैं।',
+     pa:'AI ਇੱਕ <strong>ਕੰਪਿਊਟਰ ਸਿਸਟਮ ਹੈ ਜੋ ਉਹ ਕੰਮ ਕਰਨ ਲਈ ਟ੍ਰੇਨ ਕੀਤਾ ਗਿਆ ਹੈ ਜਿਨ੍ਹਾਂ ਲਈ ਆਮ ਤੌਰ ਤੇ ਇਨਸਾਨੀ ਬੁੱਧੀ ਚਾਹੀਦੀ ਹੈ</strong> \u2014 ਜਿਵੇਂ ਭਾਸ਼ਾ ਸਮਝਣਾ, ਤਸਵੀਰਾਂ ਪਛਾਣਨਾ, ਫੈਸਲੇ ਲੈਣਾ ਅਤੇ ਕੰਟੈਂਟ ਬਣਾਉਣਾ। ਇਸਨੂੰ ਇੱਕ ਥਕਾਣ-ਰਹਿਤ ਸਹਾਇਕ ਸਮਝੋ ਜਿਸਨੇ ਲੱਖਾਂ ਕਿਤਾਬਾਂ ਪੜ੍ਹੀਆਂ ਹਨ।'},
+    {en:'<strong>Google Maps</strong> \u2014 AI predicts traffic and finds the fastest route in real-time.<br><strong>Your phone\'s autocorrect</strong> \u2014 A language model predicts the next word you\'ll type.<br><strong>Spotify</strong> \u2014 AI curates Discover Weekly based on your listening patterns.',
+     hi:'<strong>Google Maps</strong> \u2014 AI ट्रैफिक का अनुमान लगाता है और सबसे तेज़ रास्ता खोजता है।<br><strong>फ़ोन का ऑटोकरेक्ट</strong> \u2014 एक भाषा मॉडल आपका अगला शब्द predict करता है।<br><strong>Spotify</strong> \u2014 AI आपकी सुनने की आदतों से Discover Weekly बनाता है।',
+     pa:'<strong>Google Maps</strong> \u2014 AI ਟ੍ਰੈਫਿਕ ਦਾ ਅੰਦਾਜ਼ਾ ਲਗਾਉਂਦਾ ਹੈ ਅਤੇ ਸਭ ਤੋਂ ਤੇਜ਼ ਰਸਤਾ ਲੱਭਦਾ ਹੈ।<br><strong>ਫ਼ੋਨ ਦਾ ਆਟੋਕਰੈਕਟ</strong> \u2014 ਇੱਕ ਭਾਸ਼ਾ ਮਾਡਲ ਤੁਹਾਡਾ ਅਗਲਾ ਸ਼ਬਦ predict ਕਰਦਾ ਹੈ।<br><strong>Spotify</strong> \u2014 AI ਤੁਹਾਡੀਆਂ ਸੁਣਨ ਦੀਆਂ ਆਦਤਾਂ ਤੋਂ Discover Weekly ਬਣਾਉਂਦਾ ਹੈ।'}
+  ],
+  '#s1 .vcompare-card h4':[
+    {en:'What People Think',hi:'लोग क्या सोचते हैं',pa:'ਲੋਕ ਕੀ ਸੋਚਦੇ ਹਨ'},
+    {en:'The Reality',hi:'असलियत',pa:'ਅਸਲੀਅਤ'}
+  ],
+  '#s1 .vcompare-card p':[
+    {en:'AI is a conscious robot that thinks, feels, and will replace all human jobs. Terminator is coming.',
+     hi:'AI एक चेतन रोबोट है जो सोचता है, महसूस करता है, और सभी नौकरियां छीन लेगा। टर्मिनेटर आ रहा है।',
+     pa:'AI ਇੱਕ ਚੇਤੰਨ ਰੋਬੋਟ ਹੈ ਜੋ ਸੋਚਦਾ ਹੈ, ਮਹਿਸੂਸ ਕਰਦਾ ਹੈ, ਅਤੇ ਸਾਰੀਆਂ ਨੌਕਰੀਆਂ ਖੋਹ ਲਵੇਗਾ। ਟਰਮੀਨੇਟਰ ਆ ਰਿਹਾ ਹੈ।'},
+    {en:'AI is a pattern-finding tool. Incredibly good at specific tasks, but doesn\'t "think." It assists humans \u2014 not replaces them.',
+     hi:'AI एक पैटर्न-खोजने वाला टूल है। विशिष्ट कामों में बेहद अच्छा, लेकिन "सोचता" नहीं। यह इंसानों की मदद करता है \u2014 उनकी जगह नहीं लेता।',
+     pa:'AI ਇੱਕ ਪੈਟਰਨ-ਲੱਭਣ ਵਾਲਾ ਟੂਲ ਹੈ। ਖਾਸ ਕੰਮਾਂ ਵਿੱਚ ਬਹੁਤ ਵਧੀਆ, ਪਰ "ਸੋਚਦਾ" ਨਹੀਂ। ਇਹ ਇਨਸਾਨਾਂ ਦੀ ਮਦਦ ਕਰਦਾ ਹੈ \u2014 ਉਨ੍ਹਾਂ ਦੀ ਥਾਂ ਨਹੀਂ ਲੈਂਦਾ।'}
+  ],
+  '#s1 .crd h3':[
+    {en:'Narrow AI (ANI)',hi:'नैरो AI (ANI)',pa:'ਨੈਰੋ AI (ANI)'},
+    {en:'General AI (AGI)',hi:'जनरल AI (AGI)',pa:'ਜਨਰਲ AI (AGI)'},
+    {en:'Super AI (ASI)',hi:'सुपर AI (ASI)',pa:'ਸੁਪਰ AI (ASI)'}
+  ],
+  '#s1 .crd p':[
+    {en:'AI designed to do <strong>one specific thing</strong> exceptionally well. ChatGPT writes text. Google Maps finds routes. Spotify curates playlists. Every single AI tool you\'ll learn in this course is Narrow AI.',
+     hi:'AI जो <strong>एक विशिष्ट काम</strong> बेहद अच्छे से करने के लिए बनाया गया है। ChatGPT टेक्स्ट लिखता है। Google Maps रास्ता खोजता है। Spotify प्लेलिस्ट बनाता है। इस कोर्स का हर AI टूल नैरो AI है।',
+     pa:'AI ਜੋ <strong>ਇੱਕ ਖਾਸ ਕੰਮ</strong> ਬਹੁਤ ਵਧੀਆ ਢੰਗ ਨਾਲ ਕਰਨ ਲਈ ਬਣਾਇਆ ਗਿਆ ਹੈ। ChatGPT ਟੈਕਸਟ ਲਿਖਦਾ ਹੈ। Google Maps ਰਸਤਾ ਲੱਭਦਾ ਹੈ। Spotify ਪਲੇਲਿਸਟ ਬਣਾਉਂਦਾ ਹੈ। ਇਸ ਕੋਰਸ ਦਾ ਹਰ AI ਟੂਲ ਨੈਰੋ AI ਹੈ।'},
+    {en:'AI that can learn and reason <strong>across all tasks</strong>, just like a human. It doesn\'t exist yet. OpenAI, Google, and Anthropic are all racing to build it. Scientists estimate it could arrive in 5-15 years.',
+     hi:'AI जो <strong>सभी कामों में</strong> इंसान की तरह सीख और सोच सके। यह अभी मौजूद नहीं है। OpenAI, Google और Anthropic इसे बनाने की होड़ में हैं। वैज्ञानिकों का अनुमान है 5-15 साल लग सकते हैं।',
+     pa:'AI ਜੋ <strong>ਸਾਰੇ ਕੰਮਾਂ ਵਿੱਚ</strong> ਇਨਸਾਨ ਵਾਂਗ ਸਿੱਖ ਅਤੇ ਸੋਚ ਸਕੇ। ਇਹ ਅਜੇ ਮੌਜੂਦ ਨਹੀਂ ਹੈ। OpenAI, Google ਅਤੇ Anthropic ਇਸਨੂੰ ਬਣਾਉਣ ਦੀ ਦੌੜ ਵਿੱਚ ਹਨ। ਵਿਗਿਆਨੀਆਂ ਦਾ ਅੰਦਾਜ਼ਾ 5-15 ਸਾਲ ਹੈ।'},
+    {en:'AI smarter than all of humanity combined. This is pure science fiction for now \u2014 think Terminator or Avengers. We are nowhere close. Don\'t let movies scare you.',
+     hi:'पूरी मानवता से ज़्यादा बुद्धिमान AI। यह अभी विज्ञान कथा है \u2014 टर्मिनेटर या Avengers जैसा। हम इसके कहीं करीब भी नहीं हैं। फिल्मों से मत डरिए।',
+     pa:'ਪੂਰੀ ਮਨੁੱਖਤਾ ਨਾਲੋਂ ਜ਼ਿਆਦਾ ਬੁੱਧੀਮਾਨ AI। ਇਹ ਅਜੇ ਸਾਇੰਸ ਫਿਕਸ਼ਨ ਹੈ \u2014 ਟਰਮੀਨੇਟਰ ਜਾਂ Avengers ਵਰਗਾ। ਅਸੀਂ ਇਸ ਦੇ ਨੇੜੇ ਵੀ ਨਹੀਂ। ਫਿਲਮਾਂ ਤੋਂ ਨਾ ਡਰੋ।'}
+  ],
+  '#s1 .micro-win':{
+    en:'\u2713 You just learned something most MBA graduates don\'t know. Seriously.',
+    hi:'\u2713 ਤੁਸੀਂ ਹੁਣੇ ਉਹ ਚੀਜ਼ ਸਿੱਖੀ ਜੋ ਜ਼ਿਆਦਾਤਰ MBA ਵਾਲੇ ਨਹੀਂ ਜਾਣਦੇ। ਸੱਚਮੁੱਚ।',
+    pa:'\u2713 ਤੁਸੀਂ ਹੁਣੇ ਉਹ ਚੀਜ਼ ਸਿੱਖੀ ਜੋ ਜ਼ਿਆਦਾਤਰ MBA ਵਾਲੇ ਨਹੀਂ ਜਾਣਦੇ। ਸੱਚਮੁੱਚ।'
+  },
+  '#s1 .vi-label':[
+    {en:'YouTube',hi:'YouTube',pa:'YouTube'},
+    {en:'Google Translate',hi:'Google Translate',pa:'Google Translate'},
+    {en:'Zomato ETA',hi:'Zomato ETA',pa:'Zomato ETA'},
+    {en:'Autocorrect',hi:'ऑटोकरेक्ट',pa:'ਆਟੋਕਰੈਕਟ'},
+    {en:'Instagram',hi:'Instagram',pa:'Instagram'},
+    {en:'UPI Fraud',hi:'UPI फ्रॉड',pa:'UPI ਫ੍ਰੌਡ'}
+  ],
+  '#s1 .vi-desc':[
+    {en:'Predicts your next video',hi:'आपका अगला वीडियो predict करता है',pa:'ਤੁਹਾਡੀ ਅਗਲੀ ਵੀਡੀਓ predict ਕਰਦਾ ਹੈ'},
+    {en:'100+ languages via deep learning',hi:'Deep learning से 100+ भाषाएं',pa:'Deep learning ਨਾਲ 100+ ਭਾਸ਼ਾਵਾਂ'},
+    {en:'Traffic + weather + kitchen load',hi:'ट्रैफिक + मौसम + किचन लोड',pa:'ਟ੍ਰੈਫਿਕ + ਮੌਸਮ + ਕਿਚਨ ਲੋਡ'},
+    {en:'Predicts your next word',hi:'आपका अगला शब्द predict करता है',pa:'ਤੁਹਾਡਾ ਅਗਲਾ ਸ਼ਬਦ predict ਕਰਦਾ ਹੈ'},
+    {en:'30+ signals for Explore page',hi:'Explore पेज के लिए 30+ सिग्नल',pa:'Explore ਪੇਜ ਲਈ 30+ ਸਿਗਨਲ'},
+    {en:'Scans every transaction in 50ms',hi:'हर ट्रांजेक्शन 50ms में स्कैन',pa:'ਹਰ ਟ੍ਰਾਂਜ਼ੈਕਸ਼ਨ 50ms ਵਿੱਚ ਸਕੈਨ'}
+  ],
+  '#s1 .micro-action p':{
+    en:'Look at your phone right now. Open any 3 apps. For each one, think: "Is this using AI?" Write the name of the app and one way AI powers it. You\'ll identify at least 5 before the next section.',
+    hi:'अभी अपना फ़ोन देखें। कोई भी 3 ऐप खोलें। हर एक के लिए सोचें: "क्या यह AI इस्तेमाल कर रहा है?" ऐप का नाम लिखें और एक तरीका बताएं जिससे AI इसे चलाता है।',
+    pa:'ਹੁਣੇ ਆਪਣਾ ਫ਼ੋਨ ਦੇਖੋ। ਕੋਈ ਵੀ 3 ਐਪ ਖੋਲ੍ਹੋ। ਹਰ ਇੱਕ ਲਈ ਸੋਚੋ: "ਕੀ ਇਹ AI ਵਰਤ ਰਿਹਾ ਹੈ?" ਐਪ ਦਾ ਨਾਮ ਲਿਖੋ ਅਤੇ ਇੱਕ ਤਰੀਕਾ ਦੱਸੋ ਜਿਸ ਨਾਲ AI ਇਸਨੂੰ ਚਲਾਉਂਦਾ ਹੈ।'
+  },
+  '#s1 .emotional-hook p':{
+    en:'<strong>Imagine it\'s 2028.</strong> Two people from Kotkapura apply for the same job at a marketing firm. One knows how to use AI to create content in 20 minutes. The other doesn\'t know AI tools exist. Who gets hired and who gets \u20B940K/month? <strong>That decision starts with this session.</strong>',
+    hi:'<strong>सोचिए यह 2028 है।</strong> कोटकपूरा से दो लोग एक मार्केटिंग फर्म में एक ही नौकरी के लिए आवेदन करते हैं। एक AI से 20 मिनट में कंटेंट बना सकता है। दूसरे को AI टूल्स के बारे में पता ही नहीं। किसे नौकरी मिलेगी और \u20B940K/महीना कौन कमाएगा? <strong>यह फैसला इसी सेशन से शुरू होता है।</strong>',
+    pa:'<strong>ਸੋਚੋ ਇਹ 2028 ਹੈ।</strong> ਕੋਟਕਪੂਰਾ ਤੋਂ ਦੋ ਲੋਕ ਇੱਕ ਮਾਰਕੀਟਿੰਗ ਫਰਮ ਵਿੱਚ ਇੱਕੋ ਨੌਕਰੀ ਲਈ ਅਪਲਾਈ ਕਰਦੇ ਹਨ। ਇੱਕ AI ਨਾਲ 20 ਮਿੰਟ ਵਿੱਚ ਕੰਟੈਂਟ ਬਣਾ ਸਕਦਾ ਹੈ। ਦੂਜੇ ਨੂੰ AI ਟੂਲਜ਼ ਬਾਰੇ ਪਤਾ ਹੀ ਨਹੀਂ। ਕਿਸਨੂੰ ਨੌਕਰੀ ਮਿਲੇਗੀ ਅਤੇ \u20B940K/ਮਹੀਨਾ ਕੌਣ ਕਮਾਏਗਾ? <strong>ਇਹ ਫੈਸਲਾ ਇਸੇ ਸੈਸ਼ਨ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ।</strong>'
+  },
+  '#s1 .identity-shift':{
+    en:'Right now, after reading this one section, you understand AI better than 70% of the people talking about it online. That\'s not hype \u2014 that\'s fact.',
+    hi:'अभी, इस एक सेक्शन को पढ़ने के बाद, आप AI को 70% लोगों से बेहतर समझते हैं जो इसके बारे में ऑनलाइन बात करते हैं। यह हाइप नहीं \u2014 यह सच है।',
+    pa:'ਹੁਣ, ਇਸ ਇੱਕ ਸੈਕਸ਼ਨ ਨੂੰ ਪੜ੍ਹਨ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ AI ਨੂੰ 70% ਲੋਕਾਂ ਨਾਲੋਂ ਵਧੀਆ ਸਮਝਦੇ ਹੋ ਜੋ ਇਸ ਬਾਰੇ ਆਨਲਾਈਨ ਗੱਲ ਕਰਦੇ ਹਨ। ਇਹ ਹਾਈਪ ਨਹੀਂ \u2014 ਇਹ ਸੱਚ ਹੈ।'
+  },
+  '#s1 .curiosity-hook':{
+    en:'Next: You\'re using AI 50+ times a day without realising it. Let\'s find out where.',
+    hi:'अगला: आप रोज़ 50+ बार AI इस्तेमाल करते हैं बिना जाने। चलिए पता करते हैं कहां।',
+    pa:'ਅਗਲਾ: ਤੁਸੀਂ ਰੋਜ਼ 50+ ਵਾਰ AI ਵਰਤਦੇ ਹੋ ਬਿਨਾਂ ਜਾਣੇ। ਚਲੋ ਪਤਾ ਕਰਦੇ ਹਾਂ ਕਿੱਥੇ।'
+  },
+
+  // ---- S2: AI IN YOUR PHONE ----
+  '#s2 .sec-head h2':{
+    en:'AI is Already <span class="gr">In Your Phone</span>',
+    hi:'AI पहले से <span class="gr">आपके फ़ोन में</span> है',
+    pa:'AI ਪਹਿਲਾਂ ਤੋਂ <span class="gr">ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ</span> ਹੈ'
+  },
+  '#s2 .sec-head>p':{
+    en:'You interact with AI dozens of times before breakfast. Let\'s prove it with an interactive checklist.',
+    hi:'आप नाश्ते से पहले दर्जनों बार AI से बात करते हैं। चलिए इसे एक चेकलिस्ट से साबित करते हैं।',
+    pa:'ਤੁਸੀਂ ਨਾਸ਼ਤੇ ਤੋਂ ਪਹਿਲਾਂ ਦਰਜਨਾਂ ਵਾਰ AI ਨਾਲ ਗੱਲ ਕਰਦੇ ਹੋ। ਚਲੋ ਇਸਨੂੰ ਇੱਕ ਚੈਕਲਿਸਟ ਨਾਲ ਸਾਬਤ ਕਰਦੇ ਹਾਂ।'
+  },
+  '#s2 .vcompare-card h4':[
+    {en:'On-Device AI',hi:'ऑन-डिवाइस AI',pa:'ਆਨ-ਡਿਵਾਈਸ AI'},
+    {en:'Cloud AI',hi:'क्लाउड AI',pa:'ਕਲਾਊਡ AI'}
+  ],
+  '#s2 .identity-shift':{
+    en:'You\'re not just a user of AI \u2014 you\'re someone who now understands what\'s happening behind every screen. That\'s rare.',
+    hi:'आप सिर्फ AI के यूजर नहीं \u2014 अब आप समझते हैं कि हर स्क्रीन के पीछे क्या हो रहा है। यह दुर्लभ है।',
+    pa:'ਤੁਸੀਂ ਸਿਰਫ AI ਦੇ ਯੂਜ਼ਰ ਨਹੀਂ \u2014 ਹੁਣ ਤੁਸੀਂ ਸਮਝਦੇ ਹੋ ਕਿ ਹਰ ਸਕ੍ਰੀਨ ਦੇ ਪਿੱਛੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ। ਇਹ ਦੁਰਲੱਭ ਹੈ।'
+  },
+
+  // ---- S3: 3 AI ASSISTANTS ----
+  '#s3 .sec-head h2':{
+    en:'Meet Your 3 <span class="gr">AI Assistants</span>',
+    hi:'अपने 3 <span class="gr">AI असिस्टेंट</span> से मिलें',
+    pa:'ਆਪਣੇ 3 <span class="gr">AI ਅਸਿਸਟੈਂਟ</span> ਨੂੰ ਮਿਲੋ'
+  },
+  '#s3 .sec-head>p':{
+    en:'ChatGPT, Claude, and Gemini. These are the three most powerful free AI tools available. Here\'s what makes each unique \u2014 and how to get started right now.',
+    hi:'ChatGPT, Claude, और Gemini। ये तीन सबसे शक्तिशाली मुफ़्त AI टूल्स हैं। यहां बताया गया है कि हर एक खास क्यों है \u2014 और अभी कैसे शुरू करें।',
+    pa:'ChatGPT, Claude, ਅਤੇ Gemini। ਇਹ ਤਿੰਨ ਸਭ ਤੋਂ ਸ਼ਕਤੀਸ਼ਾਲੀ ਮੁਫ਼ਤ AI ਟੂਲਜ਼ ਹਨ। ਇੱਥੇ ਦੱਸਿਆ ਗਿਆ ਹੈ ਕਿ ਹਰ ਇੱਕ ਖਾਸ ਕਿਉਂ ਹੈ \u2014 ਅਤੇ ਹੁਣੇ ਕਿਵੇਂ ਸ਼ੁਰੂ ਕਰੀਏ।'
+  },
+
+  // ---- S4: FIRST CONVERSATION ----
+  '#s4 .sec-head h2':{
+    en:'Your First <span class="gr">AI Conversation</span>',
+    hi:'AI से आपकी पहली <span class="gr">बातचीत</span>',
+    pa:'AI ਨਾਲ ਤੁਹਾਡੀ ਪਹਿਲੀ <span class="gr">ਗੱਲਬਾਤ</span>'
+  },
+  '#s4 .sec-head>p':{
+    en:'The best way to understand AI is to talk to it. Here are 5 guided prompts to try right now \u2014 copy, paste, and experience AI for yourself.',
+    hi:'AI को समझने का सबसे अच्छा तरीका है उससे बात करना। यहां 5 गाइडेड प्रॉम्प्ट हैं \u2014 कॉपी करें, पेस्ट करें, और AI को खुद अनुभव करें।',
+    pa:'AI ਨੂੰ ਸਮਝਣ ਦਾ ਸਭ ਤੋਂ ਵਧੀਆ ਤਰੀਕਾ ਹੈ ਉਸ ਨਾਲ ਗੱਲ ਕਰਨਾ। ਇੱਥੇ 5 ਗਾਈਡਿਡ ਪ੍ਰੋਂਪਟ ਹਨ \u2014 ਕਾਪੀ ਕਰੋ, ਪੇਸਟ ਕਰੋ, ਅਤੇ AI ਨੂੰ ਖੁਦ ਅਨੁਭਵ ਕਰੋ।'
+  },
+  '#s4 .identity-shift':{
+    en:'You\'re no longer someone who "heard about ChatGPT." You\'re someone who has actually used it. Big difference.',
+    hi:'अब आप वो नहीं जिसने "ChatGPT के बारे में सुना है।" आप वो हैं जिसने इसे असल में इस्तेमाल किया है। बड़ा फर्क।',
+    pa:'ਹੁਣ ਤੁਸੀਂ ਉਹ ਨਹੀਂ ਜਿਸਨੇ "ChatGPT ਬਾਰੇ ਸੁਣਿਆ ਹੈ।" ਤੁਸੀਂ ਉਹ ਹੋ ਜਿਸਨੇ ਇਸਨੂੰ ਅਸਲ ਵਿੱਚ ਵਰਤਿਆ ਹੈ। ਵੱਡਾ ਫਰਕ।'
+  },
+
+  // ---- S5: QUIZ ----
+  '#s5 .sec-head h2':{
+    en:'Test Your <span class="gr">Understanding</span>',
+    hi:'अपनी <span class="gr">समझ</span> परखें',
+    pa:'ਆਪਣੀ <span class="gr">ਸਮਝ</span> ਪਰਖੋ'
+  },
+  '#s5 .sec-head>p':{
+    en:'8 questions. Instant feedback after each one. You got this.',
+    hi:'8 सवाल। हर सवाल के बाद तुरंत फीडबैक। आप कर सकते हैं।',
+    pa:'8 ਸਵਾਲ। ਹਰ ਸਵਾਲ ਤੋਂ ਬਾਅਦ ਤੁਰੰਤ ਫੀਡਬੈਕ। ਤੁਸੀਂ ਕਰ ਸਕਦੇ ਹੋ।'
+  },
+
+  // ---- S6: WRAP-UP ----
+  '#s6 .sec-head h2':{
+    en:'Session 1 <span class="gr">Complete!</span>',
+    hi:'सेशन 1 <span class="gr">पूरा!</span>',
+    pa:'ਸੈਸ਼ਨ 1 <span class="gr">ਪੂਰਾ!</span>'
+  },
+  '#s6 .sec-head>p':{
+    en:'Here\'s what you learned, your homework, and what\'s coming in Session 2.',
+    hi:'यहां आपने क्या सीखा, होमवर्क, और सेशन 2 में क्या आने वाला है।',
+    pa:'ਇੱਥੇ ਤੁਸੀਂ ਕੀ ਸਿੱਖਿਆ, ਹੋਮਵਰਕ, ਅਤੇ ਸੈਸ਼ਨ 2 ਵਿੱਚ ਕੀ ਆਉਣ ਵਾਲਾ ਹੈ।'
+  },
+  '#s6 .identity-shift':{
+    en:'You just completed Session 1 of a program most people never even start. You\'re already ahead.',
+    hi:'आपने अभी उस प्रोग्राम का सेशन 1 पूरा किया जो ज़्यादातर लोग शुरू भी नहीं करते। आप पहले से आगे हैं।',
+    pa:'ਤੁਸੀਂ ਹੁਣੇ ਉਸ ਪ੍ਰੋਗਰਾਮ ਦਾ ਸੈਸ਼ਨ 1 ਪੂਰਾ ਕੀਤਾ ਜੋ ਜ਼ਿਆਦਾਤਰ ਲੋਕ ਸ਼ੁਰੂ ਵੀ ਨਹੀਂ ਕਰਦੇ। ਤੁਸੀਂ ਪਹਿਲਾਂ ਤੋਂ ਅੱਗੇ ਹੋ।'
+  }
+};
+
+// Quiz translations
+const qDataHi=[
+  {q:"AI का कौन सा प्रकार आज मौजूद है और जनता के लिए उपलब्ध है?",o:["सुपर AI (ASI)","जनरल AI (AGI)","नैरो AI (ANI)","क्वांटम AI"],a:2,e:"नैरो AI (ANI) ही एकमात्र AI है जो आज मौजूद है। ChatGPT, Claude, Gemini — सब नैरो AI हैं, हर एक विशिष्ट काम बहुत अच्छे से करता है।"},
+  {q:"ChatGPT की मूल कंपनी OpenAI का मुख्य लक्ष्य क्या है?",o:["सबसे तेज़ गेमिंग GPU बनाना","सोशल मीडिया के लिए नैरो AI बनाना","आर्टिफिशियल जनरल इंटेलिजेंस (AGI) विकसित करना","सभी मानव कर्मचारियों को बदलना"],a:2,e:"OpenAI का लक्ष्य AGI बनाना और उसका सुरक्षित विकास सुनिश्चित करना है — AI जो कोई भी बौद्धिक कार्य कर सके जो इंसान कर सकता है।"},
+  {q:"इनमें से कौन सा आपके स्मार्टफोन में AI का उदाहरण नहीं है?",o:["कैमरे में पोर्ट्रेट मोड","ईमेल में स्पैम फिल्टर","USB चार्जिंग","YouTube होम फीड एल्गोरिदम"],a:2,e:"USB चार्जिंग बेसिक हार्डवेयर है — कोई AI नहीं। पोर्ट्रेट मोड, स्पैम फिल्टर, और YouTube का एल्गोरिदम सब AI के उदाहरण हैं।"},
+  {q:"कौन सा AI टूल Google ने बनाया है और रियल-टाइम रिसर्च के लिए सबसे अच्छा है?",o:["Claude","ChatGPT","Gemini","Perplexity"],a:2,e:"Gemini Google का AI असिस्टेंट है। यह Google Search के साथ गहराई से जुड़ा है और रियल-टाइम वेब एक्सेस के साथ रिसर्च के लिए बेहतरीन है।"},
+  {q:"कौन सा AI लंबे लेखन और डॉक्यूमेंट विश्लेषण के लिए जाना जाता है?",o:["ChatGPT","Claude","Gemini","Bing AI"],a:1,e:"Anthropic द्वारा बनाया गया Claude विचारशील, सूक्ष्म लंबे लेखन के लिए प्रसिद्ध है। यह एक बातचीत में 1,00,000+ शब्दों को संभाल सकता है।"},
+  {q:"YouTube का 'Up Next' एल्गोरिदम वीडियो दिखाता है — यह कौन सी तकनीक तय करती है?",o:["YouTube का एक मानव संपादक","रैंडम चयन","एक रिकमेंडेशन AI मॉडल","आपकी इंटरनेट स्पीड"],a:2,e:"YouTube एक AI रिकमेंडेशन सिस्टम का उपयोग करता है जो आपका वॉच हिस्ट्री, लाइक्स, सर्च पैटर्न, और यहां तक कि आप थंबनेल पर कितनी देर रुकते हैं, इसका विश्लेषण करता है।"},
+  {q:"AI शब्दावली में 'Prompt' क्या है?",o:["एक कंप्यूटर प्रोग्राम","AI को दिया गया निर्देश या सवाल","एक प्रकार का न्यूरल नेटवर्क","डेटा स्टोरेज का एक तरीका"],a:1,e:"Prompt वह टेक्स्ट निर्देश या सवाल है जो आप AI को देते हैं। बेहतर prompt = बेहतर जवाब — इसीलिए prompt engineering एक महत्वपूर्ण कौशल है जो सेशन 3 में सीखेंगे।"},
+  {q:"AI की बुद्धिमत्ता का सबसे ईमानदार विवरण क्या है?",o:["यह बिल्कुल मानव मस्तिष्क की तरह सोचता है","यह चेतन है और भावनाएं रखता है","यह ट्रेनिंग डेटा में पैटर्न ढूंढता है और उन पैटर्न के आधार पर आउटपुट जेनरेट करता है","यह सब कुछ कर सकता है जो इंसान कर सकता है"],a:2,e:"AI वास्तव में 'सोचता' या 'महसूस' नहीं करता — यह अपने ट्रेनिंग डेटा में पैटर्न ढूंढता है और सांख्यिकीय रूप से संभावित आउटपुट जेनरेट करता है।"}
+];
+const qDataPa=[
+  {q:"AI ਦੀ ਕਿਹੜੀ ਕਿਸਮ ਅੱਜ ਮੌਜੂਦ ਹੈ ਅਤੇ ਲੋਕਾਂ ਲਈ ਉਪਲਬਧ ਹੈ?",o:["ਸੁਪਰ AI (ASI)","ਜਨਰਲ AI (AGI)","ਨੈਰੋ AI (ANI)","ਕੁਆਂਟਮ AI"],a:2,e:"ਨੈਰੋ AI (ANI) ਹੀ ਇੱਕੋ-ਇੱਕ AI ਹੈ ਜੋ ਅੱਜ ਮੌਜੂਦ ਹੈ। ChatGPT, Claude, Gemini — ਸਭ ਨੈਰੋ AI ਹਨ, ਹਰ ਇੱਕ ਖਾਸ ਕੰਮ ਬਹੁਤ ਵਧੀਆ ਕਰਦਾ ਹੈ।"},
+  {q:"ChatGPT ਦੀ ਮੂਲ ਕੰਪਨੀ OpenAI ਦਾ ਮੁੱਖ ਟੀਚਾ ਕੀ ਹੈ?",o:["ਸਭ ਤੋਂ ਤੇਜ਼ ਗੇਮਿੰਗ GPU ਬਣਾਉਣਾ","ਸੋਸ਼ਲ ਮੀਡੀਆ ਲਈ ਨੈਰੋ AI ਬਣਾਉਣਾ","ਆਰਟੀਫਿਸ਼ੀਅਲ ਜਨਰਲ ਇੰਟੈਲੀਜੈਂਸ (AGI) ਵਿਕਸਿਤ ਕਰਨਾ","ਸਾਰੇ ਮਨੁੱਖੀ ਕਰਮਚਾਰੀਆਂ ਨੂੰ ਬਦਲਣਾ"],a:2,e:"OpenAI ਦਾ ਟੀਚਾ AGI ਬਣਾਉਣਾ ਅਤੇ ਇਸ ਦਾ ਸੁਰੱਖਿਅਤ ਵਿਕਾਸ ਯਕੀਨੀ ਬਣਾਉਣਾ ਹੈ — AI ਜੋ ਕੋਈ ਵੀ ਬੌਧਿਕ ਕੰਮ ਕਰ ਸਕੇ ਜੋ ਇਨਸਾਨ ਕਰ ਸਕਦਾ ਹੈ।"},
+  {q:"ਇਨ੍ਹਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਤੁਹਾਡੇ ਸਮਾਰਟਫੋਨ ਵਿੱਚ AI ਦੀ ਉਦਾਹਰਨ ਨਹੀਂ ਹੈ?",o:["ਕੈਮਰੇ ਵਿੱਚ ਪੋਰਟਰੇਟ ਮੋਡ","ਈਮੇਲ ਵਿੱਚ ਸਪੈਮ ਫਿਲਟਰ","USB ਚਾਰਜਿੰਗ","YouTube ਹੋਮ ਫੀਡ ਐਲਗੋਰਿਦਮ"],a:2,e:"USB ਚਾਰਜਿੰਗ ਬੇਸਿਕ ਹਾਰਡਵੇਅਰ ਹੈ — ਕੋਈ AI ਨਹੀਂ। ਪੋਰਟਰੇਟ ਮੋਡ, ਸਪੈਮ ਫਿਲਟਰ, ਅਤੇ YouTube ਦਾ ਐਲਗੋਰਿਦਮ ਸਭ AI ਦੀਆਂ ਉਦਾਹਰਨਾਂ ਹਨ।"},
+  {q:"ਕਿਹੜਾ AI ਟੂਲ Google ਨੇ ਬਣਾਇਆ ਹੈ ਅਤੇ ਰੀਅਲ-ਟਾਈਮ ਰਿਸਰਚ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਹੈ?",o:["Claude","ChatGPT","Gemini","Perplexity"],a:2,e:"Gemini Google ਦਾ AI ਅਸਿਸਟੈਂਟ ਹੈ। ਇਹ Google Search ਨਾਲ ਡੂੰਘਾਈ ਨਾਲ ਜੁੜਿਆ ਹੈ ਅਤੇ ਰੀਅਲ-ਟਾਈਮ ਵੈੱਬ ਐਕਸੈਸ ਨਾਲ ਰਿਸਰਚ ਲਈ ਬਿਹਤਰੀਨ ਹੈ।"},
+  {q:"ਕਿਹੜਾ AI ਲੰਬੀ ਲਿਖਤ ਅਤੇ ਡਾਕੂਮੈਂਟ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਜਾਣਿਆ ਜਾਂਦਾ ਹੈ?",o:["ChatGPT","Claude","Gemini","Bing AI"],a:1,e:"Anthropic ਦੁਆਰਾ ਬਣਾਇਆ Claude ਵਿਚਾਰਸ਼ੀਲ, ਸੂਖਮ ਲੰਬੀ ਲਿਖਤ ਲਈ ਮਸ਼ਹੂਰ ਹੈ। ਇਹ ਇੱਕ ਗੱਲਬਾਤ ਵਿੱਚ 1,00,000+ ਸ਼ਬਦ ਸੰਭਾਲ ਸਕਦਾ ਹੈ।"},
+  {q:"YouTube ਦਾ 'Up Next' ਐਲਗੋਰਿਦਮ ਵੀਡੀਓ ਦਿਖਾਉਂਦਾ ਹੈ — ਇਹ ਕਿਹੜੀ ਤਕਨੀਕ ਤੈਅ ਕਰਦੀ ਹੈ?",o:["YouTube ਦਾ ਇੱਕ ਮਨੁੱਖੀ ਸੰਪਾਦਕ","ਰੈਂਡਮ ਚੋਣ","ਇੱਕ ਰਿਕਮੈਂਡੇਸ਼ਨ AI ਮਾਡਲ","ਤੁਹਾਡੀ ਇੰਟਰਨੈੱਟ ਸਪੀਡ"],a:2,e:"YouTube ਇੱਕ AI ਰਿਕਮੈਂਡੇਸ਼ਨ ਸਿਸਟਮ ਵਰਤਦਾ ਹੈ ਜੋ ਤੁਹਾਡੀ ਵਾਚ ਹਿਸਟਰੀ, ਲਾਈਕਸ, ਸਰਚ ਪੈਟਰਨ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਦਾ ਹੈ।"},
+  {q:"AI ਸ਼ਬਦਾਵਲੀ ਵਿੱਚ 'Prompt' ਕੀ ਹੈ?",o:["ਇੱਕ ਕੰਪਿਊਟਰ ਪ੍ਰੋਗਰਾਮ","AI ਨੂੰ ਦਿੱਤਾ ਗਿਆ ਨਿਰਦੇਸ਼ ਜਾਂ ਸਵਾਲ","ਇੱਕ ਕਿਸਮ ਦਾ ਨਿਊਰਲ ਨੈੱਟਵਰਕ","ਡੇਟਾ ਸਟੋਰੇਜ ਦਾ ਇੱਕ ਤਰੀਕਾ"],a:1,e:"Prompt ਉਹ ਟੈਕਸਟ ਨਿਰਦੇਸ਼ ਜਾਂ ਸਵਾਲ ਹੈ ਜੋ ਤੁਸੀਂ AI ਨੂੰ ਦਿੰਦੇ ਹੋ। ਵਧੀਆ prompt = ਵਧੀਆ ਜਵਾਬ — ਇਸੇ ਲਈ prompt engineering ਇੱਕ ਮਹੱਤਵਪੂਰਨ ਹੁਨਰ ਹੈ ਜੋ ਸੈਸ਼ਨ 3 ਵਿੱਚ ਸਿੱਖਾਂਗੇ।"},
+  {q:"AI ਦੀ ਬੁੱਧੀ ਦਾ ਸਭ ਤੋਂ ਇਮਾਨਦਾਰ ਵਰਣਨ ਕੀ ਹੈ?",o:["ਇਹ ਬਿਲਕੁਲ ਮਨੁੱਖੀ ਦਿਮਾਗ ਵਾਂਗ ਸੋਚਦਾ ਹੈ","ਇਹ ਚੇਤੰਨ ਹੈ ਅਤੇ ਭਾਵਨਾਵਾਂ ਰੱਖਦਾ ਹੈ","ਇਹ ਟ੍ਰੇਨਿੰਗ ਡੇਟਾ ਵਿੱਚ ਪੈਟਰਨ ਲੱਭਦਾ ਹੈ ਅਤੇ ਉਨ੍ਹਾਂ ਦੇ ਆਧਾਰ ਤੇ ਆਉਟਪੁੱਟ ਬਣਾਉਂਦਾ ਹੈ","ਇਹ ਸਭ ਕੁਝ ਕਰ ਸਕਦਾ ਹੈ ਜੋ ਇਨਸਾਨ ਕਰ ਸਕਦਾ ਹੈ"],a:2,e:"AI ਅਸਲ ਵਿੱਚ 'ਸੋਚਦਾ' ਜਾਂ 'ਮਹਿਸੂਸ' ਨਹੀਂ ਕਰਦਾ — ਇਹ ਆਪਣੇ ਟ੍ਰੇਨਿੰਗ ਡੇਟਾ ਵਿੱਚ ਪੈਟਰਨ ਲੱਭਦਾ ਹੈ ਅਤੇ ਅੰਕੜਾਤਮਕ ਤੌਰ ਤੇ ਸੰਭਾਵਿਤ ਆਉਟਪੁੱਟ ਬਣਾਉਂਦਾ ਹੈ।"}
+];
+const qDataEN=JSON.parse(JSON.stringify(qData));
+
+// Apply translations
+function setLang(lang){
+  currentLang=lang;
+  // Update active buttons
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+
+  // Apply text translations via selector map
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){
+      els.forEach((el,i)=>{if(val[i])el.innerHTML=val[i][lang]||val[i].en;});
+    }else{
+      els.forEach(el=>{el.innerHTML=val[lang]||val.en;});
+    }
+  }
+
+  // Swap quiz data
+  const newQ=lang==='hi'?qDataHi:lang==='pa'?qDataPa:qDataEN;
+  for(let i=0;i<qData.length;i++){
+    qData[i].q=newQ[i].q;qData[i].o=[...newQ[i].o];qData[i].e=newQ[i].e;
+  }
+  // Re-render quiz if active
+  if(quizStarted){cq=0;sc=0;ans=new Array(qData.length).fill(false);renderQ();}
+
+  // Hide float when nav is visible
+  const navVis=document.getElementById('mainNav').style.display!=='none';
+  document.getElementById('langFloat').classList.toggle('hide',navVis);
+}
+
+// Show/hide floating lang button based on nav visibility
+const origStartLearning=startLearning;
+startLearning=function(){origStartLearning();document.getElementById('langFloat').classList.add('hide');};
+const origJumpTo=jumpTo;
+jumpTo=function(id){origJumpTo(id);document.getElementById('langFloat').classList.add('hide');};
 </script>
-<div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
 </body>
 </html>

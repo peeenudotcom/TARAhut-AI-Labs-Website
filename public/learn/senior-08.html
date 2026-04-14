@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 8: Build Your Brand with AI — TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:13px 28px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-5px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:.8rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.crd p{color:var(--t2);font-size:.88rem;line-height:1.65}
+.callout{padding:1.4rem 1.6rem;border-radius:var(--r);margin:1.8rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.88rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.4rem 1.6rem;margin:1.8rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.88rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.88rem;margin-top:.4rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.4rem 1.6rem;border-radius:0 var(--r) var(--r) 0;margin:1.8rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:18px 24px;margin:24px 0;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:10px;margin:20px 0;font-size:.8rem;color:var(--c5);font-family:'JetBrains Mono',monospace}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.progress-marker{text-align:center;padding:1.2rem;margin:1.2rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.6rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.88rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);font-size:.86rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Content Kit Generator */
+.content-kit{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.ck-passions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
+.ck-passion{padding:8px 18px;border:1px solid var(--bd);border-radius:99px;cursor:pointer;font-size:.88rem;transition:all .3s}
+.ck-passion:hover{border-color:var(--brand);color:var(--brand)}
+.ck-passion.sel{border-color:var(--brand);background:rgba(5,150,105,.1);color:var(--brand);font-weight:700}
+.ck-result{background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:1.5rem;margin-top:1.25rem;display:none}
+.ck-result.show{display:block;animation:fadeSlide .4s ease}
+.ck-result h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:.75rem}
+.ck-list{padding-left:1.1rem;color:var(--t2);font-size:.88rem}
+.ck-list li{margin-bottom:.4rem}
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:1.5rem 0}
+.cal-day{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .3s;font-size:.75rem}
+.cal-day:hover{border-color:var(--brand);background:rgba(5,150,105,.06)}
+.cal-day .cd-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:block;margin-bottom:4px}
+.cal-day .cd-icon{font-size:1.1rem;display:block;margin-bottom:3px}
+.cal-day .cd-type{font-size:.62rem;color:var(--brand);font-family:'Syne',sans-serif;font-weight:700}
+/* Takehome */
+.takehome{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.takehome h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--c4);margin-bottom:1rem}
+.takehome p{color:var(--t2);font-size:.9rem;margin-bottom:.6rem}
+.takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
+.takehome li{margin-bottom:.4rem}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.cal-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 8 of 12</div>
+  <h1>Session 8: Build Your Brand<br><span class="gr">with AI 📱</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>Social media isn't just for scrolling. It's your stage. Learn how to use AI to create content, grow an audience, and build a brand that opens doors.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Building 📱</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Social Media</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Content Calendar</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Content Kit</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Take-Home</button>
+  </div>
+</nav>
+
+<!-- S1 -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Social Media as a <span class="gr">Superpower</span> ⚡</h2>
+    <p>Not just for scrolling — social media is the biggest stage in the world. And it's FREE to get on it.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">💡</div><div class="call-body"><h4>The Shift You Need to Make</h4><p>Most people use social media as <strong>consumers</strong> — scrolling, watching, liking. But the people building wealth and influence are the <strong>creators</strong>. The only difference? They pressed "post" instead of just "like".</p></div></div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="crd-icon">📲</span><h3>Why It Matters for YOUR Future</h3><p>In 2026, companies check your social media before interviews. A strong personal brand can get you internships, clients, and opportunities — even as a student. Your profile is your digital handshake.</p></div>
+    <div class="crd"><span class="crd-icon">🤖</span><h3>AI Makes It 10x Easier</h3><p>You don't need to be a professional writer or designer. AI tools like ChatGPT, Canva, and CapCut can generate captions, design graphics, and suggest ideas — in seconds.</p></div>
+    <div class="crd"><span class="crd-icon">🌍</span><h3>From Kotkapura to the World</h3><p>Location doesn't matter anymore. A student from any small city can build an audience of thousands — even millions — with the right content strategy and consistency.</p></div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">📊</div><div class="call-body"><h4>Real Numbers</h4><p><strong>Tanmay Bhat</strong> (comedian, started as regular guy) → 3M+ YouTube subscribers<br><strong>Niharika NM</strong> (engineer turned creator) → brand deals worth ₹1 Cr/year<br><strong>Ishan Sharma</strong> (student entrepreneur) → built a brand at 19, 500K+ followers<br>All started with zero followers. <strong>The only difference is they started.</strong></p></div></div>
+
+  <div class="emotional-hook"><p>Every day you wait is a day someone else is posting. <strong>The algorithm doesn't care about your age, your city, or your marks. It only cares about your consistency and your content.</strong></p></div>
+
+  <div class="micro-win">The biggest creator in your school 3 years from now is probably reading this right now.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Content Calendar →</button></div>
+</div>
+
+<!-- S2 -->
+<div class="sec" id="s2">
+  <div class="progress-marker">✅ You understand WHY social media matters. Now let's talk about HOW to do it right.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Your <span class="gr">Content Calendar</span> 📅</h2>
+    <p>Successful creators don't post randomly — they plan. Here's a simple weekly plan you can actually stick to.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">🧠</div><div class="call-body"><h4>What to Post (and Why)</h4><p>The <strong>3 types of content</strong> every creator needs:<br>• <strong>Educate</strong> — teach something (gets shared)<br>• <strong>Entertain</strong> — make people smile/laugh (gets likes)<br>• <strong>Inspire</strong> — motivate or tell a story (builds loyal followers)<br>Mix all 3 for the best results!</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 .75rem;font-size:1.05rem">📅 Sample Weekly Content Calendar — Click a day to learn more!</h3>
+  <div class="cal-grid">
+    <div class="cal-day" onclick="calClick('Mon','📸 Monday Post','Share something you learned this week — a fun fact, an AI tip, or a quote. Caption tip: Start with a question!')"><span class="cd-label">MON</span><span class="cd-icon">📸</span><span class="cd-type">Post</span></div>
+    <div class="cal-day" onclick="calClick('Tue','💬 Tuesday Story','Share a behind-the-scenes moment. What are you working on? Studying? Creating? People love authenticity.')"><span class="cd-label">TUE</span><span class="cd-icon">💬</span><span class="cd-type">Story</span></div>
+    <div class="cal-day" onclick="calClick('Wed','🎬 Wednesday Reel','Short 15–30 second video. Teach a quick tip, do a POV, or show a transformation. Reels get 3x more reach than photos.')"><span class="cd-label">WED</span><span class="cd-icon">🎬</span><span class="cd-type">Reel</span></div>
+    <div class="cal-day" onclick="calClick('Thu','🧵 Thursday Thread','Write 3–5 tips in a carousel or thread format. \'5 AI tools every student needs\' style content gets massive shares.')"><span class="cd-label">THU</span><span class="cd-icon">🧵</span><span class="cd-type">Thread</span></div>
+    <div class="cal-day" onclick="calClick('Fri','✨ Friday Value Post','Share a resource, a checklist, or a how-to. Useful content gets saved — saves are the best engagement signal.')"><span class="cd-label">FRI</span><span class="cd-icon">✨</span><span class="cd-type">Value</span></div>
+    <div class="cal-day" onclick="calClick('Sat','🎉 Saturday Engage','Reply to comments, share a poll or quiz in stories, go live for 10 min, or reshare a follower\'s content.')"><span class="cd-label">SAT</span><span class="cd-icon">🎉</span><span class="cd-type">Engage</span></div>
+    <div class="cal-day" onclick="calClick('Sun','😌 Sunday Rest','Rest day! But you can plan next week\'s content using ChatGPT so Monday is ready before you sleep.')"><span class="cd-label">SUN</span><span class="cd-icon">😌</span><span class="cd-type">Rest</span></div>
+  </div>
+  <div id="calDetail" style="background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:1.25rem;display:none;animation:fadeSlide .3s ease"></div>
+
+  <div class="callout call-3"><div class="call-ico">🤖</div><div class="call-body"><h4>Let AI Write Your Captions</h4><p>Open ChatGPT and type: <strong>"Write an Instagram caption for a student creator who wants to motivate other teens. Topic: [your topic]. Include 5 hashtags. Keep it under 150 words."</strong><br>AI will give you 3–5 options in seconds. Edit, personalise, and post!</p></div></div>
+
+  <div class="micro-action">
+    <h4>🎯 Try It Now</h4>
+    <p>Use this AI prompt to generate 3 post ideas for your niche:</p>
+    <p style="background:var(--bg);padding:.75rem 1rem;border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);margin-top:.5rem">"Generate 3 Instagram post ideas for a 14-year-old student interested in [your interest]. Include topic, caption starter, and 3 hashtags for each."</p>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Content Kit →</button></div>
+</div>
+
+<!-- S3 -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✅ You have a content calendar strategy. Now let's generate YOUR actual content ideas!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Your <span class="gr">Content Starter Kit</span> 🎨</h2>
+    <p>Pick your passion below — AI suggests 5 post ideas, 3 story ideas, and 1 video script idea just for YOU!</p>
+  </div>
+
+  <div class="content-kit">
+    <p style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:.75rem">🎯 What's your passion? Pick one:</p>
+    <div class="ck-passions">
+      <div class="ck-passion" onclick="selectPassion('tech')">💻 Tech & AI</div>
+      <div class="ck-passion" onclick="selectPassion('study')">📚 Study Tips</div>
+      <div class="ck-passion" onclick="selectPassion('fitness')">🏋️ Fitness & Health</div>
+      <div class="ck-passion" onclick="selectPassion('art')">🎨 Art & Design</div>
+      <div class="ck-passion" onclick="selectPassion('music')">🎵 Music</div>
+      <div class="ck-passion" onclick="selectPassion('gaming')">🎮 Gaming</div>
+      <div class="ck-passion" onclick="selectPassion('food')">🍕 Food</div>
+      <div class="ck-passion" onclick="selectPassion('motivation')">🌟 Motivation</div>
+    </div>
+    <div class="ck-result" id="ckResult">
+      <h4 id="ckTitle">Your Content Kit 🎉</h4>
+      <p style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--c1);margin-bottom:.4rem;margin-top:.5rem">📸 5 Post Ideas:</p>
+      <ul class="ck-list" id="ckPosts"></ul>
+      <p style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--c2);margin-bottom:.4rem;margin-top:.9rem">📲 3 Story Ideas:</p>
+      <ul class="ck-list" id="ckStories"></ul>
+      <p style="font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--c4);margin-bottom:.4rem;margin-top:.9rem">🎬 1 Video Script Idea:</p>
+      <p id="ckVideo" style="color:var(--t2);font-size:.88rem"></p>
+    </div>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">📌</div><div class="call-body"><h4>Pro Tip: Batch Your Content</h4><p>Don't make one post at a time. Sit down for <strong>1 hour every Sunday</strong> and create 7 days of content in one go. Use Canva AI for graphics, ChatGPT for captions. You'll post every day without the daily stress.</p></div></div>
+
+  <div class="identity-shift">You don't need to be perfect. You need to be CONSISTENT. One post a day beats one perfect post a month. 📱</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz →</button></div>
+</div>
+
+<!-- S4: Quiz -->
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Session 8 <span class="gr">Quiz</span> 🧠</h2>
+    <p>6 questions on personal branding and content creation. Let's go!</p>
+  </div>
+  <div class="quiz-box">
+    <div class="q-prog" id="qProg"></div>
+    <div id="qArea"></div>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">← Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take-Home →</button></div>
+</div>
+
+<!-- S5: Take-Home -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Take-Home: <span class="gr">Your Content Kit</span> 📦</h2>
+    <p>Your actual homework — create real content you can post (or keep for your portfolio)!</p>
+  </div>
+
+  <div class="takehome">
+    <h3>📋 Content Kit Assignment</h3>
+    <p>Using your passion + the ideas from Section 3, create a <strong>real content starter kit</strong>:</p>
+    <ul>
+      <li><strong>5 Post Captions</strong> — Write them out. Use the AI prompt from Section 2 if you need help.</li>
+      <li><strong>3 Story Ideas</strong> — Describe what you'd show in each story (can be sketches or notes)</li>
+      <li><strong>1 Short Video Script</strong> — Write a 30–60 second script for a reel or YouTube Short</li>
+      <li><strong>Your Content Pillars</strong> — Pick 3 topics you'll consistently post about</li>
+    </ul>
+    <p style="margin-top:1rem">📌 <strong>Bonus:</strong> Actually post one piece of content on Instagram, YouTube, or any platform. Even a story counts. Share it with the class!</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🚀</div><div class="call-body"><h4>Coming Up in Session 9</h4><p>We're going to the AI Courtroom — <strong>Ethics, Deepfakes, and the rules of AI</strong>. It's going to be intense. You'll debate, detect fakes, and build your own AI rulebook.</p></div></div>
+
+  <div class="micro-action">
+    <h4>🌟 Before Next Session</h4>
+    <ul>
+      <li>Post at least 1 piece of content (even a story!)</li>
+      <li>Use AI (ChatGPT or Canva) for at least part of it</li>
+      <li>Screenshot it — bring it to Session 9 to show the class</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">Every big creator started with zero followers. The only requirement is to start. You've started. 🌟</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">← Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button></div>
+</div>
+
+<footer class="foot">
+  <div class="brand">TARAhut AI Labs</div>
+  <p>Session 8 &middot; Senior Track (Class 8–10) &middot; AI Explorer Program</p>
+  <p style="margin-top:.5rem"><a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; +91 92008-82008</p>
+</footer>
+
+<script>
+// Particles
+const canvas=document.getElementById('particleCanvas');const ctx=canvas.getContext('2d');let particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function animParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});requestAnimationFrame(animParticles)}
+animParticles();
+
+const sections=['s1','s2','s3','s4','s5'];let cur='s1';
+function go(id){document.getElementById(cur).classList.remove('on');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');cur=id;window.scrollTo({top:0,behavior:'smooth'});const idx=sections.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/sections.length*100)+'%';}
+function startLearning(){document.getElementById('mainNav').style.display='block';go('s1')}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';go(id)}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+
+// Calendar
+function calClick(day,title,desc){
+  const el=document.getElementById('calDetail');
+  el.style.display='block';el.innerHTML=`<strong style="font-family:'Syne',sans-serif;color:var(--brand)">${day}: ${title}</strong><p style="color:var(--t2);font-size:.88rem;margin-top:.4rem">${desc}</p>`;
+}
+
+// Content Kit
+const contentData={
+  tech:{posts:['5 AI tools every student should know in 2026','I asked ChatGPT to write my school essay — here\'s what happened','No-code tools that let you build apps without coding','How AI is changing the future of every career','The AI trick that helped me study smarter this week'],stories:['Share your screen — show how you use ChatGPT for studying','Poll: Do you think AI will help or hurt students?','Behind the scenes: My AI learning journey at TARAhut'],video:'Hook: "I was failing maths. Then I tried this one AI tool." Show 3 steps of how you used AI to understand a concept. End with: "Try it and tag me!"'},
+  study:{posts:['The Pomodoro technique that changed my study game','5 notes hacks that actually work (tested by me)','Why studying more doesn\'t always mean studying better','The best free apps for studying smarter in 2026','How I organise my school week — a student\'s honest guide'],stories:['Study with me — share a 15-min study timer','Ask me anything about my study routine','Exam prep checklist — swipe through!'],video:'Hook: "My exam was in 3 hours and I hadn\'t studied. Here\'s how I handled it." Share 3 emergency study tips. End with your exam result.'},
+  fitness:{posts:['5-minute morning workout for students (no equipment)','Why walking is the most underrated exercise','What I eat in a day as a student trying to stay healthy','Mental health tip: move your body when you feel stuck','The fitness habit I started at 14 that changed everything'],stories:['Morning routine — show your workout in 30 seconds','Progress check-in — share your fitness goal','Poll: Do you prefer gym or home workouts?'],video:'Hook: "I worked out every day for 30 days. Here\'s what changed." Show before/after energy levels, study focus, and mood. Real and honest.'},
+  art:{posts:['My art process: from sketch to final — time lapse','5 free apps that make digital art easy for beginners','Art style evolution — my first drawing vs. now','How I use Canva AI to create professional designs in minutes','Colour theory explained in 60 seconds'],stories:['Work in progress — show your current project','Poll: which style do you prefer?','Mini art challenge — draw with me!'],video:'Hook: "I created a logo in 5 minutes with AI. Here\'s how." Screen record Canva AI, show the result, and walk through each step.'},
+  music:{posts:['5 songs that explain exactly how I feel right now','How I started learning guitar with zero experience','Music theory in 3 simple rules every beginner needs','The playlist I use to study (it actually works)','Underrated Indian artists you need to hear right now'],stories:['60-second cover — record and share a short clip','Guess the song — play 5 notes, ask followers to name it','My music practice routine — share your schedule'],video:'Hook: "I practised guitar for 21 days. Here\'s what happened." Show daily practice clips, struggles, and the final performance.'},
+  gaming:{posts:['5 gaming skills that are actually life skills','How gaming taught me to think strategically','Best free PC/mobile games for students in 2026','The link between gaming and career skills nobody talks about','My honest review of [popular game] — student perspective'],stories:['Share a gaming highlight or funny moment','Poll: Which game should I play next?','Quick gaming tip that most players don\'t know'],video:'Hook: "I thought gaming was a waste of time. Then I learned this." Talk about strategy, teamwork, and problem-solving from gaming — connect to real life.'},
+  food:{posts:['3 healthy snacks I make in under 5 minutes','The desi food combo that is actually nutritional gold','What I eat during exam season for brain power','How to make instant noodles taste like restaurant food','Budget-friendly meals for students: ₹50 per meal challenge'],stories:['Cook with me — 30-second reel of your favourite snack','Rate my meal — show what you ate today','Poll: Biryani or pizza?'],video:'Hook: "I only ate healthy food for 7 days. Here\'s what changed." Document energy, mood, and focus. Keep it honest and funny.'},
+  motivation:{posts:['The one habit that changed my mindset completely','You don\'t need motivation — you need a system','Why failing my exam was the best thing that happened to me','Small wins matter: celebrate every step forward','Letter to my 12-year-old self — what I wish I knew'],stories:['Morning quote — share something that inspired you today','Ask me anything about staying motivated as a student','Share your goal for this week — hold each other accountable'],video:'Hook: "I was ready to quit. Then one thing changed everything." Tell a real story about a struggle and how you overcame it. Authentic always beats perfect.'}
+};
+
+function selectPassion(key){
+  document.querySelectorAll('.ck-passion').forEach(p=>p.classList.remove('sel'));
+  event.target.classList.add('sel');
+  const d=contentData[key];
+  document.getElementById('ckPosts').innerHTML=d.posts.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('ckStories').innerHTML=d.stories.map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('ckVideo').textContent=d.video;
+  document.getElementById('ckResult').classList.add('show');
+}
+
+// Quiz
+const quizData=[
+  {q:'What is the main difference between a content "consumer" and a content "creator"?',opts:['Consumers have more followers','Creators make and post content, consumers only scroll and watch','Creators use paid tools, consumers use free ones','There is no real difference'],ans:1,fb:'Creators generate value — they make posts, videos, and content. Consumers only watch. The shift from consuming to creating is where your personal brand begins!'},
+  {q:'Which type of content gets the MOST reach on Instagram?',opts:['Plain text posts','Long captions only','Reels (short videos)','Story polls'],ans:2,fb:'Reels consistently get 3–5x more reach than regular posts on Instagram. Short videos are the best tool for growing your audience quickly!'},
+  {q:'What does "content batching" mean?',opts:['Posting the same content on multiple platforms','Creating a week\'s worth of content in one sitting','Deleting old posts and reposting them','Using filters and effects in batches'],ans:1,fb:'Content batching means creating all your posts for the week in one go (e.g., Sunday). It saves time, reduces daily stress, and keeps you consistent!'},
+  {q:'Which AI tool can write Instagram captions for you?',opts:['Only paid tools can do this','ChatGPT, with the right prompt','Snapchat AI only','You cannot use AI for social media content'],ans:1,fb:'ChatGPT can write captions, hashtags, and content ideas when you give it a good prompt. It\'s free and incredibly useful for creators!'},
+  {q:'What are "content pillars" in personal branding?',opts:['The platform where you post most','3–5 core topics you consistently create content about','The number of followers you need to start','Paid promotions from brands'],ans:1,fb:'Content pillars are your 3–5 main topics — the themes your audience knows you for. Consistency around pillars builds a recognisable personal brand!'},
+  {q:'Why does a personal brand matter for a student\'s future?',opts:['It doesn\'t matter until you graduate college','It only helps you become a social media influencer','It builds reputation, attracts opportunities, and shows skills before you have formal work experience','It is only useful for artists and performers'],ans:2,fb:'A personal brand shows the world who you are and what you can do — before you have a degree or job experience. It attracts internships, clients, and opportunities at any age!'}
+];
+let qCur=0,qScore=0,qAnswered=false;
+function buildQuiz(){const prog=document.getElementById('qProg');prog.innerHTML=quizData.map((_,i)=>`<div class="q-dot${i===0?' cur':''}" id="qd${i}"></div>`).join('');renderQ();}
+function renderQ(){if(qCur>=quizData.length){showScore();return}const d=quizData[qCur];qAnswered=false;document.getElementById('qArea').innerHTML=`<div class="q-head"><span class="qn">Question ${qCur+1} of ${quizData.length}</span>${d.q}</div><div class="q-opts">${d.opts.map((o,i)=>`<div class="q-opt" onclick="answerQ(${i})"><div class="ol">${'ABCD'[i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div><div class="q-nav"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3)">Score: ${qScore}/${qCur}</div><button class="btn btn-glow btn-sm" onclick="nextQ()" id="qNextBtn" style="display:none">Next →</button></div>`;}
+function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];const opts=document.querySelectorAll('.q-opt');opts[d.ans].classList.add('ok');const fb=document.getElementById('qFb');if(i===d.ans){qScore++;fb.className='q-fb fb-ok show';fb.textContent='✓ Correct! '+d.fb;}else{opts[i].classList.add('no');fb.className='q-fb fb-no show';fb.textContent='✗ Not quite. '+d.fb;}document.getElementById('qNextBtn').style.display='inline-flex';}
+function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
+function showScore(){const pct=Math.round(qScore/quizData.length*100);const msg=pct>=80?'You\'re a branding pro! Time to start posting. 📱':pct>=60?'Good work! Review Section 2 for content strategy tips. 💪':'Re-read Sections 1–3 for a stronger foundation. 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;}
+buildQuiz();
+</script>
+</body>
+</html>

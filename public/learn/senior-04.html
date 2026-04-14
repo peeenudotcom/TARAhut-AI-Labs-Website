@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4: AI Detective & Smart Writing 🕵️ — TARAhut AI Labs | Senior Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1));}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6.5vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:600px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+/* Fact vs Fiction game */
+.fact-game{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.fact-card{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:1.25rem;margin-bottom:1rem}
+.fact-card .fact-text{font-size:.92rem;color:var(--t1);margin-bottom:.75rem;font-style:italic}
+.fact-btns{display:flex;gap:.75rem}
+.fact-btn{padding:8px 20px;border-radius:99px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:transparent;color:var(--t2);transition:all .3s}
+.fact-btn:hover{transform:scale(1.03)}
+.fact-result{margin-top:.75rem;padding:.75rem 1rem;border-radius:var(--rs);font-size:.85rem;display:none}
+.fact-result.show{display:block}
+.fact-result.correct{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.fact-result.wrong{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+/* Writing Builder */
+.writing-builder{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2rem 0}
+.writing-step{display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start}
+.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;flex-shrink:0;color:#fff}
+.writing-area{width:100%;padding:12px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.9rem;outline:none;transition:all .3s;resize:vertical;min-height:60px}
+.writing-area:focus{border-color:var(--c1);box-shadow:0 0 12px rgba(0,240,255,.1)}
+.word-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3);margin-top:.3rem}
+/* Quiz */
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.fact-btns{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 4 &middot; 2026</div>
+  <h1>AI Detective &<br><span class="gr">Smart Writing 🕵️</span></h1>
+  <div class="hero-brand">by TARAhut AI Labs</div>
+  <p>AI can lie. Teachers can spot AI homework. And your opinion matters! Learn to think critically, write powerfully, and use AI responsibly. 🎯</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Investigate! 🕵️</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">TARAhut AI Labs</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Fact vs Fiction</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Copy-Paste Problem</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Write Like a Pro</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quiz</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Mission</button>
+  </div>
+</nav>
+
+<!-- S1: FACT VS FICTION -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>🕵️ Fact vs Fiction<br><span class="gr">AI Can Lie. Seriously.</span></h2>
+    <p>AI sounds confident even when it's completely wrong. This section teaches you to think like a detective and verify what you read!</p>
+  </div>
+
+  <div class="callout call-4">
+    <div class="call-ico">🚨</div>
+    <div class="call-body">
+      <h4>The Scary Truth About AI Hallucinations</h4>
+      <p>In 2023, a lawyer in the USA used ChatGPT to write a legal brief. ChatGPT listed 6 court cases as evidence — <strong>every single one was fake.</strong> The lawyer didn't check. He submitted it to court. He got in serious trouble. The AI sounded completely confident. This is called an <strong>"AI hallucination"</strong> — when AI makes up facts with total confidence. 😰</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🎮 Fact vs Opinion: Can You Tell the Difference?</h3>
+  <div class="fact-game">
+    <p style="color:var(--t2);font-size:.88rem;margin-bottom:1.25rem">Read each statement. Decide if it's a FACT (can be verified) or an OPINION (someone's view). Then reveal the answer! 🔍</p>
+
+    <div class="fact-card">
+      <div class="fact-text">"India has 28 states and 8 Union Territories."</div>
+      <div class="fact-btns">
+        <button class="fact-btn" style="border-color:rgba(0,240,255,.3);color:var(--c1)" onclick="checkFact(this,'fact',0)">✅ FACT</button>
+        <button class="fact-btn" style="border-color:rgba(168,85,247,.3);color:var(--c2)" onclick="checkFact(this,'opinion',0)">💭 OPINION</button>
+      </div>
+      <div class="fact-result" id="fr0"></div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-text">"Virat Kohli is the greatest cricket player who ever lived."</div>
+      <div class="fact-btns">
+        <button class="fact-btn" style="border-color:rgba(0,240,255,.3);color:var(--c1)" onclick="checkFact(this,'fact',1)">✅ FACT</button>
+        <button class="fact-btn" style="border-color:rgba(168,85,247,.3);color:var(--c2)" onclick="checkFact(this,'opinion',1)">💭 OPINION</button>
+      </div>
+      <div class="fact-result" id="fr1"></div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-text">"The Eiffel Tower is 330 meters tall."</div>
+      <div class="fact-btns">
+        <button class="fact-btn" style="border-color:rgba(0,240,255,.3);color:var(--c1)" onclick="checkFact(this,'fact',2)">✅ FACT</button>
+        <button class="fact-btn" style="border-color:rgba(168,85,247,.3);color:var(--c2)" onclick="checkFact(this,'opinion',2)">💭 OPINION</button>
+      </div>
+      <div class="fact-result" id="fr2"></div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-text">"Social media is ruining the younger generation."</div>
+      <div class="fact-btns">
+        <button class="fact-btn" style="border-color:rgba(0,240,255,.3);color:var(--c1)" onclick="checkFact(this,'fact',3)">✅ FACT</button>
+        <button class="fact-btn" style="border-color:rgba(168,85,247,.3);color:var(--c2)" onclick="checkFact(this,'opinion',3)">💭 OPINION</button>
+      </div>
+      <div class="fact-result" id="fr3"></div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">🔍 The 3-Step Verification Method</h3>
+  <div class="cgrid">
+    <div class="crd">
+      <span class="crd-icon">🔎</span>
+      <h3>Step 1: Cross-Check</h3>
+      <p>Search the AI's claim on Google. Find 2-3 reliable sources (government sites, Wikipedia, news sites). If they agree → likely true. If they disagree → AI was wrong!</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">📅</span>
+      <h3>Step 2: Check the Date</h3>
+      <p>AI's training data has a cutoff. Ask AI: "What is your training data cutoff?" For anything from the last 1-2 years, always verify online. News, statistics, and events change!</p>
+    </div>
+    <div class="crd">
+      <span class="crd-icon">🎯</span>
+      <h3>Step 3: Ask AI to Prove It</h3>
+      <p>Ask: "What is your source for this?" Good AI will tell you it can't verify sources. That honesty is a good sign! Then you know to verify yourself.</p>
+    </div>
+  </div>
+
+  <div class="identity-shift">🕵️ Critical thinkers are rarer than AI users. Being BOTH is a superpower!</div>
+  <p class="curiosity-hook">Next: Why copy-pasting AI homework is a terrible idea... →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Copy-Paste Problem &rarr;</button></div>
+</div>
+
+<!-- S2: COPY-PASTE PROBLEM -->
+<div class="sec" id="s2">
+  <div class="progress-marker">🔍 25% done! Critical thinking activated!</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>⚠️ The Copy-Paste<br><span class="gr">Problem</span></h2>
+    <p>Submitting AI-generated homework as your own is a trap. Here's why teachers ALWAYS find out, and why it actually hurts YOUR future.</p>
+  </div>
+
+  <div class="callout call-4">
+    <div class="call-ico">😬</div>
+    <div class="call-body">
+      <h4>Real Talk: Teachers Are Smarter Than You Think</h4>
+      <p>If you copy-paste from ChatGPT and submit it as your essay — your teacher will probably know. How?</p>
+      <ul style="margin-top:.5rem;padding-left:1.2rem;font-size:.88rem;color:var(--t2)">
+        <li>Your normal writing style is completely different from AI's</li>
+        <li>AI uses certain phrases like "It is worth noting that..." and "This underscores the importance of..."</li>
+        <li>AI-detection tools like Turnitin and GPTZero exist and are free to use</li>
+        <li>AI doesn't make the small errors a student normally makes</li>
+        <li>AI's answer is often too perfect — no personal examples, no emotion</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">🎯</div>
+    <div class="call-body">
+      <h4>The RIGHT Way: Research vs Copy</h4>
+      <p><strong>WRONG:</strong> "Write my essay on water conservation. Copy." Submit. Done. ❌<br><br>
+      <strong>RIGHT:</strong> Use AI to:<br>
+      • Research: "What are the main arguments about water conservation?"<br>
+      • Get data: "Give me 3 statistics about water scarcity in India"<br>
+      • Understand: "Explain the impact of water shortage on agriculture"<br>
+      • Then: <strong>WRITE YOUR OWN ESSAY</strong> using these as reference points ✅</p>
+    </div>
+  </div>
+
+  <div class="callout call-3">
+    <div class="call-ico">💡</div>
+    <div class="call-body">
+      <h4>Why YOUR Writing Matters More in the AI Era</h4>
+      <p>Here's a plot twist: <strong>original writing is MORE valuable now than before AI!</strong> AI can generate average text instantly. But YOUR authentic perspective, YOUR personal stories, YOUR original thinking — that's something AI can never replicate. Companies, colleges, and scholarship committees increasingly VALUE original thinkers over people who just use AI. Your voice is your competitive advantage. 🚀</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🤔 Class Discussion</h4>
+    <p>Discuss these questions as a group:</p>
+    <ul>
+      <li>If you copy an AI essay, whose ideas are you learning? And whose grade do you think you deserve?</li>
+      <li>If everyone uses AI for homework, what skill do you actually have at the end of school?</li>
+      <li>What's the difference between using AI to HELP you and using AI to REPLACE you?</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now understand the line between using AI smartly and using it dishonestly. Big difference! ✅</div>
+  <p class="curiosity-hook">Now let's learn how to write so well, no one will think it needs AI! →</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Write Like a Pro &rarr;</button></div>
+</div>
+
+<!-- S3: WRITE LIKE A PRO -->
+<div class="sec" id="s3">
+  <div class="progress-marker">✍️ 50% done! Writing time!</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>✍️ Write Like a Pro<br><span class="gr">The 200-Word Technique</span></h2>
+    <p>Forget boring essays. Learn a 4-part formula that makes ANY opinion paragraph powerful and impressive! Then write one yourself.</p>
+  </div>
+
+  <div class="callout call-2">
+    <div class="call-ico">🏗️</div>
+    <div class="call-body">
+      <h4>The 4-Part Opinion Paragraph Formula</h4>
+      <p>Every great opinion paragraph has exactly 4 parts. Master this structure and you can write about ANY topic in under 10 minutes:</p>
+      <p style="margin-top:.5rem"><strong>1. Topic Sentence (20 words):</strong> State YOUR clear view. Don't be vague.<br>
+      <strong>2. Evidence (50 words):</strong> One fact, statistic, or example that supports your view.<br>
+      <strong>3. Personal View (80 words):</strong> Why YOU believe this. Include your experience or reasoning.<br>
+      <strong>4. Conclusion (30 words):</strong> Wrap up and call to action or final thought.</p>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:2rem;margin:2rem 0">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem">📝 Example: The 4-Part Formula in Action</h3>
+    <p style="color:var(--t3);font-size:.8rem;font-family:'JetBrains Mono',monospace;margin-bottom:1.25rem">Topic: "Should students be taught AI in schools?"</p>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <div style="padding:1rem;background:rgba(0,240,255,.04);border-left:3px solid var(--c1);border-radius:0 var(--rs) var(--rs) 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);margin-bottom:.4rem">PART 1 — TOPIC SENTENCE</div>
+        <p style="font-size:.88rem">AI education should be made compulsory in all Indian schools starting from Class 8, because it is the most important skill of our generation.</p>
+      </div>
+      <div style="padding:1rem;background:rgba(251,191,36,.04);border-left:3px solid var(--c4);border-radius:0 var(--rs) var(--rs) 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c4);margin-bottom:.4rem">PART 2 — EVIDENCE</div>
+        <p style="font-size:.88rem">According to a 2024 World Economic Forum report, 85 million jobs will be displaced by AI by 2025, while 97 million new roles requiring AI skills will emerge. Indian students who learn AI early will be prepared for both challenges.</p>
+      </div>
+      <div style="padding:1rem;background:rgba(168,85,247,.04);border-left:3px solid var(--c2);border-radius:0 var(--rs) var(--rs) 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c2);margin-bottom:.4rem">PART 3 — PERSONAL VIEW</div>
+        <p style="font-size:.88rem">In my experience at AI Explorer, I have seen how even a few hours of learning changes how we approach problems. Before this course, I thought AI was only for engineers. Now I realise it is a tool anyone can use — for studying, creating, and solving problems. A classmate who previously struggled with English used AI to improve his writing, and his last essay was graded the highest in class. These are the outcomes that textbooks alone cannot achieve.</p>
+      </div>
+      <div style="padding:1rem;background:rgba(52,211,153,.04);border-left:3px solid var(--c5);border-radius:0 var(--rs) var(--rs) 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c5);margin-bottom:.4rem">PART 4 — CONCLUSION</div>
+        <p style="font-size:.88rem">The question is not whether AI will enter classrooms — it already has. The question is whether we will teach students to use it wisely, or leave them to figure it out alone.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">📝 Now YOU Try! Write Your Own Paragraph</h3>
+  <div class="writing-builder">
+    <p style="color:var(--t2);font-size:.88rem;margin-bottom:1.25rem">Topic: <strong>"Mobile phones should be allowed in classrooms."</strong> Use the 4-part formula. Aim for 150-200 words total. You can agree OR disagree — just make it YOUR view!</p>
+    <div class="writing-step">
+      <div class="step-num" style="background:var(--c1);color:var(--bg)">1</div>
+      <div style="flex:1">
+        <label style="font-size:.8rem;color:var(--t2);font-family:'Syne',sans-serif;font-weight:600;display:block;margin-bottom:.4rem">Topic Sentence — State your view clearly (20-25 words)</label>
+        <textarea class="writing-area" id="w1" oninput="updateCount('w1','wc1')" placeholder="Mobile phones should/should not be allowed in classrooms because..."></textarea>
+        <div class="word-count" id="wc1">0 words</div>
+      </div>
+    </div>
+    <div class="writing-step">
+      <div class="step-num" style="background:var(--c4);color:var(--bg)">2</div>
+      <div style="flex:1">
+        <label style="font-size:.8rem;color:var(--t2);font-family:'Syne',sans-serif;font-weight:600;display:block;margin-bottom:.4rem">Evidence — One fact or example (40-60 words)</label>
+        <textarea class="writing-area" id="w2" oninput="updateCount('w2','wc2')" placeholder="According to... / Research shows... / A survey found..."></textarea>
+        <div class="word-count" id="wc2">0 words</div>
+      </div>
+    </div>
+    <div class="writing-step">
+      <div class="step-num" style="background:var(--c2)">3</div>
+      <div style="flex:1">
+        <label style="font-size:.8rem;color:var(--t2);font-family:'Syne',sans-serif;font-weight:600;display:block;margin-bottom:.4rem">Personal View — YOUR reasoning & experience (70-90 words)</label>
+        <textarea class="writing-area" id="w3" style="min-height:90px" oninput="updateCount('w3','wc3')" placeholder="In my experience... / I believe that... / From what I have seen in school..."></textarea>
+        <div class="word-count" id="wc3">0 words</div>
+      </div>
+    </div>
+    <div class="writing-step">
+      <div class="step-num" style="background:var(--c5);color:var(--bg)">4</div>
+      <div style="flex:1">
+        <label style="font-size:.8rem;color:var(--t2);font-family:'Syne',sans-serif;font-weight:600;display:block;margin-bottom:.4rem">Conclusion — Wrap it up (20-30 words)</label>
+        <textarea class="writing-area" id="w4" oninput="updateCount('w4','wc4')" placeholder="Therefore... / The real question is... / It is time to..."></textarea>
+        <div class="word-count" id="wc4">0 words</div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;padding:1rem;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)" id="totalCount">Total: 0 words (Target: 150-200)</div>
+    <button class="btn btn-glow btn-sm" style="margin-top:1rem" onclick="previewParagraph()">👀 Preview My Paragraph</button>
+    <div id="previewBox" style="display:none;margin-top:1rem;padding:1.5rem;background:rgba(0,240,255,.02);border:1px solid rgba(0,240,255,.12);border-radius:var(--rs);font-size:.9rem;line-height:1.9;white-space:pre-wrap"></div>
+  </div>
+
+  <div class="micro-win">You just practiced one of the most valuable writing skills — structured opinion writing! 🖊️</div>
+  <p class="curiosity-hook">Quiz time — detective mode on! 🕵️</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S4: QUIZ -->
+<div class="sec" id="s4">
+  <div class="progress-marker">🎯 75% done! Quiz time!</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>🧠 Session Quiz<br><span class="gr">Detective & Writing Check!</span></h2>
+    <p>6 questions on critical thinking and smart writing. Think carefully — these are trickier! 🕵️</p>
+  </div>
+  <div class="quiz-box" id="quizBox"><div class="q-prog" id="qProg"></div><div id="qContent"></div></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Mission &rarr;</button></div>
+</div>
+
+<!-- S5: MISSION -->
+<div class="sec" id="s5">
+  <div class="progress-marker">🎉 Almost done! Final mission!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>🎯 Take-Home Mission<br><span class="gr">Fact File + Opinion Paragraph</span></h2>
+    <p>Two parts tonight: a fact file and your best opinion paragraph. Get a parent to read it — their feedback is golden! 🏠</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">📋</div>
+    <div class="call-body">
+      <h4>Part 1: Fact File (15 minutes)</h4>
+      <p>Choose ANY topic you find interesting (climate change, IPL salaries, electric vehicles, social media, space exploration). Use AI to research 10 facts. Then <strong>verify 3 of them</strong> on Google. Note which ones were accurate and which (if any) were wrong. Write it down — this is your fact file! 🔍</p>
+    </div>
+  </div>
+
+  <div class="callout call-1">
+    <div class="call-ico">✍️</div>
+    <div class="call-body">
+      <h4>Part 2: Opinion Paragraph (20 minutes)</h4>
+      <p>Write a 200-word opinion paragraph using the 4-part formula on this topic: <strong>"Should AI be allowed in board examinations?"</strong><br>
+      Use AI to help you RESEARCH (find facts, statistics). But write every word yourself. Get a parent or sibling to read it. Ask them: "Does this sound like ME?" Their answer will tell you how authentic your writing is. 📝</p>
+    </div>
+  </div>
+
+  <div class="micro-action">
+    <h4>🏠 Family Discussion</h4>
+    <p>Ask your family tonight: <strong>"If AI can write better essays than students, why should students learn to write?"</strong><br>
+    There's no right answer — just discuss. Then share what your family said in class tomorrow!</p>
+  </div>
+
+  <div class="callout call-brand">
+    <div class="call-ico">🎉</div>
+    <div class="call-body">
+      <h4>Session 4 Complete! Detective Skills Unlocked! 🕵️</h4>
+      <p>Next session: <strong>AI Design & Visual Content</strong> — create stunning posters, Instagram graphics, and presentations using Canva AI! 🎨</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:2rem">
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a> &nbsp;|&nbsp; 🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+  </div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">🔄 Start Over</button></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built by <span class="brand">TARAhut AI Labs</span> — AI Education for India's Future</p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Senior Track: AI Explorer (Class 8-10) &middot; tarahutailabs.com &middot; +91 92008-82008</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}
+drawPts();
+const secIds=['s1','s2','s3','s4','s5'],navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';window.scrollTo({top:0,behavior:'smooth'});if(id==='s4'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// Fact vs Opinion game
+const factAnswers=['fact','opinion','fact','opinion'];
+const factExplanations=[
+  'FACT ✅ — This is verifiable. You can check the official Indian government website to confirm the number of states and UTs.',
+  'OPINION 💭 — "Greatest" is subjective! Sachin fans disagree. Bradman fans disagree. Facts need to be measurable.',
+  'FACT ✅ — The Eiffel Tower is 330m tall (with antenna). This is a measurable, verifiable number.',
+  'OPINION 💭 — "Ruining" is a judgment. Some research says social media harms, some says it helps. There\'s no single fact here.'
+];
+function checkFact(btn,choice,idx){
+  const card=btn.closest('.fact-card');
+  card.querySelectorAll('.fact-btn').forEach(b=>b.disabled=true);
+  const correct=choice===factAnswers[idx];
+  const res=document.getElementById('fr'+idx);
+  res.className='fact-result show '+(correct?'correct':'wrong');
+  res.innerHTML=(correct?'✅ ':'❌ ')+factExplanations[idx];
+}
+
+// Writing Builder
+function updateCount(id,countId){
+  const words=document.getElementById(id).value.trim().split(/\s+/).filter(w=>w).length;
+  document.getElementById(countId).textContent=words+' words';
+  const total=['w1','w2','w3','w4'].reduce((s,i)=>{return s+document.getElementById(i).value.trim().split(/\s+/).filter(w=>w).length},0);
+  const tc=document.getElementById('totalCount');
+  tc.textContent=`Total: ${total} words (Target: 150-200)`;
+  tc.style.color=total>=150&&total<=220?'var(--c5)':total>220?'var(--c3)':'var(--brand)';
+}
+function previewParagraph(){
+  const parts=['w1','w2','w3','w4'].map(id=>document.getElementById(id).value.trim()).filter(p=>p);
+  const preview=document.getElementById('previewBox');
+  if(parts.length===0){preview.style.display='block';preview.textContent='Start writing in the sections above first!';return;}
+  preview.style.display='block';
+  preview.textContent=parts.join(' ');
+}
+
+// Quiz
+const qData=[
+  {q:"What is an 'AI hallucination'?",o:["When AI has dreams during processing","When AI confidently states false or made-up information","When AI generates images of illusions","When AI pauses because it's confused"],a:1,e:"AI hallucination = AI making up facts with confidence. The name comes from how AI 'sees' patterns that aren't really there — like a person hallucinating! 🕵️"},
+  {q:"Which of these is an OPINION, not a FACT?",o:["The population of India is 1.4 billion","Hindi is the most beautiful language in India","Mount Everest is 8,849 meters tall","The Indian Rupee is the official currency of India"],a:1,e:"'Most beautiful' is a subjective judgment — it's someone's opinion! Facts can be measured and verified. Opinions express personal views or feelings. 💭"},
+  {q:"Why is submitting AI-written homework risky?",o:["AI homework always contains viruses","Teachers can detect AI writing through style changes and AI-detection tools","AI refuses to write homework","AI homework takes too long to generate"],a:1,e:"Teachers notice style differences, AI uses specific phrases, and free tools like GPTZero can detect AI writing. Beyond getting caught — you also miss learning the skill! 📝"},
+  {q:"What is the CORRECT way to use AI for a research assignment?",o:["Copy the AI's answer word-for-word and submit","Use AI to find facts, data, and perspectives, then write your own original response","Ask AI to write the assignment and change a few words","Tell AI to make it look like student writing"],a:1,e:"AI is a research tool, not a ghostwriter! Use it to gather information and understand topics — then express those ideas in YOUR own words, voice, and style. ✅"},
+  {q:"In the 4-part opinion paragraph, what goes in Part 2 (Evidence)?",o:["Your personal feelings about the topic","A fact, statistic, or real-world example that supports your view","A question for the reader to consider","A conclusion summarizing your view"],a:1,e:"Part 2 is Evidence — a verifiable fact, research finding, or specific example. This makes your argument stronger and more credible than just stating opinions! 📊"},
+  {q:"You ask AI: 'What is the current population of India?' AI gives a confident answer. What should you do?",o:["Trust it completely — AI is connected to the internet","Verify it on Google or India's census website before using it in an assignment","Ignore it — AI never knows population data","Ask the same question 3 times to see if answers match"],a:1,e:"Population data changes. AI has a training cutoff. Even confident AI answers about current statistics need verification. Always check recent data from official sources! 🔍"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const prog=document.getElementById('qProg');
+  prog.innerHTML=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  if(cq>=qData.length){const pct=Math.round(sc/qData.length*100);document.getElementById('qContent').innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><div style="font-size:1.5rem;margin:.5rem 0">${pct>=80?'🏆':pct>=50?'🕵️':'💪'}</div><p style="color:var(--t2);font-size:1rem">${pct>=80?'AI Detective badge earned! 🎉':pct>=50?'Good detecting! Review the tricky ones! 😊':'Go back and review — critical thinking takes practice! 💪'}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="initQuiz()">Try Again 🔄</button></div>`;return;}
+  const d=qData[cq];
+  document.getElementById('qContent').innerHTML=`<div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${d.q}</div><div class="q-opts">${d.o.map((o,i)=>`<div class="q-opt" onclick="pickAns(${i})"><div class="ol">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div><div class="q-fb" id="qFb"></div>`;
+}
+function pickAns(i){const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.style.pointerEvents='none');const d=qData[cq];const correct=i===d.a;if(correct)sc++;opts[i].classList.add(correct?'ok':'no');opts[d.a].classList.add('ok');const fb=document.getElementById('qFb');fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Results 🏆'}</button>`;}
+function nextQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

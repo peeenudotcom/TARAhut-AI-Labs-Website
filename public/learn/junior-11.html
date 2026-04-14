@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 11: My AI Project — Part 2! 🎯 | TARAhut AI Labs</title>
+<style>
+  :root {
+    --green: #059669;
+    --green-light: #34d399;
+    --green-dark: #047857;
+    --yellow: #fbbf24;
+    --orange: #f97316;
+    --purple: #7c3aed;
+    --blue: #3b82f6;
+    --pink: #ec4899;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #162032;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.7; color:var(--text); background:var(--bg); min-height:100vh; overflow-x:hidden; }
+  #particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle { position:absolute; border-radius:50%; opacity:0.15; animation:float linear infinite; }
+  @keyframes float { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:.15} 90%{opacity:.15} 100%{transform:translateY(-100px) rotate(720deg);opacity:0} }
+
+  .hero { position:relative;z-index:1;background:linear-gradient(135deg,#ec4899 0%,#7c3aed 40%,#059669 100%);padding:60px 40px 50px;text-align:center;overflow:hidden; }
+  .hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 60%); }
+  .hero-badge { display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:50px;margin-bottom:20px; }
+  .hero h1 { font-size:clamp(32px,5vw,56px);font-weight:900;color:white;margin-bottom:14px;text-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .hero p { font-size:18px;color:rgba(255,255,255,0.9);max-width:600px;margin:0 auto 24px; }
+  .hero-pills { display:flex;flex-wrap:wrap;gap:10px;justify-content:center; }
+  .hero-pill { background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px; }
+
+  .container { max-width:900px;margin:0 auto;padding:0 20px;position:relative;z-index:1; }
+  .section { padding:50px 0;border-bottom:1px solid var(--border); }
+  .section-header { display:flex;align-items:center;gap:14px;margin-bottom:30px; }
+  .section-icon { width:52px;height:52px;background:linear-gradient(135deg,var(--pink),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 15px rgba(236,72,153,0.35); }
+  .section-title { font-size:26px;font-weight:800;color:white; }
+  .section-subtitle { font-size:14px;color:var(--muted);margin-top:2px; }
+
+  /* FINISH TIPS */
+  .tips-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px; }
+  .tip-box { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center;position:relative;overflow:hidden; }
+  .tip-box::before { content:'';position:absolute;top:0;left:0;right:0;height:3px; }
+  .tip-box.t1::before { background:linear-gradient(90deg,var(--pink),var(--purple)); }
+  .tip-box.t2::before { background:linear-gradient(90deg,var(--green),var(--green-light)); }
+  .tip-box.t3::before { background:linear-gradient(90deg,var(--yellow),var(--orange)); }
+  .tip-box .tip-emoji { font-size:40px;margin-bottom:10px;display:block; }
+  .tip-box h3 { font-size:17px;font-weight:800;margin-bottom:8px; }
+  .tip-box p { font-size:14px;color:var(--muted); }
+
+  /* PROGRESS CHECKLIST */
+  .progress-list { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px; }
+  .progress-list h3 { font-size:20px;font-weight:800;margin-bottom:20px; }
+  .progress-items { display:flex;flex-direction:column;gap:12px;margin-bottom:20px; }
+  .progress-item { display:flex;gap:14px;align-items:center;background:var(--bg);border-radius:12px;padding:14px 18px;border:1px solid var(--border);transition:all 0.3s; }
+  .progress-item.checked { border-color:var(--green);background:rgba(5,150,105,0.1); }
+  .progress-item input[type="checkbox"] { width:24px;height:24px;cursor:pointer;accent-color:var(--green);flex-shrink:0; }
+  .progress-item label { font-size:15px;font-weight:600;cursor:pointer;flex:1; }
+  .progress-bar-wrap { background:var(--bg);border-radius:10px;height:12px;margin-top:20px;overflow:hidden; }
+  .progress-bar { height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:10px;transition:width 0.5s ease;width:0%; }
+  .progress-pct { text-align:right;font-size:14px;color:var(--green-light);font-weight:700;margin-top:6px; }
+
+  /* SCRIPT CARD */
+  .script-card { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px; }
+  .script-card h3 { font-size:20px;font-weight:800;margin-bottom:6px; }
+  .script-card > p { color:var(--muted);font-size:14px;margin-bottom:20px; }
+  .script-line { display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--bg);border-radius:12px;margin-bottom:10px;border-left:3px solid var(--pink); }
+  .script-tag { font-size:12px;font-weight:700;color:var(--pink);background:rgba(236,72,153,0.15);padding:4px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;margin-top:2px; }
+  .script-text { font-size:15px;color:var(--text); }
+  .script-input { width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;margin-top:8px;font-family:inherit; }
+  .script-input:focus { outline:none;border-color:var(--pink); }
+  .timer-btn { padding:12px 28px;background:var(--pink);color:white;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;transition:all 0.2s; }
+  .timer-btn:hover { background:#be185d;transform:scale(1.05); }
+  .timer-display { text-align:center;font-size:56px;font-weight:900;color:var(--yellow);margin-top:16px;display:none; }
+  .timer-msg { text-align:center;color:var(--muted);font-size:14px;margin-top:6px; }
+
+  /* CARD */
+  .card { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px; }
+  .card h3 { font-size:17px;font-weight:700;margin-bottom:8px;color:var(--pink); }
+  .card p { color:var(--muted);font-size:15px; }
+  .highlight { background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);border-radius:12px;padding:16px 20px;margin:16px 0; }
+  .highlight p { color:var(--yellow);font-size:15px; }
+
+  /* QUIZ */
+  .quiz-progress { display:flex;gap:8px;margin-bottom:24px; }
+  .q-dot { flex:1;height:6px;border-radius:3px;background:var(--border);transition:background 0.3s; }
+  .q-dot.answered { background:var(--green); }
+  .q-dot.current { background:var(--pink); }
+  .question-block { display:none; }
+  .question-block.active { display:block; }
+  .question-text { font-size:20px;font-weight:700;margin-bottom:20px;padding:20px;background:var(--card);border-radius:14px;border-left:4px solid var(--pink); }
+  .options { display:flex;flex-direction:column;gap:12px;margin-bottom:20px; }
+  .option { padding:14px 20px;background:var(--card2);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-size:16px;font-weight:500;transition:all 0.2s;text-align:left; }
+  .option:hover:not(.locked) { border-color:var(--pink);background:rgba(236,72,153,0.1); }
+  .option.correct { border-color:var(--green);background:rgba(5,150,105,0.2);color:var(--green-light); }
+  .option.wrong { border-color:#dc2626;background:rgba(220,38,38,0.15);color:#fca5a5; }
+  .q-feedback { display:none;padding:14px;border-radius:10px;font-size:15px;margin-bottom:16px;font-weight:600; }
+  .q-feedback.correct { background:rgba(5,150,105,0.15);color:var(--green-light);border:1px solid var(--green); }
+  .q-feedback.wrong { background:rgba(220,38,38,0.15);color:#fca5a5;border:1px solid #dc2626; }
+  .btn-quiz-next { display:none;padding:12px 36px;background:var(--pink);color:white;border:none;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s; }
+  .btn-quiz-next:hover { background:#be185d;transform:scale(1.05); }
+  .quiz-result { display:none;text-align:center;padding:30px;background:var(--card);border-radius:16px; }
+  .quiz-result .result-score { font-size:72px;font-weight:900;color:var(--yellow); }
+  .quiz-result p { font-size:18px;color:var(--muted);margin-top:10px; }
+  .quiz-result .result-emoji { font-size:48px;margin-top:16px;display:block; }
+
+  /* MISSION */
+  .mission-box { background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(124,58,237,0.15));border:2px solid var(--pink);border-radius:20px;padding:32px;text-align:center; }
+  .mission-box h3 { font-size:26px;font-weight:900;margin-bottom:16px; }
+  .mission-tasks { display:flex;flex-direction:column;gap:14px;text-align:left;margin:20px 0; }
+  .mission-task { display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border-radius:12px;padding:16px; }
+  .mission-task input[type="checkbox"] { width:22px;height:22px;cursor:pointer;margin-top:2px;flex-shrink:0;accent-color:var(--pink); }
+  .mission-task label { font-size:16px;font-weight:500;cursor:pointer; }
+  .mission-note { color:var(--muted);font-size:14px;margin-top:16px; }
+  .footer { background:var(--card);border-top:1px solid var(--border);padding:28px;text-align:center;position:relative;z-index:1;margin-top:20px; }
+  .footer p { color:var(--muted);font-size:13px; }
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<div class="hero">
+  <div class="hero-badge">TARAhut AI Labs · AI Explorer Junior Track</div>
+  <h1>Session 11: My AI Project — Part 2! 🎯</h1>
+  <p>You're almost there! Finish your project and practice your presentation! 🌟</p>
+  <div class="hero-pills">
+    <span class="hero-pill">📚 Class 5–7</span>
+    <span class="hero-pill">⏱️ 60 Minutes</span>
+    <span class="hero-pill">🎯 4 Activities</span>
+    <span class="hero-pill">⏱️ Presentation Timer</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: FINISH YOUR PROJECT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏁</div>
+      <div>
+        <div class="section-title">Finish Your Project!</div>
+        <div class="section-subtitle">3 golden tips to make your project truly shine!</div>
+      </div>
+    </div>
+
+    <div class="tips-row">
+      <div class="tip-box t1">
+        <span class="tip-emoji">⏳</span>
+        <h3>Take Your Time</h3>
+        <p>Don't rush the finishing touches. A project you're proud of takes a little extra care. Slow down and check your work!</p>
+      </div>
+      <div class="tip-box t2">
+        <span class="tip-emoji">🙋</span>
+        <h3>Ask for Help</h3>
+        <p>Stuck on something? Ask your teacher, parent, or classmate. Getting help is NOT cheating — it's being smart! 💡</p>
+      </div>
+      <div class="tip-box t3">
+        <span class="tip-emoji">🌈</span>
+        <h3>Make It Colourful</h3>
+        <p>Add colours, images, and fun fonts to your project. People are drawn to things that look bright and cheerful!</p>
+      </div>
+    </div>
+
+    <div class="progress-list">
+      <h3>✅ Project Completion Checklist</h3>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">Tick each task as you finish it! Watch your progress bar fill up! 🎯</p>
+      <div class="progress-items">
+        <div class="progress-item" id="pi0"><input type="checkbox" id="pc0" onchange="updateProgress()"><label for="pc0">📝 My content is complete (story / cards / report / gallery)</label></div>
+        <div class="progress-item" id="pi1"><input type="checkbox" id="pc1" onchange="updateProgress()"><label for="pc1">🎨 My design looks nice with colours and images</label></div>
+        <div class="progress-item" id="pi2"><input type="checkbox" id="pc2" onchange="updateProgress()"><label for="pc2">🔤 I've checked for spelling mistakes</label></div>
+        <div class="progress-item" id="pi3"><input type="checkbox" id="pc3" onchange="updateProgress()"><label for="pc3">💾 My project is saved and ready to share</label></div>
+        <div class="progress-item" id="pi4"><input type="checkbox" id="pc4" onchange="updateProgress()"><label for="pc4">👀 Someone else (parent/friend) has looked at it and said it's good!</label></div>
+        <div class="progress-item" id="pi5"><input type="checkbox" id="pc5" onchange="updateProgress()"><label for="pc5">🎤 I know what I'm going to SAY when I present it</label></div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-pct" id="progressPct">0% complete</div>
+    </div>
+
+    <div class="highlight" style="margin-top:20px;">
+      <p>💡 <strong>Quality over quantity!</strong> A short, neat project is MUCH better than a long, messy one. Your teacher wants to see that you UNDERSTOOD what you made — not how long it is!</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PRACTICE PRESENTING -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎤</div>
+      <div>
+        <div class="section-title">Practice Your Presentation!</div>
+        <div class="section-subtitle">A 2-3 minute script you can use — personalise it with your project details!</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <h3>🎤 Your Presentation Script</h3>
+      <p>Fill in the blanks below to create YOUR personalised presentation! Then practice it out loud 3 times!</p>
+
+      <div class="script-line">
+        <span class="script-tag">START</span>
+        <div class="script-text">👋 "Hi everyone! My name is... <input class="script-input" placeholder="Your name" style="width:200px;display:inline;padding:6px 10px;">... and today I'm going to show you my AI project!"</div>
+      </div>
+
+      <div class="script-line">
+        <span class="script-tag">INTRO</span>
+        <div class="script-text">📂 "I made a... <input class="script-input" placeholder="e.g. AI Storybook / AI Art Gallery..." style="width:250px;display:inline;padding:6px 10px;">... using AI tools."</div>
+      </div>
+
+      <div class="script-line">
+        <span class="script-tag">SHOW IT</span>
+        <div class="script-text">🖥️ "Here is my project. I used... <input class="script-input" placeholder="e.g. ChatGPT and Canva..." style="width:220px;display:inline;padding:6px 10px;">... to create it. Let me show you..."</div>
+      </div>
+
+      <div class="script-line">
+        <span class="script-tag">HOW I DID IT</span>
+        <div class="script-text">🤖 "I used AI to help me... <input class="script-input" placeholder="What did AI help you do?" style="width:260px;display:inline;padding:6px 10px;">... I typed a prompt that said..."</div>
+      </div>
+
+      <div class="script-line">
+        <span class="script-tag">FAVOURITE</span>
+        <div class="script-text">⭐ "My favourite part of this project is... <input class="script-input" placeholder="What are you most proud of?" style="width:260px;display:inline;padding:6px 10px;">... because..."</div>
+      </div>
+
+      <div class="script-line">
+        <span class="script-tag">END</span>
+        <div class="script-text">🙏 "Thank you so much for watching! Do you have any questions? 😊"</div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button class="timer-btn" onclick="startTimer()">⏱️ Start 3-Minute Practice Timer!</button>
+        <div class="timer-display" id="timerDisplay">3:00</div>
+        <div class="timer-msg" id="timerMsg"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3>💡 Presentation Do's and Don'ts</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+        <div>
+          <p style="color:var(--green-light);font-weight:700;margin-bottom:6px;">✅ DO</p>
+          <p>Speak slowly and clearly 🗣️<br>Look at the audience 👀<br>Smile at the start and end 😊<br>Take a deep breath if nervous 🌬️</p>
+        </div>
+        <div>
+          <p style="color:#fca5a5;font-weight:700;margin-bottom:6px;">❌ DON'T</p>
+          <p>Read off the screen 📺<br>Speak too fast 💨<br>Keep your back to people 🚶<br>Say sorry if you make a mistake 🙊</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: QUIZ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧠</div>
+      <div>
+        <div class="section-title">Final Prep Quiz!</div>
+        <div class="section-subtitle">5 questions before your big showcase tomorrow!</div>
+      </div>
+    </div>
+
+    <div class="quiz-progress">
+      <div class="q-dot current" id="qd0"></div>
+      <div class="q-dot" id="qd1"></div>
+      <div class="q-dot" id="qd2"></div>
+      <div class="q-dot" id="qd3"></div>
+      <div class="q-dot" id="qd4"></div>
+    </div>
+
+    <div class="question-block active" id="q0">
+      <div class="question-text">Q1: How long should your presentation be at the showcase? ⏱️</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(0,0,false)">A) 10 minutes — more is always better!</button>
+        <button class="option" onclick="answerQ(0,1,true)">B) 2–3 minutes — short, clear and confident!</button>
+        <button class="option" onclick="answerQ(0,2,false)">C) 30 seconds — just show the project, no talking</button>
+        <button class="option" onclick="answerQ(0,3,false)">D) As long as you want!</button>
+      </div>
+      <div class="q-feedback" id="qf0"></div>
+      <button class="btn-quiz-next" id="qn0" onclick="nextQuestion(0)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q1">
+      <div class="question-text">Q2: What should you say FIRST when you start presenting? 🎤</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(1,0,false)">A) Immediately start showing your project</button>
+        <button class="option" onclick="answerQ(1,1,true)">B) "Hi everyone! My name is... and today I'm going to show you my AI project!"</button>
+        <button class="option" onclick="answerQ(1,2,false)">C) "Sorry, I'm a bit nervous..."</button>
+        <button class="option" onclick="answerQ(1,3,false)">D) Wait for the teacher to start talking for you</button>
+      </div>
+      <div class="q-feedback" id="qf1"></div>
+      <button class="btn-quiz-next" id="qn1" onclick="nextQuestion(1)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q2">
+      <div class="question-text">Q3: If you make a small mistake while presenting, what should you do? 😅</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(2,0,false)">A) Stop immediately and sit down</button>
+        <button class="option" onclick="answerQ(2,1,false)">B) Say "sorry" 5 times</button>
+        <button class="option" onclick="answerQ(2,2,true)">C) Take a breath, keep going — most people won't even notice!</button>
+        <button class="option" onclick="answerQ(2,3,false)">D) Cry and ask for another chance next week</button>
+      </div>
+      <div class="q-feedback" id="qf2"></div>
+      <button class="btn-quiz-next" id="qn2" onclick="nextQuestion(2)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q3">
+      <div class="question-text">Q4: What makes a project look better and more interesting? 🌈</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(3,0,false)">A) Making it as long as possible</button>
+        <button class="option" onclick="answerQ(3,1,true)">B) Adding colours, images, and neat formatting</button>
+        <button class="option" onclick="answerQ(3,2,false)">C) Using very small text to fit more in</button>
+        <button class="option" onclick="answerQ(3,3,false)">D) Making it completely in black and white</button>
+      </div>
+      <div class="q-feedback" id="qf3"></div>
+      <button class="btn-quiz-next" id="qn3" onclick="nextQuestion(3)">Next ➡️</button>
+    </div>
+
+    <div class="question-block" id="q4">
+      <div class="question-text">Q5: How many times should you practice your presentation before the showcase? 🔄</div>
+      <div class="options">
+        <button class="option" onclick="answerQ(4,0,false)">A) Zero — it's best to keep it fresh and improvise!</button>
+        <button class="option" onclick="answerQ(4,1,false)">B) Once is enough</button>
+        <button class="option" onclick="answerQ(4,2,true)">C) At least 3 times — the more you practice, the better!</button>
+        <button class="option" onclick="answerQ(4,3,false)">D) 100 times until you memorise every single word</button>
+      </div>
+      <div class="q-feedback" id="qf4"></div>
+      <button class="btn-quiz-next" id="qn4" onclick="showResult()">See My Score! 🎉</button>
+    </div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="result-score" id="resultScore">0/5</div>
+      <p id="resultMsg"></p>
+      <span class="result-emoji" id="resultEmoji"></span>
+      <br><button class="btn-quiz-next" style="display:inline-block;margin-top:20px;" onclick="restartQuiz()">🔄 Try Again</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MISSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎓</div>
+      <div>
+        <div class="section-title">Your Mission Tonight!</div>
+        <div class="section-subtitle">Tomorrow is your big day — get ready to SHINE! ✨</div>
+      </div>
+    </div>
+
+    <div class="mission-box">
+      <h3>🎤 Final Rehearsal Night!</h3>
+      <p style="color:var(--muted);margin-bottom:16px;">Showcase Day is TOMORROW! Tonight is your final chance to practice and get ready!</p>
+
+      <div class="mission-tasks">
+        <div class="mission-task">
+          <input type="checkbox" id="m1">
+          <label for="m1">🏁 <strong>Finish your project completely</strong> — save it, review it, make sure you're proud of it!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m2">
+          <label for="m2">🎤 <strong>Rehearse out loud 3 times</strong> — time yourself with the timer. Aim for 2–3 minutes!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m3">
+          <label for="m3">👨‍👩‍👧 <strong>Do a final run-through for your family</strong> — they're your practice audience. Take their feedback!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m4">
+          <label for="m4">👔 <strong>Dress smart tomorrow!</strong> When you look good, you feel confident. Lay out your smart clothes tonight!</label>
+        </div>
+        <div class="mission-task">
+          <input type="checkbox" id="m5">
+          <label for="m5">😴 <strong>Get enough sleep!</strong> A rested brain presents 100x better than a tired one. Lights out on time tonight!</label>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:20px;background:rgba(251,191,36,0.15);border-radius:14px;border:1px solid rgba(251,191,36,0.4);">
+        <p style="color:var(--yellow);font-size:16px;font-weight:700;">⭐ Remember: You have worked SO hard for this. Be proud. Be confident. You've got this! 🌟</p>
+      </div>
+
+      <div class="mission-note">
+        💚 <strong>TARAhut AI Labs</strong> · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>TARAhut AI Labs</strong> · AI Explorer Junior Track · Session 11 of 12</p>
+  <p style="margin-top:6px;">One more session to go — you're almost an AI Explorer Graduate! 🎓 · <a href="https://tarahutailabs.com" style="color:var(--green-light);">tarahutailabs.com</a></p>
+</div>
+
+<script>
+// PARTICLES
+const pContainer=document.getElementById('particles');
+const colors=['#059669','#34d399','#ec4899','#7c3aed','#fbbf24','#f97316'];
+for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const size=Math.random()*20+8;p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;pContainer.appendChild(p);}
+
+// PROGRESS CHECKLIST
+function updateProgress(){
+  const checkboxes=document.querySelectorAll('.progress-items input[type="checkbox"]');
+  let checked=0;
+  checkboxes.forEach((cb,i)=>{
+    if(cb.checked){checked++;document.getElementById('pi'+i).classList.add('checked');}
+    else{document.getElementById('pi'+i).classList.remove('checked');}
+  });
+  const pct=Math.round((checked/checkboxes.length)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressPct').textContent=pct+'% complete'+(pct===100?' — You\'re ready! 🎉':'');
+}
+
+// TIMER
+let timerInterval=null;
+let timerSec=180;
+function startTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;timerSec=180;}
+  document.getElementById('timerDisplay').style.display='block';
+  document.getElementById('timerMsg').textContent='Practice your presentation now! Speak out loud! 🗣️';
+  timerInterval=setInterval(()=>{
+    timerSec--;
+    const m=Math.floor(timerSec/60);
+    const s=timerSec%60;
+    document.getElementById('timerDisplay').textContent=m+':'+(s<10?'0':'')+s;
+    if(timerSec<=0){
+      clearInterval(timerInterval);timerInterval=null;
+      document.getElementById('timerDisplay').textContent='Done!';
+      document.getElementById('timerDisplay').style.color='#34d399';
+      document.getElementById('timerMsg').textContent='🎉 Great job! How did that feel? Do it 2 more times!';
+    }
+  },1000);
+}
+
+// QUIZ
+let quizScore=0;
+const feedbacks=[
+  ['🎉 Correct! 2–3 minutes is perfect — enough to show your work but not too long!','❌ Not quite! 2–3 minutes is the sweet spot — clear, confident, and to the point!'],
+  ['🎉 Correct! Start with a warm, confident greeting — it sets the tone!','❌ Not quite! Always start with your name and what you\'re presenting — greet your audience!'],
+  ['🎉 Correct! Keep going! Small mistakes happen to everyone — audiences barely notice!','❌ Not quite! Keep going! A small mistake is not a big deal. Take a breath and continue!'],
+  ['🎉 Correct! Colours and images make your project stand out and look professional!','❌ Not quite! Colours, images, and neat formatting make your project look much better!'],
+  ['🎉 Correct! Practice 3+ times — each run-through makes you more confident!','❌ Not quite! Practice at least 3 times — you\'ll be SO much more confident on showcase day!']
+];
+
+function answerQ(qNum,optIdx,isCorrect){
+  const opts=document.querySelectorAll('#q'+qNum+' .option');
+  opts.forEach(o=>o.classList.add('locked'));
+  opts.forEach((o,i)=>{if(i===optIdx)o.classList.add(isCorrect?'correct':'wrong');});
+  const fb=document.getElementById('qf'+qNum);
+  fb.style.display='block';
+  if(isCorrect){quizScore++;fb.className='q-feedback correct';fb.textContent=feedbacks[qNum][0];}
+  else{fb.className='q-feedback wrong';fb.textContent=feedbacks[qNum][1];}
+  document.getElementById('qn'+qNum).style.display='inline-block';
+  document.getElementById('qd'+qNum).className='q-dot answered';
+}
+
+function nextQuestion(current){
+  document.getElementById('q'+current).classList.remove('active');
+  const next=current+1;
+  document.getElementById('q'+next).classList.add('active');
+  document.getElementById('qd'+next).className='q-dot current';
+}
+
+function showResult(){
+  document.getElementById('q4').classList.remove('active');
+  document.getElementById('quizResult').style.display='block';
+  document.getElementById('resultScore').textContent=quizScore+'/5';
+  const emojis=['😅','🤔','😊','🌟','🏆'];
+  const msgs=['Keep practising! You can do this! 💪','Good try! Review the tips again! 📖','Nice work! Almost showcase-ready! 😊','Almost perfect! You\'re so close to being ready! 🌟','Perfect score! You\'re 100% SHOWCASE READY! 🏆'];
+  document.getElementById('resultEmoji').textContent=emojis[quizScore];
+  document.getElementById('resultMsg').textContent=msgs[quizScore];
+}
+
+function restartQuiz(){
+  quizScore=0;
+  document.getElementById('quizResult').style.display='none';
+  for(let i=0;i<5;i++){
+    document.getElementById('q'+i).classList.remove('active');
+    document.getElementById('qd'+i).className='q-dot';
+    document.getElementById('qf'+i).style.display='none';
+    document.getElementById('qn'+i).style.display='none';
+    document.querySelectorAll('#q'+i+' .option').forEach(o=>{o.className='option';});
+  }
+  document.getElementById('q0').classList.add('active');
+  document.getElementById('qd0').className='q-dot current';
+}
+</script>
+</body>
+</html>
