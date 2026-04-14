@@ -153,6 +153,24 @@ tr:hover td{background:var(--bg3)}
 .ws-content p{color:var(--t2);font-size:.88rem}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.flow-row{flex-direction:column}.fl-arrow{transform:rotate(90deg)}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi span[data-lang-hi],body.lang-pa span[data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
@@ -160,16 +178,37 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 10 &middot; AI Tools Mastery</div>
-  <h1>AI Video<br><span class="gr">Creation</span></h1>
+  <h1>
+    <span data-lang-en>AI Video<br><span class="gr">Creation</span></span>
+    <span data-lang-hi style="display:none">AI वीडियो<br><span class="gr">क्रिएशन</span></span>
+    <span data-lang-pa style="display:none">AI ਵੀਡੀਓ<br><span class="gr">ਕ੍ਰਿਏਸ਼ਨ</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Script to screen in minutes. Create AI avatar videos, auto-caption reels, and professional productions — no camera, no crew, no studio needed.</p>
+  <div data-lang-en><p>Script to screen in minutes. Create AI avatar videos, auto-caption reels, and professional productions — no camera, no crew, no studio needed.</p></div>
+  <div data-lang-hi><p>स्क्रिप्ट से स्क्रीन मिनटों में। AI अवतार वीडियो, ऑटो-कैप्शन रील्स और प्रोफ़ेशनल प्रोडक्शन बनाएं — ना कैमरा, ना क्रू, ना स्टूडियो चाहिए।</p></div>
+  <div data-lang-pa><p>ਸਕ੍ਰਿਪਟ ਤੋਂ ਸਕ੍ਰੀਨ ਮਿੰਟਾਂ ਵਿੱਚ। AI ਅਵਤਾਰ ਵੀਡੀਓ, ਆਟੋ-ਕੈਪਸ਼ਨ ਰੀਲਸ ਅਤੇ ਪ੍ਰੋਫੈਸ਼ਨਲ ਪ੍ਰੋਡਕਸ਼ਨ ਬਣਾਓ — ਨਾ ਕੈਮਰਾ, ਨਾ ਕ੍ਰੂ, ਨਾ ਸਟੂਡੀਓ ਚਾਹੀਦਾ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Learning &rarr;</span>
+      <span data-lang-hi style="display:none">सीखना शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Take the Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ दें</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਦਿਓ</span>
+    </button>
   </div>
 </section>
 
@@ -190,14 +229,18 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>The AI Video <span class="gr">Revolution</span></h2>
-    <p>In 2026, a solo creator can produce what used to require a full production studio. Let's understand what's now possible — and what it means for you.</p>
+    <div data-lang-en><h2>The AI Video <span class="gr">Revolution</span></h2></div>
+    <div data-lang-hi><h2>AI वीडियो <span class="gr">क्रांति</span></h2></div>
+    <div data-lang-pa><h2>AI ਵੀਡੀਓ <span class="gr">ਕ੍ਰਾਂਤੀ</span></h2></div>
+    <div data-lang-en><p>In 2026, a solo creator can produce what used to require a full production studio. Let's understand what's now possible — and what it means for you.</p></div>
+    <div data-lang-hi><p>2026 में, एक अकेला क्रिएटर वो बना सकता है जिसके लिए पूरा प्रोडक्शन स्टूडियो चाहिए था। समझें क्या अब संभव है — और आपके लिए इसका क्या मतलब है।</p></div>
+    <div data-lang-pa><p>2026 ਵਿੱਚ, ਇੱਕ ਇਕੱਲਾ ਕ੍ਰਿਏਟਰ ਉਹ ਬਣਾ ਸਕਦਾ ਹੈ ਜਿਸ ਲਈ ਪੂਰਾ ਪ੍ਰੋਡਕਸ਼ਨ ਸਟੂਡੀਓ ਚਾਹੀਦਾ ਸੀ। ਸਮਝੋ ਕੀ ਹੁਣ ਸੰਭਵ ਹੈ — ਅਤੇ ਤੁਹਾਡੇ ਲਈ ਇਸਦਾ ਕੀ ਮਤਲਬ ਹੈ।</p></div>
   </div>
 
   <div class="callout call-1">
     <div class="call-ico">&#128248;</div>
     <div class="call-body">
-      <h4>What Was Impossible. Is Now Trivial.</h4>
+      <span data-lang-en><h4>What Was Impossible. Is Now Trivial.</h4></span><span data-lang-hi><h4>जो असंभव था। अब मामूली है।</h4></span><span data-lang-pa><h4>ਜੋ ਅਸੰਭਵ ਸੀ। ਹੁਣ ਮਾਮੂਲੀ ਐ।</h4></span>
       <p>2020: A 60-second professional brand video cost <strong>&#8377;50,000–2,00,000</strong> (videographer, editor, studio, voiceover artist, post-production).<br><br>
       2026: The same quality video costs <strong>&#8377;0–500</strong> in tool fees and takes <strong>30 minutes</strong> to produce. That's not an exaggeration — that's the gap AI created.</p>
     </div>
@@ -216,7 +259,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-2">
     <div class="call-ico">&#128176;</div>
     <div class="call-body">
-      <h4>The Video Opportunity for You</h4>
+      <span data-lang-en><h4>The Video Opportunity for You</h4></span><span data-lang-hi><h4>आपके लिए वीडियो का मौक़ा</h4></span><span data-lang-pa><h4>ਤੁਹਾਡੇ ਲਈ ਵੀਡੀਓ ਦਾ ਮੌਕਾ</h4></span>
       <p>Every restaurant, clinic, coaching center, clothing store, and wedding venue in Kotkapura and nearby cities <strong>needs video content</strong> for Instagram Reels, YouTube, and WhatsApp marketing. Almost none have a videographer on retainer. You can be their video team — using just a laptop and these tools.</p>
     </div>
   </div>
@@ -225,24 +268,32 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p><strong>What if your face wasn't on camera but your voice still reached 10,000 people?</strong> AI avatars mean you don't need to be comfortable in front of a camera to be a video creator. Your ideas, your script, your brand — presented by a professional AI avatar that you control.</p>
   </div>
 
-  <p class="curiosity-hook">Next: HeyGen — the AI avatar tool changing how businesses communicate.</p>
+  <p class="curiosity-hook" data-lang-en>Next: HeyGen — the AI avatar tool changing how businesses communicate.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: HeyGen — AI अवतार टूल जो बिज़नस कम्यूनिकेशन बदल रहा है।</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: HeyGen — AI ਅਵਤਾਰ ਟੂਲ ਜੋ ਬਿਜ਼ਨਸ ਕਮਿਊਨਿਕੇਸ਼ਨ ਬਦਲ ਰਿਹਾ ਹੈ।</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: HeyGen &rarr;</button></div>
 </div>
 
 <!-- S2: HEYGEN -->
 <div class="sec" id="s2">
-  <div class="progress-marker">&#127909; Section 2 of 6. You're building a professional video skill set right now.</div>
+  <div class="progress-marker" data-lang-en>&#127909; Section 2 of 6. You're building a professional video skill set right now.</div>
+  <div class="progress-marker" data-lang-hi>&#127909; सेक्शन 2/6। आप अभी प्रोफ़ेशनल वीडियो स्किल सेट बना रहे हैं।</div>
+  <div class="progress-marker" data-lang-pa>&#127909; ਸੈਕਸ਼ਨ 2/6। ਤੁਸੀਂ ਹੁਣੇ ਪ੍ਰੋਫੈਸ਼ਨਲ ਵੀਡੀਓ ਸਕਿੱਲ ਸੈੱਟ ਬਣਾ ਰਹੇ ਹੋ।</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>HeyGen — <span class="gr">AI Avatar Videos</span></h2>
-    <p>The world's leading AI avatar platform. Create professional presenter videos, dub into any language, or clone yourself — all without a camera.</p>
+    <div data-lang-en><h2>HeyGen — <span class="gr">AI Avatar Videos</span></h2></div>
+    <div data-lang-hi><h2>HeyGen — <span class="gr">AI अवतार वीडियोज़</span></h2></div>
+    <div data-lang-pa><h2>HeyGen — <span class="gr">AI ਅਵਤਾਰ ਵੀਡੀਓਜ਼</span></h2></div>
+    <div data-lang-en><p>The world's leading AI avatar platform. Create professional presenter videos, dub into any language, or clone yourself — all without a camera.</p></div>
+    <div data-lang-hi><p>दुनिया का अग्रणी AI अवतार प्लेटफॉर्म। प्रोफ़ेशनल प्रेजेंटर वीडियो बनाएं, किसी भी भाषा में डब करें, या खुद को क्लोन करें — सब बिना कैमरे के।</p></div>
+    <div data-lang-pa><p>ਦੁਨੀਆ ਦਾ ਅਗ੍ਰਣੀ AI ਅਵਤਾਰ ਪ੍ਲੇਟਫਾਰਮ। ਪ੍ਰੋਫੈਸ਼ਨਲ ਪ੍ਰੇਜ਼ੈਂਟਰ ਵੀਡੀਓ ਬਣਾਓ, ਕਿਸੇ ਵੀ ਭਾਸ਼ਾ ਵਿੱਚ ਡਬ ਕਰੋ, ਜਾਂ ਆਪਣੇ ਆਪ ਨੂੰ ਕਲੋਨ ਕਰੋ — ਸਬ ਬਿਨਾਂ ਕੈਮਰੇ ਦੇ।</p></div>
   </div>
 
   <div class="callout call-brand">
     <div class="call-ico">&#128640;</div>
     <div class="call-body">
-      <h4>What HeyGen Can Do</h4>
+      <span data-lang-en><h4>What HeyGen Can Do</h4></span><span data-lang-hi><h4>HeyGen क्या कर सकता है</h4></span><span data-lang-pa><h4>HeyGen ਕੀ ਕਰ ਸਕਦਾ ਹੈ</h4></span>
       <p><strong>Script-to-Video:</strong> Paste your script, choose an AI avatar presenter, select background, export a professional video.<br>
       <strong>Multi-Language Dubbing:</strong> Upload any video — HeyGen translates and dubs it in 40+ languages with lip-sync.<br>
       <strong>Personal Avatar Clone:</strong> Record 2 minutes of your face — get a digital twin that speaks any script you write.<br>
@@ -276,7 +327,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-3">
     <div class="call-ico">&#129489;</div>
     <div class="call-body">
-      <h4>How to Clone Yourself</h4>
+      <span data-lang-en><h4>How to Clone Yourself</h4></span><span data-lang-hi><h4>खुद को क्लोन कैसे करें</h4></span><span data-lang-pa><h4>ਆਪਣੇ ਆਪ ਨੂੰ ਕਲੋਨ ਕਿਵੇਂ ਕਰੋ</h4></span>
       <p><strong>1.</strong> Record a 2-minute video of yourself against a plain background, speaking naturally<br>
       <strong>2.</strong> Upload to HeyGen → Avatar → Create Instant Avatar<br>
       <strong>3.</strong> HeyGen processes it in 10–30 minutes<br>
@@ -300,7 +351,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="micro-action">
-    <h4>Try It Now</h4>
+    <span data-lang-en><h4>Try It Now</h4></span><span data-lang-hi><h4>अभी ट्राई करें</h4></span><span data-lang-pa><h4>ਹੁਣੇ ਟ੍ਰਾਈ ਕਰੋ</h4></span>
     <ul>
       <li>Go to heygen.com — create a free account</li>
       <li>Click "Create Video" → Video Avatar</li>
@@ -310,18 +361,26 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Next: CapCut AI — the editing suite that makes raw footage into viral content automatically.</p>
+  <p class="curiosity-hook" data-lang-en>Next: CapCut AI — the editing suite that makes raw footage into viral content automatically.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: CapCut AI — एडिटिंग सूट जो कच्चे फ़ूटेज को ऑटोमैटिकली वायरल कंटेंट बना देता है।</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: CapCut AI — ਐਡਿਟਿੰਗ ਸੂਟ ਜੋ ਕੱਚੇ ਫ਼ੁਟੇਜ ਨੂੰ ਆਟੋਮੈਟਿਕਲੀ ਵਾਇਰਲ ਕੰਟੈਂਟ ਬਣਾ ਦਿੰਦਾ ਹੈ।</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: CapCut AI &rarr;</button></div>
 </div>
 
 <!-- S3: CAPCUT AI -->
 <div class="sec" id="s3">
-  <div class="progress-marker">&#9889; More than halfway! You have enough to create real client videos today.</div>
+  <div class="progress-marker" data-lang-en>&#9889; More than halfway! You have enough to create real client videos today.</div>
+  <div class="progress-marker" data-lang-hi>&#9889; आधे से ज़्यादा! आपके पास अब असली क्लाइंट वीडियो बनाने के लिए काफ़ी है।</div>
+  <div class="progress-marker" data-lang-pa>&#9889; ਅੱਧੇ ਤੋਂ ਜ਼ਿਆਦਾ! ਤੁਹਾਡੇ ਕੋਲ ਹੁਣ ਅਸਲੀ ਕਲਾਇਂਟ ਵੀਡੀਓ ਬਣਾਉਣ ਲਈ ਕਾਫ਼ੀ ਐ।</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>CapCut AI — <span class="gr">Smart Editing</span></h2>
-    <p>The world's most popular video editing app for creators. CapCut's AI features turn raw footage into polished, engaging content in minutes.</p>
+    <div data-lang-en><h2>CapCut AI — <span class="gr">Smart Editing</span></h2></div>
+    <div data-lang-hi><h2>CapCut AI — <span class="gr">स्मार्ट एडिटिंग</span></h2></div>
+    <div data-lang-pa><h2>CapCut AI — <span class="gr">ਸਮਾਰਟ ਐਡਿਟਿੰਗ</span></h2></div>
+    <div data-lang-en><p>The world's most popular video editing app for creators. CapCut's AI features turn raw footage into polished, engaging content in minutes.</p></div>
+    <div data-lang-hi><p>क्रिएटर्स के लिए दुनिया का सबसे लोकप्रिय वीडियो एडिटिंग ऐप। CapCut की AI फ़ीचर्स कच्चे फ़ूटेज को मिनटों में पॉलिश्ड कंटेंट में बदल देती हैं।</p></div>
+    <div data-lang-pa><p>ਕ੍ਰਿਏਟਰਸ ਲਈ ਦੁਨੀਆ ਦਾ ਸਭ ਤੋਂ ਪ੍ਰਸਿੱਧ ਵੀਡੀਓ ਐਡਿਟਿੰਗ ਐਪ। CapCut ਦੀਆਂ AI ਫ਼ੀਚਰਸ ਕੱਚੇ ਫ਼ੁਟੇਜ ਨੂੰ ਮਿੰਟਾਂ ਵਿੱਚ ਪਾਲਿਸ਼ਡ ਕੰਟੈਂਟ ਵਿੱਚ ਬਦਲ ਦਿੰਦੀਆਂ ਨੇ।</p></div>
   </div>
 
   <div class="cgrid">
@@ -337,7 +396,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-1">
     <div class="call-ico">&#128241;</div>
     <div class="call-body">
-      <h4>Use Both — They Serve Different Purposes</h4>
+      <span data-lang-en><h4>Use Both — They Serve Different Purposes</h4></span><span data-lang-hi><h4>दोनों इस्तेमाल करें — दोनों का काम अलग है</h4></span><span data-lang-pa><h4>ਦੋਵੇਂ ਇਸਤੇਮਾਲ ਕਰੋ — ਦੋਵਾਂ ਦਾ ਕੰਮ ਵੱਖਰਾ ਹੈ</h4></span>
       <p><strong>CapCut Mobile (Phone App):</strong> Best for quick Reels — auto-captions, trending templates, fast export. Film on phone, edit on phone, post in 10 minutes.<br><br>
       <strong>CapCut Web (capcut.com):</strong> Full desktop editing suite. Better for longer videos, brand color control, more advanced AI tools like text-to-video and smart scene detection. Use this for client work.</p>
     </div>
@@ -366,7 +425,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="micro-action">
-    <h4>Action: Your First AI-Edited Reel</h4>
+    <span data-lang-en><h4>Action: Your First AI-Edited Reel</h4></span><span data-lang-hi><h4>एक्शन: आपकी पहली AI-एडिटेड रील</h4></span><span data-lang-pa><h4>ਐਕਸ਼ਨ: ਤੁਹਾਡੀ ਪਹਿਲੀ AI-ਐਡਿਟਿਡ ਰੀਲ</h4></span>
     <ul>
       <li>Film yourself for 60 seconds talking about something you know well (a topic, a skill, anything)</li>
       <li>Open CapCut on your phone or capcut.com on laptop</li>
@@ -376,7 +435,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Next: Combine everything into one seamless production workflow.</p>
+  <p class="curiosity-hook" data-lang-en>Next: Combine everything into one seamless production workflow.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: सब कुछ एक सीमलेस प्रोडक्शन वर्कफ़्लो में जोड़ें।</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: ਸਬ ਕੁਝ ਇੱਕ ਸੀਮਲੈਸ ਪ੍ਰੋਡਕਸ਼ਨ ਵਰਕਫ਼ਲੋ ਵਿੱਚ ਜੋੜੋ।</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Workflow &rarr;</button></div>
 </div>
@@ -385,14 +446,18 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s4">
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>The Complete Video <span class="gr">Production Workflow</span></h2>
-    <p>How the tools connect: Claude writes the script, HeyGen creates the presenter, CapCut polishes the final video. End-to-end in 45 minutes.</p>
+    <div data-lang-en><h2>The Complete Video <span class="gr">Production Workflow</span></h2></div>
+    <div data-lang-hi><h2>पूरा वीडियो <span class="gr">प्रोडक्शन वर्कफ़्लो</span></h2></div>
+    <div data-lang-pa><h2>ਪੂਰਾ ਵੀਡੀਓ <span class="gr">ਪ੍ਰੋਡਕਸ਼ਨ ਵਰਕਫ਼ਲੋ</span></h2></div>
+    <div data-lang-en><p>How the tools connect: Claude writes the script, HeyGen creates the presenter, CapCut polishes the final video. End-to-end in 45 minutes.</p></div>
+    <div data-lang-hi><p>टूल्स कैसे जुड़ते हैं: Claude स्क्रिप्ट लिखता है, HeyGen प्रेजेंटर बनाता है, CapCut फाइनल वीडियो पॉलिश करता है। 45 मिनट में पूरा।</p></div>
+    <div data-lang-pa><p>ਟੂਲ ਕਿਵੇਂ ਜੁੜਦੇ ਨੇ: Claude ਸਕ੍ਰਿਪਟ ਲਿਖਦਾ ਹੈ, HeyGen ਪ੍ਰੇਜ਼ੈਂਟਰ ਬਣਾਉਂਦਾ ਹੈ, CapCut ਫਾਇਨਲ ਵੀਡੀਓ ਪਾਲਿਸ਼ ਕਰਦਾ ਹੈ। 45 ਮਿੰਟਾਂ ਵਿੱਚ ਪੂਰਾ।</p></div>
   </div>
 
   <div class="callout call-brand">
     <div class="call-ico">&#127775;</div>
     <div class="call-body">
-      <h4>The Professional Pipeline</h4>
+      <span data-lang-en><h4>The Professional Pipeline</h4></span><span data-lang-hi><h4>प्रोफ़ेशनल पाइपलाइन</h4></span><span data-lang-pa><h4>ਪ੍ਰੋਫੈਸ਼ਨਲ ਪਾਈਪਲਾਈਨ</h4></span>
       <p>This is the exact workflow professional agencies charge &#8377;15,000–50,000 per video for. With AI tools, you can execute the same quality in under an hour. Click each step below to see exactly how.</p>
     </div>
   </div>
@@ -419,7 +484,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-2">
     <div class="call-ico">&#127760;</div>
     <div class="call-body">
-      <h4>One Video, Multiple Languages</h4>
+      <span data-lang-en><h4>One Video, Multiple Languages</h4></span><span data-lang-hi><h4>एक वीडियो, कई भाषाएं</h4></span><span data-lang-pa><h4>ਇੱਕ ਵੀਡੀਓ, ਕਈ ਭਾਸ਼ਾਵਾਂ</h4></span>
       <p><strong>Step 1:</strong> Create your base video in English or Hindi with HeyGen<br>
       <strong>Step 2:</strong> Upload to HeyGen's "Video Translation" feature<br>
       <strong>Step 3:</strong> Select target language (Punjabi, Tamil, Spanish, etc.)<br>
@@ -428,10 +493,12 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="identity-shift">You can now build a complete video production service. This is what agencies in Delhi and Mumbai charge lakhs for.</div>
+  <div class="identity-shift" data-lang-en>You can now build a complete video production service. This is what agencies in Delhi and Mumbai charge lakhs for.</div>
+  <div class="identity-shift" data-lang-hi>अब आप पूरी वीडियो प्रोडक्शन सर्विस बना सकते हैं। इसके लिए दिल्ली और मुंबई की एजेंसियां लाखों चार्ज करती हैं।</div>
+  <div class="identity-shift" data-lang-pa>ਹੁਣ ਤੁਸੀਂ ਪੂਰੀ ਵੀਡੀਓ ਪ੍ਰੋਡਕਸ਼ਨ ਸਰਵਿਸ ਬਣਾ ਸਕਦੇ ਹੋ। ਇਸ ਲਈ ਦਿੱਲੀ ਅਤੇ ਮੁੰਬਈ ਦੀਆਂ ਏਜੰਸੀਆਂ ਲੱਖਾਂ ਚਾਰਜ ਕਰਦੀਆਂ ਨੇ।</div>
 
   <div class="micro-action">
-    <h4>Full Workflow Practice</h4>
+    <span data-lang-en><h4>Full Workflow Practice</h4></span><span data-lang-hi><h4>पूरा वर्कफ़्लो प्रैक्टिस</h4></span><span data-lang-pa><h4>ਪੂਰਾ ਵਰਕਫ਼ਲੋ ਪ੍ਰੈਕਟਿਸ</h4></span>
     <ul>
       <li>Pick a real or imaginary local business</li>
       <li>Ask Claude to write a 30-second script for a product video</li>
@@ -441,7 +508,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Ready to test yourself? 8 questions on video creation tools.</p>
+  <p class="curiosity-hook" data-lang-en>Ready to test yourself? 8 questions on video creation tools.</p>
+  <p class="curiosity-hook" data-lang-hi>खुद को टेस्ट करने को तैयार? वीडियो क्रिएशन टूल्स पर 8 सवाल।</p>
+  <p class="curiosity-hook" data-lang-pa>ਆਪਣੇ ਆਪ ਨੂੰ ਟੈਸਟ ਕਰਨ ਨੂੰ ਤਿਆਰ? ਵੀਡੀਓ ਕ੍ਰਿਏਸ਼ਨ ਟੂਲਸ ਤੇ 8 ਸਵਾਲ।</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
 </div>
@@ -450,8 +519,12 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s5">
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Session 10 <span class="gr">Quiz</span></h2>
-    <p>8 questions on AI video creation tools and workflows.</p>
+    <div data-lang-en><h2>Session 10 <span class="gr">Quiz</span></h2></div>
+    <div data-lang-hi><h2>सेशन 10 <span class="gr">क्विज़</span></h2></div>
+    <div data-lang-pa><h2>ਸੈਸ਼ਨ 10 <span class="gr">ਕੁਇਜ਼</span></h2></div>
+    <div data-lang-en><p>8 questions on AI video creation tools and workflows.</p></div>
+    <div data-lang-hi><p>AI वीडियो क्रिएशन टूल्स और वर्कफ़्लो पर 8 सवाल।</p></div>
+    <div data-lang-pa><p>AI ਵੀਡੀਓ ਕ੍ਰਿਏਸ਼ਨ ਟੂਲਸ ਅਤੇ ਵਰਕਫ਼ਲੋ ਤੇ 8 ਸਵਾਲ।</p></div>
   </div>
   <div class="quiz-box" id="quizBox">
     <div class="q-prog" id="qProg"></div>
@@ -465,8 +538,12 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s6">
   <div class="sec-head">
     <div class="over">Section 06</div>
-    <h2>Session 10 <span class="gr">Wrap-Up</span></h2>
-    <p>Your homework challenge — create a real AI avatar video.</p>
+    <div data-lang-en><h2>Session 10 <span class="gr">Wrap-Up</span></h2></div>
+    <div data-lang-hi><h2>सेशन 10 <span class="gr">सारांश</span></h2></div>
+    <div data-lang-pa><h2>ਸੈਸ਼ਨ 10 <span class="gr">ਸਾਰ-ਅੰਸ਼</span></h2></div>
+    <div data-lang-en><p>Your homework challenge — create a real AI avatar video.</p></div>
+    <div data-lang-hi><p>आपका होमवर्क चैलेंज — एक असली AI अवतार वीडियो बनाएं।</p></div>
+    <div data-lang-pa><p>ਤੁਹਾਡਾ ਹੋਮਵਰਕ ਚੈਲੇਂਜ — ਇੱਕ ਅਸਲੀ AI ਅਵਤਾਰ ਵੀਡੀਓ ਬਣਾਓ।</p></div>
   </div>
 
   <div class="cgrid">
@@ -477,7 +554,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="hw-box">
-    <h3>&#127909; Homework: Your 60-Second AI Avatar Video</h3>
+    <span data-lang-en><h3>&#127909; Homework: Your 60-Second AI Avatar Video</h3></span><span data-lang-hi><h3>&#127909; होमवर्क: आपकी 60-सेकंड AI अवतार वीडियो</h3></span><span data-lang-pa><h3>&#127909; ਹੋਮਵਰਕ: ਤੁਹਾਡੀ 60-ਸਕਿੰਟ AI ਅਵਤਾਰ ਵੀਡੀਓ</h3></span>
     <p style="color:var(--t2);margin-bottom:1rem;font-size:.92rem">Create a 60-second AI avatar video introducing yourself or a brand. This is your most impressive portfolio piece yet.</p>
     <ul>
       <li><strong>Script:</strong> Use Claude to write a 60-second script for yourself OR a local business (the same one you'll use for the Session 12 capstone)</li>
@@ -491,7 +568,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-brand">
     <div class="call-ico">&#128176;</div>
     <div class="call-body">
-      <h4>What You Can Charge for This Service</h4>
+      <span data-lang-en><h4>What You Can Charge for This Service</h4></span><span data-lang-hi><h4>इस सर्विस के लिए आप कितना चार्ज कर सकते हैं</h4></span><span data-lang-pa><h4>ਇਸ ਸਰਵਿਸ ਲਈ ਤੁਸੀਂ ਕਿੰਨਾ ਚਾਰਜ ਕਰ ਸਕਦੇ ਹੋ</h4></span>
       <p><strong>Single brand video (60 sec):</strong> &#8377;2,000–8,000<br>
       <strong>Monthly video package (4 videos/month):</strong> &#8377;6,000–20,000/month<br>
       <strong>Multi-language video package:</strong> &#8377;5,000–15,000<br>
@@ -499,7 +576,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="identity-shift">Next: Session 11 — AI Audio + Social Media. Words become voices. Brands become sounds.</div>
+  <div class="identity-shift" data-lang-en>Next: Session 11 — AI Audio + Social Media. Words become voices. Brands become sounds.</div>
+  <div class="identity-shift" data-lang-hi>अगला: सेशन 11 — AI ऑडियो + सोशल मीडिया। शब्द आवाज़ें बनते हैं। ब्रांड्स साउंड्स बनते हैं।</div>
+  <div class="identity-shift" data-lang-pa>ਅਗਲਾ: ਸੈਸ਼ਨ 11 — AI ਆਡੀਓ + ਸੋਸ਼ਲ ਮੀਡੀਆ। ਸ਼ਬਦ ਆਵਾਜ਼ਾਂ ਬਣਦੇ ਨੇ। ਬ੍ਰਾਂਡ ਸਾਉਂਡਸ ਬਣਦੇ ਨੇ।</div>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
@@ -583,6 +662,22 @@ function showScore(){try{fetch('/api/learn/quiz',{method:'POST',headers:{'Conten
   document.getElementById('qProg').innerHTML=activeQuiz.map(()=>`<div class="q-dot done"></div>`).join('');
 }
 renderQuiz();
+
+// Language toggle
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

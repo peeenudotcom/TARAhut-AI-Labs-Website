@@ -156,10 +156,22 @@ tr:hover td{background:var(--bg3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.flow-step{flex-direction:column;gap:1rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -186,6 +198,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Research Race</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -627,6 +644,55 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'AI <span class="gr">Research Tools</span>',hi:'AI <span class="gr">Research Tools</span>',pa:'AI <span class="gr">Research Tools</span>'},
+  '.hero>p':{en:'Research that used to take days now takes hours. Perplexity + NotebookLM + Claude = the ultimate research stack.',hi:'Research जो पहले दिनों में होती थी अब घंटों में होती है। Perplexity + NotebookLM + Claude = ultimate research stack।',pa:'Research ਜੋ ਪਹਿਲਾਂ ਦਿਨਾਂ ਵਿੱਚ ਹੁੰਦੀ ਸੀ ਹੁਣ ਘੰਟਿਆਂ ਵਿੱਚ ਹੁੰਦੀ। Perplexity + NotebookLM + Claude = ultimate research stack।'},
+  '.hero-btns .btn-glow':{en:'Start Learning \u2192',hi:'सीखना शुरू करें \u2192',pa:'ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Take the Quiz',hi:'\u26A1 क्विज़ दें',pa:'\u26A1 ਕੁਇਜ਼ ਦਿਓ'},
+  '#s1 .sec-head h2':{en:'Perplexity AI <span class="gr">Deep Dive</span>',hi:'Perplexity AI <span class="gr">Deep Dive</span>',pa:'Perplexity AI <span class="gr">Deep Dive</span>'},
+  '#s1 .sec-head>p':{en:'Perplexity is the AI tool that changed how professionals do research. Real-time web access, actual citations, and answers you can trust and verify.',hi:'Perplexity वो AI tool है जिसने professionals की research करने का तरीका बदल दिया। Real-time web access, असली citations, और ऐसे जवाब जिन पर भरोसा और verify किया जा सकता है।',pa:'Perplexity ਉਹ AI tool ਹੈ ਜਿਸ ਨੇ professionals ਦੀ research ਕਰਨ ਦਾ ਤਰੀਕਾ ਬਦਲ ਦਿੱਤਾ। Real-time web access, ਅਸਲੀ citations, ਅਤੇ ਅਜਿਹੇ ਜਵਾਬ ਜਿਨ੍ਹਾਂ \'ਤੇ ਭਰੋਸਾ ਅਤੇ verify ਕੀਤਾ ਜਾ ਸਕਦਾ।'},
+  '#s1 .micro-win':{en:'You now understand why top researchers have abandoned Google for Perplexity.',hi:'अब आप समझते हैं कि top researchers ने Perplexity के लिए Google क्यों छोड़ दिया।',pa:'ਹੁਣ ਤੁਸੀਂ ਸਮਝਦੇ ਹੋ ਕਿ top researchers ਨੇ Perplexity ਲਈ Google ਕਿਉਂ ਛੱਡ ਦਿੱਤਾ।'},
+  '#s1 .curiosity-hook':{en:'Next: NotebookLM \u2014 Google\'s secret weapon for deep document analysis.',hi:'अगला: NotebookLM \u2014 गहरे document analysis के लिए Google का secret weapon।',pa:'ਅਗਲਾ: NotebookLM \u2014 ਡੂੰਘੇ document analysis ਲਈ Google ਦਾ secret weapon।'},
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! NotebookLM will change how you study and learn.',hi:'\u2705 Section 1 ਪੂਰਾ! NotebookLM ਤੁਹਾਡੇ ਪੜ੍ਹਨ ਅਤੇ ਸਿੱਖਣ ਦਾ ਤਰੀਕਾ ਬਦਲ ਦੇਵੇਗਾ।',pa:'\u2705 Section 1 ਪੂਰਾ! NotebookLM ਤੁਹਾਡੇ ਪੜ੍ਹਨ ਅਤੇ ਸਿੱਖਣ ਦਾ ਤਰੀਕਾ ਬਦਲ ਦੇਊ।'},
+  '#s2 .sec-head h2':{en:'NotebookLM <span class="gr">Deep Dive</span>',hi:'NotebookLM <span class="gr">Deep Dive</span>',pa:'NotebookLM <span class="gr">Deep Dive</span>'},
+  '#s2 .sec-head>p':{en:'NotebookLM is Google\'s most underrated AI tool. Upload any document and it becomes an AI-powered research assistant that only answers from YOUR sources.',hi:'NotebookLM Google का सबसे underrated AI tool है। कोई भी document upload करें और यह एक AI-powered research assistant बन जाता है जो सिर्फ़ आपके sources से जवाब देता है।',pa:'NotebookLM Google ਦਾ ਸਭ ਤੋਂ underrated AI tool ਹੈ। ਕੋਈ ਵੀ document upload ਕਰੋ ਅਤੇ ਇਹ ਇੱਕ AI-powered research assistant ਬਣ ਜਾਂਦਾ ਜੋ ਸਿਰਫ਼ ਤੁਹਾਡੇ sources ਤੋਂ ਜਵਾਬ ਦਿੰਦਾ।'},
+  '#s2 .micro-win':{en:'You\'ve unlocked the most underrated AI research tool available today \u2014 for free.',hi:'आपने आज उपलब्ध सबसे underrated AI research tool unlock कर लिया \u2014 मुफ़्त में।',pa:'ਤੁਸੀਂ ਅੱਜ ਉਪਲਬਧ ਸਭ ਤੋਂ underrated AI research tool unlock ਕਰ ਲਿਆ \u2014 ਮੁਫ਼ਤ ਵਿੱਚ।'},
+  '#s2 .curiosity-hook':{en:'Next: Combine these tools into a professional research workflow.',hi:'अगला: इन tools को एक professional research workflow में combine करें।',pa:'ਅਗਲਾ: ਇਨ੍ਹਾਂ tools ਨੂੰ ਇੱਕ professional research workflow ਵਿੱਚ combine ਕਰੋ।'},
+  '#s3 .progress-marker':{en:'\uD83C\uDFAF 50% through \u2014 now we combine everything into a professional workflow.',hi:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਹੁਣ ਸਭ ਕੁਝ ਇੱਕ professional workflow ਵਿੱਚ combine ਕਰੀਏ।',pa:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਹੁਣ ਸਭ ਕੁਝ ਇੱਕ professional workflow ਵਿੱਚ combine ਕਰੀਏ।'},
+  '#s3 .sec-head h2':{en:'The Complete <span class="gr">Research Workflow</span>',hi:'ਪੂਰਾ <span class="gr">Research Workflow</span>',pa:'ਪੂਰਾ <span class="gr">Research Workflow</span>'},
+  '#s3 .sec-head>p':{en:'The real power comes from combining tools. Here\'s the 5-step research workflow that professionals use to produce consultant-level analysis.',hi:'असली ताकत tools को combine करने से आती है। यहाँ 5-step research workflow है जिससे professionals consultant-level analysis produce करते हैं।',pa:'ਅਸਲੀ ਤਾਕਤ tools ਨੂੰ combine ਕਰਨ ਤੋਂ ਆਉਂਦੀ। ਇੱਥੇ 5-step research workflow ਹੈ ਜਿਸ ਨਾਲ professionals consultant-level analysis produce ਕਰਦੇ ਨੇ।'},
+  '#s3 .identity-shift':{en:'You\'re not just doing research faster \u2014 you\'re doing research at a quality level that would have required a research team before AI.',hi:'आप सिर्फ़ तेज़ research नहीं कर रहे \u2014 आप उस quality level पर research कर रहे हैं जिसके लिए AI से पहले एक research team चाहिए होती।',pa:'ਤੁਸੀਂ ਸਿਰਫ਼ ਤੇਜ਼ research ਨਹੀਂ ਕਰ ਰਹੇ \u2014 ਤੁਸੀਂ ਉਸ quality level \'ਤੇ research ਕਰ ਰਹੇ ਹੋ ਜਿਸ ਲਈ AI ਤੋਂ ਪਹਿਲਾਂ ਇੱਕ research team ਚਾਹੀਦੀ ਸੀ।'},
+  '#s3 .curiosity-hook':{en:'Next: See the full workflow in action with a live example topic.',hi:'अगला: एक live example topic के साथ पूरा workflow action में देखें।',pa:'ਅਗਲਾ: ਇੱਕ live example topic ਨਾਲ ਪੂਰਾ workflow action ਵਿੱਚ ਵੇਖੋ।'},
+  '#s4 .progress-marker':{en:'\u26A1 65% done! This is the most interactive section \u2014 click through each step.',hi:'\u26A1 65% ਪੂਰਾ! ਇਹ ਸਭ ਤੋਂ interactive section ਹੈ \u2014 ਹਰ step \'ਤੇ click ਕਰੋ।',pa:'\u26A1 65% ਪੂਰਾ! ਇਹ ਸਭ ਤੋਂ interactive section ਹੈ \u2014 ਹਰ step \'ਤੇ click ਕਰੋ।'},
+  '#s4 .sec-head h2':{en:'Research <span class="gr">Race</span>',hi:'Research <span class="gr">Race</span>',pa:'Research <span class="gr">Race</span>'},
+  '#s4 .micro-win':{en:'You just completed a full research workflow that professionals charge thousands for.',hi:'आपने अभी एक पूरा research workflow complete किया जिसके लिए professionals हज़ारों charge करते हैं।',pa:'ਤੁਸੀਂ ਹੁਣੇ ਇੱਕ ਪੂਰਾ research workflow complete ਕੀਤਾ ਜਿਸ ਲਈ professionals ਹਜ਼ਾਰਾਂ charge ਕਰਦੇ ਨੇ।'},
+  '#s4 .curiosity-hook':{en:'8 questions to lock in this workflow. Ready?',hi:'इस workflow को पक्का करने के लिए 8 सवाल। तैयार?',pa:'ਇਸ workflow ਨੂੰ ਪੱਕਾ ਕਰਨ ਲਈ 8 ਸਵਾਲ। ਤਿਆਰ?'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost there! 8 questions on Perplexity, NotebookLM &amp; research workflows.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! Perplexity, NotebookLM ਅਤੇ research workflows \'ਤੇ 8 ਸਵਾਲ।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! Perplexity, NotebookLM ਅਤੇ research workflows \'ਤੇ 8 ਸਵਾਲ।'},
+  '#s5 .sec-head h2':{en:'Quiz: <span class="gr">Research Tools</span>',hi:'Quiz: <span class="gr">Research Tools</span>',pa:'Quiz: <span class="gr">Research Tools</span>'},
+  '#s5 .micro-win':{en:'Research is no longer a bottleneck \u2014 it\'s a competitive advantage.',hi:'Research अब bottleneck नहीं \u2014 यह competitive advantage है।',pa:'Research ਹੁਣ bottleneck ਨਹੀਂ \u2014 ਇਹ competitive advantage ਹੈ।'},
+  '#s5 .curiosity-hook':{en:'Final section \u2014 homework and preparation for Session 8.',hi:'आखिरी section \u2014 होमवर्क और Session 8 की तैयारी।',pa:'ਆਖ਼ਰੀ section \u2014 ਹੋਮਵਰਕ ਅਤੇ Session 8 ਦੀ ਤਿਆਰੀ।'},
+  '#s6 .sec-head h2':{en:'Wrap-Up &amp; <span class="gr">Homework</span>',hi:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>',pa:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>'},
+  '#s6 .identity-shift':{en:'You can now research any topic professionally, with citations, in under an hour. That skill is worth thousands in consulting fees.',hi:'अब आप किसी भी topic पर professionally, citations के साथ, एक घंटे से कम में research कर सकते हैं। यह skill consulting fees में हज़ारों की कीमत है।',pa:'ਹੁਣ ਤੁਸੀਂ ਕਿਸੇ ਵੀ topic \'ਤੇ professionally, citations ਨਾਲ, ਇੱਕ ਘੰਟੇ ਤੋਂ ਘੱਟ ਵਿੱਚ research ਕਰ ਸਕਦੇ ਹੋ। ਇਹ skill consulting fees ਵਿੱਚ ਹਜ਼ਾਰਾਂ ਦੀ ਕੀਮਤ ਹੈ।'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

@@ -157,6 +157,24 @@ tr:hover td{background:var(--bg3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.rubric-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi span[data-lang-hi],body.lang-pa span[data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
@@ -164,16 +182,29 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Week 4 &middot; Session 14 &middot; AI Tools Mastery</div>
   <h1>Capstone Project<br><span class="gr">Real Client Brief</span></h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Your first real client. A real brief. A real deadline. Everything you've learned comes together right now. This is the moment you've been training for.</p>
+  <div data-lang-en><p>Your first real client. A real brief. A real deadline. Everything you've learned comes together right now. This is the moment you've been training for.</p></div>
+  <div data-lang-hi><p>सब कुछ एक साथ लाएं — आपका कैपस्टोन प्रोजेक्ट। असली क्लाइंट वर्क जो आपके पोर्टफोलियो में जाएगा।</p></div>
+  <div data-lang-pa><p>ਸਬ ਕੁਝ ਇਕੱਠੇ ਲਿਆਓ — ਤੁਹਾਡਾ ਕੈਪਸਟੋਨ ਪ੍ਰੋਜੈਕਟ। ਅਸਲੀ ਕਲਾਇਂਟ ਵਰਕ ਜੋ ਤੁਹਾਡੇ ਪੋਰਟਫੋਲੀਓ ਵਿੱਚ ਜਾਏਗਾ।</p></div>
   <div class="hero-btns">
     <button class="btn btn-glow" onclick="startLearning()">See the Brief &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Take the Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ दें</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਦਿਓ</span>
+    </button>
   </div>
 </section>
 
@@ -229,12 +260,18 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="emotional-hook">
-    <p><strong>Three weeks ago,</strong> you didn't know what ChatGPT was. Today, a coaching center is trusting you with their entire online identity. That's not an accident — that's the result of everything you've worked for in this course.</p>
+    <div data-lang-en><p><strong>Three weeks ago,</strong> you didn't know what ChatGPT was. Today, a coaching center is trusting you with their entire online identity. That's not an accident — that's the result of everything you've worked for in this course.</p></div>
+    <div data-lang-hi><p><strong>Three weeks ago,</strong> you didn't know what ChatGPT was. Today, a coaching center is trusting you with their entire online identity. That's not an accident — that's the result of everything you've worked for in this course.</p></div>
+    <div data-lang-pa><p><strong>Three weeks ago,</strong> you didn't know what ChatGPT was. Today, a coaching center is trusting you with their entire online identity. That's not an accident — that's the result of everything you've worked for in this course.</p></div>
   </div>
 
-  <div class="micro-win">You have every skill needed to nail this brief. You've already built all of these things in previous sessions.</div>
+  <div class="micro-win" data-lang-en>You have every skill needed to nail this brief. You've already built all of these things in previous sessions.</div>
+  <div class="micro-win" data-lang-hi>You have every skill needed to nail this brief. You've already built all of these things in previous sessions.</div>
+  <div class="micro-win" data-lang-pa>You have every skill needed to nail this brief. You've already built all of these things in previous sessions.</div>
 
-  <p class="curiosity-hook">Next: Let's plan the right approach — what to build first.</p>
+  <p class="curiosity-hook" data-lang-en>Next: Let's plan the right approach — what to build first.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: Let's plan the right approach — what to build first.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: Let's plan the right approach — what to build first.</p>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Planning Your Approach &rarr;</button></div>
@@ -301,7 +338,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p>Before building anything, write down on paper: (1) The client's goal in one sentence. (2) The 3 most important things to include on their website. (3) What makes Punjab Scholars Academy different from other coaching centers — this becomes their marketing message across all materials.</p>
   </div>
 
-  <p class="curiosity-hook">Next: The exact tools and prompts for each deliverable.</p>
+  <p class="curiosity-hook" data-lang-en>Next: The exact tools and prompts for each deliverable.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: The exact tools and prompts for each deliverable.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: The exact tools and prompts for each deliverable.</p>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Execution Framework &rarr;</button></div>
@@ -367,9 +406,13 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p>Open all tools in separate browser tabs: Ideogram, Bolt.new, Canva, Gamma, Claude. Work in the priority order from Section 2. Your trainer is available to help individually. You have the full session. Go.</p>
   </div>
 
-  <div class="identity-shift">When you complete this capstone, you won't just have a certificate. You'll have proof that you can deliver real work for real clients under real pressure.</div>
+  <div class="identity-shift" data-lang-en>When you complete this capstone, you won't just have a certificate. You'll have proof that you can deliver real work for real clients under real pressure.</div>
+  <div class="identity-shift" data-lang-hi>When you complete this capstone, you won't just have a certificate. You'll have proof that you can deliver real work for real clients under real pressure.</div>
+  <div class="identity-shift" data-lang-pa>When you complete this capstone, you won't just have a certificate. You'll have proof that you can deliver real work for real clients under real pressure.</div>
 
-  <p class="curiosity-hook">Next: What "excellent" looks like vs what "needs improvement" means.</p>
+  <p class="curiosity-hook" data-lang-en>Next: What "excellent" looks like vs what "needs improvement" means.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: What "excellent" looks like vs what "needs improvement" means.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: What "excellent" looks like vs what "needs improvement" means.</p>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quality Standards &rarr;</button></div>
@@ -466,9 +509,13 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="micro-win">Knowing what great looks like is the first step to producing it consistently.</div>
+  <div class="micro-win" data-lang-en>Knowing what great looks like is the first step to producing it consistently.</div>
+  <div class="micro-win" data-lang-hi>Knowing what great looks like is the first step to producing it consistently.</div>
+  <div class="micro-win" data-lang-pa>Knowing what great looks like is the first step to producing it consistently.</div>
 
-  <p class="curiosity-hook">Next: Test your project planning and tool selection knowledge.</p>
+  <p class="curiosity-hook" data-lang-en>Next: Test your project planning and tool selection knowledge.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: Test your project planning and tool selection knowledge.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: Test your project planning and tool selection knowledge.</p>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Take the Quiz &rarr;</button></div>
@@ -478,7 +525,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s5">
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Session 14 <span class="gr">Quiz</span></h2>
+    <div data-lang-en><h2>Session 14 <span class="gr">Quiz</span></h2></div>
+    <div data-lang-hi><h2>सेशन 14 <span class="gr">क्विज़</span></h2></div>
+    <div data-lang-pa><h2>ਸੈਸ਼ਨ 14 <span class="gr">ਕੁਇਜ਼</span></h2></div>
     <p>8 questions on project planning, tool selection, and client delivery. Think like a professional.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
@@ -518,10 +567,14 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="emotional-hook">
-    <p><strong>Right now,</strong> somewhere in Faridkot, Punjab Scholars Academy is teaching students who deserve to be found by parents who are looking for them. You just gave that school a digital presence. That's not a school project — that's a real impact on real people.</p>
+    <div data-lang-en><p><strong>Right now,</strong> somewhere in Faridkot, Punjab Scholars Academy is teaching students who deserve to be found by parents who are looking for them. You just gave that school a digital presence. That's not a school project — that's a real impact on real people.</p></div>
+    <div data-lang-hi><p><strong>Right now,</strong> somewhere in Faridkot, Punjab Scholars Academy is teaching students who deserve to be found by parents who are looking for them. You just gave that school a digital presence. That's not a school project — that's a real impact on real people.</p></div>
+    <div data-lang-pa><p><strong>Right now,</strong> somewhere in Faridkot, Punjab Scholars Academy is teaching students who deserve to be found by parents who are looking for them. You just gave that school a digital presence. That's not a school project — that's a real impact on real people.</p></div>
   </div>
 
-  <div class="identity-shift">You are now a professional who delivers. That's the identity. Own it.</div>
+  <div class="identity-shift" data-lang-en>You are now a professional who delivers. That's the identity. Own it.</div>
+  <div class="identity-shift" data-lang-hi>You are now a professional who delivers. That's the identity. Own it.</div>
+  <div class="identity-shift" data-lang-pa>You are now a professional who delivers. That's the identity. Own it.</div>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
@@ -630,6 +683,22 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// Language toggle
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

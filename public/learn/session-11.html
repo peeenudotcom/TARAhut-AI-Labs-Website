@@ -140,6 +140,24 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .cal-detail .tool-tag{padding:3px 10px;border-radius:99px;font-size:.65rem;font-weight:700;background:rgba(5,150,105,.12);color:var(--brand);font-family:'JetBrains Mono',monospace}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.cal-grid{grid-template-columns:repeat(4,1fr)}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi span[data-lang-hi],body.lang-pa span[data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
@@ -147,16 +165,37 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 11 &middot; AI Tools Mastery</div>
-  <h1>AI Audio +<br><span class="gr">Social Media</span></h1>
+  <h1>
+    <span data-lang-en>AI Audio +<br><span class="gr">Social Media</span></span>
+    <span data-lang-hi style="display:none">AI ऑडियो +<br><span class="gr">सोशल मीडिया</span></span>
+    <span data-lang-pa style="display:none">AI ਆਡੀਓ +<br><span class="gr">ਸੋਸ਼ਲ ਮੀਡੀਆ</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Give your brand a voice. Build a complete social media content machine. ElevenLabs voiceovers, audio branding, and the full content creation workflow.</p>
+  <div data-lang-en><p>Give your brand a voice. Build a complete social media content machine. ElevenLabs voiceovers, audio branding, and the full content creation workflow.</p></div>
+  <div data-lang-hi><p>संगीत बनाएं, वॉइसोवर क्लोन करें, और AI के साथ पूरा सोशल मीडिया स्ट्रैटेजी बनाएं।</p></div>
+  <div data-lang-pa><p>ਸੰਗੀਤ ਬਣਾਓ, ਵੋਇਸਓਵਰ ਕਲੋਨ ਕਰੋ, ਅਤੇ AI ਨਾਲ ਪੂਰਾ ਸੋਸ਼ਲ ਮੀਡੀਆ ਸਟ੍ਰੈਟੇਜੀ ਬਣਾਓ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Learning &rarr;</span>
+      <span data-lang-hi style="display:none">सीखना शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Take the Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ दें</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਦਿਓ</span>
+    </button>
   </div>
 </section>
 
@@ -232,9 +271,13 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <div class="micro-win">Voice cloning used to cost ₹5 lakh+ in studio time. You just did it for free.</div>
+  <div class="micro-win" data-lang-en>Voice cloning used to cost ₹5 lakh+ in studio time. You just did it for free.</div>
+  <div class="micro-win" data-lang-hi>Voice cloning used to cost ₹5 lakh+ in studio time. You just did it for free.</div>
+  <div class="micro-win" data-lang-pa>Voice cloning used to cost ₹5 lakh+ in studio time. You just did it for free.</div>
 
-  <p class="curiosity-hook">Next: Audio branding — making sure people recognize your brand by sound alone.</p>
+  <p class="curiosity-hook" data-lang-en>Next: Audio branding — making sure people recognize your brand by sound alone.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: Audio branding — making sure people recognize your brand by sound alone.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: Audio branding — making sure people recognize your brand by sound alone.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Audio Branding &rarr;</button></div>
 </div>
@@ -287,7 +330,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Next: Build the complete social media content machine — from idea to posted Reel in 30 minutes.</p>
+  <p class="curiosity-hook" data-lang-en>Next: Build the complete social media content machine — from idea to posted Reel in 30 minutes.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: Build the complete social media content machine — from idea to posted Reel in 30 minutes.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: Build the complete social media content machine — from idea to posted Reel in 30 minutes.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Content Machine &rarr;</button></div>
 </div>
@@ -356,7 +401,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="identity-shift">This workflow produces better content than most local businesses create in a month — in 30 minutes flat.</div>
+  <div class="identity-shift" data-lang-en>This workflow produces better content than most local businesses create in a month — in 30 minutes flat.</div>
+  <div class="identity-shift" data-lang-hi>This workflow produces better content than most local businesses create in a month — in 30 minutes flat.</div>
+  <div class="identity-shift" data-lang-pa>This workflow produces better content than most local businesses create in a month — in 30 minutes flat.</div>
 
   <div class="micro-action">
     <h4>Complete Workflow Challenge</h4>
@@ -370,7 +417,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Next: The interactive 7-day content calendar — plan a full week for any brand.</p>
+  <p class="curiosity-hook" data-lang-en>Next: The interactive 7-day content calendar — plan a full week for any brand.</p>
+  <p class="curiosity-hook" data-lang-hi>अगला: The interactive 7-day content calendar — plan a full week for any brand.</p>
+  <p class="curiosity-hook" data-lang-pa>ਅਗਲਾ: The interactive 7-day content calendar — plan a full week for any brand.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Calendar Builder &rarr;</button></div>
 </div>
@@ -426,7 +475,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
 
-  <p class="curiosity-hook">Quiz time — test your AI audio and social media knowledge.</p>
+  <p class="curiosity-hook" data-lang-en>Quiz time — test your AI audio and social media knowledge.</p>
+  <p class="curiosity-hook" data-lang-hi>Quiz time — test your AI audio and social media knowledge.</p>
+  <p class="curiosity-hook" data-lang-pa>Quiz time — test your AI audio and social media knowledge.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Take the Quiz &rarr;</button></div>
 </div>
@@ -435,7 +486,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s5">
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Session 11 <span class="gr">Quiz</span></h2>
+    <div data-lang-en><h2>Session 11 <span class="gr">Quiz</span></h2></div>
+    <div data-lang-hi><h2>सेशन 11 <span class="gr">क्विज़</span></h2></div>
+    <div data-lang-pa><h2>ਸੈਸ਼ਨ 11 <span class="gr">ਕੁਇਜ਼</span></h2></div>
     <p>8 questions on AI audio, ElevenLabs, and social media content creation.</p>
   </div>
   <div class="quiz-box" id="quizBox">
@@ -450,7 +503,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s6">
   <div class="sec-head">
     <div class="over">Section 06</div>
-    <h2>Session 11 <span class="gr">Wrap-Up</span></h2>
+    <div data-lang-en><h2>Session 11 <span class="gr">Wrap-Up</span></h2></div>
+    <div data-lang-hi><h2>सेशन 11 <span class="gr">सारांश</span></h2></div>
+    <div data-lang-pa><h2>ਸੈਸ਼ਨ 11 <span class="gr">ਸਾਰ-ਅੰਸ਼</span></h2></div>
     <p>Your audio homework — create a professional voiceover and background music for a brand video.</p>
   </div>
 
@@ -462,7 +517,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   </div>
 
   <div class="hw-box">
-    <h3>&#127908; Homework: Brand Audio Package</h3>
+    <span data-lang-en><h3>&#127908; Homework: Brand Audio Package</h3></span><span data-lang-hi><h3>&#127908; होमवर्क: Brand Audio Package</h3></span><span data-lang-pa><h3>&#127908; ਹੋਮਵਰਕ: Brand Audio Package</h3></span>
     <p style="color:var(--t2);margin-bottom:1rem;font-size:.92rem">Create a complete audio brand package for the same business you're using for the Session 12 capstone.</p>
     <ul>
       <li><strong>Voiceover:</strong> Write a 45-second script introducing the business. Generate in ElevenLabs. Try at least 2 different voices and pick the one that matches the brand.</li>
@@ -484,7 +539,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="identity-shift">Next: Session 12 — Week 3 Capstone. Everything you've built comes together as a complete Brand Kit.</div>
+  <div class="identity-shift" data-lang-en>Next: Session 12 — Week 3 Capstone. Everything you've built comes together as a complete Brand Kit.</div>
+  <div class="identity-shift" data-lang-hi>Next: Session 12 — Week 3 Capstone. Everything you've built comes together as a complete Brand Kit.</div>
+  <div class="identity-shift" data-lang-pa>Next: Session 12 — Week 3 Capstone. Everything you've built comes together as a complete Brand Kit.</div>
 
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><div></div></div>
@@ -590,6 +647,22 @@ function showScore(){try{fetch('/api/learn/quiz',{method:'POST',headers:{'Conten
   document.getElementById('qProg').innerHTML=activeQuiz.map(()=>`<div class="q-dot done"></div>`).join('');
 }
 renderQuiz();
+
+// Language toggle
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

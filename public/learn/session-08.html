@@ -163,10 +163,22 @@ tr:hover td{background:var(--bg3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid,.project-deliverables,.slide-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -193,6 +205,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Design Challenge</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Week 2 Project</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -630,6 +647,57 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'AI Presentations<br><span class="gr">&amp; Design</span>',hi:'AI Presentations<br><span class="gr">&amp; Design</span>',pa:'AI Presentations<br><span class="gr">&amp; Design</span>'},
+  '.hero>p':{en:'From blank page to boardroom-ready presentation in minutes. Gamma &amp; Canva AI are your new design team.',hi:'खाली page से boardroom-ready presentation मिनटों में। Gamma और Canva AI आपकी नई design team हैं।',pa:'ਖ਼ਾਲੀ page ਤੋਂ boardroom-ready presentation ਮਿੰਟਾਂ ਵਿੱਚ। Gamma ਅਤੇ Canva AI ਤੁਹਾਡੀ ਨਵੀਂ design team ਨੇ।'},
+  '.hero-btns .btn-glow':{en:'Start Learning \u2192',hi:'सीखना शुरू करें \u2192',pa:'ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Take the Quiz',hi:'\u26A1 क्विज़ दें',pa:'\u26A1 ਕੁਇਜ਼ ਦਿਓ'},
+  '#s1 .sec-head h2':{en:'Gamma AI <span class="gr">Deep Dive</span>',hi:'Gamma AI <span class="gr">Deep Dive</span>',pa:'Gamma AI <span class="gr">Deep Dive</span>'},
+  '#s1 .sec-head>p':{en:'Gamma turns text prompts into beautiful, complete presentations in under 60 seconds. No design skills needed. No PowerPoint frustration.',hi:'Gamma text prompts को 60 सकिंट से कम में खूबसूरत, पूरी presentations में बदल देता है। कोई design skills की ज़रूरत नहीं। कोई PowerPoint की परेशानी नहीं।',pa:'Gamma text prompts ਨੂੰ 60 ਸਕਿੰਟ ਤੋਂ ਘੱਟ ਵਿੱਚ ਖ਼ੂਬਸੂਰਤ, ਪੂਰੀਆਂ presentations ਵਿੱਚ ਬਦਲ ਦਿੰਦਾ। ਕੋਈ design skills ਦੀ ਲੋੜ ਨਹੀਂ। ਕੋਈ PowerPoint ਦੀ ਪਰੇਸ਼ਾਨੀ ਨਹੀਂ।'},
+  '#s1 .micro-win':{en:'You just built a presentation faster than most people take to open PowerPoint.',hi:'आपने अभी एक presentation उतनी तेज़ बनाई जितनी देर में ज़्यादातर लोग PowerPoint खोलते हैं।',pa:'ਤੁਸੀਂ ਹੁਣੇ ਇੱਕ presentation ਓਨੀ ਤੇਜ਼ ਬਣਾਈ ਜਿੰਨੀ ਦੇਰ ਵਿੱਚ ਜ਼ਿਆਦਾਤਰ ਲੋਕ PowerPoint ਖੋਲ੍ਹਦੇ ਨੇ।'},
+  '#s1 .curiosity-hook':{en:'Next: Canva AI \u2014 where design truly becomes limitless.',hi:'अगला: Canva AI \u2014 जहाँ design सच में असीमित हो जाती है।',pa:'ਅਗਲਾ: Canva AI \u2014 ਜਿੱਥੇ design ਸੱਚਮੁੱਚ ਬੇਅੰਤ ਹੋ ਜਾਂਦੀ।'},
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! Canva AI is where design meets unlimited creative power.',hi:'\u2705 Section 1 ਪੂਰਾ! Canva AI ਵਿੱਚ design ਅਸੀਮ creative power ਨਾਲ ਮਿਲਦੀ ਹੈ।',pa:'\u2705 Section 1 ਪੂਰਾ! Canva AI ਵਿੱਚ design ਬੇਅੰਤ creative power ਨਾਲ ਮਿਲਦੀ।'},
+  '#s2 .sec-head h2':{en:'Canva AI <span class="gr">Deep Dive</span>',hi:'Canva AI <span class="gr">Deep Dive</span>',pa:'Canva AI <span class="gr">Deep Dive</span>'},
+  '#s2 .sec-head>p':{en:'Canva AI has transformed from a simple design tool into an AI-powered creative studio. Image generation, background removal, Magic Write, and more \u2014 all free.',hi:'Canva AI एक simple design tool से AI-powered creative studio बन गया है। Image generation, background removal, Magic Write, और बहुत कुछ \u2014 सब मुफ़्त।',pa:'Canva AI ਇੱਕ simple design tool ਤੋਂ AI-powered creative studio ਬਣ ਗਿਆ। Image generation, background removal, Magic Write, ਅਤੇ ਬਹੁਤ ਕੁਝ \u2014 ਸਭ ਮੁਫ਼ਤ।'},
+  '#s2 .micro-win':{en:'Canva AI is now in your toolkit. This is your design team for life.',hi:'Canva AI अब आपकी toolkit में है। यह आपकी design team है ज़िंदगी भर के लिए।',pa:'Canva AI ਹੁਣ ਤੁਹਾਡੀ toolkit ਵਿੱਚ ਹੈ। ਇਹ ਤੁਹਾਡੀ design team ਹੈ ਜ਼ਿੰਦਗੀ ਭਰ ਲਈ।'},
+  '#s2 .curiosity-hook':{en:'Next: The critical comparison \u2014 when Gamma wins, when Canva wins.',hi:'अगला: ज़रूरी तुलना \u2014 कब Gamma जीतता है, कब Canva जीतता है।',pa:'ਅਗਲਾ: ਜ਼ਰੂਰੀ ਤੁਲਨਾ \u2014 ਕਦੋਂ Gamma ਜਿੱਤਦਾ, ਕਦੋਂ Canva ਜਿੱਤਦਾ।'},
+  '#s3 .progress-marker':{en:'\uD83C\uDFAF 50% done \u2014 this comparison will save you hours of wrong-tool frustration.',hi:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਇਹ ਤੁਲਨਾ ਤੁਹਾਡੇ ਘੰਟੇ ਬਚਾਊ।',pa:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਇਹ ਤੁਲਨਾ ਤੁਹਾਡੇ ਘੰਟੇ ਬਚਾਊ।'},
+  '#s3 .sec-head h2':{en:'Gamma vs Canva \u2014<br><span class="gr">When to Use What</span>',hi:'Gamma vs Canva \u2014<br><span class="gr">ਕਦੋਂ ਕੀ ਵਰਤੀਏ</span>',pa:'Gamma vs Canva \u2014<br><span class="gr">ਕਦੋਂ ਕੀ ਵਰਤੀਏ</span>'},
+  '#s3 .sec-head>p':{en:'Both tools are powerful but for different reasons. This decision matrix ensures you always pick the right one.',hi:'दोनों tools powerful हैं लेकिन अलग-अलग कारणों से। यह decision matrix ensure करता है कि आप हमेशा सही tool चुनें।',pa:'ਦੋਵੇਂ tools powerful ਨੇ ਪਰ ਵੱਖ-ਵੱਖ ਕਾਰਨਾਂ ਕਰਕੇ। ਇਹ decision matrix ensure ਕਰਦਾ ਕਿ ਤੁਸੀਂ ਹਮੇਸ਼ਾ ਸਹੀ tool ਚੁਣੋ।'},
+  '#s3 .identity-shift':{en:'You now have two world-class design tools mastered. Most businesses pay designers \u20B920,000-50,000/month for what you can now do in hours.',hi:'अब आपने दो world-class design tools में महारत हासिल कर ली। ज़्यादातर businesses designers को \u20B920,000-50,000/month देती हैं जो काम आप अब घंटों में कर सकते हैं।',pa:'ਹੁਣ ਤੁਸੀਂ ਦੋ world-class design tools ਵਿੱਚ ਮੁਹਾਰਤ ਹਾਸਲ ਕਰ ਲਈ। ਜ਼ਿਆਦਾਤਰ businesses designers ਨੂੰ \u20B920,000-50,000/month ਦਿੰਦੀਆਂ ਜੋ ਕੰਮ ਤੁਸੀਂ ਹੁਣ ਘੰਟਿਆਂ ਵਿੱਚ ਕਰ ਸਕਦੇ ਹੋ।'},
+  '#s3 .curiosity-hook':{en:'Next: The real test \u2014 a client brief. Which tool, which prompts, which approach?',hi:'अगला: असली test \u2014 एक client brief। कौन सा tool, कौन से prompts, कौन सा approach?',pa:'ਅਗਲਾ: ਅਸਲੀ test \u2014 ਇੱਕ client brief। ਕਿਹੜਾ tool, ਕਿਹੜੇ prompts, ਕਿਹੜਾ approach?'},
+  '#s4 .progress-marker':{en:'\u26A1 65% done. The most interactive section \u2014 make real decisions here.',hi:'\u26A1 65% ਪੂਰਾ। ਸਭ ਤੋਂ interactive section \u2014 ਇੱਥੇ ਅਸਲੀ ਫ਼ੈਸਲੇ ਕਰੋ।',pa:'\u26A1 65% ਪੂਰਾ। ਸਭ ਤੋਂ interactive section \u2014 ਇੱਥੇ ਅਸਲੀ ਫ਼ੈਸਲੇ ਕਰੋ।'},
+  '#s4 .sec-head h2':{en:'Design <span class="gr">Challenge</span>',hi:'Design <span class="gr">Challenge</span>',pa:'Design <span class="gr">Challenge</span>'},
+  '#s4 .sec-head>p':{en:'A real client brief. You\'ll decide the tool, the prompt, and the approach \u2014 then see how a professional would handle it.',hi:'एक असली client brief। आप tool, prompt, और approach तय करेंगे \u2014 फिर देखेंगे कि professional इसे कैसे handle करता।',pa:'ਇੱਕ ਅਸਲੀ client brief। ਤੁਸੀਂ tool, prompt, ਅਤੇ approach ਤੈਅ ਕਰੋਗੇ \u2014 ਫਿਰ ਵੇਖੋਗੇ ਕਿ professional ਇਸ ਨੂੰ ਕਿਵੇਂ handle ਕਰਦਾ।'},
+  '#s4 .micro-win':{en:'You just created a complete client solution in under 90 minutes. That\'s professional-grade work.',hi:'आपने अभी 90 मिनट से कम में एक पूरा client solution बनाया। यह professional-grade काम है।',pa:'ਤੁਸੀਂ ਹੁਣੇ 90 ਮਿੰਟ ਤੋਂ ਘੱਟ ਵਿੱਚ ਇੱਕ ਪੂਰਾ client solution ਬਣਾਇਆ। ਇਹ professional-grade ਕੰਮ ਹੈ।'},
+  '#s4 .curiosity-hook':{en:'Ready for the quiz? 8 questions on Gamma and Canva AI.',hi:'Quiz के लिए तैयार? Gamma और Canva AI पर 8 सवाल।',pa:'Quiz ਲਈ ਤਿਆਰ? Gamma ਅਤੇ Canva AI \'ਤੇ 8 ਸਵਾਲ।'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost there! 8 questions on Gamma and Canva AI.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! Gamma ਅਤੇ Canva AI \'ਤੇ 8 ਸਵਾਲ।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! Gamma ਅਤੇ Canva AI \'ਤੇ 8 ਸਵਾਲ।'},
+  '#s5 .sec-head h2':{en:'Quiz: <span class="gr">Design Tools</span>',hi:'Quiz: <span class="gr">Design Tools</span>',pa:'Quiz: <span class="gr">Design Tools</span>'},
+  '#s5 .micro-win':{en:'Design is no longer a barrier. It\'s your advantage.',hi:'Design अब barrier नहीं। यह आपका advantage है।',pa:'Design ਹੁਣ barrier ਨਹੀਂ। ਇਹ ਤੁਹਾਡਾ advantage ਹੈ।'},
+  '#s5 .curiosity-hook':{en:'Final section \u2014 your Week 2 Project brief awaits.',hi:'आखिरी section \u2014 आपका Week 2 Project brief इंतज़ार कर रहा है।',pa:'ਆਖ਼ਰੀ section \u2014 ਤੁਹਾਡਾ Week 2 Project brief ਉਡੀਕ ਕਰ ਰਿਹਾ।'},
+  '#s6 .sec-head h2':{en:'Week 2 <span class="gr">Project</span>',hi:'Week 2 <span class="gr">Project</span>',pa:'Week 2 <span class="gr">Project</span>'},
+  '#s6 .sec-head>p':{en:'Your capstone project for Week 2. Build a complete professional package using everything you\'ve learned.',hi:'Week 2 के लिए आपका capstone project। जो कुछ सीखा है उसका इस्तेमाल करके एक पूरा professional package बनाएं।',pa:'Week 2 ਲਈ ਤੁਹਾਡਾ capstone project। ਜੋ ਕੁਝ ਸਿੱਖਿਆ ਉਸ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇੱਕ ਪੂਰਾ professional package ਬਣਾਓ।'},
+  '#s6 .identity-shift':{en:'Week 2 complete. You are now an AI-powered professional. The only question is: what will you create first?',hi:'Week 2 ਪੂਰਾ। अब आप AI-powered professional हैं। बस एक सवाल है: पहले क्या बनाएंगे?',pa:'Week 2 ਪੂਰਾ। ਹੁਣ ਤੁਸੀਂ AI-powered professional ਹੋ। ਬੱਸ ਇੱਕ ਸਵਾਲ ਹੈ: ਪਹਿਲਾਂ ਕੀ ਬਣਾਓਗੇ?'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

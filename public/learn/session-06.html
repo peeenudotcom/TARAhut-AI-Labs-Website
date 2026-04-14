@@ -155,10 +155,22 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -185,6 +197,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Email Writer Demo</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -773,6 +790,55 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'AI for<br><span class="gr">Professional Writing</span>',hi:'AI से<br><span class="gr">Professional Writing</span>',pa:'AI ਨਾਲ<br><span class="gr">Professional Writing</span>'},
+  '.hero>p':{en:'Emails that get replies. Resumes that get interviews. Proposals that win clients. This session shows you exactly how.',hi:'ऐसे Emails जिनका जवाब आए। ऐसे Resumes जिनसे interview मिले। ऐसे Proposals जो clients जीतें। यह session बताता है exactly कैसे।',pa:'ਅਜਿਹੇ Emails ਜਿਨ੍ਹਾਂ ਦਾ ਜਵਾਬ ਆਵੇ। ਅਜਿਹੇ Resumes ਜਿਨ੍ਹਾਂ ਨਾਲ interview ਮਿਲੇ। ਅਜਿਹੇ Proposals ਜੋ clients ਜਿੱਤਣ। ਇਹ session ਦੱਸਦਾ exactly ਕਿਵੇਂ।'},
+  '.hero-btns .btn-glow':{en:'Start Learning \u2192',hi:'सीखना शुरू करें \u2192',pa:'ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Take the Quiz',hi:'\u26A1 क्विज़ दें',pa:'\u26A1 ਕੁਇਜ਼ ਦਿਓ'},
+  '#s1 .sec-head h2':{en:'Business Emails <span class="gr">That Get Replies</span>',hi:'Business Emails <span class="gr">ਜਿਨਕਾ ਜਵਾਬ ਆਏ</span>',pa:'Business Emails <span class="gr">ਜਿਨ੍ਹਾਂ ਦਾ ਜਵਾਬ ਆਵੇ</span>'},
+  '#s1 .sec-head>p':{en:'The average professional ignores 70% of emails they receive. Here\'s how to be in the 30% they actually respond to \u2014 using AI as your writing partner.',hi:'औसत professional को मिलने वाली 70% emails ignore होती हैं। यहाँ बताया है कि उन 30% में कैसे आएं जिनका जवाब आता है \u2014 AI को अपना writing partner बनाकर।',pa:'ਔਸਤ professional ਨੂੰ ਮਿਲਣ ਵਾਲੀਆਂ 70% emails ignore ਹੁੰਦੀਆਂ ਨੇ। ਇੱਥੇ ਦੱਸਿਆ ਹੈ ਕਿ ਉਨ੍ਹਾਂ 30% ਵਿੱਚ ਕਿਵੇਂ ਆਈਏ ਜਿਨ੍ਹਾਂ ਦਾ ਜਵਾਬ ਆਉਂਦਾ \u2014 AI ਨੂੰ ਆਪਣਾ writing partner ਬਣਾ ਕੇ।'},
+  '#s1 .micro-win':{en:'You now have 3 email templates that professionals pay copywriters thousands to create.',hi:'अब आपके पास 3 email templates हैं जिनके लिए professionals copywriters को हज़ारों देते हैं।',pa:'ਹੁਣ ਤੁਹਾਡੇ ਕੋਲ 3 email templates ਨੇ ਜਿਨ੍ਹਾਂ ਲਈ professionals copywriters ਨੂੰ ਹਜ਼ਾਰਾਂ ਦਿੰਦੇ ਨੇ।'},
+  '#s1 .curiosity-hook':{en:'Next: Your resume might be invisible to recruiters. Here\'s how AI fixes that.',hi:'अगला: आपका resume recruiters को दिखाई नहीं दे रहा होगा। AI इसे कैसे ठीक करता है।',pa:'ਅਗਲਾ: ਤੁਹਾਡਾ resume recruiters ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦੇ ਰਿਹਾ ਹੋਵੇਗਾ। AI ਇਸ ਨੂੰ ਕਿਵੇਂ ਠੀਕ ਕਰਦਾ।'},
+  '#s2 .progress-marker':{en:'\u2705 Great start! Section 2 is where careers change.',hi:'\u2705 ਸ਼ਾਨਦਾਰ ਸ਼ੁਰੂਆਤ! Section 2 ਵਿੱਚ careers ਬਦਲਦੇ ਨੇ।',pa:'\u2705 ਸ਼ਾਨਦਾਰ ਸ਼ੁਰੂਆਤ! Section 2 ਵਿੱਚ careers ਬਦਲਦੇ ਨੇ।'},
+  '#s2 .sec-head h2':{en:'Resume &amp; LinkedIn <span class="gr">with AI</span>',hi:'Resume &amp; LinkedIn <span class="gr">AI ਨਾਲ</span>',pa:'Resume &amp; LinkedIn <span class="gr">AI ਨਾਲ</span>'},
+  '#s2 .sec-head>p':{en:'Your resume is your first impression. AI helps you make it count \u2014 ATS-optimised, achievement-focused, and professionally polished.',hi:'आपका resume आपकी पहली impression है। AI इसे बेहतर बनाने में मदद करता है \u2014 ATS-optimised, achievement-focused, और professionally polished।',pa:'ਤੁਹਾਡਾ resume ਤੁਹਾਡੀ ਪਹਿਲੀ impression ਹੈ। AI ਇਸ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਦਾ \u2014 ATS-optimised, achievement-focused, ਅਤੇ professionally polished।'},
+  '#s2 .micro-win':{en:'You can now write resumes that actually reflect your real value.',hi:'अब आप ऐसे resumes लिख सकते हैं जो वाकई आपकी असली value दिखाते हैं।',pa:'ਹੁਣ ਤੁਸੀਂ ਅਜਿਹੇ resumes ਲਿਖ ਸਕਦੇ ਹੋ ਜੋ ਸੱਚਮੁੱਚ ਤੁਹਾਡੀ ਅਸਲੀ value ਦਿਖਾਉਂਦੇ ਨੇ।'},
+  '#s2 .curiosity-hook':{en:'Next: How to write a client proposal that wins business, not just impresses.',hi:'अगला: ऐसा client proposal कैसे लिखें जो business जीते, सिर्फ़ impress न करे।',pa:'ਅਗਲਾ: ਅਜਿਹਾ client proposal ਕਿਵੇਂ ਲਿਖੀਏ ਜੋ business ਜਿੱਤੇ, ਸਿਰਫ਼ impress ਨਾ ਕਰੇ।'},
+  '#s3 .progress-marker':{en:'\uD83C\uDFAF 50% through \u2014 you\'re building a real professional writing toolkit.',hi:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਤੁਸੀਂ ਅਸਲੀ professional writing toolkit ਬਣਾ ਰਹੇ ਹੋ।',pa:'\uD83C\uDFAF 50% ਪੂਰਾ \u2014 ਤੁਸੀਂ ਅਸਲੀ professional writing toolkit ਬਣਾ ਰਹੇ ਹੋ।'},
+  '#s3 .sec-head h2':{en:'Proposals &amp; Reports <span class="gr">with AI</span>',hi:'Proposals &amp; Reports <span class="gr">AI ਨਾਲ</span>',pa:'Proposals &amp; Reports <span class="gr">AI ਨਾਲ</span>'},
+  '#s3 .sec-head>p':{en:'Winning proposals and clear reports are how you move from employee to professional. AI helps you write them at a level most people can\'t match.',hi:'जीतने वाले proposals और clear reports \u2014 इससे आप employee से professional बनते हैं। AI ऐसे level पर लिखने में मदद करता है जो ज़्यादातर लोगों से match नहीं होता।',pa:'ਜਿੱਤਣ ਵਾਲੇ proposals ਅਤੇ clear reports \u2014 ਇਸ ਨਾਲ ਤੁਸੀਂ employee ਤੋਂ professional ਬਣਦੇ ਹੋ। AI ਅਜਿਹੇ level \'ਤੇ ਲਿਖਣ ਵਿੱਚ ਮਦਦ ਕਰਦਾ ਜੋ ਜ਼ਿਆਦਾਤਰ ਲੋਕਾਂ ਤੋਂ match ਨਹੀਂ ਹੁੰਦਾ।'},
+  '#s3 .identity-shift':{en:'You\'re not just writing faster \u2014 you\'re writing at a professional standard that took people years to develop manually.',hi:'आप सिर्फ़ तेज़ नहीं लिख रहे \u2014 आप उस professional standard पर लिख रहे हैं जो लोगों को manually develop करने में साल लगते।',pa:'ਤੁਸੀਂ ਸਿਰਫ਼ ਤੇਜ਼ ਨਹੀਂ ਲਿਖ ਰਹੇ \u2014 ਤੁਸੀਂ ਉਸ professional standard \'ਤੇ ਲਿਖ ਰਹੇ ਹੋ ਜੋ ਲੋਕਾਂ ਨੂੰ manually develop ਕਰਨ ਵਿੱਚ ਸਾਲ ਲੱਗਦੇ।'},
+  '#s3 .curiosity-hook':{en:'Next: See it in action \u2014 the interactive email writer demo.',hi:'अगला: इसे action में देखें \u2014 interactive email writer demo।',pa:'ਅਗਲਾ: ਇਸ ਨੂੰ action ਵਿੱਚ ਵੇਖੋ \u2014 interactive email writer demo।'},
+  '#s4 .progress-marker':{en:'\u26A1 65% done. The most interactive section is here.',hi:'\u26A1 65% ਪੂਰਾ। ਸਭ ਤੋਂ interactive section ਇੱਥੇ ਹੈ।',pa:'\u26A1 65% ਪੂਰਾ। ਸਭ ਤੋਂ interactive section ਇੱਥੇ ਹੈ।'},
+  '#s4 .sec-head h2':{en:'Interactive <span class="gr">Email Writer</span>',hi:'Interactive <span class="gr">Email Writer</span>',pa:'Interactive <span class="gr">Email Writer</span>'},
+  '#s4 .micro-win':{en:'You\'ve just built your personal AI email workflow. Use it for every important email from now on.',hi:'आपने अभी अपना personal AI email workflow बना लिया। अब से हर ज़रूरी email के लिए इसे इस्तेमाल करें।',pa:'ਤੁਸੀਂ ਹੁਣੇ ਆਪਣਾ personal AI email workflow ਬਣਾ ਲਿਆ। ਹੁਣ ਤੋਂ ਹਰ ਜ਼ਰੂਰੀ email ਲਈ ਇਸ ਨੂੰ ਵਰਤੋ।'},
+  '#s4 .curiosity-hook':{en:'Ready for the quiz? 8 questions to lock in what you\'ve learned.',hi:'Quiz के लिए तैयार? जो सीखा उसे पक्का करने के लिए 8 सवाल।',pa:'Quiz ਲਈ ਤਿਆਰ? ਜੋ ਸਿੱਖਿਆ ਉਸ ਨੂੰ ਪੱਕਾ ਕਰਨ ਲਈ 8 ਸਵਾਲ।'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost done! 8 questions on professional writing with AI.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! AI ਨਾਲ professional writing \'ਤੇ 8 ਸਵਾਲ।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! AI ਨਾਲ professional writing \'ਤੇ 8 ਸਵਾਲ।'},
+  '#s5 .sec-head h2':{en:'Quiz: <span class="gr">Professional Writing</span>',hi:'Quiz: <span class="gr">Professional Writing</span>',pa:'Quiz: <span class="gr">Professional Writing</span>'},
+  '#s5 .micro-win':{en:'Professional writing is now a skill you can deploy any time.',hi:'Professional writing अब एक ऐसी skill है जो आप कभी भी deploy कर सकते हैं।',pa:'Professional writing ਹੁਣ ਇੱਕ ਅਜਿਹੀ skill ਹੈ ਜੋ ਤੁਸੀਂ ਕਦੇ ਵੀ deploy ਕਰ ਸਕਦੇ ਹੋ।'},
+  '#s5 .curiosity-hook':{en:'Final section \u2014 homework that builds your professional portfolio.',hi:'आखिरी section \u2014 होमवर्क जो आपका professional portfolio बनाएगा।',pa:'ਆਖ਼ਰੀ section \u2014 ਹੋਮਵਰਕ ਜੋ ਤੁਹਾਡਾ professional portfolio ਬਣਾਊ।'},
+  '#s6 .sec-head h2':{en:'Wrap-Up &amp; <span class="gr">Homework</span>',hi:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>',pa:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>'},
+  '#s6 .identity-shift':{en:'You can now write professionally in any format, in any language, for any audience \u2014 in minutes. That\'s a career superpower.',hi:'अब आप किसी भी format में, किसी भी language में, किसी भी audience के लिए professionally लिख सकते हैं \u2014 मिनटों में। यह career superpower है।',pa:'ਹੁਣ ਤੁਸੀਂ ਕਿਸੇ ਵੀ format ਵਿੱਚ, ਕਿਸੇ ਵੀ language ਵਿੱਚ, ਕਿਸੇ ਵੀ audience ਲਈ professionally ਲਿਖ ਸਕਦੇ ਹੋ \u2014 ਮਿੰਟਾਂ ਵਿੱਚ। ਇਹ career superpower ਹੈ।'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
