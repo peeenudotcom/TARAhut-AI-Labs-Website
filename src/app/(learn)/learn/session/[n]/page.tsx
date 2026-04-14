@@ -57,10 +57,18 @@ export default async function SessionPage({ params, searchParams }: Props) {
 
   // Non-free sessions require auth
   if (!isFreeSession && !user) {
-    redirect('/login');
+    // DEV BYPASS — remove before production
+    if (process.env.NODE_ENV !== 'development') {
+      redirect('/login');
+    }
   }
 
   let isUnlocked = isFreeSession; // session 1 always unlocked
+
+  // DEV BYPASS — unlock all sessions in development
+  if (process.env.NODE_ENV === 'development') {
+    isUnlocked = true;
+  }
 
   if (!isUnlocked && user) {
     const supabase = await createServerSupabase();

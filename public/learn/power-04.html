@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4: Academic &amp; Application Writing — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}.tool-card:hover::before{transform:scaleX(1)}.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}.tool-card .tool-link{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1);text-decoration:none}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}@media(max-width:600px){.vcompare{grid-template-columns:1fr}}.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}.vcompare-card:hover{transform:translateY(-4px)}.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}.vcompare-card.vs-wrong h4{color:var(--c3)}.vcompare-card.vs-right h4{color:var(--c5)}.vcompare-card p{color:var(--t2);font-size:.85rem}.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-left.visible{opacity:1;transform:translateX(0)}.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-right.visible{opacity:1;transform:translateX(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+@media(max-width:768px){.cgrid,.tool-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 04 &middot; AI Power Program &middot; 2026</div>
+  <h1>Academic Writing &mdash;<br><span class="gr">SOPs, IELTS &amp; Applications</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Three tracks, one session: Study Abroad (SOPs &amp; LORs), IELTS Writing Practice, and Job &amp; Scheme Applications. "Canada ne door kitti &mdash; par tuhade skills te kise ne rok nahi laggi."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>SOP Masterclass</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>IELTS with AI</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Job &amp; Scheme Apps</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Research &amp; Review</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: SOP MASTERCLASS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01 &mdash; Track A</div>
+    <h2>SOP Writing &mdash; <span class="gr">Study Abroad Track</span></h2>
+    <p>Statement of Purpose is THE document that decides your admission. A bad SOP = rejection. A good SOP = visa interview. AI helps you write it, but YOUR story makes it unique. "AI structure denda hai. Tuhadi kahani tuhadi hai."</p>
+  </div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">😐</div>
+      <h4>BAD SOP: Generic &amp; Boring</h4>
+      <p>"I have always been interested in business. I want to study MBA because it will help my career. I am hardworking and dedicated." &mdash; Could be written by anyone. Admissions officers read 1,000 of these.</p>
+      <div class="vc-badge">&#10005; Rejected</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">🌟</div>
+      <h4>GOOD SOP: Personal &amp; Specific</h4>
+      <p>"Growing up in my family's textile business in Ludhiana, I watched my father struggle to compete with fast fashion imports. That experience ignited my passion for international business strategy..." &mdash; THIS gets remembered.</p>
+      <div class="vc-badge">&#10003; Shortlisted</div>
+    </div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">📝</div><div class="call-body"><h4>The 4-Step AI SOP Process</h4><p><strong>Step 1 &mdash; Outline:</strong> AI creates the structure based on your background and target university<br><strong>Step 2 &mdash; Flesh Out:</strong> AI expands each paragraph with professional language<br><strong>Step 3 &mdash; Polish:</strong> AI refines tone, fixes grammar, adds compelling transitions<br><strong>Step 4 &mdash; Critique:</strong> AI reviews as a strict admissions officer and identifies weaknesses<br><br><em>Key teaching: "AI writes the structure. YOU add the personal story that no one else can write."</em></p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📝 SOP Step 1: Generate Outline</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I want to apply for MBA at University of Toronto. My background: B.Com from Punjab University, family runs a textile business in Ludhiana, 1 year work experience in family business, interested in international business and supply chain management. I want to expand our business globally.\n\nCreate a detailed SOP outline with 5 paragraphs:\n1. Compelling opening hook (personal story)\n2. Academic background and achievements\n3. Professional experience and what I learned\n4. Why this specific program and university\n5. Future goals and how this MBA helps\n\nMake the outline specific to MY story, not generic.')">📋 Click to copy: SOP outline for MBA at University of Toronto. B.Com background, family textile business in Ludhiana.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📝 SOP Step 2-3: Flesh Out &amp; Polish</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Now write the complete SOP based on the outline above. Requirements:\n- 800-1000 words\n- Compelling, personal, specific to my Punjab background\n- Show passion for international business, not just career advancement\n- Mention specific University of Toronto MBA features (Rotman School)\n- End with a clear vision of how I will use this education\n- Professional but not robotic — let my personality show\n- Avoid cliches like \"since childhood\" or \"my passion for business\"\n\nAfter writing, review it as a strict admissions officer and rate it out of 10. Suggest 3 specific improvements.')">📋 Click to copy: Complete SOP with admissions officer review. 800-1000 words, personal, no cliches.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📜 Letter of Recommendation (LOR) Draft</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Draft a Letter of Recommendation for a B.Com student applying to MBA at University of Toronto.\n\nProfessor perspective: Dr. Sharma, Head of Commerce Department, Punjab University.\nStudent qualities: Strong in financial analysis, led the commerce society, organized an inter-college business plan competition, scored 78% in B.Com.\n\nRequirements:\n- Professional academic tone\n- Specific examples of the student capabilities\n- Compare favorably to other students (top 5%)\n- 400-500 words\n- Include professor contact information placeholder\n\nNote: The student will share this draft with their professor to customize and sign.')">📋 Click to copy: LOR draft from professor perspective for MBA application. Professional academic tone.</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">⚠️</div><div class="call-body"><h4>SOP Critical Warning: Don't Sound Like Everyone Else</h4><p>If your SOP could be submitted by any other B.Com student from Punjab, it's not personal enough. Add:<br>&#8226; <strong>A specific story from YOUR life</strong> (not "since childhood I loved business")<br>&#8226; <strong>YOUR family context</strong> that shaped your goals<br>&#8226; <strong>A specific challenge</strong> you overcame<br>&#8226; <strong>Why THIS university</strong> (research specific professors, courses, programs)<br><br><em>"Even if you're not going abroad, SOP writing structure helps in job applications too."</em></p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Canada ne door kitti &mdash; par tuhade skills te kise ne rok nahi laggi."</strong> For students whose abroad plans were stalled by SDS cancellation or visa rejection &mdash; this session acknowledges that pain. AI helps you build the strongest possible application for your next attempt, or pivot to an equally powerful career path right here.</p>
+  </div>
+
+  <div class="micro-win">You now have an SOP framework that would cost ₹15,000-25,000 at a consultancy. You made it in 15 minutes.</div>
+  <p class="curiosity-hook">Next: IELTS writing practice with AI as your personal tutor.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: IELTS with AI &rarr;</button></div>
+</div>
+
+<!-- S2: IELTS WITH AI -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Track A complete! Now let's master IELTS writing with your AI tutor.</div>
+  <div class="sec-head">
+    <div class="over">Section 02 &mdash; Track B</div>
+    <h2>IELTS Writing Practice &mdash; <span class="gr">AI as Your Tutor</span></h2>
+    <p>AI is not writing FOR you &mdash; it's TEACHING you. Practice Task 1 and Task 2 with instant Band-score feedback. "AI tuhada personal IELTS tutor hai jo 24/7 available hai."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; The AI IELTS Practice Cycle</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">📋</div><div class="vn-label">Read Question</div><div class="vn-sub">IELTS Task 1 or 2</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">✍️</div><div class="vn-label">Write 50 Words</div><div class="vn-sub">Your own attempt first</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">🤖</div><div class="vn-label">AI Improves</div><div class="vn-sub">Band 7+ upgrade</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">📊</div><div class="vn-label">Learn Patterns</div><div class="vn-sub">Notice corrections</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Key insight: AI teaches you patterns.</strong> After 10 practice rounds, you'll start writing Band 7+ vocabulary naturally. "Exam hall vich AI nahi hovega &mdash; par AI di sikhaayi hovegi."</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📝 IELTS Task 2: Essay Practice</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Practice question: "Some people think technology makes life more complicated. To what extent do you agree or disagree?"</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I am practicing for IELTS Writing Task 2. Here is the question:\n\n\"Some people think that technology makes life more complicated rather than easier. To what extent do you agree or disagree?\"\n\nHere is my attempt (I wrote this myself):\n\"Technology is very important in today life. Some people think it make life hard. I think technology is good because it help in many way. Like phone help us talk to anyone. Computer help in work. But sometime technology give problem also like social media addiction.\"\n\nPlease:\n1. Rate my writing (Band score estimate)\n2. Rewrite it to Band 7+ level, keeping my ideas but fixing grammar, vocabulary, coherence, and structure\n3. Explain each major change you made so I can LEARN the pattern\n4. Give me 5 Band 7+ vocabulary words from this essay I should memorize\n5. Suggest a better essay structure for this type of question')">📋 Click to copy: IELTS Task 2 essay improvement &mdash; get Band score, rewrite to 7+, learn vocabulary patterns.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📊 IELTS Task 1: Graph Description Practice</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I am practicing IELTS Academic Writing Task 1. Generate a practice question with a line graph showing internet usage trends in India from 2015 to 2025 across rural and urban areas.\n\nThen:\n1. Write a Band 7+ model answer (150-180 words)\n2. Highlight the key vocabulary for describing trends (increased, surged, remained stable, gradual rise, sharp decline)\n3. Show the structure: Introduction → Overview → Detail paragraph 1 → Detail paragraph 2\n4. Give me 5 Task 1 specific phrases I must memorize\n5. Create 2 more practice questions I can try on my own')">📋 Click to copy: IELTS Task 1 practice &mdash; graph description with Band 7+ model answer and vocabulary.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🗣️ IELTS Speaking Practice</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Act as an IELTS Speaking examiner. Conduct a complete IELTS Speaking test with me.\n\nPart 1: Ask me 4 questions about my hometown (I am from Bathinda, Punjab, India)\nPart 2: Give me a cue card topic about \"Describe a skill you learned recently\" - I will talk about learning AI tools\nPart 3: Ask 3 follow-up discussion questions about technology and skills\n\nAfter each part, give me:\n- Estimated band score\n- 3 ways to improve my answer\n- Better vocabulary I could have used\n- Common mistakes to avoid\n\nBe encouraging but honest. I am a Punjabi speaker learning to speak English fluently.')">📋 Click to copy: IELTS Speaking mock test with examiner feedback. All 3 parts with band scoring.</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">🧠</div><div class="call-body"><h4>Important: AI is Your Tutor, Not Your Crutch</h4><p>In the exam hall, there is no AI. The goal is to <strong>learn patterns</strong> from AI feedback:<br>&#8226; <strong>Notice</strong> the vocabulary upgrades AI makes<br>&#8226; <strong>Memorize</strong> 5 new phrases per practice session<br>&#8226; <strong>Practice writing</strong> without AI after each AI session<br>&#8226; <strong>Track improvement</strong> by comparing your Week 1 vs Week 4 essays<br><br><em>"AI tuhada tutor hai, crutch nahi. Exam vich tuhadi apni taqat kaam aavegi."</em></p></div></div>
+
+  <div class="micro-win">You just got a personal IELTS tutor that costs ₹0 and is available 24/7. Practice daily.</div>
+  <p class="curiosity-hook">Next: Job applications, government schemes, and scholarship hunting.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Job &amp; Scheme Applications &rarr;</button></div>
+</div>
+
+<!-- S3: JOB & SCHEME APPLICATIONS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 50% through! Now let's tackle real-world applications &mdash; jobs, schemes, scholarships.</div>
+  <div class="sec-head">
+    <div class="over">Section 03 &mdash; Track C</div>
+    <h2>Job &amp; Scheme Applications &mdash; <span class="gr">Real Opportunities</span></h2>
+    <p>Government schemes, scholarship applications, job applications &mdash; AI helps you find opportunities AND write compelling applications. "AI naal opportunities dhoondo te apply karo &mdash; dono kaam 1 ghante vich."</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-brand">STARTUP PUNJAB</span><span class="crd-icon">🚀</span><h3>Startup Punjab 2.0</h3><p>&#8377;3 lakh seed funding via incubators. 8% interest subsidy on loans. 25% lease rental reimbursement. Student entrepreneurship scheme with academic protection. "Government paisa de rahi hai &mdash; AI naal apply karo."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">PMKVY</span><span class="crd-icon">📜</span><h3>PM Kaushal Vikas Yojana</h3><p>Free skill development training with certification. AI can help you find centers, understand eligibility, and complete the application. "Free training + certificate = job advantage."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">SCHOLARSHIPS</span><span class="crd-icon">🎓</span><h3>Scholarship Finder</h3><p>Use Perplexity AI to find scholarships you didn't know existed. Post-Matric, Pre-Matric, minority scholarships, merit scholarships &mdash; AI searches them all.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">GOVERNMENT JOBS</span><span class="crd-icon">🏛️</span><h3>Government Job Applications</h3><p>Bank exams, SSC, state services &mdash; AI helps with application writing, study plans, and exam prep strategies. "Sarkari naukri di tayyari vich vi AI help karda hai."</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎓 Scholarship Finder</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'List 10 scholarships available for B.Com students from Punjab, India in 2026. Include:\n1. Scholarship name\n2. Eligibility criteria\n3. Amount (monthly/annual)\n4. Application deadline\n5. How to apply (website link if possible)\n\nInclude both government and private scholarships. Include state-level Punjab scholarships AND national scholarships. Table format for easy comparison.\n\nAlso suggest 3 scholarships for studying abroad (Canada, UK, Australia) that a B.Com student from Punjab can apply for.')">📋 Click to copy: Find 10 scholarships for B.Com students from Punjab. Government + private + abroad options.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🚀 Startup Punjab Application Draft</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I want to apply to Startup Punjab 2.0 scheme for seed funding. My business idea: AI-powered digital marketing agency for small businesses in Punjab.\n\nDraft the application covering:\n1. Business concept (what problem I solve, target market)\n2. Innovation element (how AI makes this different from regular agencies)\n3. Market opportunity (size of small business market in Punjab)\n4. Revenue model (subscription packages, per-project pricing)\n5. Team background (B.Com graduate, AI Power Punjab certified)\n6. Fund utilization plan (how I will use the ₹3 lakh seed funding)\n7. Expected milestones (3 months, 6 months, 12 months)\n\nProfessional tone. Show that this is a viable, scalable business.')">📋 Click to copy: Startup Punjab 2.0 application for AI digital marketing agency. Complete with fund utilization.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🏛️ Government Job Application Letter</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a formal application letter for a Junior Assistant position in Punjab State Government. I am a B.Com graduate from Guru Nanak Dev University, Amritsar with 2 years post-graduation.\n\nInclude:\n- Proper government letter format (with reference number placeholder)\n- My qualifications matching the job requirements\n- Relevant skills: computer proficiency (MS Office, Tally), Hindi and Punjabi typing, data management\n- Brief mention of my motivation to serve in government\n- Proper enclosures list (marksheets, certificates, ID proof)\n\nFormal government tone. Correct format as per Punjab State Service rules.')">📋 Click to copy: Government job application letter for Punjab State. Formal format with proper enclosures.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🔍 Career Research with Perplexity AI</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Use Perplexity for research that needs verified sources:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'What are the career options after B.Com in India in 2026? For each option provide:\n1. Job role name\n2. Average salary range (entry level and experienced)\n3. Required additional qualifications\n4. Best companies/organizations hiring\n5. Growth potential (1-10 rating)\n\nInclude: CA, CS, MBA, Banking, Government, Freelancing, Digital Marketing, AI services. Compare studying MBA in Canada vs Australia for a Punjabi student — cost, work permit, PR chances. Use current 2026 data.')">📋 Click to copy: Complete career research after B.Com. Salary ranges, requirements, growth potential. 2026 data.</div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">🔍</div><div class="call-body"><h4>How to Verify AI Research</h4><p>AI can make mistakes with facts and figures. For important decisions, always:<br>&#8226; <strong>Use Perplexity</strong> (gives sources you can click)<br>&#8226; <strong>Cross-check official websites</strong> (government.in, university sites)<br>&#8226; <strong>Check dates</strong> &mdash; is the info current for 2026?<br>&#8226; <strong>Verify numbers</strong> &mdash; scholarship amounts, salary ranges, deadlines<br><br><em>"AI research di starting point hai. Final confirmation hamesha official source ton lao."</em></p></div></div>
+
+  <div class="micro-win">You just found opportunities you didn't know existed. "AI naal dhoondo, AI naal apply karo, AI naal jeeto."</div>
+  <p class="curiosity-hook">Next: Peer review circle and common mistakes to avoid.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Research &amp; Review &rarr;</button></div>
+</div>
+
+<!-- S4: RESEARCH & REVIEW -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Let's polish everything with peer review and avoid common mistakes.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Peer Review &amp; <span class="gr">Common Mistakes</span></h2>
+    <p>Exchange work, get AI feedback, and learn the 5 mistakes that kill AI-written documents. "AI = first draft. YOU = final draft."</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Peer Review Circle</h4>
+    <p>Form groups of 3. Each person shares their best writing piece &mdash; SOP, IELTS essay, or application. Use AI to critique:</p>
+    <ul>
+      <li>"Review this [SOP/essay/application] and rate it out of 10. Give 3 specific improvements."</li>
+      <li>Share AI feedback with your partner constructively</li>
+      <li>Both improve based on feedback received</li>
+    </ul>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">5 Deadly Mistakes with AI Writing</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">MISTAKE #1</span><span class="crd-icon">😤</span><h3>Submitting Without Personalizing</h3><p>Raw AI text sounds generic. Admissions officers and HR managers can SPOT AI-generated content. Always add your specific details, personal stories, and unique perspectives. <strong>"80% AI + 20% YOU = 100% success."</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-3">MISTAKE #2</span><span class="crd-icon">🤦</span><h3>Not Proofreading</h3><p>AI makes subtle errors &mdash; wrong dates, fabricated company names, inconsistent details. One wrong fact in an SOP or application can get you rejected. <strong>Always read every line.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-3">MISTAKE #3</span><span class="crd-icon">👯</span><h3>Using Same Prompts as Everyone</h3><p>If 100 students use the same prompt, admissions get 100 similar SOPs. Add YOUR context, YOUR story, YOUR specific university research. <strong>Unique prompt = unique output.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-3">MISTAKE #4</span><span class="crd-icon">🧨</span><h3>Over-Relying on AI for IELTS</h3><p>AI improves your writing &mdash; but in the exam hall, there is no AI. Use AI to LEARN patterns, not to write for you. Practice writing without AI after every AI session. <strong>"Exam vich tuhadi apni taqat kaam aavegi."</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-3">MISTAKE #5</span><span class="crd-icon">🔓</span><h3>Sharing Sensitive Info in Prompts</h3><p>Never include Aadhaar number, bank details, passport numbers, or passwords in AI prompts. Use placeholders like [AADHAAR] and fill in later. <strong>AI conversations may not be private.</strong></p></div>
+  </div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 4 Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📝 Wrote or outlined an SOP using the 4-step process</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📜 Generated a Letter of Recommendation draft</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📝 Practiced IELTS Task 2 essay with AI feedback</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📊 Practiced IELTS Task 1 graph description</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🎓 Used Perplexity to find scholarships</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🚀 Explored Startup Punjab or government scheme applications</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🔍 Completed career research using AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>👥 Participated in peer review circle</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>⚠️ Understand the 5 deadly mistakes to avoid</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📂 Added 10 new prompts to personal prompt library</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="identity-shift">"Tusi hun professional likhna jaande ho &mdash; emails, resumes, SOPs, IELTS essays, applications. Ih skills lifetime kaam aungiya."</div>
+
+  <div class="micro-win">Week 2 complete! You now have professional writing superpowers that most graduates don't have.</div>
+  <p class="curiosity-hook">Next: Quiz time! Test your academic writing knowledge.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Quiz time &mdash; test your academic writing knowledge!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Academic Writing</span></h2>
+    <p>8 questions from a pool of 16. Covers SOPs, IELTS, scholarships, and applications. "Har sawaal sikhaaunda hai."</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question reinforced something you'll use in real life.</div>
+  <p class="curiosity-hook">Next: Your homework, key insights, and preview of Week 3.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 4 <span class="gr">Complete!</span> &mdash; Week 2 Done!</h2>
+    <p>"Tusi hun professional likhna jaande ho." Two weeks down, six to go. Here's your homework and what's coming next week.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">📝</span><div class="vi-label" style="color:var(--c5)">SOP Framework</div><div class="vi-desc">4-step process mastered</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">📊</span><div class="vi-label" style="color:var(--c1)">IELTS Practice</div><div class="vi-desc">Task 1, 2 + Speaking prep</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">🎓</span><div class="vi-label" style="color:var(--c2)">Scholarships</div><div class="vi-desc">Found with AI research</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">🏛️</span><div class="vi-label" style="color:var(--c4)">Applications</div><div class="vi-desc">Govt jobs + schemes</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>Week 2 Complete &mdash; What You Mastered</h4><p>&#9989; Professional emails, resumes, cover letters (Session 3)<br>&#9989; SOP writing with 4-step AI process (Session 4)<br>&#9989; LOR drafting for professors<br>&#9989; IELTS writing practice with Band score feedback<br>&#9989; IELTS speaking mock tests<br>&#9989; Scholarship and opportunity discovery<br>&#9989; Government scheme applications (Startup Punjab 2.0)<br>&#9989; Career research with verified sources<br>&#9989; Peer review and AI-powered feedback<br>&#9989; The 5 deadly mistakes to avoid</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Next Week</h4>
+    <p>"Practice naal hi sikhdey haan!"</p>
+    <ul>
+      <li><strong>Study abroad students:</strong> Complete first SOP draft for your target university</li>
+      <li><strong>Job seekers:</strong> Write 2 application letters (1 job, 1 scheme)</li>
+      <li><strong>IELTS students:</strong> Complete 2 Task 2 essays with AI feedback</li>
+      <li><strong>Everyone:</strong> Add 10 new prompts to your personal library</li>
+      <li><strong>Bring all writing samples</strong> next week for portfolio building</li>
+      <li><strong>Selfie Challenge:</strong> Post a selfie with your printed resume on Instagram with #AIPowerPunjab. Tag @tarahut</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Week 3 &mdash; AI for Design &amp; Video Content</h4><p>"Agle hafte tusi Canva naal design banaoge, AI naal images generate karoge, presentations seconds vich banaaoge, te apna pehla video reel banaoge. Camera-ready content in minutes." <strong>Next week is the most visually exciting week of the course!</strong></p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%204%20of%20AI%20Power%20Program!%20Week%202%20done!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">"2 hafte ho gaye. Tuhade kol hun hai: prompting skills, writing skills, research skills. Duniya vich 95% logaan ton zyada. Aage hor vi interesting hona!"</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="power-05.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 5: AI Design &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 04: Academic Writing &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Week 2 mastered! You are an academic writing pro!':checked>=5?'Great progress! Almost there.':'Keep going — check off each item.'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+const allQ=[
+  {q:"What is the MOST important element of a strong SOP?",o:["Perfect grammar","Personal, specific story that only YOU can tell","Long length","Using complex vocabulary"],a:1,e:"A strong SOP tells YOUR unique story — your specific experiences, family background, challenges, and goals. Generic SOPs get rejected because admissions officers read thousands of similar ones."},
+  {q:"In the 4-step SOP process, what does Step 4 involve?",o:["Writing the introduction","Formatting the document","AI reviews as a strict admissions officer","Printing the final copy"],a:2,e:"Step 4 is the critique phase: AI reviews your SOP as a strict admissions officer, identifying weaknesses and suggesting improvements. This is like getting a free consultancy review."},
+  {q:"How should you use AI for IELTS preparation?",o:["Let AI write all your essays","Use AI to learn patterns, then practice writing without AI","Memorize AI responses","Only use AI for vocabulary"],a:1,e:"AI is your tutor, not your crutch. Use AI to improve your writing and learn patterns, but practice writing without AI because there is no AI in the exam hall."},
+  {q:"What is the recommended length for an SOP?",o:["200-300 words","500-600 words","800-1000 words","2000+ words"],a:2,e:"Most universities want SOPs of 800-1000 words. Long enough to tell your story with depth, short enough to keep the reader engaged. Quality over quantity."},
+  {q:"What is Startup Punjab 2.0's seed funding amount?",o:["₹50,000","₹1 lakh","₹3 lakh via incubators","₹10 lakh"],a:2,e:"Startup Punjab 2.0 offers ₹3 lakh seed funding through incubators, along with 8% interest subsidy on loans and 25% lease rental reimbursement."},
+  {q:"Which AI tool is BEST for research with citations?",o:["ChatGPT","Claude","Canva","Perplexity"],a:3,e:"Perplexity AI always shows its sources and citations, making it the best choice for research where you need to verify information and click through to official sources."},
+  {q:"What SOP opening should you AVOID?",o:["A specific personal anecdote","'Since childhood I have been interested in...'","A compelling question","A vivid scene from your life"],a:1,e:"'Since childhood I have been interested in...' is the most overused SOP opening. Admissions officers have read it thousands of times. Start with a specific story, question, or scene instead."},
+  {q:"What does the 80/20 rule mean for AI writing?",o:["Use AI 80% of the time","AI creates 80% draft, you add 20% personalization","80% grammar, 20% content","Spend 80 minutes writing, 20 editing"],a:1,e:"AI creates the structure and language (80%), but you MUST add personal details, specific experiences, and a final review (20%). That 20% is what makes it authentically yours."},
+  {q:"Why is it dangerous to use the same prompt as everyone?",o:["AI won't respond","Your output will be identical to others'","It costs more","The AI breaks"],a:1,e:"If 100 students use the same SOP prompt, admissions officers get 100 similar SOPs. Your UNIQUE context and personal details in the prompt produce unique, compelling output."},
+  {q:"For IELTS Task 2, what should you do BEFORE asking AI to improve your essay?",o:["Nothing — just use AI directly","Write at least 50 words on your own first","Read someone else's essay","Watch a YouTube video"],a:1,e:"Always attempt writing first — even just 50 words. This shows AI your current level so it can give relevant feedback, and you practice the actual skill needed in the exam."},
+  {q:"What information should NEVER be included in an AI prompt?",o:["Your university name","Your career goals","Aadhaar number, passport number, bank details","Your skills and achievements"],a:2,e:"Never share sensitive personal data like Aadhaar, passport numbers, or bank details with AI. Use placeholders like [AADHAAR] and fill in the real data manually later."},
+  {q:"What is the biggest advantage of using Perplexity for scholarship research?",o:["It's faster","It gives sources you can verify","It's free","It works offline"],a:1,e:"Perplexity provides clickable sources for every piece of information, allowing you to verify scholarship details, deadlines, and eligibility directly from official websites."},
+  {q:"In the peer review exercise, what is the recommended prompt?",o:["'Just check spelling'","'Review this and rate out of 10 with 3 specific improvements'","'Rewrite the entire thing'","'Tell me it's perfect'"],a:1,e:"The peer review prompt asks for a rating out of 10 with 3 specific improvements — this provides actionable, constructive feedback that helps both the writer and reviewer learn."},
+  {q:"What is the IELTS Task 1 writing about?",o:["An essay on a topic","Describing visual data like graphs, charts, or processes","A letter to a friend","A creative story"],a:1,e:"IELTS Academic Task 1 requires you to describe visual data — line graphs, bar charts, pie charts, tables, or processes. Key skills: trend description, comparison, and data interpretation."},
+  {q:"For a government job application letter in Punjab, what format is important?",o:["Casual WhatsApp style","Proper government letter format with reference numbers and enclosures","Just a resume is enough","An email is fine"],a:1,e:"Government job applications in Punjab require proper formal letter format including reference numbers, correct addressing, relevant qualifications, and a proper enclosures list."},
+  {q:"What makes this AI Power course's approach to IELTS different from traditional coaching?",o:["It's more expensive","AI provides instant, personalized Band-score feedback 24/7","It replaces the need to take IELTS","It only teaches vocabulary"],a:1,e:"Unlike traditional coaching with limited teacher time, AI provides instant, personalized feedback at any time. You can practice 10 essays per day with Band-score analysis — impossible with a human tutor."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='Academic writing mastered! Ready for Week 3.';}else if(pct>=50){tier='Good Progress!';msg='Review the sections you missed to strengthen.';}else{tier='Keep Studying!';msg='Re-read the SOP and IELTS sections above.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

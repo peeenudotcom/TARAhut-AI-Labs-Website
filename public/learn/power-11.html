@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 11: AI Freelancing Masterclass — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'&#127919;  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'&#10003; ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.tool-card .tool-link{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1);text-decoration:none}
+
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(0,240,255,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}
+.stagger>*:nth-child(2){transition-delay:.12s}
+.stagger>*:nth-child(3){transition-delay:.19s}
+.stagger>*:nth-child(4){transition-delay:.26s}
+.stagger>*:nth-child(5){transition-delay:.33s}
+.stagger>*:nth-child(6){transition-delay:.4s}
+
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 11 &middot; AI Power Program &middot; 2026</div>
+  <h1>AI Freelancing <span class="gr">Masterclass</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>"Aaj da session sabton important hai. Aaj tusi ik consumer ton ik provider ban jaoge." Your earning journey starts TODAY. Leave with a LIVE freelancing profile.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>5 Services to Sell</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Fiverr & Upwork</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Local Clients Punjab</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Pricing & First Client</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: 5 AI SERVICES YOU CAN SELL -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>5 AI Services You Can <span class="gr">Sell TODAY</span></h2>
+    <p>"Aaj tak tusi sikhde si. Aaj ton tusi kamaaoge." Clear, specific, no BS. Here are 5 services with real pricing for the Punjab market.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128176;</div><div class="call-body"><h4>The Mindset Shift</h4><p><strong>"Aaj tusi ik consumer ton ik provider ban jaoge."</strong> Everything you've learned in 5 weeks &mdash; writing, design, video, automation, chatbots &mdash; these are services that businesses will PAY for. The shift happens today.</p></div></div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">SERVICE 1</span><span class="crd-icon">&#9997;</span><h3>AI Content Writing</h3><p><strong>What:</strong> Blogs, social media, emails, product descriptions<br><strong>Who buys:</strong> Every business with social media<br><strong>Price: &#8377;2,000-10,000</strong> per project</p></div>
+    <div class="crd reveal"><span class="tag tag-2">SERVICE 2</span><span class="crd-icon">&#128247;</span><h3>AI Social Media Management</h3><p><strong>What:</strong> Content calendar + posts + design + scheduling<br><strong>Who buys:</strong> Small businesses, clinics, coaching centres<br><strong>Price: &#8377;5,000-15,000/month</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-4">SERVICE 3</span><span class="crd-icon">&#128202;</span><h3>AI Presentation &amp; Design</h3><p><strong>What:</strong> Pitch decks, reports, posters, branding<br><strong>Who buys:</strong> Startups, students, professionals<br><strong>Price: &#8377;1,500-5,000</strong> per deck</p></div>
+    <div class="crd reveal"><span class="tag tag-5">SERVICE 4</span><span class="crd-icon">&#129302;</span><h3>AI Chatbot Building</h3><p><strong>What:</strong> Custom GPTs, Botpress chatbots for businesses<br><strong>Who buys:</strong> Any business with customer inquiries<br><strong>Price: &#8377;5,000-25,000</strong> per bot</p></div>
+    <div class="crd reveal"><span class="tag tag-3">SERVICE 5</span><span class="crd-icon">&#9889;</span><h3>AI Business Automation</h3><p><strong>What:</strong> Form&rarr;Sheet&rarr;Email, customer workflows<br><strong>Who buys:</strong> Any business doing manual repetitive work<br><strong>Price: &#8377;10,000-30,000</strong> per project</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Duniya vich log &#8377;5,000 charge karde ne oh kaam lai jo tusi aaj kar sakde ho."</strong> You're not "learning" anymore &mdash; you have real, sellable skills. The only question is: will you start offering them?</p>
+  </div>
+
+  <div class="micro-win">You now know exactly what services to sell and at what price. Knowledge is power. Action is income.</div>
+
+  <p class="curiosity-hook">Next: Set up your Fiverr and Upwork profiles step by step &mdash; going LIVE today.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Fiverr & Upwork &rarr;</button></div>
+</div>
+
+<!-- S2: FIVERR & UPWORK SETUP -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 17% through &mdash; services defined, now let's go LIVE.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Fiverr &amp; Upwork &mdash; <span class="gr">Profile Setup</span></h2>
+    <p>Step-by-step setup. Everyone follows together. By the end of this section, your Fiverr profile is LIVE with 3 gigs. No one left behind.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128187; Demo: AI-Written Fiverr Bio</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Use AI to create a professional seller bio in 30 seconds:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a Fiverr seller bio for someone who offers AI-powered content writing, social media management, design, chatbot building, and business automation services. Professional, friendly, highlights AI expertise. Mention proficiency in ChatGPT, Canva, Zapier, and Botpress. Under 200 words.')">&#128203; Click to copy: Write a Fiverr seller bio for someone who offers AI-powered content writing, social media management, design, chatbot building, and automation. Professional, friendly, highlights AI expertise. Under 200 words.</div>
+    <p style="color:var(--t3);font-size:.8rem">Paste as your Fiverr profile description. Customize with your name and specific strengths.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128640; Demo: AI-Written Gig Description</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Create your first gig with AI-powered description:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a compelling Fiverr gig description for this service: I will create AI-powered social media content for your business. Include what the buyer gets, the process, why AI makes it better, and a professional closing. Add 3 pricing tiers: Basic (5 posts) at $10, Standard (15 posts) at $25, Premium (30 posts + content calendar) at $50. Make it SEO-friendly with relevant keywords.')">&#128203; Click to copy: Write a Fiverr gig description for: "I will create AI-powered social media content for your business." Include what buyer gets, process, why AI makes it better. 3 pricing tiers. SEO-friendly.</div>
+    <p style="color:var(--t3);font-size:.8rem">3 gigs live today: Social media content, Design services, Your unique offering (chatbot, automation, IELTS help).</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128187; Fiverr Profile Setup Flow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">&#128100;</div>
+        <div class="vn-label">Profile</div>
+        <div class="vn-sub">Name, photo, AI bio</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">&#128221;</div>
+        <div class="vn-label">Gig 1</div>
+        <div class="vn-sub">Social media content</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">&#127912;</div>
+        <div class="vn-label">Gig 2</div>
+        <div class="vn-sub">Design services</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">&#11088;</div>
+        <div class="vn-label">Gig 3</div>
+        <div class="vn-sub">Your unique offering</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>"3 gigs live karo aaj. Hor baad vich add kar sakde ho."</strong> Use AI for EVERY gig description.</div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Upwork &mdash; For Bigger Projects</h3>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128188; Demo: AI-Written Upwork Proposal</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">The key skill that makes or breaks Upwork success &mdash; proposal writing:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write an Upwork proposal for this job: [PASTE JOB DESCRIPTION HERE]. I am an AI specialist who can deliver this using ChatGPT, Canva, and automation tools. Make it professional, specific, show understanding of their needs. Mention relevant experience. Under 150 words. End with a question that shows genuine interest in their project.')">&#128203; Click to copy: Write an Upwork proposal for this job: [PASTE JOB]. I am an AI specialist. Professional, specific, shows understanding of their needs. Under 150 words. End with a question.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Upwork te proposal likhaun vich 80% freelancers fail ho jaande ne. AI naal tuhada proposal 10x better hovega." Customize each one &mdash; never copy-paste the same text.</p>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128248;</div><div class="call-body"><h4>Professional Photo Session</h4><p>Set up a clean background. Take a professional headshot with your phone and good lighting. <strong>AI tip: Use an AI background remover to make it look studio-quality.</strong> Upload to both Fiverr and Upwork. First impressions matter.</p></div></div>
+
+  <div class="micro-win">Your Fiverr profile is LIVE. Your Upwork profile is ready. You just became a freelancer. That's real.</div>
+
+  <p class="curiosity-hook">Next: Local client acquisition &mdash; Punjab style. Not everyone needs Fiverr.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Local Clients Punjab &rarr;</button></div>
+</div>
+
+<!-- S3: LOCAL CLIENT ACQUISITION -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; You're 33% through. Now the Punjab-specific strategy &mdash; local clients are EASIER.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Local Clients &mdash; <span class="gr">Punjab Style</span></h2>
+    <p>Not everyone needs Fiverr. Local clients are EASIER to get and often pay more. WhatsApp, Instagram, direct approach &mdash; Punjab's business culture works in your favour.</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">CHANNEL 1</span><span class="crd-icon">&#128241;</span><h3>WhatsApp Status</h3><p>Post your services with sample work on WhatsApp Status. <strong>300+ contacts see it daily.</strong> Free, instant reach. Add portfolio images from previous weeks.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">CHANNEL 2</span><span class="crd-icon">&#128247;</span><h3>Instagram Portfolio</h3><p>Post portfolio pieces with hashtags. <strong>#AIServicesPunjab #DigitalMarketing #CanvaDesigner.</strong> Your work speaks for you. Consistency wins.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">CHANNEL 3</span><span class="crd-icon">&#128694;</span><h3>Direct Approach</h3><p>Walk into local businesses with your AI Business Plan from Week 4. <strong>"Uncle ji, main tuhade shop di Instagram marketing kar sakda/sakdi haan."</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-5">CHANNEL 4</span><span class="crd-icon">&#127891;</span><h3>College Network</h3><p>Offer services to college events, fests, clubs. <strong>College students need posters, presentations, videos.</strong> Easy first clients with repeat work.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">CHANNEL 5</span><span class="crd-icon">&#128106;</span><h3>Family &amp; Friends</h3><p>"Kise nu poster chahida? Social media help chahidi?" <strong>Your network IS your net worth.</strong> Start with people who trust you already.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128172; Demo: The Punjab Sales Pitch</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Practice this approach &mdash; natural, not salesy:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Role-play scenario: I am approaching a local shop owner in Punjab to offer AI-powered Instagram marketing services. Help me create a natural, friendly pitch in Punjabi-Hindi mix. Include: introduction, what I offer, free trial offer (1 week of posting), and how to transition to a monthly package. Keep it conversational, not salesy. Under 100 words.')">&#128203; Click to copy: Create a natural Punjab-style sales pitch for AI-powered Instagram marketing. Punjabi-Hindi mix. Include intro, offer, free trial, monthly package transition. Conversational, not salesy.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Uncle ji, main tuhade shop di Instagram marketing kar sakda/sakdi haan. AI naal professional posts banaange. Free trial &mdash; 1 hafte di posting. Pasand aave ta monthly package."</p>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">&#128172;</div><div class="call-body"><h4>Your WhatsApp Broadcast Message &mdash; Send TODAY</h4><p>"Hi! Main [name], AI tools expert. Main tuhadi help kar sakda/sakdi haan:<br>&#9989; Professional social media content<br>&#9989; Business posters &amp; designs<br>&#9989; Presentations &amp; reports<br>&#9989; Customer chatbots<br>&#9989; Business automation<br><br>Free trial available! Message me for details.<br><br>#AIPowerPunjab #TARAhutAILabs"<br><br><strong>Send to at least 20 contacts TODAY.</strong></p></div></div>
+
+  <div class="micro-action">
+    <h4>DO IT NOW &mdash; Not Later</h4>
+    <p>Open WhatsApp right now. Create this broadcast message. Add your portfolio images from previous weeks. Send to 20+ contacts. This takes 5 minutes and could change your career trajectory.</p>
+  </div>
+
+  <div class="micro-win">You now have 5 local client channels beyond Fiverr/Upwork. Punjab's business culture makes direct approach easy and effective.</div>
+
+  <p class="curiosity-hook">Next: Pricing strategy, first client tactics, and package structure for Punjab market.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Pricing & First Client &rarr;</button></div>
+</div>
+
+<!-- S4: PRICING & FIRST CLIENT STRATEGY -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! This section is about making your first rupee.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Pricing Strategy &amp; <span class="gr">First Client</span></h2>
+    <p>Golden rules for landing your first client. Realistic expectations, smart pricing, package strategy. "Pehla client mushkil hunda hai. Par pehle ton baad, har ik easy ho jaanda hai."</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128176;</div><div class="call-body"><h4>4 Golden Rules for Your First Client</h4><p><strong>1. First 2-3 clients: FREE or very cheap (&#8377;500-1,000).</strong> Build portfolio and testimonials.<br><strong>2. After 3 clients: Charge market rate.</strong> You have proof now.<br><strong>3. Always get a testimonial</strong> and permission to show the work.<br><strong>4. Punjab pricing vs Global pricing</strong> &mdash; both are valid. Local: lower price, easier clients. Global: higher price, more competition.</p></div></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong">
+      <span class="vc-icon">&#128547;</span>
+      <h4>Common Mistake</h4>
+      <p>"I'm not ready yet. I need to learn more." Analysis paralysis. Waiting for perfection. Meanwhile, people with LESS skill are charging &#8377;5,000 for work YOU can do better.</p>
+      <span class="vc-badge">Fear = No Income</span>
+    </div>
+    <div class="vcompare-card vs-right">
+      <span class="vc-icon">&#128640;</span>
+      <h4>Right Approach</h4>
+      <p>"Tusi bilkul ready ho." Start with free/cheap work. Get testimonials. Build confidence through action. Every project teaches you more than any course ever will.</p>
+      <span class="vc-badge">Action = Growth</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Package Strategy</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">BASIC</span><span class="crd-icon">&#128230;</span><h3>One-Time Service</h3><p>1 service, 1 delivery. Logo design, 5 social posts, 1 presentation. <strong>Best for: first-time clients who want to test you.</strong> Low commitment, easy yes.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">MONTHLY</span><span class="crd-icon">&#128197;</span><h3>Ongoing Support</h3><p>Monthly social media, regular content, chatbot maintenance. <strong>&#8377;5,000-15,000/month recurring income.</strong> 5 monthly clients = &#8377;25,000-75,000/month. The dream.</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">PREMIUM</span><span class="crd-icon">&#11088;</span><h3>Full Business AI Setup</h3><p>Complete package: Branding + Social media + Automation + Chatbot. <strong>&#8377;25,000-50,000 one-time + monthly maintenance.</strong> The full stack from Session 10.</p></div>
+  </div>
+
+  <div class="checklist">
+    <h4>&#128221; Freelancing Launch Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128100; Fiverr profile live with professional photo and AI-written bio</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128221; Gig 1 live: Social media content service</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#127912; Gig 2 live: Design services (posters, presentations)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#11088; Gig 3 live: Your unique offering</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128188; Upwork profile set up with portfolio</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128241; WhatsApp broadcast message sent to 20+ contacts</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128247; Instagram portfolio post published</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128176; Pricing decided (Basic / Monthly / Premium)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128172; Practiced the Punjab sales pitch</label></div>
+    <div class="check-score" id="checkScore">Tap each item as you complete it &rarr; your launch progress appears here</div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Sochdo &mdash; 6 hafte pehle tuhanu AI kya hai pata nahi si. Aaj tuhade kol Fiverr/Upwork profile hai, portfolio hai, skills ne, te pehla client millan wala hai."</strong> Tusi hun AI professionals ho. Punjab vich pehle batch ho. Own it.</p>
+  </div>
+
+  <div class="identity-shift">"Aaj tusi ik consumer ton ik provider ban gaye ho. Aaj tak tusi sikhde si. Aaj ton tusi kamaaoge."</div>
+
+  <p class="curiosity-hook">Next: Test your freelancing knowledge with the quiz.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your freelancing strategy.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions on AI freelancing, pricing, and client acquisition. Instant feedback.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question reflects a real freelancing scenario in the Punjab market.</div>
+  <p class="curiosity-hook">Next: Your mission and preview of Session 12.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 11 <span class="gr">Complete!</span></h2>
+    <p>Here's what you achieved today, your MISSION, and what's coming tomorrow.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128176;</span><div class="vi-label" style="color:var(--c5)">5 Services</div><div class="vi-desc">Clear pricing defined</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128187;</span><div class="vi-label" style="color:var(--c1)">Fiverr Live</div><div class="vi-desc">3 gigs published</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128188;</span><div class="vi-label" style="color:var(--c2)">Upwork Ready</div><div class="vi-desc">Profile + proposals</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128241;</span><div class="vi-label" style="color:var(--c4)">Local Clients</div><div class="vi-desc">5 Punjab channels</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>What You Achieved Today</h4><p>&#9989; 5 AI services defined with clear Punjab market pricing<br>&#9989; Fiverr profile LIVE with 3 gigs and AI-written descriptions<br>&#9989; Upwork profile set up with portfolio and AI-written proposals<br>&#9989; Professional photo taken for profiles<br>&#9989; 5 local client acquisition channels identified<br>&#9989; Punjab-style sales pitch practiced<br>&#9989; Pricing strategy: Basic / Monthly / Premium packages<br>&#9989; WhatsApp broadcast message sent to 20+ contacts</p></div></div>
+
+  <div class="micro-action">
+    <h4>MISSION: Get Your First Client in 7 Days</h4>
+    <p>Ih homework nahi, mission hai. 7 din vich 1 client lao:</p>
+    <ul>
+      <li>Free ho sakda hai, paid ho sakda hai. Par kaam karo.</li>
+      <li>WhatsApp status lagao daily</li>
+      <li>Instagram te portfolio post karo</li>
+      <li>Local businesses naal gall karo &mdash; at least 5 direct approaches</li>
+      <li>Fiverr gig links share karo in WhatsApp groups</li>
+      <li><strong>"Agle session vich main puchanga &mdash; KINNE JANEYAN NU CLIENT MILYA?"</strong></li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128218;</div><div class="call-body"><h4>Preview: Session 12 &mdash; Career &amp; Exam Preparation with AI</h4><p>Tomorrow: <strong>LinkedIn deep dive, AI-powered interview preparation, job hunting with AI, government exam prep strategies, and study abroad application boost.</strong> Whether you want freelancing, a job, or further studies &mdash; AI accelerates everything.</p></div></div>
+
+  <div class="callout call-4"><div class="call-ico">&#128172;</div><div class="call-body"><h4>Reality Check from Teacher's Manual</h4><p>"Pehla client mushkil hunda hai. Par pehle ton baad, har ik easy ho jaanda hai." Set realistic expectations. <strong>Balance optimism with reality.</strong> The effort you put in this week determines your trajectory for the next year.</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%2011%20of%20AI%20Power%20Program!%20My%20Fiverr%20profile%20is%20LIVE!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">&#127760; <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">&#128205; Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">"Tusi hun AI professionals ho. Punjab vich pehle batch ho. Own it. 6 hafte pehle AI kya hai pata nahi si. Aaj tuhade kol Fiverr profile, portfolio, skills, te clients ne."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 11: AI Freelancing Masterclass &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');
+  });
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(parent=>{parent.querySelectorAll(':scope > *').forEach(child=>{if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right'))child.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]&&!cards[0].classList.contains('reveal-left')){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]&&!cards[1].classList.contains('reveal-right')){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}
+initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}
+observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked} of ${total} completed — ${checked===total?'You are officially LAUNCH READY!':'Keep going!'}`;}
+
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='\u2705 Copied! Now paste into ChatGPT, Claude, or Gemini \u2192';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+const qData=[
+  {q:"What's the FIRST thing to do for your first 2-3 freelancing clients?",o:["Charge maximum price","Do it FREE or very cheap (\u20b9500-1,000) to build portfolio","Only work with big companies","Wait for clients to find you"],a:1,e:"First 2-3 clients should be free or very cheap. The goal is building portfolio and testimonials. After 3 clients with proof of work, you can charge market rate with confidence."},
+  {q:"How much can you charge for AI social media management per month?",o:["\u20b9100-200","\u20b95,000-15,000/month","\u20b91,00,000/month","It should always be free"],a:1,e:"AI social media management (content calendar + posts + design + scheduling) is worth \u20b95,000-15,000/month. Get 5 monthly clients and that's \u20b925,000-75,000/month in recurring income."},
+  {q:"What's the BEST local client acquisition strategy in Punjab?",o:["Cold calling strangers","WhatsApp Status + Direct approach to local businesses","Running expensive ads","Waiting for referrals"],a:1,e:"WhatsApp Status gives you 300+ daily views for free. Combine with direct approach to local businesses ('Uncle ji, main tuhade shop di Instagram marketing kar sakda/sakdi haan'). Punjab's business culture values personal connections."},
+  {q:"What should you use AI for when setting up Fiverr?",o:["Nothing \u2014 write everything manually","Profile bio, gig descriptions, and proposal templates","Only the profile photo","Just the pricing"],a:1,e:"Use AI for EVERYTHING: seller bio, gig descriptions, pricing strategy, and proposal templates. AI makes your profile look 10x more professional. 'AI naal tuhada proposal 10x better hovega.'"},
+  {q:"How many gigs should you launch on Fiverr TODAY?",o:["1","3","10","50"],a:1,e:"3 gigs is the sweet spot for launch day: 1) Social media content, 2) Design services, 3) Your unique offering. 'Hor baad vich add kar sakde ho.' Quality over quantity."},
+  {q:"What's the pricing for a complete AI business setup (branding + social + automation + chatbot)?",o:["\u20b91,000","\u20b95,000","\u20b925,000-50,000","\u20b95,00,000"],a:2,e:"The full AI business stack (branding + social media + automation + chatbot) is a premium \u20b925,000-50,000 package. You learned to build every component across Weeks 2-5. Combined, it's a high-value service."},
+  {q:"'Fiverr te koi buyer nahi aa reha.' What's the correct advice?",o:["Give up immediately","Improve gig description keywords, offer first order at \u20b9500, share on social media","Create 50 more gigs","Complain to Fiverr support"],a:1,e:"Pehle 2-3 hafte mushkil hunde ne. Three actions: 1) Improve gig description \u2014 keywords matter. 2) Offer first order at \u20b9500 for reviews. 3) Share on social media. Patience + consistency = results."},
+  {q:"What's the KEY skill that makes or breaks Upwork success?",o:["Profile photo quality","Proposal writing \u2014 customized for each job","Number of skills listed","Account age"],a:1,e:"'Upwork te proposal likhaun vich 80% freelancers fail ho jaande ne.' Each proposal must be customized, specific, and show understanding of the client's needs. AI helps write better proposals, but you must personalize each one."},
+  {q:"A student says 'Main ready nahi haan.' What's the truth?",o:["They're right, they need more training","'Tusi bilkul ready ho. Duniya vich log \u20b95,000 charge karde ne oh kaam lai jo tusi aaj kar sakde ho.'","They should wait 6 more months","AI skills aren't valuable yet"],a:1,e:"As the teacher's manual says: 'Address this directly \u2014 Tusi bilkul ready ho.' The shift from learner to provider is psychological. They have real skills. The market validates, not self-doubt."},
+  {q:"What should your WhatsApp broadcast message include?",o:["Just 'Hi, I do AI work'","Services list, free trial offer, contact details, and portfolio samples","A long essay about AI","Only your Fiverr link"],a:1,e:"An effective broadcast includes: clear service list, free trial offer, contact details, and portfolio images from previous weeks. Send to 20+ contacts. Professional but warm \u2014 Punjab style."},
+  {q:"How should you approach a local shop owner for AI marketing services?",o:["Send a formal business proposal by email","Natural, friendly approach: free trial offer, show sample work, monthly package transition","Call them repeatedly","Send a LinkedIn message"],a:1,e:"Punjab business culture values personal connection. Walk in, be friendly: 'Uncle ji, AI naal professional posts banaange. Free trial \u2014 1 hafte di posting. Pasand aave ta monthly package.' Natural, not salesy."},
+  {q:"What's the most important thing to get from every client?",o:["Maximum payment","A testimonial and permission to show the work","Their social media passwords","A long-term contract"],a:1,e:"Always get a testimonial and permission to show the work. These build your portfolio and social proof. After 3 clients with testimonials, you can charge market rate because you have PROOF of quality."},
+  {q:"Which package type creates the BEST recurring income?",o:["One-time basic service","Monthly ongoing support (\u20b95,000-15,000/month)","Free services only","Premium one-time setup"],a:1,e:"Monthly packages create recurring income \u2014 the holy grail of freelancing. \u20b95,000-15,000/month per client. Get 5 clients = \u20b925,000-75,000/month. Predictable income beats one-time projects."},
+  {q:"By the end of Session 11, every student should have:",o:["10 paying clients","Either a live Fiverr profile OR a sent WhatsApp services broadcast","A complete business plan","A registered company"],a:1,e:"The end goal: 'Every student has either a live Fiverr profile OR has sent their services WhatsApp broadcast.' Concrete action, not just planning. The shift from consumer to provider happens through doing."},
+  {q:"What's the complete progression from Session 1 to Session 11?",o:["Theory only","AI basics \u2192 Writing \u2192 Design \u2192 Video \u2192 Business \u2192 Automation \u2192 Chatbots \u2192 FREELANCING","Random topics","Only technical skills"],a:1,e:"Each week builds on the previous: AI foundations \u2192 writing \u2192 design \u2192 video \u2192 business consulting \u2192 automation \u2192 chatbots \u2192 freelancing. By Session 11, students have a complete skill stack to offer professional AI services."},
+  {q:"'Pehla client mushkil hunda hai.' What comes after?",o:["It stays difficult forever","Par pehle ton baad, har ik easy ho jaanda hai.","You should give up","You need another course"],a:1,e:"'Pehla client mushkil hunda hai. Par pehle ton baad, har ik easy ho jaanda hai.' The first client is the hardest \u2014 after that, testimonials, confidence, and referrals make each subsequent client easier to land."},
+  {q:"What makes Punjab's local market EASIER for freelancers than global platforms?",o:["Higher prices","Personal connections, trust-based culture, businesses that need but don't know about AI services","Less competition","Better internet"],a:1,e:"Punjab's business culture values personal connections. Most local businesses don't even know AI services exist. You're the first to offer it. Trust-based relationships lead to referrals. Local is easier than competing with millions on Fiverr globally."},
+  {q:"How should you price differently for Punjab vs global clients?",o:["Same price for everyone","Punjab: lower price, easier clients. Global: higher price, more competition. Both are valid.","Only serve global clients","Only serve local clients"],a:1,e:"Both strategies work. Punjab pricing (\u20b92,000-15,000) gets easier local clients with personal relationships. Global pricing ($50-500) targets international clients via Fiverr/Upwork. Many successful freelancers do both."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false,usedQs=[];
+function pickQuestions(){usedQs=[];const indices=[...Array(qData.length).keys()];for(let i=indices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}usedQs=indices.slice(0,8);}
+function initQuiz(){cq=0;sc=0;pickQuestions();ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=8){
+    const pct=Math.round(sc/8*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You understand freelancing strategy. Now GO GET YOUR FIRST CLIENT!';}
+    else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Review pricing and client acquisition sections.';}
+    else{tier='Keep Learning!';tierColor='var(--c4)';msg='Re-read the sections. The most important thing is ACTION \u2014 launch your profile today.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up \u2192</button></div>`;
+    return;
+  }
+  const q=qData[usedQs[cq]];const ltr=['A','B','C','D'];
+  let prog=Array(8).fill(0).map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next \u2192</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[usedQs[cq]],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`\u2705 Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`\u274c Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

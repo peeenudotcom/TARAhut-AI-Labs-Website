@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 6: AI Video &amp; Personal Branding — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}.tool-card:hover::before{transform:scaleX(1)}.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}.tool-card .tool-link{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1);text-decoration:none}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}@media(max-width:600px){.vcompare{grid-template-columns:1fr}}.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}.vcompare-card:hover{transform:translateY(-4px)}.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}.vcompare-card.vs-wrong h4{color:var(--c3)}.vcompare-card.vs-right h4{color:var(--c5)}.vcompare-card p{color:var(--t2);font-size:.85rem}.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-left.visible{opacity:1;transform:translateX(0)}.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-right.visible{opacity:1;transform:translateX(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+@media(max-width:768px){.cgrid,.tool-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 06 &middot; AI Power Program &middot; 2026</div>
+  <h1>AI Video &amp; <span class="gr">Personal Branding</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Create AI-edited videos, build your personal brand, and launch your online presence. India has 500M+ YouTube users &mdash; video is king. "Aaj tusi apna pehla reel banaoge te personal brand launch karoge."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner">
+  <span class="nav-brand">AI Power</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Video is King</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>CapCut Workshop</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>Personal Branding</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>Content Calendar</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+</div></nav>
+
+<!-- S1: VIDEO IS KING -->
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01</div><h2>Why Video Content is <span class="gr">King in Punjab</span></h2><p>India has 500M+ YouTube users. Punjab loves video content &mdash; music, reels, vlogs. Businesses with video get 80% more engagement. "Te hun video banana easy ho gaya AI naal."</p></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left"><div class="vc-icon">⏰</div><h4>Before AI: Video Was Hard</h4><p>Professional video editing took hours. Expensive software. Complex skills. Most small businesses couldn't afford video content at all.</p><div class="vc-badge">&#10005; Hours of work</div></div>
+    <div class="vcompare-card vs-right reveal-right"><div class="vc-icon">🚀</div><h4>After AI: Video in Minutes</h4><p>CapCut AI does auto-captions, background removal, effects, and music matching. A professional reel in 15 minutes. No experience needed.</p><div class="vc-badge">&#10003; 15 minutes</div></div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card reveal">
+      <span class="tag tag-brand">FREE &amp; NO WATERMARK</span>
+      <h3>🎬 CapCut</h3>
+      <p>The #1 free video editor. AI auto-captions, background removal, effects, music matching, speed ramping. No watermark on exports. Used by millions of creators.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Reels, short videos, TikTok, Instagram</p>
+      <a class="tool-link" href="https://capcut.com" target="_blank">&rarr; capcut.com</a>
+    </div>
+    <div class="tool-card reveal">
+      <span class="tag tag-2">AI AVATARS</span>
+      <h3>🧑 HeyGen</h3>
+      <p>Create talking avatar videos from text. No camera needed. AI generates a realistic video of a person speaking your script. Multiple languages including Hindi.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Explainer videos, business intros, no-camera content</p>
+      <a class="tool-link" href="https://heygen.com" target="_blank">&rarr; heygen.com</a>
+    </div>
+    <div class="tool-card reveal">
+      <span class="tag tag-4">AI VOICE</span>
+      <h3>🎙️ ElevenLabs</h3>
+      <p>Text-to-speech with incredibly realistic voices. Create voiceovers in Punjabi, Hindi, and English without recording. Perfect for shy creators.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Voiceovers, narration, multi-language content</p>
+      <a class="tool-link" href="https://elevenlabs.io" target="_blank">&rarr; elevenlabs.io</a>
+    </div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Camera-Shy? No Problem!</h4><p>Not everyone is comfortable on camera &mdash; and that's perfectly fine. You have multiple options:<br>&#8226; <strong>Text/voice-over reels</strong> &mdash; captions with AI voice narration<br>&#8226; <strong>Screen recordings</strong> &mdash; show your AI work process<br>&#8226; <strong>HeyGen avatars</strong> &mdash; AI person speaks your script<br>&#8226; <strong>Hands-only videos</strong> &mdash; show your hands using tools<br><br><em>"Tusi bina apni awaaz ya chehra use kite vi videos bana sakde ho."</em></p></div></div>
+
+  <div class="identity-shift">"3 hafte ho gaye. Tuhade kol hun hai: Prompting skills, writing skills, design skills. Aaj video te personal brand jud jaavega."</div>
+  <p class="curiosity-hook">Next: CapCut AI hands-on workshop &mdash; create your first reel.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: CapCut Workshop &rarr;</button></div>
+</div>
+
+<!-- S2: CAPCUT WORKSHOP -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! Now let's create your first video.</div>
+  <div class="sec-head"><div class="over">Section 02</div><h2>CapCut AI &mdash; <span class="gr">Video Editing Workshop</span></h2><p>Step-by-step, create a complete reel. Open CapCut on your phone or computer and follow along. "15 minute vich tuhada pehla reel ready hovega."</p></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; CapCut AI Video Creation Flow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">📹</div><div class="vn-label">Record Clip</div><div class="vn-sub">15-30 seconds</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">✂️</div><div class="vn-label">Import to CapCut</div><div class="vn-sub">Open project</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">🤖</div><div class="vn-label">AI Features</div><div class="vn-sub">Captions, effects, music</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">📤</div><div class="vn-label">Export HD</div><div class="vn-sub">No watermark</div></div>
+    </div>
+    <div class="vflow-caption"><strong>CapCut AI features covered:</strong> Auto-captions, background removal, AI effects &amp; filters, music matching, speed ramping</div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Step 1 &mdash; Record Your Clip Right Now</h4>
+    <p>Open your phone camera. Record a 15-second clip of anything:</p>
+    <ul>
+      <li>Your face saying "Main AI sikhi raha/rahi haan" (self-introduction)</li>
+      <li>The classroom/your desk (environment shot)</li>
+      <li>Your laptop screen showing an AI tool (screen recording)</li>
+      <li>Anything creative &mdash; be yourself!</li>
+    </ul>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎬 Reel Idea 1: AI Self-Introduction</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Script for a 30-second self-intro reel. Use AI to generate the script:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a 30-second Instagram reel script for a self-introduction. I am [YOUR NAME] from [YOUR CITY], Punjab. I am learning AI tools at TARAhut AI Labs. I can now create professional designs, write professional emails, and generate content using AI. The script should be energetic, confident, and end with a call-to-action to follow me for AI tips. Write in simple English or Hinglish that a Punjabi creator would use naturally.')">📋 Click to copy: 30-second self-intro reel script. Energetic, confident, with follow CTA.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎬 Reel Idea 2: Business Promotion</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a 30-second Instagram reel script promoting an AI-powered design service. Hook: \"Kya tuhadi business di social media boring dikhdi hai?\" Problem: Most small businesses in Punjab have bad designs and no social media strategy. Solution: I offer AI-powered poster design, social media management, and video editing. Pricing hint: Starting at just ₹5,000/month. End with: DM me for a free sample design! Energetic Punjabi/Hinglish tone.')">📋 Click to copy: Business promotion reel script. Hook + problem + solution + CTA format.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎬 Reel Idea 3: AI Tip Video</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a 30-second educational Instagram reel script about \"3 Free AI Tools Every Student Needs\". List: 1) ChatGPT for homework help, 2) Canva for presentations, 3) Perplexity for research with sources. Make it punchy, fast-paced, with on-screen text suggestions for each point. End with: Follow for more AI tips! Tone: Young, energetic, educational but fun.')">📋 Click to copy: Educational AI tips reel &mdash; 3 free tools every student needs. Punchy and fast-paced.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎬 Reel Idea 4: Before/After Showcase</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a 20-second Instagram reel script showing a before/after transformation. Before: \"Bad design made in MS Paint for a sweet shop\" (3 seconds). After: \"Professional AI-designed poster for the same sweet shop\" (3 seconds). Reveal: Show the Canva creation process sped up (10 seconds). Hook text: \"AI ne design ki duniya badal ditti!\" End with: Want this for YOUR business? DM me. Include suggested on-screen text overlays.')">📋 Click to copy: Before/after design transformation reel. Bad design vs AI design reveal.</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">🎙️</div><div class="call-body"><h4>AI Voiceover Alternative</h4><p>Don't want to record your voice? Use <strong>ElevenLabs</strong> or <strong>CapCut's built-in text-to-speech</strong>:<br>&#8226; Type your script<br>&#8226; Choose a voice (natural-sounding AI voices available)<br>&#8226; Generate audio<br>&#8226; Add to your video<br><br><em>"Tusi bina awaaz use kite vi professional videos bana sakde ho."</em></p></div></div>
+
+  <div class="micro-win">You just created your first professional reel. Share it on Instagram today!</div>
+  <p class="curiosity-hook">Next: Personal branding &mdash; become "the AI person" in your circle.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Personal Branding &rarr;</button></div>
+</div>
+
+<!-- S3: PERSONAL BRANDING -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 50% through! Now let's build your personal brand.</div>
+  <div class="sec-head"><div class="over">Section 03</div><h2>Personal Branding &mdash; <span class="gr">Become the AI Person</span></h2><p>Your personal brand is what people say about you when you're not in the room. Today we build your LinkedIn, optimize your Instagram, and create a strategy. "Tuhadi pehchaan banao."</p></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; The Personal Brand Triangle</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">👤</div><div class="vn-label">WHO Are You?</div><div class="vn-sub">Story, background, angle</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">🛠️</div><div class="vn-label">WHAT Do You Offer?</div><div class="vn-sub">Skills, services, knowledge</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">📍</div><div class="vn-label">WHERE Do People Find You?</div><div class="vn-sub">Instagram, LinkedIn, YouTube</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Your personal brand answers one question:</strong> "When someone needs AI help in Punjab, why should they come to YOU?"</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>💼 LinkedIn Profile Optimization</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Open <a href="https://linkedin.com" target="_blank">LinkedIn</a> (create account if needed). Use AI to build a professional profile:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I need to optimize my LinkedIn profile. My details:\n- Name: [YOUR NAME]\n- Education: B.Com from [YOUR UNIVERSITY], Punjab\n- Skills: AI tools (ChatGPT, Claude, Canva, CapCut), digital marketing, content creation, prompt engineering, professional writing\n- Currently: Learning AI at TARAhut AI Labs, AI Power Program\n- Goal: Freelancing in AI-powered services OR getting a job in digital marketing\n\nWrite:\n1. A powerful LinkedIn headline (under 120 characters) that shows I am AI-skilled\n2. An About/Summary section (200 words) that tells my story and shows my value\n3. A Skills section list (10 skills to add)\n4. 3 LinkedIn post ideas I can publish this week\n\nTone: Professional but modern. Show that I am a young, AI-skilled professional from Punjab.')">📋 Click to copy: LinkedIn profile optimization &mdash; headline, summary, skills, and post ideas.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📸 Instagram Bio Optimization</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write 5 Instagram bio options for someone who creates AI-powered content and designs. I am from Punjab, I offer digital marketing and design services.\n\nEach bio should:\n- Be under 150 characters\n- Include 2-3 relevant emojis\n- Have a clear call-to-action (DM for services, link in bio)\n- Show personality and professionalism\n- Mention AI or digital skills\n\nAlso suggest: 5 Instagram highlight names with emojis (Portfolio, Services, Reviews, AI Tips, About Me)')">📋 Click to copy: 5 Instagram bio options with CTAs + highlight names. AI-powered creator from Punjab.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎯 Personal Brand Statement</h4></div>
+    <textarea class="demo-in" id="brandPrompt" placeholder="Tell me about yourself... e.g. 'I am Gurpreet from Bathinda, B.Com student, learning AI, want to offer design and social media services to local businesses'"></textarea>
+    <button class="btn btn-glow btn-sm" onclick="copyBrandPrompt()" style="margin-bottom:.75rem">📋 Generate Personal Brand Strategy</button>
+    <div class="demo-out" id="brandOut">Your personalized brand strategy prompt will appear here.</div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Ki Instagram te AI da kaam share karna chahida hai?"</strong> &mdash; Haan! Par honestly. "AI-assisted design" ya "Created with AI tools" likhna okay hai. <strong>Transparency builds trust.</strong> Te clients nu pata hona chahida ki tusi AI use karde ho &mdash; oh FEATURE hai, weakness nahi.</p>
+  </div>
+
+  <div class="micro-win">Your LinkedIn and Instagram are now professional. You went from invisible to discoverable.</div>
+  <p class="curiosity-hook">Next: Your 7-day content calendar &mdash; never wonder "what to post" again.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Content Calendar &rarr;</button></div>
+</div>
+
+<!-- S4: CONTENT CALENDAR + EARNING -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Let's plan your content and understand earning potential.</div>
+  <div class="sec-head"><div class="over">Section 04</div><h2>Content Calendar &amp; <span class="gr">Earning Reality</span></h2><p>Never wonder "aaj ki post karaan?" again. Build a 7-day content calendar with AI. Then understand what you can earn. "Har din da content ready &mdash; 1 ghante vich."</p></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📅 7-Day Content Calendar Generator</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a 7-day Instagram content calendar for an AI-powered design and content services business in Punjab.\n\nFor each day provide:\n1. Content type (educational post, personal story, behind-the-scenes, design showcase, reel/video, testimonial, engagement post)\n2. Caption (with emojis and hashtags)\n3. Design brief (what the visual should look like)\n4. Best posting time for Indian audience\n\nSchedule:\n- Day 1 (Monday): Educational AI tip\n- Day 2 (Tuesday): Personal story or journey update\n- Day 3 (Wednesday): Behind-the-scenes of creating a design\n- Day 4 (Thursday): Design showcase (before/after or portfolio piece)\n- Day 5 (Friday): Reel or short video (AI tool demo)\n- Day 6 (Saturday): Client testimonial or case study\n- Day 7 (Sunday): Engagement post (poll, question, or giveaway)\n\nTone: Professional but relatable. Mix of English and Hinglish. Punjab flavor.')">📋 Click to copy: Complete 7-day content calendar with captions, design briefs, and posting times.</div>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">MONDAY</span><span class="crd-icon">💡</span><h3>Educational Post</h3><p>AI tip, tool recommendation, or tutorial. Position yourself as the knowledgeable person. "3 Free AI Tools Every Student Needs" type content.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">TUESDAY</span><span class="crd-icon">📖</span><h3>Personal Story</h3><p>Share your learning journey. People connect with authenticity. "Mera AI journey kive shuru hoya" type content. Builds trust.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">WEDNESDAY</span><span class="crd-icon">🎬</span><h3>Behind-the-Scenes</h3><p>Show your creative process. Screen record yourself using Canva or ChatGPT. People love seeing how things are made.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">THURSDAY</span><span class="crd-icon">🎨</span><h3>Design Showcase</h3><p>Show your best work. Before/after transformations. Portfolio pieces. This attracts potential clients.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">FRIDAY</span><span class="crd-icon">📹</span><h3>Reel / Video</h3><p>Short-form video content. AI tool demos, quick tips, or creative showcases. Reels get 3x more reach than static posts.</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">WEEKEND</span><span class="crd-icon">💬</span><h3>Engage &amp; Connect</h3><p>Saturday: Client success story or testimonial. Sunday: Engagement post &mdash; poll, question, or "ask me anything" about AI.</p></div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The Earning Reality Check</h3>
+
+  <div class="callout call-brand reveal"><div class="call-ico">💰</div><div class="call-body"><h4>What You Can Earn With Your New Skills</h4><p>After 3 weeks of learning, here's what you can offer:<br><br>&#8226; <strong>Monthly social media package:</strong> ₹5,000-15,000/client<br>&#8226; <strong>Per video edit:</strong> ₹500-2,000<br>&#8226; <strong>Per poster design:</strong> ₹500-2,000<br>&#8226; <strong>Content calendar:</strong> ₹3,000-5,000<br>&#8226; <strong>LinkedIn/Instagram optimization:</strong> ₹2,000-5,000<br>&#8226; <strong>Presentation design:</strong> ₹1,500-5,000<br><br><em>"Start small: Offer FREE work to 1-2 local businesses. Build portfolio. Then charge."</em><br><strong>"Pehle naam banaao, phir daam lagao."</strong></p></div></div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 6 Complete Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🎬 Created at least one video reel using CapCut AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🎙️ Explored AI voiceover tools (ElevenLabs or CapCut TTS)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💼 Optimized LinkedIn profile with AI-generated content</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📸 Optimized Instagram bio with professional CTA</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🎯 Created personal brand statement</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📅 Built a 7-day content calendar with AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💰 Understand pricing for video and content services</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📱 Shared your reel in WhatsApp group</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🔍 Understand the Personal Brand Triangle (WHO, WHAT, WHERE)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>✅ Ready to start posting content consistently</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You have content planned for the entire week. No more "ki post karaan?" ever again.</div>
+  <p class="curiosity-hook">Next: Quiz time! Test your video and branding knowledge.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Quiz time! Test your video and personal branding knowledge.</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Test Your <span class="gr">Video &amp; Branding Skills</span></h2><p>8 questions from a pool of 16. Covers CapCut, personal branding, content strategy, and pricing.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question prepared you for real content creation and freelancing.</div>
+  <p class="curiosity-hook">Next: Week 3 complete! Homework and preview of Week 4.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2>Session 6 <span class="gr">Complete!</span> &mdash; Week 3 Done!</h2><p>"3 hafte ho gaye. Tuhade kol hun hai: Prompting skills, writing skills, design skills, video skills, content strategy. Bahut kuch sikheya hai."</p></div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">🎬</span><div class="vi-label" style="color:var(--c5)">Video Creation</div><div class="vi-desc">CapCut, HeyGen, ElevenLabs</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">💼</span><div class="vi-label" style="color:var(--c1)">LinkedIn Ready</div><div class="vi-desc">Professional profile live</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">📸</span><div class="vi-label" style="color:var(--c2)">Instagram Optimized</div><div class="vi-desc">Bio, highlights, strategy</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">📅</span><div class="vi-label" style="color:var(--c4)">Content Calendar</div><div class="vi-desc">7 days planned</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>Week 3 Complete &mdash; Your Skills So Far</h4><p><strong>Week 1:</strong> AI foundations + prompt engineering (CRISP framework)<br><strong>Week 2:</strong> Professional writing + academic writing + applications<br><strong>Week 3:</strong> Design + visual content + video creation + personal branding<br><br>&#9989; 4 AI tools mastered (ChatGPT, Claude, Gemini, Perplexity)<br>&#9989; Design tools (Canva, Leonardo, Ideogram, Gamma)<br>&#9989; Video tools (CapCut, HeyGen, ElevenLabs)<br>&#9989; Professional writing, resumes, SOPs, IELTS prep<br>&#9989; Personal brand launched on LinkedIn and Instagram<br>&#9989; Content calendar and strategy ready<br><br><em>"Tusi 95% logaan ton zyada jaande ho. 5 hafte baki ne &mdash; hor vi interesting hona!"</em></p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Week 4</h4>
+    <p>"Ih homework tuhada portfolio banaaunda hai."</p>
+    <ul>
+      <li><strong>1 complete reel/short video</strong> &mdash; edited with CapCut AI, ready to post</li>
+      <li><strong>1-week content calendar</strong> (7 posts planned with captions and design briefs)</li>
+      <li><strong>Optimize LinkedIn profile</strong> OR Instagram bio using AI</li>
+      <li><strong>Share your video</strong> in WhatsApp group</li>
+      <li><strong>Reel Challenge:</strong> Post your AI reel on Instagram this week. Tag @tarahut. Best reel gets featured!</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Week 4 &mdash; AI for Punjab's Industries</h4><p>"Agle hafte assi sikhange ki Punjab di real businesses &mdash; kiryana, clinic, tuition centre, farming &mdash; AI naal kive grow kar sakdiyan ne. Bring your family business idea or a local business you know about." <strong>Week 4 is where AI meets real Punjab business problems.</strong></p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%206%20AI%20Video%20and%20Branding!%20Week%203%20done!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">"3 hafte ho gaye, 5 baki ne. Tusi already bahut talented ho. Aage hor vi interesting hona!"</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="power-07.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 7: AI for Punjab &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 06: AI Video &amp; Branding &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Content creator mode activated! You are ready!':checked>=5?'Great progress! Almost there.':'Keep going — check off each item.'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into the tool →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+function copyBrandPrompt(){const txt=document.getElementById('brandPrompt').value.trim();if(!txt){document.getElementById('brandOut').textContent='⚠️ Tell me about yourself first.';return;}const prompt=`Based on this person's background: "${txt}"\n\nCreate a complete personal branding strategy:\n1. Personal brand statement (1 sentence — who you are and what you offer)\n2. Target audience (who needs your services)\n3. 3 content pillars (topics to consistently post about)\n4. LinkedIn headline and bio (professional)\n5. Instagram bio (creative with emojis)\n6. Elevator pitch (30-second spoken introduction)\n7. First 5 posts to establish your brand\n\nMake it specific to Punjab context and AI-powered services.`;document.getElementById('brandOut').textContent='✅ Copied! Paste into ChatGPT, Claude, or Gemini:\n\n'+prompt;navigator.clipboard.writeText(prompt).catch(()=>{});}
+
+const allQ=[
+  {q:"What makes CapCut especially good for beginners?",o:["It requires coding","It's free with no watermark and has AI features built in","It only works on desktop","It requires a monthly subscription"],a:1,e:"CapCut is free, produces videos without watermarks, and has built-in AI features like auto-captions, background removal, and music matching — perfect for beginners."},
+  {q:"What are the 3 points of the Personal Brand Triangle?",o:["Money, Fame, Power","WHO are you, WHAT do you offer, WHERE do people find you","Design, Video, Writing","Instagram, YouTube, TikTok"],a:1,e:"The Personal Brand Triangle: WHO (your story and angle), WHAT (your skills and services), WHERE (your platforms — LinkedIn, Instagram, etc.)."},
+  {q:"What is a good alternative for camera-shy creators?",o:["Don't create videos at all","Text/voice-over reels, screen recordings, or AI avatar videos with HeyGen","Only write blog posts","Wait until you're comfortable on camera"],a:1,e:"Camera-shy creators have many options: text reels with AI voiceover, screen recordings showing their work process, HeyGen AI avatars, or hands-only tutorial videos."},
+  {q:"What is the recommended content calendar structure for a week?",o:["Post the same thing every day","Educational, personal story, behind-scenes, showcase, reel, testimonial, engagement","Only promotional posts","Only on weekends"],a:1,e:"A balanced content calendar mixes educational content, personal stories, behind-the-scenes, portfolio showcases, videos, testimonials, and engagement posts throughout the week."},
+  {q:"How much can you charge for monthly social media management in Punjab?",o:["₹100-500","₹5,000-15,000","₹1,00,000+","It should always be free"],a:1,e:"Monthly social media management packages in Punjab range from ₹5,000-15,000, depending on the scope — including posts, stories, captions, design, and basic strategy."},
+  {q:"What does ElevenLabs do?",o:["Video editing","Text-to-speech with realistic AI voices","Photo editing","Music creation"],a:1,e:"ElevenLabs converts text to incredibly realistic speech. You can create voiceovers in multiple languages including Hindi without recording your own voice."},
+  {q:"Should you mention that your content is AI-assisted?",o:["Never — keep it secret","Yes — transparency builds trust and AI skill is a selling point","Only if asked directly","It depends on the client"],a:1,e:"Yes, transparency about AI usage builds trust. Being AI-skilled is a FEATURE, not a weakness. Clients value honesty and the efficiency AI brings."},
+  {q:"What is the best first step to start freelancing with content skills?",o:["Charge high prices immediately","Offer free work to 1-2 businesses, build portfolio, then start charging","Wait for clients to find you","Buy expensive equipment first"],a:1,e:"Start with free work for 1-2 local businesses to build your portfolio with real results. Then gradually start charging. 'Pehle naam banaao, phir daam lagao.'"},
+  {q:"What should a LinkedIn headline include?",o:["Just your name","Your AI skills, value proposition, and what you offer — under 120 characters","Your phone number","A joke or meme"],a:1,e:"A LinkedIn headline should quickly communicate your skills and value — for example: 'AI-Powered Digital Marketing | Design & Content Creator | Punjab' — under 120 characters."},
+  {q:"Which type of Instagram content gets the MOST reach?",o:["Static image posts","Carousels","Reels/short videos — 3x more reach than static posts","Stories only"],a:2,e:"Reels (short-form video) consistently get 3x more reach than static image posts on Instagram. That's why video creation skills are so valuable."},
+  {q:"What is HeyGen best used for?",o:["Photo editing","Creating AI avatar videos where a virtual person speaks your script","Music mixing","Spreadsheet automation"],a:1,e:"HeyGen creates talking avatar videos from text scripts — no camera needed. An AI-generated person speaks your script naturally in multiple languages."},
+  {q:"What is the purpose of Instagram Highlights?",o:["To hide old posts","To organize your best content into permanent categories on your profile","To delete stories","To block followers"],a:1,e:"Instagram Highlights let you organize your best story content into permanent categories on your profile — like Portfolio, Services, Reviews, AI Tips — making your profile work like a mini-website."},
+  {q:"How many posts should you plan in a content calendar?",o:["1 per month","7 per week (daily posting)","1 per week is enough","30 per day"],a:1,e:"A 7-day content calendar with daily posting is recommended for building a personal brand. Consistency matters more than volume — one good post per day builds momentum."},
+  {q:"What is the formula taught for a reel script?",o:["Just talk randomly","Hook + Problem + Solution + Call-to-Action","Only music, no talking","Just show your face for 30 seconds"],a:1,e:"Effective reel scripts follow: Hook (grab attention in 2 seconds), Problem (what the viewer struggles with), Solution (your offering), CTA (follow, DM, link in bio)."},
+  {q:"After 3 weeks of AI Power Program, what skills do students have?",o:["Only basic ChatGPT usage","Prompting, writing, design, video, and content strategy skills","Only theoretical knowledge","Just exam preparation"],a:1,e:"After 3 weeks, students have: CRISP prompting, professional writing, resume building, SOP drafting, Canva design, AI image generation, video editing, personal branding, and content strategy."},
+  {q:"What pricing strategy is recommended when starting out?",o:["Charge maximum from day one","Start free to build portfolio, then gradually increase prices as you get results","Never charge — always work for free","Only work for international clients"],a:1,e:"Start with 1-2 free projects to build your portfolio and get testimonials. Then charge ₹500-2,000 for initial paid work. Increase prices as your reputation grows."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Content Creator!';msg='Week 3 mastered! You are ready to build your brand.';}else if(pct>=50){tier='Good Progress!';msg='Review the sections and practice creating content.';}else{tier='Keep Creating!';msg='Revisit the video and branding sections above.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

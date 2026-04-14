@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5: AI Design &amp; Visual Content — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}.tool-card:hover::before{transform:scaleX(1)}.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}.tool-card .tool-link{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1);text-decoration:none}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}@media(max-width:600px){.vcompare{grid-template-columns:1fr}}.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}.vcompare-card:hover{transform:translateY(-4px)}.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}.vcompare-card.vs-wrong h4{color:var(--c3)}.vcompare-card.vs-right h4{color:var(--c5)}.vcompare-card p{color:var(--t2);font-size:.85rem}.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-left.visible{opacity:1;transform:translateX(0)}.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-right.visible{opacity:1;transform:translateX(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+@media(max-width:768px){.cgrid,.tool-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 05 &middot; AI Power Program &middot; 2026</div>
+  <h1>AI Naal Dikhao &mdash;<br><span class="gr">Design &amp; Visuals</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Create professional posters, logos, presentations, and social media graphics with AI &mdash; zero design experience needed. "30 minute pehle tuhanu design aundi nahi si. Hun tusi professionals ton better kar rahe ho."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner">
+  <span class="nav-brand">AI Power</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Why Design Matters</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>Canva AI Workshop</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>AI Image &amp; Logo Gen</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>Gamma Presentations</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+</div></nav>
+
+<!-- S1 -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Why Design Matters &mdash; <span class="gr">Even for Non-Designers</span></h2>
+    <p>"Punjab vich har business nu achha design chahida hai. Te koi provide nahi kar reha. Tusi kar sakde ho." Good design = more customers, more trust, more money.</p>
+  </div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">😬</div>
+      <h4>Bad Design: MS Paint Poster</h4>
+      <p>Cluttered text, random colors, low-quality images, no hierarchy. Looks unprofessional. Customers scroll past. "Kihda customer zyada aavega?"</p>
+      <div class="vc-badge">&#10005; Ignored</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">🤩</div>
+      <h4>AI Design: Professional Poster</h4>
+      <p>Clean layout, harmonious colors, professional fonts, clear call-to-action. Looks like a ₹5,000 design job. Made in 2 minutes with Canva AI.</p>
+      <div class="vc-badge">&#10003; Customers Stop</div>
+    </div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">📊</div><div class="call-body"><h4>Real Business Impact of Good Design</h4><p>&#8226; A <strong>Ludhiana gym</strong> with professional Instagram vs handwritten posters &mdash; 3x more inquiries<br>&#8226; A <strong>sweet shop</strong> with branded packaging vs plain boxes &mdash; customers pay 20% more<br>&#8226; A <strong>tuition centre</strong> with professional admission flyers &mdash; 40% more enrollments<br><br><em>"Design sirf sundar dikhna nahi &mdash; ih business da paisa hai."</em></p></div></div>
+
+  <div class="tool-grid">
+    <div class="tool-card reveal">
+      <span class="tag tag-brand">FREE &amp; POWERFUL</span>
+      <h3>🎨 Canva</h3>
+      <p>The #1 design tool for non-designers. AI-powered templates, Magic Write, background remover, brand kits. Free tier is incredibly generous.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Posters, social media, business cards, presentations</p>
+      <a class="tool-link" href="https://canva.com" target="_blank">&rarr; canva.com</a>
+    </div>
+    <div class="tool-card reveal">
+      <span class="tag tag-2">AI IMAGES</span>
+      <h3>🖼️ Leonardo AI</h3>
+      <p>Generate photo-realistic images from text descriptions. Free tier with daily credits. Professional quality for social media and marketing.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Product images, marketing visuals, concept art</p>
+      <a class="tool-link" href="https://leonardo.ai" target="_blank">&rarr; leonardo.ai</a>
+    </div>
+    <div class="tool-card reveal">
+      <span class="tag tag-4">LOGO &amp; TEXT</span>
+      <h3>✏️ Ideogram</h3>
+      <p>AI image generation with excellent text rendering. Perfect for logos, brand graphics, and designs that include text.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Logos, text-based designs, brand graphics</p>
+      <a class="tool-link" href="https://ideogram.ai" target="_blank">&rarr; ideogram.ai</a>
+    </div>
+    <div class="tool-card reveal">
+      <span class="tag tag-1">PRESENTATIONS</span>
+      <h3>📊 Gamma AI</h3>
+      <p>Complete professional presentations generated in seconds from a single prompt. Editable, exportable, stunning.</p>
+      <p><strong style="color:var(--t1)">Best for:</strong> Business pitches, project presentations, proposals</p>
+      <a class="tool-link" href="https://gamma.app" target="_blank">&rarr; gamma.app</a>
+    </div>
+  </div>
+
+  <div class="identity-shift">"Aaj tusi iho jihe designs seconds vich banaoge. Tusi hun designer ho."</div>
+  <p class="curiosity-hook">Next: Canva AI hands-on workshop &mdash; your first professional design.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Canva AI Workshop &rarr;</button></div>
+</div>
+
+<!-- S2: CANVA WORKSHOP -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! Now let's create your first professional design.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Canva AI &mdash; <span class="gr">Complete Design Workshop</span></h2>
+    <p>Step-by-step, everyone creates together. Open <a href="https://canva.com" target="_blank">canva.com</a> and follow along. "Sab kuch free hai. Account banao te shuru karo."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; Canva AI Design Workflow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">📱</div><div class="vn-label">Open Canva</div><div class="vn-sub">Sign up free</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">📐</div><div class="vn-label">Choose Template</div><div class="vn-sub">Instagram, poster, card</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">🪄</div><div class="vn-label">Magic Write</div><div class="vn-sub">AI generates content</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">🎨</div><div class="vn-label">Customize</div><div class="vn-sub">Colors, fonts, images</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink"><div class="vn-icon">📥</div><div class="vn-label">Download HD</div><div class="vn-sub">Ready to post</div></div>
+    </div>
+    <div class="vflow-caption"><strong>From blank canvas to professional design in under 5 minutes.</strong> "Tusi hun 90% designers ton faster ho."</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎨 Design Challenge 1: Diwali Sale Poster</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Follow along in Canva. Use Magic Write with this prompt:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a Diwali sale poster for a clothing store in Amritsar called Punjab Fashion House. 50% off all ethnic wear. Warm, festive colors — gold, red, orange. Include: Store name, discount percentage, dates (Oct 20-Nov 5), address, phone number placeholder. Professional, eye-catching, Instagram-ready.')">📋 Click to copy: Diwali sale poster for Punjab Fashion House, Amritsar. 50% off ethnic wear. Festive colors.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎨 Design Challenge 2: Business Card</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Design a professional business card for Dr. Harpreet Kaur, Dental Surgeon, Bathinda. Include: Name, qualification (BDS, MDS), clinic name (Smile Dental Care), phone, email, address, clinic timings. Clean, modern, medical-professional look. White and teal color scheme.')">📋 Click to copy: Business card for Dr. Kaur's dental clinic in Bathinda. Clean, modern, medical look.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎨 Design Challenge 3: Social Media Post Series</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create 3 Instagram post designs for a new gym in Patiala called FitPunjab:\n1. Grand opening announcement — date, free trial offer, location\n2. Transformation Tuesday — before/after template with motivational quote\n3. Membership pricing post — 3 tiers: Basic ₹1,500/mo, Premium ₹2,500/mo, Annual ₹20,000/yr\n\nColor scheme: Black, neon green, white. Energetic, modern, bold typography. Include call-to-action on each post.')">📋 Click to copy: 3 Instagram posts for FitPunjab gym in Patiala. Grand opening, transformation, pricing.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🎨 Design Challenge 4: Tuition Centre Flyer</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Design an admission flyer for Bright Future Academy, a coaching centre in Bathinda.\nSubjects: Class 10-12 Commerce (Accounts, Economics, Business Studies), IELTS Preparation, Computer Courses.\nHighlights: 95% result rate, experienced faculty, AC classrooms, limited batch size (15 students).\nContact: Phone, WhatsApp, address.\nStyle: Professional, trustworthy, education-focused. Blue and white color scheme. Include a \"Register Now\" call-to-action.')">📋 Click to copy: Admission flyer for coaching centre in Bathinda. Commerce + IELTS + Computer courses.</div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Design Showcase &mdash; Show Your Best Work</h4>
+    <p>Pick your best design from the challenges above. We'll display the top 5 on the projector. Class votes on the most professional design. "Dekho &mdash; 30 minute pehle tuhanu design aundi nahi si. Hun tusi professionals ton better kar rahe ho."</p>
+  </div>
+
+  <div class="micro-win">You just created multiple professional designs that would cost ₹500-2,000 each at a design agency.</div>
+  <p class="curiosity-hook">Next: AI image generation and logo design with Leonardo AI and Ideogram.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: AI Image &amp; Logo Gen &rarr;</button></div>
+</div>
+
+<!-- S3: AI IMAGE & LOGO GENERATION -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 50% through! Now let's generate images and logos from scratch.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>AI Image &amp; Logo Generation &mdash; <span class="gr">From Text to Visuals</span></h2>
+    <p>Type a description, get a professional image. No photography, no stock photos, no design skills. "Sirf likho ki chahida hai, AI bana dega."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🖼️ Leonardo AI: Photo-Realistic Image</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Open <a href="https://leonardo.ai" target="_blank">leonardo.ai</a> and try this prompt:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'A photo-realistic image of a traditional Punjabi dhaba with warm lighting, string lights, colorful charpoys, and steaming food on the table. Golden hour sunset in the background. Rural Punjab landscape with green fields visible. High quality, professional photography style.')">📋 Click to copy: Punjabi dhaba scene with warm lighting and rural landscape. Photo-realistic.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>✏️ Ideogram: Logo Design</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Open <a href="https://ideogram.ai" target="_blank">ideogram.ai</a> for logos with text:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'A modern, professional logo for a Punjabi food delivery startup called \"PindFoods\". The logo should include the text \"PindFoods\" clearly readable, incorporate a subtle Punjabi cultural element (wheat, mustard flower, or turban), use warm colors (orange, saffron, green), clean minimalist design suitable for an app icon and website.')">📋 Click to copy: Logo for PindFoods &mdash; Punjabi food delivery startup. Modern, with cultural elements.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🖼️ Your Own AI Image &mdash; Any Business</h4></div>
+    <textarea class="demo-in" id="imgPrompt" placeholder="Describe the image you want... e.g. 'A modern sweet shop interior in Punjab with glass displays and LED lighting' or 'A logo for my tuition centre called BrightMinds'"></textarea>
+    <button class="btn btn-glow btn-sm" onclick="copyImgPrompt()" style="margin-bottom:.75rem">📋 Copy Image Prompt</button>
+    <div class="demo-out" id="imgOut">Your image prompt will appear here &mdash; paste into Leonardo AI or Ideogram.</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">⚠️</div><div class="call-body"><h4>Copyright &amp; Usage Guidelines</h4><p><strong>When to use AI images:</strong> Social media posts, concepts, presentations, personal projects, brainstorming<br><strong>When to be careful:</strong> Product packaging for sale, print advertising (check each tool's license)<br><strong>Always:</strong> Mention "AI-generated" or "Created with AI tools" in professional contexts &mdash; transparency builds trust<br><br><em>"Canva free version vich basic designs vich watermark nahi aunda. Pro features vich aa sakda hai."</em></p></div></div>
+
+  <div class="micro-win">You just generated professional images and logos that would cost ₹2,000-5,000 from a designer.</div>
+  <p class="curiosity-hook">Next: Gamma AI presentations &mdash; complete pitch decks in 5 minutes.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Gamma Presentations &rarr;</button></div>
+</div>
+
+<!-- S4: GAMMA PRESENTATIONS + PRICING -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Now let's build complete presentations in minutes.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Gamma AI Presentations &amp; <span class="gr">Pricing Your Skills</span></h2>
+    <p>Complete professional presentations from a single prompt. Then learn what these skills are worth. "Tusi hun ih services bech sakde ho."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📊 Gamma: Business Pitch Deck</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Open <a href="https://gamma.app" target="_blank">gamma.app</a> (free). This will blow your mind:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a 10-slide business pitch for a mobile phone repair shop franchise in Punjab. Include:\n1. Title slide with business name \"FixKaro Punjab\"\n2. Problem: broken phones, long repair times, untrusted shops\n3. Solution: standardized, transparent, fast phone repair franchise\n4. Market size: smartphone users in Punjab, repair market value\n5. Business model: franchise fees, service charges, parts sourcing\n6. Competition analysis: what exists vs what we offer\n7. Revenue projections: monthly, yearly\n8. Investment needed: ₹5 lakh per franchise unit\n9. Team: founder background\n10. Call to action: invest, franchise, partner\n\nProfessional, modern, with data visualizations.')">📋 Click to copy: 10-slide pitch for FixKaro Punjab phone repair franchise. With market data and projections.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>📊 Gamma: College Project Presentation</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a professional presentation on \"Impact of Digital Marketing on Small Businesses in Punjab\" for a B.Com final year project.\n\nSlides needed:\n1. Title + student name placeholder\n2. Introduction to digital marketing\n3. Current state of small businesses in Punjab\n4. Research methodology\n5. Key findings (with charts)\n6. Case studies: 3 Punjab businesses that grew with digital marketing\n7. Challenges faced by small businesses\n8. Recommendations\n9. Conclusion\n10. References\n\nAcademic but visually appealing. Include relevant statistics.')">📋 Click to copy: B.Com project presentation on digital marketing in Punjab. Academic, with charts and case studies.</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Pricing Your Design Skills &mdash; Real Money</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-5">₹500-2,000</span><span class="crd-icon">🖼️</span><h3>Poster Design</h3><p>Festival posters, sale announcements, event promotions. Each takes 5-15 minutes with AI. Punjab businesses need these constantly. "Har festival te nava poster chahida hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">₹5,000-15,000/mo</span><span class="crd-icon">📱</span><h3>Social Media Management</h3><p>Monthly package: 20-30 posts, stories, captions, hashtags. Consistent branding. This is recurring income. "Har mahine paisa aunda rahnda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">₹1,500-5,000</span><span class="crd-icon">📊</span><h3>Presentation Design</h3><p>Business pitches, college projects, company profiles. Takes 10-20 minutes with Gamma AI. Charge ₹1,500-5,000 per deck.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">₹2,000-5,000</span><span class="crd-icon">✏️</span><h3>Logo Concepts</h3><p>AI-generated logo concepts with refinement. New businesses always need logos. "Fiverr te ih $10-50 vich bikdi ne."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">₹1,500-3,000</span><span class="crd-icon">💼</span><h3>Business Card &amp; Stationery</h3><p>Business card + letterhead + envelope design. One-time project per client. Professional branding package.</p></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Start Small, Build Portfolio</h4><p><strong>Step 1:</strong> Offer FREE work to 1-2 local businesses in your area<br><strong>Step 2:</strong> Build a portfolio of real work with real results<br><strong>Step 3:</strong> Start charging &mdash; ₹500 for first few, then increase<br><strong>Step 4:</strong> List on Fiverr/Upwork with your portfolio<br><br><em>"Pehle naam banaao, phir daam lagao." Free work builds reputation.</em></p></div></div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 5 Design Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🎨 Created Canva account and completed first design</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🖼️ Designed a festival/sale poster for a local business</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💼 Designed a professional business card</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📱 Created a social media post series (3+ designs)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🖼️ Generated an AI image using Leonardo AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>✏️ Created a logo concept using Ideogram</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📊 Built a complete presentation using Gamma AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💰 Understand pricing for design services</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📸 Shared best design in WhatsApp group</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>⚠️ Understand copyright and usage guidelines</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You can now create professional visual content faster than most trained designers. That's power.</div>
+  <p class="curiosity-hook">Next: Quiz &mdash; test your design knowledge.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Quiz time &mdash; test your AI design knowledge!</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Test Your <span class="gr">Design Knowledge</span></h2><p>8 questions randomly selected. Covers Canva, image generation, presentations, and pricing. "Har sawaal sikhaaunda hai."</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question reinforced a skill you'll use in freelancing and business.</div>
+  <p class="curiosity-hook">Next: Homework, earnings potential, and preview of Session 6.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2>Session 5 <span class="gr">Complete!</span></h2><p>"Tusi hun designer ho." Here's what you created, your homework, and what's next.</p></div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">🎨</span><div class="vi-label" style="color:var(--c5)">Canva AI</div><div class="vi-desc">Posters, cards, social media</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🖼️</span><div class="vi-label" style="color:var(--c1)">AI Images</div><div class="vi-desc">Leonardo, Ideogram</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">📊</span><div class="vi-label" style="color:var(--c2)">Gamma Decks</div><div class="vi-desc">Presentations in minutes</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">💰</span><div class="vi-label" style="color:var(--c4)">Pricing Skills</div><div class="vi-desc">₹500-15,000 per project</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Created Today</h4><p>&#9989; Professional posters with Canva AI<br>&#9989; Business cards and flyers<br>&#9989; Social media post series<br>&#9989; AI-generated images with Leonardo AI<br>&#9989; Logo concepts with Ideogram<br>&#9989; Complete presentations with Gamma AI<br>&#9989; Know the pricing for freelance design services<br>&#9989; Understand copyright and usage guidelines</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework: Build Your Design Portfolio</h4>
+    <p>"Ih designs tuhade portfolio da hissa bangiya. Kal video sikhange."</p>
+    <ul>
+      <li><strong>2 posters</strong> for local businesses (real or imagined)</li>
+      <li><strong>1 business card</strong> design</li>
+      <li><strong>1 presentation</strong> (5+ slides) using Gamma AI</li>
+      <li><strong>1 social media post series</strong> (3 coordinated posts)</li>
+      <li><strong>Share your best design</strong> in WhatsApp group &mdash; "Most likes wins a shoutout next class!"</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Session 6 &mdash; AI Video &amp; Personal Branding</h4><p>"Kal tusi apna pehla reel banaoge &mdash; CapCut AI naal. Instagram-ready. Te personal brand strategy sikhoge &mdash; LinkedIn, Instagram, content calendar. Tusi content creator ban rahe ho."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%205%20AI%20Design!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">📞 <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">🌐 <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">📍 Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">"Tuhada design portfolio shuru ho gaya hai! Kal video te personal branding &mdash; tusi content creator ban rahe ho."</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="power-06.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 6: AI Video &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 05: AI Design &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Design master! Your portfolio is growing!':checked>=5?'Great progress! Almost there.':'Keep creating — check off each item.'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into the design tool →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+function copyImgPrompt(){const txt=document.getElementById('imgPrompt').value.trim();if(!txt){document.getElementById('imgOut').textContent='⚠️ Describe the image you want first.';return;}const prompt=txt;document.getElementById('imgOut').textContent='✅ Copied! Paste into Leonardo AI or Ideogram:\n\n'+prompt;navigator.clipboard.writeText(prompt).catch(()=>{});}
+
+const allQ=[
+  {q:"What is Canva BEST suited for?",o:["Video editing","Posters, social media, business cards, and presentations","3D animation","Music production"],a:1,e:"Canva is the #1 tool for non-designers to create professional posters, social media graphics, business cards, presentations, and more — all with AI assistance."},
+  {q:"What is Canva's 'Magic Write' feature?",o:["A handwriting font","AI that generates text content for your designs","A spelling checker","A drawing tool"],a:1,e:"Magic Write is Canva's AI feature that generates text content — headlines, descriptions, captions — based on your prompt, directly within your design."},
+  {q:"What is Ideogram BEST at compared to other AI image tools?",o:["Video creation","Photo editing","Text rendering in images — perfect for logos","Music generation"],a:2,e:"Ideogram excels at generating images with readable, accurate text — making it ideal for logos, brand graphics, and designs where text needs to be clear and correct."},
+  {q:"How much can you charge for a social media management package in Punjab?",o:["₹100-500/month","₹5,000-15,000/month","₹50,000-100,000/month","Social media should always be free"],a:1,e:"Social media management packages in Punjab typically range from ₹5,000-15,000 per month — including 20-30 posts, stories, captions, and hashtags. This is recurring monthly income."},
+  {q:"What is Gamma AI used for?",o:["Photo editing","Creating complete presentations from a single prompt","Social media scheduling","Email marketing"],a:1,e:"Gamma AI generates complete, professional presentations from a text prompt — including slides, layouts, charts, and content. A 10-slide deck in under 5 minutes."},
+  {q:"Which tool would you use to generate a photo-realistic image of a Punjab scene?",o:["Canva","Microsoft Word","Leonardo AI","Google Docs"],a:2,e:"Leonardo AI generates photo-realistic images from text descriptions. It's perfect for creating marketing visuals, product concepts, and scene illustrations."},
+  {q:"What should you mention when using AI-generated images professionally?",o:["Nothing — keep it secret","'AI-generated' or 'Created with AI tools' — transparency builds trust","Claim you drew it yourself","Don't use AI images at all"],a:1,e:"Transparency is key. Mentioning that images are AI-generated builds trust with clients and audiences. It's a feature of your skillset, not a weakness."},
+  {q:"What is the recommended first step to start freelancing with design skills?",o:["Immediately charge ₹10,000 per project","Offer FREE work to 1-2 local businesses to build portfolio","Wait until you're an expert","Buy expensive design software"],a:1,e:"Start by offering free work to 1-2 local businesses. Build a portfolio of real results. Then start charging. 'Pehle naam banaao, phir daam lagao.'"},
+  {q:"How long does it take to create a professional poster with Canva AI?",o:["2-3 hours","5-15 minutes","1 week","At least 1 hour"],a:1,e:"With Canva AI templates and Magic Write, a professional poster can be created in 5-15 minutes — from template selection to customization to download."},
+  {q:"What makes a good AI image generation prompt?",o:["Just one word like 'food'","Detailed description with style, colors, mood, and specific elements","As short as possible","Only technical photography terms"],a:1,e:"Good image prompts include specific details: subject, style, colors, mood, lighting, composition. The more specific, the better the AI output."},
+  {q:"What is the typical price range for logo concepts using AI tools?",o:["₹50-100","₹2,000-5,000","₹50,000+","Logos should be free"],a:1,e:"Logo concepts created with AI tools like Ideogram typically sell for ₹2,000-5,000. On Fiverr, similar services go for $10-50 internationally."},
+  {q:"Why is design important for small businesses in Punjab?",o:["It's not important","Good design = more customers, more trust, more money","Only big companies need design","Design is just decoration"],a:1,e:"Good design directly impacts business success: professional-looking businesses attract 3x more customers, command higher prices, and build trust instantly."},
+  {q:"What is the best approach for a complete design portfolio?",o:["One type of design only","Mix of posters, cards, social media, presentations, and logos","Only logos","Only presentations"],a:1,e:"A strong portfolio shows variety — posters, business cards, social media posts, presentations, and logo concepts. This demonstrates versatility and attracts diverse clients."},
+  {q:"How many free designs can you typically create with Canva's free tier?",o:["Only 1","3-5 per month","Unlimited basic designs with free templates and elements","None — Canva is paid only"],a:2,e:"Canva's free tier allows unlimited designs using free templates and elements. Only certain premium elements and features require a paid plan."},
+  {q:"What is the key difference between Leonardo AI and Ideogram?",o:["One is free, the other isn't","Leonardo excels at photo-realistic images; Ideogram excels at text in images","They are exactly the same","One is for videos, the other for images"],a:1,e:"Leonardo AI specializes in photo-realistic and artistic image generation, while Ideogram specializes in images with clear, readable text — making it better for logos and branded graphics."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Design Master!';msg='You are ready to create professional visual content!';}else if(pct>=50){tier='Good Progress!';msg='Practice more with each tool to build confidence.';}else{tier='Keep Creating!';msg='Revisit the tool sections above and practice.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

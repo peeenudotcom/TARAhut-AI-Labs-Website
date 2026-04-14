@@ -138,21 +138,59 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 .badge-sonnet{background:rgba(0,240,255,.12);color:var(--c1)}
 .badge-haiku{background:rgba(52,211,153,.12);color:var(--c5)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 01 &middot; Master Claude in 15 Days</div>
-  <h1>Understanding<br><span class="gr">Claude</span></h1>
+  <h1>
+    <span data-lang-en>Understanding<br><span class="gr">Claude</span></span>
+    <span data-lang-hi style="display:none"><span class="gr">Claude</span><br>को समझें</span>
+    <span data-lang-pa style="display:none"><span class="gr">Claude</span><br>ਨੂੰ ਸਮਝੋ</span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Claude is not just another chatbot. It's the most sophisticated AI assistant available today &mdash; and knowing how it thinks differently gives you an immediate advantage.</p>
+  <div data-lang-en><p>Claude is not just another chatbot. It's the most sophisticated AI assistant available today &mdash; and knowing how it thinks differently gives you an immediate advantage.</p></div>
+  <div data-lang-hi style="display:none"><p>Claude सिर्फ एक और चैटबॉट नहीं है। यह आज उपलब्ध सबसे उन्नत AI असिस्टेंट है &mdash; और यह समझना कि यह अलग कैसे सोचता है, आपको तुरंत फायदा देता है।</p></div>
+  <div data-lang-pa style="display:none"><p>Claude ਸਿਰਫ਼ ਇੱਕ ਹੋਰ ਚੈਟਬੋਟ ਨਹੀਂ ਹੈ। ਇਹ ਅੱਜ ਉਪਲਬਧ ਸਭ ਤੋਂ ਵਧੀਆ AI ਅਸਿਸਟੈਂਟ ਹੈ &mdash; ਅਤੇ ਇਹ ਸਮਝਣਾ ਕਿ ਇਹ ਵੱਖਰੇ ਤਰੀਕੇ ਨਾਲ ਕਿਵੇਂ ਸੋਚਦਾ ਹੈ, ਤੁਹਾਨੂੰ ਤੁਰੰਤ ਫਾਇਦਾ ਦਿੰਦਾ ਹੈ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 1 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 1 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 1 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 1 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -429,6 +467,23 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 </div>
 
 <script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  // Show/hide lang-specific elements
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+// Restore saved language
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 // === COPY PROTECTION ===
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});

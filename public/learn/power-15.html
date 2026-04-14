@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 15: Capstone Project Building — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(0,240,255,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 15 &middot; AI Power Program &middot; 2026</div>
+  <h1>Capstone<br><span class="gr">Project Building</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Build your masterpiece. Polish your portfolio. Prepare to present to the world. "Aaj da din &mdash; build day hai. Let's make it count."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Building &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Portfolio Website</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Capstone Building</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Portfolio Completion</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Presentation Prep</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Demo Day Ready</button>
+  </div>
+</nav>
+
+<!-- S1: PORTFOLIO WEBSITE SETUP -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Portfolio <span class="gr">Website Setup</span></h2>
+    <p>Your portfolio website is your professional identity online. A real URL you can share with employers, clients, and the world. Let's build it in 10 minutes.</p>
+  </div>
+
+  <div class="vcompare reveal">
+    <div class="vcompare-card vs-wrong">
+      <div class="vc-icon">📄</div>
+      <h4>No Portfolio</h4>
+      <p>"Main kaam kar sakdaan" &mdash; but no proof. No website, no samples, no credibility. Clients and employers move on.</p>
+      <div class="vc-badge">&#10005; Invisible</div>
+    </div>
+    <div class="vcompare-card vs-right">
+      <div class="vc-icon">🌐</div>
+      <h4>Live Portfolio Website</h4>
+      <p>"Here's my portfolio: yourname.carrd.co" &mdash; professional, credible, shareable. Clients see proof. Employers are impressed.</p>
+      <div class="vc-badge">&#10003; Professional</div>
+    </div>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">OPTION 1</span><span class="crd-icon">🚀</span><h3>Carrd.co (Simplest)</h3><p>Free one-page portfolio site. <strong>5 minutes to set up.</strong> Sections: About Me, Skills, Projects, Contact. Perfect for beginners who want something live today.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">OPTION 2</span><span class="crd-icon">📑</span><h3>Google Sites (Free, Multi-page)</h3><p>Free multi-page portfolio. More room for project details. Clean, professional look. Good if you have <strong>5+ projects to showcase</strong>.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Portfolio About Me Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate your professional About Me section instantly:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write the About Me section for my portfolio website. I am [your name], a [your background, e.g., B.Com graduate] from Punjab. I specialize in AI-powered [your services: content creation, digital marketing, automation, chatbot building]. I completed the AI Power Program at TARAhut AI Labs. Professional, modern, confident tone. 150 words max.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Tuhadi About section tuhadi kahani hai &mdash; AI onu professional bananda hai."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Portfolio Project Description Writer</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Write compelling descriptions for each project in your portfolio:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a portfolio project description. Project: [e.g., AI-powered social media strategy for a Ludhiana textile business]. What I did: [briefly describe]. Tools used: [ChatGPT, Canva, Zapier]. Results: [e.g., created 30-day content calendar, 15 posts, automated posting workflow]. Write it in 3rd person, professional tone, 80 words max. Include bullet points for key achievements.</div>
+    <p style="color:var(--t3);font-size:.8rem">Each project description = proof of your skills. Quality over quantity.</p>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What to Include on Your Portfolio</h4><p>&#10004; <strong>About Me</strong> &mdash; who you are, what you do<br>&#10004; <strong>Skills</strong> &mdash; AI tools, design, automation, content<br>&#10004; <strong>Projects</strong> &mdash; 3-5 best pieces from the program<br>&#10004; <strong>Testimonials</strong> &mdash; from field research businesses, accountability partners<br>&#10004; <strong>Contact</strong> &mdash; email, phone, LinkedIn, WhatsApp</p></div></div>
+
+  <div class="micro-action">
+    <h4>Start Building NOW</h4>
+    <p>Open Carrd.co or Google Sites right now. Create your portfolio using the AI-generated About Me section. Add your top 3 projects. This is not optional &mdash; your portfolio goes live today.</p>
+  </div>
+
+  <div class="micro-win">Your portfolio website is being built right now. When it goes live, you'll have a real URL to share with the world.</div>
+
+  <p class="curiosity-hook">Next: Deep-dive into your capstone project.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Capstone Building &rarr;</button></div>
+</div>
+
+<!-- S2: CAPSTONE BUILDING -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Portfolio website started! Now focus on your capstone masterpiece.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Capstone <span class="gr">Project Building</span></h2>
+    <p>40 minutes of focused building time. Polish your capstone, create demos, prepare before/after screenshots. This is your masterpiece.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:1rem 0;">Your Capstone Option &mdash; Build Guide</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">OPTION A</span><span class="crd-icon">🏢</span><h3>AI Solution for Punjab Business</h3><p>Polish the business plan. Create <strong>live demos</strong> of your AI solutions. Prepare before/after screenshots showing impact. "Dikhaao ki tuhada AI kaam karda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">OPTION B</span><span class="crd-icon">💼</span><h3>Freelancing Agency Kit</h3><p>Finalize portfolio pieces. Ensure <strong>Fiverr/Upwork profiles are perfect</strong>. Create sample proposals. Show 3 completed client-ready deliverables.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">OPTION C</span><span class="crd-icon">🤖</span><h3>Chatbot + Automation</h3><p>Test the chatbot thoroughly. <strong>Document the automation flow</strong> with screenshots. Prepare a live demo that works flawlessly under pressure.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">OPTION D</span><span class="crd-icon">📱</span><h3>Content Brand Launch</h3><p>Schedule content. Finalize branding identity. Show <strong>content calendar and samples</strong>. Demonstrate the full content creation workflow.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">OPTION E</span><span class="crd-icon">✈️</span><h3>Study Abroad Kit</h3><p>Polish SOPs. Organize <strong>university comparison research</strong>. Show research quality and application-ready documents.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Capstone Problem Statement Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Craft a clear, compelling problem statement for your capstone:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Help me write a compelling problem statement for my capstone project. My project is about [describe your project]. The problem I'm solving is [describe the pain point]. My target audience is [who benefits]. Write it in 3-4 sentences that are clear, specific, and make the audience care about the solution. Use language suitable for a presentation to business owners and faculty.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Problem clear hai ta solution impressive lagda hai."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Before/After Impact Slide Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Create a powerful comparison for your presentation:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Create a "Before AI vs After AI" comparison for my capstone project: [describe what you built]. Show the old way (manual, slow, expensive) vs the new way (AI-powered, fast, efficient). Include specific time savings, cost savings, and quality improvements. Format as two columns with bullet points. Make it visual and impactful for a Demo Day presentation.</div>
+    <p style="color:var(--t3);font-size:.8rem">Before/After comparisons are the most powerful slide in any pitch.</p>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128736;</div><div class="call-body"><h4>Quality Over Quantity</h4><p>3 polished portfolio pieces are better than 5 mediocre ones. Focus on your <strong>best work</strong>. Each piece should demonstrate a different skill: one for writing, one for design, one for automation. "Kam kaam, par best kaam."</p></div></div>
+
+  <div class="micro-action">
+    <h4>40-Minute Focus Sprint</h4>
+    <p>Set a timer. No phone checking. No social media. Pure focused building for the next 40 minutes. This is your capstone &mdash; make it count.</p>
+    <ul>
+      <li><strong>Minutes 1-15:</strong> Polish your core deliverable</li>
+      <li><strong>Minutes 16-30:</strong> Create screenshots and demo materials</li>
+      <li><strong>Minutes 31-40:</strong> Write project descriptions for portfolio</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You are building something real. When this is done, you'll have proof of what you can do &mdash; not just claims.</div>
+
+  <p class="curiosity-hook">Next: Complete your portfolio website and make it live.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Portfolio Completion &rarr;</button></div>
+</div>
+
+<!-- S3: PORTFOLIO COMPLETION -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% through! Capstone is taking shape. Now make your portfolio live.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Portfolio <span class="gr">Website Completion</span></h2>
+    <p>Upload all project screenshots, add your capstone description, include testimonials, and test on mobile. Your website goes LIVE today.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#127760; Portfolio Completion Checklist</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">📸</div>
+        <div class="vn-label">Screenshots</div>
+        <div class="vn-sub">All projects uploaded</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">📝</div>
+        <div class="vn-label">Descriptions</div>
+        <div class="vn-sub">AI-written, you-edited</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">💬</div>
+        <div class="vn-label">Testimonials</div>
+        <div class="vn-sub">From businesses/peers</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">📱</div>
+        <div class="vn-label">Mobile Test</div>
+        <div class="vn-sub">Looks good on phone</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">🚀</div>
+        <div class="vn-label">GO LIVE</div>
+        <div class="vn-sub">Share with the world</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>When you see your work on a real URL you can share &mdash; that's graduation-level pride.</strong></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Testimonial Request Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Ask businesses and peers for testimonials to add to your portfolio:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a polite WhatsApp message asking a business owner I helped during the AI Power Program for a short testimonial I can add to my portfolio website. I helped them with [describe what you did: e.g., created their social media content calendar, built a chatbot for customer queries]. Keep it casual, respectful, and in Hinglish. Ask them to write 2-3 sentences about the quality of my work.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Testimonials = trust. Real words from real people who saw your work."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Portfolio Review Prompt</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Get AI to review your portfolio before going live:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Review my portfolio website content. I'm a recent graduate showcasing AI skills. Here's my About Me: [paste]. Here are my project descriptions: [paste]. Give me specific feedback: (1) Is it professional enough? (2) Any grammar issues? (3) Does it clearly communicate my value? (4) What's missing? (5) Rate it out of 10 and suggest 3 improvements.</div>
+    <p style="color:var(--t3);font-size:.8rem">AI reviews your portfolio before the world sees it. Fix issues now, not after Demo Day.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Final Portfolio Push</h4>
+    <p>Spend the next 20 minutes completing these tasks:</p>
+    <ul>
+      <li><strong>Upload all project screenshots/links</strong> to your website</li>
+      <li><strong>Add your capstone project description</strong></li>
+      <li><strong>Include at least 1 testimonial</strong> (or send the request now)</li>
+      <li><strong>Add contact information</strong> &mdash; email, phone, LinkedIn, WhatsApp</li>
+      <li><strong>Test on mobile</strong> &mdash; open your website on your phone</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">Your portfolio is LIVE. You now have a professional URL to share with anyone, anywhere. That's real credibility.</div>
+
+  <p class="curiosity-hook">Next: Prepare your 5-minute Demo Day presentation.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Presentation Prep &rarr;</button></div>
+</div>
+
+<!-- S4: PRESENTATION PREP -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Portfolio live. Now nail your Demo Day presentation.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Demo Day <span class="gr">Presentation Prep</span></h2>
+    <p>5 minutes on stage. That's all you get. Make every second count. Practice in pairs, time strictly, deliver with confidence.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#127916; The 5-Minute Presentation Structure</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">👋</div>
+        <div class="vn-label">0:00 &ndash; 0:30</div>
+        <div class="vn-sub">Introduction</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">❓</div>
+        <div class="vn-label">0:30 &ndash; 1:30</div>
+        <div class="vn-sub">The Problem</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">🤖</div>
+        <div class="vn-label">1:30 &ndash; 3:30</div>
+        <div class="vn-sub">AI Solution — LIVE DEMO</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">📊</div>
+        <div class="vn-label">3:30 &ndash; 4:30</div>
+        <div class="vn-sub">Results & Impact</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">🚀</div>
+        <div class="vn-label">4:30 &ndash; 5:00</div>
+        <div class="vn-sub">What's Next</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>5 minutes. Strict timing. Tell your story, show your work, inspire the audience.</strong></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Presentation Script Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate your presentation script with perfect timing:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a 5-minute Demo Day presentation script for me. My project: [describe your capstone]. Problem I solved: [the pain point]. My AI solution: [what you built/demonstrated]. Results: [time saved, quality improved, etc.]. Structure it with exact timing markers: Introduction (30 seconds), Problem (1 minute), Solution with live demo cues (2 minutes), Results (1 minute), What's Next (30 seconds). Tone: confident, professional, with a touch of Punjabi warmth. Include a strong opening line and closing statement.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Script tayyar hai ta confidence apne aap aunda hai."</p>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">&#9201;</div><div class="call-body"><h4>The 5-Minute Rule</h4><p>Your presentation is <strong>strictly 5 minutes</strong>. Not 6, not 7. Practice with a timer. If you're going over, cut content &mdash; don't speak faster. The audience includes business owners, parents, media, and faculty. <strong>Respect their time = earn their respect.</strong></p></div></div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="crd-icon">🎯</span><h3>Strong Opening</h3><p>"Sat Sri Akal! Main [name], te main [one sentence about what you built]." <strong>Hook them in 10 seconds.</strong> No "umm" or "actually."</p></div>
+    <div class="crd reveal"><span class="crd-icon">📱</span><h3>Live Demo</h3><p>The most important part. <strong>Show, don't tell.</strong> Open ChatGPT/Canva/Zapier and demonstrate your solution working in real-time. Have a backup screenshot ready.</p></div>
+    <div class="crd reveal"><span class="crd-icon">💪</span><h3>Strong Closing</h3><p>"8 hafte pehle main AI nahi jaanda/jaandi si. Aaj main [what you can do]. Shukriya, TARAhut AI Labs." <strong>End with confidence.</strong></p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Practice Pairs &mdash; Right Now</h4>
+    <p>Find a partner. Practice your 5-minute presentation. Time each other strictly. Give honest feedback: Was the demo clear? Did they finish on time? Was the opening strong? Practice again. Then once more.</p>
+  </div>
+
+  <div class="checklist">
+    <h4>&#128203; Demo Day Readiness Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Portfolio website is live and tested on mobile</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Capstone project is complete with all deliverables</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>5-minute presentation script is ready</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Live demo is tested and working</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Backup screenshots ready (in case demo fails)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Practiced with a partner at least once</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Timed myself &mdash; under 5 minutes</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Smart casual outfit planned for tomorrow</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Laptop fully charged for Demo Day</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Before/after comparison slide ready</label></div>
+    <div class="check-score" id="checkScore">Tap items to track your Demo Day readiness &rarr; your score will appear here</div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128197;</div><div class="call-body"><h4>Demo Day Logistics</h4><p>&#10004; <strong>Arrival:</strong> 30 minutes before start<br>&#10004; <strong>Dress code:</strong> Smart casual (look professional)<br>&#10004; <strong>Bring:</strong> Laptop (charged), phone, portfolio printout (optional)<br>&#10004; <strong>Audience:</strong> Business owners, parents, college faculty, media<br>&#10004; <strong>Awards:</strong> Best Business Impact, Most Creative, Best Portfolio<br>&#10004; <strong>Certificate ceremony</strong> after all presentations<br><br>"Kal tuhade life da ik special din hovega. Enjoy karo. Tusi hun ready ho."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"8 hafte pehle tusi ek classroom vich baithe si jinna nu AI kya hai pata nahi si. Kal tusi stage te khade ho ke duniya nu dikhaaoge ki tusi ki sikheya hai. Main tuhade te proud haan. Kal best dikhaaoge."</strong></p>
+  </div>
+
+  <div class="identity-shift">Tomorrow you stand on stage and show the world what you built. You are not just a student anymore &mdash; you are a creator, a builder, an AI professional.</div>
+
+  <p class="curiosity-hook">Next: Quick quiz to test your capstone knowledge.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quick knowledge check before Demo Day.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Capstone Readiness</span></h2>
+    <p>15 questions about portfolio building, capstone projects, presentations, and Demo Day strategy. Are you ready?</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every answer reinforced your readiness. You're prepared for Demo Day.</div>
+  <p class="curiosity-hook">Next: Final checklist and see you at Demo Day!</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Demo Day Ready &rarr;</button></div>
+</div>
+
+<!-- S6: DEMO DAY READY -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 15 <span class="gr">Complete!</span></h2>
+    <p>Your capstone is built. Your portfolio is live. Your presentation is practiced. You are ready for Demo Day.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🌐</span><div class="vi-label" style="color:var(--c1)">Portfolio Live</div><div class="vi-desc">Real URL, real work</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">🏆</span><div class="vi-label" style="color:var(--c2)">Capstone Done</div><div class="vi-desc">Masterpiece complete</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">🎤</span><div class="vi-label" style="color:var(--c5)">Presentation Ready</div><div class="vi-desc">5 min, polished</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">😎</span><div class="vi-label" style="color:var(--c4)">Confidence High</div><div class="vi-desc">Practiced & prepared</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>FINAL Homework &mdash; Before Demo Day</h4><p>&#10004; <strong>Practice your 5-minute presentation 3 times</strong> at home<br>&#10004; <strong>Get feedback from family or friend</strong> on your delivery<br>&#10004; <strong>Make final edits to your portfolio website</strong><br>&#10004; <strong>Charge your laptop fully</strong><br>&#10004; <strong>Plan your smart casual outfit</strong><br>&#10004; <strong>Come to Demo Day with full confidence</strong><br><br>"Tusi hun ready ho. Kal duniya nu dikhaao ki Punjab de pehle AI-trained batch ki kar sakde ne."</p></div></div>
+
+  <div class="callout call-2"><div class="call-ico">&#127881;</div><div class="call-body"><h4>Preview: Session 16 &mdash; DEMO DAY &amp; CERTIFICATION</h4><p>Tomorrow is <strong>THE grand finale!</strong> Student presentations, guest remarks, awards ceremony, <strong>certificate distribution</strong>, group photo, and celebration. Bring your best self, your best work, and your biggest smile. <strong>"8 hafte da safar &mdash; kal complete hunda hai. Enjoy karo!"</strong></p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%2015%20of%20AI%20Power%20Program!%20Ready%20for%20Demo%20Day!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"8 hafte pehle tusi ik classroom vich baithe si jinna nu AI kya hai pata nahi si. Kal tusi stage te khade ho ke duniya nu dikhaaoge ki tusi ki sikheya hai. Main tuhade te proud haan."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 15: Capstone Project Building &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade')){el.classList.add('reveal');}
+  });
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(parent=>{parent.querySelectorAll(':scope > *').forEach(child=>{if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right')){child.classList.add('reveal');}});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]&&!cards[0].classList.contains('reveal-left')){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]&&!cards[1].classList.contains('reveal-right')){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}
+initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger')){e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}
+observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`Demo Day readiness: ${checked}/${total} items complete — ${pct}% ready to present!`;}
+
+function copyPrompt(el){const text=el.textContent.replace('📋 ','');navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+const qData=[
+  {q:"What is the most important thing about a portfolio website?",o:["It must be very long","It must have a real URL, professional content, and showcase your best work as proof of skills","It should have as many pages as possible","It only matters if you're a designer"],a:1,e:"A portfolio website is your proof of competence. A real URL you can share with anyone, showcasing your best work professionally. 'Jado tuhada kaam website te hai, oh real hai.'"},
+  {q:"Which portfolio platform is simplest for a beginner?",o:["WordPress (self-hosted)","Carrd.co — free, one-page site, live in 5 minutes","Custom coded HTML","Shopify"],a:1,e:"Carrd.co is the simplest option — create a professional one-page portfolio in 5 minutes for free. About Me, Skills, Projects, Contact — that's all you need to start."},
+  {q:"What should the About Me section of your portfolio include?",o:["Your entire life story from childhood","Your name, background, AI skills, what services you offer, and professional confidence — written with AI help and personalized by you","Just your name and phone number","A photo only"],a:1,e:"A strong About Me covers who you are, your background, your skills, and what you can do for clients/employers. AI writes the draft, you add the personal touch."},
+  {q:"How many portfolio pieces should you prioritize?",o:["As many as possible, even if some are mediocre","3-5 polished, high-quality pieces that each demonstrate a different skill","Only 1 piece","At least 20 pieces"],a:1,e:"Quality over quantity. 3 polished pieces that each showcase different skills (writing, design, automation) are more impressive than 5 mediocre ones. 'Kam kaam, par best kaam.'"},
+  {q:"What is the Demo Day presentation time limit?",o:["10 minutes","Strictly 5 minutes — not 6, not 7","No time limit","2 minutes"],a:1,e:"5 minutes, strictly timed. If you go over, you get cut off. Practice with a timer. Cut content rather than speaking faster. Respect the audience's time."},
+  {q:"What is the correct structure for the 5-minute presentation?",o:["Just talk about whatever comes to mind","Introduction (30s) → Problem (1min) → AI Solution with Live Demo (2min) → Results (1min) → What's Next (30s)","Start with your resume, then read it","Only show slides, no talking"],a:1,e:"The structured format ensures every presentation is compelling: hook them, show the problem, demonstrate your AI solution LIVE, prove results, and end with vision. Each section has a strict time allocation."},
+  {q:"What is the most important part of the Demo Day presentation?",o:["The introduction","The live demo — showing your AI solution working in real-time is more convincing than any slide or description","The closing","The outfit you wear"],a:1,e:"Show, don't tell. A live demo where the audience SEES your AI solution working is the most powerful moment. Have backup screenshots ready in case of technical issues."},
+  {q:"Why should you include testimonials on your portfolio?",o:["They fill space on the page","Real words from real people who experienced your work build trust and credibility faster than self-promotion","It's required by the program","They make the website load faster"],a:1,e:"Testimonials are social proof. When a business owner says your work was valuable, that's more convincing than anything you say about yourself. 'Testimonials = trust.'"},
+  {q:"What should you do if your live demo fails during the presentation?",o:["Panic and apologize for 2 minutes","Smoothly switch to your backup screenshots and continue — 'Let me show you what this looks like'","Walk off the stage","Start the demo over from scratch"],a:1,e:"Always have backup screenshots ready. If the demo fails, seamlessly switch to visuals. The audience won't mind — what matters is that you handle it professionally and keep going."},
+  {q:"Who will be in the Demo Day audience?",o:["Only classmates","Business owners, parents, media, and college faculty — real stakeholders who can offer opportunities","No one special","Only the instructor"],a:1,e:"The audience includes people who matter: business owners (potential clients), parents (who see the transformation), media (publicity), and faculty (credibility). This is real-world exposure."},
+  {q:"What are the Demo Day awards?",o:["Everyone gets the same award","Best Business Impact, Most Creative Use of AI, Best Portfolio — recognizing different types of excellence","No awards are given","Only the instructor gets an award"],a:1,e:"Three distinct awards celebrate different strengths: practical impact, creativity, and professional presentation. Each student can win based on their unique approach."},
+  {q:"How should you test your portfolio website before Demo Day?",o:["Don't test it — it's probably fine","Open it on your phone, check all links work, read every description, and have someone else review it with fresh eyes","Only check on desktop","Just check the spelling"],a:1,e:"Mobile testing is crucial — most people will view on phones. Check links, read descriptions, and get a fresh-eyes review. AI can also review your content for professionalism."},
+  {q:"What's the best way to handle stage fright at Demo Day?",o:["Don't present","Remember that the audience is full of supporters, not judges. Practice 3 times at home. Use notes if needed. Drink water.","Imagine everyone in their underwear","Speak as fast as possible to get it over with"],a:1,e:"'Sab tuhade supporters ne, judges nahi.' Practice builds confidence. Notes are allowed. Water helps with dry mouth. The more you practice, the less nervous you'll be."},
+  {q:"What should you bring to Demo Day?",o:["Nothing — the instructor provides everything","Laptop (fully charged), phone, portfolio URL, presentation ready, and yourself dressed in smart casual","A printed essay about AI","Snacks for everyone"],a:1,e:"Come prepared: charged laptop for your live demo, phone as backup, your portfolio URL memorized, and professional appearance. Smart casual dress code shows you take it seriously."},
+  {q:"What makes a strong opening line for your presentation?",o:["'Um, hi, my name is...'","A confident, specific statement: 'Sat Sri Akal! Main [name], te aaj main tuhanu dikhaaonga/dikhaaongi ki AI naal [specific achievement]'","Reading your entire resume","Apologizing for being nervous"],a:1,e:"A strong opening hooks the audience in 10 seconds. Be specific about what you built. No filler words. Confidence + specificity = impressive first impression."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Demo Day Ready!';tierColor='var(--brand)';msg='You are prepared to deliver an outstanding presentation. Go show the world!';}
+    else if(pct>=50){tier='Almost Ready!';tierColor='var(--c1)';msg='Good progress. Review your presentation structure and practice one more time.';}
+    else{tier='Need More Practice!';tierColor='var(--c4)';msg='Review the presentation prep section. Practice your 5-minute presentation with a timer.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

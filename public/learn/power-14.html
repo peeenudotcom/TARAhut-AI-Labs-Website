@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 14: Future-Proofing & AI Agents — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(0,240,255,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 14 &middot; AI Power Program &middot; 2026</div>
+  <h1>Future-Proofing &amp;<br><span class="gr">AI Agents</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Look ahead. Learn the skills that will matter in 2027, not just today. "Tusi pehle wave vich ho. Rukna nahi &mdash; AI har mahine evolve hunda hai."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>AI Landscape 2027</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>AI Agents</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Voice AI & Staying Updated</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Skill Stack & Roadmap</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: AI LANDSCAPE 2027 -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>The AI Landscape <span class="gr">2026&ndash;2027</span></h2>
+    <p>Where AI is going &mdash; and why the foundation you built in this program puts you miles ahead. "Jo aaj sikheya hai, oh foundation hai. Par rukna nahi."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#127758; The 5 Mega-Trends Shaping AI</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">🤖</div>
+        <div class="vn-label">AI Agents</div>
+        <div class="vn-sub">AI that DOES things</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🗣️</div>
+        <div class="vn-label">Voice AI</div>
+        <div class="vn-sub">Natural conversations</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">📱</div>
+        <div class="vn-label">AI Everywhere</div>
+        <div class="vn-sub">Word, Excel, Google</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">🧠</div>
+        <div class="vn-label">Personal AI</div>
+        <div class="vn-sub">Knows your business</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">⚖️</div>
+        <div class="vn-label">AI Regulation</div>
+        <div class="vn-sub">Government rules</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>You are riding the first wave.</strong> These 5 trends will define the next 3 years of opportunity.</div>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">TREND 1</span><span class="crd-icon">🤖</span><h3>AI Agents</h3><p>AI that doesn't just answer questions &mdash; it <strong>takes action</strong>. Research, write, email, schedule, post &mdash; all on autopilot. "AI jo khud decisions le ke kaam kare."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">TREND 2</span><span class="crd-icon">🗣️</span><h3>Voice AI</h3><p>Talk to AI naturally in <strong>Punjabi and Hindi</strong>. Huge for Punjab's oral culture &mdash; voice-based customer service, voice notes to text, and more. "Tuhade daddy ji vi AI naal gall kar sakde ne."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">TREND 3</span><span class="crd-icon">📱</span><h3>AI in Every App</h3><p>Microsoft Word, Excel, Google Docs &mdash; <strong>all have built-in AI now</strong>. Knowing how to prompt means you're productive in every tool, not just ChatGPT.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">TREND 4</span><span class="crd-icon">🧠</span><h3>Personalized AI</h3><p>Your <strong>own AI that knows your business</strong> &mdash; your products, your customers, your style. Custom GPTs are just the beginning. "Tuhada AI assistant, tuhade warga."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">TREND 5</span><span class="crd-icon">⚖️</span><h3>AI Regulation</h3><p>Governments worldwide creating rules for AI usage. <strong>Ethical AI knowledge = competitive advantage</strong>. Companies will need people who understand responsible AI.</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Sochdo &mdash; 7 hafte pehle tuhanu ChatGPT kholna nahi aunda si. Aaj tusi AI agents, automation, chatbots &mdash; sab samajhde ho. Tusi Punjab de pehle AI-literate batch ho. Ih power hai."</strong></p>
+  </div>
+
+  <div class="callout call-3"><div class="call-ico">💡</div><div class="call-body"><h4>The Foundation Advantage</h4><p>When a new AI tool launches tomorrow, you'll learn it in <strong>30 minutes</strong> because your foundation is strong. Prompting, thinking with AI, workflows &mdash; these transfer to ANY tool. "Nava tool sikhna 30 minute da kaam hai jado foundation strong hai."</p></div></div>
+
+  <div class="micro-win">You now understand where AI is headed. You're not just keeping up &mdash; you're ahead of the curve.</div>
+
+  <p class="curiosity-hook">Next: Build your own AI agent that works while you sleep.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: AI Agents &rarr;</button></div>
+</div>
+
+<!-- S2: AI AGENTS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! AI landscape mapped. Now let's build agents.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Build Your Own <span class="gr">AI Agents</span></h2>
+    <p>AI agents don't just answer &mdash; they DO. Research agents, content agents, customer service agents. Build one today using tools you already know.</p>
+  </div>
+
+  <div class="vcompare reveal">
+    <div class="vcompare-card vs-wrong">
+      <div class="vc-icon">💬</div>
+      <h4>Regular AI (Chat)</h4>
+      <p>You ask a question, AI answers. You copy-paste. You do the next step manually. One task at a time.</p>
+      <div class="vc-badge">&#10005; Manual Steps</div>
+    </div>
+    <div class="vcompare-card vs-right">
+      <div class="vc-icon">🤖</div>
+      <h4>AI Agent (Autonomous)</h4>
+      <p>You give a goal. AI searches, summarizes, writes, emails, schedules, posts &mdash; all automatically. Chain of tasks, zero manual work.</p>
+      <div class="vc-badge">&#10003; Fully Automated</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Three Agent Blueprints</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">AGENT 1</span><span class="crd-icon">🔬</span><h3>Research Agent</h3><p><strong>Prompt chain:</strong> "Search latest news about [topic]" &rarr; "Summarize top 5 results" &rarr; "Write a 200-word brief" &rarr; "Email it to me." Built with Custom GPT + Zapier.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">AGENT 2</span><span class="crd-icon">📝</span><h3>Content Agent</h3><p><strong>Full pipeline:</strong> Give a topic &rarr; AI writes blog &rarr; AI creates social posts &rarr; AI designs image &rarr; Scheduled to publish. Content creation on autopilot.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">AGENT 3</span><span class="crd-icon">🛎️</span><h3>Customer Service Agent</h3><p><strong>Combined system:</strong> Custom GPT + Botpress + Zapier. Customer asks &rarr; Bot answers &rarr; If stuck &rarr; Notifies human &rarr; Logs everything automatically.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Research Agent Prompt Chain</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Build a research agent step by step. Copy each prompt in sequence:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Step 1: Search for the latest developments in AI automation tools for small businesses in India. Focus on news from the last 30 days. List the top 5 most important developments with source links.</div>
+    <div style="padding:1rem;background:rgba(168,85,247,.03);border:1px dashed rgba(168,85,247,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c2);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Step 2: Based on the research above, write a 200-word executive brief suitable for a Punjab business owner. Use simple language. Include 3 action items they can implement this week.</div>
+    <div style="padding:1rem;background:rgba(52,211,153,.03);border:1px dashed rgba(52,211,153,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Step 3: Convert that brief into a professional email with subject line. Tone: helpful consultant. Include a call to action to schedule a 15-minute consultation. Sign off as [Your Name], AI Consultant.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Ih teen steps &mdash; research, summary, email &mdash; pehle 2 ghante launde si. Agent naal 5 minute."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Content Agent Workflow Builder</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Design a content creation pipeline that runs itself:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 I want to build an AI content agent. My niche is [e.g., AI tips for Punjab businesses]. Create a workflow that takes one topic and produces: (1) a 500-word blog post, (2) three Instagram captions with hashtags, (3) one LinkedIn post, and (4) an image description for Canva. Show me the complete prompt chain I should use.</div>
+    <p style="color:var(--t3);font-size:.8rem">One topic in, four pieces of content out. "Content factory ban gayi tuhadi."</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Build Your First Agent NOW</h4>
+    <p>Choose one agent blueprint above based on your capstone project. Build the prompt chain. Test it end to end. If you chose a business solution capstone, build the Research Agent. If you chose content brand, build the Content Agent.</p>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#9888;&#65039;</div><div class="call-body"><h4>Keep It Simple</h4><p>AI agents sound complex but they're just <strong>prompt chains + automation</strong>. You already know both. Don't overcomplicate &mdash; the best agents solve ONE problem really well. "Simple agent jo kaam kare > complex agent jo crash kare."</p></div></div>
+
+  <div class="micro-win">You just designed an AI agent. Most tech professionals haven't done this yet. You're ahead of them.</div>
+
+  <p class="curiosity-hook">Next: Voice AI and how to stay updated forever.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Voice AI &rarr;</button></div>
+</div>
+
+<!-- S3: VOICE AI & STAYING UPDATED -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% through! Agents built. Now explore voice AI and your learning toolkit.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Voice AI &amp; <span class="gr">Staying Updated Forever</span></h2>
+    <p>Voice is the next frontier &mdash; especially for Punjab's oral culture. Plus, your 5-source toolkit to never fall behind in AI.</p>
+  </div>
+
+  <div class="vcompare reveal">
+    <div class="vcompare-card vs-wrong">
+      <div class="vc-icon">⌨️</div>
+      <h4>Typing Only</h4>
+      <p>Requires literacy, keyboard, screen time. Not accessible for everyone. Older family members can't use it easily.</p>
+      <div class="vc-badge">&#10005; Limited Access</div>
+    </div>
+    <div class="vcompare-card vs-right">
+      <div class="vc-icon">🗣️</div>
+      <h4>Voice AI</h4>
+      <p>Just talk. Punjabi, Hindi, English &mdash; AI understands. Your parents, grandparents, anyone can use it. "Phone te Punjabi vich gall karo, AI samjhega."</p>
+      <div class="vc-badge">&#10003; Universal Access</div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Voice AI Demo: Talk to ChatGPT</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Try having a voice conversation with AI in Punjabi/Hindi:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Open ChatGPT app on your phone. Tap the headphone icon. Say in Punjabi: "Meri ik choti si dukaan hai Kotkapura vich, kapde vechi aan. Dassi ki AI naal main apna business kivein vadha sakdaan?" Listen to AI's response in your language.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Sochdo &mdash; tuhade daddy ji vi phone te AI naal Punjabi vich gall kar sakde ne. Ih accessibility hai."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Voice-to-Action Workflow</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Convert voice notes into professional content:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 I'm going to paste a voice transcription of my business meeting notes (in Hinglish). Please: 1) Clean up the language, 2) Extract key action items, 3) Create a professional summary email, 4) List follow-up tasks with deadlines. Here are my notes: [paste transcription]</div>
+    <p style="color:var(--t3);font-size:.8rem">Record &rarr; Transcribe &rarr; AI processes &rarr; Professional output. Voice-first workflow.</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Your 5-Source AI Learning Toolkit</h3>
+  <p style="color:var(--t2);font-size:.92rem;margin-bottom:1.5rem">"AI bahut fast change hunda hai. Par jado tuhadi foundation strong hai, ta nava tool sikhna 30 minute da kaam hai."</p>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">SOURCE 1</span><span class="crd-icon">📺</span><h3>YouTube Channels</h3><p>Follow 3 AI channels in Hindi/English. Watch one 10-minute video daily during chai time. <strong>Consistent learning beats binge-watching.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-2">SOURCE 2</span><span class="crd-icon">📸</span><h3>Instagram AI Accounts</h3><p>Follow AI tip accounts &mdash; quick reels and carousels that teach you a new trick every day. <strong>Learning while scrolling.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-5">SOURCE 3</span><span class="crd-icon">📧</span><h3>AI Newsletters</h3><p>Subscribe to 1-2 simple AI newsletters. <strong>5 minutes of reading = staying current.</strong> AI summarizes the rest for you.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">SOURCE 4</span><span class="crd-icon">🔬</span><h3>Daily Practice</h3><p>Try <strong>1 new AI prompt daily</strong>. Experiment with new features. 5 minutes a day = 150+ experiments per month. "Roz ik navi cheez try karo."</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">SOURCE 5</span><span class="crd-icon">👥</span><h3>TARAhut Community</h3><p>Stay active in the <strong>WhatsApp alumni group</strong>. Share discoveries, ask questions, help others. Community accelerates learning 10x.</p></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The 30-Minute Rule</h4><p>When a new AI tool launches, you need exactly <strong>30 minutes to learn it</strong> because your foundation is strong. Prompting skills transfer. Workflow thinking transfers. "Nava tool = same skills, nava interface. Bas."</p></div></div>
+
+  <div class="micro-win">You have a complete learning system. AI will keep evolving, and now you'll evolve with it.</div>
+
+  <p class="curiosity-hook">Next: Build your personal AI Skill Stack and 6-month roadmap.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Skill Stack &rarr;</button></div>
+</div>
+
+<!-- S4: SKILL STACK & ROADMAP -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Voice AI explored, learning toolkit set. Now plan your future.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Your AI <span class="gr">Skill Stack &amp; 6-Month Roadmap</span></h2>
+    <p>Rate your skills, identify gaps, and build a personalized 6-month plan. This is your post-course compass &mdash; where you're going next.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128736; The AI Skill Stack &mdash; 5 Layers</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">🧠</div>
+        <div class="vn-label">Foundation</div>
+        <div class="vn-sub">Prompting, AI thinking</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🎨</div>
+        <div class="vn-label">Creation</div>
+        <div class="vn-sub">Writing, design, video</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">💼</div>
+        <div class="vn-label">Business</div>
+        <div class="vn-sub">Consulting, automation</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">📊</div>
+        <div class="vn-label">Advanced</div>
+        <div class="vn-sub">Data, research, agents</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">💰</div>
+        <div class="vn-label">Earning</div>
+        <div class="vn-sub">Freelancing, jobs, startup</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>Rate yourself 1-5 on each layer.</strong> Identify your weakest area. Plan to strengthen it this month.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>6-Month Roadmap Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Create your personalized post-course career plan:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Based on my skills [AI prompt engineering, Canva design, content creation, automation with Zapier, chatbot building, data analysis, freelancing] and my goals [start freelancing AND get a marketing job in Chandigarh within 6 months], create a detailed 6-month career development plan. Break it down by month with specific milestones and weekly actions. Month 1-2: Master chosen service, get 5 clients. Month 3-4: Add new service, increase pricing. Month 5-6: Scale or transition to full-time role.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Ih tuhada post-course compass hai. Har mahine ik milestone, har hafte ik action."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Capstone Project Planner</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Plan your capstone project for Demo Day next week:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 I need to present a 5-minute capstone project at Demo Day. My chosen project is [Option A: AI solution for Punjab business / Option B: Freelancing agency kit / Option C: Chatbot + automation system / Option D: Content brand launch / Option E: Study abroad application kit]. Help me plan: 1) The problem I'm solving, 2) My AI-powered solution with live demo plan, 3) Expected results and impact, 4) Presentation structure (intro 30s, problem 1min, solution 2min, results 1min, next steps 30s), 5) What portfolio pieces to include on my website.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Agle hafte Demo Day hai. Ih planning aaj karo &mdash; kal ton late hai."</p>
+  </div>
+
+  <div class="checklist">
+    <h4>&#128203; Future-Proofing Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand 5 AI mega-trends for 2026-2027</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Built at least one AI agent prompt chain</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tried Voice AI conversation in Punjabi/Hindi</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Set up 5-source learning toolkit (YouTube, Instagram, newsletters, practice, community)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Rated myself on all 5 AI Skill Stack layers</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created my 6-month learning roadmap with AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chosen my capstone project option (A/B/C/D/E)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Listed all portfolio pieces from previous weeks</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Planned my 5-minute Demo Day presentation</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Following 3 AI news sources starting today</label></div>
+    <div class="check-score" id="checkScore">Tap items to track your progress &rarr; your score will appear here</div>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#127891;</div><div class="call-body"><h4>Demo Day is Coming!</h4><p>Next week is capstone building and Demo Day. Audience includes <strong>business owners, parents, media, and college faculty</strong>. Dress smart casual. Prepare a 5-minute presentation showing: Problem &rarr; AI Solution &rarr; Live Demo &rarr; Results. Awards for Best Business Impact, Most Creative, and Best Portfolio. "Kal best kaam karo."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Ih tuhadi aakhri learning session si. 7 hafte &mdash; pure 14 sessions &mdash; tusi zero ton hero ban ke aaye ho. Next week celebrate karnaange. Par yaad rakhna &mdash; sikhi kadi band nahi hundi. AI naal tuhadi journey aaj shuru hoyi hai, end nahi."</strong></p>
+  </div>
+
+  <div class="identity-shift">You started 7 weeks ago not knowing what AI was. Today you build agents, plan futures, and see opportunities everywhere. That's not education &mdash; that's transformation.</div>
+
+  <p class="curiosity-hook">Next: Test your knowledge in the quiz.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your future-proofing knowledge.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Future-Proofing Knowledge</span></h2>
+    <p>18 questions covering AI agents, voice AI, staying updated, skill stacks, and roadmap planning. Prove you're future-ready.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question you answered sharpened your understanding of the AI future.</div>
+  <p class="curiosity-hook">Next: Session wrap-up and capstone preview.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 14 <span class="gr">Complete!</span></h2>
+    <p>The last learning session is done. You now have the vision, the tools, and the roadmap to stay relevant for years.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🤖</span><div class="vi-label" style="color:var(--c1)">AI Agents</div><div class="vi-desc">Built agent workflows</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">🗣️</span><div class="vi-label" style="color:var(--c2)">Voice AI</div><div class="vi-desc">Punjabi conversations</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">📚</span><div class="vi-label" style="color:var(--c5)">5 Sources</div><div class="vi-desc">Learning toolkit set</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">🗺️</span><div class="vi-label" style="color:var(--c4)">6-Month Plan</div><div class="vi-desc">Roadmap created</div></div>
+    <div class="vigrid-item" style="border-color:rgba(255,61,139,.2)"><span class="vi-icon">🎯</span><div class="vi-label" style="color:var(--c3)">Capstone Chosen</div><div class="vi-desc">Demo Day prep started</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>Your Homework &mdash; The Most Important One</h4><p>&#10004; <strong>Complete your 6-month learning roadmap</strong> &mdash; this is your post-course compass<br>&#10004; <strong>Start following 3 AI news sources</strong> today<br>&#10004; <strong>Assemble all portfolio pieces</strong> from every week<br>&#10004; <strong>Prepare your 5-minute Demo Day presentation outline</strong><br>&#10004; <strong>Choose your capstone option</strong> and start collecting your best work<br><br>"Agle Saturday capstone building session hai. Come prepared."</p></div></div>
+
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Session 15 &mdash; Capstone Project Building</h4><p>Next session is <strong>BUILD DAY</strong>. You'll create your portfolio website, polish your capstone project, and practice your Demo Day presentation. Come with all your work organized. "Aaj da din &mdash; build day hai. Let's make it count."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%2014%20of%20AI%20Power%20Program!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">📱 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"Ih tuhadi aakhri learning session si. AI naal tuhadi journey aaj shuru hoyi hai, end nahi. 6-month roadmap follow karo. Alumni group vich active raho. Sikhi kadi band nahi hundi."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 14: Future-Proofing & AI Agents &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade')){el.classList.add('reveal');}
+  });
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(parent=>{parent.querySelectorAll(':scope > *').forEach(child=>{if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right')){child.classList.add('reveal');}});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]&&!cards[0].classList.contains('reveal-left')){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]&&!cards[1].classList.contains('reveal-right')){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}
+initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger')){e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}
+observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`Future-proofing progress: ${checked}/${total} items complete — ${pct}% ready for what's next!`;}
+
+function copyPrompt(el){const text=el.textContent.replace('📋 ','');navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+const qData=[
+  {q:"What is an AI agent, in simple terms?",o:["A robot that walks and talks","AI that takes autonomous actions to complete tasks, not just answer questions","A special ChatGPT account","An AI that replaces humans entirely"],a:1,e:"An AI agent doesn't just answer — it DOES things. It chains multiple actions: research, write, email, schedule — all from a single goal. 'AI jo khud decisions le ke kaam kare.'"},
+  {q:"What is the key difference between chatting with AI and using an AI agent?",o:["Agents are more expensive","Chat = one question, one answer. Agent = chain of tasks completed automatically","There is no difference","Agents only work in English"],a:1,e:"A chat interaction is one prompt, one response. An agent takes a goal and executes multiple steps autonomously — research, summarize, write, send — without you doing each step manually."},
+  {q:"Which combination creates a Research Agent?",o:["Only ChatGPT","Custom GPT + Zapier with a prompt chain (search → summarize → brief → email)","Microsoft Excel only","Downloading a special app"],a:1,e:"A research agent combines AI (Custom GPT) with automation (Zapier) in a prompt chain. Each step feeds into the next: search → summarize → write brief → send email. Tools you already know!"},
+  {q:"Why is Voice AI especially important for Punjab?",o:["It's a fashion trend","Punjab has a strong oral culture — many people are more comfortable speaking than typing, and it's accessible for older generations","Voice AI is only available in Punjabi","It's cheaper than text AI"],a:1,e:"Voice AI democratizes AI access. Punjab's oral culture means speaking comes naturally. Older family members who can't type can still benefit from AI through voice. 'Tuhade daddy ji vi AI naal gall kar sakde ne.'"},
+  {q:"How long should it take you to learn a new AI tool, given your foundation?",o:["6 months minimum","About 30 minutes — because prompting and workflow skills transfer across all tools","You need a new course for each tool","It's impossible to keep up"],a:1,e:"Your foundation — prompting, AI thinking, workflows — transfers to ANY new tool. New tool = same skills, new interface. 'Nava tool sikhna 30 minute da kaam hai jado foundation strong hai.'"},
+  {q:"What are the 5 layers of the AI Skill Stack?",o:["Reading, Writing, Math, Science, Art","Foundation (Prompting) → Creation (Writing/Design) → Business (Consulting/Automation) → Advanced (Data/Agents) → Earning (Freelancing/Jobs)","Only prompting matters","ChatGPT, Gemini, Claude, Canva, Zapier"],a:1,e:"The 5-layer skill stack builds progressively: Foundation → Creation → Business → Advanced → Earning. Rate yourself 1-5 on each layer to identify where to focus your growth."},
+  {q:"What should your 6-month roadmap include for Months 1-2?",o:["Take a vacation from AI","Master your chosen freelancing service and get your first 5 clients","Only study theory","Wait for the next course"],a:1,e:"Months 1-2 are about mastery and first clients. Pick ONE service, get really good at it, and start earning. Action beats perfection. 'Pehle 2 mahine vich 5 clients = serious progress.'"},
+  {q:"What are the 5 capstone project options?",o:["There's only one option","AI solution for Punjab business, Freelancing agency kit, Chatbot + automation, Content brand launch, Study abroad application kit","Writing an essay about AI","Taking an exam"],a:1,e:"Five options so every student can choose what matches their goals: business solution, freelancing kit, chatbot system, content brand, or study abroad prep. Each showcases different skills learned."},
+  {q:"How should a Demo Day presentation be structured?",o:["Just talk freely for 5 minutes","Introduction (30s) → Problem (1min) → AI Solution with Live Demo (2min) → Results (1min) → What's Next (30s)","Read your portfolio website out loud","Show only slides with no demo"],a:1,e:"The 5-minute structure ensures every presentation is compelling: hook them with who you are, show the problem, demonstrate your AI solution LIVE, share results, and end with your vision. Strict timing matters."},
+  {q:"What is a 'prompt chain' in the context of AI agents?",o:["A necklace made of prompts","A sequence of prompts where each output feeds as input to the next prompt, creating an automated workflow","Asking the same question multiple times","A chain email"],a:1,e:"A prompt chain is the backbone of AI agents. Output of prompt 1 becomes input for prompt 2, which feeds prompt 3, and so on. This creates automated multi-step workflows from simple building blocks."},
+  {q:"Which 5 sources should you use to stay updated on AI?",o:["Only classroom learning","YouTube channels, Instagram AI accounts, AI newsletters, daily practice (1 new prompt/day), TARAhut community WhatsApp group","Only reading newspapers","Waiting for someone to tell you"],a:1,e:"Five sources create a sustainable learning system: YouTube for deep learning, Instagram for quick tips, newsletters for trends, daily practice for skill building, and community for support and sharing."},
+  {q:"What does 'AI in every app' mean for your skills?",o:["You need to learn 100 new apps","Your prompting skills work everywhere — Word, Excel, Google Docs all have AI, and you already know how to use it effectively","AI will make all apps the same","Nothing changes"],a:1,e:"AI is being embedded into every tool you use. Your prompting skills transfer directly. Knowing how to instruct AI means you're instantly more productive in Word, Excel, Google, and every app adding AI features."},
+  {q:"Why should you rate yourself on the AI Skill Stack?",o:["It's a homework requirement","To identify your weakest layer and create a targeted improvement plan — you grow fastest by addressing gaps","To show off to friends","Rating doesn't matter"],a:1,e:"Self-assessment reveals your gaps. If you're strong in creation but weak in business, you know exactly where to focus. Targeted improvement beats random learning. 'Kamzori pata hai ta fix kar sakde ho.'"},
+  {q:"What is the Content Agent's workflow?",o:["Just write one blog post","Topic → AI writes blog → AI creates social posts → AI designs image → Content scheduled to publish automatically","Copy-paste from Google","Ask a friend to write for you"],a:1,e:"The content agent creates a full pipeline: one topic goes in, and out comes a blog post, multiple social media posts, and image descriptions — all from a single prompt chain. 'Content factory ban gayi tuhadi.'"},
+  {q:"What should you bring to next week's Capstone Building session?",o:["Nothing — the instructor provides everything","All portfolio pieces organized, presentation outline, portfolio website draft, and capstone project plan","Only your phone","A printed certificate"],a:1,e:"Come prepared with all your work organized, a clear outline for your 5-minute presentation, a draft portfolio website structure, and your capstone plan. 'Aaj da din — build day hai. Let's make it count.'"},
+  {q:"What is 'Personalized AI' and why does it matter?",o:["AI that knows your name","AI customized for YOUR business — knowing your products, customers, and style. Custom GPTs are the first step.","AI that only works for one person","A premium subscription"],a:1,e:"Personalized AI knows your context — your business, your clients, your style. It gives better answers because it understands YOU. Custom GPTs, memory features, and trained assistants make this real today."},
+  {q:"After 14 sessions, what career advantage do you have over 99% of your peers?",o:["Just a certificate","AI prompting, content creation, design, automation, chatbots, data analysis, freelancing skills, agents, voice AI, and a 6-month roadmap","Only theoretical knowledge","Nothing significant"],a:1,e:"You have practical, executable skills across the entire AI spectrum PLUS a roadmap. Most people haven't even started. 'Punjab de pehle AI-trained batch ho tusi. Own it.'"},
+  {q:"The instructor says 'sikhi kadi band nahi hundi.' What does this mean for your AI journey?",o:["The course failed to teach everything","Learning never stops — this program is the foundation, not the destination. Keep learning, keep building, keep earning.","You need to take another course immediately","AI learning is too difficult to continue"],a:1,e:"The 8-week program built your foundation. But AI evolves monthly. Your 6-month roadmap, 5-source toolkit, and alumni community ensure you keep growing. 'AI naal tuhadi journey aaj shuru hoyi hai, end nahi.'"}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Future-Ready!';tierColor='var(--brand)';msg='You understand where AI is going and have a plan to stay ahead. Execute your 6-month roadmap!';}
+    else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid understanding. Review the agent and roadmap sections to strengthen your future-proofing strategy.';}
+    else{tier='Keep Building!';tierColor='var(--c4)';msg='Re-read the sections on agents and staying updated. These concepts are your bridge to the future.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

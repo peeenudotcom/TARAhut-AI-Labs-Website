@@ -20,6 +20,10 @@ export async function getUser() {
 export async function requireAuth() {
   const user = await getUser();
   if (!user) {
+    // DEV BYPASS — remove before production
+    if (process.env.NODE_ENV === 'development') {
+      return { id: 'dev-user', email: 'peeenu@gmail.com' } as any;
+    }
     redirect('/login');
   }
   return user;

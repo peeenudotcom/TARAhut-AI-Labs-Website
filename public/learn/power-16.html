@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 16: Demo Day & Certification — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+  --gcelebrate:linear-gradient(135deg,#fbbf24,#ff3d8b,#a855f7,#00f0ff);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;pointer-events:none;opacity:0;transition:opacity .5s}
+#confettiCanvas.active{opacity:1}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gcelebrate);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(251,191,36,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c4);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(251,191,36,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--c4);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--gcelebrate);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradShift 4s ease-in-out infinite}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--c4);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--c4);color:#000;box-shadow:0 0 30px rgba(251,191,36,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(251,191,36,.4)}
+.btn-celebrate{background:var(--gcelebrate);background-size:200% 200%;animation:gradShift 3s ease-in-out infinite;color:#fff;box-shadow:0 0 40px rgba(168,85,247,.3)}
+.btn-celebrate:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 0 60px rgba(168,85,247,.5)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(251,191,36,.08);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.07);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(255,61,139,.05);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--c4);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c4);border-bottom-color:var(--c4)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c4);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c4)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head h2 .grcelebrate{background:var(--gcelebrate);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradShift 4s ease-in-out infinite}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-celebrate{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(168,85,247,.04));border:1px solid rgba(251,191,36,.2)}.call-celebrate::before{background:var(--gcelebrate);width:4px}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--c4);border:1px solid rgba(251,191,36,.2);background:rgba(251,191,36,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--c4);border:1px dashed rgba(251,191,36,.25);border-radius:var(--r);background:rgba(251,191,36,.03)}
+
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--c4);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(251,191,36,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c4)}
+
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c4);box-shadow:0 0 8px rgba(251,191,36,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c4);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gcelebrate);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradShift 3s ease-in-out infinite}
+
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gcelebrate);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c4);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(251,191,36,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(251,191,36,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c4);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(251,191,36,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(251,191,36,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+/* CERTIFICATE PREVIEW */
+.cert-preview{background:linear-gradient(135deg,#1a1a3e,#0c0c2a);border:2px solid rgba(251,191,36,.3);border-radius:var(--r);padding:3rem 2.5rem;margin:2.5rem 0;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(251,191,36,.08)}
+.cert-preview::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;border:1px solid rgba(251,191,36,.15);border-radius:var(--r);margin:12px;pointer-events:none}
+.cert-preview::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gcelebrate)}
+.cert-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--c4);margin-bottom:.5rem;letter-spacing:1px}
+.cert-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:var(--gcelebrate);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+.cert-subtitle{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--t3);margin-bottom:1.5rem}
+.cert-name{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--t1);padding:1rem 0;border-top:1px solid rgba(251,191,36,.15);border-bottom:1px solid rgba(251,191,36,.15);margin:1rem 2rem;min-height:60px;display:flex;align-items:center;justify-content:center}
+.cert-name input{background:transparent;border:none;color:var(--t1);font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;text-align:center;width:100%;outline:none}
+.cert-name input::placeholder{color:var(--t3);font-style:italic;font-size:1.2rem}
+.cert-body{color:var(--t2);font-size:.88rem;margin:1rem 0;line-height:1.8}
+.cert-program{font-family:'Syne',sans-serif;font-weight:700;color:var(--c4);font-size:1rem;margin:.75rem 0}
+.cert-details{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3);margin-top:1rem}
+.cert-seal{display:inline-block;width:70px;height:70px;border-radius:50%;border:2px solid var(--c4);display:flex;align-items:center;justify-content:center;margin:1rem auto;font-size:2rem;background:rgba(251,191,36,.05)}
+.cert-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:1.5rem;padding:0 1rem}
+.cert-sig{text-align:center}
+.cert-sig-line{width:120px;height:1px;background:var(--t3);margin:0 auto .3rem}
+.cert-sig-name{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3)}
+
+/* CELEBRATION STYLES */
+.celebration-banner{text-align:center;padding:3rem 2rem;margin:2rem 0;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(168,85,247,.06),rgba(255,61,139,.04));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);position:relative;overflow:hidden}
+.celebration-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gcelebrate)}
+.celebration-banner h3{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.5rem}
+.celebration-banner p{color:var(--t2);font-size:1rem;max-width:600px;margin:0 auto}
+.emoji-rain{font-size:3rem;margin-bottom:1rem;display:block;animation:emojiBounce 2s ease-in-out infinite}
+@keyframes emojiBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--c4)}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .cert-preview{padding:2rem 1.5rem}
+  .cert-name{margin:1rem 0}
+  .cert-footer{flex-direction:column;gap:1.5rem;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 16 &middot; AI Power Program &middot; 2026</div>
+  <h1>Demo Day &amp;<br><span class="gr">Certification</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>"Sat Sri Akal! Aaj tusi dekho ge ki 8 hafteyan vich saade students ne ki kamal kar dikhaya." The grand finale. Your moment to shine.</p>
+  <div class="hero-btns">
+    <button class="btn btn-celebrate" onclick="startCelebration()">Begin Celebration &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#127891; Jump to Certificate</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Opening Ceremony</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Student Presentations</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Awards Ceremony</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Certificate & Alumni</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Graduation!</button>
+  </div>
+</nav>
+
+<!-- S1: OPENING CEREMONY -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Opening <span class="grcelebrate">Ceremony</span></h2>
+    <p>Welcome to Demo Day! 8 weeks, 16 sessions, 32 hours of learning &mdash; and today we celebrate everything you've accomplished.</p>
+  </div>
+
+  <div class="celebration-banner reveal">
+    <span class="emoji-rain">🎉</span>
+    <h3 style="color:var(--c4)">Welcome to Demo Day!</h3>
+    <p>"TARAhut AILabs de AI Power Punjab program de Demo Day vich tuhada swagat hai. Aaj tusi dekho ge ki 8 hafteyan vich saade students ne ki kamal kar dikhaya."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#127916; Demo Day Schedule</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">🎤</div>
+        <div class="vn-label">Opening</div>
+        <div class="vn-sub">Welcome & journey video</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">🎯</div>
+        <div class="vn-label">Presentations</div>
+        <div class="vn-sub">5 min each, live demos</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">💬</div>
+        <div class="vn-label">Guest Remarks</div>
+        <div class="vn-sub">Business owners, parents</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">🏆</div>
+        <div class="vn-label">Awards</div>
+        <div class="vn-sub">5 award categories</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">🎓</div>
+        <div class="vn-label">Certificates</div>
+        <div class="vn-sub">Graduation moment</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>Today you show the world what Punjab's first AI-trained batch can do.</strong></div>
+  </div>
+
+  <div class="callout call-celebrate"><div class="call-ico">&#128249;</div><div class="call-body"><h4>The Journey So Far</h4><p>Week 1: "AI kya hai?" Week 2: Professional writing. Week 3: Design and video. Week 4: Business plans. Week 5: Automation and chatbots. Week 6: Freelancing and careers. Week 7: Data, research, and agents. Week 8: <strong>TODAY &mdash; you present your capstone to the world.</strong> From zero knowledge to AI professionals. What a journey.</p></div></div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-4">IN THE AUDIENCE</span><span class="crd-icon">🏢</span><h3>Business Owners</h3><p>Local entrepreneurs who might <strong>become your first clients</strong>. They're here to see if AI can help their business. Show them it can.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">IN THE AUDIENCE</span><span class="crd-icon">👨‍👩‍👧</span><h3>Parents & Family</h3><p>They've watched you study for 8 weeks. Today they see the <strong>transformation with their own eyes</strong>. Make them proud.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">IN THE AUDIENCE</span><span class="crd-icon">📰</span><h3>Media & Faculty</h3><p>Journalists and college faculty who'll <strong>spread the word</strong> about Punjab's AI revolution. Your story becomes their story.</p></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Sochdo &mdash; 8 hafte pehle tusi ik classroom vich baithe si jinna nu AI kya hai pata nahi si. Aaj tusi stage te khade ho &mdash; portfolio, skills, clients, confidence sab tuhade kol hai. Ih din tuhada hai."</strong></p>
+  </div>
+
+  <div class="micro-win">The opening ceremony has set the stage. The audience is ready. Now it's your time to shine.</div>
+
+  <p class="curiosity-hook">Next: Student presentations begin. Your moment on stage.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Presentations &rarr;</button></div>
+</div>
+
+<!-- S2: STUDENT PRESENTATIONS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#127916; Opening complete! Student presentations are live.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Student <span class="grcelebrate">Presentations</span></h2>
+    <p>5 minutes per student. Problem &rarr; AI Solution &rarr; Live Demo &rarr; Results. Strict timing, real impact, authentic pride.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#127897; Presentation Format (5 Minutes Each)</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">👋</div>
+        <div class="vn-label">Who I Am</div>
+        <div class="vn-sub">30 seconds</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">❓</div>
+        <div class="vn-label">The Problem</div>
+        <div class="vn-sub">60 seconds</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">🤖</div>
+        <div class="vn-label">AI Solution</div>
+        <div class="vn-sub">LIVE DEMO — 2 min</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">📊</div>
+        <div class="vn-label">Results</div>
+        <div class="vn-sub">60 seconds</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">🚀</div>
+        <div class="vn-label">What's Next</div>
+        <div class="vn-sub">30 seconds</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>Each student tells their story.</strong> From the problem they found to the AI solution they built.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Audience Feedback Prompt</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">For audience members &mdash; use this to give structured feedback to each presenter:</p>
+    <div style="padding:1rem;background:rgba(251,191,36,.03);border:1px dashed rgba(251,191,36,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c4);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Presentation Feedback for [Student Name]: One thing I loved about your presentation: ___. One suggestion for improvement: ___. Would I hire/use this AI solution? Yes / Maybe / Not yet. Potential collaboration opportunity: ___.</div>
+    <p style="color:var(--t3);font-size:.8rem">Structured feedback helps every student grow from this experience.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Post-Presentation Social Media Post</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Share your Demo Day moment immediately:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a LinkedIn/Instagram post about my Demo Day presentation. I presented [your capstone topic] at TARAhut AI Labs' AI Power Program Demo Day. I demonstrated [what you showed]. 8 weeks ago I didn't know what AI was. Today I presented to business owners, parents, and faculty. Include hashtags: #AIpower #TARAhutAILabs #DemoDay #PunjabAI #AIskills. Confident, proud tone. Tag @tarahutailabs.</div>
+    <p style="color:var(--t3);font-size:.8rem">"Post karo &mdash; duniya nu pata lage ki Punjab vich AI revolution ho reha hai."</p>
+  </div>
+
+  <div class="callout call-celebrate"><div class="call-ico">&#128588;</div><div class="call-body"><h4>Gallery Walk</h4><p>During the break, students who didn't present on stage show their portfolios on laptops &mdash; <strong>gallery walk style</strong>. Guests mingle with students over chai and snacks. This networking is where real opportunities happen. "Business owner naal gall karo &mdash; ohh tuhada client ban sakda hai."</p></div></div>
+
+  <div class="micro-action">
+    <h4>During Presentations</h4>
+    <p>If you're in the audience:</p>
+    <ul>
+      <li><strong>Cheer for every presenter</strong> &mdash; this takes courage</li>
+      <li><strong>Take notes</strong> &mdash; what worked well in each presentation</li>
+      <li><strong>Network during break</strong> &mdash; talk to guests, exchange contacts</li>
+      <li><strong>Take photos</strong> &mdash; share on social media immediately</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">Every presentation is proof that AI education transforms lives. You did this.</div>
+
+  <p class="curiosity-hook">Next: Awards ceremony and recognition.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Awards &rarr;</button></div>
+</div>
+
+<!-- S3: AWARDS CEREMONY -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#127881; Presentations complete! Time for awards.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Awards <span class="grcelebrate">Ceremony</span></h2>
+    <p>Recognizing excellence in five categories. Every award celebrates a different kind of brilliance.</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal" style="border-color:rgba(251,191,36,.3)"><span class="tag tag-4">AWARD 1</span><span class="crd-icon">🏆</span><h3>Best Business Impact</h3><p>The capstone that could <strong>most directly help a real business</strong>. Practical, implementable, revenue-generating. The business owners in the audience will vote.</p></div>
+    <div class="crd reveal" style="border-color:rgba(168,85,247,.3)"><span class="tag tag-2">AWARD 2</span><span class="crd-icon">💡</span><h3>Most Creative Use of AI</h3><p>The most <strong>innovative or unexpected AI application</strong>. Thinking outside the box. Using AI in ways nobody expected.</p></div>
+    <div class="crd reveal" style="border-color:rgba(0,240,255,.3)"><span class="tag tag-1">AWARD 3</span><span class="crd-icon">🌐</span><h3>Best Portfolio</h3><p>The <strong>most professional and complete portfolio</strong>. Clean website, strong project descriptions, polished presentation. Ready for real clients.</p></div>
+    <div class="crd reveal" style="border-color:rgba(52,211,153,.3)"><span class="tag tag-5">AWARD 4</span><span class="crd-icon">📈</span><h3>Most Improved</h3><p>The student who showed the <strong>most growth from Week 1 to today</strong>. From nervous beginner to confident presenter. The transformation award.</p></div>
+    <div class="crd reveal" style="border-color:rgba(255,61,139,.3)"><span class="tag tag-3">AWARD 5</span><span class="crd-icon">🤝</span><h3>Community Champion</h3><p>The <strong>most helpful in the WhatsApp group</strong>, most supportive peer. The one who lifted everyone else up. "Jo dusreyan nu sikhaaunda hai, oh sabton zyada sikhdaa hai."</p></div>
+  </div>
+
+  <div class="callout call-celebrate"><div class="call-ico">&#127942;</div><div class="call-body"><h4>Every Student is a Winner</h4><p>Awards celebrate specific excellence, but <strong>every single student who completed this program is a winner</strong>. You showed up for 8 weeks. You learned. You built. You presented. That takes courage. "Jo stage te khada hoya &mdash; ohh already jeeteya hai."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Jado tuhada naam announce hunda hai, te tusi stage te jaande ho trophy lain &mdash; oh moment tuhade mummy-papa de chehere te dekhi proudness sabton vaddi award hai. Ohh moment hamesha yaad rahegi."</strong></p>
+  </div>
+
+  <div class="micro-win">Awards distributed. Excellence recognized. But the biggest award is what you carry with you — skills, confidence, and community.</div>
+
+  <p class="curiosity-hook">Next: Certificate distribution and alumni network. The big moment.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Certificates &rarr;</button></div>
+</div>
+
+<!-- S4: CERTIFICATE & ALUMNI -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#127891; Awards presented! Now the graduation moment you've been waiting for.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Certificate &amp; <span class="grcelebrate">Alumni Network</span></h2>
+    <p>Your name is called. You walk to the stage. You receive your certificate. This moment changes everything.</p>
+  </div>
+
+  <!-- INTERACTIVE CERTIFICATE PREVIEW -->
+  <div class="cert-preview reveal">
+    <div class="cert-logo">TARAhut AI Labs</div>
+    <div class="cert-title">Certificate of Completion</div>
+    <div class="cert-subtitle">AI Power Punjab &mdash; 8-Week Program</div>
+    <div class="cert-body">This is to certify that</div>
+    <div class="cert-name"><input type="text" id="certNameInput" placeholder="Type your name here..." oninput="updateCertName()"></div>
+    <div class="cert-body">has successfully completed the AI Power Punjab program, demonstrating proficiency in AI prompting, content creation, design, automation, chatbot building, data analysis, freelancing, and capstone project delivery.</div>
+    <div class="cert-program">AI Power Punjab &mdash; 32 Hours &mdash; 16 Sessions</div>
+    <div class="cert-seal">🏅</div>
+    <div class="cert-footer">
+      <div class="cert-sig"><div class="cert-sig-line"></div><div class="cert-sig-name">Program Director</div></div>
+      <div class="cert-sig"><div class="cert-sig-line"></div><div class="cert-sig-name">TARAhut AI Labs</div></div>
+      <div class="cert-sig"><div class="cert-sig-line"></div><div class="cert-sig-name">April 2026</div></div>
+    </div>
+    <div class="cert-details">Kotkapura, Punjab &middot; Batch 2026 &middot; Certificate ID: TAR-AIP-2026-___</div>
+  </div>
+  <p style="text-align:center;color:var(--t3);font-size:.8rem;margin-top:-1rem;margin-bottom:2rem">Type your name above to see your certificate preview. The real one is even more beautiful.</p>
+
+  <div class="callout call-celebrate"><div class="call-ico">&#127891;</div><div class="call-body"><h4>What You Receive</h4><p>&#10004; <strong>Certificate of Completion</strong> &mdash; framed, professional, Instagram-worthy<br>&#10004; <strong>Portfolio Website URL Card</strong> &mdash; share with anyone<br>&#10004; <strong>Alumni WhatsApp Group Access</strong> &mdash; lifetime membership<br>&#10004; <strong>Photo with instructor</strong> &mdash; captured by photographer<br>&#10004; <strong>Your skills, confidence, and community</strong> &mdash; priceless</p></div></div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The Alumni Network &mdash; Your Lifelong Community</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-4">LIFETIME</span><span class="crd-icon">💬</span><h3>Alumni WhatsApp Group</h3><p>Job opportunities, freelance gigs, AI updates, mutual support &mdash; <strong>posted here forever</strong>. This is your professional network. "Active raho, opportunities aaundiyaan rahngiyan."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">MONTHLY</span><span class="crd-icon">📅</span><h3>Monthly Alumni Meetup</h3><p>First Saturday of every month &mdash; online meetup. Share wins, ask questions, learn new tools. <strong>You're never alone in your AI journey.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-1">NEXT STEP</span><span class="crd-icon">🚀</span><h3>Advanced Courses</h3><p>Ready to go deeper? Advanced AI courses coming soon &mdash; <strong>alumni get priority enrollment</strong>. Your growth doesn't stop here.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">REFERRAL</span><span class="crd-icon">🎁</span><h3>Refer & Earn</h3><p>Know someone who should learn AI? <strong>Refer them for the next batch &mdash; they save, you earn.</strong> Spread the knowledge.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Share Your Achievement</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Share your certification on LinkedIn and social media:</p>
+    <div style="padding:1rem;background:rgba(251,191,36,.03);border:1px dashed rgba(251,191,36,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c4);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a LinkedIn post announcing my completion of the AI Power Punjab program at TARAhut AI Labs. Over 8 weeks, I learned: AI prompting (CRISP framework), professional writing with AI, AI design and video, business planning with AI, automation and chatbots, freelancing, data analysis, AI agents, and built a complete capstone project. I am now an AI-powered professional ready for the future. Include my portfolio link: [your URL]. Proud and grateful tone. Tag @TARAhutAILabs. #AIpower #PunjabAI #Graduation #TARAhutAILabs</div>
+    <p style="color:var(--t3);font-size:.8rem">"Post karo aaj hi. Duniya nu pata lage ki tusi ki sikheya hai."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Thank You Message Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Send gratitude to your instructor and classmates:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this)">📋 Write a heartfelt thank you message for the TARAhut AI Labs WhatsApp group. Thank the instructor for 8 weeks of patience and guidance. Thank classmates for support and friendship. Mention one specific moment that changed you. Express excitement about the future. In Hinglish (Hindi/Punjabi mix with some English). Warm, emotional, genuine.</div>
+    <p style="color:var(--t3);font-size:.8rem">Gratitude completes the journey. Say thank you today.</p>
+  </div>
+
+  <div class="micro-win">Certificate received. Alumni network joined. Professional identity established. This is real.</div>
+
+  <p class="curiosity-hook">Next: Final quiz celebrating your complete journey.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Final Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: FINAL QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Last quiz ever! Celebrate what you know.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>The Final <span class="grcelebrate">Quiz</span></h2>
+    <p>18 questions celebrating your entire 8-week journey. From AI foundations to agents, from prompting to presenting. Show what you've learned.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">That was your last quiz. Every answer is proof of 8 weeks of transformation.</div>
+  <p class="curiosity-hook">Next: The grand finale. Graduation!</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-celebrate btn-sm" onclick="go('s6')">Next: Graduation! &rarr;</button></div>
+</div>
+
+<!-- S6: GRADUATION -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 16 <span class="grcelebrate">COMPLETE!</span></h2>
+    <p>The AI Power Punjab program is complete. 8 weeks. 16 sessions. 32 hours. Infinite possibilities.</p>
+  </div>
+
+  <div class="celebration-banner reveal">
+    <span class="emoji-rain">🎓</span>
+    <h3 style="background:var(--gcelebrate);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradShift 3s ease-in-out infinite;font-size:2.5rem">CONGRATULATIONS!</h3>
+    <p style="font-size:1.1rem;margin-top:.75rem">"Punjab de pehle AI-trained batch ho tusi. Own it. Spread it. Earn from it. Grow with it."</p>
+    <button class="btn btn-celebrate" style="margin-top:1.5rem" onclick="launchConfetti()">🎉 Launch Confetti!</button>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.25)"><span class="vi-icon">🧠</span><div class="vi-label" style="color:var(--c4)">AI Foundations</div><div class="vi-desc">Week 1</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.25)"><span class="vi-icon">📝</span><div class="vi-label" style="color:var(--c1)">Professional Writing</div><div class="vi-desc">Week 2</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.25)"><span class="vi-icon">🎨</span><div class="vi-label" style="color:var(--c2)">Design & Video</div><div class="vi-desc">Week 3</div></div>
+    <div class="vigrid-item" style="border-color:rgba(255,61,139,.25)"><span class="vi-icon">🏢</span><div class="vi-label" style="color:var(--c3)">Business & Industry</div><div class="vi-desc">Week 4</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.25)"><span class="vi-icon">🤖</span><div class="vi-label" style="color:var(--c5)">Automation & Bots</div><div class="vi-desc">Week 5</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.25)"><span class="vi-icon">💰</span><div class="vi-label" style="color:var(--c1)">Careers & Earning</div><div class="vi-desc">Week 6</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.25)"><span class="vi-icon">📊</span><div class="vi-label" style="color:var(--c2)">Data & Agents</div><div class="vi-desc">Week 7</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.25)"><span class="vi-icon">🎓</span><div class="vi-label" style="color:var(--c4)">Demo Day!</div><div class="vi-desc">Week 8</div></div>
+  </div>
+
+  <div class="callout call-celebrate"><div class="call-ico">&#128149;</div><div class="call-body"><h4>Your Next Steps &mdash; The Journey Continues</h4><p>&#10004; <strong>Follow your 6-month roadmap</strong> &mdash; this is your compass now<br>&#10004; <strong>Stay active in alumni WhatsApp group</strong> &mdash; opportunities are posted here<br>&#10004; <strong>Share your Demo Day video/photos on social media</strong> &mdash; tell the world<br>&#10004; <strong>Apply what you've learned</strong> &mdash; skills decay without use<br>&#10004; <strong>Keep building. Keep earning. Keep growing.</strong><br><br>"Tuhadi journey end nahi hoyi &mdash; shuru hoyi hai."</p></div></div>
+
+  <div class="emotional-hook" style="border-left-color:var(--c4);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(168,85,247,.04))">
+    <p style="font-size:1rem"><strong>"8 hafte pehle tusi ik room vich baithe si jinna nu AI da matlab nahi pata si. Aaj tusi stage te khade ho &mdash; portfolio, skills, clients, confidence sab tuhade kol hai. Punjab de pehle AI-trained batch ho tusi.</strong></p>
+    <p style="margin-top:1rem;font-size:1rem"><strong>Own it. Spread it. Earn from it. Grow with it.</strong></p>
+    <p style="margin-top:1rem;font-size:1rem"><strong>Waheguru Meharbaan. TARAhut AI Labs tuhade naal hamesha hai."</strong></p>
+  </div>
+
+  <div class="identity-shift" style="font-size:1.2rem;padding:28px;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.04);color:var(--c4)">You entered as students. You leave as AI professionals. This is not the end &mdash; this is the beginning of everything.</div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20GRADUATED%20from%20the%20AI%20Power%20Program!%20Thank%20you%20TARAhut%20AI%20Labs!%20🎓" target="_blank" class="btn btn-celebrate" style="margin-right:12px;margin-bottom:12px;text-decoration:none">🎓 Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">🌐 Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;margin:2rem 0">
+    <button class="btn btn-celebrate" style="font-size:1.1rem;padding:18px 40px" onclick="launchConfetti()">🎉 Celebrate Again!</button>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-celebrate btn-sm" onclick="go('s1')">&#128260; Relive Demo Day</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built with love by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 16: Demo Day & Certification &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved. Punjab's First AI-Trained Batch.</p>
+</div>
+
+<script>
+/* PARTICLE CANVAS */
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(251,191,36,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(251,191,36,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+/* CONFETTI CANVAS */
+const ccvs=document.getElementById('confettiCanvas'),cctx=ccvs.getContext('2d');
+let confetti=[],confettiActive=false;
+function resizeConfetti(){ccvs.width=window.innerWidth;ccvs.height=window.innerHeight}
+window.addEventListener('resize',resizeConfetti);resizeConfetti();
+const confettiColors=['#fbbf24','#ff3d8b','#a855f7','#00f0ff','#34d399','#059669','#fff','#ff6b6b','#48dbfb','#feca57'];
+function createConfetti(){
+  confetti=[];
+  for(let i=0;i<200;i++){
+    confetti.push({
+      x:Math.random()*ccvs.width,
+      y:Math.random()*ccvs.height-ccvs.height,
+      w:Math.random()*10+5,
+      h:Math.random()*6+3,
+      color:confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      rotation:Math.random()*360,
+      rotSpeed:(Math.random()-.5)*8,
+      dx:(Math.random()-.5)*3,
+      dy:Math.random()*4+2,
+      wobble:Math.random()*10,
+      wobbleSpeed:Math.random()*.1+.05,
+      opacity:1
+    });
+  }
+}
+function drawConfetti(){
+  cctx.clearRect(0,0,ccvs.width,ccvs.height);
+  if(!confettiActive)return;
+  let allDone=true;
+  confetti.forEach(c=>{
+    if(c.y<ccvs.height+50){allDone=false;}
+    c.x+=c.dx+Math.sin(c.wobble)*1.5;
+    c.y+=c.dy;
+    c.rotation+=c.rotSpeed;
+    c.wobble+=c.wobbleSpeed;
+    if(c.y>ccvs.height-100)c.opacity=Math.max(0,(ccvs.height+50-c.y)/150);
+    cctx.save();
+    cctx.translate(c.x,c.y);
+    cctx.rotate(c.rotation*Math.PI/180);
+    cctx.globalAlpha=c.opacity;
+    cctx.fillStyle=c.color;
+    cctx.fillRect(-c.w/2,-c.h/2,c.w,c.h);
+    cctx.restore();
+  });
+  if(allDone){confettiActive=false;ccvs.classList.remove('active');}
+  else{requestAnimationFrame(drawConfetti);}
+}
+function launchConfetti(){
+  confettiActive=true;
+  ccvs.classList.add('active');
+  createConfetti();
+  drawConfetti();
+  // Also launch firework bursts
+  setTimeout(()=>fireworkBurst(ccvs.width*.25,ccvs.height*.3),300);
+  setTimeout(()=>fireworkBurst(ccvs.width*.75,ccvs.height*.25),600);
+  setTimeout(()=>fireworkBurst(ccvs.width*.5,ccvs.height*.2),900);
+}
+function fireworkBurst(cx,cy){
+  const burstCount=30;
+  for(let i=0;i<burstCount;i++){
+    const angle=(Math.PI*2/burstCount)*i;
+    const speed=Math.random()*3+2;
+    confetti.push({
+      x:cx,y:cy,
+      w:4,h:4,
+      color:confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      rotation:0,rotSpeed:0,
+      dx:Math.cos(angle)*speed,
+      dy:Math.sin(angle)*speed-1,
+      wobble:0,wobbleSpeed:0,
+      opacity:1
+    });
+  }
+}
+
+/* NAV & SECTIONS */
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Celebration begins!`:pctDone<=50?`${pctDone}% — Awards incoming`:pctDone<=75?`${pctDone}% — Almost graduated`:pctDone<100?`${pctDone}% — Grand finale!`:`100% — GRADUATED! 🎓`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  if(id==='s6')setTimeout(launchConfetti,500);
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startCelebration(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';launchConfetti();go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box,.cert-preview,.celebration-banner';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade')){el.classList.add('reveal');}
+  });
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(parent=>{parent.querySelectorAll(':scope > *').forEach(child=>{if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right')){child.classList.add('reveal');}});});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}
+initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger')){e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}
+observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`Graduation readiness: ${checked}/${total} — ${pct}% complete!`;}
+
+function copyPrompt(el){const text=el.textContent.replace('📋 ','');navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+function updateCertName(){/* visual only — the name shows in the cert preview input */}
+
+const qData=[
+  {q:"How many total sessions did the AI Power Punjab program include?",o:["8 sessions","12 sessions","16 sessions over 8 weeks, totaling 32 hours","20 sessions"],a:2,e:"The program included 16 sessions across 8 weeks (2 sessions per week, 2 hours each), totaling 32 hours of intensive AI training. A complete transformation in just 2 months."},
+  {q:"What was the very first thing you learned in Session 1?",o:["How to build a website","AI Foundations — what AI is, how it works, and the CRISP prompt framework","Freelancing on Fiverr","Automation with Zapier"],a:1,e:"Session 1 laid the foundation: understanding AI, trying ChatGPT/Gemini for the first time, and learning the CRISP prompt framework that you've used in every session since."},
+  {q:"What is the CRISP Framework?",o:["A cooking technique","Context, Role, Intent, Specifics, Polish — the 5 elements of an effective AI prompt","A type of AI agent","A website builder"],a:1,e:"CRISP (Context, Role, Intent, Specifics, Polish) is the prompting framework that made all your AI outputs professional-quality. It's the foundation skill that transfers to every AI tool."},
+  {q:"What did you learn to create in Weeks 3?",o:["Only text documents","AI-powered designs, visual content, videos, and personal branding materials using Canva and AI tools","Physical paintings","Nothing creative"],a:1,e:"Week 3 was the creative explosion — Canva AI designs, social media content, AI video creation, and personal branding. Many students created their first professional-quality designs here."},
+  {q:"What is an AI Agent?",o:["A human who uses AI","AI that autonomously chains multiple actions — research, write, email, schedule — to complete tasks without step-by-step human input","A customer service person","A special app"],a:1,e:"AI agents don't just answer questions — they TAKE ACTION. Research → Summarize → Write → Send — all automated. You learned this in Session 14 and it's the future of AI productivity."},
+  {q:"What does Demo Day demonstrate to the audience?",o:["That AI is dangerous","That students went from zero AI knowledge to building real AI-powered solutions in 8 weeks — shown through live demos and capstone projects","That AI replaces humans","Nothing specific"],a:1,e:"Demo Day shows transformation: real people, real problems, real AI solutions. Live demos prove it's not theoretical — students actually built working solutions for Punjab businesses and careers."},
+  {q:"What are the 5 Demo Day award categories?",o:["Only one award is given","Best Business Impact, Most Creative, Best Portfolio, Most Improved, Community Champion","Best Dressed, Funniest, Tallest, Loudest, Quietest","There are no awards"],a:1,e:"Five awards celebrate different excellences: practical impact, creativity, professional presentation, personal growth, and community support. Every type of student can be recognized."},
+  {q:"What should you receive on Demo Day?",o:["Only a handshake","Certificate of Completion, portfolio website URL card, alumni WhatsApp group access, and a photo with the instructor","Money","A new laptop"],a:1,e:"You receive tangible proof of your achievement: a professional certificate, your portfolio URL card to share, lifetime alumni group access, and a photo capturing this milestone moment."},
+  {q:"What is the alumni WhatsApp group for?",o:["Just chatting","Lifetime access to job opportunities, freelance gigs, AI updates, mutual support, and monthly meetups","Sharing memes only","It closes after the course"],a:1,e:"The alumni group is your professional network. Job postings, freelance opportunities, AI tool updates, and community support — all shared here indefinitely. 'Active raho, opportunities aaundiyaan rahngiyan.'"},
+  {q:"What tools did you learn across all 8 weeks?",o:["Just ChatGPT","ChatGPT, Claude, Gemini, Perplexity, Canva, Zapier, Make, Botpress, Custom GPTs, and many more","Only Microsoft Word","No tools were taught"],a:1,e:"You mastered an entire AI toolkit: ChatGPT, Claude, Gemini for prompting; Canva for design; Zapier/Make for automation; Botpress/Custom GPTs for chatbots; Perplexity for research — and the skills to learn any new tool in 30 minutes."},
+  {q:"What was the purpose of Week 4's sessions?",o:["Only theory about business","AI for Punjab's industries and AI Business Plan Workshop — applying AI solutions to real Punjab businesses like textile, agriculture, sports goods","Learning to code","Physical business setup"],a:1,e:"Week 4 made AI real for Punjab: identifying AI opportunities in Ludhiana textiles, Jalandhar sports goods, Bathinda farming, and building complete AI business improvement plans with local entrepreneurs."},
+  {q:"How should you continue learning AI after the program?",o:["Stop learning — the course covered everything","Follow 5 sources: YouTube channels, Instagram AI accounts, newsletters, daily practice (1 new prompt/day), and stay active in the alumni community","Wait for the next course","Only read textbooks"],a:1,e:"The 5-source learning toolkit ensures you never fall behind: YouTube for depth, Instagram for quick tips, newsletters for trends, daily practice for skills, and community for support. AI evolves monthly — so should you."},
+  {q:"What is the '30-minute rule' for new AI tools?",o:["New tools take 30 days to learn","With your strong foundation in prompting and workflows, any new AI tool takes only about 30 minutes to learn","You can only use AI for 30 minutes a day","30 minutes is the maximum conversation length"],a:1,e:"Your foundation — CRISP prompting, AI thinking, workflow design — transfers to every new tool. 'Nava tool = same skills, nava interface. Bas.' New tool launches? You'll master it over chai."},
+  {q:"What was special about the presentations at Demo Day?",o:["They were pre-recorded","Live 5-minute presentations with real AI solution demos — Problem → Solution → Live Demo → Results — to business owners, parents, and faculty","They were optional","Only the teacher presented"],a:1,e:"Live demonstrations in front of real stakeholders. Students showed real AI solutions to real problems, in real-time. Business owners saw potential clients, parents saw transformation, faculty saw innovation."},
+  {q:"What does 'Punjab de pehle AI-trained batch ho tusi' mean for you?",o:["Nothing special","You are pioneers — the first formally trained AI batch from Punjab, setting the standard and opening doors for others","You can't learn more AI","Punjab doesn't need AI"],a:1,e:"Being the first means you are pioneers. You set the standard. You prove that Punjab youth can master cutting-edge technology. Your success opens doors for thousands who will follow. 'Own it. Spread it. Earn from it.'"},
+  {q:"What is the most important thing to do after graduation?",o:["Forget everything you learned","Follow your 6-month roadmap, stay active in the alumni group, apply your skills, and keep building","Wait for someone to offer you a job","Nothing — the certificate is enough"],a:1,e:"Skills decay without use. Your 6-month roadmap is your compass. The alumni group keeps you connected. But the key action is APPLYING what you learned — freelance, build, create, earn. 'Tuhadi journey shuru hoyi hai, end nahi.'"},
+  {q:"If someone asks 'Ki AI meri naukri kha jaavega?' — what's the best answer?",o:["Yes, AI will take all jobs","'AI naukri nahi khaavega — par AI jaanan wala banda, nahi jaanan wale di naukri zaroor le jaavega. Tusi sahi jagah ho.'","'Don't worry about it'","'AI can't do anything useful'"],a:1,e:"The best answer reframes the fear: AI won't take your job, but someone who knows AI will. And that someone is YOU now. You completed 8 weeks of training. You are on the right side of history."},
+  {q:"Complete this sentence: 'Sikhi kadi ___ nahi hundi.'",o:["Mushkil","Zaruri","Band","Mehgi"],a:2,e:"'Sikhi kadi band nahi hundi' — learning never stops. This program built your foundation, but AI evolves every month. Your commitment to continuous learning is what will keep you ahead for years to come."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qData.length){
+    const pct=Math.round(sc/qData.length*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='AI Power Graduate!';tierColor='var(--c4)';msg='You have mastered the entire AI Power program. Go change the world, one AI solution at a time!';}
+    else if(pct>=50){tier='Strong Foundation!';tierColor='var(--c1)';msg='Great knowledge base. Keep practicing and your skills will keep growing.';}
+    else{tier='Keep Growing!';tierColor='var(--c5)';msg='Review your favorite sessions. The knowledge is there — it just needs reinforcement.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-celebrate" onclick="initQuiz()">Retake Final Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Graduate! 🎓</button></div>`;
+    launchConfetti();
+    return;
+  }
+  const q=qData[cq];const ltr=['A','B','C','D'];
+  let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

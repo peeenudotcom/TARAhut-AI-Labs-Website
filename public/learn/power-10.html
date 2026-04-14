@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 10: AI Chatbots & Custom GPTs — AI Power Program · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'&#127919;  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'&#10003; ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.tool-card .tool-link{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--c1);text-decoration:none}
+
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(0,240,255,.05)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}
+.stagger>*:nth-child(2){transition-delay:.12s}
+.stagger>*:nth-child(3){transition-delay:.19s}
+.stagger>*:nth-child(4){transition-delay:.26s}
+.stagger>*:nth-child(5){transition-delay:.33s}
+.stagger>*:nth-child(6){transition-delay:.4s}
+
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 10 &middot; AI Power Program &middot; 2026</div>
+  <h1>AI Chatbots &amp; <span class="gr">Custom GPTs</span></h1>
+  <div class="hero-brand">AI Power &mdash; 8-Week Program &mdash; TARAhut AI Labs</div>
+  <p>Build AI assistants that talk to customers, answer questions, and work 24/7 for you. "Chatbot = ik AI assistant jo logaan naal gall karda hai tuhade bina."</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Power</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What are Chatbots?</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Custom GPT Builder</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Botpress & WhatsApp</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>The Full Stack</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT ARE CHATBOTS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>What are <span class="gr">Chatbots &amp; Custom GPTs?</span></h2>
+    <p>"Tusi machines bana liye jo kaam kardi ne. Aaj assi AI assistants banaange." Yesterday automation, today intelligent conversation.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#129302;</div><div class="call-body"><h4>Simple Explanation</h4><p><strong>Chatbot = ik AI assistant jo logaan naal gall karda hai tuhade bina.</strong> You already use chatbots every day:<br>&#128176; Bank chatbot on WhatsApp<br>&#127828; Swiggy/Zomato customer support<br>&#128646; IRCTC help chat<br><br>"Aaj tusi apna chatbot banaoge. Kise vi kaam lai &mdash; business, education, personal."</p></div></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong">
+      <span class="vc-icon">&#128547;</span>
+      <h4>Without a Chatbot</h4>
+      <p>Answering the same questions 50 times a day. Missing inquiries at night. Customers waiting hours for replies. You're chained to your phone 24/7.</p>
+      <span class="vc-badge">Manual = Exhausting</span>
+    </div>
+    <div class="vcompare-card vs-right">
+      <span class="vc-icon">&#129302;</span>
+      <h4>With a Chatbot</h4>
+      <p>Every question answered instantly, 24/7. Raat nu vi, chutti nu vi. Professional responses every time. You focus on real work while the bot handles FAQs.</p>
+      <span class="vc-badge">Automated = Freedom</span>
+    </div>
+  </div>
+
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">&#127891;</span><div class="vi-label">IELTS Coach</div><div class="vi-desc">Writing practice assistant</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128188;</span><div class="vi-label">Business Advisor</div><div class="vi-desc">Punjab market guidance</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127806;</span><div class="vi-label">Farming Advisor</div><div class="vi-desc">Crop & weather advice</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128218;</span><div class="vi-label">Study Helper</div><div class="vi-desc">Exam prep & quizzes</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128172;</span><div class="vi-label">Customer FAQ</div><div class="vi-desc">Auto-answer inquiries</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128188;</span><div class="vi-label">Interview Coach</div><div class="vi-desc">Mock interview prep</div></div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Ih chatbot 24/7 kaam karda hai. Raat nu vi, chutti nu vi. Tuhadi jagah customers naal gall karda hai."</strong> One chatbot replaces hours of repetitive work. And YOU built it &mdash; that puts you ahead of 99% of people.</p>
+  </div>
+
+  <div class="micro-win">You now understand what chatbots are and why they're valuable. Time to build your own.</div>
+
+  <p class="curiosity-hook">Next: Build your own Custom GPT step by step &mdash; your personal AI assistant.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Custom GPT Builder &rarr;</button></div>
+</div>
+
+<!-- S2: CUSTOM GPT BUILDER -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Build Your <span class="gr">Custom GPT</span></h2>
+    <p>Step-by-step: create an AI assistant tailored to YOUR needs. This is where your CRISP prompting skills truly shine.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129302; Demo: "Punjab Business Advisor" GPT</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Follow these steps in ChatGPT &rarr; Explore GPTs &rarr; Create:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'You are a friendly business advisor who understands Punjab\'s economy. You speak in simple Hinglish. You give practical, low-cost advice suitable for small businesses in tier-2/3 Punjab cities. Always suggest free or very affordable tools. Give examples from retail, agriculture, education, and healthcare sectors. Keep answers under 200 words unless asked for more detail.')">&#128203; Click to copy GPT Instructions: You are a friendly business advisor who understands Punjab's economy. You speak in simple Hinglish. You give practical, low-cost advice suitable for small businesses in tier-2/3 Punjab cities. Always suggest free or very affordable tools. Give examples from retail, agriculture, education, and healthcare sectors.</div>
+    <p style="color:var(--t3);font-size:.8rem">Paste this as the GPT's Instructions. Add a name, description, and 4 conversation starters. Test it live!</p>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Custom GPT Ideas for Students</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">STUDENT</span><span class="crd-icon">&#127891;</span><h3>IELTS Writing Coach</h3><p>A GPT that grades IELTS essays, gives band scores, and suggests improvements. <code>"You are an IELTS examiner. Grade my writing and suggest improvements for Band 7+."</code></p></div>
+    <div class="crd reveal"><span class="tag tag-4">BUSINESS</span><span class="crd-icon">&#128722;</span><h3>Customer Query Handler</h3><p>Handle common customer questions for any business. <code>"You handle customer inquiries for [business name]. Answer about products, prices, timings, and delivery."</code></p></div>
+    <div class="crd reveal"><span class="tag tag-5">FARMER</span><span class="crd-icon">&#127806;</span><h3>Punjab Farming Advisor</h3><p>Crop advice, mandi prices, government schemes. <code>"You advise Punjab farmers on crops, weather, MSP, and government schemes. Speak in simple Punjabi-Hindi mix."</code></p></div>
+    <div class="crd reveal"><span class="tag tag-2">JOB SEEKER</span><span class="crd-icon">&#128188;</span><h3>Interview Prep Coach</h3><p>Practice interviews for any role. <code>"You are an HR manager. Interview me for [role] at a [industry] company. Ask questions one by one, rate my answers."</code></p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128161; Demo: AI-Written GPT Description</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Let AI write the perfect description for your Custom GPT:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a compelling description for a Custom GPT called [YOUR GPT NAME]. It helps [TARGET USER] with [WHAT IT DOES]. Include what makes it unique and 4 conversation starter questions. Keep the description under 100 words, professional but friendly.')">&#128203; Click to copy: Write a compelling description for a Custom GPT called [YOUR GPT NAME]. It helps [TARGET USER] with [WHAT IT DOES]. Include what makes it unique and 4 conversation starter questions.</div>
+    <p style="color:var(--t3);font-size:.8rem">Use AI to write about your AI. Meta, but effective.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Build Your GPT NOW</h4>
+    <p>Don't just read &mdash; do it right now:</p>
+    <ul>
+      <li>Open ChatGPT &rarr; Explore GPTs &rarr; Create</li>
+      <li>Pick a name (IELTS Coach, Business Advisor, your own idea)</li>
+      <li>Paste your instructions using CRISP framework</li>
+      <li>Add 4 conversation starters</li>
+      <li>Test it with 3 different questions. Refine the instructions.</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">"Tusi apna AI assistant bana litta. Ih 99% logaan ton aage hai."</div>
+
+  <p class="curiosity-hook">Next: Botpress for professional chatbots &amp; WhatsApp integration concepts.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Botpress & WhatsApp &rarr;</button></div>
+</div>
+
+<!-- S3: BOTPRESS & WHATSAPP -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; You're 33% through. Now we go professional &mdash; Botpress chatbots.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Botpress &amp; <span class="gr">WhatsApp Chatbots</span></h2>
+    <p>Build professional chatbots for real businesses. FAQ bots for coaching centres, clinics, hotels &mdash; visual builder, no code. Plus WhatsApp chatbot concepts.</p>
+  </div>
+
+  <div class="callout call-1"><div class="call-ico">&#128172;</div><div class="call-body"><h4>Botpress &mdash; Free &amp; Professional</h4><p>Visual conversation flow builder. Perfect for FAQ-based chatbots. <strong>We're building a chatbot for a coaching centre:</strong> "What courses do you offer?" "What are the fees?" "What are the timings?" "How to register?" &mdash; all answered automatically, 24/7.</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128172; Demo: Coaching Centre FAQ Bot</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Create FAQ content for a Botpress chatbot with AI:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create FAQ content for a coaching centre chatbot. The centre offers IELTS, PTE, and spoken English courses in Jalandhar, Punjab. Include answers for: 1) What courses are available? 2) What are the fees? 3) What are the timings? 4) How to register? 5) What is the success rate? 6) Is there a demo class? 7) What are the batch sizes? 8) Where is the centre located? Keep answers conversational, friendly, and under 50 words each. Mix Hindi-English naturally.')">&#128203; Click to copy: Create FAQ content for a coaching centre chatbot in Jalandhar. Include answers for courses, fees, timings, registration, success rate, demo class, batch size, and location. Conversational, friendly, under 50 words each.</div>
+    <p style="color:var(--t3);font-size:.8rem">Paste these into Botpress conversation flows. Add AI fallback for unexpected questions.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128172; Botpress Chatbot Build Flow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">&#128221;</div>
+        <div class="vn-label">Sign Up</div>
+        <div class="vn-sub">Free Botpress account</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">&#128172;</div>
+        <div class="vn-label">Add FAQs</div>
+        <div class="vn-sub">Conversation flows</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">&#129302;</div>
+        <div class="vn-label">AI Fallback</div>
+        <div class="vn-sub">Handle unexpected Qs</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">&#127760;</div>
+        <div class="vn-label">Embed</div>
+        <div class="vn-sub">Add to website</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>From zero to live chatbot in under 30 minutes.</strong> Embed on any website with a simple code snippet.</div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">WhatsApp Chatbot Concepts</h3>
+
+  <div class="callout call-2"><div class="call-ico">&#128241;</div><div class="call-body"><h4>WhatsApp is Punjab's Primary Tool</h4><p>Full WhatsApp chatbot zyada advanced hai &mdash; requires API integration (WATI, Twilio). <strong>But today:</strong> WhatsApp Business auto-replies + quick replies (from Session 7) are your foundation. "Advanced WhatsApp chatbot version freelancing service vich bech sakde ho."</p></div></div>
+
+  <div class="tool-grid stagger">
+    <div class="tool-card reveal">
+      <h3>&#129302; Custom GPTs</h3>
+      <p>Build AI assistants inside ChatGPT. Share via link. Perfect for personal use and professional demos. Free to create.</p>
+      <a href="https://chat.openai.com/gpts" target="_blank" class="tool-link">chat.openai.com/gpts &rarr;</a>
+    </div>
+    <div class="tool-card reveal">
+      <h3>&#128172; Botpress</h3>
+      <p>Professional chatbot builder. Visual flows, AI fallback, website embedding. Free tier is generous. Best for business chatbots.</p>
+      <a href="https://botpress.com" target="_blank" class="tool-link">botpress.com &rarr;</a>
+    </div>
+    <div class="tool-card reveal">
+      <h3>&#128241; WhatsApp Business</h3>
+      <p>Auto-replies, quick replies, catalogue. Every Punjab business needs this. Set up in 15 minutes with AI-written content.</p>
+      <a href="https://business.whatsapp.com" target="_blank" class="tool-link">business.whatsapp.com &rarr;</a>
+    </div>
+  </div>
+
+  <div class="micro-win">You now know THREE chatbot platforms. Custom GPTs for smart assistants, Botpress for websites, WhatsApp for local businesses.</div>
+
+  <p class="curiosity-hook">Next: The Full Stack &mdash; combining everything into a complete business system.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: The Full Stack &rarr;</button></div>
+</div>
+
+<!-- S4: THE FULL STACK + BUSINESS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! This section shows the complete picture &mdash; and how to sell it.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>The Full Stack &mdash; <span class="gr">Complete Business System</span></h2>
+    <p>Everything you've learned combines into one powerful system. Plus: chatbot pricing for Punjab businesses.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128302; The Complete AI Business Stack</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-pink">
+        <div class="vn-icon">&#128247;</div>
+        <div class="vn-label">Instagram Ad</div>
+        <div class="vn-sub">Week 3 design skills</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-cyan">
+        <div class="vn-icon">&#128172;</div>
+        <div class="vn-label">Chatbot</div>
+        <div class="vn-sub">Answers questions</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green">
+        <div class="vn-icon">&#128221;</div>
+        <div class="vn-label">Form</div>
+        <div class="vn-sub">Captures data</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple">
+        <div class="vn-icon">&#128241;</div>
+        <div class="vn-label">WhatsApp</div>
+        <div class="vn-sub">Owner notified</div>
+      </div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold">
+        <div class="vn-icon">&#128231;</div>
+        <div class="vn-label">Follow-up</div>
+        <div class="vn-sub">AI drafts email</div>
+      </div>
+    </div>
+    <div class="vflow-caption"><strong>"Tusi puri system bana sakde ho &mdash; start to end. Ih &#8377;25,000-50,000 di service hai jo tusi de sakde ho."</strong></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128176;</div><div class="call-body"><h4>Chatbot Business Pricing for Punjab</h4><p><strong>Basic FAQ chatbot: &#8377;5,000-15,000</strong><br><strong>Advanced chatbot with automation: &#8377;15,000-30,000</strong><br><strong>Monthly maintenance: &#8377;2,000-5,000</strong><br><br>Target clients: Coaching centres (admission queries), Clinics (appointment booking), Real estate (property inquiries), Hotels/restaurants (menu &amp; booking).</p></div></div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">COACHING</span><span class="crd-icon">&#127979;</span><h3>Admission Query Bot</h3><p>Handles all admission questions 24/7. Courses, fees, timings, registration &mdash; parents get instant answers even at midnight. <strong>&#8377;10,000-20,000 one-time setup.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-3">CLINIC</span><span class="crd-icon">&#128138;</span><h3>Appointment Booking Bot</h3><p>Patients book appointments via chatbot. Doctor availability, specializations, fees &mdash; all answered automatically. <strong>Reduces receptionist workload by 50%.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-4">REAL ESTATE</span><span class="crd-icon">&#127968;</span><h3>Property Inquiry Bot</h3><p>Budget, location, BHK &mdash; bot filters and shows relevant properties. Captures lead details automatically for the dealer. <strong>24/7 lead generation machine.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-5">RESTAURANT</span><span class="crd-icon">&#127828;</span><h3>Menu &amp; Booking Bot</h3><p>Menu browsing, table reservations, delivery options &mdash; all handled by the bot. <strong>Perfect for Punjab's growing restaurant scene.</strong></p></div>
+  </div>
+
+  <div class="checklist">
+    <h4>&#128221; Week 5 Skills Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#9889; Built at least 1 working automation in Zapier (Session 9)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128202; Created AI-powered Google Sheets formulas (Session 9)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#129302; Built a Custom GPT with instructions and conversation starters</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128172; Explored Botpress and understood FAQ chatbot building</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128241; Reviewed WhatsApp Business auto-replies and quick replies</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128176; Understood the complete AI business stack (ad &rarr; bot &rarr; form &rarr; follow-up)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128200; Know chatbot pricing for Punjab market (&#8377;5K-30K)</label></div>
+    <div class="check-score" id="checkScore">Tap each item as you complete it &rarr; your progress appears here</div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"5 hafte complete. Tuhade kol hun SYSTEMS banaun di skill hai &mdash; automations, chatbots, custom GPTs. Ih skills rare ne. Punjab vich koi nahi kar reha ih kaam."</strong> You are literally the first batch in Punjab with these skills.</p>
+  </div>
+
+  <div class="identity-shift">"Next week is THE week. Freelancing profiles live honge. Paisa kamaan di gall hovegi. Seriously &mdash; next Saturday tuhadi life change kar sakda hai."</div>
+
+  <p class="curiosity-hook">Next: Test your chatbot knowledge with the quiz.</p>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your chatbot &amp; GPT knowledge.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions on chatbots and Custom GPTs. Instant feedback after each one.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question reflects a real chatbot scenario for Punjab businesses.</div>
+  <p class="curiosity-hook">Next: Your homework and preview of Session 11 &mdash; the Freelancing Masterclass.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Session 10 <span class="gr">Complete!</span></h2>
+    <p>Here's what you learned, your homework, and the exciting preview of EARNING WEEK.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#129302;</span><div class="vi-label" style="color:var(--c5)">Custom GPTs</div><div class="vi-desc">Your personal AI assistant</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128172;</span><div class="vi-label" style="color:var(--c1)">Botpress</div><div class="vi-desc">Professional chatbot builder</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128241;</span><div class="vi-label" style="color:var(--c2)">WhatsApp</div><div class="vi-desc">Auto-replies & quick replies</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128176;</span><div class="vi-label" style="color:var(--c4)">Full Stack</div><div class="vi-desc">&#8377;25K-50K service system</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; What chatbots are and why they matter for businesses<br>&#9989; Built your own Custom GPT with CRISP instructions<br>&#9989; Botpress: professional FAQ chatbot for coaching centres, clinics<br>&#9989; WhatsApp chatbot concepts and tools (WATI, Twilio)<br>&#9989; The complete AI business stack: ad &rarr; chatbot &rarr; form &rarr; automation &rarr; follow-up<br>&#9989; Chatbot pricing: &#8377;5,000-30,000 per project + monthly maintenance</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework: Build &amp; Share</h4>
+    <p>Two deliverables before next session:</p>
+    <ul>
+      <li><strong>1 Custom GPT</strong> for your field (IELTS coach, business advisor, farming helper, etc.). Share the link in WhatsApp group.</li>
+      <li><strong>1 Botpress chatbot concept</strong> &mdash; outline the FAQs and conversation flow for a real business.</li>
+      <li>Get <strong>3 people to test</strong> your Custom GPT and collect their feedback. What worked? What confused them?</li>
+    </ul>
+  </div>
+
+  <div class="callout call-4"><div class="call-ico">&#128176;</div><div class="call-body"><h4>Preview: Session 11 &mdash; AI Freelancing Masterclass</h4><p><strong>Next week is THE week.</strong> Freelancing profiles will go live. Job preparation starts. Paisa kamaan di gall hovegi. "Seriously &mdash; next Saturday tuhadi life change kar sakda hai. Apna best look pao &mdash; assi professional photos vi lavaange!"</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%2010%20of%20AI%20Power%20Program!%20Built%20my%20Custom%20GPT!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3>
+    <p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a></p>
+    <p style="color:var(--t2)">&#127760; <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
+    <p style="color:var(--t2)">&#128205; Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">"5 hafte complete. Tuhade kol hun SYSTEMS banaun di skill hai &mdash; automations, chatbots, custom GPTs. Ih skills rare ne. Punjab vich koi nahi kar reha ih kaam."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Power &mdash; 8-Week Program &middot; Session 10: AI Chatbots &amp; Custom GPTs &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');
+let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}
+drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));
+  navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){
+    var navEl=document.getElementById('mainNav');
+    var navH=navEl?navEl.offsetHeight:50;
+    var secEl=document.getElementById(id);
+    if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
+  });
+  const idx=secIds.indexOf(id);
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pctDone=Math.round((idx+1)/secIds.length*100);
+  const pt=document.getElementById('progText');
+  pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;
+  pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);
+  sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();
+    sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});
+  },100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const selectors='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(selectors).forEach(el=>{
+    if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');
+  });
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(parent=>{parent.querySelectorAll(':scope > *').forEach(child=>{if(!child.classList.contains('reveal')&&!child.classList.contains('reveal-left')&&!child.classList.contains('reveal-right'))child.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]&&!cards[0].classList.contains('reveal-left')){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]&&!cards[1].classList.contains('reveal-right')){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}
+initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}
+observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked} of ${total} completed — ${checked===total?'Week 5 skills mastered!':'Keep going!'}`;}
+
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='\u2705 Copied! Now paste into ChatGPT, Claude, or Gemini \u2192';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+const qData=[
+  {q:"What is a chatbot in simple terms?",o:["A robot that walks around","An AI assistant jo logaan naal gall karda hai tuhade bina","A spreadsheet formula","A website template"],a:1,e:"'Chatbot = ik AI assistant jo logaan naal gall karda hai tuhade bina.' It answers questions, handles inquiries, and provides information automatically, 24/7."},
+  {q:"Where do you build a Custom GPT?",o:["Microsoft Word","ChatGPT \u2192 Explore GPTs \u2192 Create","Instagram","Zapier"],a:1,e:"Custom GPTs are built inside ChatGPT. Go to Explore GPTs \u2192 Create. Add a name, description, instructions (using CRISP!), and conversation starters. Then share via link."},
+  {q:"What makes Custom GPT instructions effective?",o:["Keeping them vague","Using the CRISP framework with specific persona, tone, and constraints","Writing in code","Making them as long as possible"],a:1,e:"Your CRISP prompting skills make the difference. Specific instructions about persona, tone, knowledge domain, and constraints create a GPT that actually feels like an expert in its field."},
+  {q:"Which platform is best for building FAQ-based chatbots for websites?",o:["Microsoft Excel","Botpress","Instagram","WhatsApp"],a:1,e:"Botpress is free and powerful for building FAQ-based chatbots with visual conversation flows. It can be embedded on any website with a simple code snippet. Perfect for coaching centres, clinics, and businesses."},
+  {q:"How much can you charge for a basic FAQ chatbot?",o:["\u20b9100-200","\u20b95,000-15,000","\u20b91,00,000+","It should be free"],a:1,e:"A basic FAQ chatbot is worth \u20b95,000-15,000. Advanced chatbot with automation: \u20b915,000-30,000. Monthly maintenance adds \u20b92,000-5,000/month. These are real prices Punjab businesses will pay."},
+  {q:"What's the complete AI business stack from ad to follow-up?",o:["Just a website","Instagram ad \u2192 Chatbot \u2192 Form \u2192 Automation \u2192 Follow-up email","Only social media posting","Chatbot only"],a:1,e:"The full stack: Customer sees Instagram ad (Week 3) \u2192 Chatbot answers questions (Week 5) \u2192 Customer fills form \u2192 Automation captures data (Week 5) \u2192 AI drafts follow-up email (Week 2). This complete system is worth \u20b925,000-50,000."},
+  {q:"Which Punjab business type would benefit MOST from an admission query chatbot?",o:["Kiryana store","Coaching centre","Farm","Transport company"],a:1,e:"Coaching centres get hundreds of admission queries about courses, fees, timings, and registration. A chatbot handles these 24/7 \u2014 even when the centre is closed. Parents love instant answers."},
+  {q:"'ChatGPT may require Plus for Custom GPTs.' What's the backup plan?",o:["Cancel the session","Use Botpress as strong backup","Give up","Wait until it's free"],a:1,e:"As the teacher's manual advises: 'Have Botpress as strong backup. Monitor OpenAI\u2019s free tier policies.' Always have alternative tools ready. Botpress is free and equally powerful for chatbot building."},
+  {q:"What's the key difference between Custom GPTs and Botpress?",o:["Custom GPTs are faster to build","Custom GPTs are AI-powered assistants; Botpress is for visual FAQ flows on websites","There is no difference","Botpress is more expensive"],a:1,e:"Custom GPTs create intelligent AI assistants that understand context and generate responses. Botpress creates structured FAQ chatbots with visual conversation flows that embed on websites. Both are valuable for different use cases."},
+  {q:"How should you test a Custom GPT before sharing it?",o:["Don't test, just share","Ask 3 people to test it and collect feedback","Assume it works perfectly","Only test it yourself"],a:1,e:"Peer validation is powerful. Get 3 people to test your GPT with real questions. Collect feedback on what worked and what confused them. Then refine the instructions based on real usage."},
+  {q:"For WhatsApp chatbots in Punjab, what's the practical first step?",o:["Build a full API integration immediately","Set up WhatsApp Business auto-replies and quick replies","Install Botpress on WhatsApp","Create a mobile app"],a:1,e:"Start with WhatsApp Business auto-replies and quick replies \u2014 these are free and work today. Full WhatsApp chatbot via API (WATI, Twilio) is advanced and can be offered as a freelancing service later."},
+  {q:"What's the end goal for every student after Session 10?",o:["10 chatbots built","At least 1 Custom GPT or 1 chatbot prototype that works","A paid chatbot service running","Nothing specific"],a:1,e:"As the teacher's manual states: 'Every student has at least 1 Custom GPT or 1 chatbot prototype that works.' One working creation proves you can build AI assistants \u2014 that's the transformation moment."},
+  {q:"A restaurant owner asks 'Ki chatbot mera kaam kar sakda hai?' What's your best answer?",o:["No, chatbots are only for tech companies","Haan! Menu browsing, table reservations, delivery options \u2014 sab handle kar sakda hai 24/7.","Maybe, but it's complicated","Only if you spend \u20b91 lakh"],a:1,e:"Restaurants benefit hugely: menu inquiries, table reservations, delivery options, special dietary questions \u2014 all handled 24/7 by a chatbot. This is a real service you can sell for \u20b95,000-15,000."},
+  {q:"What's the MOST important thing when writing Custom GPT instructions?",o:["Making them very long","Being specific about persona, knowledge domain, and tone","Using complicated language","Adding lots of emojis"],a:1,e:"Specific instructions create specific results. Define the persona (friendly business advisor), knowledge domain (Punjab economy), tone (simple Hinglish), and constraints (under 200 words, free tools only). CRISP skills are essential here."},
+  {q:"'Tusi puri system bana sakde ho \u2014 start to end.' What's this system worth as a service?",o:["\u20b9500","\u20b95,000","\u20b925,000-50,000","\u20b910,00,000"],a:2,e:"A complete business system (ad design + chatbot + automation + follow-up) is worth \u20b925,000-50,000. You learned to build each component across Weeks 3-5. Combined, it's a premium service that transforms any business."},
+  {q:"How does Botpress handle questions it doesn't have answers for?",o:["It crashes","AI fallback generates a helpful response","It ignores the user","It redirects to Google"],a:1,e:"Botpress has an AI fallback feature. When a user asks something not in the FAQ flows, the AI generates a helpful response based on the bot's context. This means the bot never leaves a user without an answer."}
+];
+let cq=0,sc=0,ans=[],quizStarted=false,usedQs=[];
+function pickQuestions(){usedQs=[];const indices=[...Array(qData.length).keys()];for(let i=indices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}usedQs=indices.slice(0,8);}
+function initQuiz(){cq=0;sc=0;pickQuestions();ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=8){
+    const pct=Math.round(sc/8*100);
+    let tier,tierColor,msg;
+    if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You understand chatbots and Custom GPTs. Ready to build AI assistants for clients!';}
+    else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Review the Botpress and Full Stack sections.';}
+    else{tier='Keep Learning!';tierColor='var(--c4)';msg='Re-read the sections and try building at least 1 Custom GPT today.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/8</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up \u2192</button></div>`;
+    return;
+  }
+  const q=qData[usedQs[cq]];const ltr=['A','B','C','D'];
+  let prog=Array(8).fill(0).map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of 8</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next \u2192</button></div>`;
+}
+function selAns(i){
+  if(ans[cq])return;ans[cq]=true;
+  const q=qData[usedQs[cq]],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');
+  opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});
+  if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`\u2705 Correct! ${q.e}`}
+  else{fb.className='q-fb show fb-no';fb.innerHTML=`\u274c Not quite. ${q.e}`}
+  document.getElementById('nxtBtn').style.display='inline-flex';
+  document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
+}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>
