@@ -64,10 +64,31 @@
   .mission-steps li { color: #d1d5db; padding: 6px 0; font-size: 0.95rem; }
   .mission-steps li::before { content: "✅ "; }
   footer { text-align: center; padding: 20px; color: #4b5563; font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px; }
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <canvas id="particles"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <nav>
   <div class="logo">🤖 TARAhut AI Labs</div>
   <div class="nav-badge">Junior Track · Session 1</div>
@@ -77,8 +98,12 @@
   <!-- HERO -->
   <div class="hero">
     <span class="hero-emoji">🤖</span>
-    <h1>Session 1: Meet Your <span>AI Friend!</span></h1>
-    <p>Get ready for the coolest adventure in school! 🚀</p>
+    <h1>
+    <span data-lang-en>Session 1: Meet Your <span>AI Friend!</span></span>
+    <span data-lang-hi style="display:none">Session 1: अपने <span>AI दोस्त</span> से मिलो!</span>
+    <span data-lang-pa style="display:none">Session 1: ਆਪਣੇ <span>AI ਦੋਸਤ</span> ਨੂੰ ਮਿਲੋ!</span>
+  </h1>
+    <div data-lang-en><p>Get ready for the coolest adventure in school! 🚀</p></div><div data-lang-hi style="display:none"><p>स्कूल के सबसे मज़ेदार adventure के लिए तैयार हो जाओ! 🚀</p></div><div data-lang-pa style="display:none"><p>ਸਕੂਲ ਦੇ ਸਭ ਤੋਂ ਮਜ਼ੇਦਾਰ adventure ਲਈ ਤਿਆਰ ਹੋ ਜਾਓ! 🚀</p></div>
   </div>
 
   <!-- SECTION 1: What is AI? -->
@@ -283,6 +308,22 @@ function answer(el, isCorrect, qId) {
     box.style.display = 'block';
   }
 }
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

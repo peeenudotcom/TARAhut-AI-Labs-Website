@@ -99,23 +99,48 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <canvas id="confettiCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 15 &middot; THE FINALE &middot; 2026</div>
-  <h1>Final Project &<br><span class="gr">Certification</span></h1>
+  <h1>
+    <span data-lang-en>Final Project &amp;<br><span class="gr">Certification</span></span>
+    <span data-lang-hi style="display:none">Final Project &amp;<br><span class="gr">Certification</span></span>
+    <span data-lang-pa style="display:none">Final Project &amp;<br><span class="gr">Certification</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>This is it. 15 days of learning, practising, and building. Today you choose your capstone project, build it, and celebrate your mastery. You earned this moment.</p>
+  <div data-lang-en><p>This is it. 15 days of learning, practising, and building. Today you choose your capstone project, build it, and celebrate your mastery. You earned this moment.</p></div><div data-lang-hi style="display:none"><p>यही है वो दिन। 15 दिन की सीख, practice, और building। आज आप अपना capstone project चुनें, बनाएं, और अपनी mastery celebrate करें। आपने यह moment earn किया है।</p></div><div data-lang-pa style="display:none"><p>ਇਹ ਹੈ ਉਹ ਦਿਨ। 15 ਦਿਨ ਦੀ ਸਿੱਖਿਆ, practice, ਅਤੇ building। ਅੱਜ ਤੁਸੀਂ ਆਪਣਾ capstone project ਚੁਣੋ, ਬਣਾਓ, ਅਤੇ ਆਪਣੀ mastery celebrate ਕਰੋ। ਤੁਸੀਂ ਇਹ moment earn ਕੀਤਾ ਹੈ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Begin the Finale &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#127881; Jump to Celebration</button>
+    <button class="btn btn-glow" onclick="startLearning()"><span data-lang-en>Begin the Finale &rarr;</span><span data-lang-hi style="display:none">Finale शुरू करें &rarr;</span><span data-lang-pa style="display:none">Finale ਸ਼ੁਰੂ ਕਰੋ &rarr;</span></button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#127881; <span data-lang-en>Jump to Celebration</span><span data-lang-hi style="display:none">Celebration पर जाएं</span><span data-lang-pa style="display:none">Celebration ਤੇ ਜਾਓ</span></button>
   </div>
 </section>
 
@@ -412,6 +437,22 @@ function updateCheckScore(){const total=document.querySelectorAll('.check-item')
 // === COPY ===
 function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Paste into Claude →';setTimeout(()=>el.textContent=orig,3000)}).catch(()=>{el.style.background='rgba(52,211,153,.1)'})}
 function copyFreePrompt(){const txt=document.getElementById('freePrompt').value.trim();if(!txt){document.getElementById('freeOut').textContent='⚠️ Describe your project first.';return}document.getElementById('freeOut').textContent='✅ Copied! Paste into Claude.';navigator.clipboard.writeText(txt).catch(()=>{})}
+
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
 
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>

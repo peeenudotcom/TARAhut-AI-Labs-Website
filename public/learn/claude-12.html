@@ -100,10 +100,31 @@ tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
 .score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
 .score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
 .score-sub{color:var(--muted);font-size:0.9em}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body oncontextmenu="return false">
 <div id="particles"></div>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <nav>
   <div class="nav-inner">
     <div class="nav-brand">TARAhut AI Labs</div>
@@ -117,8 +138,12 @@ tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
 
 <div class="hero">
   <div class="hero-badge">DAY 12 — INTERMEDIATE</div>
-  <h1>Automation &amp;<br><span>Integration</span></h1>
-  <p>Make Claude a daily habit, not a one-off tool. Build your personal Claude system that saves hours every week — automatically.</p>
+  <h1>
+    <span data-lang-en>Automation &amp;<br><span>Integration</span></span>
+    <span data-lang-hi style="display:none">Automation &amp;<br><span>Integration</span></span>
+    <span data-lang-pa style="display:none">Automation &amp;<br><span>Integration</span></span>
+  </h1>
+  <div data-lang-en><p>Make Claude a daily habit, not a one-off tool. Build your personal Claude system that saves hours every week — automatically.</p></div><div data-lang-hi style="display:none"><p>Claude को daily habit बनाएं, one-off tool नहीं। अपना personal Claude system बनाएं जो हर हफ़्ते घंटों बचाए — automatically।</p></div><div data-lang-pa style="display:none"><p>Claude ਨੂੰ daily habit ਬਣਾਓ, one-off tool ਨਹੀਂ। ਆਪਣਾ personal Claude system ਬਣਾਓ ਜੋ ਹਰ ਹਫ਼ਤੇ ਘੰਟੇ ਬਚਾਵੇ — automatically।</p></div>
   <div class="hero-meta"><span>5 Sections</span><span>25 Quiz Questions</span><span>~90 min</span><span>tarahutailabs.com</span></div>
 </div>
 
@@ -506,6 +531,22 @@ function showScore(c){
   const msg=pct>=80?'Excellent!':pct>=60?'Good work!':'Review and retry!';
   c.innerHTML=`<div class="quiz-score show"><div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div><div class="score-msg">${msg}</div><div class="score-sub">${pct}% — ${score} of ${currentQuestions.length} correct</div><div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-secondary" onclick="showSection(0)">Review Content</button></div></div>`;
 }
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

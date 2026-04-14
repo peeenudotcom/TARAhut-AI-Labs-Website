@@ -118,18 +118,43 @@
 .celebration .big-emoji{font-size:4rem;display:block;margin-bottom:.8rem}
 .celebration h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem}
 .celebration p{color:var(--t2);font-size:.95rem}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div>
   <div class="hero-chip"><span class="live"></span>AI Explorer · Junior Track · Session 6</div>
-  <h1>English<br><span class="gr">Power-Up! 🗣️</span></h1>
+  <h1>
+    <span data-lang-en>English<br><span class="gr">Power-Up! 🗣️</span></span>
+    <span data-lang-hi style="display:none">English<br><span class="gr">Power-Up! 🗣️</span></span>
+    <span data-lang-pa style="display:none">English<br><span class="gr">Power-Up! 🗣️</span></span>
+  </h1>
   <div class="brand-tag">by TARAhut AI Labs</div>
-  <p class="sub">Use AI to boost your English — new words, better grammar, and more confidence! 💪✨</p>
+  <p class="sub" data-lang-en>Use AI to boost your English — new words, better grammar, and more confidence! 💪✨</p><p class="sub" data-lang-hi style="display:none">AI से अपनी English बूस्ट करो — नए words, बेहतर grammar, और ज़्यादा confidence! 💪✨</p><p class="sub" data-lang-pa style="display:none">AI ਨਾਲ ਆਪਣੀ English ਬੂਸਟ ਕਰੋ — ਨਵੇਂ words, ਵਧੀਆ grammar, ਅਤੇ ਜ਼ਿਆਦਾ confidence! 💪✨</p>
   <div class="hero-btns">
     <button class="btn btn-glow" onclick="startLearning()">Level Up English! →</button>
     <button class="btn btn-ghost" onclick="jumpTo('s3')">⚡ Jump to Quiz</button>
@@ -431,6 +456,22 @@ function answer(el,chosen,correct,fb){if(answered)return;answered=true;document.
 function nextQ(){qIdx++;renderQ();}
 function showScore(){const stars=score>=5?'🌟🌟🌟':score>=3?'⭐⭐':'⭐';const msg=score>=5?'English Champion! Incredible! 🏆':score>=3?'Great work! Your English is growing! 💪':'Good try! Review and try again! 📖';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/5</div><div style="font-size:2rem;margin:.5rem 0">${stars}</div><p style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">${msg}</p><p style="color:var(--t2)">You answered ${score} out of 5 correctly!</p><br><button class="btn btn-glow btn-sm" onclick="qIdx=0;score=0;buildQuiz()">Try Again 🔄</button></div>`;}
 buildQuiz();
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

@@ -154,6 +154,23 @@ tr:hover td{background:var(--bg3)}
   .sec{padding:2rem 1rem 4rem}
 }
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
@@ -161,16 +178,37 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Week 3 &middot; Session 9 &middot; AI Tools Mastery</div>
-  <h1>AI Image<br><span class="gr">Generation</span></h1>
+  <h1>
+    <span data-lang-en>AI Image<br><span class="gr">Generation</span></span>
+    <span data-lang-hi style="display:none">AI इमेज<br><span class="gr">जेनरेशन</span></span>
+    <span data-lang-pa style="display:none">AI ਇਮੇਜ<br><span class="gr">ਜਨਰੇਸ਼ਨ</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Turn words into stunning visuals. Learn Midjourney, Ideogram, and Canva AI to create professional images for any brand, business, or project.</p>
+  <div data-lang-en><p>Turn words into stunning visuals. Learn Midjourney, Ideogram, and Canva AI to create professional images for any brand, business, or project.</p></div>
+  <div data-lang-hi><p>शब्दों को शानदार विज़ुअल्स में बदलें। Midjourney, Ideogram और Canva AI सीखें और किसी भी ब्रांड, बिज़नेस या प्रोजेक्ट के लिए प्रोफ़ेशनल इमेज बनाएं।</p></div>
+  <div data-lang-pa><p>ਸ਼ਬਦਾਂ ਨੂੰ ਸ਼ਾਨਦਾਰ ਵਿਜ਼ੁਅਲਸ ਵਿੱਚ ਬਦਲੋ। Midjourney, Ideogram ਅਤੇ Canva AI ਸਿੱਖੋ ਅਤੇ ਕਿਸੇ ਵੀ ਬ੍ਰਾਂਡ, ਬਿਜ਼ਨਸ ਜਾਂ ਪ੍ਰੋਜੈਕਟ ਲਈ ਪ੍ਰੋਫੈਸ਼ਨਲ ਇਮੇਜ ਬਣਾਓ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Learning &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Take the Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Learning &rarr;</span>
+      <span data-lang-hi style="display:none">सीखना शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Take the Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ दें</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਦਿਓ</span>
+    </button>
   </div>
 </section>
 
@@ -191,15 +229,23 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>How AI <span class="gr">Creates Images</span></h2>
-    <p>No art degree. No Photoshop skills. Just words — and AI turns them into professional visuals in seconds. But how?</p>
+    <div data-lang-en><h2>How AI <span class="gr">Creates Images</span></h2></div>
+    <div data-lang-hi><h2>AI इमेज कैसे <span class="gr">बनाता है</span></h2></div>
+    <div data-lang-pa><h2>AI ਇਮੇਜ ਕਿਵੇਂ <span class="gr">ਬਣਾਉਂਦਾ ਹੈ</span></h2></div>
+    <div data-lang-en><p>No art degree. No Photoshop skills. Just words — and AI turns them into professional visuals in seconds. But how?</p></div>
+    <div data-lang-hi><p>ना आर्ट डिग्री चाहिए, ना Photoshop स्किल। बस शब्द — और AI उन्हें सेकंडों में प्रोफ़ेशनल विज़ुअल्स में बदल देता है। लेकिन कैसे?</p></div>
+    <div data-lang-pa><p>ਨਾ ਆਰਟ ਡਿਗਰੀ ਚਾਹੀਦੀ, ਨਾ Photoshop ਸਕਿੱਲ। ਬੱਸ ਸ਼ਬਦ — ਅਤੇ AI ਉਨ੍ਹਾਂ ਨੂੰ ਸਕਿੰਟਾਂ ਵਿੱਚ ਪ੍ਰੋਫੈਸ਼ਨਲ ਵਿਜ਼ੁਅਲਸ ਵਿੱਚ ਬਦਲ ਦਿੰਦਾ ਹੈ। ਪਰ ਕਿਵੇਂ?</p></div>
   </div>
 
   <div class="callout call-1">
     <div class="call-ico">&#128161;</div>
     <div class="call-body">
-      <h4>The Magic Explained Simply</h4>
-      <p>Imagine taking a clear photo and slowly adding static noise until it becomes pure fuzz. Now imagine teaching an AI to <strong>reverse that process</strong> — to look at fuzz and intelligently remove noise based on your description. That's a <strong>diffusion model</strong>. It starts from random noise and gradually sculpts your image, guided by your text prompt.</p>
+      <div data-lang-en><h4>The Magic Explained Simply</h4>
+      <p>Imagine taking a clear photo and slowly adding static noise until it becomes pure fuzz. Now imagine teaching an AI to <strong>reverse that process</strong> — to look at fuzz and intelligently remove noise based on your description. That's a <strong>diffusion model</strong>. It starts from random noise and gradually sculpts your image, guided by your text prompt.</p></div>
+      <div data-lang-hi><h4>जादू को आसानी से समझें</h4>
+      <p>कल्पना करें कि एक साफ़ फ़ोटो में धीरे-धीरे शोर जोड़ रहे हैं जब तक वो पूरी तरह धुंधली न हो जाए। अब सोचें कि AI को <strong>इस प्रक्रिया को उलटना</strong> सिखाया गया है — शोर को देखकर आपके विवरण के आधार पर बुद्धिमानी से हटाना। यही <strong>diffusion model</strong> है। यह रैंडम शोर से शुरू होता है और धीरे-धीरे आपकी इमेज को तराशता है।</p></div>
+      <div data-lang-pa><h4>ਜਾਦੂ ਨੂੰ ਆਸਾਨੀ ਨਾਲ ਸਮਝੋ</h4>
+      <p>ਸੋਚੋ ਕਿ ਇੱਕ ਸਾਫ਼ ਫ਼ੋਟੋ ਵਿੱਚ ਹੌਲੀ-ਹੌਲੀ ਸ਼ੋਰ ਮਿਲਾ ਰਹੇ ਹੋ ਜਦੋਂ ਤੱਕ ਉਹ ਪੂਰੀ ਤਰ੍ਹਾਂ ਧੁੰਦਲੀ ਨਾ ਹੋ ਜਾਵੇ। ਹੁਣ ਸੋਚੋ ਕਿ AI ਨੂੰ <strong>ਇਸ ਪ੍ਰਕਿਰਿਆ ਨੂੰ ਉਲਟਾਉਣਾ</strong> ਸਿਖਾਇਆ ਗਿਆ ਹੈ — ਤੁਹਾਡੇ ਵਰਣਨ ਦੇ ਅਧਾਰ ਤੇ ਸ਼ੋਰ ਹਟਾਉਣਾ। ਇਹੀ <strong>diffusion model</strong> ਹੈ। ਇਹ ਰੈਂਡਮ ਸ਼ੋਰ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ ਅਤੇ ਹੌਲੀ-ਹੌਲੀ ਤੁਹਾਡੀ ਇਮੇਜ ਘੜਦਾ ਹੈ।</p></div>
     </div>
   </div>
 
@@ -225,7 +271,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </div>
   </div>
 
-  <div class="micro-win">You now understand what took PhD students years to develop. That's your advantage.</div>
+  <div class="micro-win" data-lang-en>You now understand what took PhD students years to develop. That's your advantage.</div>
+  <div class="micro-win" data-lang-hi>आपने वो समझ लिया जो PhD स्टूडेंट्स को सालों लगते थे। यही आपका फ़ायदा है।</div>
+  <div class="micro-win" data-lang-pa>ਤੁਸੀਂ ਉਹ ਸਮਝ ਲਿਆ ਜੋ PhD ਸਟੂਡੈਂਟਸ ਨੂੰ ਸਾਲਾਂ ਲੱਗਦੇ ਸੀ। ਇਹੀ ਤੁਹਾਡਾ ਫ਼ਾਇਦਾ ਹੈ।</div>
 
   <div class="cgrid">
     <div class="crd"><span class="tag tag-1">Text-to-Image</span><span class="crd-icon">&#128221;</span><h3>Text-to-Image</h3><p>Type a description, get an image. Used by Midjourney, Ideogram, Canva AI, DALL-E. The most common approach.</p></div>
@@ -236,14 +284,22 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="callout call-2">
     <div class="call-ico">&#9889;</div>
     <div class="call-body">
-      <h4>Why This Matters for Your Career</h4>
-      <p>In 2024, stock photo agencies reported a <strong>35% drop in downloads</strong>. Businesses are switching to AI-generated images. A social media post that used to need a &#8377;5,000 photoshoot can now be created in 30 seconds. The person who creates those images? That could be you.</p>
+      <div data-lang-en><h4>Why This Matters for Your Career</h4>
+      <p>In 2024, stock photo agencies reported a <strong>35% drop in downloads</strong>. Businesses are switching to AI-generated images. A social media post that used to need a &#8377;5,000 photoshoot can now be created in 30 seconds. The person who creates those images? That could be you.</p></div>
+      <div data-lang-hi><h4>यह आपके करियर के लिए क्यों ज़रूरी है</h4>
+      <p>2024 में, स्टॉक फ़ोटो एजेंसियों ने <strong>35% डाउनलोड में गिरावट</strong> रिपोर्ट की। बिज़नेस AI-जनरेटेड इमेज पर स्विच कर रहे हैं। एक सोशल मीडिया पोस्ट जिसके लिए &#8377;5,000 का फ़ोटोशूट चाहिए था वो अब 30 सेकंड में बन सकती है। वो इमेज कौन बनाएगा? आप बन सकते हैं।</p></div>
+      <div data-lang-pa><h4>ਇਹ ਤੁਹਾਡੇ ਕਰੀਅਰ ਲਈ ਕਿਉਂ ਜ਼ਰੂਰੀ ਹੈ</h4>
+      <p>2024 ਵਿੱਚ, ਸਟਾਕ ਫ਼ੋਟੋ ਏਜੰਸੀਆਂ ਨੇ <strong>35% ਡਾਊਨਲੋਡ ਵਿੱਚ ਗਿਰਾਵਟ</strong> ਰਿਪੋਰਟ ਕੀਤੀ। ਬਿਜ਼ਨਸ AI-ਜਨਰੇਟਿਡ ਇਮੇਜ ਵੱਲ ਬਦਲ ਰਹੇ ਨੇ। ਇੱਕ ਸੋਸ਼ਲ ਮੀਡੀਆ ਪੋਸਟ ਜਿਸ ਲਈ &#8377;5,000 ਦਾ ਫ਼ੋਟੋਸ਼ੂਟ ਚਾਹੀਦਾ ਸੀ ਉਹ ਹੁਣ 30 ਸਕਿੰਟਾਂ ਵਿੱਚ ਬਣ ਸਕਦੀ ਐ। ਉਹ ਇਮੇਜ ਕੌਣ ਬਣਾਏਗਾ? ਤੁਸੀਂ ਬਣ ਸਕਦੇ ਹੋ।</p></div>
     </div>
   </div>
 
   <div class="micro-action">
-    <h4>Quick Reflection</h4>
-    <p>Think of the last time you searched for a stock photo. What if you could generate exactly what you imagined instead of settling for "close enough"? That's the power you're about to unlock.</p>
+    <div data-lang-en><h4>Quick Reflection</h4>
+    <p>Think of the last time you searched for a stock photo. What if you could generate exactly what you imagined instead of settling for "close enough"? That's the power you're about to unlock.</p></div>
+    <div data-lang-hi><h4>जल्दी सोचें</h4>
+    <p>याद करें जब आपने आखिरी बार स्टॉक फ़ोटो सर्च किया था। क्या हो अगर आप "करीब-करीब" पर settle होने की बजाय बिल्कुल वैसी इमेज बना सकें जो दिमाग में है? यही ताक़त आप अनलॉक करने वाले हैं।</p></div>
+    <div data-lang-pa><h4>ਜਲਦੀ ਸੋਚੋ</h4>
+    <p>ਯਾਦ ਕਰੋ ਜਦੋਂ ਤੁਸੀਂ ਆਖ਼ਰੀ ਵਾਰ ਸਟਾਕ ਫ਼ੋਟੋ ਲੱਭੀ ਸੀ। ਕੀ ਹੋਵੇ ਜੇ "ਲਗਭਗ ਠੀਕ" ਤੇ settle ਹੋਣ ਦੀ ਬਜਾਏ ਤੁਸੀਂ ਬਿਲਕੁਲ ਉਹੀ ਇਮੇਜ ਬਣਾ ਸਕੋ ਜੋ ਦਿਮਾਗ਼ ਵਿੱਚ ਐ? ਇਹੀ ਤਾਕਤ ਤੁਸੀਂ ਅਨਲਾਕ ਕਰਨ ਵਾਲੇ ਹੋ।</p></div>
   </div>
 
   <p class="curiosity-hook">Next: The professional's choice for AI images — Midjourney.</p>
@@ -253,17 +309,25 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 
 <!-- S2: MIDJOURNEY -->
 <div class="sec" id="s2">
-  <div class="progress-marker">&#128170; Section 2 of 6. You're building real skills right now.</div>
+  <div class="progress-marker" data-lang-en>&#128170; Section 2 of 6. You're building real skills right now.</div>
+  <div class="progress-marker" data-lang-hi>&#128170; सेक्शन 2/6. आप अभी असली स्किल्स बना रहे हैं।</div>
+  <div class="progress-marker" data-lang-pa>&#128170; ਸੈਕਸ਼ਨ 2/6. ਤੁਸੀਂ ਹੁਣੇ ਅਸਲੀ ਸਕਿੱਲਸ ਬਣਾ ਰਹੇ ਹੋ।</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Midjourney — <span class="gr">Professional AI Art</span></h2>
-    <p>The industry standard for AI image generation. Used by designers, agencies, and brands worldwide. Operates through Discord.</p>
+    <div data-lang-en><h2>Midjourney — <span class="gr">Professional AI Art</span></h2></div>
+    <div data-lang-hi><h2>Midjourney — <span class="gr">प्रोफ़ेशनल AI आर्ट</span></h2></div>
+    <div data-lang-pa><h2>Midjourney — <span class="gr">ਪ੍ਰੋਫੈਸ਼ਨਲ AI ਆਰਟ</span></h2></div>
+    <div data-lang-en><p>The industry standard for AI image generation. Used by designers, agencies, and brands worldwide. Operates through Discord.</p></div>
+    <div data-lang-hi><p>AI इमेज जनरेशन का इंडस्ट्री स्टैंडर्ड। दुनिया भर के डिज़ाइनर्स, एजेंसियां और ब्रांड्स इस्तेमाल करते हैं। Discord पर चलता है।</p></div>
+    <div data-lang-pa><p>AI ਇਮੇਜ ਜਨਰੇਸ਼ਨ ਦਾ ਇੰਡਸਟਰੀ ਸਟੈਂਡਰਡ। ਦੁਨੀਆ ਭਰ ਦੇ ਡਿਜ਼ਾਈਨਰਸ, ਏਜੰਸੀਆਂ ਅਤੇ ਬ੍ਰਾਂਡ ਇਸਤੇਮਾਲ ਕਰਦੇ ਨੇ। Discord ਉੱਤੇ ਚੱਲਦਾ ਹੈ।</p></div>
   </div>
 
   <div class="callout call-brand">
     <div class="call-ico">&#128279;</div>
     <div class="call-body">
-      <h4>Getting Started: Discord Setup</h4>
+      <span data-lang-en><h4>Getting Started: Discord Setup</h4></span>
+      <span data-lang-hi><h4>शुरू करें: Discord सेटअप</h4></span>
+      <span data-lang-pa><h4>ਸ਼ੁਰੂ ਕਰੋ: Discord ਸੈੱਟਅੱਪ</h4></span>
       <p><strong>1.</strong> Create a free account at discord.com<br>
       <strong>2.</strong> Visit midjourney.com and click "Join the Beta"<br>
       <strong>3.</strong> Accept the Discord invite — you're now in the Midjourney server<br>

@@ -95,18 +95,43 @@
 .foot{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
 .foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:600px){.subject-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div>
   <div class="hero-chip"><span class="live"></span>AI Explorer · Junior Track · Session 2</div>
-  <h1>AI is Your<br><span class="gr">Study Buddy! 📚</span></h1>
+  <h1>
+    <span data-lang-en>AI is Your<br><span class="gr">Study Buddy! 📚</span></span>
+    <span data-lang-hi style="display:none">AI है तुम्हारा<br><span class="gr">Study Buddy! 📚</span></span>
+    <span data-lang-pa style="display:none">AI ਹੈ ਤੁਹਾਡਾ<br><span class="gr">Study Buddy! 📚</span></span>
+  </h1>
   <div class="brand-tag">by TARAhut AI Labs</div>
-  <p class="sub">Stuck on homework? AI can explain ANYTHING in super simple words! 🌟</p>
+  <p class="sub" data-lang-en>Stuck on homework? AI can explain ANYTHING in super simple words! 🌟</p><p class="sub" data-lang-hi style="display:none">Homework में अटक गए? AI कुछ भी बहुत आसान शब्दों में समझा सकता है! 🌟</p><p class="sub" data-lang-pa style="display:none">Homework ਵਿੱਚ ਅਟਕ ਗਏ? AI ਕੁਝ ਵੀ ਬਹੁਤ ਸੌਖੇ ਸ਼ਬਦਾਂ ਵਿੱਚ ਸਮਝਾ ਸਕਦਾ! 🌟</p>
   <div class="hero-btns">
     <button class="btn btn-glow" onclick="startLearning()">Let's Study! →</button>
     <button class="btn btn-ghost" onclick="jumpTo('s3')">⚡ Jump to Quiz</button>
@@ -325,6 +350,22 @@ function answer(el,chosen,correct,fb){if(answered)return;answered=true;document.
 function nextQ(){qIdx++;renderQ();}
 function showScore(){const stars=score>=5?'🌟🌟🌟':score>=3?'⭐⭐':'⭐';const msg=score>=5?'Perfect score! You\'re an AI Scholar! 🧠':score>=3?'Great job! Keep practising! 💪':'Good try! Review and try again! 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${score}/5</div><div style="font-size:2rem;margin:.5rem 0">${stars}</div><p style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">${msg}</p><p style="color:var(--t2)">You answered ${score} out of 5 correctly!</p><br><button class="btn btn-glow btn-sm" onclick="qIdx=0;score=0;buildQuiz()">Try Again 🔄</button></div>`;}
 buildQuiz();
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

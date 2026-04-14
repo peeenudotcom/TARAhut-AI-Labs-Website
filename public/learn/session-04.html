@@ -198,11 +198,23 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   .library-table{font-size:.75rem}
 }
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -229,6 +241,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Prompt Library</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up + Project</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -669,6 +686,69 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'Advanced Prompting<br><span class="gr">+ Prompt Library</span>',hi:'Advanced Prompting<br><span class="gr">+ Prompt Library</span>',pa:'Advanced Prompting<br><span class="gr">+ Prompt Library</span>'},
+  '.hero>p':{
+    en:'Chain-of-Thought, Few-Shot, System Prompts, and building your personal Prompt Library \u2014 the techniques that separate amateurs from professionals.',
+    hi:'Chain-of-Thought, Few-Shot, System Prompts, और अपनी Personal Prompt Library बनाना \u2014 वो techniques जो amateurs को professionals से अलग करती हैं।',
+    pa:'Chain-of-Thought, Few-Shot, System Prompts, ਅਤੇ ਆਪਣੀ Personal Prompt Library ਬਣਾਉਣਾ \u2014 ਉਹ techniques ਜੋ amateurs ਨੂੰ professionals ਤੋਂ ਵੱਖ ਕਰਦੀਆਂ ਨੇ।'
+  },
+  '.hero-btns .btn-glow':{en:'Start Session \u2192',hi:'सेशन शुरू करें \u2192',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\uD83D\uDCDA Build Your Library',hi:'\uD83D\uDCDA अपनी Library बनाएं',pa:'\uD83D\uDCDA ਆਪਣੀ Library ਬਣਾਓ'},
+  '#s1 .sec-head h2':{en:'Chain-of-Thought <span class="gr">Prompting</span>',hi:'Chain-of-Thought <span class="gr">Prompting</span>',pa:'Chain-of-Thought <span class="gr">Prompting</span>'},
+  '#s1 .sec-head>p':{en:'Make AI think step by step before giving you the final answer. This dramatically improves accuracy on complex problems, reasoning tasks, and multi-step decisions.',hi:'AI को final answer देने से पहले step by step सोचने को कहें। यह complex problems, reasoning tasks, और multi-step decisions पर accuracy को बहुत बढ़ा देता है।',pa:'AI ਨੂੰ final answer ਦੇਣ ਤੋਂ ਪਹਿਲਾਂ step by step ਸੋਚਣ ਲਈ ਕਹੋ। ਇਹ complex problems, reasoning tasks, ਅਤੇ multi-step decisions \'ਤੇ accuracy ਨੂੰ ਬਹੁਤ ਵਧਾ ਦਿੰਦਾ।'},
+  '#s1 .micro-win':{en:'You just learned a technique that researchers formally published in academic AI papers. And you can use it right now.',hi:'आपने अभी वो technique सीखी जो researchers ने academic AI papers में publish की। और आप इसे अभी इस्तेमाल कर सकते हैं।',pa:'ਤੁਸੀਂ ਹੁਣੇ ਉਹ technique ਸਿੱਖੀ ਜੋ researchers ਨੇ academic AI papers ਵਿੱਚ publish ਕੀਤੀ। ਅਤੇ ਤੁਸੀਂ ਇਸ ਨੂੰ ਹੁਣੇ ਵਰਤ ਸਕਦੇ ਹੋ।'},
+  '#s1 .micro-action h4':{en:'60-Second Action',hi:'60-सकिंट एक्शन',pa:'60-ਸਕਿੰਟ ਐਕਸ਼ਨ'},
+  '#s1 .curiosity-hook':{en:'Next: Teaching AI with examples. The Few-Shot technique that makes AI understand your exact style.',hi:'अगला: AI को examples से सिखाना। Few-Shot technique जो AI को आपकी exact style समझा देती है।',pa:'ਅਗਲਾ: AI ਨੂੰ examples ਨਾਲ ਸਿਖਾਉਣਾ। Few-Shot technique ਜੋ AI ਨੂੰ ਤੁਹਾਡੀ exact style ਸਮਝਾ ਦਿੰਦੀ।'},
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! You\'re 17% through this advanced session.',hi:'\u2705 Section 1 ਪੂਰਾ! ਇਸ advanced session ਦਾ 17% ਹੋ ਗਿਆ।',pa:'\u2705 Section 1 ਪੂਰਾ! ਇਸ advanced ਸੈਸ਼ਨ ਦਾ 17% ਹੋ ਗਿਆ।'},
+  '#s2 .sec-head h2':{en:'Few-Shot <span class="gr">Prompting</span>',hi:'Few-Shot <span class="gr">Prompting</span>',pa:'Few-Shot <span class="gr">Prompting</span>'},
+  '#s2 .sec-head>p':{en:'Give AI 2-3 examples of what you want before asking it to produce. This is how you teach AI your specific style, tone, and format \u2014 permanently changing how it responds to you.',hi:'AI से produce करवाने से पहले 2-3 examples दें कि आप क्या चाहते हैं। इससे AI आपकी specific style, tone, और format सीख जाता है \u2014 और हमेशा के लिए बदल जाता है कि वो आपको कैसे respond करता है।',pa:'AI ਤੋਂ produce ਕਰਵਾਉਣ ਤੋਂ ਪਹਿਲਾਂ 2-3 examples ਦਿਓ ਕਿ ਤੁਸੀਂ ਕੀ ਚਾਹੁੰਦੇ ਹੋ। ਇਸ ਨਾਲ AI ਤੁਹਾਡੀ specific style, tone, ਅਤੇ format ਸਿੱਖ ਜਾਂਦਾ \u2014 ਅਤੇ ਹਮੇਸ਼ਾ ਲਈ ਬਦਲ ਜਾਂਦਾ ਕਿ ਉਹ ਤੁਹਾਨੂੰ ਕਿਵੇਂ respond ਕਰਦਾ।'},
+  '#s2 .micro-win':{en:'Few-Shot prompting is used by professional AI developers daily. You now have the same technique.',hi:'Few-Shot prompting professional AI developers रोज़ इस्तेमाल करते हैं। अब यही technique आपके पास है।',pa:'Few-Shot prompting professional AI developers ਰੋਜ਼ ਵਰਤਦੇ ਨੇ। ਹੁਣ ਇਹੀ technique ਤੁਹਾਡੇ ਕੋਲ ਹੈ।'},
+  '#s2 .identity-shift':{en:'You\'re no longer writing prompts \u2014 you\'re teaching AI to work in your exact style. That\'s a different level entirely.',hi:'अब आप सिर्फ़ prompts नहीं लिख रहे \u2014 आप AI को अपनी exact style में काम करना सिखा रहे हैं। यह बिल्कुल अलग level है।',pa:'ਹੁਣ ਤੁਸੀਂ ਸਿਰਫ਼ prompts ਨਹੀਂ ਲਿਖ ਰਹੇ \u2014 ਤੁਸੀਂ AI ਨੂੰ ਆਪਣੀ exact style ਵਿੱਚ ਕੰਮ ਕਰਨਾ ਸਿਖਾ ਰਹੇ ਹੋ। ਇਹ ਬਿਲਕੁਲ ਵੱਖ level ਹੈ।'},
+  '#s2 .micro-action h4':{en:'Try it Now: Clone Your Style',hi:'अभी आज़माएं: अपनी Style Clone करें',pa:'ਹੁਣੇ ਅਜ਼ਮਾਓ: ਆਪਣੀ Style Clone ਕਰੋ'},
+  '#s2 .curiosity-hook':{en:'Next: System prompts \u2014 how to create a permanent AI persona that works exactly the way you need.',hi:'अगला: System prompts \u2014 एक permanent AI persona कैसे बनाएं जो exactly वैसे काम करे जैसा आपको चाहिए।',pa:'ਅਗਲਾ: System prompts \u2014 ਇੱਕ permanent AI persona ਕਿਵੇਂ ਬਣਾਈਏ ਜੋ exactly ਉਸ ਤਰ੍ਹਾਂ ਕੰਮ ਕਰੇ ਜਿਵੇਂ ਤੁਹਾਨੂੰ ਚਾਹੀਦਾ।'},
+  '#s3 .progress-marker':{en:'\uD83D\uDCAA 33% done! System prompts \u2014 the most powerful AI technique most users never discover.',hi:'\uD83D\uDCAA 33% ਪੂਰਾ! System prompts \u2014 सबसे powerful AI technique जो ज़्यादातर users कभी नहीं सीखते।',pa:'\uD83D\uDCAA 33% ਪੂਰਾ! System prompts \u2014 ਸਭ ਤੋਂ powerful AI technique ਜੋ ਜ਼ਿਆਦਾਤਰ users ਕਦੇ ਨਹੀਂ ਸਿੱਖਦੇ।'},
+  '#s3 .sec-head h2':{en:'System Prompts <span class="gr">&amp; Personas</span>',hi:'System Prompts <span class="gr">&amp; Personas</span>',pa:'System Prompts <span class="gr">&amp; Personas</span>'},
+  '#s3 .sec-head>p':{en:'Create permanent AI personalities that behave exactly how you need \u2014 every conversation, every time. This is how businesses build custom AI assistants.',hi:'ऐसी permanent AI personalities बनाएं जो exactly वैसे behave करें जैसा आपको चाहिए \u2014 हर conversation में, हर बार। Businesses ऐसे ही custom AI assistants बनाते हैं।',pa:'ਅਜਿਹੀਆਂ permanent AI personalities ਬਣਾਓ ਜੋ exactly ਉਸ ਤਰ੍ਹਾਂ behave ਕਰਨ ਜਿਵੇਂ ਤੁਹਾਨੂੰ ਚਾਹੀਦਾ \u2014 ਹਰ conversation ਵਿੱਚ, ਹਰ ਵਾਰ। Businesses ਇਸੇ ਤਰ੍ਹਾਂ custom AI assistants ਬਣਾਉਂਦੇ ਨੇ।'},
+  '#s3 .micro-win':{en:'You can now build custom AI assistants. That\'s a product, not just a skill.',hi:'अब आप custom AI assistants बना सकते हैं। यह एक product है, सिर्फ़ skill नहीं।',pa:'ਹੁਣ ਤੁਸੀਂ custom AI assistants ਬਣਾ ਸਕਦੇ ਹੋ। ਇਹ ਇੱਕ product ਹੈ, ਸਿਰਫ਼ skill ਨਹੀਂ।'},
+  '#s3 .curiosity-hook':{en:'Next: Building your Prompt Library \u2014 the asset that compounds in value over time.',hi:'अगला: अपनी Prompt Library बनाना \u2014 वो asset जो समय के साथ और कीमती होती जाती है।',pa:'ਅਗਲਾ: ਆਪਣੀ Prompt Library ਬਣਾਉਣਾ \u2014 ਉਹ asset ਜੋ ਸਮੇਂ ਨਾਲ ਹੋਰ ਕੀਮਤੀ ਹੁੰਦੀ ਜਾਂਦੀ।'},
+  '#s4 .progress-marker':{en:'\uD83D\uDD25 67% done! The Prompt Library \u2014 your most valuable AI asset.',hi:'\uD83D\uDD25 67% ਪੂਰਾ! Prompt Library \u2014 आपकी सबसे कीमती AI asset।',pa:'\uD83D\uDD25 67% ਪੂਰਾ! Prompt Library \u2014 ਤੁਹਾਡੀ ਸਭ ਤੋਂ ਕੀਮਤੀ AI asset।'},
+  '#s4 .sec-head h2':{en:'Building Your <span class="gr">Prompt Library</span>',hi:'अपनी <span class="gr">Prompt Library</span> बनाएं',pa:'ਆਪਣੀ <span class="gr">Prompt Library</span> ਬਣਾਓ'},
+  '#s4 .sec-head>p':{en:'A Prompt Library is a personal collection of tested, effective prompts organised by category. Once built, it saves you hours every week and grows more valuable over time.',hi:'Prompt Library tested, effective prompts का personal collection है जो category के हिसाब से organized है। एक बार बन जाए तो हर हफ़्ते घंटे बचाती है और समय के साथ और कीमती होती जाती है।',pa:'Prompt Library tested, effective prompts ਦਾ personal collection ਹੈ ਜੋ category ਅਨੁਸਾਰ organized ਹੈ। ਇੱਕ ਵਾਰ ਬਣ ਜਾਵੇ ਤਾਂ ਹਰ ਹਫ਼ਤੇ ਘੰਟੇ ਬਚਾਉਂਦੀ ਅਤੇ ਸਮੇਂ ਨਾਲ ਹੋਰ ਕੀਮਤੀ ਹੁੰਦੀ ਜਾਂਦੀ।'},
+  '#s4 .emotional-hook p':{en:'<strong>Think about this:</strong> A professional chef doesn\'t memorise every recipe from scratch every day. They build a personal recipe book over years. A good prompt library does the same thing for your AI work. <strong>Your future self will thank your present self for building this now.</strong>',hi:'<strong>ज़रा सोचें:</strong> एक professional chef रोज़ हर recipe याद से नहीं बनाता। वो सालों में अपनी personal recipe book बनाता है। एक अच्छी prompt library आपके AI काम के लिए वही काम करती है। <strong>भविष्य का आप अभी के आप का शुक्रिया अदा करेगा।</strong>',pa:'<strong>ਜ਼ਰਾ ਸੋਚੋ:</strong> ਇੱਕ professional chef ਰੋਜ਼ ਹਰ recipe ਯਾਦ ਤੋਂ ਨਹੀਂ ਬਣਾਉਂਦਾ। ਉਹ ਸਾਲਾਂ ਵਿੱਚ ਆਪਣੀ personal recipe book ਬਣਾਉਂਦਾ। ਇੱਕ ਚੰਗੀ prompt library ਤੁਹਾਡੇ AI ਕੰਮ ਲਈ ਉਹੀ ਕੰਮ ਕਰਦੀ। <strong>ਭਵਿੱਖ ਦਾ ਤੁਸੀਂ ਹੁਣ ਦੇ ਤੁਹਾਡਾ ਸ਼ੁਕਰੀਆ ਅਦਾ ਕਰੋਗੇ।</strong>'},
+  '#s4 .micro-action h4':{en:'Start Your Prompt Library Right Now',hi:'अभी अपनी Prompt Library शुरू करें',pa:'ਹੁਣੇ ਆਪਣੀ Prompt Library ਸ਼ੁਰੂ ਕਰੋ'},
+  '#s4 .micro-win':{en:'Your Prompt Library is now born. Every great prompt you write from this day forward goes in it.',hi:'आपकी Prompt Library अब पैदा हो गई। आज से हर शानदार prompt जो आप लिखें, उसमें जाएगा।',pa:'ਤੁਹਾਡੀ Prompt Library ਹੁਣ ਪੈਦਾ ਹੋ ਗਈ। ਅੱਜ ਤੋਂ ਹਰ ਸ਼ਾਨਦਾਰ prompt ਜੋ ਤੁਸੀਂ ਲਿਖੋ, ਉਸ ਵਿੱਚ ਜਾਊ।'},
+  '#s4 .identity-shift':{en:'You\'ve moved from following tutorials to building your own AI toolkit. That\'s a professional mindset, not a student one.',hi:'आप tutorials follow करने से अपनी AI toolkit बनाने पर आ गए हैं। यह professional mindset है, student वाली नहीं।',pa:'ਤੁਸੀਂ tutorials follow ਕਰਨ ਤੋਂ ਆਪਣੀ AI toolkit ਬਣਾਉਣ \'ਤੇ ਆ ਗਏ ਹੋ। ਇਹ professional mindset ਹੈ, student ਵਾਲੀ ਨਹੀਂ।'},
+  '#s4 .curiosity-hook':{en:'Next: 8 questions on advanced prompting \u2014 then the big Week 1 project reveal.',hi:'अगला: advanced prompting पर 8 सवाल \u2014 फिर Week 1 project का बड़ा reveal।',pa:'ਅਗਲਾ: advanced prompting \'ਤੇ 8 ਸਵਾਲ \u2014 ਫਿਰ Week 1 project ਦਾ ਵੱਡਾ reveal।'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost done! Let\'s test your advanced prompting knowledge.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! चलें आपकी advanced prompting knowledge test करते हैं।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! ਚੱਲੋ ਤੁਹਾਡੀ advanced prompting knowledge test ਕਰੀਏ।'},
+  '#s5 .sec-head h2':{en:'Test Your <span class="gr">Advanced Skills</span>',hi:'अपनी <span class="gr">Advanced Skills</span> जाँचें',pa:'ਆਪਣੀਆਂ <span class="gr">Advanced Skills</span> ਜਾਂਚੋ'},
+  '#s5 .sec-head>p':{en:'8 questions on Chain-of-Thought, Few-Shot, System Prompts, and Prompt Libraries. These are real professional techniques now in your toolkit.',hi:'Chain-of-Thought, Few-Shot, System Prompts, और Prompt Libraries पर 8 सवाल। ये सब असली professional techniques अब आपकी toolkit में हैं।',pa:'Chain-of-Thought, Few-Shot, System Prompts, ਅਤੇ Prompt Libraries \'ਤੇ 8 ਸਵਾਲ। ਇਹ ਸਭ ਅਸਲੀ professional techniques ਹੁਣ ਤੁਹਾਡੀ toolkit ਵਿੱਚ ਨੇ।'},
+  '#s5 .micro-win':{en:'You completed the quiz. This is the knowledge base of a working prompt engineer.',hi:'आपने quiz पूरा कर लिया। यह एक working prompt engineer का knowledge base है।',pa:'ਤੁਸੀਂ quiz ਪੂਰਾ ਕਰ ਲਿਆ। ਇਹ ਇੱਕ working prompt engineer ਦਾ knowledge base ਹੈ।'},
+  '#s5 .curiosity-hook':{en:'Next: Your Week 1 Project \u2014 "My Prompt Playbook." This one goes on your portfolio.',hi:'अगला: आपका Week 1 Project \u2014 "My Prompt Playbook।" यह आपके portfolio में जाएगा।',pa:'ਅਗਲਾ: ਤੁਹਾਡਾ Week 1 Project \u2014 "My Prompt Playbook।" ਇਹ ਤੁਹਾਡੇ portfolio ਵਿੱਚ ਜਾਊ।'},
+  '#s6 .sec-head h2':{en:'Session 4 <span class="gr">Complete!</span> + Your Week 1 Project',hi:'Session 4 <span class="gr">ਪੂਰਾ!</span> + ਤੁਹਾਡਾ Week 1 Project',pa:'Session 4 <span class="gr">ਪੂਰਾ!</span> + ਤੁਹਾਡਾ Week 1 Project'},
+  '#s6 .sec-head>p':{en:'Four sessions done. Advanced prompting is yours. Now it\'s time to build something real.',hi:'चार sessions पूरे। Advanced prompting अब आपकी है। अब कुछ असली बनाने का समय है।',pa:'ਚਾਰ sessions ਪੂਰੇ। Advanced prompting ਹੁਣ ਤੁਹਾਡੀ ਹੈ। ਹੁਣ ਕੁਝ ਅਸਲੀ ਬਣਾਉਣ ਦਾ ਸਮਾਂ ਹੈ।'},
+  '#s6 .micro-action h4':{en:'Your Week 1 Homework Summary',hi:'आपका Week 1 होमवर्क सारांश',pa:'ਤੁਹਾਡਾ Week 1 ਹੋਮਵਰਕ ਸਾਰ'},
+  '#s6 .identity-shift':{en:'You\'ve completed 4 sessions. You understand AI, use it ethically, prompt it like a professional, and you\'re building a portfolio. You\'re not a beginner anymore. Act like it.',hi:'आपने 4 sessions पूरे कर लिए। आप AI समझते हैं, नैतिक तरीके से इस्तेमाल करते हैं, professional की तरह prompt करते हैं, और portfolio बना रहे हैं। अब आप beginner नहीं हैं। ऐसे ही काम करें।',pa:'ਤੁਸੀਂ 4 sessions ਪੂਰੇ ਕਰ ਲਏ। ਤੁਸੀਂ AI ਸਮਝਦੇ ਹੋ, ਨੈਤਿਕ ਤਰੀਕੇ ਨਾਲ ਵਰਤਦੇ ਹੋ, professional ਵਾਂਗ prompt ਕਰਦੇ ਹੋ, ਅਤੇ portfolio ਬਣਾ ਰਹੇ ਹੋ। ਹੁਣ ਤੁਸੀਂ beginner ਨਹੀਂ ਹੋ। ਇਸੇ ਤਰ੍ਹਾਂ ਕੰਮ ਕਰੋ।'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

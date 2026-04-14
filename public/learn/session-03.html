@@ -207,11 +207,23 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   .sec{padding:2rem 1rem 4rem}
 }
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -238,6 +250,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Prompt Lab</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -699,6 +716,68 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'Prompt Engineering<br><span class="gr">Basics</span>',hi:'Prompt Engineering<br><span class="gr">की बुनियाद</span>',pa:'Prompt Engineering<br><span class="gr">ਦੀ ਬੁਨਿਆਦ</span>'},
+  '.hero>p':{
+    en:'The difference between bad AI results and excellent AI results is almost always the prompt. Learn the RCTF Framework and score your own prompts live.',
+    hi:'ख़राब AI नतीजों और शानदार AI नतीजों के बीच का फ़र्क लगभग हमेशा prompt में होता है। RCTF Framework सीखें और अपने prompts को live score करें।',
+    pa:'ਮਾੜੇ AI ਨਤੀਜਿਆਂ ਅਤੇ ਸ਼ਾਨਦਾਰ AI ਨਤੀਜਿਆਂ ਵਿੱਚ ਫ਼ਰਕ ਲਗਭਗ ਹਮੇਸ਼ਾ prompt ਵਿੱਚ ਹੁੰਦਾ। RCTF Framework ਸਿੱਖੋ ਅਤੇ ਆਪਣੇ prompts ਨੂੰ live score ਕਰੋ।'
+  },
+  '.hero-btns .btn-glow':{en:'Start Session \u2192',hi:'सेशन शुरू करें \u2192',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Try Prompt Lab',hi:'\u26A1 Prompt Lab आज़माएं',pa:'\u26A1 Prompt Lab ਅਜ਼ਮਾਓ'},
+  '#s1 .sec-head h2':{en:'What is a <span class="gr">Prompt</span>?',hi:'<span class="gr">Prompt</span> क्या है?',pa:'<span class="gr">Prompt</span> ਕੀ ਹੈ?'},
+  '#s1 .sec-head>p':{en:'A prompt is the instruction you give AI. It\'s the single most important factor determining the quality of what AI produces for you.',hi:'Prompt वो instruction है जो आप AI को देते हैं। AI आपके लिए क्या produce करता है, उसकी quality का सबसे ज़रूरी factor यही है।',pa:'Prompt ਉਹ instruction ਹੈ ਜੋ ਤੁਸੀਂ AI ਨੂੰ ਦਿੰਦੇ ਹੋ। AI ਤੁਹਾਡੇ ਲਈ ਕੀ produce ਕਰਦਾ, ਉਸ ਦੀ quality ਦਾ ਸਭ ਤੋਂ ਜ਼ਰੂਰੀ factor ਇਹੀ ਹੈ।'},
+  '#s1 .micro-win':{en:'You now understand something most ChatGPT users will never learn: the quality gap is almost always in the prompt.',hi:'अब आप वो बात समझ गए जो ज़्यादातर ChatGPT users कभी नहीं सीखेंगे: quality gap लगभग हमेशा prompt में होता है।',pa:'ਹੁਣ ਤੁਸੀਂ ਉਹ ਗੱਲ ਸਮਝ ਗਏ ਜੋ ਜ਼ਿਆਦਾਤਰ ChatGPT users ਕਦੇ ਨਹੀਂ ਸਿੱਖਣਗੇ: quality gap ਲਗਭਗ ਹਮੇਸ਼ਾ prompt ਵਿੱਚ ਹੁੰਦਾ।'},
+  '#s1 .micro-action h4':{en:'60-Second Experiment',hi:'60-सकिंट का प्रयोग',pa:'60-ਸਕਿੰਟ ਦਾ ਤਜਰਬਾ'},
+  '#s1 .identity-shift':{en:'From this moment forward, you\'re not just an AI user. You\'re someone who understands HOW to direct AI. That distinction will matter.',hi:'इस पल से आगे, आप सिर्फ़ AI user नहीं हैं। आप वो इंसान हैं जो जानता है कि AI को कैसे direct करना है। यह फ़र्क मायने रखेगा।',pa:'ਇਸ ਪਲ ਤੋਂ ਅੱਗੇ, ਤੁਸੀਂ ਸਿਰਫ਼ AI user ਨਹੀਂ ਹੋ। ਤੁਸੀਂ ਉਹ ਇਨਸਾਨ ਹੋ ਜੋ ਜਾਣਦਾ ਹੈ ਕਿ AI ਨੂੰ ਕਿਵੇਂ direct ਕਰਨਾ। ਇਹ ਫ਼ਰਕ ਮਾਅਨੇ ਰੱਖੂ।'},
+  '#s1 .curiosity-hook':{en:'Next: The 4-part formula that makes every prompt professional. It takes 90 seconds to learn.',hi:'अगला: 4-भाग का formula जो हर prompt को professional बनाता है। सीखने में 90 सकिंट लगते हैं।',pa:'ਅਗਲਾ: 4-ਭਾਗ ਦਾ formula ਜੋ ਹਰ prompt ਨੂੰ professional ਬਣਾਉਂਦਾ। ਸਿੱਖਣ ਵਿੱਚ 90 ਸਕਿੰਟ ਲੱਗਦੇ ਨੇ।'},
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! You\'re 17% through this session.',hi:'\u2705 Section 1 ਪੂਰਾ! ਇਸ session ਦਾ 17% ਹੋ ਗਿਆ।',pa:'\u2705 Section 1 ਪੂਰਾ! ਇਸ ਸੈਸ਼ਨ ਦਾ 17% ਹੋ ਗਿਆ।'},
+  '#s2 .sec-head h2':{en:'The <span class="gr">RCTF Framework</span>',hi:'<span class="gr">RCTF Framework</span>',pa:'<span class="gr">RCTF Framework</span>'},
+  '#s2 .sec-head>p':{en:'Role + Context + Task + Format. Four elements that transform every prompt from average to excellent. Once you learn this, you can\'t unlearn it.',hi:'Role + Context + Task + Format। चार elements जो हर prompt को औसत से शानदार बना देते हैं। एक बार सीख लेंगे तो भूल नहीं पाएंगे।',pa:'Role + Context + Task + Format। ਚਾਰ elements ਜੋ ਹਰ prompt ਨੂੰ ਔਸਤ ਤੋਂ ਸ਼ਾਨਦਾਰ ਬਣਾ ਦਿੰਦੇ ਨੇ। ਇੱਕ ਵਾਰ ਸਿੱਖ ਲਓਗੇ ਤਾਂ ਭੁੱਲ ਨਹੀਂ ਪਾਓਗੇ।'},
+  '#s2 .micro-win':{en:'5 professional-level prompts in your toolkit. These alone are worth the session.',hi:'5 professional-level prompts आपकी toolkit में। बस ये अकेले ही session की कीमत हैं।',pa:'5 professional-level prompts ਤੁਹਾਡੀ toolkit ਵਿੱਚ। ਬੱਸ ਇਹ ਇਕੱਲੇ ਹੀ session ਦੀ ਕੀਮਤ ਨੇ।'},
+  '#s2 .micro-action h4':{en:'Your Turn \u2014 Write an RCTF Prompt',hi:'अब आपकी बारी \u2014 एक RCTF Prompt लिखें',pa:'ਹੁਣ ਤੁਹਾਡੀ ਵਾਰੀ \u2014 ਇੱਕ RCTF Prompt ਲਿਖੋ'},
+  '#s2 .curiosity-hook':{en:'Next: The 4 mistakes almost everyone makes \u2014 and exactly how to fix them.',hi:'अगला: 4 गलतियाँ जो लगभग हर कोई करता है \u2014 और उन्हें ठीक करने का तरीका।',pa:'ਅਗਲਾ: 4 ਗਲਤੀਆਂ ਜੋ ਲਗਭਗ ਹਰ ਕੋਈ ਕਰਦਾ \u2014 ਅਤੇ ਉਨ੍ਹਾਂ ਨੂੰ ਠੀਕ ਕਰਨ ਦਾ ਤਰੀਕਾ।'},
+  '#s3 .progress-marker':{en:'\uD83D\uDCAA 33% done! Knowing what NOT to do is just as important as knowing what to do.',hi:'\uD83D\uDCAA 33% ਪੂਰਾ! ਕੀ ਨਹੀਂ ਕਰਨਾ ਚਾਹੀਦਾ ਇਹ ਜਾਣਨਾ ਓਨਾ ਹੀ ਜ਼ਰੂਰੀ ਹੈ।',pa:'\uD83D\uDCAA 33% ਪੂਰਾ! ਕੀ ਨਹੀਂ ਕਰਨਾ ਚਾਹੀਦਾ ਇਹ ਜਾਣਨਾ ਓਨਾ ਹੀ ਜ਼ਰੂਰੀ ਹੈ।'},
+  '#s3 .sec-head h2':{en:'Common Prompting <span class="gr">Mistakes</span>',hi:'Prompting ਦੀਆਂ ਆਮ <span class="gr">ਗਲਤੀਆਂ</span>',pa:'Prompting ਦੀਆਂ ਆਮ <span class="gr">ਗਲਤੀਆਂ</span>'},
+  '#s3 .sec-head>p':{en:'Most people make the same 4 errors with every single AI prompt they write. Here they are \u2014 with before/after fixes you can apply immediately.',hi:'ज़्यादातर लोग हर AI prompt में वही 4 गलतियाँ करते हैं। यहाँ वो हैं \u2014 before/after fixes के साथ जो आप तुरंत लागू कर सकते हैं।',pa:'ਜ਼ਿਆਦਾਤਰ ਲੋਕ ਹਰ AI prompt ਵਿੱਚ ਉਹੀ 4 ਗਲਤੀਆਂ ਕਰਦੇ ਨੇ। ਇੱਥੇ ਉਹ ਨੇ \u2014 before/after fixes ਨਾਲ ਜੋ ਤੁਸੀਂ ਤੁਰੰਤ ਲਾਗੂ ਕਰ ਸਕਦੇ ਹੋ।'},
+  '#s3 .micro-win':{en:'You can now spot bad prompts instantly. That\'s a genuine professional skill.',hi:'अब आप ख़राब prompts को तुरंत पहचान सकते हैं। यह एक असली professional skill है।',pa:'ਹੁਣ ਤੁਸੀਂ ਮਾੜੇ prompts ਨੂੰ ਤੁਰੰਤ ਪਛਾਣ ਸਕਦੇ ਹੋ। ਇਹ ਇੱਕ ਅਸਲੀ professional skill ਹੈ।'},
+  '#s3 .identity-shift':{en:'You\'ve moved from being someone who "uses AI" to someone who "engineers prompts." That\'s a title change that carries weight.',hi:'आप "AI इस्तेमाल करने वाले" से "prompts engineer करने वाले" बन गए हैं। यह एक title change है जिसका वज़न है।',pa:'ਤੁਸੀਂ "AI ਵਰਤਣ ਵਾਲੇ" ਤੋਂ "prompts engineer ਕਰਨ ਵਾਲੇ" ਬਣ ਗਏ ਹੋ। ਇਹ ਇੱਕ title change ਹੈ ਜਿਸ ਦਾ ਵਜ਼ਨ ਹੈ।'},
+  '#s3 .curiosity-hook':{en:'Next: The Prompt Lab \u2014 type a prompt, get an instant score. See exactly how your prompts rate.',hi:'अगला: Prompt Lab \u2014 prompt type करें, instant score पाएं। देखें कि आपके prompts कैसे rate होते हैं।',pa:'ਅਗਲਾ: Prompt Lab \u2014 prompt type ਕਰੋ, instant score ਪਾਓ। ਵੇਖੋ ਤੁਹਾਡੇ prompts ਕਿਵੇਂ rate ਹੁੰਦੇ ਨੇ।'},
+  '#s4 .progress-marker':{en:'\uD83D\uDD25 67% done! The most interactive part of this session.',hi:'\uD83D\uDD25 67% ਪੂਰਾ! ਇਸ session ਦਾ ਸਭ ਤੋਂ interactive ਹਿੱਸਾ।',pa:'\uD83D\uDD25 67% ਪੂਰਾ! ਇਸ session ਦਾ ਸਭ ਤੋਂ interactive ਹਿੱਸਾ।'},
+  '#s4 .sec-head h2':{en:'Interactive <span class="gr">Prompt Lab</span>',hi:'Interactive <span class="gr">Prompt Lab</span>',pa:'Interactive <span class="gr">Prompt Lab</span>'},
+  '#s4 .sec-head>p':{en:'Type any prompt below and get an instant RCTF score. The checker analyses whether your prompt includes Role, Context, Task, and Format elements.',hi:'नीचे कोई भी prompt type करें और instant RCTF score पाएं। Checker जाँचता है कि आपके prompt में Role, Context, Task, और Format elements हैं या नहीं।',pa:'ਹੇਠਾਂ ਕੋਈ ਵੀ prompt type ਕਰੋ ਅਤੇ instant RCTF score ਪਾਓ। Checker ਜਾਂਚਦਾ ਹੈ ਕਿ ਤੁਹਾਡੇ prompt ਵਿੱਚ Role, Context, Task, ਅਤੇ Format elements ਨੇ ਜਾਂ ਨਹੀਂ।'},
+  '#s4 .micro-action h4':{en:'Your Goal: Write Three 4/4 Prompts',hi:'आपका लक्ष्य: तीन 4/4 Prompts लिखें',pa:'ਤੁਹਾਡਾ ਟੀਚਾ: ਤਿੰਨ 4/4 Prompts ਲਿਖੋ'},
+  '#s4 .micro-win':{en:'You have a live tool to evaluate and improve your prompts. Most prompt engineers would love this feedback loop.',hi:'आपके पास अपने prompts को evaluate और improve करने का live tool है। ज़्यादातर prompt engineers इस feedback loop को पसंद करेंगे।',pa:'ਤੁਹਾਡੇ ਕੋਲ ਆਪਣੇ prompts ਨੂੰ evaluate ਅਤੇ improve ਕਰਨ ਦਾ live tool ਹੈ। ਜ਼ਿਆਦਾਤਰ prompt engineers ਇਸ feedback loop ਨੂੰ ਪਸੰਦ ਕਰਨਗੇ।'},
+  '#s4 .curiosity-hook':{en:'Next: 8 questions to test your prompt engineering knowledge.',hi:'अगला: prompt engineering knowledge test करने के लिए 8 सवाल।',pa:'ਅਗਲਾ: prompt engineering knowledge test ਕਰਨ ਲਈ 8 ਸਵਾਲ।'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost there! Quiz time on prompt engineering.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! Prompt engineering पर quiz का समय।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! Prompt engineering \'ਤੇ quiz ਦਾ ਸਮਾਂ।'},
+  '#s5 .sec-head h2':{en:'Test Your <span class="gr">Prompt Skills</span>',hi:'अपनी <span class="gr">Prompt Skills</span> जाँचें',pa:'ਆਪਣੀਆਂ <span class="gr">Prompt Skills</span> ਜਾਂਚੋ'},
+  '#s5 .sec-head>p':{en:'8 questions on prompts, RCTF, and common mistakes. You\'ve got this.',hi:'Prompts, RCTF, और आम गलतियों पर 8 सवाल। आप कर सकते हैं।',pa:'Prompts, RCTF, ਅਤੇ ਆਮ ਗਲਤੀਆਂ \'ਤੇ 8 ਸਵਾਲ। ਤੁਸੀਂ ਕਰ ਸਕਦੇ ਹੋ।'},
+  '#s5 .micro-win':{en:'Quiz done. Your prompt knowledge is now sharper than when you started.',hi:'Quiz पूरा। आपकी prompt knowledge अब शुरू से ज़्यादा पक्की है।',pa:'Quiz ਪੂਰਾ। ਤੁਹਾਡੀ prompt knowledge ਹੁਣ ਸ਼ੁਰੂ ਤੋਂ ਵੱਧ ਪੱਕੀ ਹੈ।'},
+  '#s5 .curiosity-hook':{en:'Next: Homework and a preview of Session 4 \u2014 advanced techniques.',hi:'अगला: होमवर्क और Session 4 की झलक \u2014 advanced techniques।',pa:'ਅਗਲਾ: ਹੋਮਵਰਕ ਅਤੇ Session 4 ਦੀ ਝਲਕ \u2014 advanced techniques।'},
+  '#s6 .sec-head h2':{en:'Session 3 <span class="gr">Complete!</span>',hi:'Session 3 <span class="gr">ਪੂਰਾ!</span>',pa:'Session 3 <span class="gr">ਪੂਰਾ!</span>'},
+  '#s6 .sec-head>p':{en:'Prompt engineering basics are yours. Here\'s your homework and what\'s coming in Session 4.',hi:'Prompt engineering basics अब आपकी हैं। यहाँ आपका होमवर्क है और Session 4 में क्या आने वाला है।',pa:'Prompt engineering basics ਹੁਣ ਤੁਹਾਡੀਆਂ ਨੇ। ਇੱਥੇ ਤੁਹਾਡਾ ਹੋਮਵਰਕ ਅਤੇ Session 4 ਵਿੱਚ ਕੀ ਆਉਣ ਵਾਲਾ।'},
+  '#s6 .micro-action h4':{en:'Your Homework Before Session 4',hi:'Session 4 से पहले आपका होमवर्क',pa:'Session 4 ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡਾ ਹੋਮਵਰਕ'},
+  '#s6 .identity-shift':{en:'Prompt engineering is the new literacy. You have it. Most people around you don\'t. Use it well.',hi:'Prompt engineering नई साक्षरता है। आपके पास है। आपके आसपास ज़्यादातर लोगों के पास नहीं। इसे अच्छे से इस्तेमाल करें।',pa:'Prompt engineering ਨਵੀਂ ਸਾਖਰਤਾ ਹੈ। ਤੁਹਾਡੇ ਕੋਲ ਹੈ। ਤੁਹਾਡੇ ਆਲੇ-ਦੁਆਲੇ ਜ਼ਿਆਦਾਤਰ ਲੋਕਾਂ ਕੋਲ ਨਹੀਂ। ਇਸ ਨੂੰ ਚੰਗੀ ਤਰ੍ਹਾਂ ਵਰਤੋ।'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

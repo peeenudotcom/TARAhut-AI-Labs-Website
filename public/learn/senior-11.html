@@ -139,20 +139,45 @@ a{color:var(--c1);text-decoration:none}
 .takehome ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem}
 .takehome li{margin-bottom:.4rem}
 @media(max-width:768px){.sec{padding:2rem 1rem 4rem}.story-steps{grid-template-columns:1fr 1fr}.step-arrow{display:none}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 11 of 12</div>
-  <h1>Session 11: Capstone Project<br><span class="gr">Part 2 🎯</span></h1>
+  <h1>
+    <span data-lang-en>Session 11: Capstone Project<br><span class="gr">Part 2 🎯</span></span>
+    <span data-lang-hi style="display:none">Session 11: Capstone Project<br><span class="gr">Part 2 🎯</span></span>
+    <span data-lang-pa style="display:none">Session 11: Capstone Project<br><span class="gr">Part 2 🎯</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Peer review, presentation coaching, and final preparations. Showcase Day is tomorrow — let's make sure you're ready!</p>
+  <div data-lang-en><p>Peer review, presentation coaching, and final preparations. Showcase Day is tomorrow — let's make sure you're ready!</p></div><div data-lang-hi style="display:none"><p>Peer review, presentation coaching, और final preparations। Showcase Day कल है — चलो पक्का करें कि तुम तैयार हो!</p></div><div data-lang-pa style="display:none"><p>Peer review, presentation coaching, ਅਤੇ final preparations। Showcase Day ਕੱਲ੍ਹ ਹੈ — ਚੱਲੋ ਪੱਕਾ ਕਰੀਏ ਕਿ ਤੁਸੀਂ ਤਿਆਰ ਹੋ!</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Let's Finish Strong 🎯</button>
+    <button class="btn btn-glow" onclick="startLearning()"><span data-lang-en>Let's Finish Strong 🎯</span><span data-lang-hi style="display:none">Strong Finish करें 🎯</span><span data-lang-pa style="display:none">Strong Finish ਕਰੀਏ 🎯</span></button>
     <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
   </div>
 </section>
@@ -422,6 +447,22 @@ function answerQ(i){if(qAnswered)return;qAnswered=true;const d=quizData[qCur];co
 function nextQ(){document.getElementById('qd'+qCur).className='q-dot done';qCur++;if(qCur<quizData.length)document.getElementById('qd'+qCur).className='q-dot cur';renderQ();}
 function showScore(){const pct=Math.round(qScore/quizData.length*100);const msg=pct>=80?'You are READY for the Showcase! Go show them what you\'ve got. 🏆':pct>=60?'Good job! Review Section 2 for presentation tips. 💪':'Re-read Sections 1–2 before the showcase tomorrow. 📚';document.getElementById('qArea').innerHTML=`<div class="q-score-box"><div class="big">${qScore}/${quizData.length}</div><p style="font-size:1.1rem;font-family:'Syne',sans-serif;font-weight:700;margin:.5rem 0">${pct}% Score</p><p style="color:var(--t2);font-size:.9rem">${msg}</p><button class="btn btn-glow" style="margin-top:1.5rem" onclick="qCur=0;qScore=0;buildQuiz()">Try Again 🔄</button></div>`;}
 buildQuiz();
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

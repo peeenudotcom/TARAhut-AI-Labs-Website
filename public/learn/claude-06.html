@@ -123,21 +123,58 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .check-label{font-size:.9rem;transition:all .3s}
 .check-progress{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--brand);margin-top:1rem;text-align:center;padding:.5rem;background:rgba(5,150,105,.04);border-radius:var(--rs)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 06 &middot; Master Claude in 15 Days</div>
-  <h1>Projects + Artifacts<br><span class="gr">Workshop</span></h1>
+  <h1>
+    <span data-lang-en>Projects + Artifacts<br><span class="gr">Workshop</span></span>
+    <span data-lang-hi style="display:none">Projects + Artifacts<br><span class="gr">वर्कशॉप</span></span>
+    <span data-lang-pa style="display:none">Projects + Artifacts<br><span class="gr">ਵਰਕਸ਼ਾਪ</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Day 6 is pure application. Take everything from Days 4-5 and build something real. A training guide for a Kotkapura retail store — from zero to deliverable.</p>
+  <div data-lang-en><p>Day 6 is pure application. Take everything from Days 4-5 and build something real. A training guide for a Kotkapura retail store — from zero to deliverable.</p></div>
+  <div data-lang-hi style="display:none"><p>दिन 6 पूरी तरह एप्लीकेशन है। दिन 4-5 की सारी सीखी चीज़ें लो और कुछ असली बनाओ। कोटकपूरा की रिटेल दुकान के लिए ट्रेनिंग गाइड — शून्य से लेकर डिलीवरेबल तक।</p></div>
+  <div data-lang-pa style="display:none"><p>ਦਿਨ 6 ਪੂਰੀ ਤਰ੍ਹਾਂ ਐਪਲੀਕੇਸ਼ਨ ਹੈ। ਦਿਨ 4-5 ਦੀ ਸਾਰੀ ਸਿੱਖੀ ਚੀਜ਼ ਲਓ ਅਤੇ ਕੁਝ ਅਸਲੀ ਬਣਾਓ। ਕੋਟਕਪੂਰਾ ਦੀ ਰਿਟੇਲ ਦੁਕਾਨ ਲਈ ਟ੍ਰੇਨਿੰਗ ਗਾਈਡ — ਜ਼ੀਰੋ ਤੋਂ ਡਿਲੀਵਰੇਬਲ ਤੱਕ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Workshop &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Workshop &rarr;</span>
+      <span data-lang-hi style="display:none">वर्कशॉप शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਵਰਕਸ਼ਾਪ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -156,8 +193,8 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>The <span class="gr">Client Brief</span></h2>
-    <p>A real business scenario. Your task: use Claude Projects + Artifacts to create an internal training guide for a Kotkapura retail store.</p>
+    <h2><span data-lang-en>The <span class="gr">Client Brief</span></span><span data-lang-hi style="display:none"><span class="gr">क्लाइंट ब्रीफ</span></span><span data-lang-pa style="display:none"><span class="gr">ਕਲਾਇੰਟ ਬ੍ਰੀਫ</span></span></h2>
+    <div data-lang-en><p>A real business scenario. Your task: use Claude Projects + Artifacts to create an internal training guide for a Kotkapura retail store.</p></div><div data-lang-hi style="display:none"><p>एक असली बिज़नेस सिनेरियो। आपका काम: Claude Projects + Artifacts का उपयोग करके कोटकपूरा की रिटेल दुकान के लिए इंटरनल ट्रेनिंग गाइड बनाना।</p></div><div data-lang-pa style="display:none"><p>ਇੱਕ ਅਸਲੀ ਬਿਜ਼ਨਸ ਸਿਨੇਰੀਓ। ਤੁਹਾਡਾ ਕੰਮ: Claude Projects + Artifacts ਵਰਤ ਕੇ ਕੋਟਕਪੂਰਾ ਦੀ ਰਿਟੇਲ ਦੁਕਾਨ ਲਈ ਇੰਟਰਨਲ ਟ੍ਰੇਨਿੰਗ ਗਾਈਡ ਬਣਾਉਣਾ।</p></div>
   </div>
 
   <div style="background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(0,240,255,.03));border:1px solid rgba(5,150,105,.2);border-radius:var(--r);padding:2rem;margin:2rem 0">
@@ -194,8 +231,8 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#9989; Brief understood. Now: open Claude alongside this page and build.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Step-by-Step <span class="gr">Build</span></h2>
-    <p>Follow these steps exactly in Claude. This is an active workshop — the learning is in the doing.</p>
+    <h2><span data-lang-en>Step-by-Step <span class="gr">Build</span></span><span data-lang-hi style="display:none">स्टेप-बाय-स्टेप <span class="gr">बिल्ड</span></span><span data-lang-pa style="display:none">ਸਟੈਪ-ਬਾਈ-ਸਟੈਪ <span class="gr">ਬਿਲਡ</span></span></h2>
+    <div data-lang-en><p>Follow these steps exactly in Claude. This is an active workshop — the learning is in the doing.</p></div><div data-lang-hi style="display:none"><p>Claude में इन स्टेप्स को बिल्कुल फ़ॉलो करें। यह एक एक्टिव वर्कशॉप है — सीखना करने में है।</p></div><div data-lang-pa style="display:none"><p>Claude ਵਿੱਚ ਇਹ ਸਟੈਪਸ ਬਿਲਕੁਲ ਫਾਲੋ ਕਰੋ। ਇਹ ਇੱਕ ਐਕਟਿਵ ਵਰਕਸ਼ਾਪ ਹੈ — ਸਿੱਖਣਾ ਕਰਨ ਵਿੱਚ ਹੈ।</p></div>
   </div>
 
   <div class="build-step">
@@ -277,7 +314,7 @@ For the Product Flash Cards:
   <div class="progress-marker">&#128170; 60% done. Use this checklist to track your workshop progress.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>Quality <span class="gr">Checklist</span></h2>
+    <h2><span data-lang-en>Quality <span class="gr">Checklist</span></span><span data-lang-hi style="display:none">क्वालिटी <span class="gr">चेकलिस्ट</span></span><span data-lang-pa style="display:none">ਕੁਆਲਿਟੀ <span class="gr">ਚੈੱਕਲਿਸਟ</span></span></h2>
     <p>Check off each milestone as you complete it. This is your workshop progress tracker.</p>
   </div>
 
@@ -329,7 +366,7 @@ For the Product Flash Cards:
   <div class="progress-marker">&#127919; 80% complete. The work is done. Now: how to present it effectively.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Showcase <span class="gr">Your Work</span></h2>
+    <h2><span data-lang-en>Showcase <span class="gr">Your Work</span></span><span data-lang-hi style="display:none">अपना काम <span class="gr">शोकेस करें</span></span><span data-lang-pa style="display:none">ਆਪਣਾ ਕੰਮ <span class="gr">ਸ਼ੋਕੇਸ ਕਰੋ</span></span></h2>
     <p>Producing the deliverable is 70% of the job. Presenting it effectively is the other 30%. Both matter.</p>
   </div>
 
@@ -370,7 +407,7 @@ For the Product Flash Cards:
   <div class="progress-marker">&#129504; Day 6 Knowledge Check — Workshop concepts and professional workflow.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Day 6 <span class="gr">Quiz</span></h2>
+    <h2><span data-lang-en>Day 6 <span class="gr">Quiz</span></span><span data-lang-hi style="display:none">दिन 6 <span class="gr">क्विज़</span></span><span data-lang-pa style="display:none">ਦਿਨ 6 <span class="gr">ਕੁਇਜ਼</span></span></h2>
     <p>Workshop methodology, professional workflow, and presentation skills. 8 randomized questions.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
@@ -386,6 +423,22 @@ For the Product Flash Cards:
 </div>
 
 <script>
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
 document.addEventListener('copy',e=>e.preventDefault());

@@ -148,23 +148,60 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid,.tool-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 02 &middot; Master Claude in 15 Days &middot; 2026</div>
-  <h1>Interface<br><span class="gr">Mastery</span></h1>
+  <h1>
+    <span data-lang-en>Interface<br><span class="gr">Mastery</span></span>
+    <span data-lang-hi style="display:none">इंटरफ़ेस<br><span class="gr">माहिर</span></span>
+    <span data-lang-pa style="display:none">ਇੰਟਰਫੇਸ<br><span class="gr">ਮਾਹਿਰ</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Master every button, setting, shortcut, and hidden feature in the Claude interface. After today, you'll navigate Claude faster than 99% of users.</p>
+  <div data-lang-en><p>Master every button, setting, shortcut, and hidden feature in the Claude interface. After today, you'll navigate Claude faster than 99% of users.</p></div>
+  <div data-lang-hi style="display:none"><p>Claude इंटरफ़ेस के हर बटन, सेटिंग, शॉर्टकट और छिपी फ़ीचर में महारत हासिल करें। आज के बाद, आप 99% यूज़र्स से तेज़ Claude चलाएंगे।</p></div>
+  <div data-lang-pa style="display:none"><p>Claude ਇੰਟਰਫੇਸ ਦੇ ਹਰ ਬਟਨ, ਸੈਟਿੰਗ, ਸ਼ਾਰਟਕੱਟ ਅਤੇ ਲੁਕੀ ਹੋਈ ਫੀਚਰ ਵਿੱਚ ਮਾਹਿਰ ਬਣੋ। ਅੱਜ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ 99% ਯੂਜ਼ਰਾਂ ਤੋਂ ਤੇਜ਼ Claude ਚਲਾਓਗੇ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 2 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 2 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 2 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 2 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -185,25 +222,25 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>The Sidebar &amp; <span class="gr">Layout</span></h2>
-    <p>Every feature in Claude lives somewhere in its interface. Let's walk through every single element so nothing is a mystery to you.</p>
+    <h2><span data-lang-en>The Sidebar &amp; <span class="gr">Layout</span></span><span data-lang-hi style="display:none">साइडबार और <span class="gr">लेआउट</span></span><span data-lang-pa style="display:none">ਸਾਈਡਬਾਰ ਅਤੇ <span class="gr">ਲੇਆਉਟ</span></span></h2>
+    <div data-lang-en><p>Every feature in Claude lives somewhere in its interface. Let's walk through every single element so nothing is a mystery to you.</p></div><div data-lang-hi style="display:none"><p>Claude ਦੀ ਹਰ ਫ਼ੀਚਰ ਉਸ ਦੇ ਇੰਟਰਫ਼ੇਸ ਵਿੱਚ ਕਿਤੇ ਨਾ ਕਿਤੇ ਹੈ। ਆਇਏ ਹਰ ਐਲੀਮੈਂਟ ਨੂੰ ਸਮਝੀਏ ਤਾਂ ਜੋ ਕੁਝ ਵੀ ਰਹੱਸ ਨਾ ਰਹੇ।</p></div><div data-lang-pa style="display:none"><p>Claude ਦੀ ਹਰ ਫੀਚਰ ਇਸ ਦੇ ਇੰਟਰਫੇਸ ਵਿੱਚ ਕਿਤੇ ਨਾ ਕਿਤੇ ਹੈ। ਆਓ ਹਰ ਇੱਕ ਐਲੀਮੈਂਟ ਨੂੰ ਸਮਝੀਏ ਤਾਂ ਜੋ ਕੁਝ ਵੀ ਰਹੱਸ ਨਾ ਰਹੇ।</p></div>
   </div>
-  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why Interface Mastery Matters</h4><p>Most people use Claude like a simple chat box &mdash; type, send, read. But Claude's interface has <strong>conversation management, model switching, file uploads, keyboard shortcuts, system-level instructions, and project organisation</strong>. Knowing these features means you get <strong>better outputs in less time</strong>. A Ludhiana freelancer who knows these shortcuts finishes work 40% faster than one who doesn't.</p></div></div>
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4><span data-lang-en>Why Interface Mastery Matters</span><span data-lang-hi style="display:none">Interface माहिरी क्यों ज़रूरी है</span><span data-lang-pa style="display:none">Interface ਮਾਹਿਰੀ ਕਿਉਂ ਜ਼ਰੂਰੀ ਹੈ</span></h4><p>Most people use Claude like a simple chat box &mdash; type, send, read. But Claude's interface has <strong>conversation management, model switching, file uploads, keyboard shortcuts, system-level instructions, and project organisation</strong>. Knowing these features means you get <strong>better outputs in less time</strong>. A Ludhiana freelancer who knows these shortcuts finishes work 40% faster than one who doesn't.</p></div></div>
   <div class="cgrid">
     <div class="crd"><span class="tag tag-brand">LEFT PANEL</span><span class="crd-icon">&#128193;</span><h3>Conversation Sidebar</h3><p>The left sidebar shows <strong>all your past conversations</strong> grouped by date (Today, Yesterday, Previous 7 Days, etc.). Each conversation has a title auto-generated from your first message. You can <strong>rename conversations</strong> by clicking the title, <strong>delete conversations</strong> via the three-dot menu, and <strong>search</strong> through all past chats using the search bar at the top. Think of it as your AI filing cabinet.</p></div>
     <div class="crd"><span class="tag tag-1">TOP BAR</span><span class="crd-icon">&#128736;</span><h3>Model Selector</h3><p>At the top of any conversation, you'll see the <strong>model picker</strong>. Click it to switch between Sonnet, Opus, and Haiku. On the free tier, you get Sonnet. On Pro ($20/month), you unlock Opus for complex tasks and Haiku for speed. <strong>You can switch models mid-conversation</strong> &mdash; start with Sonnet for drafting, switch to Opus for final polish.</p></div>
     <div class="crd"><span class="tag tag-2">CENTRE</span><span class="crd-icon">&#128172;</span><h3>Chat Area</h3><p>The main conversation area where messages flow. Your messages appear on the right, Claude's on the left. Claude's responses include a <strong>copy button</strong> (one click copies the entire response), a <strong>retry button</strong> (regenerates the response with slight variation), and <strong>thumbs up/down</strong> for feedback. Long responses have a scroll indicator.</p></div>
   </div>
-  <div class="micro-win">You now know the three core zones of Claude's interface: sidebar, top bar, and chat area.</div>
+  <div class="micro-win"><span data-lang-en>You now know the three core zones of Claude's interface: sidebar, top bar, and chat area.</span><span data-lang-hi style="display:none">अब आप Claude इंटरफ़ेस के तीन मुख्य ज़ोन जानते हैं: साइडबार, टॉप बार, और चैट एरिया।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਸੀਂ Claude ਇੰਟਰਫੇਸ ਦੇ ਤਿੰਨ ਮੁੱਖ ਜ਼ੋਨ ਜਾਣਦੇ ਹੋ: ਸਾਈਡਬਾਰ, ਟੌਪ ਬਾਰ, ਅਤੇ ਚੈਟ ਏਰੀਆ।</span></div>
   <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">The Input Area &mdash; More Powerful Than You Think</h3>
   <p style="color:var(--t2);margin-bottom:1.5rem;">The message input box at the bottom is not just a text field. It supports <strong>file attachments</strong> (click the paperclip or drag-and-drop), <strong>multi-line input</strong> (press Shift+Enter for new lines), and <strong>long-form pasting</strong> (you can paste entire documents directly). There's also a <strong>microphone icon</strong> for voice input on supported browsers. The send button turns into a stop button while Claude is generating, letting you halt a response mid-stream.</p>
-  <div class="callout call-2"><div class="call-ico">&#128205;</div><div class="call-body"><h4>Punjab Pro Tip: Conversation Organisation</h4><p>If you run a business in Kotkapura and use Claude for multiple purposes &mdash; marketing content, GST calculations, email drafting, employee communications &mdash; <strong>start a new conversation for each topic</strong>. Don't dump everything into one thread. This keeps Claude's context focused and your sidebar organised. Rename each conversation: "GST Q3 Filing", "Diwali Marketing", "HR Policies Draft".</p></div></div>
+  <div class="callout call-2"><div class="call-ico">&#128205;</div><div class="call-body"><h4><span data-lang-en>Punjab Pro Tip: Conversation Organisation</span><span data-lang-hi style="display:none">पंजाब प्रो टिप: बातचीत संगठन</span><span data-lang-pa style="display:none">ਪੰਜਾਬ ਪ੍ਰੋ ਟਿਪ: ਗੱਲਬਾਤ ਸੰਗਠਨ</span></h4><p>If you run a business in Kotkapura and use Claude for multiple purposes &mdash; marketing content, GST calculations, email drafting, employee communications &mdash; <strong>start a new conversation for each topic</strong>. Don't dump everything into one thread. This keeps Claude's context focused and your sidebar organised. Rename each conversation: "GST Q3 Filing", "Diwali Marketing", "HR Policies Draft".</p></div></div>
   <div class="micro-action">
-    <h4>60-Second Action</h4>
+    <h4><span data-lang-en>60-Second Action</span><span data-lang-hi style="display:none">60-सेकंड एक्शन</span><span data-lang-pa style="display:none">60-ਸਕਿੰਟ ਐਕਸ਼ਨ</span></h4>
     <p>Open <a href="https://claude.ai" target="_blank">claude.ai</a> right now. Look at your sidebar. Rename your most recent conversation to something meaningful. Then start a brand new conversation and type a quick message. Notice how the sidebar updates in real time.</p>
   </div>
   <div class="emotional-hook"><p><strong>Picture a CA in Ludhiana</strong> with 50 client conversations scattered across Claude, unnamed and chaotic. Every time they need to find that GST advice they gave a client last week, they scroll endlessly. Now picture another CA who names every conversation clearly. They find anything in 3 seconds. <strong>Small habits create big advantages.</strong></p></div>
-  <div class="identity-shift">You're not just chatting with an AI. You're building an organised knowledge system that grows with every conversation.</div>
+  <div class="identity-shift"><span data-lang-en>You're not just chatting with an AI. You're building an organised knowledge system that grows with every conversation.</span><span data-lang-hi style="display:none">आप सिर्फ AI से बात नहीं कर रहे। आप एक व्यवस्थित ज्ञान प्रणाली बना रहे हैं जो हर बातचीत के साथ बढ़ती है।</span><span data-lang-pa style="display:none">ਤੁਸੀਂ ਸਿਰਫ਼ AI ਨਾਲ ਗੱਲ ਨਹੀਂ ਕਰ ਰਹੇ। ਤੁਸੀਂ ਇੱਕ ਵਿਵਸਥਿਤ ਗਿਆਨ ਪ੍ਰਣਾਲੀ ਬਣਾ ਰਹੇ ਹੋ ਜੋ ਹਰ ਗੱਲਬਾਤ ਨਾਲ ਵਧਦੀ ਹੈ।</span></div>
   <p class="curiosity-hook">Next: Master the model selector and Claude's hidden settings panel.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Model Selector &amp; Settings &rarr;</button></div>
@@ -214,10 +251,10 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#9989; Section 1 complete! You're 17% through this session.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Model Selector &amp; <span class="gr">Settings</span></h2>
-    <p>Claude's settings panel controls response style, data privacy, and account features. Most users never open it. You're about to master every tab.</p>
+    <h2><span data-lang-en>Model Selector &amp; <span class="gr">Settings</span></span><span data-lang-hi style="display:none">Model Selector और <span class="gr">Settings</span></span><span data-lang-pa style="display:none">Model Selector ਅਤੇ <span class="gr">Settings</span></span></h2>
+    <div data-lang-en><p>Claude's settings panel controls response style, data privacy, and account features. Most users never open it. You're about to master every tab.</p></div><div data-lang-hi style="display:none"><p>Claude का Settings पैनल रिस्पॉन्स स्टाइल, डेटा प्राइवेसी और अकाउंट फ़ीचर्स कंट्रोल करता है। ज़्यादातर यूज़र्स इसे कभी खोलते ही नहीं।</p></div><div data-lang-pa style="display:none"><p>Claude ਦਾ Settings ਪੈਨਲ ਰਿਸਪਾਂਸ ਸਟਾਈਲ, ਡੇਟਾ ਪ੍ਰਾਈਵੇਸੀ ਅਤੇ ਅਕਾਊਂਟ ਫੀਚਰਾਂ ਨੂੰ ਕੰਟਰੋਲ ਕਰਦਾ ਹੈ। ਬਹੁਤੇ ਯੂਜ਼ਰ ਇਸ ਨੂੰ ਕਦੇ ਖੋਲ੍ਹਦੇ ਹੀ ਨਹੀਂ।</p></div>
   </div>
-  <div class="callout call-brand"><div class="call-ico">&#9881;</div><div class="call-body"><h4>How to Access Settings</h4><p>Click your <strong>profile icon</strong> (bottom-left of the sidebar) &rarr; select <strong>"Settings"</strong>. The settings panel has multiple tabs: <strong>Profile, Appearance, Data Controls, Connected Apps, and Subscription</strong>. Each tab controls a different aspect of your Claude experience. Let's walk through every one.</p></div></div>
+  <div class="callout call-brand"><div class="call-ico">&#9881;</div><div class="call-body"><h4><span data-lang-en>How to Access Settings</span><span data-lang-hi style="display:none">Settings कैसे एक्सेस करें</span><span data-lang-pa style="display:none">Settings ਕਿਵੇਂ ਐਕਸੈਸ ਕਰੀਏ</span></h4><p>Click your <strong>profile icon</strong> (bottom-left of the sidebar) &rarr; select <strong>"Settings"</strong>. The settings panel has multiple tabs: <strong>Profile, Appearance, Data Controls, Connected Apps, and Subscription</strong>. Each tab controls a different aspect of your Claude experience. Let's walk through every one.</p></div></div>
   <div class="tool-grid">
     <div class="tool-card"><span class="tag tag-brand">Settings Tab</span><h3>&#128100; Profile</h3><p>Set your display name (this appears in conversations). Upload a profile picture. Add <strong>Custom Instructions</strong> &mdash; a system-level message that applies to ALL new conversations. This is where you tell Claude about yourself once, so you don't repeat it every time.</p></div>
     <div class="tool-card"><span class="tag tag-1">Settings Tab</span><h3>&#127912; Appearance</h3><p>Switch between <strong>Light mode, Dark mode, and System</strong> (follows your OS). Dark mode reduces eye strain during late-night work. Choose your preferred <strong>response language</strong> and set Claude's default response length (concise, normal, or detailed).</p></div>
@@ -231,17 +268,17 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p style="color:var(--t3);font-size:.8rem">Fill in the brackets with your details. This saves you 30 seconds of context-setting in every conversation.</p>
   </div>
   <div class="micro-action">
-    <h4>Right Now: Set Your Custom Instructions</h4>
+    <h4><span data-lang-en>Right Now: Set Your Custom Instructions</span><span data-lang-hi style="display:none">अभी: अपने Custom Instructions सेट करें</span><span data-lang-pa style="display:none">ਹੁਣੇ: ਆਪਣੀਆਂ Custom Instructions ਸੈੱਟ ਕਰੋ</span></h4>
     <p>Go to Settings &rarr; Profile &rarr; Custom Instructions. Paste the template above, fill in your details, and save. From now on, every new Claude conversation will automatically know your context.</p>
   </div>
-  <div class="micro-win">You've set up Custom Instructions. Claude now knows your context before you type a single word.</div>
+  <div class="micro-win"><span data-lang-en>You've set up Custom Instructions. Claude now knows your context before you type a single word.</span><span data-lang-hi style="display:none">आपने Custom Instructions सेट कर लिए। अब Claude आपकी एक भी लाइन टाइप करने से पहले आपका कॉन्टेक्स्ट जानता है।</span><span data-lang-pa style="display:none">ਤੁਸੀਂ Custom Instructions ਸੈੱਟ ਕਰ ਲਈਆਂ। ਹੁਣ Claude ਤੁਹਾਡੀ ਇੱਕ ਵੀ ਲਾਈਨ ਟਾਈਪ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡਾ ਕੰਟੈਕਸਟ ਜਾਣਦਾ ਹੈ।</span></div>
   <div class="demo">
     <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Test Your Custom Instructions</h4></div>
     <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">After setting custom instructions, start a NEW conversation and try this:</p>
     <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Suggest 3 ways I can use AI to grow my business this quarter. Be specific to my industry and location.')">&#128203; Click to copy: Suggest 3 ways I can use AI to grow my business this quarter...</div>
     <p style="color:var(--t3);font-size:.8rem">If Claude references your city, profession, and uses INR &mdash; your custom instructions are working perfectly.</p>
   </div>
-  <div class="identity-shift">Professionals configure their tools. Amateurs use defaults. You just moved from amateur to professional Claude user.</div>
+  <div class="identity-shift"><span data-lang-en>Professionals configure their tools. Amateurs use defaults. You just moved from amateur to professional Claude user.</span><span data-lang-hi style="display:none">प्रोफ़ेशनल्स अपने टूल्स कॉन्फ़िगर करते हैं। एमेचर डिफ़ॉल्ट यूज़ करते हैं। आप अभी प्रोफ़ेशनल Claude यूज़र बन गए।</span><span data-lang-pa style="display:none">ਪ੍ਰੋਫੈਸ਼ਨਲ ਆਪਣੇ ਟੂਲਜ਼ ਕੌਂਫਿਗਰ ਕਰਦੇ ਹਨ। ਅਮੈਚਰ ਡਿਫਾਲਟ ਵਰਤਦੇ ਹਨ। ਤੁਸੀਂ ਹੁਣੇ ਪ੍ਰੋਫੈਸ਼ਨਲ Claude ਯੂਜ਼ਰ ਬਣ ਗਏ।</span></div>
   <p class="curiosity-hook">Next: The 200K context window explained with real examples &mdash; and how to upload files like a pro.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Context Window &amp; Files &rarr;</button></div>
@@ -252,10 +289,10 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128170; You're 33% through. The context window section is where real power unlocks.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>The 200K Context Window &amp; <span class="gr">File Uploads</span></h2>
-    <p>Claude can hold 200,000 tokens in memory at once. That's like having a brilliant assistant who just read an entire 500-page book.</p>
+    <h2><span data-lang-en>The 200K Context Window &amp; <span class="gr">File Uploads</span></span><span data-lang-hi style="display:none">200K Context Window और <span class="gr">File Uploads</span></span><span data-lang-pa style="display:none">200K Context Window ਅਤੇ <span class="gr">File Uploads</span></span></h2>
+    <div data-lang-en><p>Claude can hold 200,000 tokens in memory at once. That's like having a brilliant assistant who just read an entire 500-page book.</p></div><div data-lang-hi style="display:none"><p>Claude एक बार में 200,000 टोकन मेमोरी में रख सकता है। यह ऐसा है जैसे एक शानदार असिस्टेंट ने अभी 500 पन्नों की पूरी किताब पढ़ी हो।</p></div><div data-lang-pa style="display:none"><p>Claude ਇੱਕ ਵਾਰ ਵਿੱਚ 200,000 ਟੋਕਨ ਮੈਮਰੀ ਵਿੱਚ ਰੱਖ ਸਕਦਾ ਹੈ। ਇਹ ਇੰਝ ਹੈ ਜਿਵੇਂ ਇੱਕ ਸ਼ਾਨਦਾਰ ਅਸਿਸਟੈਂਟ ਨੇ ਹੁਣੇ 500 ਪੰਨਿਆਂ ਦੀ ਪੂਰੀ ਕਿਤਾਬ ਪੜ੍ਹੀ ਹੋਵੇ।</p></div>
   </div>
-  <div class="callout call-1"><div class="call-ico">&#128218;</div><div class="call-body"><h4>What is a Context Window?</h4><p>The context window is Claude's <strong>working memory</strong> &mdash; everything it can "see" at once during a conversation. 200,000 tokens equals roughly <strong>150,000 words</strong>. An average novel is 80,000 words. Claude can hold almost <strong>two full novels</strong> in its memory simultaneously. You can paste an entire contract, business plan, or research paper and Claude will read and understand ALL of it &mdash; not just skim the beginning like some other AI tools.</p></div></div>
+  <div class="callout call-1"><div class="call-ico">&#128218;</div><div class="call-body"><h4><span data-lang-en>What is a Context Window?</span><span data-lang-hi style="display:none">Context Window क्या है?</span><span data-lang-pa style="display:none">Context Window ਕੀ ਹੈ?</span></h4><p>The context window is Claude's <strong>working memory</strong> &mdash; everything it can "see" at once during a conversation. 200,000 tokens equals roughly <strong>150,000 words</strong>. An average novel is 80,000 words. Claude can hold almost <strong>two full novels</strong> in its memory simultaneously. You can paste an entire contract, business plan, or research paper and Claude will read and understand ALL of it &mdash; not just skim the beginning like some other AI tools.</p></div></div>
   <div class="cgrid">
     <div class="crd"><span class="tag tag-5">Example</span><span class="crd-icon">&#128196;</span><h3>A 100-Page Contract</h3><p>A typical legal contract is 20,000-30,000 words. Claude reads the ENTIRE contract in one go and then answers questions about any clause, identifies risks, compares terms, or summarises it. A lawyer in Punjab spends 3 hours reading a land deal contract. Claude reads it in 10 seconds.</p></div>
     <div class="crd"><span class="tag tag-1">Example</span><span class="crd-icon">&#128202;</span><h3>6 Months of Sales Data</h3><p>A CSV with 6 months of daily sales data for a Kotkapura retail shop might be 5,000-10,000 rows. Claude ingests all of it and finds trends, anomalies, seasonal patterns, and generates reports. No Excel formulas needed &mdash; just ask in plain English or Punjabi.</p></div>
@@ -269,14 +306,14 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I have uploaded a document. Please: 1) Summarise it in 5 bullet points, 2) Identify the 3 most important sections, 3) List any risks or concerns you see, 4) Suggest 3 questions I should ask about this document. Be thorough and specific.')">&#128203; Click to copy: I have uploaded a document. Please: 1) Summarise it in 5 bullet points...</div>
     <p style="color:var(--t3);font-size:.8rem">This single prompt extracts maximum value from any uploaded document.</p>
   </div>
-  <div class="callout call-2"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Context Window Warning</h4><p>The context window includes <strong>everything</strong>: your messages, Claude's responses, uploaded files, AND system instructions. In a long conversation, older messages eventually "fall off" the top. <strong>If Claude starts forgetting things from early in the conversation, start a new one and paste essential context fresh.</strong></p></div></div>
+  <div class="callout call-2"><div class="call-ico">&#9888;</div><div class="call-body"><h4><span data-lang-en>Context Window Warning</span><span data-lang-hi style="display:none">Context Window ਚੇਤਾਵਨੀ</span><span data-lang-pa style="display:none">Context Window ਚੇਤਾਵਨੀ</span></h4><p>The context window includes <strong>everything</strong>: your messages, Claude's responses, uploaded files, AND system instructions. In a long conversation, older messages eventually "fall off" the top. <strong>If Claude starts forgetting things from early in the conversation, start a new one and paste essential context fresh.</strong></p></div></div>
   <div class="micro-action">
-    <h4>Try This Now</h4>
+    <h4><span data-lang-en>Try This Now</span><span data-lang-hi style="display:none">अभी यह करो</span><span data-lang-pa style="display:none">ਹੁਣੇ ਇਹ ਕਰੋ</span></h4>
     <p>Find any PDF on your computer &mdash; an invoice, a report, a syllabus, anything. Upload it to Claude and use the prompt above. Watch how Claude extracts structured insights from your document in seconds.</p>
   </div>
   <div class="emotional-hook"><p><strong>A small business owner in Kotkapura</strong> receives a 40-page vendor contract in English. They don't have a lawyer on retainer. They upload it to Claude, and in 30 seconds get a summary of every obligation, every penalty clause, and every risk. <strong>That's not just convenience &mdash; it's access to expertise they couldn't afford before.</strong></p></div>
-  <div class="micro-win">You now understand what 200K tokens means practically and how to use file uploads for real work.</div>
-  <div class="identity-shift">You're not just typing questions into a chatbot. You're feeding Claude entire documents and extracting strategic insights. That's executive-level AI usage.</div>
+  <div class="micro-win"><span data-lang-en>You now understand what 200K tokens means practically and how to use file uploads for real work.</span><span data-lang-hi style="display:none">अब आप समझते हैं कि 200K टोकन का मतलब क्या होता है और फ़ाइल अपलोड को असली काम में कैसे इस्तेमाल करें।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਸੀਂ ਸਮਝਦੇ ਹੋ ਕਿ 200K ਟੋਕਨ ਦਾ ਮਤਲਬ ਕੀ ਹੈ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ ਨੂੰ ਅਸਲੀ ਕੰਮ ਵਿੱਚ ਕਿਵੇਂ ਵਰਤਣਾ ਹੈ।</span></div>
+  <div class="identity-shift"><span data-lang-en>You're not just typing questions into a chatbot. You're feeding Claude entire documents and extracting strategic insights. That's executive-level AI usage.</span><span data-lang-hi style="display:none">आप सिर्फ चैटबॉट में सवाल टाइप नहीं कर रहे। आप Claude को पूरे डॉक्यूमेंट्स दे रहे हैं और स्ट्रैटेजिक इनसाइट्स निकाल रहे हैं। यह एग्ज़ीक्यूटिव-लेवल AI यूज़ है।</span><span data-lang-pa style="display:none">ਤੁਸੀਂ ਸਿਰਫ਼ ਚੈਟਬੋਟ ਵਿੱਚ ਸਵਾਲ ਟਾਈਪ ਨਹੀਂ ਕਰ ਰਹੇ। ਤੁਸੀਂ Claude ਨੂੰ ਪੂਰੇ ਡੌਕੂਮੈਂਟ ਦੇ ਰਹੇ ਹੋ ਅਤੇ ਸਟ੍ਰੈਟੇਜਿਕ ਇਨਸਾਈਟਸ ਕੱਢ ਰਹੇ ਹੋ। ਇਹ ਐਗਜ਼ੀਕਿਊਟਿਵ-ਲੈਵਲ AI ਯੂਜ਼ ਹੈ।</span></div>
   <p class="curiosity-hook">Next: 7 keyboard shortcuts that will make you a Claude speed demon.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Keyboard Shortcuts &rarr;</button></div>
@@ -287,10 +324,10 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128293; 67% done! Time to master the speed features.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Keyboard Shortcuts &amp; <span class="gr">Speed Mastery</span></h2>
-    <p>Seven keyboard shortcuts, conversation management tricks, and a speed drill to make you faster than anyone you know at using Claude.</p>
+    <h2><span data-lang-en>Keyboard Shortcuts &amp; <span class="gr">Speed Mastery</span></span><span data-lang-hi style="display:none">Keyboard Shortcuts और <span class="gr">स्पीड माहिरी</span></span><span data-lang-pa style="display:none">Keyboard Shortcuts ਅਤੇ <span class="gr">ਸਪੀਡ ਮਾਹਿਰੀ</span></span></h2>
+    <div data-lang-en><p>Seven keyboard shortcuts, conversation management tricks, and a speed drill to make you faster than anyone you know at using Claude.</p></div><div data-lang-hi style="display:none"><p>सात Keyboard Shortcuts, बातचीत मैनेजमेंट ट्रिक्स, और एक स्पीड ड्रिल जो आपको Claude चलाने में सबसे तेज़ बना देगी।</p></div><div data-lang-pa style="display:none"><p>ਸੱਤ Keyboard Shortcuts, ਗੱਲਬਾਤ ਮੈਨੇਜਮੈਂਟ ਟ੍ਰਿਕਸ, ਅਤੇ ਇੱਕ ਸਪੀਡ ਡ੍ਰਿਲ ਜੋ ਤੁਹਾਨੂੰ Claude ਚਲਾਉਣ ਵਿੱਚ ਸਭ ਤੋਂ ਤੇਜ਼ ਬਣਾ ਦੇਵੇਗੀ।</p></div>
   </div>
-  <div class="callout call-brand"><div class="call-ico">&#9000;</div><div class="call-body"><h4>Why Shortcuts Matter</h4><p>Each shortcut saves 2-5 seconds. If you use Claude 50 times a day, that's <strong>4-8 minutes saved daily</strong>, or roughly <strong>30-40 hours per year</strong>. For a Ludhiana professional billing at &#8377;2,000/hour, that's &#8377;60,000-80,000 worth of recovered time annually. Shortcuts aren't just convenient &mdash; they're profitable.</p></div></div>
+  <div class="callout call-brand"><div class="call-ico">&#9000;</div><div class="call-body"><h4><span data-lang-en>Why Shortcuts Matter</span><span data-lang-hi style="display:none">Shortcuts ਕਿਉਂ ਜ਼ਰੂਰੀ ਹਨ</span><span data-lang-pa style="display:none">Shortcuts ਕਿਉਂ ਜ਼ਰੂਰੀ ਹਨ</span></h4><p>Each shortcut saves 2-5 seconds. If you use Claude 50 times a day, that's <strong>4-8 minutes saved daily</strong>, or roughly <strong>30-40 hours per year</strong>. For a Ludhiana professional billing at &#8377;2,000/hour, that's &#8377;60,000-80,000 worth of recovered time annually. Shortcuts aren't just convenient &mdash; they're profitable.</p></div></div>
   <div class="tool-grid">
     <div class="tool-card"><span class="tag tag-1">Shortcut 1</span><h3>&#9889; Ctrl/Cmd + Shift + O</h3><p><strong>New Conversation.</strong> Instantly starts a fresh chat without touching the sidebar. The fastest way to start a new topic.</p></div>
     <div class="tool-card"><span class="tag tag-1">Shortcut 2</span><h3>&#9889; Ctrl/Cmd + Shift + ;</h3><p><strong>Toggle Sidebar.</strong> Hides or shows the conversation sidebar. Hide it for distraction-free, full-width writing.</p></div>
@@ -312,11 +349,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ਮੈਨੂੰ ਇੱਕ ਛੋਟੇ ਕਾਰੋਬਾਰ ਲਈ ਰੋਜ਼ਾਨਾ ਦੀ ਚੈਕਲਿਸਟ ਬਣਾ ਕੇ ਦਿਓ। ਕਾਰੋਬਾਰ: ਕੱਪੜੇ ਦੀ ਦੁਕਾਨ, ਸ਼ਹਿਰ: ਕੋਟਕਪੂਰਾ। 10 ਆਈਟਮਾਂ ਦੀ ਲਿਸਟ ਬਣਾਓ ਜੀ।')">&#128203; Click to copy Punjabi checklist prompt</div>
     <p style="color:var(--t3);font-size:.8rem">Claude creates a detailed daily business checklist in Punjabi.</p>
   </div>
-  <div class="micro-win">You now know 7 keyboard shortcuts. That puts you in the top 1% of Claude users worldwide.</div>
+  <div class="micro-win"><span data-lang-en>You now know 7 keyboard shortcuts. That puts you in the top 1% of Claude users worldwide.</span><span data-lang-hi style="display:none">अब आप 7 Keyboard Shortcuts जानते हैं। इससे आप दुनिया भर के Claude यूज़र्स में टॉप 1% में हैं।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਸੀਂ 7 Keyboard Shortcuts ਜਾਣਦੇ ਹੋ। ਇਸ ਨਾਲ ਤੁਸੀਂ ਦੁਨੀਆ ਭਰ ਦੇ Claude ਯੂਜ਼ਰਾਂ ਵਿੱਚ ਟੌਪ 1% ਵਿੱਚ ਹੋ।</span></div>
   <h3 style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Conversation Management Pro Tips</h3>
-  <div class="callout call-3"><div class="call-ico">&#128736;</div><div class="call-body"><h4>Advanced Conversation Strategies</h4><p><strong>Retry for variety:</strong> Click the retry button on any Claude response to get a different take.<br><strong>Edit your message:</strong> Hover over any message you sent and click edit to rephrase without starting over.<br><strong>Branch conversations:</strong> Edit an earlier message to create a "branch" &mdash; Claude re-generates everything from that point.<br><strong>Star important conversations:</strong> Use the favourite feature to bookmark chats you'll return to frequently.</p></div></div>
+  <div class="callout call-3"><div class="call-ico">&#128736;</div><div class="call-body"><h4><span data-lang-en>Advanced Conversation Strategies</span><span data-lang-hi style="display:none">ਐਡਵਾਂਸ ਬਾਤਚੀਤ ਰਣਨੀਤੀਆਂ</span><span data-lang-pa style="display:none">ਐਡਵਾਂਸ ਗੱਲਬਾਤ ਰਣਨੀਤੀਆਂ</span></h4><p><strong>Retry for variety:</strong> Click the retry button on any Claude response to get a different take.<br><strong>Edit your message:</strong> Hover over any message you sent and click edit to rephrase without starting over.<br><strong>Branch conversations:</strong> Edit an earlier message to create a "branch" &mdash; Claude re-generates everything from that point.<br><strong>Star important conversations:</strong> Use the favourite feature to bookmark chats you'll return to frequently.</p></div></div>
   <div class="micro-action">
-    <h4>Practice All 7 Shortcuts</h4>
+    <h4><span data-lang-en>Practice All 7 Shortcuts</span><span data-lang-hi style="display:none">सभी 7 Shortcuts प्रैक्टिस करें</span><span data-lang-pa style="display:none">ਸਾਰੇ 7 Shortcuts ਪ੍ਰੈਕਟਿਸ ਕਰੋ</span></h4>
     <p>Spend 3 minutes right now practising each shortcut at least twice:</p>
     <ul>
       <li>New conversation: Ctrl/Cmd + Shift + O (try it 3 times)</li>
@@ -326,9 +363,9 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     </ul>
   </div>
   <div class="emotional-hook"><p><strong>Two freelancers in Ludhiana</strong> get the same client request at 9 AM. One types slowly, clicks around, loses time switching conversations. The other uses shortcuts &mdash; new conversation in 1 second, copies Claude's output instantly, pastes into the client email. She replies by 9:05. He replies at 9:20. <strong>The client remembers who was faster.</strong></p></div>
-  <div class="identity-shift">Speed isn't about rushing. It's about eliminating friction so your thinking flows without interruption.</div>
+  <div class="identity-shift"><span data-lang-en>Speed isn't about rushing. It's about eliminating friction so your thinking flows without interruption.</span><span data-lang-hi style="display:none">स्पीड का मतलब जल्दबाज़ी नहीं है। यह रुकावट हटाना है ताकि आपकी सोच बिना रुकावट बहती रहे।</span><span data-lang-pa style="display:none">ਸਪੀਡ ਦਾ ਮਤਲਬ ਜਲਦਬਾਜ਼ੀ ਨਹੀਂ ਹੈ। ਇਹ ਰੁਕਾਵਟ ਹਟਾਉਣਾ ਹੈ ਤਾਂ ਜੋ ਤੁਹਾਡੀ ਸੋਚ ਬਿਨਾਂ ਰੁਕਾਵਟ ਵਗਦੀ ਰਹੇ।</span></div>
   <div class="checklist">
-    <h4>&#9989; Day 2 Interface Mastery Checklist</h4>
+    <h4><span data-lang-en>&#9989; Day 2 Interface Mastery Checklist</span><span data-lang-hi style="display:none">&#9989; दिन 2 Interface माहिरी चेकलिस्ट</span><span data-lang-pa style="display:none">&#9989; ਦਿਨ 2 Interface ਮਾਹਿਰੀ ਚੈੱਕਲਿਸਟ</span></h4>
     <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Explored the conversation sidebar and renamed at least one conversation</label></div>
     <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Identified the model selector and know which model I'm using</label></div>
     <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Opened Settings and reviewed all tabs (Profile, Appearance, Data Controls)</label></div>
@@ -341,7 +378,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Started a fresh conversation using only keyboard shortcuts</label></div>
     <div class="check-score" id="checkScore">Tap each item as you complete it &rarr; your progress score will appear here</div>
   </div>
-  <div class="micro-win">Every box you checked is a skill locked in. You're building real Claude fluency.</div>
+  <div class="micro-win"><span data-lang-en>Every box you checked is a skill locked in. You're building real Claude fluency.</span><span data-lang-hi style="display:none">हर चेक किया गया बॉक्स एक स्किल पक्की कर देता है। आप असली Claude फ्लुएंसी बना रहे हैं।</span><span data-lang-pa style="display:none">ਹਰ ਚੈੱਕ ਕੀਤਾ ਬਾਕਸ ਇੱਕ ਸਕਿੱਲ ਪੱਕੀ ਕਰ ਦਿੰਦਾ ਹੈ। ਤੁਸੀਂ ਅਸਲੀ Claude ਫਲੂਐਂਸੀ ਬਣਾ ਰਹੇ ਹੋ।</span></div>
   <p class="curiosity-hook">Next: 8 quick questions to cement your interface knowledge.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
@@ -352,11 +389,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your interface knowledge.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Test Your <span class="gr">Interface Knowledge</span></h2>
-    <p>8 questions randomly selected from a pool of 20. Instant feedback after each one.</p>
+    <h2><span data-lang-en>Test Your <span class="gr">Interface Knowledge</span></span><span data-lang-hi style="display:none">अपना <span class="gr">Interface ज्ञान</span> परखें</span><span data-lang-pa style="display:none">ਆਪਣਾ <span class="gr">Interface ਗਿਆਨ</span> ਪਰਖੋ</span></h2>
+    <div data-lang-en><p>8 questions randomly selected from a pool of 20. Instant feedback after each one.</p></div><div data-lang-hi style="display:none"><p>20 में से 8 सवाल रैंडमली चुने गए। हर सवाल के बाद तुरंत फ़ीडबैक।</p></div><div data-lang-pa style="display:none"><p>20 ਵਿੱਚੋਂ 8 ਸਵਾਲ ਰੈਂਡਮਲੀ ਚੁਣੇ ਗਏ। ਹਰ ਸਵਾਲ ਤੋਂ ਬਾਅਦ ਤੁਰੰਤ ਫੀਡਬੈਕ।</p></div>
   </div>
   <div class="quiz-box" id="quizBox"></div>
-  <div class="micro-win">Every question you answered taught you something &mdash; right or wrong.</div>
+  <div class="micro-win"><span data-lang-en>Every question you answered taught you something &mdash; right or wrong.</span><span data-lang-hi style="display:none">हर सवाल जो आपने जवाब दिया उसने आपको कुछ सिखाया &mdash; सही हो या गलत।</span><span data-lang-pa style="display:none">ਹਰ ਸਵਾਲ ਜੋ ਤੁਸੀਂ ਜਵਾਬ ਦਿੱਤਾ ਉਸ ਨੇ ਤੁਹਾਨੂੰ ਕੁਝ ਸਿਖਾਇਆ &mdash; ਸਹੀ ਹੋਵੇ ਜਾਂ ਗਲਤ।</span></div>
   <p class="curiosity-hook">Next: Your homework, key insights, and a preview of Day 3.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Shortcuts</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
@@ -366,12 +403,12 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s6">
   <div class="sec-head">
     <div class="over">Section 06</div>
-    <h2>Day 2 <span class="gr">Complete!</span></h2>
-    <p>Here's what you mastered, your homework, and what's coming in Day 3.</p>
+    <h2><span data-lang-en>Day 2 <span class="gr">Complete!</span></span><span data-lang-hi style="display:none">दिन 2 <span class="gr">पूरा!</span></span><span data-lang-pa style="display:none">ਦਿਨ 2 <span class="gr">ਪੂਰਾ!</span></span></h2>
+    <div data-lang-en><p>Here's what you mastered, your homework, and what's coming in Day 3.</p></div><div data-lang-hi style="display:none"><p>आज आपने क्या सीखा, आपका होमवर्क, और दिन 3 में क्या आने वाला है।</p></div><div data-lang-pa style="display:none"><p>ਅੱਜ ਤੁਸੀਂ ਕੀ ਸਿੱਖਿਆ, ਤੁਹਾਡਾ ਹੋਮਵਰਕ, ਅਤੇ ਦਿਨ 3 ਵਿੱਚ ਕੀ ਆਉਣ ਵਾਲਾ ਹੈ।</p></div>
   </div>
-  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; Every element of Claude's interface: sidebar, model selector, chat area, input box<br>&#9989; Settings deep-dive: Profile, Appearance, Data Controls, Connected Apps<br>&#9989; Custom Instructions &mdash; how to configure Claude to know your context automatically<br>&#9989; The 200K token context window &mdash; what it means and how to use it strategically<br>&#9989; File uploads: PDFs, docs, spreadsheets, CSVs, images<br>&#9989; 7 keyboard shortcuts for speed and efficiency<br>&#9989; Conversation management: renaming, branching, retrying, editing</p></div></div>
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4><span data-lang-en>What You Learned Today</span><span data-lang-hi style="display:none">आज आपने क्या सीखा</span><span data-lang-pa style="display:none">ਅੱਜ ਤੁਸੀਂ ਕੀ ਸਿੱਖਿਆ</span></h4><p>&#9989; Every element of Claude's interface: sidebar, model selector, chat area, input box<br>&#9989; Settings deep-dive: Profile, Appearance, Data Controls, Connected Apps<br>&#9989; Custom Instructions &mdash; how to configure Claude to know your context automatically<br>&#9989; The 200K token context window &mdash; what it means and how to use it strategically<br>&#9989; File uploads: PDFs, docs, spreadsheets, CSVs, images<br>&#9989; 7 keyboard shortcuts for speed and efficiency<br>&#9989; Conversation management: renaming, branching, retrying, editing</p></div></div>
   <div class="micro-action">
-    <h4>Your Homework Before Day 3</h4>
+    <h4><span data-lang-en>Your Homework Before Day 3</span><span data-lang-hi style="display:none">दिन 3 से पहले आपका होमवर्क</span><span data-lang-pa style="display:none">ਦਿਨ 3 ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡਾ ਹੋਮਵਰਕ</span></h4>
     <p>This is how the learning sticks:</p>
     <ul>
       <li>Use <strong>keyboard shortcuts exclusively</strong> for 24 hours &mdash; no clicking the new conversation button</li>
@@ -381,7 +418,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
       <li>Ask Claude to <strong>summarise a long article or report</strong> you've been meaning to read</li>
     </ul>
   </div>
-  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Day 3 &mdash; The CRISP Framework</h4><p>Tomorrow you'll learn the <strong>CRISP prompt framework</strong> that transforms vague questions into precise, powerful prompts. Context, Role, Intent, Specifics, Parameters &mdash; five elements that make the difference between a mediocre AI response and a brilliant one. <strong>This single framework will 10x your Claude output quality.</strong></p></div></div>
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4><span data-lang-en>Preview: Day 3 &mdash; The CRISP Framework</span><span data-lang-hi style="display:none">प्रीव्यू: दिन 3 &mdash; CRISP Framework</span><span data-lang-pa style="display:none">ਪ੍ਰੀਵਿਊ: ਦਿਨ 3 &mdash; CRISP Framework</span></h4><p>Tomorrow you'll learn the <strong>CRISP prompt framework</strong> that transforms vague questions into precise, powerful prompts. Context, Role, Intent, Specifics, Parameters &mdash; five elements that make the difference between a mediocre AI response and a brilliant one. <strong>This single framework will 10x your Claude output quality.</strong></p></div></div>
   <div style="text-align:center;margin:2.5rem 0">
     <a href="https://wa.me/919200882008?text=I%20completed%20Day%202%20of%20Master%20Claude%20in%2015%20Days!%20Ready%20for%20Day%203." target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
     <a href="claude-03.html" class="btn btn-ghost" style="text-decoration:none">Day 3: CRISP Framework &rarr;</a>
@@ -392,7 +429,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <p style="color:var(--t2)">&#127760; <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a></p>
     <p style="color:var(--t2)">&#128205; Kotkapura, Punjab</p>
   </div>
-  <div class="identity-shift">You just mastered Claude's interface in one session. Most users never learn half of what you now know.</div>
+  <div class="identity-shift"><span data-lang-en>You just mastered Claude's interface in one session. Most users never learn half of what you now know.</span><span data-lang-hi style="display:none">आपने एक सेशन में Claude का इंटरफ़ेस माहिर कर लिया। ज़्यादातर यूज़र्स कभी आधा भी नहीं सीख पाते।</span><span data-lang-pa style="display:none">ਤੁਸੀਂ ਇੱਕ ਸੈਸ਼ਨ ਵਿੱਚ Claude ਦਾ ਇੰਟਰਫੇਸ ਮਾਹਿਰ ਕਰ ਲਿਆ। ਬਹੁਤੇ ਯੂਜ਼ਰ ਕਦੇ ਅੱਧਾ ਵੀ ਨਹੀਂ ਸਿੱਖ ਪਾਉਂਦੇ।</span></div>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
 </div>
@@ -417,6 +454,22 @@ function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new 
 function renderQ(){const box=document.getElementById('quizBox');if(cq>=activeQuiz.length){const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:'claude-02',score:sc,total:activeQuiz.length})})}catch(e){}let tier,tierColor,msg;if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='You have mastered Claude\'s interface. Ready for Day 3!';}else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid understanding. Practise the shortcuts a few more times.';}else{tier='Keep Learning!';tierColor='var(--c4)';msg='Re-read sections 1-4 and try the demos again.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;return;}const q=activeQuiz[cq];const ltr=['A','B','C','D'];let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
 function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
 function nxtQ(){cq++;renderQ()}
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

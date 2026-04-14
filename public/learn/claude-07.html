@@ -124,21 +124,58 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .field select option{background:var(--bg2)}
 .gen-output{padding:1.25rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:80px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--c5);white-space:pre-wrap;line-height:1.8;margin-top:1rem}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.crisp-breakdown{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 07 &middot; Master Claude in 15 Days</div>
-  <h1>Business<br><span class="gr">Writing</span></h1>
+  <h1>
+    <span data-lang-en>Business<br><span class="gr">Writing</span></span>
+    <span data-lang-hi style="display:none">बिज़नेस<br><span class="gr">राइटिंग</span></span>
+    <span data-lang-pa style="display:none">ਬਿਜ਼ਨਸ<br><span class="gr">ਰਾਈਟਿੰਗ</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Claude's greatest professional strength is business writing — nuanced, audience-aware, instruction-following prose that sounds like a senior professional wrote it. Today you master this capability.</p>
+  <div data-lang-en><p>Claude's greatest professional strength is business writing — nuanced, audience-aware, instruction-following prose that sounds like a senior professional wrote it. Today you master this capability.</p></div>
+  <div data-lang-hi style="display:none"><p>Claude की सबसे बड़ी प्रोफ़ेशनल ताकत बिज़नेस राइटिंग है — बारीक, ऑडियंस-अवेयर, इंस्ट्रक्शन-फ़ॉलोइंग प्रोज़ जो ऐसा लगता है जैसे सीनियर प्रोफ़ेशनल ने लिखा हो। आज आप इस काबिलियत में माहिर बनेंगे।</p></div>
+  <div data-lang-pa style="display:none"><p>Claude ਦੀ ਸਭ ਤੋਂ ਵੱਡੀ ਪ੍ਰੋਫੈਸ਼ਨਲ ਤਾਕਤ ਬਿਜ਼ਨਸ ਰਾਈਟਿੰਗ ਹੈ — ਬਰੀਕ, ਔਡੀਐਂਸ-ਅਵੇਅਰ, ਇੰਸਟ੍ਰਕਸ਼ਨ-ਫਾਲੋਇੰਗ ਗੱਦ ਜੋ ਲੱਗਦਾ ਹੈ ਜਿਵੇਂ ਸੀਨੀਅਰ ਪ੍ਰੋਫੈਸ਼ਨਲ ਨੇ ਲਿਖਿਆ ਹੋਵੇ। ਅੱਜ ਤੁਸੀਂ ਇਸ ਕਾਬਲੀਅਤ ਵਿੱਚ ਮਾਹਿਰ ਬਣੋਗੇ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 7 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 7 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 7 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 7 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -157,8 +194,8 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>Why Claude Excels at <span class="gr">Business Writing</span></h2>
-    <p>Not all AI writes equally well. Claude's specific architecture and training make it particularly suited for professional business communication.</p>
+    <h2><span data-lang-en>Why Claude Excels at <span class="gr">Business Writing</span></span><span data-lang-hi style="display:none">Claude <span class="gr">बिज़नेस राइटिंग</span> में क्यों सबसे अच्छा है</span><span data-lang-pa style="display:none">Claude <span class="gr">ਬਿਜ਼ਨਸ ਰਾਈਟਿੰਗ</span> ਵਿੱਚ ਕਿਉਂ ਸਭ ਤੋਂ ਵਧੀਆ ਹੈ</span></h2>
+    <div data-lang-en><p>Not all AI writes equally well. Claude's specific architecture and training make it particularly suited for professional business communication.</p></div><div data-lang-hi style="display:none"><p>सभी AI एक जैसा नहीं लिखते। Claude की खास आर्किटेक्चर और ट्रेनिंग इसे प्रोफ़ेशनल बिज़नेस कम्युनिकेशन के लिए खासतौर पर उपयुक्त बनाती है।</p></div><div data-lang-pa style="display:none"><p>ਸਾਰੇ AI ਇੱਕ ਜਿਹਾ ਨਹੀਂ ਲਿਖਦੇ। Claude ਦੀ ਖਾਸ ਆਰਕੀਟੈਕਚਰ ਅਤੇ ਟ੍ਰੇਨਿੰਗ ਇਸ ਨੂੰ ਪ੍ਰੋਫੈਸ਼ਨਲ ਬਿਜ਼ਨਸ ਕਮਿਊਨੀਕੇਸ਼ਨ ਲਈ ਖਾਸ ਤੌਰ ਤੇ ਢੁਕਵਾਂ ਬਣਾਉਂਦੀ ਹੈ।</p></div>
   </div>
 
   <div class="callout call-brand"><div class="call-ico">✍️</div><div class="call-body"><h4>The Writing Quality Difference</h4><p>Claude was specifically trained to follow complex, multi-part writing instructions — and to produce nuanced, professional prose rather than templated-sounding output. Where other AI tools tend toward formulaic structure and generic phrasing, Claude produces writing that reads like it came from a senior professional who understood the assignment. That difference is the entire value proposition for business writing.</p></div></div>
@@ -182,7 +219,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
     <div class="crd"><span class="crd-icon">📋</span><h3>Standard Operating Procedures</h3><p>Clear, numbered, unambiguous step-by-step processes. Claude writes SOPs that actually get followed because they're readable and complete.</p></div>
   </div>
 
-  <div class="micro-win">You now understand the specific capabilities that make Claude the superior choice for professional business writing.</div>
+  <div class="micro-win"><span data-lang-en>You now understand the specific capabilities that make Claude the superior choice for professional business writing.</span><span data-lang-hi style="display:none">अब आप उन विशिष्ट क्षमताओं को समझते हैं जो Claude को प्रोफ़ेशनल बिज़नेस राइटिंग के लिए सबसे बेहतर विकल्प बनाती हैं।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਖਾਸ ਸਮਰੱਥਾਵਾਂ ਨੂੰ ਸਮਝਦੇ ਹੋ ਜੋ Claude ਨੂੰ ਪ੍ਰੋਫੈਸ਼ਨਲ ਬਿਜ਼ਨਸ ਰਾਈਟਿੰਗ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਵਿਕਲਪ ਬਣਾਉਂਦੀਆਂ ਹਨ।</span></div>
 
   <p class="curiosity-hook">Next: CRISP prompts for reports, proposals, and SOPs — with complete examples.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
@@ -194,8 +231,8 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#9989; Section 1 done. Now: the exact CRISP prompts for four major business document types.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Report & Proposal <span class="gr">Writing</span></h2>
-    <p>Four document types. Complete CRISP breakdowns for each. These are reusable templates — adapt them to your context.</p>
+    <h2><span data-lang-en>Report & Proposal <span class="gr">Writing</span></span><span data-lang-hi style="display:none">रिपोर्ट और प्रपोज़ल <span class="gr">राइटिंग</span></span><span data-lang-pa style="display:none">ਰਿਪੋਰਟ ਅਤੇ ਪ੍ਰਪੋਜ਼ਲ <span class="gr">ਰਾਈਟਿੰਗ</span></span></h2>
+    <div data-lang-en><p>Four document types. Complete CRISP breakdowns for each. These are reusable templates — adapt them to your context.</p></div><div data-lang-hi style="display:none"><p>चार डॉक्यूमेंट टाइप। हर एक के लिए पूरा CRISP ब्रेकडाउन। ये रीयूज़ेबल टेम्पलेट हैं — इन्हें अपने कॉन्टेक्स्ट के हिसाब से ढालें।</p></div><div data-lang-pa style="display:none"><p>ਚਾਰ ਡੌਕੂਮੈਂਟ ਟਾਈਪ। ਹਰ ਇੱਕ ਲਈ ਪੂਰਾ CRISP ਬ੍ਰੇਕਡਾਊਨ। ਇਹ ਰੀਯੂਜ਼ੇਬਲ ਟੈਂਪਲੇਟ ਹਨ — ਇਨ੍ਹਾਂ ਨੂੰ ਆਪਣੇ ਕੰਟੈਕਸਟ ਅਨੁਸਾਰ ਢਾਲੋ।</p></div>
   </div>
 
   <div class="writing-prompt">
@@ -263,7 +300,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#128170; 60% through Day 7. Email is the highest-frequency professional writing task — master it here.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>Email <span class="gr">Mastery</span></h2>
+    <h2><span data-lang-en>Email <span class="gr">Mastery</span></span><span data-lang-hi style="display:none">ईमेल <span class="gr">माहिरी</span></span><span data-lang-pa style="display:none">ਈਮੇਲ <span class="gr">ਮਾਹਿਰੀ</span></span></h2>
     <p>Four email categories with complete CRISP breakdowns. The most practical section in the business writing module.</p>
   </div>
 
@@ -327,7 +364,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#127919; 80% through Day 7. The interactive generator transforms your inputs into ready-to-use Claude prompts.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Interactive <span class="gr">Email Generator</span></h2>
+    <h2><span data-lang-en>Interactive <span class="gr">Email Generator</span></span><span data-lang-hi style="display:none">इंटरैक्टिव <span class="gr">ईमेल जनरेटर</span></span><span data-lang-pa style="display:none">ਇੰਟਰੈਕਟਿਵ <span class="gr">ਈਮੇਲ ਜਨਰੇਟਰ</span></span></h2>
     <p>Fill in recipient, purpose, and tone. Get a complete CRISP prompt ready to paste into Claude.</p>
   </div>
 
@@ -408,7 +445,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#129504; Day 7 Knowledge Check. Business writing, email strategies, CRISP for documents.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Day 7 <span class="gr">Quiz</span></h2>
+    <h2><span data-lang-en>Day 7 <span class="gr">Quiz</span></span><span data-lang-hi style="display:none">दिन 7 <span class="gr">क्विज़</span></span><span data-lang-pa style="display:none">ਦਿਨ 7 <span class="gr">ਕੁਇਜ਼</span></span></h2>
     <p>Business writing principles and strategies tested in 8 randomized questions.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
@@ -424,6 +461,22 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 </div>
 
 <script>
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
 document.addEventListener('copy',e=>e.preventDefault());

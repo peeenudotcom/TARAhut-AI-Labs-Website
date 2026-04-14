@@ -116,20 +116,45 @@ a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
 .q-score-box{text-align:center;padding:3rem 2rem}
 .q-score-box .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Senior Track &middot; Session 5 &middot; 2026</div>
-  <h1>AI Design &<br><span class="gr">Visual Content 🎨</span></h1>
+  <h1>
+    <span data-lang-en>AI Design &amp;<br><span class="gr">Visual Content 🎨</span></span>
+    <span data-lang-hi style="display:none">AI Design &amp;<br><span class="gr">Visual Content 🎨</span></span>
+    <span data-lang-pa style="display:none">AI Design &amp;<br><span class="gr">Visual Content 🎨</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>Create stunning posters, Instagram posts, and presentations with AI — no art skills needed! Visual content is the language of the internet, and you're about to become fluent. 🚀</p>
+  <div data-lang-en><p>Create stunning posters, Instagram posts, and presentations with AI — no art skills needed! Visual content is the language of the internet, and you're about to become fluent. 🚀</p></div><div data-lang-hi style="display:none"><p>AI से शानदार posters, Instagram posts, और presentations बनाओ — art skills की ज़रूरत नहीं! Visual content internet की भाषा है, और तुम fluent होने वाले हो। 🚀</p></div><div data-lang-pa style="display:none"><p>AI ਨਾਲ ਸ਼ਾਨਦਾਰ posters, Instagram posts, ਅਤੇ presentations ਬਣਾਓ — art skills ਦੀ ਲੋੜ ਨਹੀਂ! Visual content internet ਦੀ ਭਾਸ਼ਾ ਹੈ, ਅਤੇ ਤੁਸੀਂ fluent ਹੋਣ ਵਾਲੇ ਹੋ। 🚀</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Create! 🎨</button>
+    <button class="btn btn-glow" onclick="startLearning()"><span data-lang-en>Create! 🎨</span><span data-lang-hi style="display:none">बनाओ! 🎨</span><span data-lang-pa style="display:none">ਬਣਾਓ! 🎨</span></button>
     <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Jump to Quiz</button>
   </div>
 </section>
@@ -478,6 +503,22 @@ function renderQ(){
 }
 function pickAns(i){const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.style.pointerEvents='none');const d=qData[cq];const correct=i===d.a;if(correct)sc++;opts[i].classList.add(correct?'ok':'no');opts[d.a].classList.add('ok');const fb=document.getElementById('qFb');fb.className=`q-fb show ${correct?'fb-ok':'fb-no'}`;fb.innerHTML=(correct?'✅ ':'❌ ')+d.e+`<br><br><button class="btn btn-glow btn-sm" style="margin-top:.5rem" onclick="nextQ()">${cq<qData.length-1?'Next Question →':'See Results 🏆'}</button>`;}
 function nextQ(){cq++;renderQ();}
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

@@ -141,21 +141,58 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 .field textarea{min-height:72px}
 .builder-output{padding:1.25rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:60px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;line-height:1.8}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 03 &middot; Master Claude in 15 Days</div>
-  <h1>The CRISP<br><span class="gr">Framework</span></h1>
+  <h1>
+    <span data-lang-en>The CRISP<br><span class="gr">Framework</span></span>
+    <span data-lang-hi style="display:none">CRISP<br><span class="gr">Framework</span></span>
+    <span data-lang-pa style="display:none">CRISP<br><span class="gr">Framework</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Prompt quality is the single biggest variable in Claude's output. The CRISP framework gives you a systematic method for writing prompts that work consistently, not just sometimes.</p>
+  <div data-lang-en><p>Prompt quality is the single biggest variable in Claude's output. The CRISP framework gives you a systematic method for writing prompts that work consistently, not just sometimes.</p></div>
+  <div data-lang-hi style="display:none"><p>Prompt की क्वालिटी Claude के आउटपुट में सबसे बड़ा फ़र्क़ डालती है। CRISP Framework आपको ऐसे Prompts लिखने का सिस्टमैटिक तरीका देता है जो हमेशा काम करें, कभी-कभी नहीं।</p></div>
+  <div data-lang-pa style="display:none"><p>Prompt ਦੀ ਕੁਆਲਿਟੀ Claude ਦੇ ਆਉਟਪੁਟ ਵਿੱਚ ਸਭ ਤੋਂ ਵੱਡਾ ਫ਼ਰਕ ਪਾਉਂਦੀ ਹੈ। CRISP Framework ਤੁਹਾਨੂੰ ਅਜਿਹੇ Prompts ਲਿਖਣ ਦਾ ਸਿਸਟਮੈਟਿਕ ਤਰੀਕਾ ਦਿੰਦਾ ਹੈ ਜੋ ਹਮੇਸ਼ਾ ਕੰਮ ਕਰਨ, ਕਦੇ-ਕਦੇ ਨਹੀਂ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 3 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 3 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 3 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 3 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -174,8 +211,8 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>Why <span class="gr">Prompts Matter</span></h2>
-    <p>The same Claude. The same model. Wildly different outputs. The variable is you.</p>
+    <h2><span data-lang-en>Why <span class="gr">Prompts Matter</span></span><span data-lang-hi style="display:none"><span class="gr">Prompts</span> क्यों मायने रखते हैं</span><span data-lang-pa style="display:none"><span class="gr">Prompts</span> ਕਿਉਂ ਮਾਅਨੇ ਰੱਖਦੇ ਹਨ</span></h2>
+    <div data-lang-en><p>The same Claude. The same model. Wildly different outputs. The variable is you.</p></div><div data-lang-hi style="display:none"><p>वही Claude। वही Model। बिल्कुल अलग आउटपुट। फ़र्क़ सिर्फ आप हैं।</p></div><div data-lang-pa style="display:none"><p>ਉਹੀ Claude। ਉਹੀ Model। ਬਿਲਕੁਲ ਵੱਖਰੇ ਆਉਟਪੁਟ। ਫ਼ਰਕ ਸਿਰਫ਼ ਤੁਸੀਂ ਹੋ।</p></div>
   </div>
 
   <div class="emotional-hook">
@@ -207,7 +244,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
     <div class="crd"><span class="crd-icon">📐</span><h3>Format & Constraints</h3><p>Length, tone, format, what to avoid — constraints are features, not limitations. They guide Claude toward exactly what you need, cutting everything else.</p></div>
   </div>
 
-  <div class="micro-win">You now understand why prompt quality is the highest-leverage skill in this entire course.</div>
+  <div class="micro-win"><span data-lang-en>You now understand why prompt quality is the highest-leverage skill in this entire course.</span><span data-lang-hi style="display:none">अब आप समझते हैं कि Prompt क्वालिटी इस पूरे कोर्स में सबसे ज़्यादा लीवरेज वाली स्किल क्यों है।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਸੀਂ ਸਮਝਦੇ ਹੋ ਕਿ Prompt ਕੁਆਲਿਟੀ ਇਸ ਪੂਰੇ ਕੋਰਸ ਵਿੱਚ ਸਭ ਤੋਂ ਵੱਧ ਲੀਵਰੇਜ ਵਾਲੀ ਸਕਿੱਲ ਕਿਉਂ ਹੈ।</span></div>
 
   <div class="micro-action">
     <h4>Before-and-After Exercise</h4>
@@ -224,7 +261,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#9989; Section 1 complete. You know why prompts matter. Now: the systematic framework.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>The <span class="gr">CRISP Framework</span></h2>
+    <h2><span data-lang-en>The <span class="gr">CRISP Framework</span></span><span data-lang-hi style="display:none">CRISP <span class="gr">Framework</span></span><span data-lang-pa style="display:none">CRISP <span class="gr">Framework</span></span></h2>
     <p>Five components. Every component earns its place. When all five are present, output quality becomes predictable.</p>
   </div>
 
@@ -280,7 +317,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 
   <div class="callout call-2"><div class="call-ico">💡</div><div class="call-body"><h4>When to Skip Components</h4><p>For quick, simple tasks, you don't need all five. A quick factual question needs only Instructions. A simple edit needs Context + Instructions. The full CRISP framework earns its complexity for high-stakes, nuanced outputs where the gap between good and great matters. Learn to calibrate which components to include based on task complexity.</p></div></div>
 
-  <div class="micro-win">You now have a systematic framework for prompting. The guesswork is gone.</div>
+  <div class="micro-win"><span data-lang-en>You now have a systematic framework for prompting. The guesswork is gone.</span><span data-lang-hi style="display:none">अब आपके पास Prompting के लिए एक सिस्टमैटिक Framework है। अंदाज़े लगाना बंद।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਹਾਡੇ ਕੋਲ Prompting ਲਈ ਇੱਕ ਸਿਸਟਮੈਟਿਕ Framework ਹੈ। ਅੰਦਾਜ਼ੇ ਲਾਉਣੇ ਬੰਦ।</span></div>
 
   <p class="curiosity-hook">Next: See CRISP applied to 5 real professional scenarios.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
@@ -292,7 +329,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#128170; 60% through Day 3. The examples here are the ones students save and reuse for months.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>CRISP <span class="gr">in Action</span></h2>
+    <h2><span data-lang-en>CRISP <span class="gr">in Action</span></span><span data-lang-hi style="display:none">CRISP <span class="gr">एक्शन में</span></span><span data-lang-pa style="display:none">CRISP <span class="gr">ਐਕਸ਼ਨ ਵਿੱਚ</span></span></h2>
     <p>Five real professional scenarios. See each CRISP component broken out, then assembled into the complete prompt.</p>
   </div>
 
@@ -356,7 +393,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#127919; 80% done — the interactive builder is where learning becomes muscle memory.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Interactive <span class="gr">Prompt Builder</span></h2>
+    <h2><span data-lang-en>Interactive <span class="gr">Prompt Builder</span></span><span data-lang-hi style="display:none">इंटरैक्टिव <span class="gr">Prompt Builder</span></span><span data-lang-pa style="display:none">ਇੰਟਰੈਕਟਿਵ <span class="gr">Prompt Builder</span></span></h2>
     <p>Fill in each CRISP field. Watch the complete prompt assemble in real time. Then use it in Claude.</p>
   </div>
 
@@ -394,7 +431,7 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 
   <div class="callout call-3"><div class="call-ico">🎯</div><div class="call-body"><h4>The Builder as a Thinking Tool</h4><p>Notice that filling in the CRISP fields forces you to think clearly about what you actually want. Many students report that the act of structuring CRISP components clarifies their own thinking <em>before</em> they even send the prompt. That's the meta-skill: CRISP makes you a clearer thinker, not just a better prompter.</p></div></div>
 
-  <div class="identity-shift">You now have a repeatable, systematic method for professional-grade prompting. This is the skill that compounds every day you use Claude.</div>
+  <div class="identity-shift"><span data-lang-en>You now have a repeatable, systematic method for professional-grade prompting. This is the skill that compounds every day you use Claude.</span><span data-lang-hi style="display:none">अब आपके पास प्रोफ़ेशनल-ग्रेड Prompting के लिए एक दोहराया जा सकने वाला, सिस्टमैटिक तरीका है। यह वो स्किल है जो हर दिन Claude इस्तेमाल करने पर बढ़ती जाती है।</span><span data-lang-pa style="display:none">ਹੁਣ ਤੁਹਾਡੇ ਕੋਲ ਪ੍ਰੋਫੈਸ਼ਨਲ-ਗ੍ਰੇਡ Prompting ਲਈ ਇੱਕ ਦੁਹਰਾਇਆ ਜਾ ਸਕਣ ਵਾਲਾ, ਸਿਸਟਮੈਟਿਕ ਤਰੀਕਾ ਹੈ। ਇਹ ਉਹ ਸਕਿੱਲ ਹੈ ਜੋ ਹਰ ਦਿਨ Claude ਵਰਤਣ ਨਾਲ ਵਧਦੀ ਜਾਂਦੀ ਹੈ।</span></div>
 
   <div class="micro-action">
     <h4>Day 3 Capstone</h4>
@@ -411,11 +448,11 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   <div class="progress-marker">&#129504; Day 3 Knowledge Check. The CRISP framework tested in 8 questions.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Day 3 <span class="gr">Quiz</span></h2>
+    <h2><span data-lang-en>Day 3 <span class="gr">Quiz</span></span><span data-lang-hi style="display:none">दिन 3 <span class="gr">क्विज़</span></span><span data-lang-pa style="display:none">ਦਿਨ 3 <span class="gr">ਕੁਇਜ਼</span></span></h2>
     <p>Prompting frameworks, CRISP components, quality indicators. 8 randomized questions.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
-  <div class="micro-win">CRISP is your permanent prompting infrastructure. Every day you use it, you get better at it.</div>
+  <div class="micro-win"><span data-lang-en>CRISP is your permanent prompting infrastructure. Every day you use it, you get better at it.</span><span data-lang-hi style="display:none">CRISP आपकी परमानेंट Prompting इन्फ्रास्ट्रक्चर है। हर दिन इस्तेमाल करने पर आप बेहतर होते जाते हैं।</span><span data-lang-pa style="display:none">CRISP ਤੁਹਾਡਾ ਪਰਮਾਨੈਂਟ Prompting ਇਨਫ੍ਰਾਸਟ੍ਰਕਚਰ ਹੈ। ਹਰ ਦਿਨ ਵਰਤਣ ਨਾਲ ਤੁਸੀਂ ਬਿਹਤਰ ਹੁੰਦੇ ਜਾਂਦੇ ਹੋ।</span></div>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Builder</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 3</button></div>
 </div>
@@ -427,6 +464,22 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
 </div>
 
 <script>
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
 document.addEventListener('copy',e=>e.preventDefault());

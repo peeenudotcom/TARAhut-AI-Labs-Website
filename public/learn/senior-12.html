@@ -163,20 +163,45 @@ a{color:var(--c1);text-decoration:none}
 .level2-cta p{color:var(--t2);font-size:.92rem;max-width:520px;margin:0 auto 1.5rem}
 @media(max-width:768px){.sec{padding:2rem 1rem 4rem}.journey-grid,.level-track,.achievements{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.journey-grid,.level-track,.achievements{grid-template-columns:1fr}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Senior Track &middot; Final Session &middot; 12 of 12 🎓</div>
-  <h1>Session 12:<br><span class="gr">Showcase Day</span><br><span class="gr2">+ Graduation 🎓</span></h1>
+  <h1>
+    <span data-lang-en>Session 12:<br><span class="gr">Showcase Day</span><br><span class="gr2">+ Graduation 🎓</span></span>
+    <span data-lang-hi style="display:none">Session 12:<br><span class="gr">Showcase Day</span><br><span class="gr2">+ Graduation 🎓</span></span>
+    <span data-lang-pa style="display:none">Session 12:<br><span class="gr">Showcase Day</span><br><span class="gr2">+ Graduation 🎓</span></span>
+  </h1>
   <div class="hero-brand">by TARAhut AI Labs</div>
-  <p>You started as a curious student. Today, you leave as an AI Explorer. This moment belongs to YOU.</p>
+  <div data-lang-en><p>You started as a curious student. Today, you leave as an AI Explorer. This moment belongs to YOU.</p></div><div data-lang-hi style="display:none"><p>तुमने एक curious student की तरह शुरू किया। आज तुम AI Explorer बनकर जा रहे हो। यह moment तुम्हारा है।</p></div><div data-lang-pa style="display:none"><p>ਤੁਸੀਂ ਇੱਕ curious student ਵਾਂਗ ਸ਼ੁਰੂ ਕੀਤਾ। ਅੱਜ ਤੁਸੀਂ AI Explorer ਬਣ ਕੇ ਜਾ ਰਹੇ ਹੋ। ਇਹ moment ਤੁਹਾਡਾ ਹੈ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-grad" onclick="startLearning()">Begin Your Final Session 🎓</button>
+    <button class="btn btn-grad" onclick="startLearning()"><span data-lang-en>Begin Your Final Session 🎓</span><span data-lang-hi style="display:none">Final Session शुरू करें 🎓</span><span data-lang-pa style="display:none">Final Session ਸ਼ੁਰੂ ਕਰੋ 🎓</span></button>
     <button class="btn btn-ghost" onclick="jumpTo('s4')">⚡ Final Quiz</button>
   </div>
 </section>
@@ -453,6 +478,22 @@ function showScore(){
     </div>`;
 }
 buildQuiz();
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>

@@ -125,21 +125,58 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 .instr-box h4{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:.4rem;color:var(--c1)}
 .instr-box p{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--t2);line-height:1.8;white-space:pre-wrap}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 04 &middot; Master Claude in 15 Days</div>
-  <h1>Claude<br><span class="gr">Projects</span></h1>
+  <h1>
+    <span data-lang-en>Claude<br><span class="gr">Projects</span></span>
+    <span data-lang-hi style="display:none">Claude<br><span class="gr">Projects</span></span>
+    <span data-lang-pa style="display:none">Claude<br><span class="gr">Projects</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Projects are the feature that separates casual Claude users from professional operators. Persistent context, custom instructions, and a knowledge base — all in one workspace.</p>
+  <div data-lang-en><p>Projects are the feature that separates casual Claude users from professional operators. Persistent context, custom instructions, and a knowledge base — all in one workspace.</p></div>
+  <div data-lang-hi style="display:none"><p>Projects वो फ़ीचर है जो आम Claude यूज़र्स को प्रोफ़ेशनल ऑपरेटर्स से अलग करती है। स्थायी कॉन्टेक्स्ट, कस्टम इंस्ट्रक्शन्स, और नॉलेज बेस — सब एक वर्कस्पेस में।</p></div>
+  <div data-lang-pa style="display:none"><p>Projects ਉਹ ਫੀਚਰ ਹੈ ਜੋ ਆਮ Claude ਯੂਜ਼ਰਾਂ ਨੂੰ ਪ੍ਰੋਫੈਸ਼ਨਲ ਆਪਰੇਟਰਾਂ ਤੋਂ ਵੱਖ ਕਰਦੀ ਹੈ। ਸਥਾਈ ਕੰਟੈਕਸਟ, ਕਸਟਮ ਇੰਸਟ੍ਰਕਸ਼ਨਜ਼, ਅਤੇ ਨੌਲੇਜ ਬੇਸ — ਸਭ ਇੱਕ ਵਰਕਸਪੇਸ ਵਿੱਚ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 4 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 4 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 4 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 4 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -158,8 +195,8 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>What Are <span class="gr">Claude Projects</span>?</h2>
-    <p>Projects transform Claude from a conversational tool into a persistent, context-aware professional workspace.</p>
+    <h2><span data-lang-en>What Are <span class="gr">Claude Projects</span>?</span><span data-lang-hi style="display:none"><span class="gr">Claude Projects</span> क्या हैं?</span><span data-lang-pa style="display:none"><span class="gr">Claude Projects</span> ਕੀ ਹਨ?</span></h2>
+    <div data-lang-en><p>Projects transform Claude from a conversational tool into a persistent, context-aware professional workspace.</p></div><div data-lang-hi style="display:none"><p>Projects Claude को एक बातचीत टूल से एक स्थायी, कॉन्टेक्स्ट-अवेयर प्रोफ़ेशनल वर्कस्पेस में बदल देते हैं।</p></div><div data-lang-pa style="display:none"><p>Projects Claude ਨੂੰ ਇੱਕ ਗੱਲਬਾਤ ਟੂਲ ਤੋਂ ਇੱਕ ਸਥਾਈ, ਕੰਟੈਕਸਟ-ਅਵੇਅਰ ਪ੍ਰੋਫੈਸ਼ਨਲ ਵਰਕਸਪੇਸ ਵਿੱਚ ਬਦਲ ਦਿੰਦੇ ਹਨ।</p></div>
   </div>
 
   <div class="emotional-hook">
@@ -202,7 +239,7 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 
   <div class="callout call-brand"><div class="call-ico">💼</div><div class="call-body"><h4>Real-World Impact</h4><p>A content marketing consultant sets up a Client Project for each client. Each Project contains the client's brand voice guide, target audience notes, competitor positioning, and tone instructions. Every piece of content she creates for that client uses Claude with full brand context — no briefing required. What used to take 30 minutes of context-setting per session now takes zero.</p></div></div>
 
-  <div class="micro-win">You now understand why Projects are the most powerful feature in Claude for professional users.</div>
+  <div class="micro-win"><span data-lang-en>You now understand why Projects are the most powerful feature in Claude for professional users.</span></div>
 
   <p class="curiosity-hook">Next: Step-by-step Project setup — from blank canvas to operational workspace.</p>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
@@ -214,7 +251,7 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
   <div class="progress-marker">&#9989; Section 1 done. Now: the exact setup sequence for a professional Project.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>Setting Up <span class="gr">a Project</span></h2>
+    <h2><span data-lang-en>Setting Up <span class="gr">a Project</span></span><span data-lang-hi style="display:none"><span class="gr">Project</span> सेट अप करना</span><span data-lang-pa style="display:none"><span class="gr">Project</span> ਸੈੱਟ ਅੱਪ ਕਰਨਾ</span></h2>
     <p>Step-by-step. Name it, instruct it, load it with knowledge, and you're operational in under 20 minutes.</p>
   </div>
 
@@ -246,7 +283,7 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
   <div class="progress-marker">&#128170; 60% through Day 4. The instruction templates in this section are used by TARAhut graduates daily.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>Custom Instructions <span class="gr">That Work</span></h2>
+    <h2><span data-lang-en>Custom Instructions <span class="gr">That Work</span></span><span data-lang-hi style="display:none">Custom Instructions <span class="gr">जो काम करें</span></span><span data-lang-pa style="display:none">Custom Instructions <span class="gr">ਜੋ ਕੰਮ ਕਰਨ</span></span></h2>
     <p>Ten battle-tested instruction templates across different professional roles. Adapt, not copy — your context is unique.</p>
   </div>
 
@@ -300,7 +337,7 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
     <p>You manage social media content for [Brand]. Platform priorities: [list]. Posting schedule: [describe]. Brand voice: [describe]. Audience: [describe]. When writing posts: optimize for [engagement/reach/conversions]. Platform-specific rules: Twitter — punchy, under 250 chars; LinkedIn — professional insight, 150-300 words; Instagram — visual-first, emotional, heavy hashtags. Always suggest relevant hashtags. Avoid bandwagon trends that don't fit brand values.</p>
   </div>
 
-  <div class="micro-win">You now have 10 instruction templates used by working professionals. One of these covers your use case today.</div>
+  <div class="micro-win"><span data-lang-en>You now have 10 instruction templates used by working professionals. One of these covers your use case today.</span></div>
 
   <div class="micro-action">
     <h4>Customize One Template Now</h4>
@@ -317,7 +354,7 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
   <div class="progress-marker">&#127919; 80% done — knowledge base strategy is what separates good Projects from great ones.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Knowledge Base <span class="gr">Management</span></h2>
+    <h2><span data-lang-en>Knowledge Base <span class="gr">Management</span></span><span data-lang-hi style="display:none">Knowledge Base <span class="gr">मैनेजमेंट</span></span><span data-lang-pa style="display:none">Knowledge Base <span class="gr">ਮੈਨੇਜਮੈਂਟ</span></span></h2>
     <p>What to upload, what to leave out, and how Claude actually uses the documents you provide.</p>
   </div>
 
@@ -373,11 +410,11 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
   <div class="progress-marker">&#129504; Day 4 Quiz. Projects, custom instructions, knowledge base — 8 randomized questions.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Day 4 <span class="gr">Quiz</span></h2>
+    <h2><span data-lang-en>Day 4 <span class="gr">Quiz</span></span><span data-lang-hi style="display:none">दिन 4 <span class="gr">क्विज़</span></span><span data-lang-pa style="display:none">ਦਿਨ 4 <span class="gr">ਕੁਇਜ਼</span></span></h2>
     <p>Projects are the professional's power move. Let's confirm you can use them confidently.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
-  <div class="micro-win">Day 4 complete. You now build Claude workspaces, not just conversations.</div>
+  <div class="micro-win"><span data-lang-en>Day 4 complete. You now build Claude workspaces, not just conversations.</span></div>
   <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
   <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back to Knowledge Base</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Restart Day 4</button></div>
 </div>
@@ -389,6 +426,22 @@ td{color:var(--t2);background:var(--bg2)}tr:last-child td{border-bottom:none}tr:
 </div>
 
 <script>
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault()});
 document.addEventListener('copy',e=>e.preventDefault());

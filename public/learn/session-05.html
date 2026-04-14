@@ -143,10 +143,22 @@ tr:hover td{background:var(--bg3)}
 .foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
 @media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -173,6 +185,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Interactive Challenge</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -526,6 +543,57 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{en:'Mastering<br><span class="gr">ChatGPT &amp; Claude</span>',hi:'<span class="gr">ChatGPT &amp; Claude</span><br>में महारत',pa:'<span class="gr">ChatGPT &amp; Claude</span><br>ਵਿੱਚ ਮੁਹਾਰਤ'},
+  '.hero>p':{en:'Two AI giants, one session. Know them deeply, use them smartly \u2014 and never waste time on the wrong tool again.',hi:'दो AI दिग्गज, एक session। उन्हें गहराई से जानें, समझदारी से इस्तेमाल करें \u2014 और गलत tool पर कभी समय बर्बाद न करें।',pa:'ਦੋ AI ਦਿੱਗਜ, ਇੱਕ session। ਉਨ੍ਹਾਂ ਨੂੰ ਡੂੰਘਾਈ ਨਾਲ ਜਾਣੋ, ਸਮਝਦਾਰੀ ਨਾਲ ਵਰਤੋ \u2014 ਅਤੇ ਗਲਤ tool \'ਤੇ ਕਦੇ ਸਮਾਂ ਬਰਬਾਦ ਨਾ ਕਰੋ।'},
+  '.hero-btns .btn-glow':{en:'Start Learning \u2192',hi:'सीखना शुरू करें \u2192',pa:'ਸਿੱਖਣਾ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Take the Quiz',hi:'\u26A1 क्विज़ दें',pa:'\u26A1 ਕੁਇਜ਼ ਦਿਓ'},
+  '#s1 .sec-head h2':{en:'ChatGPT <span class="gr">Deep Dive</span>',hi:'ChatGPT <span class="gr">Deep Dive</span>',pa:'ChatGPT <span class="gr">Deep Dive</span>'},
+  '#s1 .sec-head>p':{en:'ChatGPT is the world\'s most popular AI tool. But most people use barely 10% of what it can do. Let\'s unlock the rest.',hi:'ChatGPT दुनिया का सबसे लोकप्रिय AI tool है। लेकिन ज़्यादातर लोग इसकी सिर्फ़ 10% capabilities इस्तेमाल करते हैं। बाकी unlock करते हैं।',pa:'ChatGPT ਦੁਨੀਆ ਦਾ ਸਭ ਤੋਂ ਮਸ਼ਹੂਰ AI tool ਹੈ। ਪਰ ਜ਼ਿਆਦਾਤਰ ਲੋਕ ਇਸ ਦੀ ਸਿਰਫ਼ 10% capabilities ਵਰਤਦੇ ਨੇ। ਬਾਕੀ unlock ਕਰੀਏ।'},
+  '#s1 .micro-win':{en:'You now know ChatGPT features that 90% of users have never touched.',hi:'अब आप ChatGPT की वो features जानते हैं जो 90% users ने कभी छुई नहीं।',pa:'ਹੁਣ ਤੁਸੀਂ ChatGPT ਦੀਆਂ ਉਹ features ਜਾਣਦੇ ਹੋ ਜੋ 90% users ਨੇ ਕਦੇ ਛੂਹੀਆਂ ਨਹੀਂ।'},
+  '#s1 .curiosity-hook':{en:'Next: Claude \u2014 the underdog that often beats ChatGPT at the most important tasks.',hi:'अगला: Claude \u2014 वो underdog जो अक्सर सबसे ज़रूरी tasks में ChatGPT को हरा देता है।',pa:'ਅਗਲਾ: Claude \u2014 ਉਹ underdog ਜੋ ਅਕਸਰ ਸਭ ਤੋਂ ਜ਼ਰੂਰੀ tasks ਵਿੱਚ ChatGPT ਨੂੰ ਹਰਾ ਦਿੰਦਾ।'},
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! You\'re building a real toolkit now.',hi:'\u2705 Section 1 ਪੂਰਾ! ਅਬ ਆਪ ਅਸਲੀ toolkit ਬना ਰਹੇ ਹੈ।',pa:'\u2705 Section 1 ਪੂਰਾ! ਹੁਣ ਤੁਸੀਂ ਅਸਲੀ toolkit ਬਣਾ ਰਹੇ ਹੋ।'},
+  '#s2 .sec-head h2':{en:'Claude <span class="gr">Deep Dive</span>',hi:'Claude <span class="gr">Deep Dive</span>',pa:'Claude <span class="gr">Deep Dive</span>'},
+  '#s2 .sec-head>p':{en:'Claude by Anthropic is the quiet achiever. Where ChatGPT excels at breadth, Claude dominates in depth \u2014 especially for long documents, nuanced writing, and careful analysis.',hi:'Anthropic का Claude शांत achiever है। जहाँ ChatGPT breadth में excel करता है, वहाँ Claude depth में dominate करता है \u2014 ख़ासकर लंबे documents, nuanced writing, और careful analysis में।',pa:'Anthropic ਦਾ Claude ਸ਼ਾਂਤ achiever ਹੈ। ਜਿੱਥੇ ChatGPT breadth ਵਿੱਚ excel ਕਰਦਾ, ਉੱਥੇ Claude depth ਵਿੱਚ dominate ਕਰਦਾ \u2014 ਖ਼ਾਸਕਰ ਲੰਬੇ documents, nuanced writing, ਅਤੇ careful analysis ਵਿੱਚ।'},
+  '#s2 .micro-win':{en:'You now know Claude\'s superpower \u2014 depth of understanding at scale.',hi:'अब आप Claude की superpower जानते हैं \u2014 बड़े पैमाने पर गहरी समझ।',pa:'ਹੁਣ ਤੁਸੀਂ Claude ਦੀ superpower ਜਾਣਦੇ ਹੋ \u2014 ਵੱਡੇ ਪੈਮਾਨੇ \'ਤੇ ਡੂੰਘੀ ਸਮਝ।'},
+  '#s2 .curiosity-hook':{en:'Next: The decision matrix \u2014 when to reach for ChatGPT vs Claude.',hi:'अगला: Decision matrix \u2014 कब ChatGPT और कब Claude इस्तेमाल करें।',pa:'ਅਗਲਾ: Decision matrix \u2014 ਕਦੋਂ ChatGPT ਅਤੇ ਕਦੋਂ Claude ਵਰਤਣਾ।'},
+  '#s3 .progress-marker':{en:'\uD83C\uDFAF Halfway there! This section will save you hours of wasted effort.',hi:'\uD83C\uDFAF ਅੱਧਾ ਰਸਤਾ! ਇਹ section ਤੁਹਾਡੇ ਘੰਟੇ ਬਚਾਏਗਾ।',pa:'\uD83C\uDFAF ਅੱਧਾ ਰਸਤਾ! ਇਹ section ਤੁਹਾਡੇ ਘੰਟੇ ਬਚਾਊ।'},
+  '#s3 .sec-head h2':{en:'ChatGPT vs Claude \u2014<br><span class="gr">When to Use What</span>',hi:'ChatGPT vs Claude \u2014<br><span class="gr">ਕਦੋਂ ਕੀ ਇਸ੍ਤੇਮਾਲ ਕਰੀਏ</span>',pa:'ChatGPT vs Claude \u2014<br><span class="gr">ਕਦੋਂ ਕੀ ਵਰਤੀਏ</span>'},
+  '#s3 .sec-head>p':{en:'The real skill isn\'t knowing how to use AI \u2014 it\'s knowing WHICH AI to use for WHICH task. This decision matrix makes it automatic.',hi:'असली skill AI इस्तेमाल करना जानना नहीं है \u2014 बल्कि यह जानना है कि किस task के लिए कौन सा AI इस्तेमाल करें। यह decision matrix इसे automatic बना देता है।',pa:'ਅਸਲੀ skill AI ਵਰਤਣਾ ਜਾਣਨਾ ਨਹੀਂ \u2014 ਸਗੋਂ ਇਹ ਜਾਣਨਾ ਕਿ ਕਿਸ task ਲਈ ਕਿਹੜਾ AI ਵਰਤਣਾ। ਇਹ decision matrix ਇਸ ਨੂੰ automatic ਬਣਾ ਦਿੰਦਾ।'},
+  '#s3 .identity-shift':{en:'You\'re no longer "using AI" \u2014 you\'re deploying the right AI for the right job. That\'s how professionals think.',hi:'अब आप सिर्फ़ "AI इस्तेमाल" नहीं कर रहे \u2014 आप सही काम के लिए सही AI deploy कर रहे हैं। Professionals ऐसे ही सोचते हैं।',pa:'ਹੁਣ ਤੁਸੀਂ ਸਿਰਫ਼ "AI ਵਰਤ" ਨਹੀਂ ਰਹੇ \u2014 ਤੁਸੀਂ ਸਹੀ ਕੰਮ ਲਈ ਸਹੀ AI deploy ਕਰ ਰਹੇ ਹੋ। Professionals ਇਸੇ ਤਰ੍ਹਾਂ ਸੋਚਦੇ ਨੇ।'},
+  '#s3 .curiosity-hook':{en:'Next: Put this to the test. Three real tasks, you decide which tool wins.',hi:'अगला: इसे test करें। तीन असली tasks, आप तय करें कौन सा tool जीतता है।',pa:'ਅਗਲਾ: ਇਸ ਨੂੰ test ਕਰੋ। ਤਿੰਨ ਅਸਲੀ tasks, ਤੁਸੀਂ ਤੈਅ ਕਰੋ ਕਿਹੜਾ tool ਜਿੱਤਦਾ।'},
+  '#s4 .progress-marker':{en:'\u26A1 65% done. This is the most interactive section \u2014 engage fully.',hi:'\u26A1 65% ਪੂਰਾ। ਇਹ ਸਭ ਤੋਂ interactive section ਹੈ \u2014 ਪੂਰੀ ਤਰ੍ਹਾਂ ਜੁੜੋ।',pa:'\u26A1 65% ਪੂਰਾ। ਇਹ ਸਭ ਤੋਂ interactive section ਹੈ \u2014 ਪੂਰੀ ਤਰ੍ਹਾਂ ਜੁੜੋ।'},
+  '#s4 .sec-head h2':{en:'Interactive <span class="gr">Tool Challenge</span>',hi:'Interactive <span class="gr">Tool Challenge</span>',pa:'Interactive <span class="gr">Tool Challenge</span>'},
+  '#s4 .sec-head>p':{en:'Three real tasks. For each one, read the scenario and pick: ChatGPT or Claude? Then reveal the answer with expert reasoning.',hi:'तीन असली tasks। हर एक में scenario पढ़ें और चुनें: ChatGPT या Claude? फिर expert reasoning के साथ answer reveal करें।',pa:'ਤਿੰਨ ਅਸਲੀ tasks। ਹਰ ਇੱਕ ਵਿੱਚ scenario ਪੜ੍ਹੋ ਅਤੇ ਚੁਣੋ: ChatGPT ਜਾਂ Claude? ਫਿਰ expert reasoning ਨਾਲ answer reveal ਕਰੋ।'},
+  '#s4 .micro-win':{en:'You can now make smarter tool decisions than most working professionals.',hi:'अब आप ज़्यादातर working professionals से बेहतर tool decisions ले सकते हैं।',pa:'ਹੁਣ ਤੁਸੀਂ ਜ਼ਿਆਦਾਤਰ working professionals ਤੋਂ ਵਧੀਆ tool decisions ਲੈ ਸਕਦੇ ਹੋ।'},
+  '#s4 .curiosity-hook':{en:'Next: Test everything you\'ve learned. 8 questions await.',hi:'अगला: जो कुछ सीखा उसे test करें। 8 सवाल इंतज़ार कर रहे हैं।',pa:'ਅਗਲਾ: ਜੋ ਕੁਝ ਸਿੱਖਿਆ ਉਸ ਨੂੰ test ਕਰੋ। 8 ਸਵਾਲ ਉਡੀਕ ਕਰ ਰਹੇ ਨੇ।'},
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost done! 8 questions to test your mastery.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! ਤੁਹਾਡੀ mastery test ਕਰਨ ਲਈ 8 ਸਵਾਲ।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! ਤੁਹਾਡੀ mastery test ਕਰਨ ਲਈ 8 ਸਵਾਲ।'},
+  '#s5 .sec-head h2':{en:'Quiz: <span class="gr">ChatGPT vs Claude</span>',hi:'Quiz: <span class="gr">ChatGPT vs Claude</span>',pa:'Quiz: <span class="gr">ChatGPT vs Claude</span>'},
+  '#s5 .micro-win':{en:'Knowledge reinforced is knowledge retained.',hi:'जो knowledge दोहराई जाए वो याद रहती है।',pa:'ਜੋ knowledge ਦੁਹਰਾਈ ਜਾਵੇ ਉਹ ਯਾਦ ਰਹਿੰਦੀ।'},
+  '#s5 .curiosity-hook':{en:'One more section \u2014 your homework and next steps.',hi:'एक और section \u2014 आपका होमवर्क और अगले कदम।',pa:'ਇੱਕ ਹੋਰ section \u2014 ਤੁਹਾਡਾ ਹੋਮਵਰਕ ਅਤੇ ਅਗਲੇ ਕਦਮ।'},
+  '#s6 .sec-head h2':{en:'Wrap-Up &amp; <span class="gr">Homework</span>',hi:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>',pa:'Wrap-Up &amp; <span class="gr">ਹੋਮਵਰਕ</span>'},
+  '#s6 .sec-head>p':{en:'You now know ChatGPT and Claude deeply. Here\'s how to keep building on this.',hi:'अब आप ChatGPT और Claude को गहराई से जानते हैं। इस पर आगे कैसे बढ़ना है यह रहा।',pa:'ਹੁਣ ਤੁਸੀਂ ChatGPT ਅਤੇ Claude ਨੂੰ ਡੂੰਘਾਈ ਨਾਲ ਜਾਣਦੇ ਹੋ। ਇਸ \'ਤੇ ਅੱਗੇ ਕਿਵੇਂ ਵਧਣਾ ਇਹ ਰਿਹਾ।'},
+  '#s6 .identity-shift':{en:'You now know how to deploy AI like a professional. The right tool. The right task. The right result.',hi:'अब आप जानते हैं कि professional की तरह AI कैसे deploy करना है। सही tool। सही task। सही result।',pa:'ਹੁਣ ਤੁਸੀਂ ਜਾਣਦੇ ਹੋ ਕਿ professional ਵਾਂਗ AI ਕਿਵੇਂ deploy ਕਰਨਾ। ਸਹੀ tool। ਸਹੀ task। ਸਹੀ result।'}
+};
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

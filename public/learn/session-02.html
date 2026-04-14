@@ -184,11 +184,24 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   .sec{padding:2rem 1rem 4rem}
 }
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
+<!-- Floating language switcher -->
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -215,6 +228,11 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Career Paths</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -562,6 +580,142 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  // ---- HERO ----
+  '.hero h1':{
+    en:'The AI<br><span class="gr">Mindset</span>',
+    hi:'AI<br><span class="gr">मानसिकता</span>',
+    pa:'AI<br><span class="gr">ਸੋਚ</span>'
+  },
+  '.hero>p':{
+    en:'How you think about AI matters more than which tool you use. Learn the 5 mindset shifts, understand what AI gets wrong, and build your ethical framework.',
+    hi:'AI के बारे में आप कैसे सोचते हैं — यह किसी भी टूल से ज़्यादा ज़रूरी है। 5 ज़रूरी सोच बदलाव सीखें, AI की गलतियाँ समझें, और अपना नैतिक ढाँचा बनाएं।',
+    pa:'AI ਬਾਰੇ ਤੁਸੀਂ ਕਿਵੇਂ ਸੋਚਦੇ ਹੋ — ਇਹ ਕਿਸੇ ਵੀ ਟੂਲ ਤੋਂ ਵੱਧ ਜ਼ਰੂਰੀ ਹੈ। 5 ਅਹਿਮ ਸੋਚ ਬਦਲਾਅ ਸਿੱਖੋ, AI ਦੀਆਂ ਗਲਤੀਆਂ ਸਮਝੋ, ਅਤੇ ਆਪਣਾ ਨੈਤਿਕ ਢਾਂਚਾ ਬਣਾਓ।'
+  },
+  '.hero-btns .btn-glow':{en:'Start Session \u2192',hi:'सेशन शुरू करें \u2192',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ \u2192'},
+  '.hero-btns .btn-ghost':{en:'\u26A1 Jump to Quiz',hi:'\u26A1 क्विज़ पर जाएं',pa:'\u26A1 ਕੁਇਜ਼ ਤੇ ਜਾਓ'},
+
+  // ---- S1: 5 MINDSET SHIFTS ----
+  '#s1 .sec-head h2':{
+    en:'5 Mindset Shifts for the <span class="gr">AI Era</span>',
+    hi:'<span class="gr">AI युग</span> के लिए 5 ज़रूरी सोच बदलाव',
+    pa:'<span class="gr">AI ਯੁੱਗ</span> ਲਈ 5 ਜ਼ਰੂਰੀ ਸੋਚ ਬਦਲਾਅ'
+  },
+  '#s1 .sec-head>p':{
+    en:'Most people fail with AI not because of the tools \u2014 but because of their thinking. These 5 shifts will change how you approach AI forever.',
+    hi:'ज़्यादातर लोग AI में इसलिए नहीं फेल होते कि टूल ख़राब हैं \u2014 बल्कि इसलिए कि उनकी सोच गलत है। ये 5 बदलाव AI के साथ आपका तरीका हमेशा के लिए बदल देंगे।',
+    pa:'ਜ਼ਿਆਦਾਤਰ ਲੋਕ AI ਵਿੱਚ ਇਸ ਲਈ ਫੇਲ ਨਹੀਂ ਹੁੰਦੇ ਕਿ ਟੂਲ ਮਾੜੇ ਨੇ \u2014 ਸਗੋਂ ਇਸ ਲਈ ਕਿ ਉਨ੍ਹਾਂ ਦੀ ਸੋਚ ਗਲਤ ਹੈ। ਇਹ 5 ਬਦਲਾਅ AI ਨਾਲ ਤੁਹਾਡਾ ਤਰੀਕਾ ਹਮੇਸ਼ਾ ਲਈ ਬਦਲ ਦੇਣਗੇ।'
+  },
+  '#s1 .call-body h4':{en:'The Pilot/Co-Pilot Analogy',hi:'पायलट/को-पायलट उदाहरण',pa:'ਪਾਇਲਟ/ਕੋ-ਪਾਇਲਟ ਉਦਾਹਰਨ'},
+  '#s1 .call-body p':{
+    en:'Think of yourself as the <strong>pilot</strong>. AI is your co-pilot. The co-pilot is incredibly capable, knowledgeable, and fast \u2014 but you are still in command. You decide the direction, make the key decisions, and take responsibility for the outcome. <strong>AI amplifies your judgment \u2014 it doesn\'t replace it.</strong>',
+    hi:'खुद को <strong>पायलट</strong> समझें। AI आपका को-पायलट है। को-पायलट बेहद काबिल, जानकार और तेज़ है \u2014 लेकिन कमान आपके हाथ में है। दिशा आप तय करते हैं, अहम फ़ैसले आप लेते हैं, और ज़िम्मेदारी भी आपकी है। <strong>AI आपकी सोच को बढ़ाता है \u2014 बदलता नहीं।</strong>',
+    pa:'ਆਪਣੇ ਆਪ ਨੂੰ <strong>ਪਾਇਲਟ</strong> ਸਮਝੋ। AI ਤੁਹਾਡਾ ਕੋ-ਪਾਇਲਟ ਹੈ। ਕੋ-ਪਾਇਲਟ ਬਹੁਤ ਕਾਬਲ, ਜਾਣਕਾਰ ਅਤੇ ਤੇਜ਼ ਹੈ \u2014 ਪਰ ਕਮਾਨ ਤੁਹਾਡੇ ਹੱਥ ਵਿੱਚ ਹੈ। ਦਿਸ਼ਾ ਤੁਸੀਂ ਤੈਅ ਕਰਦੇ ਹੋ, ਅਹਿਮ ਫ਼ੈਸਲੇ ਤੁਸੀਂ ਲੈਂਦੇ ਹੋ, ਅਤੇ ਜ਼ਿੰਮੇਵਾਰੀ ਵੀ ਤੁਹਾਡੀ ਹੈ। <strong>AI ਤੁਹਾਡੀ ਸੋਚ ਨੂੰ ਵਧਾਉਂਦਾ ਹੈ \u2014 ਬਦਲਦਾ ਨਹੀਂ।</strong>'
+  },
+  '#s1 .mindset-item:nth-child(1) h4':{en:'AI Amplifies YOUR Skills \u2014 It Doesn\'t Replace Them',hi:'AI आपकी Skills बढ़ाता है \u2014 Replace नहीं करता',pa:'AI ਤੁਹਾਡੀਆਂ Skills ਵਧਾਉਂਦਾ ਹੈ \u2014 Replace ਨਹੀਂ ਕਰਦਾ'},
+  '#s1 .mindset-item:nth-child(1) p':{
+    en:'A bad writer with AI produces bad content faster. A good writer with AI produces exceptional content faster. AI makes you 10x more productive \u2014 but it multiplies whatever skill level you already have. <strong>The higher your skill, the more valuable AI becomes in your hands.</strong>',
+    hi:'एक ख़राब लिखने वाला AI से और तेज़ी से ख़राब लिखता है। एक अच्छा लिखने वाला AI से और तेज़ी से शानदार लिखता है। AI आपको 10 गुना ज़्यादा productive बनाता है \u2014 लेकिन यह आपकी मौजूदा skill को ही multiply करता है। <strong>आपकी skill जितनी ज़्यादा, AI उतना ज़्यादा कीमती।</strong>',
+    pa:'ਇੱਕ ਮਾੜਾ ਲਿਖਣ ਵਾਲਾ AI ਨਾਲ ਹੋਰ ਤੇਜ਼ੀ ਨਾਲ ਮਾੜਾ ਲਿਖਦਾ। ਇੱਕ ਵਧੀਆ ਲਿਖਣ ਵਾਲਾ AI ਨਾਲ ਹੋਰ ਤੇਜ਼ੀ ਨਾਲ ਸ਼ਾਨਦਾਰ ਲਿਖਦਾ। AI ਤੁਹਾਨੂੰ 10 ਗੁਣਾ ਵੱਧ productive ਬਣਾਉਂਦਾ ਹੈ \u2014 ਪਰ ਇਹ ਤੁਹਾਡੀ ਮੌਜੂਦਾ skill ਨੂੰ ਹੀ multiply ਕਰਦਾ। <strong>ਤੁਹਾਡੀ skill ਜਿੰਨੀ ਵੱਧ, AI ਓਨਾ ਵੱਧ ਕੀਮਤੀ।</strong>'
+  },
+  '#s1 .mindset-item:nth-child(2) h4':{en:'Quality In = Quality Out (Garbage In, Garbage Out)',hi:'अच्छा इनपुट = अच्छा आउटपुट (कचरा डालोगे तो कचरा मिलेगा)',pa:'ਵਧੀਆ ਇਨਪੁੱਟ = ਵਧੀਆ ਆਉਟਪੁੱਟ (ਕੂੜਾ ਪਾਓਗੇ ਤਾਂ ਕੂੜਾ ਮਿਲੂ)'},
+  '#s1 .mindset-item:nth-child(2) p':{
+    en:'AI is only as good as the instructions you give it. Vague, lazy prompts produce average results. Clear, specific, context-rich prompts produce remarkable results. <strong>The skill gap in AI is mostly a prompting gap.</strong> This is why Sessions 3 and 4 exist.',
+    hi:'AI उतना ही अच्छा है जितने अच्छे instructions आप देते हैं। अधूरे, आलसी prompts से औसत नतीजे आते हैं। साफ़, specific, context वाले prompts से शानदार नतीजे आते हैं। <strong>AI में skill gap असल में prompting gap है।</strong> इसीलिए Session 3 और 4 बने हैं।',
+    pa:'AI ਓਨਾ ਹੀ ਵਧੀਆ ਹੈ ਜਿੰਨੇ ਵਧੀਆ instructions ਤੁਸੀਂ ਦਿੰਦੇ ਹੋ। ਅਧੂਰੇ, ਆਲਸੀ prompts ਨਾਲ ਔਸਤ ਨਤੀਜੇ ਆਉਂਦੇ ਨੇ। ਸਾਫ਼, specific, context ਵਾਲੇ prompts ਨਾਲ ਸ਼ਾਨਦਾਰ ਨਤੀਜੇ ਆਉਂਦੇ ਨੇ। <strong>AI ਵਿੱਚ skill gap ਅਸਲ ਵਿੱਚ prompting gap ਹੈ।</strong> ਇਸੇ ਲਈ Session 3 ਤੇ 4 ਬਣੇ ਨੇ।'
+  },
+  '#s1 .mindset-item:nth-child(3) h4':{en:'Always Verify AI Outputs \u2014 Never Trust Blindly',hi:'AI के आउटपुट हमेशा जाँचें \u2014 अंधा भरोसा न करें',pa:'AI ਦੇ ਆਉਟਪੁੱਟ ਹਮੇਸ਼ਾ ਜਾਂਚੋ \u2014 ਅੰਨ੍ਹਾ ਭਰੋਸਾ ਨਾ ਕਰੋ'},
+  '#s1 .mindset-item:nth-child(3) p':{
+    en:'AI can be confidently wrong. It can invent facts, misquote sources, and present fiction as truth with complete confidence. Before using any AI output for important work \u2014 verify it. Check facts. Cross-reference sources. Your reputation is on the line, not the AI\'s.',
+    hi:'AI बड़े आत्मविश्वास से गलत हो सकता है। यह तथ्य गढ़ सकता है, स्रोतों को गलत बता सकता है, और झूठ को सच की तरह पेश कर सकता है। किसी भी ज़रूरी काम में AI का आउटपुट इस्तेमाल करने से पहले \u2014 जाँच लें। तथ्य चेक करें। आपकी इज़्ज़त दाँव पर है, AI की नहीं।',
+    pa:'AI ਬੜੇ ਆਤਮਵਿਸ਼ਵਾਸ ਨਾਲ ਗਲਤ ਹੋ ਸਕਦਾ ਹੈ। ਇਹ ਤੱਥ ਘੜ ਸਕਦਾ, ਸਰੋਤਾਂ ਨੂੰ ਗਲਤ ਦੱਸ ਸਕਦਾ, ਅਤੇ ਝੂਠ ਨੂੰ ਸੱਚ ਵਾਂਗ ਪੇਸ਼ ਕਰ ਸਕਦਾ। ਕਿਸੇ ਵੀ ਜ਼ਰੂਰੀ ਕੰਮ ਵਿੱਚ AI ਦਾ ਆਉਟਪੁੱਟ ਵਰਤਣ ਤੋਂ ਪਹਿਲਾਂ \u2014 ਜਾਂਚ ਲਓ। ਤੱਥ ਚੈੱਕ ਕਰੋ। ਤੁਹਾਡੀ ਇੱਜ਼ਤ ਦਾਅ \'ਤੇ ਹੈ, AI ਦੀ ਨਹੀਂ।'
+  },
+  '#s1 .mindset-item:nth-child(4) h4':{en:'AI is a Tool for Everyone \u2014 Not Just Tech People',hi:'AI सबके लिए है \u2014 सिर्फ़ Tech वालों के लिए नहीं',pa:'AI ਸਭ ਲਈ ਹੈ \u2014 ਸਿਰਫ਼ Tech ਵਾਲਿਆਂ ਲਈ ਨਹੀਂ'},
+  '#s1 .mindset-item:nth-child(4) p':{
+    en:'Farmers in Punjab are using AI to predict crop prices. Shopkeepers in Kotkapura are using AI to write product descriptions. Doctors in Ludhiana are using AI to draft patient reports. <strong>If you can describe a task in words, AI can help you with it.</strong> No coding required.',
+    hi:'पंजाब के किसान AI से फसल के दाम अनुमान लगा रहे हैं। कोटकपूरा के दुकानदार AI से प्रोडक्ट विवरण लिख रहे हैं। लुधियाना के डॉक्टर AI से मरीज़ों की रिपोर्ट बना रहे हैं। <strong>अगर आप किसी काम को शब्दों में बता सकते हैं, तो AI उसमें मदद कर सकता है।</strong> कोडिंग की ज़रूरत नहीं।',
+    pa:'ਪੰਜਾਬ ਦੇ ਕਿਸਾਨ AI ਨਾਲ ਫ਼ਸਲ ਦੇ ਭਾਅ ਦਾ ਅੰਦਾਜ਼ਾ ਲਾ ਰਹੇ ਨੇ। ਕੋਟਕਪੂਰਾ ਦੇ ਦੁਕਾਨਦਾਰ AI ਨਾਲ ਪ੍ਰੋਡਕਟ ਦਾ ਵੇਰਵਾ ਲਿਖ ਰਹੇ ਨੇ। ਲੁਧਿਆਣਾ ਦੇ ਡਾਕਟਰ AI ਨਾਲ ਮਰੀਜ਼ਾਂ ਦੀ ਰਿਪੋਰਟ ਬਣਾ ਰਹੇ ਨੇ। <strong>ਜੇ ਤੁਸੀਂ ਕਿਸੇ ਕੰਮ ਨੂੰ ਸ਼ਬਦਾਂ ਵਿੱਚ ਦੱਸ ਸਕਦੇ ਹੋ, ਤਾਂ AI ਉਸ ਵਿੱਚ ਮਦਦ ਕਰ ਸਕਦਾ।</strong> ਕੋਡਿੰਗ ਦੀ ਲੋੜ ਨਹੀਂ।'
+  },
+  '#s1 .mindset-item:nth-child(5) h4':{en:'Treat AI Like a Brilliant Intern \u2014 Give It Context',hi:'AI को एक होशियार Intern समझें \u2014 Context दें',pa:'AI ਨੂੰ ਇੱਕ ਹੁਸ਼ਿਆਰ Intern ਸਮਝੋ \u2014 Context ਦਿਓ'},
+  '#s1 .mindset-item:nth-child(5) p':{
+    en:'If you hired the world\'s most knowledgeable intern but gave them zero context about your business, they\'d produce generic work. AI is the same. Tell it who you are, what you need, why you need it, and who it\'s for. Context is everything. <strong>The more you share, the better it serves you.</strong>',
+    hi:'अगर आप दुनिया के सबसे जानकार intern को hire करें लेकिन अपने बिज़नेस के बारे में कोई context न दें, तो वो generic काम करेगा। AI भी ऐसा ही है। बताएं कि आप कौन हैं, क्या चाहिए, क्यों चाहिए, और किसके लिए है। Context ही सब कुछ है। <strong>जितना ज़्यादा बताएंगे, उतना बेहतर काम मिलेगा।</strong>',
+    pa:'ਜੇ ਤੁਸੀਂ ਦੁਨੀਆ ਦੇ ਸਭ ਤੋਂ ਜਾਣਕਾਰ intern ਨੂੰ hire ਕਰੋ ਪਰ ਆਪਣੇ ਬਿਜ਼ਨਸ ਬਾਰੇ ਕੋਈ context ਨਾ ਦਿਓ, ਤਾਂ ਉਹ generic ਕੰਮ ਕਰੂ। AI ਵੀ ਇਸੇ ਤਰ੍ਹਾਂ ਹੈ। ਦੱਸੋ ਕਿ ਤੁਸੀਂ ਕੌਣ ਹੋ, ਕੀ ਚਾਹੀਦਾ, ਕਿਉਂ ਚਾਹੀਦਾ, ਅਤੇ ਕਿਸ ਲਈ ਹੈ। Context ਹੀ ਸਭ ਕੁਝ ਹੈ। <strong>ਜਿੰਨਾ ਵੱਧ ਦੱਸੋਗੇ, ਓਨਾ ਵਧੀਆ ਕੰਮ ਮਿਲੂ।</strong>'
+  },
+  '#s1 .micro-win':{en:'5 shifts that took years for AI experts to articulate \u2014 you absorbed them in 5 minutes.',hi:'5 बदलाव जिन्हें AI experts को समझाने में साल लगे \u2014 आपने 5 मिनट में सीख लिए।',pa:'5 ਬਦਲਾਅ ਜੋ AI experts ਨੂੰ ਸਮਝਾਉਣ ਵਿੱਚ ਸਾਲ ਲੱਗੇ \u2014 ਤੁਸੀਂ 5 ਮਿੰਟ ਵਿੱਚ ਸਿੱਖ ਲਏ।'},
+  '#s1 .micro-action h4':{en:'60-Second Reflection',hi:'60-ਸਕਿੰਟ ਚਿੰਤਨ',pa:'60-ਸਕਿੰਟ ਸੋਚ'},
+  '#s1 .micro-action p':{
+    en:'Think of one task in your daily life or work where AI could amplify your existing skills. Write it down. Now think of what context you\'d need to give AI to make it truly useful for that task. You\'ve just designed your first AI use case.',
+    hi:'अपनी रोज़मर्रा ज़िंदगी या काम का एक ऐसा काम सोचें जहाँ AI आपकी skills को बढ़ा सकता है। लिख लें। अब सोचें कि उस काम के लिए AI को कौन सा context देना होगा। बस \u2014 आपने अपना पहला AI use case डिज़ाइन कर लिया।',
+    pa:'ਆਪਣੀ ਰੋਜ਼ਾਨਾ ਜ਼ਿੰਦਗੀ ਜਾਂ ਕੰਮ ਦਾ ਇੱਕ ਅਜਿਹਾ ਕੰਮ ਸੋਚੋ ਜਿੱਥੇ AI ਤੁਹਾਡੀਆਂ skills ਵਧਾ ਸਕਦਾ। ਲਿਖ ਲਓ। ਹੁਣ ਸੋਚੋ ਕਿ ਉਸ ਕੰਮ ਲਈ AI ਨੂੰ ਕਿਹੜਾ context ਦੇਣਾ ਪਊ। ਬੱਸ \u2014 ਤੁਸੀਂ ਆਪਣਾ ਪਹਿਲਾ AI use case ਡਿਜ਼ਾਈਨ ਕਰ ਲਿਆ।'
+  },
+  '#s1 .identity-shift':{en:'You now approach AI the way professionals do \u2014 as a tool to amplify, not a magic solution to depend on.',hi:'अब आप AI को वैसे ही देखते हैं जैसे professionals देखते हैं \u2014 बढ़ाने का टूल, न कि जादू की छड़ी।',pa:'ਹੁਣ ਤੁਸੀਂ AI ਨੂੰ ਉਸੇ ਤਰ੍ਹਾਂ ਦੇਖਦੇ ਹੋ ਜਿਵੇਂ professionals ਦੇਖਦੇ ਨੇ \u2014 ਵਧਾਉਣ ਦਾ ਟੂਲ, ਨਾ ਕਿ ਜਾਦੂ ਦੀ ਛੜੀ।'},
+  '#s1 .curiosity-hook':{en:'Next: What happens when AI confidently tells you something completely false? It\'s more common than you think.',hi:'अगला: जब AI बड़े भरोसे से कुछ पूरी तरह गलत बोल दे? यह आपकी सोच से ज़्यादा आम है।',pa:'ਅਗਲਾ: ਜਦੋਂ AI ਪੂਰੇ ਭਰੋਸੇ ਨਾਲ ਕੁਝ ਪੂਰੀ ਤਰ੍ਹਾਂ ਗਲਤ ਬੋਲ ਦੇਵੇ? ਇਹ ਤੁਹਾਡੀ ਸੋਚ ਤੋਂ ਵੱਧ ਆਮ ਹੈ।'},
+
+  // ---- S2: WHAT AI GETS WRONG ----
+  '#s2 .progress-marker':{en:'\u2705 Section 1 done! You\'re 17% through this session.',hi:'\u2705 Section 1 ਪੂਰਾ! ਇਸ session ਦਾ 17% ਹੋ ਗਿਆ।',pa:'\u2705 Section 1 ਪੂਰਾ! ਇਸ ਸੈਸ਼ਨ ਦਾ 17% ਹੋ ਗਿਆ।'},
+  '#s2 .sec-head h2':{en:'What AI <span class="gr">Gets Wrong</span>',hi:'AI ਕੀ <span class="gr">गलत करता है</span>',pa:'AI ਕੀ <span class="gr">ਗਲਤ ਕਰਦਾ ਹੈ</span>'},
+  '#s2 .sec-head>p':{
+    en:'AI can be confidently, completely wrong. Understanding hallucinations and AI limitations protects you from embarrassing (and dangerous) mistakes.',
+    hi:'AI बड़े भरोसे से पूरी तरह गलत हो सकता है। Hallucinations और AI की सीमाएं समझना आपको शर्मनाक (और खतरनाक) गलतियों से बचाता है।',
+    pa:'AI ਪੂਰੇ ਭਰੋਸੇ ਨਾਲ ਪੂਰੀ ਤਰ੍ਹਾਂ ਗਲਤ ਹੋ ਸਕਦਾ। Hallucinations ਅਤੇ AI ਦੀਆਂ ਸੀਮਾਵਾਂ ਸਮਝਣਾ ਤੁਹਾਨੂੰ ਸ਼ਰਮਨਾਕ (ਅਤੇ ਖ਼ਤਰਨਾਕ) ਗਲਤੀਆਂ ਤੋਂ ਬਚਾਉਂਦਾ।'
+  },
+  '#s2 .micro-win':{en:'You can now catch AI mistakes that most professionals miss. This makes you a better AI user than 90% of people.',hi:'अब आप AI की वो गलतियाँ पकड़ सकते हैं जो ज़्यादातर professionals भी नहीं पकड़ पाते। यह आपको 90% लोगों से बेहतर AI user बनाता है।',pa:'ਹੁਣ ਤੁਸੀਂ AI ਦੀਆਂ ਉਹ ਗਲਤੀਆਂ ਫੜ ਸਕਦੇ ਹੋ ਜੋ ਜ਼ਿਆਦਾਤਰ professionals ਵੀ ਨਹੀਂ ਫੜਦੇ। ਇਹ ਤੁਹਾਨੂੰ 90% ਲੋਕਾਂ ਤੋਂ ਵਧੀਆ AI user ਬਣਾਉਂਦਾ।'},
+  '#s2 .curiosity-hook':{en:'Next: Privacy, deepfakes, and the ethical lines you should never cross with AI.',hi:'अगला: Privacy, deepfakes, और वो नैतिक सीमाएं जो AI के साथ कभी पार नहीं करनी चाहिए।',pa:'ਅਗਲਾ: Privacy, deepfakes, ਅਤੇ ਉਹ ਨੈਤਿਕ ਸੀਮਾਵਾਂ ਜੋ AI ਨਾਲ ਕਦੇ ਪਾਰ ਨਹੀਂ ਕਰਨੀਆਂ ਚਾਹੀਦੀਆਂ।'},
+
+  // ---- S3: AI ETHICS ----
+  '#s3 .progress-marker':{en:'\uD83D\uDCAA 33% done! This section could save you from a serious mistake one day.',hi:'\uD83D\uDCAA 33% ਪੂਰਾ! ਇਹ section किसी दिन आपको बड़ी गलती से बचा सकता है।',pa:'\uD83D\uDCAA 33% ਪੂਰਾ! ਇਹ section ਕਿਸੇ ਦਿਨ ਤੁਹਾਨੂੰ ਵੱਡੀ ਗਲਤੀ ਤੋਂ ਬਚਾ ਸਕਦਾ।'},
+  '#s3 .sec-head h2':{en:'AI Ethics &amp; <span class="gr">Responsible Use</span>',hi:'AI ਨੈਤਿਕਤਾ &amp; <span class="gr">ज़िम्मेदार उपयोग</span>',pa:'AI ਨੈਤਿਕਤਾ &amp; <span class="gr">ਜ਼ਿੰਮੇਵਾਰ ਵਰਤੋਂ</span>'},
+  '#s3 .sec-head>p':{en:'Power without responsibility is dangerous. Here\'s how to use AI in ways you\'ll never regret.',hi:'ज़िम्मेदारी के बिना ताकत खतरनाक है। AI को ऐसे इस्तेमाल करें कि कभी पछताना न पड़े।',pa:'ਜ਼ਿੰਮੇਵਾਰੀ ਤੋਂ ਬਿਨਾਂ ਤਾਕਤ ਖ਼ਤਰਨਾਕ ਹੈ। AI ਨੂੰ ਇਸ ਤਰ੍ਹਾਂ ਵਰਤੋ ਕਿ ਕਦੇ ਪਛਤਾਉਣਾ ਨਾ ਪਵੇ।'},
+  '#s3 .micro-win':{en:'You just became one of the few AI users who actually understands the ethical landscape. That\'s rare and valuable.',hi:'आप उन गिने-चुने AI users में से एक बन गए जो नैतिक परिदृश्य को सच में समझते हैं। यह दुर्लभ और कीमती है।',pa:'ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਗਿਣੇ-ਚੁਣੇ AI users ਵਿੱਚੋਂ ਇੱਕ ਬਣ ਗਏ ਜੋ ਨੈਤਿਕ ਸਥਿਤੀ ਨੂੰ ਸੱਚਮੁੱਚ ਸਮਝਦੇ ਨੇ। ਇਹ ਦੁਰਲੱਭ ਅਤੇ ਕੀਮਤੀ ਹੈ।'},
+  '#s3 .curiosity-hook':{en:'Next: What careers are opening up right now \u2014 and realistic salary ranges you can achieve.',hi:'अगला: अभी कौन से careers खुल रहे हैं \u2014 और यथार्थवादी salary ranges जो आप हासिल कर सकते हैं।',pa:'ਅਗਲਾ: ਹੁਣ ਕਿਹੜੇ careers ਖੁੱਲ੍ਹ ਰਹੇ ਨੇ \u2014 ਅਤੇ ਅਸਲੀ salary ranges ਜੋ ਤੁਸੀਂ ਹਾਸਲ ਕਰ ਸਕਦੇ ਹੋ।'},
+
+  // ---- S4: CAREER PATHS ----
+  '#s4 .progress-marker':{en:'\uD83D\uDD25 67% done! Career section \u2014 this is where it gets real.',hi:'\uD83D\uDD25 67% ਪੂਰਾ! Career section \u2014 यहाँ बात असली हो जाती है।',pa:'\uD83D\uDD25 67% ਪੂਰਾ! Career section \u2014 ਇੱਥੇ ਗੱਲ ਅਸਲੀ ਹੋ ਜਾਂਦੀ।'},
+  '#s4 .sec-head h2':{en:'AI Career <span class="gr">Opportunities</span>',hi:'AI Career <span class="gr">ਮੌਕੇ</span>',pa:'AI Career <span class="gr">ਮੌਕੇ</span>'},
+  '#s4 .sec-head>p':{en:'6 real career paths opening up right now \u2014 with realistic salary ranges and no coding required for most of them.',hi:'6 असली career paths जो अभी खुल रहे हैं \u2014 यथार्थवादी salary ranges के साथ और ज़्यादातर में coding की ज़रूरत नहीं।',pa:'6 ਅਸਲੀ career paths ਜੋ ਹੁਣੇ ਖੁੱਲ੍ਹ ਰਹੇ ਨੇ \u2014 ਅਸਲੀ salary ranges ਨਾਲ ਅਤੇ ਜ਼ਿਆਦਾਤਰ ਵਿੱਚ coding ਦੀ ਲੋੜ ਨਹੀਂ।'},
+  '#s4 .emotional-hook p':{
+    en:'<strong>The real opportunity isn\'t in Bangalore or Mumbai.</strong> It\'s in Kotkapura, Faridkot, Moga, and Bathinda. These cities have businesses that need AI skills, students who need AI training, and shops that could benefit from AI marketing. <strong>And there\'s almost nobody there providing these services yet. That\'s you.</strong>',
+    hi:'<strong>असली मौका Bangalore या Mumbai में नहीं है।</strong> यह Kotkapura, Faridkot, Moga और Bathinda में है। इन शहरों में ऐसे businesses हैं जिन्हें AI skills चाहिए, ऐसे students हैं जिन्हें AI training चाहिए, और ऐसी दुकानें हैं जो AI marketing से फायदा उठा सकती हैं। <strong>और अभी वहाँ ये services देने वाला लगभग कोई नहीं है। वो आप हो।</strong>',
+    pa:'<strong>ਅਸਲੀ ਮੌਕਾ Bangalore ਜਾਂ Mumbai ਵਿੱਚ ਨਹੀਂ।</strong> ਇਹ ਕੋਟਕਪੂਰਾ, ਫ਼ਰੀਦਕੋਟ, ਮੋਗਾ ਅਤੇ ਬਠਿੰਡਾ ਵਿੱਚ ਹੈ। ਇਨ੍ਹਾਂ ਸ਼ਹਿਰਾਂ ਵਿੱਚ ਅਜਿਹੇ businesses ਨੇ ਜਿਨ੍ਹਾਂ ਨੂੰ AI skills ਚਾਹੀਦੀਆਂ, ਅਜਿਹੇ students ਨੇ ਜਿਨ੍ਹਾਂ ਨੂੰ AI training ਚਾਹੀਦੀ, ਅਤੇ ਅਜਿਹੀਆਂ ਦੁਕਾਨਾਂ ਨੇ ਜੋ AI marketing ਤੋਂ ਫ਼ਾਇਦਾ ਲੈ ਸਕਦੀਆਂ। <strong>ਅਤੇ ਅਜੇ ਉੱਥੇ ਇਹ services ਦੇਣ ਵਾਲਾ ਲਗਭਗ ਕੋਈ ਨਹੀਂ। ਉਹ ਤੁਸੀਂ ਹੋ।</strong>'
+  },
+  '#s4 .micro-win':{en:'You just learned more about AI career paths than most career counsellors know right now.',hi:'आपने अभी AI career paths के बारे में उतना सीख लिया जितना ज़्यादातर career counsellors अभी नहीं जानते।',pa:'ਤੁਸੀਂ ਹੁਣੇ AI career paths ਬਾਰੇ ਓਨਾ ਸਿੱਖ ਲਿਆ ਜਿੰਨਾ ਜ਼ਿਆਦਾਤਰ career counsellors ਅਜੇ ਨਹੀਂ ਜਾਣਦੇ।'},
+  '#s4 .identity-shift':{en:'You\'re not just learning a skill. You\'re positioning yourself for careers that didn\'t exist 3 years ago and pay better than most traditional options.',hi:'आप सिर्फ़ एक skill नहीं सीख रहे। आप खुद को ऐसे careers के लिए तैयार कर रहे हैं जो 3 साल पहले थे ही नहीं और ज़्यादातर traditional options से बेहतर pay करते हैं।',pa:'ਤੁਸੀਂ ਸਿਰਫ਼ ਇੱਕ skill ਨਹੀਂ ਸਿੱਖ ਰਹੇ। ਤੁਸੀਂ ਆਪਣੇ ਆਪ ਨੂੰ ਅਜਿਹੇ careers ਲਈ ਤਿਆਰ ਕਰ ਰਹੇ ਹੋ ਜੋ 3 ਸਾਲ ਪਹਿਲਾਂ ਸਨ ਹੀ ਨਹੀਂ ਅਤੇ ਜ਼ਿਆਦਾਤਰ traditional options ਤੋਂ ਵਧੀਆ pay ਕਰਦੇ ਨੇ।'},
+  '#s4 .curiosity-hook':{en:'Next: 8 questions to test everything from today\'s session.',hi:'अगला: आज के session से सब कुछ test करने के लिए 8 सवाल।',pa:'ਅਗਲਾ: ਅੱਜ ਦੇ session ਤੋਂ ਸਭ ਕੁਝ test ਕਰਨ ਲਈ 8 ਸਵਾਲ।'},
+
+  // ---- S5: QUIZ ----
+  '#s5 .progress-marker':{en:'\uD83E\uDDE0 Almost done! 8 questions \u2014 let\'s find out what stuck.',hi:'\uD83E\uDDE0 ਲਗभग ਪੂਰਾ! 8 सवाल \u2014 देखते हैं क्या याद रहा।',pa:'\uD83E\uDDE0 ਲਗਭਗ ਪੂਰਾ! 8 ਸਵਾਲ \u2014 ਵੇਖਦੇ ਆਂ ਕੀ ਯਾਦ ਰਿਹਾ।'},
+  '#s5 .sec-head h2':{en:'Test Your <span class="gr">Understanding</span>',hi:'अपनी <span class="gr">समझ</span> जाँचें',pa:'ਆਪਣੀ <span class="gr">ਸਮਝ</span> ਜਾਂਚੋ'},
+  '#s5 .sec-head>p':{en:'8 questions on mindset, hallucinations, ethics, and careers. Instant feedback after each one.',hi:'मानसिकता, hallucinations, नैतिकता और careers पर 8 सवाल। हर एक के बाद तुरंत feedback।',pa:'ਸੋਚ, hallucinations, ਨੈਤਿਕਤਾ ਅਤੇ careers \'ਤੇ 8 ਸਵਾਲ। ਹਰ ਇੱਕ ਤੋਂ ਬਾਅਦ ਤੁਰੰਤ feedback।'},
+  '#s5 .micro-win':{en:'You completed the quiz. Every question sharpened your understanding.',hi:'आपने quiz पूरा कर लिया। हर सवाल ने आपकी समझ और पक्की की।',pa:'ਤੁਸੀਂ quiz ਪੂਰਾ ਕਰ ਲਿਆ। ਹਰ ਸਵਾਲ ਨੇ ਤੁਹਾਡੀ ਸਮਝ ਹੋਰ ਪੱਕੀ ਕੀਤੀ।'},
+  '#s5 .curiosity-hook':{en:'Next: Homework, key takeaways, and a preview of Session 3.',hi:'अगला: होमवर्क, मुख्य बातें, और Session 3 की झलक।',pa:'ਅਗਲਾ: ਹੋਮਵਰਕ, ਮੁੱਖ ਗੱਲਾਂ, ਅਤੇ Session 3 ਦੀ ਝਲਕ।'},
+
+  // ---- S6: WRAP-UP ----
+  '#s6 .sec-head h2':{en:'Session 2 <span class="gr">Complete!</span>',hi:'Session 2 <span class="gr">ਪੂਰਾ!</span>',pa:'Session 2 <span class="gr">ਪੂਰਾ!</span>'},
+  '#s6 .sec-head>p':{en:'The AI Mindset is now yours. Here\'s your homework and a preview of Session 3.',hi:'AI Mindset अब आपकी है। यहाँ आपका होमवर्क और Session 3 की झलक है।',pa:'AI Mindset ਹੁਣ ਤੁਹਾਡੀ ਹੈ। ਇੱਥੇ ਤੁਹਾਡਾ ਹੋਮਵਰਕ ਅਤੇ Session 3 ਦੀ ਝਲਕ ਹੈ।'},
+  '#s6 .micro-action h4':{en:'Your Homework Before Session 3',hi:'Session 3 से पहले आपका होमवर्क',pa:'Session 3 ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡਾ ਹੋਮਵਰਕ'},
+  '#s6 .identity-shift':{en:'You now think about AI the way experts do \u2014 with a clear framework, ethical boundaries, and real career awareness. Session 3 takes you into actual skill-building.',hi:'अब आप AI के बारे में वैसे ही सोचते हैं जैसे experts सोचते हैं \u2014 एक स्पष्ट framework, नैतिक सीमाओं और असली career awareness के साथ। Session 3 में असली skill-building शुरू होगी।',pa:'ਹੁਣ ਤੁਸੀਂ AI ਬਾਰੇ ਉਸੇ ਤਰ੍ਹਾਂ ਸੋਚਦੇ ਹੋ ਜਿਵੇਂ experts ਸੋਚਦੇ ਨੇ \u2014 ਇੱਕ ਸਾਫ਼ framework, ਨੈਤਿਕ ਸੀਮਾਵਾਂ ਅਤੇ ਅਸਲੀ career awareness ਨਾਲ। Session 3 ਵਿੱਚ ਅਸਲੀ skill-building ਸ਼ੁਰੂ ਹੋਵੇਗੀ।'}
+};
+
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('tarahut-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){els.forEach((el,i)=>{if(val[i]&&val[i][lang])el.innerHTML=val[i][lang]});}
+    else{els.forEach(el=>{if(val[lang])el.innerHTML=val[lang]});}
+  }
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">© 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

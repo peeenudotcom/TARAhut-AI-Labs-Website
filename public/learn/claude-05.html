@@ -171,24 +171,61 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   .sec{padding:2rem 1rem 4rem}
 }
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
 <canvas id="particleCanvas"></canvas>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
   <div class="hero-chip"><span class="live"></span>Day 05 &middot; Master Claude in 15 Days &middot; 2026</div>
-  <h1>Claude <span class="gr">Artifacts</span></h1>
+  <h1>
+    <span data-lang-en>Claude <span class="gr">Artifacts</span></span>
+    <span data-lang-hi style="display:none">Claude <span class="gr">Artifacts</span></span>
+    <span data-lang-pa style="display:none">Claude <span class="gr">Artifacts</span></span>
+  </h1>
   <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
-  <p>Build interactive HTML pages, working calculators, data dashboards, and complete documents &mdash; all inside Claude, without writing a single line of code yourself.</p>
+  <div data-lang-en><p>Build interactive HTML pages, working calculators, data dashboards, and complete documents &mdash; all inside Claude, without writing a single line of code yourself.</p></div>
+  <div data-lang-hi style="display:none"><p>इंटरैक्टिव HTML पेज, काम करने वाले कैलकुलेटर, डेटा डैशबोर्ड, और पूरे डॉक्यूमेंट बनाएं &mdash; सब Claude के अंदर, बिना एक भी लाइन कोड लिखे।</p></div>
+  <div data-lang-pa style="display:none"><p>ਇੰਟਰੈਕਟਿਵ HTML ਪੇਜ, ਕੰਮ ਕਰਨ ਵਾਲੇ ਕੈਲਕੂਲੇਟਰ, ਡੇਟਾ ਡੈਸ਼ਬੋਰਡ, ਅਤੇ ਪੂਰੇ ਡੌਕੂਮੈਂਟ ਬਣਾਓ &mdash; ਸਭ Claude ਦੇ ਅੰਦਰ, ਬਿਨਾਂ ਇੱਕ ਵੀ ਲਾਈਨ ਕੋਡ ਲਿਖੇ।</p></div>
   <div class="hero-btns">
-    <button class="btn btn-glow" onclick="startLearning()">Start Day 5 &rarr;</button>
-    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button>
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Day 5 &rarr;</span>
+      <span data-lang-hi style="display:none">दिन 5 शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਦਿਨ 5 ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889;
+      <span data-lang-en>Jump to Quiz</span>
+      <span data-lang-hi style="display:none">क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
   </div>
 </section>
 
@@ -209,7 +246,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec on" id="s1">
   <div class="sec-head">
     <div class="over">Section 01</div>
-    <h2>What Are <span class="gr">Artifacts</span>?</h2>
+    <h2><span data-lang-en>What Are <span class="gr">Artifacts</span>?</span><span data-lang-hi style="display:none"><span class="gr">Artifacts</span> क्या हैं?</span><span data-lang-pa style="display:none"><span class="gr">Artifacts</span> ਕੀ ਹਨ?</span></h2>
     <p>Artifacts are Claude's ability to create standalone, interactive content that appears in a dedicated preview panel. Think of them as Claude's creative workspace.</p>
   </div>
 
@@ -249,7 +286,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#9989; Section 1 complete! Now let's build some Artifacts.</div>
   <div class="sec-head">
     <div class="over">Section 02</div>
-    <h2>3 Creation <span class="gr">Demos</span></h2>
+    <h2><span data-lang-en>3 Creation <span class="gr">Demos</span></span><span data-lang-hi style="display:none">3 बनाने के <span class="gr">डेमो</span></span><span data-lang-pa style="display:none">3 ਬਣਾਉਣ ਦੇ <span class="gr">ਡੈਮੋ</span></span></h2>
     <p>Three complete Artifact prompts: a business card, an expense calculator, and a data dashboard. Copy each one into Claude and watch the magic happen.</p>
   </div>
 
@@ -296,7 +333,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128170; You're 33% through. Now learn the secret to perfect Artifacts: iteration.</div>
   <div class="sec-head">
     <div class="over">Section 03</div>
-    <h2>Iteration &amp; <span class="gr">Refinement</span></h2>
+    <h2><span data-lang-en>Iteration &amp; <span class="gr">Refinement</span></span><span data-lang-hi style="display:none">इटरेशन और <span class="gr">रिफ़ाइनमेंट</span></span><span data-lang-pa style="display:none">ਇਟਰੇਸ਼ਨ ਅਤੇ <span class="gr">ਰਿਫਾਈਨਮੈਂਟ</span></span></h2>
     <p>The first version of an Artifact is never the final version. The real magic happens in iteration &mdash; refining through conversation.</p>
   </div>
 
@@ -338,7 +375,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#128293; 67% done! Time to look back at everything you've learned this week.</div>
   <div class="sec-head">
     <div class="over">Section 04</div>
-    <h2>Week 1 <span class="gr">Retrospective</span></h2>
+    <h2><span data-lang-en>Week 1 <span class="gr">Retrospective</span></span><span data-lang-hi style="display:none">हफ़्ता 1 <span class="gr">रिट्रोस्पेक्टिव</span></span><span data-lang-pa style="display:none">ਹਫ਼ਤਾ 1 <span class="gr">ਰਿਟ੍ਰੋਸਪੈਕਟਿਵ</span></span></h2>
     <p>Five days of intensive Claude training. Let's consolidate what you've learned and prepare for Week 2.</p>
   </div>
 
@@ -399,7 +436,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
   <div class="progress-marker">&#129504; Final quiz of Week 1! Show what you've mastered.</div>
   <div class="sec-head">
     <div class="over">Section 05</div>
-    <h2>Test Your <span class="gr">Artifacts &amp; Week 1 Knowledge</span></h2>
+    <h2><span data-lang-en>Test Your <span class="gr">Artifacts &amp; Week 1 Knowledge</span></span><span data-lang-hi style="display:none">अपना <span class="gr">Artifacts और हफ़्ता 1 ज्ञान</span> परखें</span><span data-lang-pa style="display:none">ਆਪਣਾ <span class="gr">Artifacts ਅਤੇ ਹਫ਼ਤਾ 1 ਗਿਆਨ</span> ਪਰਖੋ</span></h2>
     <p>8 questions from a pool of 20 covering Artifacts and Week 1 review.</p>
   </div>
   <div class="quiz-box" id="quizBox"></div>
@@ -413,7 +450,7 @@ body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-se
 <div class="sec" id="s6">
   <div class="sec-head">
     <div class="over">Section 06</div>
-    <h2>Day 5 &amp; Week 1 <span class="gr">Complete!</span></h2>
+    <h2><span data-lang-en>Day 5 &amp; Week 1 <span class="gr">Complete!</span></span><span data-lang-hi style="display:none">दिन 5 और हफ़्ता 1 <span class="gr">पूरा!</span></span><span data-lang-pa style="display:none">ਦਿਨ 5 ਅਤੇ ਹਫ਼ਤਾ 1 <span class="gr">ਪੂਰਾ!</span></span></h2>
     <p>You've finished the foundation week. Here's your homework and what's coming in Week 2.</p>
   </div>
 
@@ -558,6 +595,22 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ()}
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
 <div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>

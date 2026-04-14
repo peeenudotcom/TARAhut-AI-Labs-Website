@@ -149,18 +149,43 @@
 
   .footer { background:var(--card);border-top:1px solid var(--border);padding:32px;text-align:center;position:relative;z-index:1;margin-top:20px; }
   .footer p { color:var(--muted);font-size:13px; }
+
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid rgba(30,30,58,.8);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace,'Courier New',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:#55556e;background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:#eeeef6}
+.lang-btn.active{background:#059669;color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
 <div id="particles"></div>
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिं</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰ</button>
+</div>
+
 
 <!-- GRADUATION HERO -->
 <div class="hero">
   <span class="hero-stars">🌟⭐🌟⭐🌟⭐🌟</span>
   <div class="hero-badge">🎓 TARAhut AI Labs · GRADUATION DAY</div>
-  <h1>Session 12: Showcase Day! 🎓🎉</h1>
-  <p>This is YOUR moment. You've worked so hard. Today you stand up, shine bright, and show the world what you've created! 🌍✨</p>
+  <h1>
+    <span data-lang-en>Session 12: Showcase Day! 🎓🎉</span>
+    <span data-lang-hi style="display:none">Session 12: Showcase Day! 🎓🎉</span>
+    <span data-lang-pa style="display:none">Session 12: Showcase Day! 🎓🎉</span>
+  </h1>
+  <div data-lang-en><p>This is YOUR moment. You've worked so hard. Today you stand up, shine bright, and show the world what you've created! 🌍✨</p></div><div data-lang-hi style="display:none"><p>यह तुम्हारा moment है। तुमने बहुत मेहनत की। आज खड़े हो, चमको, और दुनिया को दिखाओ क्या बनाया! 🌍✨</p></div><div data-lang-pa style="display:none"><p>ਇਹ ਤੁਹਾਡਾ moment ਹੈ। ਤੁਸੀਂ ਬਹੁਤ ਮਿਹਨਤ ਕੀਤੀ। ਅੱਜ ਖੜ੍ਹੇ ਹੋ, ਚਮਕੋ, ਅਤੇ ਦੁਨੀਆ ਨੂੰ ਦਿਖਾਓ ਕੀ ਬਣਾਇਆ! 🌍✨</p></div>
   <div class="hero-pills">
     <span class="hero-pill">🎓 AI Explorer Graduation</span>
     <span class="hero-pill">🏆 All Sessions Complete</span>
@@ -671,6 +696,22 @@ function restartQuiz(){
   document.getElementById('q0').classList.add('active');
   document.getElementById('qd0').className='q-dot current';
 }
+
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  var sel=document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]');if(sel)sel.classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(function(el){
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){var saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
 </script>
 </body>
 </html>
