@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Day 7: Canva AI Design Day 1 — Social Media Graphics — AI Hustler 45 · TARAhut AI Labs</title><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}@media print{body{display:none!important}}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p,.hero>div>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px)}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-arrow{font-size:1.2rem;color:var(--c1);opacity:.5}.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{text-align:center;padding:1.5rem 1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2)}.vi-icon{font-size:2rem;display:block;margin-bottom:.5rem}.vi-label{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem}.vi-desc{font-size:.72rem;color:var(--t3);margin-top:.2rem}.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}.vcompare-card{padding:1.75rem;border-radius:var(--r);border:1px solid var(--bd)}.vcompare-card.bad{background:rgba(255,61,139,.03);border-color:rgba(255,61,139,.15)}.vcompare-card.good{background:rgba(52,211,153,.03);border-color:rgba(52,211,153,.15)}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.75rem}.vcompare-card.bad h4{color:var(--c3)}.vcompare-card.good h4{color:var(--c5)}.vcompare-card p,.vcompare-card li{font-size:.85rem;color:var(--t2);line-height:1.7}.vcompare-card ul{padding-left:1rem;margin-top:.5rem}.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.25rem;margin:2rem 0}.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;text-align:center;transition:all .4s}.tool-card:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.25)}.tool-card .tc-icon{font-size:2.5rem;margin-bottom:.75rem}.tool-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}.tool-card p{font-size:.8rem;color:var(--t2)}.lang-toggle{display:inline-flex;gap:4px;background:var(--bg3);padding:4px;border-radius:99px;border:1px solid var(--bd);margin-bottom:1rem}.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:all .3s;letter-spacing:1px}.lang-btn.active{background:var(--brand);color:#fff}.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-left{opacity:0;transform:translateX(-30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-right{opacity:0;transform:translateX(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-scale{opacity:0;transform:scale(.92);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-fade{opacity:0;transition:opacity .7s ease}.reveal.visible,.reveal-left.visible,.reveal-right.visible,.reveal-scale.visible,.reveal-fade.visible{opacity:1;transform:none}.stagger .reveal:nth-child(1),.stagger .reveal-left:nth-child(1),.stagger .reveal-right:nth-child(1){transition-delay:.05s}.stagger .reveal:nth-child(2),.stagger .reveal-left:nth-child(2),.stagger .reveal-right:nth-child(2){transition-delay:.12s}.stagger .reveal:nth-child(3),.stagger .reveal-left:nth-child(3),.stagger .reveal-right:nth-child(3){transition-delay:.19s}.stagger .reveal:nth-child(4),.stagger .reveal-left:nth-child(4){transition-delay:.26s}.stagger .reveal:nth-child(5){transition-delay:.33s}.stagger .reveal:nth-child(6){transition-delay:.4s}@media(max-width:768px){.vcompare{grid-template-columns:1fr}.hero h1{font-size:clamp(1.8rem,8vw,3rem)}.cgrid{grid-template-columns:1fr}.tool-grid{grid-template-columns:1fr 1fr}.vigrid{grid-template-columns:repeat(3,1fr)}}@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.vigrid{grid-template-columns:repeat(2,1fr)}}</style>
+</head><body>
+<canvas id="particleCanvas"></canvas>
+<div class="progress-bar" id="progBar"></div>
+<div id="progText" style="display:none;position:fixed;top:6px;right:14px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--brand);z-index:10000"></div>
+
+<div class="hero">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span> Day 07 &middot; AI Hustler 45 &middot; 2026</div>
+  <div class="hero-brand">TARAhut AI Labs</div>
+  <h1 data-lang-en>Canva AI <span class="gr">Design Day 1</span></h1>
+  <h1 data-lang-hi style="display:none">Canva AI <span class="gr">डिज़ाइन दिन 1</span></h1>
+  <h1 data-lang-pa style="display:none">Canva AI <span class="gr">ਡਿਜ਼ਾਈਨ ਦਿਨ 1</span></h1>
+  <div>
+    <p data-lang-en>Social media graphics, Instagram posts, brand kits for local businesses. Text + Design = Complete Package. Today you become a visual content creator.</p>
+    <p data-lang-hi style="display:none">Social media graphics, Instagram posts, local businesses ke liye brand kits. Text + Design = Complete Package. Aaj se tum visual content creator ho.</p>
+    <p data-lang-pa style="display:none">Social media graphics, Instagram posts, local businesses layi brand kits. Text + Design = Complete Package. Ajj toh tusi visual content creator ho.</p>
+  </div>
+  <div style="margin-bottom:1rem">
+    <div class="lang-toggle"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">HI</button><button class="lang-btn" onclick="setLang('pa')">PA</button></div>
+  </div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 7 &rarr;</button>
+    <a href="hustler-06.html" class="btn btn-ghost">&larr; Day 6</a>
+  </div>
+</div>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Day 07</span>
+    <button class="nav-btn" data-s="s1"><span class="nn">01</span> Canva Setup</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span> Instagram Posts</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span> Brand Kit</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span> Story Templates</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span> Design Sprint</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span> Checklist</button>
+    <button class="nav-btn" data-s="s7"><span class="nn">07</span> Quiz</button>
+    <button class="nav-btn" data-s="s8"><span class="nn">08</span> Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- ===== SECTION 1: Canva Setup & AI Overview ===== -->
+<div class="sec" id="s1">
+  <div class="progress-marker">&#128293; Day 7 begins! Visuals are about to change everything.</div>
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>Canva AI <span class="gr">Setup & Overview</span></h2>
+    <h2 data-lang-hi style="display:none">Canva AI <span class="gr">सेटअप और परिचय</span></h2>
+    <h2 data-lang-pa style="display:none">Canva AI <span class="gr">ਸੈੱਟਅਪ ਅਤੇ ਜਾਣ-ਪਛਾਣ</span></h2>
+    <p>Canva is the #1 design tool for hustlers. No Photoshop skills needed. AI does the heavy lifting. You bring the creativity and client knowledge.</p>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why Canva for Hustlers?</h4><p>Photoshop = months to learn. Canva = minutes. With AI features like Magic Design, Magic Write, and Background Remover, you can create <strong>professional-grade visuals in under 5 minutes</strong>. That's the hustle advantage. Speed + quality = money.</p></div></div>
+
+  <div class="emotional-hook">"<strong>6 din se text content bana rahe the. Ab visuals add hoga.</strong> Client ko text dena = half service. Text + Design dena = full package. Full package = double the price. Simple math."</div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Canva AI Design Workflow</div>
+    <div class="vflow-row">
+      <div class="vflow-node"><span class="vn-icon">&#128173;</span><span class="vn-label">Brief</span><span class="vn-sub">Client requirements</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#127912;</span><span class="vn-label">Template</span><span class="vn-sub">Pick from Canva</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#129302;</span><span class="vn-label">AI Magic</span><span class="vn-sub">Auto-enhance</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#9999;&#65039;</span><span class="vn-label">Customize</span><span class="vn-sub">Brand colors/fonts</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#128640;</span><span class="vn-label">Export</span><span class="vn-sub">PNG/JPG/PDF</span></div>
+    </div>
+  </div>
+
+  <div class="micro-action"><h4>Action: Set Up Your Canva Account</h4>
+    <ul>
+      <li><strong>Go to canva.com</strong> and sign up with Google (fastest method)</li>
+      <li><strong>Choose "Small Business"</strong> when asked what you'll use Canva for</li>
+      <li><strong>Explore the dashboard:</strong> Templates, Uploads, Brand Kit, Apps</li>
+      <li><strong>Find AI features:</strong> Magic Design (homepage), Magic Write (in editor), Background Remover (photo edit)</li>
+      <li><strong>Canva Free vs Pro:</strong> Free is enough for today. Pro unlocks Magic Resize, Brand Kit, premium templates (INR 500/month)</li>
+    </ul>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd"><span class="crd-icon">&#129302;</span><span class="tag tag-1">AI Feature</span><h3>Magic Design</h3><p>Type what you want, Canva AI generates complete designs. Instagram posts, stories, presentations &mdash; all from a text description. Game changer for speed.</p></div>
+    <div class="crd"><span class="crd-icon">&#9999;&#65039;</span><span class="tag tag-2">AI Feature</span><h3>Magic Write</h3><p>AI-powered text generation right inside Canva. Write headlines, taglines, descriptions without leaving the design editor. Content + design in one place.</p></div>
+    <div class="crd"><span class="crd-icon">&#128444;&#65039;</span><span class="tag tag-3">AI Feature</span><h3>Background Remover</h3><p>One click removes backgrounds from product photos. Essential for clean, professional designs. No more messy product images from clients.</p></div>
+    <div class="crd"><span class="crd-icon">&#127912;</span><span class="tag tag-4">AI Feature</span><h3>Magic Resize</h3><p>Design once, resize for every platform instantly. Instagram square to story to Facebook cover &mdash; one click. Saves hours of manual resizing (Pro feature).</p></div>
+    <div class="crd"><span class="crd-icon">&#128396;</span><span class="tag tag-5">AI Feature</span><h3>Magic Edit</h3><p>Select any part of an image and describe what you want changed. AI replaces it. Add elements, change scenes, modify details without Photoshop skills.</p></div>
+    <div class="crd"><span class="crd-icon">&#128172;</span><span class="tag tag-brand">AI Feature</span><h3>Magic Animate</h3><p>Turn static designs into animated posts with one click. Animated content gets 2-3x more engagement on Instagram. Free engagement boost.</p></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128176;</div><div class="call-body"><h4>The Money Math: Text-Only vs Text+Design</h4><p>Text-only freelancer: INR 3,000-5,000/month per client.<br>Text + Design freelancer: <strong>INR 8,000-15,000/month per client.</strong><br>Same client, 3x the price. Why? Because clients don't want to hire two people. "Ek banda jo sab kar de" = premium pricing.</p></div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo: Canva Dashboard Orientation</h4></div><div class="demo-out">CANVA DASHBOARD CHECKLIST:
+&#9745; Home &rarr; Recent Designs, Magic Design bar at top
+&#9745; Templates &rarr; Search "Instagram Post", "Story", "Facebook"
+&#9745; Brand Kit &rarr; Set colors, fonts, logos (we'll do this in Section 3)
+&#9745; Apps &rarr; Find "AI Image Generator", "Mockups", "QR Code"
+&#9745; Create a Design &rarr; Custom size or pick a format
+&#9745; Editor &rarr; Left panel: Elements, Text, Uploads, Draw, Apps
+&#9745; Editor &rarr; Top bar: Resize, Animate, Share, Download
+
+PRO TIP: Bookmark canva.com/design (jumps straight to editor)</div></div>
+
+  <div class="identity-shift">"Ab tum sirf writer nahi ho. Tum designer bhi ho. Text + Design = Complete Digital Service Provider. Clients ko ab kisi aur ki zaroorat nahi."</div>
+
+  <div class="micro-win">Canva account ready. AI features located. You now have the most powerful free design tool in your arsenal.</div>
+  <p class="curiosity-hook">Next: Create killer Instagram posts from scratch with AI.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Top</button><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Instagram Posts &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 2: Instagram Post Design ===== -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; 18% done! Time to create scroll-stopping Instagram posts.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Instagram Post <span class="gr">Design Mastery</span></h2>
+    <h2 data-lang-hi style="display:none">Instagram Post <span class="gr">डिज़ाइन माहिर</span></h2>
+    <h2 data-lang-pa style="display:none">Instagram Post <span class="gr">ਡਿਜ਼ਾਈਨ ਮਾਹਿਰ</span></h2>
+    <p>Instagram = visual-first platform. Bad design = scroll past. Good design = stop, read, follow. You'll create 5 different post types that local businesses actually need.</p>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">&#128640;</div><div class="call-body"><h4>The 5 Instagram Post Types Every Local Business Needs</h4><p><strong>1. Offer/Sale Post</strong> &mdash; discounts, deals, limited time offers<br><strong>2. Product Showcase</strong> &mdash; hero shots of best products<br><strong>3. Testimonial/Review</strong> &mdash; social proof from happy customers<br><strong>4. Educational/Tips</strong> &mdash; value content that builds trust<br><strong>5. Festival/Event</strong> &mdash; seasonal greetings, event announcements</p></div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Design 1: Restaurant Offer Post</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA DESIGN STEPS: Restaurant Offer Post\n\n1. Open Canva > Create Design > Instagram Post (1080x1080)\n2. Search templates: \"food offer\" or \"restaurant deal\"\n3. Pick a template with bold text + food imagery\n4. CUSTOMIZE:\n   - Headline: \"FLAT 20% OFF\" (font: bold, size 60+)\n   - Subtext: \"On all Tandoori items this weekend\"\n   - Business: \"Punjabi Dhaba, Jalandhar\"\n   - Add phone/WhatsApp number\n   - Change colors to match restaurant brand (warm oranges, reds)\n5. ELEMENTS: Add a \"Limited Time\" badge from Elements > Stickers\n6. PHOTO: Upload actual food photo OR use Canva stock\n   - Background Remover on food photo for clean look\n7. EXPORT: Download as PNG, High Quality\n\nTIME TARGET: 5 minutes')">&#128203; Copy: Step-by-step Canva instructions for Restaurant Offer Post</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Design 2: Salon Product Showcase</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA DESIGN STEPS: Salon Product Showcase\n\n1. Open Canva > Instagram Post (1080x1080)\n2. Search templates: \"beauty product\" or \"salon service\"\n3. Pick MINIMAL template (clean, elegant, premium feel)\n4. CUSTOMIZE:\n   - Headline: \"New Arrival: Keratin Treatment\"\n   - Price: \"Starting ₹2,999\" (use a contrasting color)\n   - Business: \"Glamour Studio, Model Town\"\n   - Tagline: \"Because you deserve the best\"\n5. BACKGROUND: Use soft gradient (pink to white) or solid pastel\n6. Add product/service photo with Background Remover\n7. ELEMENTS: Add subtle gold accents, thin borders\n8. TYPOGRAPHY: Use elegant serif font for headline\n9. EXPORT: PNG, High Quality\n\nVIBE: Premium, clean, aspirational\nTIME TARGET: 5 minutes')">&#128203; Copy: Step-by-step Canva instructions for Salon Product Showcase</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Design 3: Customer Testimonial Post</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA DESIGN STEPS: Customer Testimonial Post\n\n1. Open Canva > Instagram Post (1080x1080)\n2. Search templates: \"testimonial\" or \"review\"\n3. Pick template with quote marks and star rating\n4. CUSTOMIZE:\n   - Quote: \"Best haircut I ever got! Staff is so professional and friendly.\" - Gurpreet K.\n   - Stars: ★★★★★ (use yellow star elements)\n   - Business: \"Style Point Salon, Ludhiana\"\n   - Add \"Google Review\" badge for credibility\n5. COLORS: Match business brand colors\n6. PHOTO: Add customer photo (with permission) or use avatar\n   - Use circular frame for photo\n7. ELEMENTS: Add quotation mark graphics (search \"quote\")\n8. FOOTER: \"Book your appointment: +91 XXXXX XXXXX\"\n9. EXPORT: PNG\n\nSOCIAL PROOF = More customers\nTIME TARGET: 4 minutes')">&#128203; Copy: Step-by-step Canva instructions for Customer Testimonial Post</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Design 4: Educational Tips Post</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA DESIGN STEPS: Educational Tips Post (Carousel)\n\n1. Open Canva > Instagram Post (1080x1080)\n2. Search templates: \"tips carousel\" or \"educational post\"\n3. Create 3-5 slides (Add Page in editor)\n\nSLIDE 1 (Cover):\n   - Bold headline: \"5 Hair Care Tips for Summer\" \n   - Subtext: \"Swipe for expert advice →\"\n   - Eye-catching background color\n\nSLIDE 2: Tip #1 \"Oil your hair twice a week with coconut oil\"\nSLIDE 3: Tip #2 \"Avoid hot water — use lukewarm only\"\nSLIDE 4: Tip #3 \"Wear a scarf/hat in direct sun\"\nSLIDE 5 (CTA): \"Follow @stylepointsalon for more tips!\"\n   - Add logo, phone number, location\n\n4. Keep consistent colors and fonts across all slides\n5. ELEMENTS: Numbered circles (1,2,3), swipe arrows\n6. EXPORT: Download all pages as PNG\n\nCARROUSEL = 3x more saves than single posts\nTIME TARGET: 8 minutes for 5 slides')">&#128203; Copy: Step-by-step Canva instructions for Educational Tips Carousel</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Design 5: Festival Greeting Post (Baisakhi)</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA DESIGN STEPS: Baisakhi Festival Greeting Post\n\n1. Open Canva > Instagram Post (1080x1080)\n2. Search templates: \"Baisakhi\" or \"Punjabi festival\"\n3. If no good templates, search \"Indian festival\" and customize\n4. CUSTOMIZE:\n   - Main text: \"ਬੈਸਾਖੀ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ\" (Gurmukhi)\n   - English subtext: \"Happy Baisakhi 2026\"\n   - Business: \"From the team at [Business Name]\"\n   - Special offer: \"Baisakhi Special: 15% off all week!\"\n5. COLORS: Orange, yellow, green (Baisakhi colors)\n6. ELEMENTS: Search \"wheat\", \"dhol\", \"bhangra\" in Elements\n   - Add wheat/crop decorative elements\n   - Add subtle Khanda or cultural motifs\n7. BACKGROUND: Warm gradient (orange to yellow)\n8. TYPOGRAPHY: Use decorative font for Gurmukhi text\n9. Add business logo in corner\n10. EXPORT: PNG\n\nFESTIVAL POSTS get 5x engagement\nTIME TARGET: 6 minutes')">&#128203; Copy: Step-by-step Canva instructions for Baisakhi Festival Greeting</div></div>
+
+  <div class="micro-action"><h4>Action: Create All 5 Instagram Posts NOW</h4>
+    <p>Open Canva in another tab. Follow each design step-by-step. Use "Raju Restaurant, Jalandhar" or any local business you know.</p>
+    <ul>
+      <li><strong>Post 1:</strong> Restaurant Offer &mdash; 5 min</li>
+      <li><strong>Post 2:</strong> Salon Product Showcase &mdash; 5 min</li>
+      <li><strong>Post 3:</strong> Customer Testimonial &mdash; 4 min</li>
+      <li><strong>Post 4:</strong> Educational Tips Carousel (5 slides) &mdash; 8 min</li>
+      <li><strong>Post 5:</strong> Baisakhi Festival Greeting &mdash; 6 min</li>
+    </ul>
+    <p><strong>Total time: 28 minutes for 5 professional designs. GO!</strong></p>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Design Principles for Non-Designers</h4><p><strong>Rule 1:</strong> Maximum 2 fonts per design (1 heading, 1 body).<br><strong>Rule 2:</strong> Maximum 3 colors (brand primary, secondary, accent).<br><strong>Rule 3:</strong> White space is your friend &mdash; don't fill every pixel.<br><strong>Rule 4:</strong> Text must be readable on mobile (test by shrinking browser window).<br><strong>Rule 5:</strong> Always include CTA: phone number, "DM us", "Visit us".</p></div></div>
+
+  <div class="vcompare reveal">
+    <div class="vcompare-card bad"><h4>&#10060; Bad Instagram Post</h4><ul><li>5 different fonts in one design</li><li>8 colors fighting for attention</li><li>Text too small to read on phone</li><li>No business name or contact</li><li>Low-res blurry images</li><li>No clear message or CTA</li></ul></div>
+    <div class="vcompare-card good"><h4>&#9989; Good Instagram Post</h4><ul><li>2 fonts: bold heading + clean body</li><li>3 colors from brand palette</li><li>Big, readable text (40pt+ for headline)</li><li>Business name + phone number</li><li>High-quality images from Canva or client</li><li>Clear CTA: "Call now" or "Visit today"</li></ul></div>
+  </div>
+
+  <div class="identity-shift">"Pehle sirf captions likhte the. Ab complete Instagram posts banate ho &mdash; design + copy + CTA. Tusi one-stop shop ho for local businesses."</div>
+
+  <div class="micro-win">5 Instagram post types mastered. You can now deliver complete social media content packages.</div>
+  <p class="curiosity-hook">Next: Build a professional Brand Kit that makes every design consistent.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Brand Kit &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 3: Brand Kit Creation ===== -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128293; 33% done! Brand consistency = professional look.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Brand Kit <span class="gr">Creation</span></h2>
+    <h2 data-lang-hi style="display:none">ब्रांड किट <span class="gr">बनाना</span></h2>
+    <h2 data-lang-pa style="display:none">ਬ੍ਰਾਂਡ ਕਿੱਟ <span class="gr">ਬਣਾਉਣਾ</span></h2>
+    <p>A Brand Kit = consistent colors, fonts, and logos across all designs. This is what separates amateur designs from professional ones. Build brand kits for local businesses in minutes.</p>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#127912;</div><div class="call-body"><h4>What Is a Brand Kit?</h4><p>A Brand Kit is a set of rules that define how a business LOOKS everywhere: social media, WhatsApp, flyers, business cards. It includes: <strong>Logo + 3-5 Brand Colors + 2 Fonts + Tagline</strong>. Without it, every post looks different = unprofessional. With it, instant brand recognition.</p></div></div>
+
+  <div class="emotional-hook">"<strong>Local businesses mein Brand Kit koi nahi banata.</strong> Sab random colors, random fonts use karte hain. Tum Brand Kit banake doge = instant 'professional' feel. Client sochega 'ye toh expensive agency jaisa kaam karta hai.'"</div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Prompt: Generate Brand Colors with ChatGPT</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'[ROLE] Brand identity designer for small Indian businesses.\n[CONTEXT] A sweet shop called \"Raju Sweets\" in Jalandhar, Punjab. They sell traditional Indian sweets — Gulab Jamun, Rasgulla, Barfi, Jalebi. Target audience: families, festival shoppers, wedding caterers. Vibe: traditional yet modern, warm, inviting, premium quality.\n[TASK] Create a complete brand color palette with 5 colors.\n[FORMAT] For each color provide:\n- Color name\n- HEX code\n- RGB values\n- Where to use it (primary background, text, accents, CTA buttons, etc.)\n\nAlso suggest:\n- 2 Google Fonts that pair well (1 heading, 1 body)\n- A tagline (in English and Hinglish)\n- Color psychology explanation for each choice\n[CONSTRAINTS] Colors must: work on both light and dark backgrounds, be accessible (WCAG AA contrast), feel warm and appetizing (food business), reflect Indian/Punjabi heritage.')">&#128203; Copy: Generate brand color palette for a sweet shop with ChatGPT</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Set Up Brand Kit in Canva</h4></div><div class="demo-out">CANVA BRAND KIT SETUP:
+
+1. Go to canva.com &rarr; Brand Kit (left sidebar)
+   (Free plan: 1 brand kit. Pro: unlimited)
+
+2. ADD LOGO:
+   &#8226; Upload business logo (PNG with transparent background)
+   &#8226; No logo? Create one: Canva &rarr; Logo template &rarr; Customize
+   &#8226; Pro tip: Make logo versions &mdash; full, icon-only, white version
+
+3. ADD BRAND COLORS:
+   &#8226; Click "Add palette" &rarr; Enter HEX codes from ChatGPT
+   &#8226; Example for Raju Sweets:
+     Primary: #D4451A (warm saffron)
+     Secondary: #8B1A1A (deep maroon)
+     Accent: #FFB347 (golden yellow)
+     Background: #FFF8F0 (warm cream)
+     Text: #2C1810 (dark chocolate)
+
+4. ADD BRAND FONTS:
+   &#8226; Heading: Playfair Display (elegant, premium)
+   &#8226; Body: Nunito Sans (clean, readable)
+   &#8226; Click "Add font" &rarr; Search &rarr; Select
+
+5. TEST IT:
+   &#8226; Create new design &rarr; Your brand colors appear in color picker
+   &#8226; Your fonts appear at top of font list
+   &#8226; Instant brand consistency across ALL designs!
+
+&#9200; Time: 10 minutes to set up, saves HOURS long-term</div></div>
+
+  <div class="micro-action"><h4>Action: Build 3 Brand Kits for 3 Different Businesses</h4>
+    <p>Use ChatGPT to generate colors + fonts, then set them up in Canva. Practice makes perfect.</p>
+    <ul>
+      <li><strong>Brand Kit 1:</strong> Restaurant/Food Business (warm, appetizing colors)</li>
+      <li><strong>Brand Kit 2:</strong> Salon/Beauty Business (elegant, pastel, premium)</li>
+      <li><strong>Brand Kit 3:</strong> Gym/Fitness Business (bold, energetic, dark)</li>
+    </ul>
+    <p><strong>10 minutes per brand kit. 30 minutes total. These go in your portfolio!</strong></p>
+  </div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Prompt: Salon Brand Colors</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'[ROLE] Brand identity designer specializing in beauty and wellness businesses.\n[CONTEXT] \"Glamour Studio\" — a unisex salon in Model Town, Ludhiana. Services: haircuts, coloring, facials, bridal makeup, keratin treatments. Target: age 18-45, both men and women, middle to upper-middle class. Vibe: modern, elegant, premium but approachable.\n[TASK] Create a complete brand color palette with 5 colors and typography pairing.\n[FORMAT] For each color: name, HEX, RGB, usage. Plus 2 Google Font suggestions with reasoning.\n[CONSTRAINTS] Must feel luxurious without being intimidating. Colors should photograph well on social media. Must work on white AND dark backgrounds. Think rose gold, charcoal, soft pink — but be creative.')">&#128203; Copy: Generate brand colors for a salon/beauty business</div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Prompt: Gym Brand Colors</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'[ROLE] Brand identity designer for fitness and sports businesses.\n[CONTEXT] \"Iron Fitness\" — a gym in Phagwara, Punjab. Has weight training, cardio, CrossFit, personal training. Target: age 16-40, mostly men but growing women membership. Vibe: hardcore, motivational, strong, energetic.\n[TASK] Create a complete brand color palette with 5 colors and typography.\n[FORMAT] For each color: name, HEX, RGB, usage. Plus 2 Google Fonts (1 bold display, 1 clean sans-serif).\n[CONSTRAINTS] Must feel powerful and energetic. Dark mode primary (dark background with bright accents). Think: neon on dark, electric energy. Must pop on Instagram feeds.')">&#128203; Copy: Generate brand colors for a gym/fitness business</div></div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128176;</div><div class="call-body"><h4>Brand Kit as a Standalone Service</h4><p>Charge <strong>INR 2,000-5,000</strong> just for creating a Brand Kit. It takes you 30 minutes (ChatGPT + Canva), but it gives the client months of consistency. Add a "Brand Guidelines PDF" (1-page Canva design showing their colors, fonts, do's and don'ts) = premium upsell.</p></div></div>
+
+  <div class="identity-shift">"Tum ab brand identity consultant ho. Sab bolenge 'mere business ka look consistent karo' &mdash; that's your Brand Kit service. INR 5,000 for 30 minutes of work."</div>
+
+  <div class="micro-win">3 Brand Kits created. You now offer brand identity as a service. Portfolio growing fast.</div>
+  <p class="curiosity-hook">Next: Instagram Story templates that get replies and engagement.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Story Templates &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 4: Instagram Story Templates ===== -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128170; 50% done! Stories = daily touchpoints with customers.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Instagram Story <span class="gr">Templates</span></h2>
+    <h2 data-lang-hi style="display:none">Instagram Story <span class="gr">टेम्पलेट</span></h2>
+    <h2 data-lang-pa style="display:none">Instagram Story <span class="gr">ਟੈਂਪਲੇਟ</span></h2>
+    <p>Stories disappear in 24 hours but they drive daily engagement. Clients need 3-5 stories per day. Create reusable templates that make story creation a 2-minute job.</p>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#128248;</div><div class="call-body"><h4>Why Stories Matter More Than Posts</h4><p>Instagram algorithm shows Stories to followers FIRST. Posts reach 10-20% of followers. Stories reach 50-70%. Businesses posting daily stories see <strong>3x more profile visits and DMs</strong>. Your job: make stories so easy that clients can post daily.</p></div></div>
+
+  <div class="cgrid stagger">
+    <div class="crd"><span class="crd-icon">&#128172;</span><span class="tag tag-1">Template</span><h3>"This or That" Poll</h3><p>Two options side by side with poll sticker. Works for restaurants (Butter Chicken vs Dal Makhani?), salons (Straight vs Curly?), gyms (Cardio vs Weights?). Drives replies and engagement.</p></div>
+    <div class="crd"><span class="crd-icon">&#11088;</span><span class="tag tag-2">Template</span><h3>Customer Review Story</h3><p>Screenshot of Google review with branded background frame. Add business logo and "Thank you" text. Social proof in story format. Encourages more reviews.</p></div>
+    <div class="crd"><span class="crd-icon">&#128240;</span><span class="tag tag-3">Template</span><h3>Behind-The-Scenes</h3><p>Template with "BTS" or "Making of" header. Space for photo/video. Great for restaurants (kitchen shots), salons (transformation process), bakeries (baking process). Builds authenticity.</p></div>
+    <div class="crd"><span class="crd-icon">&#128276;</span><span class="tag tag-4">Template</span><h3>Offer Countdown</h3><p>Bold offer text with countdown sticker area. "Only 24 HOURS left!" Creates urgency. Perfect for weekend deals, festival sales, last-minute offers.</p></div>
+    <div class="crd"><span class="crd-icon">&#128161;</span><span class="tag tag-5">Template</span><h3>Quick Tip of the Day</h3><p>Clean background with tip text and business branding. Daily value content. "Hair care tip: Oiling before wash gives 2x shine." Positions business as expert.</p></div>
+    <div class="crd"><span class="crd-icon">&#128075;</span><span class="tag tag-brand">Template</span><h3>"Ask Me Anything" Story</h3><p>Question sticker template with branded frame. "Ask us anything about fitness!" Drives DM conversations. Collected questions become content for posts and reels.</p></div>
+  </div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Create Story Templates in Canva</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA STORY TEMPLATES (1080x1920):\n\n1. Open Canva > Create Design > Instagram Story\n2. Create 6 story templates on separate pages:\n\nPAGE 1: \"This or That\" Poll\n- Split screen (left/right with a diagonal divider)\n- Left side: Option A photo area + text\n- Right side: Option B photo area + text  \n- Top: Business logo\n- Middle: \"VS\" in bold circle\n- Bottom: \"Vote in our poll!\" text\n- Leave space for Instagram poll sticker\n\nPAGE 2: Customer Review\n- Branded header: ★★★★★ \"What our customers say\"\n- Center: Large quote area with quotation marks\n- Customer name below quote\n- Business logo + name at bottom\n- Background: brand secondary color\n\nPAGE 3: Behind-The-Scenes\n- Top banner: \"BEHIND THE SCENES\" in bold\n- Large photo frame area (80% of story)\n- Bottom: Business name + \"Follow for more BTS\"\n- Subtle film strip border effect\n\nPAGE 4: Offer Countdown\n- Bold: \"ENDING SOON!\" at top\n- Offer details: \"Flat 30% OFF\"\n- Space for countdown sticker\n- Swipe up / DM CTA at bottom\n- Background: urgent red/orange gradient\n\nPAGE 5: Tip of the Day\n- Header: \"💡 TIP OF THE DAY\"\n- Large text area for tip content\n- \"Follow @business for daily tips\"\n- Clean, minimal background\n\nPAGE 6: AMA (Ask Me Anything)\n- Header: \"ASK US ANYTHING!\"\n- Space for question sticker\n- Business category hint: \"About fitness, diet, training...\"\n- Business logo and handle at bottom\n\nSave all 6 as a multi-page Canva design.\nClient reuses these DAILY — just swaps content.\nTime: 20 minutes for all 6 templates.')">&#128203; Copy: Create all 6 Story Templates in Canva (detailed steps)</div></div>
+
+  <div class="micro-action"><h4>Action: Build a Complete Story Template Pack</h4>
+    <p>Create all 6 story templates for ONE business. Use their brand colors from the Brand Kit you made in Section 3.</p>
+    <ul>
+      <li><strong>Pick one business:</strong> Restaurant, Salon, or Gym</li>
+      <li><strong>Apply their Brand Kit:</strong> Use the colors and fonts you created</li>
+      <li><strong>Create 6 templates:</strong> Poll, Review, BTS, Countdown, Tip, AMA</li>
+      <li><strong>Test on mobile:</strong> Download and view on your phone &mdash; is text readable?</li>
+    </ul>
+    <p><strong>20 minutes. These templates save the client 30+ minutes EVERY DAY. That's the value.</strong></p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128176;</div><div class="call-body"><h4>Story Templates = Monthly Retainer Income</h4><p>Offer: "6 branded story templates + 15 daily stories/month = <strong>INR 3,000-5,000/month</strong>"<br>You create templates once (20 min), then just swap content daily (5 min/story).<br>15 stories/month = 75 minutes of work = INR 5,000. That's INR 4,000/hour effective rate.<br>"Templates banao ek baar, paisa aata rahe har mahine."</p></div></div>
+
+  <div class="identity-shift">"Tusi templates bana ke clients ko SYSTEM de rahe ho. System = consistency. Consistency = brand recognition. Brand recognition = more customers. It all connects."</div>
+
+  <div class="micro-win">6 Story Templates done. You now offer a daily content system to clients. Recurring revenue unlocked.</div>
+  <p class="curiosity-hook">Next: The 30-Minute Design Sprint &mdash; 10 designs for one business.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Design Sprint &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 5: Design Sprint ===== -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#128293; 65% done! Sprint time &mdash; 10 designs, 30 minutes, one business.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2 data-lang-en>30-Minute <span class="gr">Design Sprint</span></h2>
+    <h2 data-lang-hi style="display:none">30-मिनट <span class="gr">डिज़ाइन स्प्रिंट</span></h2>
+    <h2 data-lang-pa style="display:none">30-ਮਿੰਟ <span class="gr">ਡਿਜ਼ਾਈਨ ਸਪ੍ਰਿੰਟ</span></h2>
+    <p>Real client work means speed. You need to create a full social media starter pack in one sitting. 10 designs. 30 minutes. One business. This is the real test.</p>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#9200;</div><div class="call-body"><h4>Social Media Starter Pack &mdash; What Clients Actually Buy</h4><p>When a local business says "handle our social media", they need a starter pack:<br><strong>5 Instagram Posts</strong> (different types) + <strong>3 Story Templates</strong> + <strong>1 Facebook Cover</strong> + <strong>1 WhatsApp Profile Image</strong> = 10 designs.<br>You'll create all 10 in 30 minutes. This pack sells for <strong>INR 3,000-5,000</strong>.</p></div></div>
+
+  <div class="micro-action"><h4>Action: 30-Minute Design Sprint</h4>
+    <p>Choose a business: "Raju Sweets, Jalandhar" (or any local business). Create these 10 designs:</p>
+    <ul>
+      <li><strong>Design 1 (3 min):</strong> Instagram Post &mdash; Grand Opening / Welcome</li>
+      <li><strong>Design 2 (3 min):</strong> Instagram Post &mdash; Best-Seller Product Highlight</li>
+      <li><strong>Design 3 (3 min):</strong> Instagram Post &mdash; Customer Testimonial</li>
+      <li><strong>Design 4 (3 min):</strong> Instagram Post &mdash; Festival Offer (Baisakhi)</li>
+      <li><strong>Design 5 (3 min):</strong> Instagram Post &mdash; Educational/Tips</li>
+      <li><strong>Design 6 (3 min):</strong> Story Template &mdash; Poll / This-or-That</li>
+      <li><strong>Design 7 (3 min):</strong> Story Template &mdash; Daily Special Announcement</li>
+      <li><strong>Design 8 (3 min):</strong> Story Template &mdash; Customer Review Highlight</li>
+      <li><strong>Design 9 (3 min):</strong> Facebook Cover Photo (820x312)</li>
+      <li><strong>Design 10 (3 min):</strong> WhatsApp Business Profile Photo (500x500)</li>
+    </ul>
+    <p><strong>ALL designs must use the same Brand Kit! 3 minutes per design. Timer starts NOW.</strong></p>
+  </div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Quick Sizes Reference</h4></div><div class="demo-out">SOCIAL MEDIA SIZE CHEAT SHEET:
+
+&#128247; Instagram Post:     1080 x 1080 px (square)
+&#128247; Instagram Story:    1080 x 1920 px (9:16)
+&#128247; Instagram Reel:     1080 x 1920 px (9:16)
+&#128247; Facebook Cover:      820 x 312 px
+&#128247; Facebook Post:      1200 x 630 px
+&#128247; WhatsApp Profile:    500 x 500 px
+&#128247; WhatsApp Status:    1080 x 1920 px
+&#128247; YouTube Thumbnail:  1280 x 720 px
+&#128247; LinkedIn Banner:    1584 x 396 px
+&#128247; Google My Business: 1200 x 900 px
+
+CANVA TIP: Select "Custom Size" and type these exact dimensions.
+Or search the platform name in template search &mdash; Canva auto-sizes.</div></div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Speed Design Tips</h4><p><strong>Tip 1:</strong> Start from templates &mdash; never from blank canvas.<br><strong>Tip 2:</strong> Duplicate pages &mdash; change content, keep layout.<br><strong>Tip 3:</strong> Use Brand Kit colors &mdash; no time wasted picking colors.<br><strong>Tip 4:</strong> Batch similar designs &mdash; all posts first, then stories.<br><strong>Tip 5:</strong> Keyboard shortcuts: Ctrl+D (duplicate), T (text), R (rectangle), / (search).</p></div></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Sprint Workflow</div>
+    <div class="vflow-row">
+      <div class="vflow-node"><span class="vn-icon">&#128203;</span><span class="vn-label">Plan</span><span class="vn-sub">List all 10 designs</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#127912;</span><span class="vn-label">Template</span><span class="vn-sub">Pick best templates</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#127912;</span><span class="vn-label">Brand</span><span class="vn-sub">Apply brand kit</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#9999;&#65039;</span><span class="vn-label">Content</span><span class="vn-sub">Add text + images</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#128190;</span><span class="vn-label">Export</span><span class="vn-sub">Download all PNGs</span></div>
+    </div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128176;</div><div class="call-body"><h4>The Sprint Economics</h4><p>10 designs in 30 minutes = <strong>3 minutes per design.</strong><br>Sell as "Social Media Starter Pack" for INR 3,000-5,000.<br>Your effective hourly rate: <strong>INR 6,000-10,000/hour.</strong><br>Do 2 starter packs per day = INR 6,000-10,000/day.<br>20 working days = <strong>INR 1.2-2 lakh/month.</strong> Just from design sprints.<br>"Speed hai toh paisa hai."</p></div></div>
+
+  <div class="emotional-hook">"<strong>Socho: 30 minutes mein 10 professional designs.</strong> Pehle ye kaam agency INR 15,000+ mein karti thi. Tum wahi quality de sakte ho INR 5,000 mein. Client khush, tum khush, bank balance khush."</div>
+
+  <div class="identity-shift">"10 designs. 30 minutes. 1 business. Tum ab design sprint expert ho. Speed + quality = competitive advantage."</div>
+
+  <div class="micro-win">Design Sprint complete! 10 designs for one business. You just created a sellable Social Media Starter Pack.</div>
+  <p class="curiosity-hook">Next: Completion checklist &mdash; make sure you've done everything.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Checklist &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 6: Checklist ===== -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2 data-lang-en>Day 7 <span class="gr">Completion Checklist</span></h2>
+    <h2 data-lang-hi style="display:none">दिन 7 <span class="gr">चेकलिस्ट</span></h2>
+    <h2 data-lang-pa style="display:none">ਦਿਨ 7 <span class="gr">ਚੈੱਕਲਿਸਟ</span></h2>
+    <p>Tick every item. Save all designs to your portfolio folder. Share your best one in the WhatsApp group.</p>
+  </div>
+
+  <div class="checklist"><h4>&#9989; Day 7 Completion Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#127912; Canva account set up and AI features explored</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128248; Created 5 Instagram post types (offer, product, testimonial, tips, festival)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#127912; Built 3 Brand Kits (restaurant, salon, gym) with ChatGPT colors</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128241; Created 6 Instagram Story templates</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128293; Completed 30-Minute Design Sprint (10 designs, 1 business)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128161; Know 5 design principles for non-designers</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128176; Understand pricing: text+design = 3x text-only</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128190; All designs exported and saved to portfolio folder</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128241; Shared best design in WhatsApp group</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128200; Social Media Starter Pack ready to sell</label></div>
+    <div class="check-score" id="checkScore">Tap items &rarr; score appears here</div>
+  </div>
+
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">&#127912;</span><div class="vi-label">5 Posts</div><div class="vi-desc">Instagram designs</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128241;</span><div class="vi-label">6 Stories</div><div class="vi-desc">Template pack</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127912;</span><div class="vi-label">3 Brand Kits</div><div class="vi-desc">Color + font systems</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128293;</span><div class="vi-label">10 Designs</div><div class="vi-desc">Sprint output</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128176;</span><div class="vi-label">1 Starter Pack</div><div class="vi-desc">Sellable package</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128200;</span><div class="vi-label">Portfolio</div><div class="vi-desc">Growing daily</div></div>
+  </div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Quiz &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 7: Quiz ===== -->
+<div class="sec" id="s7">
+  <div class="sec-head">
+    <div class="over">Section 07</div>
+    <h2 data-lang-en>Test Your <span class="gr">Design Knowledge</span></h2>
+    <h2 data-lang-hi style="display:none"><span class="gr">डिज़ाइन</span> ज्ञान जांचो</h2>
+    <h2 data-lang-pa style="display:none"><span class="gr">ਡਿਜ਼ਾਈਨ</span> ਗਿਆਨ ਪਰਖੋ</h2>
+    <p>8 questions on Canva AI and design principles.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s8')">Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 8: Wrap-Up ===== -->
+<div class="sec" id="s8">
+  <div class="sec-head">
+    <div class="over">Section 08</div>
+    <h2 data-lang-en>Day 7 <span class="gr">Complete!</span></h2>
+    <h2 data-lang-hi style="display:none">दिन 7 <span class="gr">पूरा!</span></h2>
+    <h2 data-lang-pa style="display:none">ਦਿਨ 7 <span class="gr">ਪੂਰਾ!</span></h2>
+    <p>You just added VISUAL DESIGN to your skill stack. Text + Design = Complete digital service provider. Tomorrow we go deeper with marketing materials.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>Today's Achievements</h4><p>&#9989; Canva AI mastered: Magic Design, Magic Write, Background Remover, Magic Edit<br>&#9989; 5 Instagram Post types designed for local businesses<br>&#9989; 3 Brand Kits created (restaurant, salon, gym) with AI-generated palettes<br>&#9989; 6 Instagram Story templates built for daily engagement<br>&#9989; 10-design Sprint completed in 30 minutes<br>&#9989; Social Media Starter Pack ready to sell (INR 3,000-5,000)</p></div></div>
+
+  <div class="micro-action"><h4>Homework Before Day 8</h4>
+    <ul>
+      <li><strong>Polish your best 5 designs</strong> &mdash; these are your portfolio showpieces</li>
+      <li><strong>Create one real design</strong> for a family/friend's business (free practice)</li>
+      <li><strong>Explore Canva templates:</strong> search "menu", "flyer", "business card" for tomorrow</li>
+      <li><strong>Download all designs</strong> as high-quality PNGs to your portfolio folder</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128308;</div><div class="call-body"><h4>Preview: Day 8 &mdash; Canva AI Design Day 2</h4><p>"Kal marketing materials banayenge! Flyers, business cards, WhatsApp catalog images, restaurant menus. Ye cheezein har local business ko chahiye. Canva se 2 minute mein professional quality. Commercial speed design."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=Day%207%20done!%20Canva%20AI%20design%20day%201%20complete!" target="_blank" class="btn btn-glow" style="text-decoration:none">&#128241; Message TARAhut</a></div>
+
+  <div class="identity-shift">"7 din. Text + Design. Complete digital service provider. Kal se marketing materials bhi add honge. Tusi full package ho for any local business."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s7')">&larr; Quiz</button><a href="hustler-08.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 8: Canva Design Day 2 &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 07 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs.</p></div>
+
+<script>
+function setLang(lang){document.body.classList.remove('lang-hi','lang-pa');if(lang!=='en')document.body.classList.add('lang-'+lang);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}else{el.style.display='none'}});localStorage.setItem('tarahut-lang',lang);}(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7','s8'];function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';document.getElementById('progText').textContent=Math.round((idx+1)/secIds.length*100)+'%';document.getElementById('progText').style.display='block';if(id==='s7'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked}/${total} — ${checked>=8?'DESIGN MASTER!':checked>=5?'Great progress!':'Keep going!'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied!';el.style.background='rgba(52,211,153,.1)';setTimeout(()=>{el.textContent=orig;el.style.background='rgba(0,240,255,.03)'},3000);}).catch(()=>{});}
+const allQ=[{q:"What is Canva's Magic Design feature?",o:["A Photoshop plugin","AI that generates complete designs from text descriptions","A font library","A color picker tool"],a:1,e:"Magic Design lets you type what you want and Canva AI generates complete designs — Instagram posts, stories, presentations — all from a text description."},{q:"How many fonts should you use maximum in one design?",o:["As many as you want","5-6 different fonts","Maximum 2 (1 heading, 1 body)","Only 1 font everywhere"],a:2,e:"Maximum 2 fonts per design: one for headings (bold/display) and one for body text (clean/readable). More fonts = messy, unprofessional look."},{q:"What pricing premium does text+design command over text-only?",o:["Same price","About 2x","About 3x (INR 8,000-15,000 vs 3,000-5,000)","10x"],a:2,e:"Text + Design freelancers charge approximately 3x more: INR 8,000-15,000/month vs INR 3,000-5,000 for text-only. Clients prefer one person who does everything."},{q:"What's in a Brand Kit?",o:["Just a logo","Logo + 3-5 brand colors + 2 fonts + tagline","Only colors","Just fonts and colors"],a:1,e:"A complete Brand Kit includes: Logo (multiple versions) + 3-5 Brand Colors (with HEX codes) + 2 Fonts (heading + body) + Tagline. This ensures consistency."},{q:"How many story templates should a daily engagement pack include?",o:["1","3","6 templates covering different content types","20+"],a:2,e:"6 templates: Poll/This-or-That, Customer Review, Behind-the-Scenes, Offer Countdown, Tip of the Day, and AMA. These cover all daily story needs."},{q:"What percentage of followers do Instagram Stories reach vs Posts?",o:["Stories: 10%, Posts: 50%","Both reach the same","Stories: 50-70%, Posts: 10-20%","Stories: 5%, Posts: 90%"],a:2,e:"Stories reach 50-70% of followers while Posts reach only 10-20%. The algorithm prioritizes Stories, making them essential for daily engagement."},{q:"What's the correct Instagram Post size?",o:["800 x 800 px","1080 x 1080 px (square)","1920 x 1080 px","500 x 500 px"],a:1,e:"Instagram Post standard size is 1080 x 1080 pixels (square format). This ensures crisp, high-quality display on all devices."},{q:"How much can you charge for a Social Media Starter Pack (10 designs)?",o:["INR 500","INR 1,000","INR 3,000-5,000","INR 50,000"],a:2,e:"A Social Media Starter Pack (5 posts + 3 story templates + Facebook cover + WhatsApp profile) sells for INR 3,000-5,000. Takes 30 minutes to create."},{q:"Why is Background Remover important for local business designs?",o:["It's not important","It makes product photos clean and professional without messy backgrounds","It only works on faces","It changes colors"],a:1,e:"Background Remover creates clean, professional product photos from messy client-sent images. One click removes cluttered backgrounds for polished designs."},{q:"What is the 30-Minute Design Sprint?",o:["A Canva tutorial","Creating 10 designs for one business in 30 minutes using templates and brand kit","A daily exercise routine","A coding challenge"],a:1,e:"The Design Sprint creates 10 designs (5 posts, 3 stories, 1 FB cover, 1 WhatsApp profile) in 30 minutes for one business. It simulates real client work speed."},{q:"How much can Brand Kit creation alone be charged as a service?",o:["It's always free","INR 500","INR 2,000-5,000","INR 50,000"],a:2,e:"Brand Kit creation can be charged as INR 2,000-5,000 standalone service. Takes 30 minutes with ChatGPT + Canva, but delivers months of brand consistency."},{q:"What makes animated Instagram content more effective?",o:["Nothing special","Animated content gets 2-3x more engagement than static posts","It loads faster","Clients prefer still images"],a:1,e:"Canva's Magic Animate turns static designs into animated posts that get 2-3x more engagement. Movement catches eyes while scrolling, leading to more stops and interactions."},{q:"What's the key advantage of creating reusable story templates?",o:["They look prettier","They take longer to make","Create once, reuse daily — saving 30+ minutes per day for clients","They only work on iPhone"],a:2,e:"Reusable story templates are created once (20 min) then reused daily by just swapping content (5 min). This saves clients 30+ minutes daily and creates recurring revenue for you."},{q:"For a food business, what brand colors work best?",o:["Cool blues and grays","Warm colors: saffron, maroon, golden yellow — appetizing and inviting","Black and white only","Neon pink and green"],a:1,e:"Food businesses need warm, appetizing colors: saffron/orange, deep reds/maroons, golden yellows. These stimulate appetite and create warmth, making food content more appealing."},{q:"What's the most important element to ALWAYS include in business social media designs?",o:["Complex animations","A CTA: phone number, 'DM us', 'Visit us'","As many fonts as possible","Dark backgrounds only"],a:1,e:"Every business design MUST include a Call-To-Action: phone/WhatsApp number, 'DM us', 'Visit today', or 'Book now'. Without CTA, beautiful designs don't convert to business."}];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct>=75?'Design Master!':pct>=50?'Good progress!':'Review the material!'}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}%</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s8')" style="margin-left:.8rem">Wrap-Up &rarr;</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;}function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#9989; ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10060; ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}function nxtQ(){cq++;renderQ();}
+</script></body></html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Day 15: Portfolio Building + Phase 1 Exam — AI Hustler 45 · TARAhut AI Labs</title><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}@media print{body{display:none!important}}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p,.hero>div>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px)}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-arrow{font-size:1.2rem;color:var(--c1);opacity:.5}.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{text-align:center;padding:1.5rem 1rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2)}.vi-icon{font-size:2rem;display:block;margin-bottom:.5rem}.vi-label{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem}.vi-desc{font-size:.72rem;color:var(--t3);margin-top:.2rem}.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}.vcompare-card{padding:1.75rem;border-radius:var(--r);border:1px solid var(--bd)}.vcompare-card.bad{background:rgba(255,61,139,.03);border-color:rgba(255,61,139,.15)}.vcompare-card.good{background:rgba(52,211,153,.03);border-color:rgba(52,211,153,.15)}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.75rem}.vcompare-card.bad h4{color:var(--c3)}.vcompare-card.good h4{color:var(--c5)}.vcompare-card p,.vcompare-card li{font-size:.85rem;color:var(--t2);line-height:1.7}.vcompare-card ul{padding-left:1rem;margin-top:.5rem}.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.25rem;margin:2rem 0}.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;text-align:center;transition:all .4s}.tool-card:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.25)}.tool-card .tc-icon{font-size:2.5rem;margin-bottom:.75rem}.tool-card h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}.tool-card p{font-size:.8rem;color:var(--t2)}.lang-toggle{display:inline-flex;gap:4px;background:var(--bg3);padding:4px;border-radius:99px;border:1px solid var(--bd);margin-bottom:1rem}.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:all .3s;letter-spacing:1px}.lang-btn.active{background:var(--brand);color:#fff}.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-left{opacity:0;transform:translateX(-30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-right{opacity:0;transform:translateX(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-scale{opacity:0;transform:scale(.92);transition:all .7s cubic-bezier(.22,1,.36,1)}.reveal-fade{opacity:0;transition:opacity .7s ease}.reveal.visible,.reveal-left.visible,.reveal-right.visible,.reveal-scale.visible,.reveal-fade.visible{opacity:1;transform:none}.stagger .reveal:nth-child(1),.stagger .reveal-left:nth-child(1),.stagger .reveal-right:nth-child(1){transition-delay:.05s}.stagger .reveal:nth-child(2),.stagger .reveal-left:nth-child(2),.stagger .reveal-right:nth-child(2){transition-delay:.12s}.stagger .reveal:nth-child(3),.stagger .reveal-left:nth-child(3),.stagger .reveal-right:nth-child(3){transition-delay:.19s}.stagger .reveal:nth-child(4),.stagger .reveal-left:nth-child(4){transition-delay:.26s}.stagger .reveal:nth-child(5){transition-delay:.33s}.stagger .reveal:nth-child(6){transition-delay:.4s}@media(max-width:768px){.vcompare{grid-template-columns:1fr}.hero h1{font-size:clamp(1.8rem,8vw,3rem)}.cgrid{grid-template-columns:1fr}.tool-grid{grid-template-columns:1fr 1fr}.vigrid{grid-template-columns:repeat(3,1fr)}}@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.vigrid{grid-template-columns:repeat(2,1fr)}}.exam-challenge{background:linear-gradient(135deg,rgba(255,61,139,.06),rgba(251,191,36,.04));border:2px solid rgba(255,61,139,.25);border-radius:var(--r);padding:2rem;margin:2rem 0;position:relative;overflow:hidden}.exam-challenge::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g2)}.exam-challenge h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--c3);margin-bottom:.75rem}.exam-challenge h4::before{content:'&#9201;  '}.exam-challenge p{color:var(--t2);font-size:.9rem}.exam-challenge ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.exam-challenge li{margin-bottom:.4rem}.exam-challenge .time-badge{display:inline-block;padding:4px 12px;background:rgba(255,61,139,.15);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:var(--c3);margin-bottom:.5rem}.exam-timer{text-align:center;padding:2rem;margin:2rem 0;background:var(--bg2);border:2px solid rgba(255,61,139,.3);border-radius:var(--r)}.exam-timer .timer-display{font-family:'JetBrains Mono',monospace;font-size:3.5rem;font-weight:700;color:var(--c3);margin:1rem 0}.exam-timer .timer-label{font-family:'Syne',sans-serif;font-size:.85rem;color:var(--t2)}.celebration{text-align:center;padding:3rem 2rem;margin:2rem 0;background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(52,211,153,.06));border:2px solid rgba(5,150,105,.3);border-radius:var(--r);position:relative;overflow:hidden}.celebration::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand)}.celebration h3{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--brand);margin-bottom:1rem}.celebration p{color:var(--t2);font-size:1rem;max-width:600px;margin:0 auto}</style>
+</head><body>
+<canvas id="particleCanvas"></canvas>
+<div class="progress-bar" id="progBar"></div>
+<div id="progText" style="display:none;position:fixed;top:6px;right:14px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--brand);z-index:10000"></div>
+
+<div class="hero">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span> Day 15 &middot; AI Hustler 45 &middot; 2026</div>
+  <div class="hero-brand">TARAhut AI Labs</div>
+  <h1 data-lang-en>Portfolio + <span class="gr">Phase 1 Exam</span></h1>
+  <h1 data-lang-hi style="display:none">पोर्टफोलियो + <span class="gr">फेज़ 1 परीक्षा</span></h1>
+  <h1 data-lang-pa style="display:none">ਪੋਰਟਫੋਲੀਓ + <span class="gr">ਫੇਜ਼ 1 ਪ੍ਰੀਖਿਆ</span></h1>
+  <div>
+    <p data-lang-en>15 days of hustle. 15+ portfolio pieces. Today you organize, polish, and prove everything. Timed exam with 10 challenges. Phase 1 graduation day.</p>
+    <p data-lang-hi style="display:none">15 din ki hustle. 15+ portfolio pieces. Aaj organize karo, polish karo, aur sab kuch prove karo. Timed exam, 10 challenges. Phase 1 graduation day.</p>
+    <p data-lang-pa style="display:none">15 ਦਿਨ ਦੀ hustle. 15+ portfolio pieces. ਅੱਜ organize ਕਰੋ, polish ਕਰੋ, ਅਤੇ ਸਭ ਕੁਝ prove ਕਰੋ. Timed exam, 10 challenges. Phase 1 graduation day.</p>
+  </div>
+  <div style="margin-bottom:1rem">
+    <div class="lang-toggle"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">HI</button><button class="lang-btn" onclick="setLang('pa')">PA</button></div>
+  </div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Day 15 &rarr;</button>
+    <a href="hustler-14.html" class="btn btn-ghost">&larr; Day 14</a>
+  </div>
+</div>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Day 15</span>
+    <button class="nav-btn" data-s="s1"><span class="nn">01</span> Portfolio Audit</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span> Portfolio Polish</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span> Portfolio Presentation</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span> Phase 1 Exam</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span> Exam Challenges</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span> Phase 1 Celebration</button>
+    <button class="nav-btn" data-s="s7"><span class="nn">07</span> Quiz</button>
+    <button class="nav-btn" data-s="s8"><span class="nn">08</span> Graduation</button>
+  </div>
+</nav>
+
+<!-- ===== SECTION 1: Portfolio Audit ===== -->
+<div class="sec" id="s1">
+  <div class="progress-marker">&#128293; Day 15! Phase 1 finale. Time to show what you've built in 15 days.</div>
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>Portfolio <span class="gr">Audit</span></h2>
+    <h2 data-lang-hi style="display:none">पोर्टफोलियो <span class="gr">ऑडिट</span></h2>
+    <h2 data-lang-pa style="display:none">ਪੋਰਟਫੋਲੀਓ <span class="gr">ਆਡਿਟ</span></h2>
+    <p>Before the exam, let's audit everything you've created in 14 days. Open your portfolio folder and check every piece against the master list below.</p>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128269;</div><div class="call-body"><h4>Why Portfolio Matters More Than Skills</h4><p>Clients don't ask "what can you do?" They ask <strong>"show me what you've done."</strong> A portfolio with 15+ real pieces tells a client everything. No need for a degree, no need for certificates. Just results. Your portfolio IS your resume, your pitch, and your credibility.</p></div></div>
+
+  <div class="emotional-hook">"<strong>15 din pehle tumhare paas kuch nahi tha.</strong> No portfolio. No skills. No confidence. Aaj tumhare paas 15+ professional pieces hain. Content, designs, marketing materials, multilingual work. Ye transformation real hai. Feel it."</div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#128203; Master Portfolio Checklist: 15+ Pieces Required</h4></div><div class="demo-out">PHASE 1 PORTFOLIO &mdash; MINIMUM 15 PIECES:
+
+FROM DAYS 1-6 (Content Writing):
+&#9745; 1. Social media post set (5 posts for one business)
+&#9745; 2. Email sequence (welcome/offer/follow-up)
+&#9745; 3. Product descriptions (5 products)
+&#9745; 4. Google My Business description
+&#9745; 5. Content Starter Pack for one business
+&#9745; 6. Trilingual content samples (EN/HI/PA)
+&#9745; 7. WhatsApp template library (10 templates)
+
+FROM DAYS 7-8 (Canva Design):
+&#9745; 8. Instagram post designs (5 types)
+&#9745; 9. Brand Kit documentation (3 businesses)
+&#9745; 10. Instagram Story templates (6 templates)
+&#9745; 11. Business cards (4 styles)
+&#9745; 12. Flyer designs (3 types)
+&#9745; 13. WhatsApp catalog images (10 products)
+&#9745; 14. Restaurant menu (print + digital)
+
+FROM DAYS 9-14 (Advanced Skills):
+&#9745; 15. Complete Marketing Package for one business
+&#9745; BONUS: Any additional pieces from practice
+
+TOTAL MINIMUM: 15 distinct portfolio pieces
+TARGET: 20+ pieces for competitive advantage</div></div>
+
+  <div class="micro-action"><h4>Action: Portfolio Audit</h4>
+    <p>Open your Google Drive portfolio folder. Count every piece. Fill the gaps.</p>
+    <ul>
+      <li><strong>Step 1:</strong> Open Google Drive &rarr; "AI Hustler Portfolio" folder</li>
+      <li><strong>Step 2:</strong> Create sub-folders: "Content Writing", "Design", "Marketing Materials", "Brand Kits"</li>
+      <li><strong>Step 3:</strong> Move ALL saved work into correct sub-folders</li>
+      <li><strong>Step 4:</strong> Count pieces per category. You need 15+ total.</li>
+      <li><strong>Step 5:</strong> If you're short, CREATE the missing pieces NOW. You have the skills.</li>
+    </ul>
+    <p><strong>30 minutes to organize. If you need to create missing pieces, add 30 more minutes. Non-negotiable.</strong></p>
+  </div>
+
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">&#128221;</span><div class="vi-label">7 Writing</div><div class="vi-desc">Content pieces</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127912;</span><div class="vi-label">4 Design</div><div class="vi-desc">Social media</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128196;</span><div class="vi-label">3 Marketing</div><div class="vi-desc">Print materials</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128188;</span><div class="vi-label">1 Package</div><div class="vi-desc">Complete solution</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127912;</span><div class="vi-label">3 Brand Kits</div><div class="vi-desc">Identity systems</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128200;</span><div class="vi-label">15+ Total</div><div class="vi-desc">Minimum pieces</div></div>
+  </div>
+
+  <div class="identity-shift">"Tumhare portfolio mein 15+ professional pieces hain. Koi degree, koi certificate itna powerful nahi jitna 'yeh dekho, yeh maine banaya.' Show, don't tell."</div>
+
+  <div class="micro-win">Portfolio audit complete. Sub-folders organized. Every piece accounted for.</div>
+  <p class="curiosity-hook">Next: Polish your best 5 pieces to showroom quality.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Top</button><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Polish &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 2: Portfolio Polish ===== -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#128170; 18% done! Polish time &mdash; make your best work shine.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Portfolio <span class="gr">Polish</span></h2>
+    <h2 data-lang-hi style="display:none">पोर्टफोलियो <span class="gr">पॉलिश</span></h2>
+    <h2 data-lang-pa style="display:none">ਪੋਰਟਫੋਲੀਓ <span class="gr">ਪਾਲਿਸ਼</span></h2>
+    <p>Not all portfolio pieces are equal. Pick your BEST 5 and polish them to showroom quality. These 5 will be your client-facing samples.</p>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">&#11088;</div><div class="call-body"><h4>The "Best 5" Strategy</h4><p>Clients don't want to see 50 mediocre pieces. They want to see <strong>5 INCREDIBLE pieces that prove you're the right choice</strong>. Pick your best work from each category and make it flawless. Better to have 5 perfect pieces than 20 okay ones.</p></div></div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Prompt: Polish Portfolio Copy with ChatGPT</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'[ROLE] Portfolio consultant and copywriter for freelance digital marketers.\n[CONTEXT] I am an AI-powered digital marketing freelancer from Punjab. I have 15+ portfolio pieces covering content writing (English, Hindi, Punjabi), social media design (Instagram posts, stories, carousels), marketing materials (flyers, business cards, menus), brand kits, and WhatsApp catalog images. I need to present my best 5 pieces professionally.\n[TASK] For each of my 5 best portfolio pieces, write:\n1. A portfolio title (catchy, professional)\n2. A 2-sentence project description (what it was, what problem it solved)\n3. A \"Results\" line (realistic results/impact)\n4. Services used (tags like \"Content Writing\", \"Brand Design\", \"Trilingual\")\n[FORMAT] Create entries for:\n- Best social media content package\n- Best brand kit\n- Best Instagram post set\n- Best marketing flyer\n- Best WhatsApp catalog\n[CONSTRAINTS] Sound professional but not corporate. Show value to potential clients. Keep descriptions concise. Include Hinglish/Punjabi flair where appropriate.')">&#128203; Copy: Generate professional portfolio descriptions with ChatGPT</div></div>
+
+  <div class="micro-action"><h4>Action: Polish Your Best 5</h4>
+    <ul>
+      <li><strong>Piece 1 (Writing):</strong> Your best content package. Fix typos, improve headlines, ensure brand consistency.</li>
+      <li><strong>Piece 2 (Design):</strong> Your best Instagram post set. Align elements, check color consistency, verify text readability.</li>
+      <li><strong>Piece 3 (Brand Kit):</strong> Your most complete brand kit. Add a 1-page "Brand Guidelines" PDF.</li>
+      <li><strong>Piece 4 (Marketing):</strong> Your best flyer or menu. Check print-readiness, ensure high resolution.</li>
+      <li><strong>Piece 5 (Package):</strong> Your complete marketing package. This is your hero piece &mdash; make it perfect.</li>
+    </ul>
+    <p><strong>15 minutes per piece. 75 minutes total. These 5 pieces will land your first clients.</strong></p>
+  </div>
+
+  <div class="vcompare reveal">
+    <div class="vcompare-card bad"><h4>&#10060; Unpolished Portfolio</h4><ul><li>Typos in content samples</li><li>Inconsistent colors across designs</li><li>Low-resolution exports</li><li>No project descriptions</li><li>Random file names ("design_final_v3.png")</li><li>Missing business context</li></ul></div>
+    <div class="vcompare-card good"><h4>&#9989; Polished Portfolio</h4><ul><li>Zero typos, proofread twice</li><li>Consistent brand colors in every piece</li><li>High-resolution exports (300 DPI for print, 72 DPI for web)</li><li>Professional project descriptions</li><li>Clean file names ("RajuSweets-InstagramPostSet.png")</li><li>Client context and results included</li></ul></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Portfolio Presentation Formats</h4><p><strong>Google Drive folder:</strong> Organized sub-folders, shareable link (easiest, most common).<br><strong>Canva Portfolio:</strong> Design a visual portfolio as a Canva presentation (most impressive).<br><strong>Behance:</strong> Upload to behance.net for global visibility (best for design work).<br><strong>WhatsApp PDF:</strong> Convert best 5 to single PDF for sharing on WhatsApp (most practical for local clients).<br>Do ALL FOUR. Different clients, different formats.</p></div></div>
+
+  <div class="identity-shift">"Portfolio polish karna = apne kaam ki izzat karna. Jo apne kaam ko polish karta hai, client usse serious leta hai. Professionalism dikhao."</div>
+
+  <div class="micro-win">Best 5 pieces polished to showroom quality. Portfolio ready for client presentations.</div>
+  <p class="curiosity-hook">Next: Create your portfolio presentation &mdash; the visual that wins clients.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Presentation &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 3: Portfolio Presentation ===== -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128293; 33% done! Your portfolio presentation = your sales weapon.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Portfolio <span class="gr">Presentation</span></h2>
+    <h2 data-lang-hi style="display:none">पोर्टफोलियो <span class="gr">प्रेजेंटेशन</span></h2>
+    <h2 data-lang-pa style="display:none">ਪੋਰਟਫੋਲੀਓ <span class="gr">ਪ੍ਰੈਜ਼ੇਂਟੇਸ਼ਨ</span></h2>
+    <p>Build a visual portfolio presentation in Canva. This is what you'll send to potential clients. It should scream "professional" and "I deliver results".</p>
+  </div>
+
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Create: Visual Portfolio in Canva</h4></div><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);cursor:pointer" onclick="copyPrompt(this,'CANVA PORTFOLIO PRESENTATION:\n\n1. Canva > Create > Presentation (16:9)\n2. Use a minimal, dark or professional template\n\nSLIDE 1 - COVER:\n   - Your name in large text\n   - Title: \"Digital Marketing & Design\"\n   - Tagline: \"AI-Powered Content + Design for Local Businesses\"\n   - Contact: Phone, email, WhatsApp\n   - Professional photo or avatar\n\nSLIDE 2 - SERVICES:\n   - \"What I Do\" heading\n   - Grid of services with icons:\n     📝 Content Writing (EN/HI/PA)\n     🎨 Social Media Design\n     📄 Marketing Materials\n     🎯 Brand Identity\n     📱 WhatsApp Catalog Setup\n     📊 Complete Marketing Packages\n\nSLIDE 3 - PORTFOLIO PIECE 1:\n   - Project title\n   - Mockup/screenshot of the work\n   - 2-sentence description\n   - Services used (tags)\n\nSLIDE 4 - PORTFOLIO PIECE 2:\n   (Same format)\n\nSLIDE 5 - PORTFOLIO PIECE 3:\n   (Same format)\n\nSLIDE 6 - PORTFOLIO PIECE 4:\n   (Same format)\n\nSLIDE 7 - PORTFOLIO PIECE 5:\n   (Same format)\n\nSLIDE 8 - PRICING:\n   - \"Packages\" heading\n   - Starter: INR 5,000/month (basic content)\n   - Growth: INR 10,000/month (content + design)\n   - Premium: INR 20,000/month (full marketing)\n   - One-time projects: Starting INR 2,000\n\nSLIDE 9 - TESTIMONIALS:\n   - 2-3 quotes (from practice clients or peers)\n   - Star ratings\n   - \"Trusted by local businesses in Punjab\"\n\nSLIDE 10 - CONTACT:\n   - \"Let us Talk\" heading\n   - Phone + WhatsApp (clickable)\n   - Email\n   - Instagram handle\n   - QR code for WhatsApp chat\n   - \"Free consultation call — 15 minutes\"\n\nEXPORT: PDF for email, PNG slides for WhatsApp\nTIME: 30 minutes for complete presentation')">&#128203; Copy: Complete portfolio presentation design in Canva</div></div>
+
+  <div class="micro-action"><h4>Action: Build Your Portfolio Presentation</h4>
+    <ul>
+      <li><strong>Step 1:</strong> Create 10-slide Canva presentation (30 min)</li>
+      <li><strong>Step 2:</strong> Insert your polished best 5 pieces as mockups</li>
+      <li><strong>Step 3:</strong> Export as PDF (for email) and PNG slides (for WhatsApp)</li>
+      <li><strong>Step 4:</strong> Upload to Google Drive with shareable link</li>
+      <li><strong>Step 5:</strong> Test: Send to yourself on WhatsApp. Does it look professional?</li>
+    </ul>
+    <p><strong>This presentation will be your SALES WEAPON for Phase 2 (client acquisition). Make it count.</strong></p>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128176;</div><div class="call-body"><h4>The "WhatsApp Portfolio" Trick</h4><p>Export each slide as a separate PNG. When a potential client asks "what do you do?", send 3-4 slides via WhatsApp. Visual, fast, impressive. <strong>Most local business owners don't check email &mdash; they check WhatsApp.</strong> Your portfolio must work on WhatsApp first, everything else second.</p></div></div>
+
+  <div class="identity-shift">"Tumhare paas ab professional portfolio presentation hai. Koi bhi client, koi bhi business &mdash; WhatsApp pe 3 slide bhejo, call aayegi."</div>
+
+  <div class="micro-win">Portfolio presentation created. Google Drive link ready. WhatsApp slides ready. You're ready for clients.</div>
+  <p class="curiosity-hook">Next: The Phase 1 Exam &mdash; 10 timed challenges to prove your skills.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: EXAM TIME &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 4: Phase 1 Exam Introduction ===== -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 45% done! EXAM TIME. 10 challenges. Timed. No excuses.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Phase 1 <span class="gr">Exam</span></h2>
+    <h2 data-lang-hi style="display:none">फेज़ 1 <span class="gr">परीक्षा</span></h2>
+    <h2 data-lang-pa style="display:none">ਫੇਜ਼ 1 <span class="gr">ਪ੍ਰੀਖਿਆ</span></h2>
+    <p>This is it. 10 real-world challenges. Each timed. You must use ALL the skills from Days 1-14. This exam simulates actual client work. Pass this, and you're officially Phase 1 certified.</p>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#9888;&#65039;</div><div class="call-body"><h4>Exam Rules</h4><p><strong>Rule 1:</strong> Each challenge has a time limit. Respect it. Clients have deadlines.<br><strong>Rule 2:</strong> Quality matters. Sloppy work = failed challenge.<br><strong>Rule 3:</strong> You can use ChatGPT, Canva, and any tools from the course.<br><strong>Rule 4:</strong> Save every output to a new folder: "Phase 1 Exam"<br><strong>Rule 5:</strong> 7/10 challenges passed = Phase 1 Certified. 10/10 = Distinction.<br><strong>Rule 6:</strong> Be honest. Only YOU know if you actually completed each challenge.</p></div></div>
+
+  <div class="emotional-hook">"<strong>Yeh exam tumhare liye nahi hai. Yeh tumhare CLIENTS ke liye hai.</strong> Agar tum yeh 10 challenges complete kar sakte ho, toh tum kisi bhi local business ko serve kar sakte ho. Prove it. To yourself."</div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Exam Structure</div>
+    <div class="vflow-row">
+      <div class="vflow-node"><span class="vn-icon">&#128221;</span><span class="vn-label">3 Content</span><span class="vn-sub">Writing tasks</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#127912;</span><span class="vn-label">3 Design</span><span class="vn-sub">Visual tasks</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#128196;</span><span class="vn-label">2 Marketing</span><span class="vn-sub">Material tasks</span></div>
+      <span class="vflow-arrow">&#8594;</span>
+      <div class="vflow-node"><span class="vn-icon">&#128640;</span><span class="vn-label">2 Speed</span><span class="vn-sub">Sprint tasks</span></div>
+    </div>
+  </div>
+
+  <div class="exam-timer"><div class="timer-label">Total Exam Time</div><div class="timer-display" id="examTimer">01:30:00</div><div><button class="btn btn-glow" onclick="startExamTimer()">Start Exam Timer</button> <button class="btn btn-ghost btn-sm" onclick="resetExamTimer()" style="margin-left:.5rem">Reset</button></div></div>
+
+  <div class="identity-shift">"90 minutes. 10 challenges. Everything you've learned. Ab dikhao kya kya seekha hai. GAME ON."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Start Challenges &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 5: Exam Challenges ===== -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#9201; EXAM IN PROGRESS &mdash; Complete all 10 challenges!</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2 data-lang-en>10 Exam <span class="gr">Challenges</span></h2>
+    <h2 data-lang-hi style="display:none">10 परीक्षा <span class="gr">चैलेंज</span></h2>
+    <h2 data-lang-pa style="display:none">10 ਪ੍ਰੀਖਿਆ <span class="gr">ਚੈਲੰਜ</span></h2>
+    <p>Complete each challenge within its time limit. Save all outputs to "Phase 1 Exam" folder.</p>
+  </div>
+
+  <!-- Challenge 1 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 8 MINUTES</span><h4>Challenge 1: Social Media Content Pack</h4><p>A new gym called <strong>"Iron Fitness, Phagwara"</strong> needs social media content. Create:</p><ul><li>5 Instagram captions (motivational, offer, tip, testimonial, event)</li><li>Each caption with relevant hashtags (10-15 per post)</li><li>CTA in each post (DM, call, visit)</li><li>At least 1 caption in Hinglish</li></ul><p><strong>Deliverable:</strong> 5 captions saved in a document. Quality: ready to post.</p></div>
+
+  <!-- Challenge 2 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 7 MINUTES</span><h4>Challenge 2: Trilingual WhatsApp Messages</h4><p><strong>"Raju Sweets, Jalandhar"</strong> needs Baisakhi promotion messages. Create:</p><ul><li>1 message in English (professional, for corporate orders)</li><li>1 message in Hindi Roman/Hinglish (casual, for WhatsApp broadcast)</li><li>1 message in Punjabi Roman (warm, for regular customers)</li><li>Each under 80 words with emojis and CTA</li></ul><p><strong>Deliverable:</strong> 3 messages. Must feel natural in each language, not translated.</p></div>
+
+  <!-- Challenge 3 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 10 MINUTES</span><h4>Challenge 3: Google My Business + Email</h4><p><strong>"Dr. Sharma Dental Care, Bathinda"</strong> needs digital presence content. Create:</p><ul><li>Google My Business description (750 characters, SEO keywords)</li><li>Welcome email for new patients (warm, informative, includes services)</li><li>Follow-up email after first visit (thank you + review request)</li></ul><p><strong>Deliverable:</strong> 1 GMB description + 2 emails. Professional medical tone.</p></div>
+
+  <!-- Challenge 4 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 8 MINUTES</span><h4>Challenge 4: Brand Kit Design</h4><p>Create a complete Brand Kit for <strong>"Kaur Boutique, Amritsar"</strong> (women's clothing).</p><ul><li>5 brand colors with HEX codes (use ChatGPT)</li><li>2 font suggestions with reasoning</li><li>Set up Brand Kit in Canva (colors + fonts)</li><li>Create a 1-page Brand Guidelines visual</li></ul><p><strong>Deliverable:</strong> Brand Kit set up in Canva + Brand Guidelines PNG.</p></div>
+
+  <!-- Challenge 5 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 10 MINUTES</span><h4>Challenge 5: Instagram Post Set</h4><p>Using the Kaur Boutique brand kit, design <strong>3 Instagram posts</strong>:</p><ul><li>Post 1: New Arrival announcement (product showcase)</li><li>Post 2: Customer testimonial with star rating</li><li>Post 3: Festival sale (Baisakhi special)</li><li>All posts: 1080x1080, brand colors, CTA, readable text</li></ul><p><strong>Deliverable:</strong> 3 Instagram post PNGs. Consistent brand identity across all.</p></div>
+
+  <!-- Challenge 6 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 8 MINUTES</span><h4>Challenge 6: Story Template Pack</h4><p>Create <strong>3 Instagram Story templates</strong> for Kaur Boutique:</p><ul><li>Story 1: "This or That" poll (two outfit styles)</li><li>Story 2: Behind-the-scenes (new collection sneak peek)</li><li>Story 3: Offer countdown (48-hour flash sale)</li><li>All: 1080x1920, brand colors, space for stickers</li></ul><p><strong>Deliverable:</strong> 3 Story template PNGs. Reusable by client daily.</p></div>
+
+  <!-- Challenge 7 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 10 MINUTES</span><h4>Challenge 7: Marketing Flyer</h4><p>Design a <strong>Grand Opening flyer</strong> for a new restaurant: <strong>"Tandoor Express, Ludhiana"</strong>.</p><ul><li>A4 size, print-ready (PDF Print export)</li><li>Includes: business name, opening date, address, inaugural offer</li><li>Phone number (large), Google Maps QR code</li><li>Warm, appetizing color scheme</li><li>Both print PDF and digital PNG versions</li></ul><p><strong>Deliverable:</strong> 1 flyer PDF + 1 flyer PNG. Ready to send to printer.</p></div>
+
+  <!-- Challenge 8 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 10 MINUTES</span><h4>Challenge 8: WhatsApp Catalog</h4><p>Create <strong>5 WhatsApp catalog images</strong> for Tandoor Express restaurant:</p><ul><li>5 menu items with food descriptions and prices</li><li>Consistent template across all 5</li><li>1024x1024 px, clean backgrounds, price badges</li><li>Veg/Non-veg indicators, spice levels</li><li>Business branding at bottom</li></ul><p><strong>Deliverable:</strong> 5 catalog PNGs. Consistent, appetizing, ready for WhatsApp Business.</p></div>
+
+  <!-- Challenge 9 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 10 MINUTES</span><h4>Challenge 9: Business Card + Flyer Combo</h4><p>Create a <strong>business card AND service flyer</strong> for yourself as a freelancer:</p><ul><li>Business card: front + back, your name, "Digital Marketing & Design"</li><li>Service flyer: A5, list your services, pricing tiers, contact, QR code</li><li>Both must share the same brand identity (your personal brand)</li></ul><p><strong>Deliverable:</strong> 1 business card (front+back) + 1 service flyer. Your actual marketing materials.</p></div>
+
+  <!-- Challenge 10 -->
+  <div class="exam-challenge reveal"><span class="time-badge">&#9201; 9 MINUTES</span><h4>Challenge 10: Speed Sprint &mdash; Complete Mini-Package</h4><p>A <strong>coaching center "Bright Academy, Mohali"</strong> needs an urgent mini-package. Create ALL of these in 9 minutes:</p><ul><li>1 Instagram post (admissions open)</li><li>1 Instagram story template (results announcement)</li><li>1 WhatsApp broadcast message (Hinglish)</li><li>Must use consistent branding across all 3</li></ul><p><strong>Deliverable:</strong> 3 pieces in 9 minutes. This tests your commercial speed. GO!</p></div>
+
+  <div class="checklist"><h4>&#9989; Exam Completion Tracker</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 1: Social Media Content Pack (8 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 2: Trilingual WhatsApp Messages (7 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 3: GMB Description + Emails (10 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 4: Brand Kit Design (8 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 5: Instagram Post Set (10 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 6: Story Template Pack (8 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 7: Marketing Flyer (10 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 8: WhatsApp Catalog (10 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 9: Business Card + Flyer Combo (10 min)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Challenge 10: Speed Sprint Mini-Package (9 min)</label></div>
+    <div class="check-score" id="checkScore">Tap completed challenges &rarr; score appears here</div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128200;</div><div class="call-body"><h4>Exam Scoring</h4><p><strong>10/10 challenges:</strong> DISTINCTION &mdash; You're ready for premium clients.<br><strong>8-9/10:</strong> PASS WITH MERIT &mdash; Strong skills, minor gaps to fill.<br><strong>7/10:</strong> PASS &mdash; Phase 1 certified. Keep practicing weak areas.<br><strong>Below 7:</strong> REVIEW &mdash; Revisit weak days, retry exam tomorrow.<br>Be honest with yourself. This exam is for YOUR growth.</p></div></div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Phase 1 Celebration &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 6: Phase 1 Celebration ===== -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2 data-lang-en>Phase 1 <span class="gr">Celebration!</span></h2>
+    <h2 data-lang-hi style="display:none">फेज़ 1 <span class="gr">जश्न!</span></h2>
+    <h2 data-lang-pa style="display:none">ਫੇਜ਼ 1 <span class="gr">ਜਸ਼ਨ!</span></h2>
+    <p>You did it. 15 days. From zero to a complete digital service provider. Let's celebrate what you've accomplished.</p>
+  </div>
+
+  <div class="celebration">
+    <h3>&#127881; PHASE 1 COMPLETE &#127881;</h3>
+    <p>15 days ago you had zero digital skills. Today you have a portfolio of 15+ professional pieces, you passed a timed exam with 10 real-world challenges, and you're ready to serve local businesses.</p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127942;</div><div class="call-body"><h4>What You Can Now Do</h4><p>&#9989; <strong>Content Writing:</strong> Social media, emails, product descriptions, GMB &mdash; in English, Hindi, Punjabi<br>&#9989; <strong>Social Media Design:</strong> Instagram posts, stories, carousels, reels covers<br>&#9989; <strong>Marketing Materials:</strong> Flyers, business cards, menus, price lists<br>&#9989; <strong>Brand Identity:</strong> Complete brand kits with colors, fonts, guidelines<br>&#9989; <strong>WhatsApp Business:</strong> Catalog images, broadcast templates, status designs<br>&#9989; <strong>Commercial Speed:</strong> 15 designs in 45 minutes. Complete packages in under an hour.<br>&#9989; <strong>Portfolio:</strong> 15+ pieces organized, polished, presentation-ready</p></div></div>
+
+  <div class="emotional-hook">"<strong>15 din pehle tum kisi se bolte 'main digital marketing karta hoon' toh confidence nahi hota.</strong> Aaj bolte ho toh peeche 15+ pieces ka portfolio hai. CONFIDENCE with PROOF. That's the difference. Tusi earned it."</div>
+
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">&#128197;</span><div class="vi-label">15 Days</div><div class="vi-desc">Of consistent hustle</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128221;</span><div class="vi-label">15+ Pieces</div><div class="vi-desc">Portfolio items</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127912;</span><div class="vi-label">6+ Tools</div><div class="vi-desc">Mastered</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#127760;</span><div class="vi-label">3 Languages</div><div class="vi-desc">EN + HI + PA</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128176;</span><div class="vi-label">INR 20K+</div><div class="vi-desc">Package value</div></div>
+    <div class="vigrid-item"><span class="vi-icon">&#128640;</span><div class="vi-label">Phase 2</div><div class="vi-desc">Ready to launch</div></div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">&#128200;</div><div class="call-body"><h4>Your Earning Potential After Phase 1</h4><p><strong>Freelance content writing:</strong> INR 3,000-8,000/month per client<br><strong>Social media management:</strong> INR 5,000-15,000/month per client<br><strong>Marketing packages:</strong> INR 10,000-20,000 one-time per business<br><strong>Brand Kit creation:</strong> INR 2,000-5,000 per business<br><strong>With just 3-5 local business clients:</strong> INR 30,000-75,000/month<br>Phase 2 will teach you HOW to get those clients.</p></div></div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128308;</div><div class="call-body"><h4>What's Coming in Phase 2 (Days 16-30)</h4><p><strong>Day 16-18:</strong> Client acquisition &mdash; how to find and pitch local businesses<br><strong>Day 19-21:</strong> Pricing and packaging your services<br><strong>Day 22-24:</strong> Advanced AI tools (video, presentations, automation)<br><strong>Day 25-27:</strong> Scaling &mdash; handling multiple clients efficiently<br><strong>Day 28-30:</strong> Phase 2 Exam + First Real Client Sprint<br>"Phase 1: skills. Phase 2: money. The hustle continues."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=PHASE%201%20COMPLETE!%20Day%2015%20exam%20done!%20Ready%20for%20Phase%202!" target="_blank" class="btn btn-glow" style="text-decoration:none;font-size:1.1rem;padding:18px 36px">&#127881; Message TARAhut: Phase 1 Complete!</a></div>
+
+  <div class="identity-shift">"Phase 1: GRADUATED. 15 din mein tum zero se hero ban gaye. Ab Phase 2 mein paise kamayenge. Skills done. Ab execution. LET'S GO."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Final Quiz &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 7: Final Quiz ===== -->
+<div class="sec" id="s7">
+  <div class="sec-head">
+    <div class="over">Section 07</div>
+    <h2 data-lang-en>Phase 1 <span class="gr">Final Quiz</span></h2>
+    <h2 data-lang-hi style="display:none">फेज़ 1 <span class="gr">फाइनल क्विज़</span></h2>
+    <h2 data-lang-pa style="display:none">ਫੇਜ਼ 1 <span class="gr">ਫਾਈਨਲ ਕੁਇਜ਼</span></h2>
+    <p>The ultimate knowledge test. 8 questions covering everything from Phase 1.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s8')">Graduation &rarr;</button></div>
+</div>
+
+<!-- ===== SECTION 8: Graduation ===== -->
+<div class="sec" id="s8">
+  <div class="sec-head">
+    <div class="over">Section 08</div>
+    <h2 data-lang-en>Phase 1 <span class="gr">Graduation</span></h2>
+    <h2 data-lang-hi style="display:none">फेज़ 1 <span class="gr">ग्रेजुएशन</span></h2>
+    <h2 data-lang-pa style="display:none">ਫੇਜ਼ 1 <span class="gr">ਗ੍ਰੈਜੁਏਸ਼ਨ</span></h2>
+    <p>You are now officially Phase 1 certified. The foundation is built. Phase 2 is where you turn skills into income.</p>
+  </div>
+
+  <div class="celebration">
+    <h3>&#127891; PHASE 1 GRADUATED &#127891;</h3>
+    <p>From Day 1 to Day 15. Zero to Digital Service Provider. Content. Design. Marketing. Trilingual. Commercial Speed. Portfolio Ready.<br><br><strong>Phase 2 starts tomorrow. The hustle never stops.</strong></p>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128640;</div><div class="call-body"><h4>Your Phase 1 Journey</h4><p><strong>Days 1-3:</strong> ChatGPT mastery &mdash; prompting, content creation, business writing<br><strong>Days 4-6:</strong> Multilingual content &mdash; English, Hindi, Punjabi, code-switching<br><strong>Days 7-8:</strong> Canva AI &mdash; social media design, marketing materials<br><strong>Days 9-11:</strong> Advanced tools &mdash; video, presentations, automation<br><strong>Days 12-14:</strong> Complete packages &mdash; client simulation, speed sprints<br><strong>Day 15:</strong> Portfolio building &mdash; exam, certification, graduation<br><br>&#128170; <strong>You covered in 15 days what most people take months to learn.</strong></p></div></div>
+
+  <div class="micro-action"><h4>Before Phase 2 Begins</h4>
+    <ul>
+      <li><strong>Share your portfolio</strong> with 3 friends/family members &mdash; get feedback</li>
+      <li><strong>Join the TARAhut WhatsApp group</strong> if not already there</li>
+      <li><strong>Identify 5 local businesses</strong> you could approach as potential clients</li>
+      <li><strong>Rest and recharge</strong> &mdash; Phase 2 is intense. Client work begins.</li>
+      <li><strong>Be proud.</strong> You earned this. Celebrate tonight.</li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=Phase%201%20GRADUATED!%20Ready%20for%20Phase%202!%20AI%20Hustler%2045!" target="_blank" class="btn btn-glow" style="text-decoration:none;font-size:1.1rem;padding:18px 36px">&#127891; Share Your Graduation!</a></div>
+
+  <div class="identity-shift">"15 din. Phase 1 complete. Tum ab AI Hustler ho. Skills proven. Portfolio ready. Phase 2 mein paisa kamana hai. REST TODAY. HUSTLE TOMORROW."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s7')">&larr; Quiz</button><a href="hustler-16.html" class="btn btn-glow btn-sm" style="text-decoration:none">Phase 2: Day 16 &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 15 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs.</p></div>
+
+<script>
+function setLang(lang){document.body.classList.remove('lang-hi','lang-pa');if(lang!=='en')document.body.classList.add('lang-'+lang);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}else{el.style.display='none'}});localStorage.setItem('tarahut-lang',lang);}(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+let examTimerInterval=null,examTimeLeft=5400;function startExamTimer(){if(examTimerInterval)return;examTimerInterval=setInterval(()=>{examTimeLeft--;if(examTimeLeft<=0){clearInterval(examTimerInterval);examTimerInterval=null;document.getElementById('examTimer').textContent='TIME UP!';document.getElementById('examTimer').style.color='var(--c3)';return;}const h=Math.floor(examTimeLeft/3600),m=Math.floor((examTimeLeft%3600)/60),s=examTimeLeft%60;document.getElementById('examTimer').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(examTimeLeft<300)document.getElementById('examTimer').style.color='var(--c3)';else if(examTimeLeft<600)document.getElementById('examTimer').style.color='var(--c4)';},1000);}function resetExamTimer(){clearInterval(examTimerInterval);examTimerInterval=null;examTimeLeft=5400;document.getElementById('examTimer').textContent='01:30:00';document.getElementById('examTimer').style.color='var(--c3)';}
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7','s8'];function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';document.getElementById('progText').textContent=Math.round((idx+1)/secIds.length*100)+'%';document.getElementById('progText').style.display='block';if(id==='s7'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box,.exam-challenge,.exam-timer,.celebration';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const label=checked>=10?'DISTINCTION! 10/10!':checked>=8?'MERIT! '+checked+'/10':checked>=7?'PASSED! '+checked+'/10':'Keep going: '+checked+'/10';score.textContent=label;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='Copied!';el.style.background='rgba(52,211,153,.1)';setTimeout(()=>{el.textContent=orig;el.style.background='rgba(0,240,255,.03)'},3000);}).catch(()=>{});}
+const allQ=[{q:"How many portfolio pieces should you have minimum after Phase 1?",o:["3","5","15+","50"],a:2,e:"Phase 1 requires a minimum of 15 distinct portfolio pieces covering content writing, social media design, marketing materials, brand kits, and WhatsApp catalogs."},{q:"What's more important than any degree or certificate for freelancing?",o:["University name","Years of experience","A portfolio showing 'here's what I've done'","Number of courses completed"],a:2,e:"Clients don't ask for degrees. They ask 'show me what you've done.' A portfolio with real work is more powerful than any certificate."},{q:"How should you organize your portfolio for maximum impact?",o:["One giant folder with everything mixed","Sub-folders by category: Writing, Design, Marketing, Brand Kits","Alphabetically","By date only"],a:1,e:"Organized sub-folders (Content Writing, Design, Marketing Materials, Brand Kits) make it easy for clients to find relevant work quickly."},{q:"What's the 'WhatsApp Portfolio Trick'?",o:["Send a long text about your skills","Export each portfolio slide as PNG and send 3-4 on WhatsApp","Send a link to your website","Call and describe your work"],a:1,e:"Export portfolio slides as individual PNGs. When a client asks 'kya karte ho?', send 3-4 slides on WhatsApp. Visual, fast, impressive — and that's where local clients ARE."},{q:"In the Phase 1 exam, what's the passing score?",o:["3/10","5/10","7/10 challenges completed","10/10 only"],a:2,e:"7/10 challenges = Pass (Phase 1 Certified). 8-9/10 = Pass with Merit. 10/10 = Distinction. Below 7 = Review and retry."},{q:"What's your earning potential with 3-5 local business clients after Phase 1?",o:["INR 5,000/month","INR 10,000/month","INR 30,000-75,000/month","INR 5,00,000/month"],a:2,e:"With 3-5 local business clients buying content, design, and marketing packages, you can earn INR 30,000-75,000/month. Phase 2 teaches client acquisition."},{q:"Why should you create portfolio pieces for different business types?",o:["It's required by Canva","It shows versatility — restaurants, salons, gyms, coaching centers all see relevant work","Only one business type matters","It's just for practice"],a:1,e:"Different business types in your portfolio show versatility. A restaurant owner sees your restaurant work, a salon owner sees salon work — relevance wins clients."},{q:"What comes in Phase 2 of AI Hustler 45?",o:["More design tutorials","Client acquisition, pricing, advanced AI tools, scaling, and real client work","Only exams","Nothing — Phase 1 is complete"],a:1,e:"Phase 2 (Days 16-30) covers client acquisition, pricing/packaging services, advanced AI tools, scaling multiple clients, and the first real client sprint."},{q:"What's the best 'social proof' for a freelancer starting out?",o:["Expensive ads","Practice portfolio pieces that look like real client work","Lying about experience","Waiting until you have 'enough' experience"],a:1,e:"Practice portfolio pieces that look like real client work are the best social proof when starting. They demonstrate capability even without paid clients yet."},{q:"How long should the Phase 1 timed exam take?",o:["30 minutes","90 minutes total for 10 challenges","5 hours","No time limit"],a:1,e:"The Phase 1 exam is 90 minutes total for 10 challenges, with individual time limits per challenge. This simulates real client deadline pressure."},{q:"What makes the 'Best 5' portfolio strategy effective?",o:["Having fewer pieces is easier","5 incredible pieces prove capability better than 20 mediocre ones","Clients can only count to 5","It saves storage space"],a:1,e:"Clients want to see quality, not quantity. 5 incredible showpiece portfolio items prove your capability far more than 20 average ones."},{q:"What should a freelancer portfolio presentation include?",o:["Only images","Cover, services, 5 portfolio pieces, pricing, testimonials, and contact slide","Just a phone number","Resume and degree certificates"],a:1,e:"A complete portfolio presentation: Cover slide + Services + 5 Portfolio pieces with descriptions + Pricing tiers + Testimonials + Contact/CTA slide."},{q:"Why is the exam timed with real business scenarios?",o:["To cause stress","To simulate actual client work — real clients have real deadlines","Timing doesn't matter","For entertainment"],a:1,e:"Real clients have deadlines. The timed exam simulates actual work conditions — if you can deliver under time pressure, you can serve real clients."},{q:"What's the Phase 1 Commercial Speed benchmark?",o:["1 design per hour","5 designs per day","15 designs in 45 minutes for one business","1 design per week"],a:2,e:"Commercial Speed = 15 designs in 45 minutes for one business (complete marketing package). This speed makes you competitive and profitable."},{q:"After Phase 1, what's the most important next step?",o:["Take a year off","Identify 5 local businesses to approach as potential clients","Learn another programming language","Wait for clients to find you"],a:1,e:"Identify 5 local businesses to approach. Phase 2 teaches acquisition, but preparation starts now. Research businesses, understand their needs, plan your pitch."}];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct>=75?'Phase 1 Master!':pct>=50?'Good foundation!':'Review Phase 1 materials!'}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}%</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s8')" style="margin-left:.8rem">Graduation &rarr;</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;}function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`&#9989; ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`&#10060; ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}function nxtQ(){cq++;renderQ();}
+</script></body></html>

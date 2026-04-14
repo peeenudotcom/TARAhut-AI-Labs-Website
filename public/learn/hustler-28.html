@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 28: Field Work Day 1 — Guided Sprint — AI Hustler 45 · Uplrn AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.lang-toggle{position:fixed;top:12px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);padding:4px;border-radius:99px;border:1px solid var(--bd)}.lang-btn{padding:5px 12px;border-radius:99px;font-size:.7rem;font-weight:700;cursor:pointer;border:none;background:none;color:var(--t3);font-family:'JetBrains Mono',monospace;transition:all .3s}.lang-btn.active{background:var(--brand);color:#fff}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}.btn-sm{padding:10px 22px;font-size:.85rem}.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}.micro-win::before{content:'> ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:100px;text-align:center}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6}.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1)}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3)}.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s,transform .7s}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}.prompt-block{padding:1.2rem 1.5rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin:1rem 0;cursor:pointer;line-height:1.7}.prompt-block:hover{background:rgba(0,240,255,.06)}.field-tracker{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.field-tracker h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem;color:var(--c4)}.field-row{display:grid;grid-template-columns:40px 1fr 1fr 100px 1fr;gap:8px;padding:.6rem .5rem;border-bottom:1px solid var(--bd);align-items:center;font-size:.82rem;color:var(--t2)}.field-row.header{font-family:'Syne',sans-serif;font-weight:700;color:var(--c1);font-size:.72rem;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid var(--c1)}.field-row input,.field-row select{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);color:var(--t1);padding:6px 8px;font-size:.8rem;font-family:'Nunito Sans',sans-serif;width:100%}.field-row input:focus,.field-row select:focus{outline:none;border-color:var(--c1)}.field-row select{appearance:none;cursor:pointer}.field-summary{margin-top:1rem;padding:.75rem 1rem;background:rgba(251,191,36,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c4);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}.debrief-section{margin:2rem 0;padding:1.75rem;background:linear-gradient(135deg,rgba(168,85,247,.04),rgba(0,240,255,.03));border:1px solid rgba(168,85,247,.15);border-radius:var(--r)}.debrief-section h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem;color:var(--c2)}.debrief-textarea{width:100%;padding:12px 14px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-size:.88rem;font-family:'Nunito Sans',sans-serif;outline:none;transition:all .3s;margin-bottom:.75rem;resize:vertical;min-height:70px}.debrief-textarea:focus{border-color:var(--c2)}.debrief-textarea::placeholder{color:var(--t3)}@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.field-row{grid-template-columns:30px 1fr;gap:4px}.field-row.header{display:none}}</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:140px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<div class="lang-toggle"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">HI</button><button class="lang-btn" onclick="setLang('pa')">PA</button></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 28 &middot; AI Hustler 45 &middot; 2026</div>
+  <h1>Field Work<br><span class="gr">Day 1: Guided Sprint</span></h1>
+  <div class="hero-brand">AI Hustler 45 &mdash; Phase 3: Earning &mdash; Uplrn AI Labs</div>
+  <p data-en="Your first real market day. Go in pairs. Visit 5+ businesses. Trainer accompanies your first 2 visits. Pitch, hand over your service menu, collect contacts. This is where everything becomes real." data-hi="Tumhara pehla real market day. Pairs mein jao. 5+ businesses visit karo. Trainer pehle 2 visits mein saath chalega. Pitch karo, service menu do, contacts lo. Yahan se sab real hota hai." data-pa="Tuhada pehla real market day. Pairs vich jao. 5+ businesses visit karo. Trainer pehle 2 visits vich naal chalega. Pitch karo, service menu deo, contacts lo. Etthe sab kujh real hunda hai.">Your first real market day. Go in pairs. Visit 5+ businesses. Trainer accompanies your first 2 visits. Pitch, hand over your service menu, collect contacts. This is where everything becomes real.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Briefing &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s4')">Field Tracker</button></div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner"><span class="nav-brand">AI Hustler 45</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Briefing</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>Pitch Scripts</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>Logistics &amp; Zones</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>Field Tracker</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Debrief</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+  <button class="nav-btn" data-s="s7"><span class="nn">07</span>Next Steps</button>
+</div></nav>
+
+<!-- SECTION 1: BRIEFING -->
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01 &mdash; Briefing</div><h2>Today <span class="gr">Changes Everything</span></h2>
+    <p data-en="This is the day you will remember. The day you first spoke to a real business owner as a professional. The day you stopped being a student and started being a consultant." data-hi="Yeh woh din hai jo tum yaad rakhoge. Jab tumne pehli baar ek real business owner se as a professional baat ki. Jab tum student se consultant bane." data-pa="Eh oh din hai jo tusi yaad rakhoge. Jado tusi pehli vaar ek real business owner naal as a professional gall kiti. Jado tusi student ton consultant bane.">This is the day you will remember. The day you first spoke to a real business owner as a professional. The day you stopped being a student and started being a consultant.</p></div>
+
+  <div class="emotional-hook reveal">
+    <strong>"Dar lag raha hai? Accha hai. Matlab kuch important karne waale ho."</strong> Feeling nervous is completely normal. Every successful salesperson felt exactly this way before their first pitch. The difference between those who succeed and those who do not is simple: those who succeed do it anyway.
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">🎯</div><div class="call-body"><h4>Today's Mission</h4>
+    <p data-en="Go to the market in pairs. Each pair visits <strong>5+ businesses</strong>. Trainer accompanies the first 2 pairs for their first 2 visits. Introduce yourself, hand over service menu, collect contacts. <strong>Goal is conversations, not sales.</strong>" data-hi="Market mein pairs mein jao. Har pair <strong>5+ businesses</strong> visit kare. Trainer pehle 2 pairs ke saath pehle 2 visits pe jaayega. Apna introduction do, service menu do, contacts lo. <strong>Goal hai baat karna, bechna nahi.</strong>" data-pa="Market vich pairs vich jao. Har pair <strong>5+ businesses</strong> visit kare. Trainer pehle 2 pairs de naal pehle 2 visits te jaayega. Apna introduction deo, service menu deo, contacts lo. <strong>Goal hai gall karna, vechna nahi.</strong>">Go to the market in pairs. Each pair visits <strong>5+ businesses</strong>. Trainer accompanies the first 2 pairs for their first 2 visits. Introduce yourself, hand over service menu, collect contacts. <strong>Goal is conversations, not sales.</strong></p></div></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Field Work Day 1 Flow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">🧘</div><div class="vn-label">Breathe</div><div class="vn-sub">3 deep breaths</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">📋</div><div class="vn-label">Briefing</div><div class="vn-sub">30 min prep</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">🏪</div><div class="vn-label">Field Work</div><div class="vn-sub">60 min outreach</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">📊</div><div class="vn-label">Debrief</div><div class="vn-sub">25 min review</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Total session: ~2 hours.</strong> 30 min briefing + 60 min field work + 5 min return + 25 min debrief.</div>
+  </div>
+
+  <div class="micro-action"><h4>Breathing Exercise (Do It Now)</h4>
+    <p>Before we go further, let us calm those nerves. Stand up. Do this together as a class:</p>
+    <ul>
+      <li><strong>Inhale deeply</strong> for 4 seconds (through your nose)</li>
+      <li><strong>Hold</strong> for 4 seconds</li>
+      <li><strong>Exhale slowly</strong> for 6 seconds (through your mouth)</li>
+      <li>Repeat <strong>3 times</strong></li>
+      <li>Shake your hands out. Roll your shoulders. You are ready.</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">⚡</div><div class="call-body"><h4>Mindset Reset</h4>
+    <p data-en="Today's goal is <strong>NOT</strong> to sell. Today's goal is to have 5+ conversations with business owners. That is it. If someone says yes, amazing. If everyone says 'sochke batata hoon,' that is still a win. You planted seeds today. Sales happen in follow-ups." data-hi="Aaj ka goal sell karna <strong>NAHI</strong> hai. Aaj ka goal hai 5+ business owners se baat karna. Bas. Agar koi haan bole, amazing. Agar sab bolen 'sochke batata hoon,' phir bhi win hai. Aaj tumne seeds plant kiye. Sales follow-up mein hoti hain." data-pa="Ajj da goal sell karna <strong>NAHI</strong> hai. Ajj da goal hai 5+ business owners naal gall karna. Bas. Jekar koi haan bole, amazing. Jekar sab bolen 'sochke dasda haan,' fer vi win hai. Ajj tusi seeds plant kite. Sales follow-up vich hundiyan ne.">Today's goal is <strong>NOT</strong> to sell. Today's goal is to have 5+ conversations with business owners. That is it. If someone says yes, amazing. If everyone says 'sochke batata hoon,' that is still a win. You planted seeds today. Sales happen in follow-ups.</p></div></div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Pre-Field Checklist</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">ESSENTIAL</span><span class="crd-icon">📄</span><h3>10 Printed Service Menus</h3><p>Canva-designed, professionally printed at a local shop or cyber cafe. These are your calling cards. Clean, clear, with your name and phone number.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">ESSENTIAL</span><span class="crd-icon">📱</span><h3>Phone Fully Charged</h3><p>WhatsApp Business installed and configured. Portfolio samples accessible on your phone. Camera ready for storefront photos.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">ESSENTIAL</span><span class="crd-icon">💼</span><h3>Portfolio on Phone</h3><p>Best 5-6 designs from your portfolio accessible instantly. Show social media posts, logo concepts, and content examples from class practice.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">ESSENTIAL</span><span class="crd-icon">📝</span><h3>Tracking Sheet</h3><p>Printed tracking sheet with 8 rows for businesses visited. Columns: business name, owner name, phone, status (interested/maybe/no), notes.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">ESSENTIAL</span><span class="crd-icon">👔</span><h3>Professional Appearance</h3><p>Clean, ironed clothes. First impressions matter enormously. You are a professional consultant, not a student. Dress the part.</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">ESSENTIAL</span><span class="crd-icon">🪪</span><h3>Student ID / Letterhead</h3><p>TARAhut AI Labs student ID card or letterhead for credibility. Business owners trust organizations more than individuals.</p></div>
+  </div>
+
+  <div class="identity-shift">You are not a student today. You are a Digital Marketing Consultant from TARAhut AI Labs.</div>
+
+  <div class="micro-win">27 days of preparation. Today you execute. Let us go.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Pitch Scripts &rarr;</button></div>
+</div>
+
+<!-- SECTION 2: PITCH SCRIPTS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">14% through! Master your pitch scripts before heading out.</div>
+  <div class="sec-head"><div class="over">Section 02 &mdash; Pitch Scripts</div><h2>The Approach <span class="gr">Script Toolkit</span></h2>
+    <p data-en="Three versions of your opening pitch. Practice each one 3 times out loud before you leave this room. The words must feel natural, not robotic." data-hi="Tumhare opening pitch ke teen versions. Har ek ko 3 baar zor se bolo room se nikalne se pehle. Words natural lagne chahiye, robotic nahi." data-pa="Tuhade opening pitch de teen versions. Har ik nu 3 vaar zor naal bolo room ton niklan ton pehle. Words natural lagane chahide ne, robotic nahi.">Three versions of your opening pitch. Practice each one 3 times out loud before you leave this room. The words must feel natural, not robotic.</p></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Opening Pitch: Standard (30 Seconds)</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Namaste ji, mera naam [Your Name] hai, main TARAhut AI Labs se digital marketing consultant hoon. Kya main aapko 2 minute mein bataa sakta/sakti hoon ki hum aapke business ki online presence kaise badha sakte hain?"</div>
+    <div class="demo-out" data-en="This is your default opener. It is polite, professional, and asks for permission. The '2 minute' time limit reduces resistance. Practice this 3 times until it flows naturally." data-hi="Yeh tumhara default opener hai. Polite hai, professional hai, aur permission maangta hai. '2 minute' time limit resistance kam karta hai. 3 baar practice karo jab tak naturally bole." data-pa="Eh tuhada default opener hai. Polite hai, professional hai, te permission mangda hai. '2 minute' time limit resistance ghatt karda hai. 3 vaar practice karo jado tak naturally bolo.">This is your default opener. It is polite, professional, and asks for permission. The '2 minute' time limit reduces resistance. Practice this 3 times until it flows naturally.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Opening Pitch: Compliment-First (More Warm)</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Namaste ji! Aapki shop bahut achhi hai. Main [Your Name], TARAhut AI Labs se digital marketing mein kaam karta/karti hoon. Maine dekha aapka Google pe profile nahi hai -- main aapko dikha sakta/sakti hoon ki 10 minute mein kaise bana sakte hain. Free mein."</div>
+    <div class="demo-out" data-en="Compliment-first works great with shop owners who take pride in their business. The 'free' hook lowers the barrier. You are offering something before asking for anything." data-hi="Compliment-first woh shop owners ke saath achha kaam karta hai jo apne business pe proud hain. 'Free' hook barrier kam karta hai. Tum kuch de rahe ho, maang nahi rahe." data-pa="Compliment-first oh shop owners de naal vadiya kaam karda hai jo apne business te proud ne. 'Free' hook barrier ghatt karda hai. Tusi kujh de rahe ho, mang nahi rahe.">Compliment-first works great with shop owners who take pride in their business. The 'free' hook lowers the barrier. You are offering something before asking for anything.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Opening Pitch: Problem-Led (Direct)</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Namaste ji, kya aapke business ka Instagram ya Google pe profile hai? Nahi? Main yeh kaam karta/karti hoon -- chhote businesses ko online le jaata/jaati hoon. Mera naam [Your Name] hai, TARAhut AI Labs se hoon. Ek sample dikhaata/dikhaati hoon 30 second mein."</div>
+    <div class="demo-out" data-en="Problem-led works with businesses that clearly have zero online presence. You identify the gap immediately and position yourself as the solution. Show the portfolio sample within 30 seconds." data-hi="Problem-led woh businesses ke saath kaam karta hai jinki clearly zero online presence hai. Tum gap turant identify karte ho aur khud ko solution ke roop mein present karte ho. 30 second mein portfolio sample dikhao." data-pa="Problem-led oh businesses de naal kaam karda hai jinhan di clearly zero online presence hai. Tusi gap turant identify karde ho te khud nu solution de roop vich present karde ho. 30 second vich portfolio sample dikhao.">Problem-led works with businesses that clearly have zero online presence. You identify the gap immediately and position yourself as the solution. Show the portfolio sample within 30 seconds.</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Top 5 Objections You Will Hear Today</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">OBJECTION 1</span><span class="crd-icon">🙅</span><h3>"Humein zaroorat nahi hai"</h3>
+      <p><strong>Response:</strong> "Ji bilkul, bahut se business owners yeh bolte hain. Lekin aapke competitor [next door/nearby] ne social media shuru kiya hai. Kya main aapko ek free sample bana ke bhej sakta hoon? Dekhne mein kya jaata hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">OBJECTION 2</span><span class="crd-icon">💸</span><h3>"Budget nahi hai"</h3>
+      <p><strong>Response:</strong> "Main samajh sakta hoon. Isiliye hamara starter plan sirf ₹3,000/month hai -- ek din ka ₹100. Aur pehle hum aapko free sample dikhayenge. Pasand aaye toh aage badhenge."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">OBJECTION 3</span><span class="crd-icon">🤔</span><h3>"Sochke batata hoon"</h3>
+      <p><strong>Response:</strong> "Bilkul, sochiye. Main apna card chhod jaata hoon. Kya main aapko kal ek free sample post bana ke WhatsApp pe bhej sakta hoon? Dekhne mein kya jaata hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-1">OBJECTION 4</span><span class="crd-icon">🏢</span><h3>"Aapki company kya hai?"</h3>
+      <p><strong>Response:</strong> "TARAhut AI Labs -- hum AI se digital marketing services dete hain chhote businesses ko. Yeh hamara card hai aur yeh hain hamare past projects." (Show portfolio on phone)</p></div>
+    <div class="crd reveal"><span class="tag tag-5">OBJECTION 5</span><span class="crd-icon">📂</span><h3>"Pehle portfolio dikhao"</h3>
+      <p><strong>Response:</strong> "Zaroor! Yeh dekhiye." (Show phone immediately with 3-4 best designs) "Yeh ek salon ke liye banaya, yeh ek restaurant ke liye. Aapke business ke liye bhi aisa ban sakta hai."</p></div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Pro Tip: The 2-Minute Rule</h4>
+    <p data-en="Never talk for more than 2 minutes. After your pitch, <strong>stop and ask a question</strong>. 'Aapke business ka sabse bada challenge kya hai online mein?' Let them talk. People who talk feel heard, and people who feel heard are more likely to say yes." data-hi="Kabhi 2 minute se zyada mat bolo. Pitch ke baad, <strong>ruko aur sawaal poocho</strong>. 'Aapke business ka sabse bada challenge kya hai online mein?' Unhe bolne do. Jo log bolte hain unhe suna jaata hai, aur sunne waale log haan bolte hain." data-pa="Kabhi 2 minute ton vadh naa bolo. Pitch ton baad, <strong>ruko te sawaal puchho</strong>. 'Tuhade business da sabton vadda challenge ki hai online vich?' Unhan nu bolne deo. Jo log bolde ne unhan nu suneya jaanda hai, te sunne waale log haan bolde ne.">Never talk for more than 2 minutes. After your pitch, <strong>stop and ask a question</strong>. 'Aapke business ka sabse bada challenge kya hai online mein?' Let them talk. People who talk feel heard, and people who feel heard are more likely to say yes.</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Role Play Practice (Do This Now)</h4></div>
+    <div class="demo-out" data-en="Pair up. One person is the business owner, one is the consultant.
+
+Round 1: Owner says 'Humein zaroorat nahi hai' -- Consultant responds.
+Round 2: Owner says 'Budget nahi hai' -- Consultant responds.
+Round 3: Owner says 'Sochke batata hoon' -- Consultant responds.
+
+Switch roles. Repeat.
+
+You must be able to handle these 3 objections smoothly before stepping out." data-hi="Pair bano. Ek business owner, ek consultant.
+
+Round 1: Owner bole 'Humein zaroorat nahi hai' -- Consultant jawab de.
+Round 2: Owner bole 'Budget nahi hai' -- Consultant jawab de.
+Round 3: Owner bole 'Sochke batata hoon' -- Consultant jawab de.
+
+Roles switch karo. Repeat karo.
+
+Yeh 3 objections smoothly handle karne chahiye bahar jaane se pehle." data-pa="Pair bano. Ek business owner, ek consultant.
+
+Round 1: Owner bole 'Saanu loR nahi' -- Consultant jawab de.
+Round 2: Owner bole 'Budget nahi hai' -- Consultant jawab de.
+Round 3: Owner bole 'Sochke dasda haan' -- Consultant jawab de.
+
+Roles switch karo. Repeat karo.
+
+Eh 3 objections smoothly handle karne chahide ne bahar jaan ton pehle.">Pair up. One person is the business owner, one is the consultant.
+
+Round 1: Owner says 'Humein zaroorat nahi hai' -- Consultant responds.
+Round 2: Owner says 'Budget nahi hai' -- Consultant responds.
+Round 3: Owner says 'Sochke batata hoon' -- Consultant responds.
+
+Switch roles. Repeat.
+
+You must be able to handle these 3 objections smoothly before stepping out.</div>
+  </div>
+
+  <div class="micro-action"><h4>The Follow-Up WhatsApp Template</h4>
+    <p>Save this in your WhatsApp quick replies. Send it within 2 hours of meeting every business owner:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Namaste [Owner Name] ji, main [Your Name] -- aaj aapki dukaan pe aaya/aayi tha/thi digital marketing ke baare mein baat karne. Bahut achha laga aapse milke. Main aapke liye ek sample post bana ke bhejta/bhejti hoon. Dhanyavaad! 🙏"</div>
+  </div>
+
+  <div class="identity-shift">You have practiced 27 days for this moment. The scripts are ready. YOU are ready.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Logistics &rarr;</button></div>
+</div>
+
+<!-- SECTION 3: LOGISTICS & ZONES -->
+<div class="sec" id="s3">
+  <div class="progress-marker">28% through! Understand your zone and safety rules.</div>
+  <div class="sec-head"><div class="over">Section 03 &mdash; Logistics</div><h2>Zones, Pairs <span class="gr">&amp; Safety Rules</span></h2>
+    <p data-en="Every pair gets a zone on the market map. Targets, rules, and the trainer accompaniment plan. Study this before heading out." data-hi="Har pair ko market map pe ek zone milega. Targets, rules, aur trainer accompaniment plan. Bahar jaane se pehle yeh padho." data-pa="Har pair nu market map te ek zone milega. Targets, rules, te trainer accompaniment plan. Bahar jaan ton pehle eh padho.">Every pair gets a zone on the market map. Targets, rules, and the trainer accompaniment plan. Study this before heading out.</p></div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">👥</div><div class="call-body"><h4>Pair Assignments</h4>
+    <p>Pairs are assigned by the trainer: <strong>1 confident student + 1 shy student</strong> where possible. This is intentional. The confident student leads the first 2 approaches. The shy student leads the next 2. By the 5th business, both are comfortable.</p></div></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Trainer Accompaniment Plan</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">🏪</div><div class="vn-label">Business 1</div><div class="vn-sub">Trainer LEADS</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">🏪</div><div class="vn-label">Business 2</div><div class="vn-sub">Trainer CO-LEADS</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">🏪</div><div class="vn-label">Business 3-5+</div><div class="vn-sub">YOU LEAD (solo pair)</div></div>
+    </div>
+    <div class="vflow-caption">Trainer and TA each accompany 2 pairs for their first 2 visits. Then you are on your own.</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Field Work Targets</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-5">TARGET</span><span class="crd-icon">🏪</span><h3>5+ Businesses Per Pair</h3><p>Minimum 5 businesses approached. If you finish 5 early and still have time, go for 7. More conversations = more chances = more confidence.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">COLLECT</span><span class="crd-icon">📱</span><h3>Contact Info</h3><p>For every business visited: owner name, phone number (if shared), WhatsApp status (interested / maybe / not interested). This becomes your follow-up list.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">DELIVER</span><span class="crd-icon">📄</span><h3>Service Menu</h3><p>Hand over your printed service menu to every business you visit. Even if they say no. They might look at it later. Plant the seed.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">ASSESS</span><span class="crd-icon">📝</span><h3>Quick Notes</h3><p>After each visit, write quick notes: what did they say? Any specific needs mentioned? What objection? This information is gold for follow-ups.</p></div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">🛡️</div><div class="call-body"><h4>Safety Rules (Non-Negotiable)</h4>
+    <p><strong>1.</strong> Stay in pairs at all times. <strong>2.</strong> Share live location on WhatsApp group. <strong>3.</strong> Trainer's phone number on speed dial. <strong>4.</strong> If you feel unsafe or uncomfortable at any business, leave immediately. <strong>5.</strong> Return to classroom by the exact return time. <strong>6.</strong> Check in via WhatsApp every 20 minutes with a quick update.</p></div></div>
+
+  <div class="micro-action"><h4>At Each Business: The 5-Step Process</h4>
+    <ul>
+      <li><strong>Step 1:</strong> Walk in confidently. Ask for the owner. Smile.</li>
+      <li><strong>Step 2:</strong> Deliver your 30-second opening pitch.</li>
+      <li><strong>Step 3:</strong> Show 1 portfolio sample on your phone (30 seconds max).</li>
+      <li><strong>Step 4:</strong> Hand over the service menu. Let them look at it.</li>
+      <li><strong>Step 5:</strong> Ask: "Kya main aapko ek free sample post bana ke bhej sakta hoon?" Collect contact if yes or maybe.</li>
+    </ul>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Which Businesses to Approach</h3>
+  <div class="vigrid stagger reveal">
+    <div class="vigrid-item"><span class="vi-icon">🍕</span><div class="vi-label" style="color:var(--c1)">Restaurants</div><div class="vi-desc">High visual need</div></div>
+    <div class="vigrid-item"><span class="vi-icon">💇</span><div class="vi-label" style="color:var(--c2)">Salons</div><div class="vi-desc">Instagram-ready</div></div>
+    <div class="vigrid-item"><span class="vi-icon">👗</span><div class="vi-label" style="color:var(--c3)">Clothing</div><div class="vi-desc">Need product posts</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🏋️</span><div class="vi-label" style="color:var(--c4)">Gyms</div><div class="vi-desc">Social media gap</div></div>
+    <div class="vigrid-item"><span class="vi-icon">📚</span><div class="vi-label" style="color:var(--c5)">Coaching</div><div class="vi-desc">Need leads</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🏥</span><div class="vi-label" style="color:var(--brand)">Clinics</div><div class="vi-desc">GMB critical</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🛒</span><div class="vi-label" style="color:var(--c1)">Retail</div><div class="vi-desc">Product marketing</div></div>
+    <div class="vigrid-item"><span class="vi-icon">🎂</span><div class="vi-label" style="color:var(--c3)">Bakeries</div><div class="vi-desc">Visual content gold</div></div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">🚫</div><div class="call-body"><h4>Common Day 1 Mistakes to Avoid</h4>
+    <p><strong>1. Talking too much</strong> -- deliver your 2-minute pitch, then let THEM talk. <strong>2. Getting discouraged after first rejection</strong> -- rejection is normal, even the best salespeople get rejected 7 out of 10 times. <strong>3. Skipping businesses</strong> because they look "too big" or "too small" -- every business is a prospect. <strong>4. Not collecting contact info</strong> -- even from businesses that say no, ask "Kya main aapko ek free sample bhej sakta hoon? Number mil jayega?"</p></div></div>
+
+  <div class="micro-win">Every "no" brings you closer to a "yes." The math of sales is simple: more approaches = more income.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Field Tracker &rarr;</button></div>
+</div>
+
+<!-- SECTION 4: FIELD TRACKER -->
+<div class="sec" id="s4">
+  <div class="progress-marker">43% through! Track every business you visit.</div>
+  <div class="sec-head"><div class="over">Section 04 &mdash; Field Tracker</div><h2>Business <span class="gr">Visit Tracker</span></h2>
+    <p data-en="Record every business you visit. Fill this during or immediately after each visit. This is your sales pipeline. Treat it like gold." data-hi="Har business ko record karo jo visit kiya. Yeh visit ke dauraan ya turant baad bharo. Yeh tumhara sales pipeline hai. Ise sone ki tarah treat karo." data-pa="Har business nu record karo jo visit kita. Eh visit de dauran ya turant baad bharo. Eh tuhada sales pipeline hai. Enu sone di tarah treat karo.">Record every business you visit. Fill this during or immediately after each visit. This is your sales pipeline. Treat it like gold.</p></div>
+
+  <div class="field-tracker" id="fieldTracker1">
+    <h4>Business Visit Log -- Day 28</h4>
+    <div class="field-row header"><span>#</span><span>Business Name</span><span>Owner Name</span><span>Status</span><span>Notes / Objection</span></div>
+    <div class="field-row"><span>1</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>2</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>3</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>4</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>5</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>6</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>7</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-row"><span>8</span><input type="text" placeholder="Business name"><input type="text" placeholder="Owner name + phone"><select><option>--</option><option>Interested</option><option>Maybe Later</option><option>Not Interested</option></select><input type="text" placeholder="Notes..."></div>
+    <div class="field-summary"><span>Businesses: <strong id="bizCount">0</strong></span><span>Interested: <strong id="intCount">0</strong></span><span>Maybe: <strong id="mayCount">0</strong></span><span>Menus Given: <strong id="menuCount">0</strong></span></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">📊</div><div class="call-body"><h4>After Each Visit</h4>
+    <p>Immediately after leaving each business, take 30 seconds to fill in the row. Do not rely on memory. Write the owner's name, their response, and any specific thing they mentioned. <strong>"Unhone bola ki summer mein business slow hai"</strong> -- this detail helps you customize your follow-up.</p></div></div>
+
+  <div class="micro-action"><h4>WhatsApp Check-In Format</h4>
+    <p>Every 20 minutes, send this to the class WhatsApp group:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "[Your Name] -- 3 done, 1 interested, 1 maybe. Going strong! 💪"</div>
+  </div>
+
+  <div class="checklist">
+    <h4>Field Day 1 Completion Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Arrived at assigned zone on time</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Approached 5+ businesses</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Delivered opening pitch smoothly</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Showed portfolio on phone</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Handed service menu to every business</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Collected at least 2 contact numbers</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Handled at least 1 objection live</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Sent WhatsApp check-ins every 20 minutes</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Returned to classroom on time</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Filled tracking sheet for every business</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off</div>
+  </div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Debrief &rarr;</button></div>
+</div>
+
+<!-- SECTION 5: DEBRIEF -->
+<div class="sec" id="s5">
+  <div class="progress-marker">57% through! Debrief time -- what happened out there?</div>
+  <div class="sec-head"><div class="over">Section 05 &mdash; Debrief</div><h2>Field <span class="gr">Debrief Session</span></h2>
+    <p data-en="Every pair reports: businesses approached, best conversation, worst rejection, contacts collected. We learn from each other. Every number is a win." data-hi="Har pair report kare: kitne businesses approach kiye, sabse achhi baat, sabse buri rejection, contacts collected. Hum ek doosre se seekhte hain. Har number ek win hai." data-pa="Har pair report kare: kitne businesses approach kite, sabton vadiya gall, sabton buri rejection, contacts collected. Assi ek dooje ton sikhde haan. Har number ek win hai.">Every pair reports: businesses approached, best conversation, worst rejection, contacts collected. We learn from each other. Every number is a win.</p></div>
+
+  <div class="debrief-section reveal">
+    <h4>Round Robin Report (Your Pair)</h4>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">Businesses approached (count)</label>
+    <div class="debrief-textarea" contenteditable="true" style="min-height:40px" data-placeholder="e.g., 6 businesses visited"></div>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">Best conversation -- what happened?</label>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="Describe your best interaction today..."></div>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">Worst rejection -- what happened?</label>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="Describe the toughest moment and what they said..."></div>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">Total contacts collected</label>
+    <div class="debrief-textarea" contenteditable="true" style="min-height:40px" data-placeholder="e.g., 3 contacts (2 interested, 1 maybe)"></div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">🎉</div><div class="call-body"><h4>Celebrate Every Number</h4>
+    <p data-en="15 businesses approached as a class? <strong>Amazing!</strong> 6 contacts collected? <strong>Outstanding!</strong> These are real sales numbers. Professional salespeople work with exactly these same metrics. You are doing real business development." data-hi="Class ne 15 businesses approach kiye? <strong>Amazing!</strong> 6 contacts mile? <strong>Outstanding!</strong> Yeh real sales numbers hain. Professional salespeople exactly inhi metrics ke saath kaam karte hain." data-pa="Class ne 15 businesses approach kite? <strong>Amazing!</strong> 6 contacts mile? <strong>Outstanding!</strong> Eh real sales numbers ne. Professional salespeople exactly inhi metrics de naal kaam karde ne.">15 businesses approached as a class? <strong>Amazing!</strong> 6 contacts collected? <strong>Outstanding!</strong> These are real sales numbers. Professional salespeople work with exactly these same metrics. You are doing real business development.</p></div></div>
+
+  <div class="debrief-section reveal">
+    <h4>Objection Analysis</h4>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">What objections did you hear today? (List all)</label>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="List every objection you heard in the field..."></div>
+    <label style="font-size:.82rem;color:var(--t3);display:block;margin-bottom:.3rem">Any NEW objections not covered in class? How did you respond?</label>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="New objections and your responses..."></div>
+  </div>
+
+  <div class="debrief-section reveal">
+    <h4>What Worked Today?</h4>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="What approach, words, or technique worked best for you today?"></div>
+    <h4 style="margin-top:1rem">What Would You Do Differently Tomorrow?</h4>
+    <div class="debrief-textarea" contenteditable="true" data-placeholder="If you could redo today, what would you change?"></div>
+  </div>
+
+  <div class="micro-action"><h4>Tonight's Action Items (Non-Negotiable)</h4>
+    <ul>
+      <li><strong>Within 2 hours:</strong> Send follow-up WhatsApp message to EVERY contact collected today</li>
+      <li><strong>Tonight:</strong> Create and send 1 free sample post to any business that showed strong interest</li>
+      <li><strong>Tonight:</strong> Update your contact tracker spreadsheet with all data from today</li>
+      <li><strong>Before bed:</strong> Charge your phone. Prepare for Day 29 tomorrow (solo sprint!)</li>
+    </ul>
+  </div>
+
+  <div class="emotional-hook reveal">
+    <strong>"Pehla din ho gaya. Dar se bahar nikle. Business owners se baat ki. Yeh sab tumne kiya."</strong> Whatever happened today -- 5 yeses or 5 nos -- you went out there and did it. That takes courage. Tomorrow you go solo. And tomorrow will be even better because today you learned.
+  </div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- SECTION 6: QUIZ -->
+<div class="sec" id="s6">
+  <div class="progress-marker">71% through! Quick field knowledge check.</div>
+  <div class="sec-head"><div class="over">Quiz</div><h2>Test Your <span class="gr">Field Skills</span></h2><p>8 questions on pitching, objection handling, and field work best practices.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Next Steps &rarr;</button></div>
+</div>
+
+<!-- SECTION 7: NEXT STEPS -->
+<div class="sec" id="s7">
+  <div class="sec-head"><div class="over">Next Steps</div><h2>Day 28 <span class="gr">Complete!</span></h2>
+    <p data-en="Your first field day is done. Contacts collected. Seeds planted. Tomorrow you go solo." data-hi="Tumhara pehla field day ho gaya. Contacts mile. Seeds plant hue. Kal tum akele jaoge." data-pa="Tuhada pehla field day ho gaya. Contacts mile. Seeds plant hoe. Kal tusi ikkalle jaoge.">Your first field day is done. Contacts collected. Seeds planted. Tomorrow you go solo.</p></div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🏪</span><div class="vi-label" style="color:var(--c1)">Businesses</div><div class="vi-desc">5+ approached</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">📱</span><div class="vi-label" style="color:var(--c2)">Contacts</div><div class="vi-desc">Pipeline started</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">📄</span><div class="vi-label" style="color:var(--c4)">Menus</div><div class="vi-desc">Distributed</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">💪</span><div class="vi-label" style="color:var(--c5)">Confidence</div><div class="vi-desc">Level: Growing</div></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">🔥</div><div class="call-body"><h4>Day 28 Metrics (Class Total)</h4>
+    <p>Write these on the whiteboard and photograph them: <strong>Total businesses approached:</strong> ___ | <strong>Total contacts collected:</strong> ___ | <strong>Total "interested" responses:</strong> ___ | <strong>Service menus distributed:</strong> ___</p></div></div>
+
+  <div class="micro-action"><h4>Prepare for Day 29: Solo Sprint</h4><ul>
+    <li>Tomorrow you go ALONE. No pairs. Each student approaches 5+ businesses independently.</li>
+    <li>New zone assignments will be given tomorrow morning.</li>
+    <li>Replenish printed service menus if you ran out today.</li>
+    <li>Review your tracking sheet. What type of business responded best? Target more of those tomorrow.</li>
+    <li>Get good sleep. Iron your clothes again. Charge your phone.</li>
+  </ul></div>
+
+  <div class="callout call-2"><div class="call-ico">📍</div><div class="call-body"><h4>Preview: Day 29 -- Solo Sprint</h4>
+    <p>Tomorrow each student goes to the market alone. Target: 5+ businesses per person. No trainer, no partner. Just you and your skills. If you can do this, you can do anything.</p></div></div>
+
+  <div class="identity-shift">Day 28: First field day done. You are no longer afraid of talking to business owners. Tomorrow, you fly solo.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back</button><a href="hustler-29.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 29: Solo Sprint &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">Uplrn AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 28 &middot; uplrn.ai</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 Uplrn AI Labs.</p></div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7'];let curLang='en';
+function setLang(l){curLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));document.querySelectorAll('[data-'+l+']').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});}
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pt=document.getElementById('progText');pt.textContent=Math.round((idx+1)/secIds.length*100)+'%';pt.style.display='block';if(id==='s6'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vigrid,.progress-marker,.crd,.quiz-box,.field-tracker,.debrief-section';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal'))c.classList.add('reveal');});});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const t=document.querySelectorAll('.check-item').length;const c=document.querySelectorAll('.check-item.checked').length;const s=document.getElementById('checkScore');if(s)s.textContent=`${c}/${t} complete`;}
+function copyPrompt(el){const text=el.textContent.replace(/^Click to copy:\s*/,'');navigator.clipboard.writeText(text).then(()=>{const o=el.textContent;el.textContent='Copied!';setTimeout(()=>el.textContent=o,2500);}).catch(()=>{});}
+// Field tracker auto-count
+document.getElementById('fieldTracker1').addEventListener('change',function(){const rows=this.querySelectorAll('.field-row:not(.header)');let biz=0,int=0,may=0,menu=0;rows.forEach(r=>{const inputs=r.querySelectorAll('input');const sel=r.querySelector('select');if(inputs[0]&&inputs[0].value.trim())biz++;if(sel){if(sel.value==='Interested')int++;if(sel.value==='Maybe Later')may++;}if(inputs[0]&&inputs[0].value.trim())menu++;});document.getElementById('bizCount').textContent=biz;document.getElementById('intCount').textContent=int;document.getElementById('mayCount').textContent=may;document.getElementById('menuCount').textContent=menu;});
+const allQ=[{q:"What is the primary goal of Field Work Day 1?",o:["Close 5 deals","Have conversations and collect contacts","Make ₹10,000","Distribute flyers"],a:1,e:"Day 1 is about conversations and contacts, NOT sales. If a sale happens, great -- but the goal is planting seeds."},{q:"How long should your opening pitch be?",o:["30 seconds","2 minutes","5 minutes","10 minutes"],a:1,e:"The 2-minute pitch is ideal. After 2 minutes, stop and ask THEM a question. Let the business owner talk."},{q:"What should you do after visiting each business?",o:["Move on immediately","Write notes on your tracking sheet","Call the trainer","Take a selfie"],a:1,e:"Immediately fill in your tracking sheet after each visit. Do not rely on memory -- write down the owner's name, response, and any details."},{q:"What is the best response to 'Budget nahi hai'?",o:["Walk away","Argue about the value","Offer ₹100/month plan","Mention ₹3,000 starter plan and offer a free sample"],a:3,e:"Start with the smallest package and offer a free sample. 'Pehle free sample dekhiye. Pasand aaye toh ₹3,000 ka starter plan hai.'"},{q:"How often should you check in via WhatsApp during field work?",o:["Never","Once at the end","Every 20 minutes","Every 5 minutes"],a:2,e:"Check in every 20 minutes with a quick update. This keeps the trainer informed and keeps you accountable."},{q:"The trainer accompanies your pair for:",o:["All visits","First 2 visits only","No visits","Last 2 visits"],a:1,e:"Trainer leads at the first business, co-leads at the second, then you are on your own from business 3 onwards."},{q:"What should you do if a business owner says 'Sochke batata hoon'?",o:["Argue with them","Leave your card and offer to send a free sample","Walk away upset","Keep pitching for 10 more minutes"],a:1,e:"'Sochke batata hoon' is a WARM response. Leave your card, offer a free sample, and follow up within 24 hours."},{q:"When should you send follow-up WhatsApp messages?",o:["Next week","Within 2 hours","After 3 days","Never"],a:1,e:"Within 2 hours of the meeting. Strike while the iron is hot. A timely follow-up converts 'maybe' into 'yes'."}];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct}%</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct>=75?'Field ready! Go crush it!':pct>=50?'Review the pitch scripts once more.':'Re-read the briefing section.'}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Next Steps</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];box.innerHTML=`<div class="q-prog">${qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('')}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('')}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML='Correct! '+q.e}else{fb.className='q-fb show fb-no';fb.innerHTML='Not quite. '+q.e}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

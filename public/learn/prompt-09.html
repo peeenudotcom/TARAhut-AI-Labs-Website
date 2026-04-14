@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 9: Role-Based Prompting & Multi-Step Workflows — Generative AI & Prompt Engineering | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'&#127919;  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'&#10003; ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
+.acc-tracker{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:2rem 0}
+.acc-tracker h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem;color:var(--c1)}
+.acc-bar{height:24px;background:var(--bg);border-radius:var(--rs);overflow:hidden;margin:.5rem 0}
+.acc-fill{height:100%;background:var(--gbrand);border-radius:var(--rs);transition:width .6s ease;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fff;font-weight:700}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">&#2361;&#2367;&#2306;</button>
+  <button class="lang-btn" onclick="setLang('pa')">&#2602;&#2672;</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 09 &middot; Prompt Engineering &middot; 2026</div>
+  <h1>
+    <span data-lang-en>Role-Based Prompting &amp;<br><span class="gr">Multi-Step Workflows</span></span>
+    <span data-lang-hi style="display:none"><span class="gr">Role-Based</span> Prompting और<br>Multi-Step Workflows</span>
+    <span data-lang-pa style="display:none"><span class="gr">Role-Based</span> Prompting ਅਤੇ<br>Multi-Step Workflows</span>
+  </h1>
+  <div class="hero-brand">Generative AI &amp; Prompt Engineering &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>Assign AI different roles within a single workflow. Build a complete content production pipeline where one AI acts as researcher, writer, editor, and publisher. "Ek AI nu multiple roles do &mdash; poori team da kaam ek prompt naal."</p></div>
+  <div data-lang-hi style="display:none"><p>एक AI को workflow में अलग-अलग roles दें। Complete content production pipeline बनाएं। "Ek AI ko multiple roles do — poori team ka kaam ek prompt se."</p></div>
+  <div data-lang-pa style="display:none"><p>ਇੱਕ AI ਨੂੰ workflow ਵਿੱਚ ਵੱਖ-ਵੱਖ roles ਦਿਓ। Complete content production pipeline ਬਣਾਓ। "ਇੱਕ AI ਨੂੰ multiple roles ਦਿਓ &mdash; ਪੂਰੀ team ਦਾ ਕੰਮ ਇੱਕ prompt ਨਾਲ।"</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Session &rarr;</span>
+      <span data-lang-hi style="display:none">&#2360;&#2375;&#2358;&#2344; &#2358;&#2369;&#2352;&#2370; &#2325;&#2352;&#2375;&#2306; &rarr;</span>
+      <span data-lang-pa style="display:none">&#2616;&#2632;&#2614;&#2600; &#2614;&#2625;&#2608;&#2626; &#2581;&#2608;&#2635; &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">
+      <span data-lang-en>&#9889; Jump to Quiz</span>
+      <span data-lang-hi style="display:none">&#9889; &#2325;&#2381;&#2357;&#2367;&#2332;&#2364; &#2346;&#2352; &#2332;&#2366;&#2319;&#2306;</span>
+      <span data-lang-pa style="display:none">&#9889; &#2581;&#2625;&#2567;&#2588;&#2620; &#2596;&#2631; &#2588;&#2622;&#2579;</span>
+    </button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Prompt Engineering</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Role-Based Prompting</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Content Pipeline</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Business Workflows</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Quality Control</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: ROLE-BASED PROMPTING -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>The Power of <span class="gr">Role Assignment</span></h2>
+    <h2 data-lang-hi style="display:none"><span class="gr">Role Assignment</span> &#2325;&#2368; &#2358;&#2325;&#2381;&#2340;&#2367;</h2>
+    <h2 data-lang-pa style="display:none"><span class="gr">Role Assignment</span> &#2598;&#2624; &#2614;&#2581;&#2596;&#2624;</h2>
+    <p>In Session 8, you built single personas. Now you will assign MULTIPLE roles to AI within a single workflow. The same AI becomes a researcher, then a writer, then an editor, then a publisher &mdash; each with different rules and perspectives. "Ikko AI &mdash; 4 roles &mdash; poori team replace."</p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128218;</div><div class="call-body"><h4>Session 8 Recap: System Prompts</h4><p>Last session you built <strong>3 permanent AI personas</strong> and stress-tested them. Today we take it further: instead of one persona per conversation, you will <strong>switch roles within a single workflow</strong>. Think of it as directing a play where one actor plays multiple characters. "Pichle session vich ek persona banaya &mdash; aaj ek workflow vich 4 roles."</p></div></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">&#128100;</div>
+      <h4>Single Role: One Perspective</h4>
+      <p>"Write a blog post about AI in Punjab agriculture." &mdash; You get one perspective, one draft, and hope it is good enough. No review, no quality check, no different angles. Like having one employee do research, writing, editing, and publishing alone.</p>
+      <div class="vc-badge">&#10005; No Quality Layers</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">&#128101;</div>
+      <h4>Multi-Role: Team Workflow</h4>
+      <p>"Step 1: As a researcher, gather key facts. Step 2: As a writer, draft the article. Step 3: As an editor, critique and improve. Step 4: As a publisher, format for distribution." Each role adds a quality layer. The output is exponentially better.</p>
+      <div class="vc-badge">&#10003; Professional Quality</div>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The Role-Switch Framework</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Role Type</span><span class="crd-icon">&#128269;</span><h3>The Researcher</h3><p><strong>Mission:</strong> Gather facts, data, and insights. <strong>Personality:</strong> Thorough, skeptical, source-focused. <strong>Output:</strong> Structured research brief with key findings, statistics, and source credibility notes. "Researcher di nazar &mdash; facts first, opinions baad vich."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Role Type</span><span class="crd-icon">&#9997;&#65039;</span><h3>The Writer</h3><p><strong>Mission:</strong> Transform research into compelling content. <strong>Personality:</strong> Creative, engaging, audience-aware. <strong>Output:</strong> Draft content with storytelling, hooks, and clear structure. Takes research input and makes it human-readable. "Writer &mdash; boring facts nu interesting story banaunda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Role Type</span><span class="crd-icon">&#128203;</span><h3>The Editor</h3><p><strong>Mission:</strong> Critique, improve, and polish. <strong>Personality:</strong> Critical, detail-oriented, reader-first. <strong>Output:</strong> Tracked changes, improvement suggestions, fact-check flags, and tone adjustments. The editor finds what the writer misses. "Editor &mdash; writer di galti labh ke fix karda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Role Type</span><span class="crd-icon">&#128640;</span><h3>The Publisher</h3><p><strong>Mission:</strong> Format and optimize for distribution. <strong>Personality:</strong> Platform-aware, SEO-focused, conversion-minded. <strong>Output:</strong> Final formatted content with metadata, headlines, social media snippets, and distribution notes. "Publisher &mdash; content nu duniya tak le ke jaanda hai."</p></div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Key Insight: Separation of Concerns</h4><p>When you ask AI to "write a blog post," it tries to research, write, edit, and format ALL AT ONCE. The result is mediocre at everything. When you <strong>separate roles</strong>, each step gets the AI's full attention. The researcher does not worry about style. The writer does not worry about SEO. Each role does ONE thing excellently. "Ek kaam ek vaari &mdash; quality 10x vaddh jaandi hai."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Main pehla ek prompt vich sab kuchh mangda si &mdash; result mediocre aunda si."</strong> &mdash; That is the single-prompt trap. Multi-role workflows break complex tasks into steps where each step has a SPECIALIST perspective. The compound quality gain is dramatic. This is how content agencies work &mdash; you are building a one-person agency with AI.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Warm-Up: Single vs Multi-Role Comparison</h4>
+    <p>Test both approaches on the same topic:</p>
+    <ul>
+      <li><strong>Single role:</strong> "Write a 500-word blog post about how AI is transforming Ludhiana's hosiery industry."</li>
+      <li><strong>Multi-role:</strong> Use 4 sequential prompts (researcher → writer → editor → publisher) on the same topic.</li>
+      <li>Compare the final outputs side by side. The difference will convince you.</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Build the complete content production pipeline step by step.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Content Pipeline &rarr;</button></div>
+</div>
+
+<!-- S2: CONTENT PRODUCTION PIPELINE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Content Production <span class="gr">Pipeline</span></h2>
+    <h2 data-lang-hi style="display:none">Content Production <span class="gr">Pipeline</span></h2>
+    <h2 data-lang-pa style="display:none">Content Production <span class="gr">Pipeline</span></h2>
+    <p>Build a 4-stage content production pipeline for a Punjab business. Each stage uses a different AI role with specific instructions. The output of each stage feeds into the next. "Har stage da output agle stage da input ban jaanda hai."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; Content Production Pipeline</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#128269;</div><div class="vn-label">Stage 1</div><div class="vn-sub">Research Brief</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#9997;&#65039;</div><div class="vn-label">Stage 2</div><div class="vn-sub">First Draft</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-pink"><div class="vn-icon">&#128203;</div><div class="vn-label">Stage 3</div><div class="vn-sub">Editorial Review</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#128640;</div><div class="vn-label">Stage 4</div><div class="vn-sub">Publish-Ready</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Each stage has a different AI role, different rules, and different output format.</strong> The pipeline transforms a topic idea into publish-ready content.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Stage 1: The Researcher</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Start by generating a research brief. Copy and paste this prompt:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ROLE: Senior Research Analyst\n\nYou are a meticulous research analyst specializing in Punjab industry and business trends. Your job is to create a comprehensive research brief that a content writer will use to draft an article.\n\nTOPIC: \"How AI is Transforming the Hosiery Industry in Ludhiana — From Manual Looms to Smart Manufacturing\"\n\nCreate a research brief with these sections:\n\n1. KEY FACTS & STATISTICS\n   - Current size of Ludhiana hosiery industry (revenue, employment, export figures)\n   - Specific AI/automation technologies being adopted\n   - Before vs After metrics where available\n\n2. KEY PLAYERS & EXAMPLES\n   - Name 3-5 Ludhiana companies adopting AI/technology (real or realistic composites)\n   - What specific technologies are they using?\n   - Results they have achieved\n\n3. CHALLENGES & BARRIERS\n   - Why has adoption been slow?\n   - Cost barriers, skill gaps, infrastructure issues\n   - Worker displacement concerns\n\n4. GOVERNMENT SUPPORT\n   - Relevant schemes: SAMARTH, MSME, PLI scheme for textiles\n   - Punjab state policies supporting manufacturing modernization\n\n5. FUTURE OUTLOOK\n   - 3-5 year projection\n   - Technologies on the horizon (computer vision for quality control, predictive maintenance, demand forecasting)\n\n6. EXPERT QUOTES (create realistic composite quotes)\n   - An industry leader\n   - A technology provider\n   - A government official\n\nFormat: Use bullet points. Include data ranges where exact figures are uncertain. Flag any information that needs verification with [VERIFY].')">&#128203; Click to copy: Stage 1 — Research Analyst prompt for Ludhiana hosiery AI article</div>
+    <div class="demo-out">The research brief becomes the INPUT for Stage 2. Save this output — you will paste it into the next prompt.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Stage 2: The Writer</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Now switch the AI role to writer. Paste the research brief from Stage 1 along with this prompt:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ROLE: Senior Content Writer — Punjab Business & Technology\n\nYou are a compelling business journalist who writes for Punjab entrepreneurs and industry leaders. Your style is informative yet engaging, using storytelling to make complex topics accessible. You naturally weave in Punjabi cultural references.\n\nUsing the RESEARCH BRIEF below, write a 1000-word article.\n\nARTICLE REQUIREMENTS:\n- Headline: Attention-grabbing, under 12 words\n- Opening hook: Start with a vivid scene in a Ludhiana factory (show, do not tell)\n- Structure: Use subheadings every 200-250 words\n- Tone: Authoritative but accessible — like explaining to a smart business owner over chai\n- Include: At least 2 expert quotes from the research brief\n- Punjab flavor: Natural Punjabi phrases or idioms where they add warmth (do not force them)\n- Data integration: Weave statistics into the narrative naturally, do not just list them\n- Call to action: End with a forward-looking paragraph that inspires action\n- Audience: Punjab manufacturing business owners aged 35-55\n\nRESEARCH BRIEF:\n[PASTE YOUR STAGE 1 OUTPUT HERE]')">&#128203; Click to copy: Stage 2 — Content Writer prompt (paste Stage 1 output where indicated)</div>
+    <div class="demo-out">The draft article becomes the INPUT for Stage 3. Notice how the writer transforms dry research into a readable story.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Stage 3: The Editor</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Switch to editor role. Paste the draft from Stage 2:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ROLE: Senior Editor — Punjab Business Publications\n\nYou are a demanding but fair editor with 15 years of experience editing business content for Indian audiences. Your job is to make good writing GREAT.\n\nReview the DRAFT ARTICLE below and provide:\n\n1. OVERALL ASSESSMENT (2-3 sentences)\n   - Is this publish-worthy? What is the overall quality?\n\n2. STRUCTURAL FEEDBACK\n   - Is the headline compelling enough? Suggest 3 alternatives.\n   - Does the opening hook grab attention in the first 2 lines?\n   - Is the flow logical? Flag any jumps or gaps.\n   - Is the conclusion strong enough to inspire action?\n\n3. LINE-BY-LINE IMPROVEMENTS\n   - Quote specific sentences that need rewriting and provide improved versions\n   - Flag any cliches, jargon, or unclear passages\n   - Identify weak transitions between sections\n\n4. FACT-CHECK FLAGS\n   - Any statistics that seem inflated or need verification?\n   - Any claims that need attribution?\n\n5. AUDIENCE CHECK\n   - Will a 45-year-old Ludhiana factory owner find this relevant?\n   - Is the language accessible or too technical?\n   - Are the Punjabi references natural or forced?\n\n6. FINAL VERDICT\n   - List exactly 3 must-fix changes before publication\n   - Rate the draft: Ready / Needs Minor Edits / Needs Major Revision\n\nDRAFT ARTICLE:\n[PASTE YOUR STAGE 2 OUTPUT HERE]')">&#128203; Click to copy: Stage 3 — Editor review prompt (paste Stage 2 output where indicated)</div>
+    <div class="demo-out">The editorial feedback guides the final polish. A real editor catches what the writer misses — this AI editor does the same.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Stage 4: The Publisher</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Final stage — format for distribution. Paste the edited article:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ROLE: Digital Content Publisher & SEO Specialist\n\nYou are a digital publishing expert who optimizes content for maximum reach and engagement. You know Indian digital platforms, SEO for Google India, and social media trends in Punjab.\n\nTake the FINAL ARTICLE below and create a complete publishing package:\n\n1. SEO OPTIMIZATION\n   - Primary keyword and 5 secondary keywords\n   - Meta title (under 60 characters)\n   - Meta description (under 155 characters)\n   - URL slug suggestion\n   - Internal linking suggestions (topics for related articles)\n\n2. SOCIAL MEDIA PACKAGE\n   - LinkedIn post (professional tone, 200 words with relevant hashtags)\n   - Twitter/X thread (5 tweets that tell the story in bite-sized pieces)\n   - Instagram caption (engaging, with emojis and 15 hashtags)\n   - WhatsApp forward message (under 100 words — this is how Punjab businesses share content)\n\n3. EMAIL NEWSLETTER SNIPPET\n   - Subject line (3 options, A/B test ready)\n   - Preview text (under 90 characters)\n   - Newsletter excerpt (100 words with \"Read More\" hook)\n\n4. DISTRIBUTION CHECKLIST\n   - Best time to publish for Punjab audience\n   - Platforms to distribute on (prioritized)\n   - Engagement triggers (questions to ask in comments)\n   - Follow-up content ideas (3 related topics)\n\nFINAL ARTICLE:\n[PASTE YOUR EDITED ARTICLE HERE]')">&#128203; Click to copy: Stage 4 — Publisher prompt (paste edited article where indicated)</div>
+    <div class="demo-out">From one topic idea, you now have: a researched article, editorial review, SEO metadata, social media posts, email newsletter, and distribution plan. That is a content team's output from 4 prompts.</div>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#128293;</div><div class="call-body"><h4>The Math: 4 Prompts = Content Team</h4><p>A typical content agency charges &#8377;15,000-&#8377;50,000 for this package (research + article + social media + SEO). You just built the same pipeline with 4 prompts. The cost? About &#8377;5-10 in API tokens, or free if using ChatGPT/Claude free tiers. <strong>This is the democratization of professional content production.</strong> "Char prompts = ek poori content team."</p></div></div>
+
+  <div class="micro-win">You have built a complete content production pipeline. This is agency-level output.</div>
+  <p class="curiosity-hook">Next: Apply multi-step workflows to other business operations.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Business Workflows &rarr;</button></div>
+</div>
+
+<!-- S3: BUSINESS WORKFLOWS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% through! Now apply multi-role to every business function.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Business <span class="gr">Workflow Templates</span></h2>
+    <h2 data-lang-hi style="display:none">Business <span class="gr">Workflow Templates</span></h2>
+    <h2 data-lang-pa style="display:none">Business <span class="gr">Workflow Templates</span></h2>
+    <p>Content is just the beginning. Multi-role workflows transform every business function: sales, HR, product development, and customer success. "Content sirf shuruat hai &mdash; har business function vich multi-role workflow laga sakde ho."</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Sales</span><span class="crd-icon">&#128176;</span><h3>Sales Proposal Pipeline</h3><p><strong>Role 1: Market Analyst</strong> &mdash; Research the prospect, their industry, competitors, and pain points. <strong>Role 2: Solution Architect</strong> &mdash; Design a tailored solution matching their needs. <strong>Role 3: Proposal Writer</strong> &mdash; Draft the proposal with ROI calculations. <strong>Role 4: Reviewer</strong> &mdash; Check pricing, commitments, and risk language. "Sales proposal 4 steps vich &mdash; customized, professional, risk-checked."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">HR</span><span class="crd-icon">&#128101;</span><h3>Hiring Workflow</h3><p><strong>Role 1: Job Analyst</strong> &mdash; Define role requirements, skills matrix, and salary benchmarks for Punjab market. <strong>Role 2: JD Writer</strong> &mdash; Create an engaging job description that attracts Punjab talent. <strong>Role 3: Screening Expert</strong> &mdash; Design interview questions targeting specific competencies. <strong>Role 4: HR Reviewer</strong> &mdash; Check for bias, legal compliance, and inclusivity.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Product</span><span class="crd-icon">&#128640;</span><h3>Product Launch Pipeline</h3><p><strong>Role 1: Market Researcher</strong> &mdash; Analyze market size, competition, and customer needs in Punjab. <strong>Role 2: Product Strategist</strong> &mdash; Define features, pricing, and positioning. <strong>Role 3: Launch Planner</strong> &mdash; Create timeline, marketing plan, and distribution strategy. <strong>Role 4: Risk Analyst</strong> &mdash; Identify potential failures and mitigation plans.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Customer</span><span class="crd-icon">&#128172;</span><h3>Customer Success Pipeline</h3><p><strong>Role 1: Account Analyst</strong> &mdash; Review customer history, usage patterns, and satisfaction signals. <strong>Role 2: Success Strategist</strong> &mdash; Design retention and upsell plan. <strong>Role 3: Communication Writer</strong> &mdash; Draft personalized outreach (check-in emails, QBR decks). <strong>Role 4: Manager Review</strong> &mdash; Verify tone, accuracy, and strategic alignment.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab: Sales Proposal Multi-Role Workflow</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Build a complete sales proposal for a Punjab IT services company:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I need to create a sales proposal for my IT services company (based in Mohali, Punjab) pitching to a mid-size manufacturing company in Ludhiana that wants to digitize their operations.\n\nPlease execute this 4-role workflow:\n\n--- ROLE 1: MARKET ANALYST ---\nAnalyze the Ludhiana manufacturing sector:\n- Common pain points in operations (inventory, billing, quality control, workforce management)\n- Current technology adoption level\n- Budget range for IT solutions in this segment\n- Key decision-maker profiles (who buys IT solutions in Ludhiana factories?)\n\n--- ROLE 2: SOLUTION ARCHITECT ---\nBased on the analysis, design a solution package:\n- Recommended modules (ERP, inventory, billing, etc.)\n- Implementation approach (phased vs big-bang)\n- Technology stack recommendation\n- Integration with existing systems (Tally, manual registers)\n- Timeline and resource requirements\n\n--- ROLE 3: PROPOSAL WRITER ---\nDraft the actual proposal with:\n- Executive summary (1 paragraph)\n- Problem statement (their pain points)\n- Proposed solution (with visual-friendly descriptions)\n- Pricing (give a realistic range for a Mohali IT company, in INR)\n- ROI projections (time saved, error reduction, revenue impact)\n- Implementation timeline (Gantt chart style)\n- Why choose us (differentiators)\n\n--- ROLE 4: RISK REVIEWER ---\nReview the proposal for:\n- Over-promising (flag any unrealistic claims)\n- Pricing risks (is it competitive for Punjab market?)\n- Legal/contractual gaps (SLA, payment terms, IP ownership)\n- Suggested modifications\n\nPlease execute each role sequentially, clearly labeling when you switch roles.')">&#128203; Click to copy: 4-Role Sales Proposal workflow for Punjab IT company</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Pro Tip: The Review Role is Non-Negotiable</h4><p>The biggest mistake in multi-role workflows is skipping the reviewer. <strong>Always include a critical review role as the final step.</strong> The reviewer catches: over-promising, factual errors, tone mismatches, legal risks, and audience misalignment. It is the quality gate that makes the difference between amateur and professional output. "Review role kabhi skip na karo &mdash; ehi professional aur amateur da farak hai."</p></div></div>
+
+  <div class="micro-win">You can now apply multi-role workflows to any business function. The template is universal.</div>
+  <p class="curiosity-hook">Next: Quality control techniques that make multi-step workflows reliable.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Quality Control &rarr;</button></div>
+</div>
+
+<!-- S4: QUALITY CONTROL -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Now master workflow quality assurance.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Workflow <span class="gr">Quality Control</span></h2>
+    <h2 data-lang-hi style="display:none">Workflow <span class="gr">Quality Control</span></h2>
+    <h2 data-lang-pa style="display:none">Workflow <span class="gr">Quality Control</span></h2>
+    <p>Multi-step workflows are powerful but can go wrong. Quality gates, role contracts, and feedback loops ensure consistent output. "Power de naal responsibility vi aundi hai &mdash; quality gates lagao."</p>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:1rem 0 1rem;">The 5 Quality Gates</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Gate 1</span><span class="crd-icon">&#128220;</span><h3>Role Contract</h3><p>Every role must have a clear "contract" &mdash; what it receives as input, what it must produce as output, and what quality standards apply. If the research brief is thin, the writer cannot produce a great article. <strong>Garbage in, garbage out</strong> applies to every stage. "Har role da contract clear hona chahida hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Gate 2</span><span class="crd-icon">&#128260;</span><h3>Handoff Format</h3><p>Define EXACTLY how output transfers between roles. Use consistent formats: "Research output must be in bullet points with [VERIFY] flags. Writer output must be in paragraphs with [SUBHEADING] markers." Structured handoffs prevent information loss between stages.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Gate 3</span><span class="crd-icon">&#128683;</span><h3>Contradiction Check</h3><p>After the final stage, ask AI: "Review this entire workflow output. Are there any contradictions between the research findings and the article claims? Any inconsistencies in numbers, names, or facts?" This catches drift that happens across multiple stages.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Gate 4</span><span class="crd-icon">&#127919;</span><h3>Audience Validation</h3><p>Add a validation step: "Read this output as if you are a [TARGET AUDIENCE]. Would you find this useful? What questions would you still have? What would make you stop reading?" This catches content that is technically correct but audience-wrong.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Gate 5</span><span class="crd-icon">&#128260;</span><h3>Feedback Loop</h3><p>The most powerful gate: take the editor/reviewer feedback and SEND IT BACK to the writer for revision. "Revise the article based on this editorial feedback: [PASTE FEEDBACK]." This iterative loop is how professional publishing works. Two rounds of revision transform good into excellent.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab: Contradiction Checker</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Run this after any multi-step workflow to catch errors:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ROLE: Quality Assurance Analyst\n\nYou are a meticulous QA analyst reviewing the output of a multi-step content workflow. Your job is to find any inconsistencies, errors, or quality issues.\n\nReview the following workflow output and check for:\n\n1. FACTUAL CONSISTENCY\n   - Do the statistics in the article match the research brief?\n   - Are names, titles, and companies consistent throughout?\n   - Any numbers that contradict each other?\n\n2. TONE CONSISTENCY\n   - Does the article maintain the same voice throughout?\n   - Any sudden shifts in formality or style?\n   - Are the Punjabi/Hindi references natural or forced?\n\n3. LOGIC FLOW\n   - Does each section follow logically from the previous?\n   - Are there any gaps in the argument?\n   - Does the conclusion follow from the evidence presented?\n\n4. AUDIENCE ALIGNMENT\n   - Would the target audience (Punjab business owners) find this useful?\n   - Is the language accessible or too technical?\n   - Are the action items realistic for the audience?\n\n5. MISSING ELEMENTS\n   - What important information was in the research but not in the article?\n   - What questions would a reader have that are not answered?\n\nProvide a numbered list of issues found, severity (HIGH/MEDIUM/LOW), and suggested fixes.\n\nWORKFLOW OUTPUT:\n[PASTE YOUR COMPLETE WORKFLOW OUTPUT HERE]')">&#128203; Click to copy: QA Analyst prompt for multi-step workflow review</div>
+  </div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 9 Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128218; Understand single-role vs multi-role workflow difference</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128269; Built Stage 1: Research Analyst role for content pipeline</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#9997; Built Stage 2: Content Writer role with storytelling focus</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128203; Built Stage 3: Editor role with critique framework</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128640; Built Stage 4: Publisher role with SEO and social media</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128176; Applied multi-role workflow to a business function (sales/HR/product)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128220; Understand the 5 quality gates for workflow reliability</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128260; Used the contradiction checker on a workflow output</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#127919; Compared single-prompt vs multi-role output quality</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128293; Ready for Session 10: Prompt Chaining</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You now build production-quality multi-step workflows with quality assurance. That is team-level output.</div>
+  <p class="curiosity-hook">Next: Quiz time! Prove your multi-role workflow mastery.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your workflow mastery.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions picked randomly from a pool of 20. Advanced-level questions about role-based prompting, content pipelines, and workflow quality. "Har sawaal tuhadi samajh test karda hai."</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question deepened your understanding of multi-step workflows.</div>
+  <p class="curiosity-hook">Next: Your homework and Session 10 preview.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2 data-lang-en>Session 9 <span class="gr">Complete!</span></h2>
+    <h2 data-lang-hi style="display:none">&#2360;&#2375;&#2358;&#2344; 9 <span class="gr">&#2346;&#2370;&#2352;&#2366;!</span></h2>
+    <h2 data-lang-pa style="display:none">&#2616;&#2632;&#2614;&#2600; 9 <span class="gr">&#2606;&#2625;&#2581;&#2672;&#2606;&#2610;!</span></h2>
+    <p>"Tusi aaj ek poori content production team bana li &mdash; 4 AI roles naal." Here is what you learned and what comes next.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128269;</span><div class="vi-label" style="color:var(--c5)">Research</div><div class="vi-desc">Facts-first analysis</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#9997;&#65039;</span><div class="vi-label" style="color:var(--c1)">Writing</div><div class="vi-desc">Storytelling drafts</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128203;</span><div class="vi-label" style="color:var(--c2)">Editing</div><div class="vi-desc">Critical review</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128640;</span><div class="vi-label" style="color:var(--c4)">Publishing</div><div class="vi-desc">SEO + distribution</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; Single-role vs multi-role workflow architecture<br>&#9989; The 4 role types: Researcher, Writer, Editor, Publisher<br>&#9989; Complete content production pipeline with 4 sequential stages<br>&#9989; Multi-role templates for Sales, HR, Product, and Customer Success<br>&#9989; The 5 quality gates: Role contracts, Handoff formats, Contradiction checks, Audience validation, Feedback loops<br>&#9989; QA Analyst role for cross-stage consistency checking</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Session 10</h4>
+    <p>"Practice naal hi mastery aundi hai!"</p>
+    <ul>
+      <li><strong>Run the complete 4-stage content pipeline</strong> on a topic relevant to your business. Save all 4 outputs.</li>
+      <li><strong>Build a multi-role workflow for ONE non-content business task</strong> (sales proposal, hiring plan, or product launch).</li>
+      <li><strong>Run the QA Analyst prompt</strong> on your best workflow output. Document what it catches.</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Session 10 &mdash; Prompt Chaining</h4><p>"Kal assi prompt chaining sikhange &mdash; 5 linked prompts jo automatic pipeline banaunde ne. Research → Outline → Draft → Polish → Distribute. Ek chain jo poora workflow ek flow vich chala dende. From manual multi-step to automated chains."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%209%20of%20Prompt%20Engineering!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"Tusi aaj multi-role workflows master kar liya. Kal prompt chaining. Tusi ek insaan naal poori team da kaam kara sakde ho &mdash; AI de naal." You are building a one-person agency.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="prompt-10.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 10: Prompt Chaining &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Generative AI &amp; Prompt Engineering &middot; Session 09: Role-Based Prompting &amp; Multi-Step Workflows &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === REVEALS ===
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Outstanding! You have mastered Session 9!':checked>=5?'Great progress! Almost there.':'Keep going — check off each item as you complete it.'}`;}
+
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='Copied! Now paste into ChatGPT, Claude, or Gemini';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+// === QUIZ ===
+const allQ=[
+  {q:"What is the key advantage of multi-role prompting over single-prompt approaches?",o:["It is faster","Each role gets the AI's full attention, adding quality layers that compound","It uses fewer tokens","Multi-role is simpler to write"],a:1,e:"When you separate roles (researcher, writer, editor, publisher), each step gets focused attention. The researcher does not worry about style; the writer does not worry about SEO. This separation of concerns dramatically improves quality."},
+  {q:"In the content production pipeline, why does the Researcher role come first?",o:["Alphabetical order","Research provides the factual foundation that all subsequent roles build upon","Researchers are more important than writers","It is a convention"],a:1,e:"Research must come first because the writer needs facts to write about, the editor needs facts to verify against, and the publisher needs facts for SEO keywords. Without solid research, every subsequent step builds on shaky ground."},
+  {q:"What is the Editor role's primary job in a multi-role workflow?",o:["Rewrite everything from scratch","Critique the writer's output, find weaknesses, suggest improvements, and verify facts","Check spelling only","Approve or reject the article"],a:1,e:"The Editor provides critical review: structural feedback, line-by-line improvements, fact-checking, audience alignment, and a final verdict. They find what the writer misses and suggest specific improvements."},
+  {q:"Why is the 'Review Role' described as non-negotiable in business workflows?",o:["It is a legal requirement","The reviewer catches over-promising, factual errors, tone mismatches, and legal risks that earlier roles miss","Reviews are always quick","Clients demand reviews"],a:1,e:"Without a review role, you ship content with potential over-promises, factual errors, audience misalignment, or legal risks. The review role is the quality gate between 'AI draft' and 'professional output.'"},
+  {q:"What does 'separation of concerns' mean in multi-role prompting?",o:["Keeping roles in separate conversations","Each role focuses on ONE aspect of the task without worrying about other aspects","Separating business from personal concerns","Using different AI models for each role"],a:1,e:"Separation of concerns means the researcher focuses only on facts, the writer only on engaging prose, the editor only on quality, and the publisher only on distribution. This focus produces better results than asking one prompt to do everything simultaneously."},
+  {q:"How does the Publisher role add value beyond just formatting?",o:["It does not add value","It creates SEO metadata, social media packages, email snippets, and distribution strategy — multiplying the content's reach","It makes the article longer","It translates the article"],a:1,e:"The Publisher transforms a single article into a multi-platform distribution package: SEO keywords, social media posts, email newsletters, WhatsApp forwards, and distribution timing. One article becomes 10+ pieces of content."},
+  {q:"What is a 'role contract' in multi-step workflows?",o:["A legal document","A clear definition of what each role receives as input, must produce as output, and what quality standards apply","A contract between AI and user","An API specification"],a:1,e:"A role contract specifies: (1) Input format — what the role receives, (2) Output format — what it must produce, (3) Quality standards — what 'good' looks like. Clear contracts prevent ambiguity and ensure consistent handoffs between stages."},
+  {q:"What is the feedback loop quality gate?",o:["Asking users for feedback","Taking the editor's critique and sending it back to the writer for revision before publishing","Automated error checking","A/B testing"],a:1,e:"The feedback loop sends editorial feedback back to the writer for revision: 'Revise based on this feedback.' This iterative cycle — write, critique, revise — is how professional publishing produces excellent content. Two rounds transform good into great."},
+  {q:"Why should you include a contradiction check after a multi-step workflow?",o:["To find typos","Information can drift or contradict across stages — the research might say one thing while the article claims another","Contradictions are common in AI","It is optional"],a:1,e:"Across multiple stages, drift happens: the research says 'approximately 5,000 factories' but the writer rounds to '10,000 factories.' A contradiction check catches these cross-stage inconsistencies before publishing."},
+  {q:"How does multi-role prompting relate to how real content agencies operate?",o:["It does not relate","It mirrors the actual workflow: researchers brief writers, editors review drafts, publishers prepare distribution — the same process, done by AI","Agencies use single prompts","Agencies do not use AI"],a:1,e:"Multi-role prompting mirrors the actual agency workflow. Real agencies have researchers, writers, editors, and publishers working sequentially. You are replicating this professional process with AI, achieving similar quality at a fraction of the cost."},
+  {q:"What is the 'audience validation' quality gate?",o:["Sending the article to readers","Asking AI to read the output as if it were the target audience and identify relevance gaps","Publishing and measuring clicks","A survey technique"],a:1,e:"Audience validation asks AI: 'Read this as a 45-year-old Ludhiana factory owner. Would you find this useful? What questions remain?' This catches content that is technically correct but irrelevant or inaccessible to the actual audience."},
+  {q:"For a Punjab IT company, which business function benefits MOST from multi-role workflows?",o:["Accounting","Sales proposals — because they require market research, solution design, persuasive writing, and risk review","Email forwarding","Office management"],a:1,e:"Sales proposals require multiple perspectives: market analysis, solution architecture, persuasive writing, and risk review. Each perspective is a natural role, and the compound quality makes proposals significantly more competitive."},
+  {q:"What is the estimated cost difference between an AI content pipeline and a traditional agency?",o:["AI is more expensive","AI pipeline costs approximately ₹5-10 in tokens vs ₹15,000-50,000 for an agency","They cost the same","AI has no cost"],a:1,e:"A complete AI content pipeline (research + article + social media + SEO) costs about ₹5-10 in API tokens, compared to ₹15,000-50,000 from a traditional agency. This democratizes professional content production for small businesses."},
+  {q:"What should you do if the Editor role rates the draft as 'Needs Major Revision'?",o:["Publish anyway","Send the editorial feedback back to the Writer role for a complete revision, then re-run the Editor","Start over from scratch","Ignore the editor"],a:1,e:"Use the feedback loop: send the editor's specific critiques back to the writer role with instructions to revise. Then re-run the editor on the revised draft. This iterative process is standard in professional publishing."},
+  {q:"Why is the Researcher role instructed to use [VERIFY] flags?",o:["For decoration","To mark information that needs fact-checking, so the Editor and human reviewer know which claims to verify","AI always needs verification","It is a standard format"],a:1,e:"[VERIFY] flags explicitly mark statistics, claims, and facts that may not be accurate. This honest flagging helps the Editor and human reviewer focus their verification effort on the most uncertain information, improving overall accuracy."},
+  {q:"What makes the WhatsApp forward format important in the Publisher role for Punjab businesses?",o:["WhatsApp is free","WhatsApp is the primary content sharing channel for Punjab business owners — optimizing for it maximizes local reach","It is a trend","WhatsApp has better SEO"],a:1,e:"In Punjab's business ecosystem, WhatsApp forwards are a primary information-sharing channel. A short, compelling WhatsApp message (under 100 words) gets shared across business groups, generating more reach than traditional social media for local audiences."},
+  {q:"What is 'handoff format' in multi-step workflows?",o:["How you hand off work to colleagues","A standardized structure for passing output from one role to the next, ensuring no information is lost","The final output format","Email formatting"],a:1,e:"Handoff format defines exactly how each role's output is structured for the next role: bullet points with [VERIFY] flags from researcher, paragraphs with [SUBHEADING] markers from writer. Consistent formats prevent information loss between stages."},
+  {q:"How many quality gates should a production multi-step workflow have?",o:["Zero — trust the AI","Five: Role contracts, Handoff formats, Contradiction checks, Audience validation, and Feedback loops","One is enough","Ten or more"],a:1,e:"Five quality gates ensure reliability: (1) Role contracts define expectations, (2) Handoff formats prevent information loss, (3) Contradiction checks catch drift, (4) Audience validation ensures relevance, (5) Feedback loops enable iterative improvement."},
+  {q:"When building an HR hiring workflow, why is the 'Bias Reviewer' role important?",o:["It is a legal requirement everywhere","Job descriptions and interview questions can contain unconscious bias that the Reviewer catches and removes, improving hiring quality","Bias reviews are optional","AI cannot detect bias"],a:1,e:"AI-generated job descriptions and interview questions can inherit biases (gender-coded language, unnecessary requirements, cultural assumptions). A dedicated Bias Reviewer role checks for and removes these issues, improving both compliance and hiring quality."},
+  {q:"What is the compound quality gain in multi-role workflows?",o:["Adding more words","Each role builds on and improves the previous role's output, so quality multiplies rather than just adding — the final output is exponentially better than a single-prompt result","Getting more tokens","Running prompts faster"],a:1,e:"Compound quality means each role adds a quality layer that builds on the previous: research creates solid facts, writing makes them engaging, editing makes them excellent, publishing makes them reach. The multiplication effect produces output far superior to any single prompt."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='You have mastered multi-role workflows. Ready for prompt chaining.';}else if(pct>=50){tier='Good Progress!';msg='Solid foundation. Review the quality control section.';}else{tier='Keep Learning!';msg='Re-read the content pipeline lab and try the experiments again.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up &rarr;</button></div>`;return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>
