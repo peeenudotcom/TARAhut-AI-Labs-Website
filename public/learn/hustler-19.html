@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 19: Contracts + Client Onboarding — AI Hustler 45 · Uplrn AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.lang-toggle{position:fixed;top:12px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);padding:4px;border-radius:99px;border:1px solid var(--bd)}.lang-btn{padding:5px 12px;border-radius:99px;font-size:.7rem;font-weight:700;cursor:pointer;border:none;background:none;color:var(--t3);font-family:'JetBrains Mono',monospace;transition:all .3s}.lang-btn.active{background:var(--brand);color:#fff}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}.btn-sm{padding:10px 22px;font-size:.85rem}.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}.micro-win::before{content:'> ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:100px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px)}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}.vflow-caption strong{color:var(--t1)}.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1)}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}.prompt-block{padding:1.2rem 1.5rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin:1rem 0;cursor:pointer;transition:all .3s;line-height:1.7}.prompt-block:hover{background:rgba(0,240,255,.06)}@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:140px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<div class="lang-toggle"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">HI</button><button class="lang-btn" onclick="setLang('pa')">PA</button></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 19 &middot; AI Hustler 45 &middot; Phase 2</div>
+  <h1>Contracts &amp;<br><span class="gr">Client Onboarding</span></h1>
+  <div class="hero-brand">AI Hustler 45 &mdash; Applied Skills &mdash; Uplrn AI Labs</div>
+  <p data-en="Create simple service contracts, build client onboarding workflows, and practice the full client journey through role-play." data-hi="Simple service contracts banao, client onboarding workflows banao, aur role-play se full client journey practice karo." data-pa="Simple service contracts banao, client onboarding workflows banao, te role-play naal full client journey practice karo.">Create simple service contracts, build client onboarding workflows, and practice the full client journey through role-play.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s6')">Jump to Quiz</button></div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner">
+  <span class="nav-brand">AI Hustler 45</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Why Contracts</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>Contract Template</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>Onboarding Workflow</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>Build Your Systems</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Role-Play Practice</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+  <button class="nav-btn" data-s="s7"><span class="nn">07</span>Wrap-Up</button>
+</div></nav>
+
+<!-- S1: WHY CONTRACTS -->
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01</div>
+    <h2>Why Contracts Are <span class="gr">Non-Negotiable</span></h2>
+    <p>Horror story: a freelancer did ₹25,000 worth of work. Client said "mujhe pasand nahi aaya" and refused to pay. Why? No contract.</p>
+  </div>
+  <div class="callout call-4 reveal"><div class="call-ico">🚨</div><div class="call-body"><h4>The ₹25,000 Nightmare</h4><p data-en="A freelancer created 30 social media posts, 2 videos, and a complete GMB profile for a restaurant. Took 2 weeks of work. Client ghosted after delivery. <strong>No contract = no protection = no payment.</strong> This will NEVER happen to you because you will always use a contract." data-hi="Ek freelancer ne restaurant ke liye 30 posts, 2 videos, aur complete GMB profile banaya. 2 hafte ka kaam. Client ne delivery ke baad ghost kar diya. <strong>Contract nahi = protection nahi = payment nahi.</strong> Tumhare saath yeh KABHI nahi hoga kyunki tum hamesha contract use karoge." data-pa="Ek freelancer ne restaurant lai 30 posts, 2 videos, te complete GMB profile banaya. 2 hafte da kaam. Client ne delivery ton baad ghost kar dita. <strong>Contract nahi = protection nahi = payment nahi.</strong> Tuhade naal eh KADEY nahi hovega kyunki tusi hamesha contract use karoge.">A freelancer created 30 social media posts, 2 videos, and a complete GMB profile for a restaurant. Took 2 weeks of work. Client ghosted after delivery. <strong>No contract = no protection = no payment.</strong> This will NEVER happen to you because you will always use a contract.</p></div></div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">What a Contract Protects</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-5">YOU</span><span class="crd-icon">🛡️</span><h3>Payment Security</h3><p>50% advance before starting work. Remaining 50% on delivery. Written in the contract = enforceable. No more "sochke batata hoon" after work is done.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">SCOPE</span><span class="crd-icon">📏</span><h3>Scope Clarity</h3><p>Exactly what is included and what is NOT included. "20 posts per month" prevents the client from saying "ek aur post bana do na" endlessly. Boundaries matter.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">CLIENT</span><span class="crd-icon">🤝</span><h3>Expectation Setting</h3><p>Client knows exactly what they get, when they get it, and what they need to provide. No surprises on either side. Professional relationships need clear expectations.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">REVISIONS</span><span class="crd-icon">🔄</span><h3>Revision Policy</h3><p>2 rounds of revisions included. Additional revisions at ₹500/round. This prevents infinite revision loops that eat your time and profit.</p></div>
+  </div>
+
+  <div class="emotional-hook"><strong>"Simple aur clear rakhna hai, waqeel wali language nahi chahiye."</strong> Your contract should be readable by a shop owner in Ludhiana, not a lawyer in Delhi. Hindi/English mix is fine. Clarity beats formality.</div>
+
+  <div class="micro-win">Contracts protect both sides. They are a sign of professionalism, not distrust.</div>
+  <p class="curiosity-hook">Next: The actual contract template you will use with every client.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Contract Template &rarr;</button></div>
+</div>
+
+<!-- S2: CONTRACT TEMPLATE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">14% through! Learn the key contract elements.</div>
+  <div class="sec-head"><div class="over">Section 02</div><h2>Simple Service <span class="gr">Contract Template</span></h2><p>7 essential clauses. No legalese. Clear and professional.</p></div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-brand">CLAUSE 1</span><span class="crd-icon">👥</span><h3>Parties</h3><p>Service Provider: [Your Name]. Client: [Business Name, Owner Name]. Clear identification of who is involved in this agreement.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">CLAUSE 2</span><span class="crd-icon">📋</span><h3>Services Described</h3><p>Exact services: "Social media management including 20 posts/month, GMB updates, WhatsApp broadcast setup." Be specific. Vague = trouble.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">CLAUSE 3</span><span class="crd-icon">📦</span><h3>Deliverables</h3><p>What the client receives: number of posts, designs, videos, reports. "20 Instagram posts, 4 GMB posts, 2 videos, 1 monthly report."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">CLAUSE 4</span><span class="crd-icon">📅</span><h3>Timeline</h3><p>Start date, delivery schedule, monthly cycle dates. "Work begins within 48 hours of advance payment. Monthly cycle: 1st to 30th."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">CLAUSE 5</span><span class="crd-icon">💰</span><h3>Payment Terms</h3><p>Amount, payment schedule, payment method. "₹10,000/month. 50% advance, 50% on 15th. Payment via UPI/bank transfer."</p></div>
+    <div class="crd reveal"><span class="tag tag-5">CLAUSE 6</span><span class="crd-icon">🔄</span><h3>Revision Policy</h3><p>"2 rounds of revisions included per deliverable. Additional revisions: ₹500 per round. Revision requests within 48 hours of delivery."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">CLAUSE 7</span><span class="crd-icon">🚪</span><h3>Cancellation</h3><p>"Either party may cancel with 15 days notice. Work completed until cancellation date will be paid in full. Advance is non-refundable after work begins."</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 1: Generate Contract with AI</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Create a simple service contract for a digital marketing freelancer in India. The service provider offers social media management (₹10,000/month Growth Package). Include 7 clauses: parties, services, deliverables (20 posts, GMB updates, WhatsApp setup, 2 videos, monthly report), timeline, payment (50% advance, 50% on 15th via UPI), revision policy (2 rounds included, ₹500 extra), and cancellation (15 days notice). Use simple language that a small business owner can understand. Mix of English and Hindi is acceptable. Format as a professional document ready to print."</div>
+    <div class="demo-out">AI generates a clean, professional contract in under 1 minute. Review it, customize the names and details, and you have a ready-to-use legal document.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 2: Customize for Any Client</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">Once you have the base template, customizing for each client takes 5 minutes:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Take this contract template and customize it for: Client: Raju Sweets, Amritsar. Owner: Rajinder Singh. Package: Starter (₹5,000/month). Deliverables: 12 posts/month, caption writing, 1 festival video. Start date: [Next Monday]. Keep all other terms the same."</div>
+  </div>
+
+  <p class="curiosity-hook">Next: The 7-step client onboarding workflow.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Onboarding Workflow &rarr;</button></div>
+</div>
+
+<!-- S3: ONBOARDING WORKFLOW -->
+<div class="sec" id="s3">
+  <div class="progress-marker">28% through! The onboarding workflow creates a professional experience.</div>
+  <div class="sec-head"><div class="over">Section 03</div><h2>7-Step Client <span class="gr">Onboarding Workflow</span></h2><p>From "yes" to first delivery in 48 hours. A smooth onboarding creates trust and sets the tone.</p></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Client Onboarding Flow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">✅</div><div class="vn-label">1. Yes</div><div class="vn-sub">Client agrees</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">📜</div><div class="vn-label">2. Contract</div><div class="vn-sub">Via WhatsApp</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">💰</div><div class="vn-label">3. Advance</div><div class="vn-sub">50% via UPI</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">📝</div><div class="vn-label">4. Form</div><div class="vn-sub">Onboarding info</div></div>
+    </div>
+    <div class="vflow-row" style="margin-top:1rem">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">📞</div><div class="vn-label">5. Kickoff</div><div class="vn-sub">15-min call</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">📦</div><div class="vn-label">6. First Draft</div><div class="vn-sub">Within 48 hrs</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">🔄</div><div class="vn-label">7. Feedback</div><div class="vn-sub">Revise + deliver</div></div>
+    </div>
+    <div class="vflow-caption"><strong>48 hours from payment to first delivery.</strong> Speed builds trust and shows professionalism.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 3: Client Onboarding Form (Google Forms)</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">Create a Google Form with these questions. Send to client after contract signing:</p>
+    <div style="padding:1.5rem;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);font-size:.88rem;color:var(--t2);line-height:2.2">
+      <p><strong style="color:var(--c1)">1.</strong> Business name (as you want it displayed)</p>
+      <p><strong style="color:var(--c1)">2.</strong> Business category/type</p>
+      <p><strong style="color:var(--c1)">3.</strong> Business address (full)</p>
+      <p><strong style="color:var(--c1)">4.</strong> Business phone and WhatsApp number</p>
+      <p><strong style="color:var(--c1)">5.</strong> Business hours (opening and closing)</p>
+      <p><strong style="color:var(--c1)">6.</strong> Upload your logo (high resolution)</p>
+      <p><strong style="color:var(--c1)">7.</strong> Upload 10+ photos of products/services/shop</p>
+      <p><strong style="color:var(--c1)">8.</strong> Brand colors (if any preference)</p>
+      <p><strong style="color:var(--c1)">9.</strong> Target audience (who are your ideal customers?)</p>
+      <p><strong style="color:var(--c1)">10.</strong> Menu/price list (if applicable)</p>
+      <p><strong style="color:var(--c1)">11.</strong> Top 3 products/services you want to promote</p>
+      <p><strong style="color:var(--c1)">12.</strong> Any existing social media accounts (links)</p>
+      <p><strong style="color:var(--c1)">13.</strong> Competitors you want us to be aware of</p>
+      <p><strong style="color:var(--c1)">14.</strong> Any specific instructions or preferences</p>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 4: Client Tracker Spreadsheet</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">Set up a Google Sheet with these columns — your free CRM:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Create a Google Sheets template for managing digital marketing clients. Columns: Client Name, Business Type, Package (Starter/Growth/Premium), Monthly Fee, Start Date, Contract Status, Payment Status (Advance Paid/Full Paid/Overdue), Deliverables This Month (Posts Done/Total, Videos Done/Total), Next Action, Check-in Date, Notes. Add conditional formatting: green for paid, yellow for pending, red for overdue. Include a summary row at the bottom showing total monthly revenue."</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Google Forms + Google Sheets = Free CRM</h4><p>You do not need expensive software. Google Forms for onboarding + Google Sheets for tracking + Google Drive for deliverables = a complete client management system that costs ₹0.</p></div></div>
+
+  <div class="micro-win">Simple systems work. Google Forms + Sheets + Drive = your entire business infrastructure for free.</div>
+  <p class="curiosity-hook">Next: Build all your systems in one guided session.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Build Your Systems &rarr;</button></div>
+</div>
+
+<!-- S4: BUILD YOUR SYSTEMS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">43% through! Time to build everything.</div>
+  <div class="sec-head"><div class="over">Section 04</div><h2>Build Your <span class="gr">Business Systems</span></h2><p>Create your contract template, onboarding form, and client tracker right now.</p></div>
+
+  <div class="micro-action">
+    <h4>Build These 3 Systems Now</h4>
+    <ul>
+      <li><strong>Contract template</strong> — Generate using ChatGPT CRISP prompt, customize for your services</li>
+      <li><strong>Client onboarding form</strong> — Create in Google Forms with all 14 questions</li>
+      <li><strong>Client tracker spreadsheet</strong> — Set up in Google Sheets with columns for 5 clients</li>
+    </ul>
+    <p style="margin-top:.5rem">Time target: 30 minutes for all three. You have AI to help.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 5: Test Your Onboarding Form</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">After building your Google Form, test it yourself:</p>
+    <ul style="padding-left:1.5rem;color:var(--t2);font-size:.9rem;line-height:2">
+      <li>Fill it out as if you were a salon owner — does it make sense?</li>
+      <li>Check: can they upload photos easily?</li>
+      <li>Check: are any questions confusing?</li>
+      <li>Send to a friend and have them fill it — get feedback on clarity</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift">Google Forms + Sheets = your free CRM. You do not need expensive tools. Simple systems that work beat complex tools that don't.</div>
+  <p class="curiosity-hook">Next: Practice the full client journey through role-play.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Role-Play Practice &rarr;</button></div>
+</div>
+
+<!-- S5: ROLE-PLAY -->
+<div class="sec" id="s5">
+  <div class="progress-marker">57% through! Practice makes confident.</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Role-Play: <span class="gr">Full Client Journey</span></h2><p>Pair up. One is the client (salon owner). One is the AI service provider. Run the full journey.</p></div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:1.5rem 0 1rem;">The Role-Play Script</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-brand">STEP 1</span><span class="crd-icon">📋</span><h3>Present Service Menu</h3><p>Show the 3-tier service menu. Explain what each tier includes. Let the "client" ask questions. Be confident but not pushy.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">STEP 2</span><span class="crd-icon">❓</span><h3>Handle Questions</h3><p>"Client" asks questions and raises concerns. "Kitna time lagega?" "Guarantee kya hai?" "Pehle bhi kisi ne try kiya, kaam nahi aaya." Practice responding naturally.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">STEP 3</span><span class="crd-icon">🎯</span><h3>Recommend a Package</h3><p>Based on the "client's" needs, recommend the Growth Package with clear reasoning. Use the per-day breakdown. Show sample deliverables.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">STEP 4</span><span class="crd-icon">✅</span><h3>"Client" Says Yes</h3><p>Practice the moment of agreement. "Bahut achha, chaliye shuru karte hain." Stay professional, not overly excited.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">STEP 5</span><span class="crd-icon">📜</span><h3>Walk Through Contract</h3><p>Show the contract. Walk through each clause. "Yeh hai aapka agreement. Ismein yeh yeh included hai..." Answer contract questions.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">STEP 6</span><span class="crd-icon">📝</span><h3>Send Onboarding Form</h3><p>Explain the onboarding form. "Yeh form bharna hoga taaki hum kaam shuru kar sakein. Logo, photos, aur business details chahiye."</p></div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">🎭</div><div class="call-body"><h4>Role-Play Tips</h4><p><strong>For the "client":</strong> Act like a real business owner — skeptical, busy, budget-conscious. Ask tough questions. Do not make it easy.<br><strong>For the "provider":</strong> Stay calm, professional, and helpful. Use specific numbers and examples. Show your portfolio samples.</p></div></div>
+
+  <div class="checklist">
+    <h4>Day 19 Completion Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand why contracts are essential for every client</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Know all 7 contract clauses</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Generated a contract template using AI</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created Google Form for client onboarding (14 questions)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created Google Sheet client tracker</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Know the 7-step onboarding workflow</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Completed role-play practice (both roles)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tested onboarding form with a friend</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off</div>
+  </div>
+
+  <div class="micro-win">You practiced the full client journey. Confidence comes from preparation and repetition.</div>
+  <p class="curiosity-hook">Next: Quiz on contracts and onboarding.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S6: QUIZ -->
+<div class="sec" id="s6">
+  <div class="progress-marker">71% through! Quiz time.</div>
+  <div class="sec-head"><div class="over">Section 06</div><h2>Test Your <span class="gr">Understanding</span></h2><p>8 questions on contracts, onboarding, and client management.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S7: WRAP-UP -->
+<div class="sec" id="s7">
+  <div class="sec-head"><div class="over">Section 07</div><h2>Day 19 <span class="gr">Complete!</span></h2><p>Contracts, onboarding, and client management systems — all built.</p></div>
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">📜</span><div class="vi-label" style="color:var(--c1)">Contract</div><div class="vi-desc">Template ready</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">📝</span><div class="vi-label" style="color:var(--c2)">Onboarding</div><div class="vi-desc">Google Form built</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">📊</span><div class="vi-label" style="color:var(--c4)">Tracker</div><div class="vi-desc">Google Sheet CRM</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">🎭</span><div class="vi-label" style="color:var(--c5)">Practice</div><div class="vi-desc">Role-play complete</div></div>
+  </div>
+  <div class="micro-action"><h4>Homework Before Day 20</h4><ul><li>Finalize contract template, onboarding form, and client tracker</li><li>Test the onboarding form — send to a friend to fill</li><li>Practice the sales conversation with a family member</li><li>Be ready for Day 20: WhatsApp Marketing mastery</li></ul></div>
+  <div class="callout call-2"><div class="call-ico">📱</div><div class="call-body"><h4>Preview: Day 20 — WhatsApp Campaigns</h4><p>Tomorrow: WhatsApp Business mastery — catalog, quick replies, broadcasts. India mein 500M+ WhatsApp users. This is the most powerful free marketing channel.</p></div></div>
+  <div class="identity-shift">Contracts are non-negotiable. Onboarding forms save time. Practice makes confident. You are building a real business.</div>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back</button><a href="hustler-20.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 20: WhatsApp &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">Uplrn AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 19 &middot; uplrn.ai</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 Uplrn AI Labs.</p></div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7'];let curLang='en';
+function setLang(l){curLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));document.querySelectorAll('[data-'+l+']').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});}
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pt=document.getElementById('progText');pt.textContent=Math.round((idx+1)/secIds.length*100)+'%';pt.style.display='block';if(id==='s6'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vigrid,.progress-marker,.crd,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal'))c.classList.add('reveal');});});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const t=document.querySelectorAll('.check-item').length;const c=document.querySelectorAll('.check-item.checked').length;const s=document.getElementById('checkScore');if(s)s.textContent=`${c}/${t} complete`;}
+function copyPrompt(el){const text=el.textContent.replace(/^Click to copy:\s*/,'');navigator.clipboard.writeText(text).then(()=>{const o=el.textContent;el.textContent='Copied!';setTimeout(()=>el.textContent=o,2500);}).catch(()=>{});}
+const allQ=[
+  {q:"Why is a contract essential for every client engagement?",o:["To impress the client","To protect payment, define scope, set expectations, and prevent disputes","To comply with government regulations","To increase your pricing"],a:1,e:"Contracts protect both you and the client by defining scope, deliverables, payment terms, revision policy, and cancellation terms. No contract = no protection."},
+  {q:"What payment terms should you use?",o:["Full payment after completion","50% advance before work starts, 50% on delivery/mid-month","Free work for first month as trial","Payment only if client is happy"],a:1,e:"50% advance ensures you are compensated for starting work. 50% on delivery or mid-month ensures the client pays for completed work. Never start without advance."},
+  {q:"How many rounds of revisions should be included?",o:["Unlimited revisions","0 revisions — final is final","2 rounds included, additional at ₹500/round","5 rounds minimum"],a:2,e:"2 rounds included is professional and fair. Extra revisions at ₹500/round prevents infinite revision loops. This boundary protects your time and profit."},
+  {q:"What is the first step after a client says yes?",o:["Start working immediately","Send the contract via WhatsApp/email","Post about it on social media","Ask for full payment"],a:1,e:"After 'yes': send contract first, collect advance, then send onboarding form. Never start work before contract and advance."},
+  {q:"What tools make up the free CRM for client management?",o:["Salesforce and HubSpot","Google Forms + Google Sheets + Google Drive","WhatsApp only","A physical notebook"],a:1,e:"Google Forms for onboarding, Google Sheets for tracking, and Google Drive for deliverables = a complete free CRM system."},
+  {q:"What should the onboarding form collect?",o:["Client's personal Aadhaar and bank details","Business details, logo, photos, brand preferences, target audience, hours, menu/prices","Only the business name","Client's social media passwords"],a:1,e:"The onboarding form collects everything needed to start work: business identity, visual assets, brand preferences, target audience, and service information."},
+  {q:"How soon should you deliver the first draft after receiving payment?",o:["Within 1 week","Within 48 hours","Within 1 month","Whenever you have time"],a:1,e:"48 hours for first draft shows professionalism and builds trust. Speed in the first delivery sets the tone for the entire relationship."},
+  {q:"What is the cancellation policy in the contract?",o:["No cancellation allowed","15 days notice, work completed will be paid, advance non-refundable after work begins","Immediate cancellation with full refund","Client can cancel anytime with no notice"],a:1,e:"15 days notice is fair to both sides. Work completed until cancellation is paid. Advance is non-refundable after work starts — this protects your time."},
+  {q:"During role-play, what should the 'client' do?",o:["Agree to everything immediately","Act like a real business owner — skeptical, busy, budget-conscious with tough questions","Refuse everything","Stay silent"],a:1,e:"Realistic role-play prepares you for real conversations. The 'client' should be skeptical and ask tough questions so the 'provider' can practice handling them."},
+  {q:"What language should contracts be written in?",o:["Only English legal language","Simple Hindi/English mix that a local business owner can understand","Only Punjabi","Complex legal jargon"],a:1,e:"Simple, clear language in Hindi/English mix. The contract must be understandable by a shop owner in Ludhiana, not a lawyer in Delhi."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct}%</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct>=75?'Contracts and onboarding mastered!':pct>=50?'Review the contract clauses.':'Re-read the sections above.'}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Wrap-Up</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];box.innerHTML=`<div class="q-prog">${qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('')}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('')}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML='Correct! '+q.e}else{fb.className='q-fb show fb-no';fb.innerHTML='Not quite. '+q.e}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

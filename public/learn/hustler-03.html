@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 3: AI Deep Dive — Hands-On All Tools — AI Hustler 45 · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}@media print{body{display:none!important}}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3)}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2)}.vflow-node.glow-pink{border-color:rgba(255,61,139,.2)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}@media(max-width:600px){.vcompare{grid-template-columns:1fr}}.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}.vcompare-card:hover{transform:translateY(-4px)}.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}.vcompare-card.vs-wrong h4{color:var(--c3)}.vcompare-card.vs-right h4{color:var(--c5)}.vcompare-card p{color:var(--t2);font-size:.85rem}.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-left.visible{opacity:1;transform:translateX(0)}.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-right.visible{opacity:1;transform:translateX(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}.lang-btn:hover{color:var(--t1)}.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}[data-lang-hi],[data-lang-pa]{display:none}body.lang-hi [data-lang-en]{display:none}body.lang-hi [data-lang-hi]{display:block}body.lang-pa [data-lang-en]{display:none}body.lang-pa [data-lang-pa]{display:block}body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}body.lang-hi .hero h1 [data-lang-hi]{display:inline}body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:160px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<div class="lang-bar"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">हिं</button><button class="lang-btn" onclick="setLang('pa')">ਪੰ</button></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 03 &middot; AI Hustler 45 &middot; 2026</div>
+  <h1><span data-lang-en>AI Deep Dive &mdash;<br><span class="gr">All Tools, Real Tasks</span></span><span data-lang-hi style="display:none">AI गहराई &mdash;<br><span class="gr">सब टूल्स, असली काम</span></span><span data-lang-pa style="display:none">AI ਡੂੰਘਾਈ &mdash;<br><span class="gr">ਸਾਰੇ ਟੂਲ, ਅਸਲੀ ਕੰਮ</span></span></h1>
+  <div class="hero-brand">AI Hustler 45 &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>Today is 100% HANDS-ON. Real business tasks. Real outputs. Real limitations. You'll understand AI hallucinations, build your first commercial output, and produce something a business would PAY for. "Aaj sirf kaam. Theory khatam."</p></div>
+  <div data-lang-hi style="display:none"><p>आज 100% प्रैक्टिकल है। असली बिजनेस टास्क। असली आउटपुट। असली limitations। आज कुछ ऐसा बनाओगे जिसके लिए बिजनेस पैसे देगा।</p></div>
+  <div data-lang-pa style="display:none"><p>ਅੱਜ 100% ਪ੍ਰੈਕਟੀਕਲ ਹੈ। ਅਸਲੀ ਬਿਜ਼ਨਸ ਟਾਸਕ। ਅਸਲੀ ਆਊਟਪੁੱਟ। ਅੱਜ ਕੁਝ ਅਜਿਹਾ ਬਣਾਓਗੇ ਜਿਸ ਲਈ ਬਿਜ਼ਨਸ ਪੈਸੇ ਦੇਵੇ।</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()"><span data-lang-en>Deep Dive &rarr;</span><span data-lang-hi style="display:none">शुरू करें &rarr;</span><span data-lang-pa style="display:none">ਸ਼ੁਰੂ ਕਰੋ &rarr;</span></button>
+    <button class="btn btn-ghost" onclick="jumpTo('s6')">&#9889; Quiz</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner">
+  <span class="nav-brand">AI Hustler</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>AI Limitations</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>Hallucination Lab</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>Commercial Output</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>Multilingual Magic</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Portfolio Builder</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+  <button class="nav-btn" data-s="s7"><span class="nn">07</span>Wrap-Up</button>
+</div></nav>
+
+<!-- S1: AI LIMITATIONS -->
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01</div>
+    <h2 data-lang-en>AI Limitations &mdash; <span class="gr">The Honest Truth</span></h2>
+    <h2 data-lang-hi style="display:none">AI की सीमाएं &mdash; <span class="gr">सच्चाई</span></h2>
+    <h2 data-lang-pa style="display:none">AI ਦੀਆਂ ਸੀਮਾਵਾਂ &mdash; <span class="gr">ਸੱਚਾਈ</span></h2>
+    <p>A Hustler who knows AI's weaknesses is MORE valuable than one who only knows its strengths. Clients will trust you when you're honest about what AI can and cannot do.</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">CRITICAL</span><span class="crd-icon">🤥</span><h3>Hallucinations</h3><p>AI can confidently state completely false information. It might invent statistics, fake restaurant names, or wrong phone numbers. <strong>ALWAYS fact-check for clients.</strong> "AI kade kade galat gall badi confidence naal kehnda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">IMPORTANT</span><span class="crd-icon">📅</span><h3>Knowledge Cutoff</h3><p>AI was trained on data up to a certain date. It may not know about very recent events, new businesses, or latest prices. Always verify time-sensitive info. "AI nu aaj di khabar nahi pata hundi."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">UNDERSTAND</span><span class="crd-icon">🧩</span><h3>No Real Understanding</h3><p>AI predicts words, it doesn't truly understand meaning. It can't visit a restaurant, taste food, or know your local market. YOUR local knowledge is irreplaceable. "AI sirf shabd predict karda hai, samajhda nahi."</p></div>
+    <div class="crd reveal"><span class="tag tag-1">BIAS</span><span class="crd-icon">⚖️</span><h3>Training Data Bias</h3><p>AI learned from internet data which contains biases. It may default to Western examples, miss Punjab-specific context, or make cultural assumptions. "AI di training mein Punjab da context ghat hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">PRIVACY</span><span class="crd-icon">🔒</span><h3>No Privacy Guarantee</h3><p>Don't put client confidential data, Aadhaar numbers, passwords, or trade secrets into AI. Conversations may be stored. "Client da secret data AI vich KABHI na paao."</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">YOUR VALUE</span><span class="crd-icon">💎</span><h3>Why YOU Matter</h3><p>AI + Human = Unbeatable. You bring: local knowledge, cultural context, fact-checking, client relationships, and quality control. AI brings speed. Together = money. "AI + Tusi = Invincible team."</p></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">💰</div><div class="call-body"><h4>The Hustler Advantage</h4><p>When you tell a client "Main AI use karda haan, par ALWAYS fact-check karda haan aur local context add karda haan" &mdash; they trust you MORE. Honesty about AI limitations = higher client trust = longer contracts = more money.</p></div></div>
+
+  <div class="micro-win">Understanding limitations makes you 10x more valuable than someone who just copies AI output blindly.</div>
+  <p class="curiosity-hook">Next: Let's actually catch AI lying &mdash; the Hallucination Lab.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Hallucination Lab &rarr;</button></div>
+</div>
+
+<!-- S2: HALLUCINATION LAB -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Limitations understood. Now let's catch AI red-handed!</div>
+  <div class="sec-head"><div class="over">Section 02</div>
+    <h2 data-lang-en>Hallucination <span class="gr">Lab</span></h2>
+    <h2 data-lang-hi style="display:none">हैलुसिनेशन <span class="gr">लैब</span></h2>
+    <h2 data-lang-pa style="display:none">ਹੈਲੁਸੀਨੇਸ਼ਨ <span class="gr">ਲੈਬ</span></h2>
+    <p>Try these prompts and watch AI make mistakes. This teaches you WHAT to verify for clients. "AI nu galat jawab dete hue pakdo."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Hallucination Test 1: Fake Facts</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Ask AI about a specific local detail it can't possibly know accurately:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'What is the exact phone number and address of the most popular sweet shop on GT Road in Kotkapura, Punjab? Also tell me their opening hours and specialties.')">📋 Click to copy: What is the exact phone number and address of the most popular sweet shop on GT Road in Kotkapura, Punjab?</div>
+    <p style="color:var(--c3);font-size:.82rem"><strong>WARNING:</strong> AI will likely INVENT a phone number and address. It doesn't actually know this. Verify everything!</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Hallucination Test 2: Recent Events</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'What were the results of the most recent Faridkot municipal elections in Punjab? Give me exact vote counts and winning candidates.')">📋 Click to copy: Results of the most recent Faridkot municipal elections? Exact vote counts and winning candidates.</div>
+    <p style="color:var(--c3);font-size:.82rem"><strong>WARNING:</strong> AI may confidently give you COMPLETELY wrong election results. Always check government sources.</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Hallucination Test 3: Math Check</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'A shop in Ludhiana sells 45 shirts at INR 850 each and gives 12% discount on bulk orders over 20 shirts. The GST is 5% on the discounted price. Calculate the final amount the customer pays.')">📋 Click to copy: Calculate: 45 shirts at INR 850 each, 12% bulk discount, 5% GST on discounted price. What's the final amount?</div>
+    <p style="color:var(--c3);font-size:.82rem"><strong>CHECK:</strong> Verify the math manually. AI sometimes makes calculation errors, especially with multiple steps.</p>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">🎯</div><div class="call-body"><h4>The 3-Step Fact-Check Process for Hustlers</h4><p><strong>Step 1: VERIFY FACTS.</strong> Phone numbers, addresses, statistics, dates &mdash; check with Google/official sources.<br><strong>Step 2: VERIFY MATH.</strong> Any calculations &mdash; use a calculator to double-check.<br><strong>Step 3: VERIFY CULTURAL FIT.</strong> Does the language sound natural? Would a Punjab business owner actually talk like this? Adjust if needed.<br><br>"3 steps: Facts verify karo. Math check karo. Cultural fit dekho."</p></div></div>
+
+  <div class="micro-win">You can now catch AI mistakes before they embarrass you in front of clients. This skill is GOLD.</div>
+  <p class="curiosity-hook">Next: Create your FIRST commercial output &mdash; something businesses actually pay for.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Commercial Output &rarr;</button></div>
+</div>
+
+<!-- S3: FIRST COMMERCIAL OUTPUT -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128293; 43% done! Now we create something worth SELLING.</div>
+  <div class="sec-head"><div class="over">Section 03</div>
+    <h2 data-lang-en>First <span class="gr">Commercial Output</span></h2>
+    <h2 data-lang-hi style="display:none">पहला <span class="gr">कमर्शियल आउटपुट</span></h2>
+    <h2 data-lang-pa style="display:none">ਪਹਿਲਾ <span class="gr">ਕਮਰਸ਼ੀਅਲ ਆਊਟਪੁੱਟ</span></h2>
+    <p>Right now, create a complete social media post that a real business would pay INR 500-1000 for. This is the moment content becomes commerce.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">The Commercial Output Workflow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">🏪</div><div class="vn-label">Pick Business</div><div class="vn-sub">Restaurant, salon, gym...</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">💬</div><div class="vn-label">ChatGPT</div><div class="vn-sub">Caption + hashtags</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">🔍</div><div class="vn-label">Fact-Check</div><div class="vn-sub">Verify all details</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">💰</div><div class="vn-label">Portfolio</div><div class="vn-sub">Save as sample</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Every output you create from today goes into your portfolio.</strong> By Day 15, you'll have 15+ pieces to show clients.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Create: Social Media Post for a Restaurant</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a complete Instagram post package for a Punjabi restaurant called Pind Di Rasoi in Jalandhar. Include: 1) An engaging caption (100 words, Hinglish), 2) 10 relevant hashtags, 3) A strong call-to-action, 4) A suggested image description for Canva design. The restaurant is famous for its butter chicken, amritsari kulcha, and lassi. Tone: warm, inviting, proud of Punjabi heritage.')">📋 Click to copy: Complete Instagram post package for Pind Di Rasoi, Jalandhar. Caption (Hinglish), hashtags, CTA, image suggestion.</div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Your Turn &mdash; Create 3 Posts for 3 Different Businesses</h4>
+    <p>Pick 3 different business types from this list and create a complete social media post for each:</p>
+    <ul>
+      <li><strong>Option A:</strong> Salon / Beauty Parlour</li>
+      <li><strong>Option B:</strong> Gym / Fitness Center</li>
+      <li><strong>Option C:</strong> Coaching Center / Tuition</li>
+      <li><strong>Option D:</strong> Clothing Boutique</li>
+      <li><strong>Option E:</strong> Medical Clinic / Dental</li>
+      <li><strong>Option F:</strong> Real Estate Agent</li>
+    </ul>
+    <p><strong>Each post must include:</strong> Caption (50-100 words), 5-10 hashtags, CTA, and must be in a DIFFERENT language: 1 English, 1 Hindi, 1 Punjabi.</p>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">💰</div><div class="call-body"><h4>What This Is Worth</h4><p>A set of 3 social media posts (trilingual) = INR 500-1000. If you can create 10 sets per hour using AI, that's INR 5,000-10,000/hour worth of deliverables. Obviously you won't charge per post &mdash; you'll package as monthly service. But the SPEED is your advantage. "3 posts = INR 500-1000. 10 sets/hour = INR 5,000-10,000 worth."</p></div></div>
+
+  <div class="identity-shift">"Tusi abhi ik kaam kita hai jo businesses actually pay karde ne. Ih day 3 hai. Day 30 tak tusi 10x faster hovoge."</div>
+
+  <div class="micro-win">First commercial-quality output DONE. This is no longer just learning &mdash; this is your future income.</div>
+  <p class="curiosity-hook">Next: Multilingual Magic &mdash; English, Hindi, Punjabi content mastery.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Multilingual Magic &rarr;</button></div>
+</div>
+
+<!-- S4: MULTILINGUAL MAGIC -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128170; 57% done! Now the language advantage that sets Punjab hustlers apart.</div>
+  <div class="sec-head"><div class="over">Section 04</div>
+    <h2 data-lang-en>Multilingual <span class="gr">AI Magic</span></h2>
+    <h2 data-lang-hi style="display:none">बहुभाषी <span class="gr">AI जादू</span></h2>
+    <h2 data-lang-pa style="display:none">ਬਹੁ-ਭਾਸ਼ਾਈ <span class="gr">AI ਜਾਦੂ</span></h2>
+    <p>Punjab businesses need content in English, Hindi, AND Punjabi. Your ability to deliver in all 3 = TRIPLE the value. Most freelancers only do English. "Tuhadi Punjabi = competitive advantage."</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">ENGLISH</span><span class="crd-icon">🇬🇧</span><h3>English Content</h3><p>For: Google My Business, LinkedIn, professional emails, international clients. AI is BEST at English. Quality: 9/10. Minimal editing needed.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">HINDI</span><span class="crd-icon">🇮🇳</span><h3>Hindi Content</h3><p>For: Facebook, WhatsApp, mass marketing. AI is good but needs cultural editing. Devanagari for formal, Roman for social media. Quality: 7/10.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">PUNJABI</span><span class="crd-icon">🏵️</span><h3>Punjabi Content</h3><p>For: WhatsApp groups, local Instagram, festival posts. AI is decent but YOU must add authentic flavor. Gurmukhi for formal, Roman for social. Quality: 6/10 (needs your touch).</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Same Message, 3 Languages</h4></div>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a Baisakhi festival greeting for a clothing store called Rangreza Boutique in Ludhiana. Write 3 versions: 1) English (professional, modern), 2) Hindi in Devanagari script (warm, traditional), 3) Punjabi in Gurmukhi script (festive, culturally rich). Each version: under 80 words. Include a subtle sales message about their Baisakhi collection. Do NOT translate word-for-word — write FRESH in each language.')">📋 Click to copy: Baisakhi greeting for Rangreza Boutique &mdash; English, Hindi (Devanagari), Punjabi (Gurmukhi). Fresh in each language, not translated.</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Pro Tip: Write Fresh, Don't Translate</h4><p>The biggest mistake: translating English content to Hindi/Punjabi word-for-word. Each language has its own rhythm, humor, and cultural references. Tell AI: <strong>"Write fresh in [language], don't translate."</strong> This is the difference between amateur and professional multilingual content. "Translate mat karo, naye se likho har language mein."</p></div></div>
+
+  <div class="micro-win">You now create content in 3 languages. That's 3x the market reach for every client.</div>
+  <p class="curiosity-hook">Next: Build your portfolio &mdash; your ticket to real clients.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Portfolio Builder &rarr;</button></div>
+</div>
+
+<!-- S5: PORTFOLIO BUILDER + CHECKLIST -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#128736; 71% done! Let's organize your portfolio.</div>
+  <div class="sec-head"><div class="over">Section 05</div>
+    <h2 data-lang-en>Portfolio <span class="gr">Builder</span></h2>
+    <h2 data-lang-hi style="display:none">पोर्टफोलियो <span class="gr">बिल्डर</span></h2>
+    <h2 data-lang-pa style="display:none">ਪੋਰਟਫੋਲੀਓ <span class="gr">ਬਿਲਡਰ</span></h2>
+    <p>By end of today, you should have 6+ content pieces in your portfolio. By Day 15, you need 15+. This portfolio is what you'll show to real businesses in Phase 3.</p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">📁</div><div class="call-body"><h4>Portfolio Organization</h4><p>Create a Google Drive folder: <strong>[YourName]_AI_Portfolio</strong><br>Inside, create subfolders:<br>&#8226; <strong>Social_Media_Posts</strong> &mdash; Instagram, Facebook, WhatsApp content<br>&#8226; <strong>Business_Writing</strong> &mdash; Emails, bios, descriptions<br>&#8226; <strong>Designs</strong> (starting Day 7 with Canva)<br>&#8226; <strong>Videos</strong> (starting Day 10 with HeyGen)<br><br>"Organized portfolio = professional impression. Disorganized = amateur."</p></div></div>
+
+  <div class="checklist">
+    <h4>&#9989; Day 3 Completion Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🤥 Tested AI hallucinations with 3 prompts</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🔍 Learned the 3-Step Fact-Check Process</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📝 Created 3 social media posts for 3 business types</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🌐 Created content in English, Hindi, AND Punjabi</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💡 Understand: write fresh, don't translate</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📁 Created Google Drive portfolio folder</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>💰 Understand the value of my outputs (INR 500-1000/set)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📊 Have 6+ portfolio pieces total (including Days 1-2)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>📱 Shared best output in WhatsApp group</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>🧠 Know AI's 5 main limitations</label></div>
+    <div class="check-score" id="checkScore">Tap items to check &rarr; score appears here</div>
+  </div>
+
+  <div class="micro-win">Portfolio started. 6+ pieces and counting. By Day 15 you'll have 15+.</div>
+  <p class="curiosity-hook">Next: Quiz time!</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Quiz &rarr;</button></div>
+</div>
+
+<!-- S6: QUIZ -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2 data-lang-en>Test Your <span class="gr">Deep Dive</span></h2><h2 data-lang-hi style="display:none">अपनी <span class="gr">गहराई</span> जांचो</h2><h2 data-lang-pa style="display:none">ਆਪਣੀ <span class="gr">ਡੂੰਘਾਈ</span> ਪਰਖੋ</h2><p>8 questions. Show what you learned today.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S7: WRAP-UP -->
+<div class="sec" id="s7">
+  <div class="sec-head"><div class="over">Section 07</div><h2 data-lang-en>Day 3 <span class="gr">Complete!</span></h2><h2 data-lang-hi style="display:none">दिन 3 <span class="gr">पूरा!</span></h2><h2 data-lang-pa style="display:none">ਦਿਨ 3 <span class="gr">ਪੂਰਾ!</span></h2><p>3 days in and you've already produced commercial-quality content in 3 languages. Let that sink in.</p></div>
+
+  <div class="callout call-brand"><div class="call-ico">🎉</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; 5 AI limitations every hustler must know<br>&#9989; Hallucination detection &mdash; you can catch AI lying<br>&#9989; 3-Step Fact-Check Process<br>&#9989; First commercial output &mdash; worth INR 500-1000<br>&#9989; Multilingual content: English + Hindi + Punjabi<br>&#9989; Portfolio organization in Google Drive</p></div></div>
+
+  <div class="micro-action"><h4>Homework Before Day 4</h4><ul>
+    <li><strong>Create 3 MORE social media posts</strong> for 3 new business types</li>
+    <li><strong>Total portfolio should be 6+ pieces</strong> by tomorrow</li>
+    <li><strong>Walk past 3 shops</strong> &mdash; what content do they need? Write it down.</li>
+    <li><strong>Fact-check one AI output</strong> &mdash; find at least 1 error and fix it</li>
+  </ul></div>
+
+  <div class="callout call-2"><div class="call-ico">🔮</div><div class="call-body"><h4>Preview: Day 4 &mdash; Prompt Engineering Part 1</h4><p>"Kal assi sikhange THE most important skill &mdash; Prompt Engineering. The 5-Block Framework jo tumhari AI output quality 10x kar dega. ROLE, CONTEXT, TASK, FORMAT, CONSTRAINTS. Ih framework yaad kar lo &mdash; paise kamaan da formula hai."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=I%20completed%20Day%203%20of%20AI%20Hustler%2045!" target="_blank" class="btn btn-glow" style="margin-right:12px;text-decoration:none">&#128241; Message TARAhut</a><a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; TARAhut</a></div>
+
+  <div class="identity-shift">"3 din, 3 languages, 6+ portfolio pieces. Tusi hun AI Hustler path te ho. 42 din baaki &mdash; har roz strong honde jaao."</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Quiz</button><a href="hustler-04.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 4: Prompt Engineering &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 03 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs.</p></div>
+
+<script>
+function setLang(lang){document.body.classList.remove('lang-hi','lang-pa');if(lang!=='en')document.body.classList.add('lang-'+lang);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}else{el.style.display='none'}});localStorage.setItem('tarahut-lang',lang);}(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['u','s','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=`${pct}%`;pt.style.display='block';if(id==='s6'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked}/${total} — ${checked>=8?'DEEP DIVE COMPLETE!':checked>=5?'Great progress!':'Keep going!'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Paste into ChatGPT →';el.style.background='rgba(52,211,153,.1)';setTimeout(()=>{el.textContent=orig;el.style.background='rgba(0,240,255,.03)'},3000);}).catch(()=>{});}
+
+const allQ=[
+  {q:"What is an AI hallucination?",o:["When AI creates images","When AI confidently presents false information as fact","When AI runs slowly","When AI crashes"],a:1,e:"AI hallucinations occur when the model generates false information with high confidence — it might invent fake statistics, addresses, or facts."},
+  {q:"What are the 3 steps in the Hustler Fact-Check Process?",o:["Copy, Paste, Send","Verify Facts, Verify Math, Verify Cultural Fit","Read, Edit, Publish","Ask, Wait, Accept"],a:1,e:"Three steps: 1) Verify facts with official sources, 2) Check all math with a calculator, 3) Verify cultural fit — does it sound natural for Punjab?"},
+  {q:"Why is writing fresh content in each language better than translating?",o:["It's faster","Each language has its own rhythm, humor, and cultural references","AI can't translate","Translation is more expensive"],a:1,e:"Each language has unique expressions, idioms, and cultural references. Word-for-word translation sounds unnatural. Fresh content in each language is far more authentic."},
+  {q:"What is a social media post set worth for a local business?",o:["INR 50-100","INR 500-1000","INR 10,000-15,000","It's free"],a:1,e:"A trilingual social media post set (caption + hashtags + CTA) is worth INR 500-1000 for a local business. With AI, you can create 10 sets per hour."},
+  {q:"Which AI limitation makes YOUR local knowledge irreplaceable?",o:["AI is slow","AI can't visit restaurants, taste food, or know local market context","AI costs money","AI only works in English"],a:1,e:"AI predicts words but doesn't truly understand. It can't visit a local shop, taste food, or know Kotkapura market dynamics. YOUR local knowledge is irreplaceable."},
+  {q:"How should you organize your portfolio in Google Drive?",o:["One big folder with everything mixed","Subfolders: Social_Media_Posts, Business_Writing, Designs, Videos","No need for organization","Keep on phone only"],a:1,e:"Organize with clear subfolders: Social_Media_Posts, Business_Writing, Designs (Day 7+), Videos (Day 10+). Professional organization = professional impression."},
+  {q:"What should you tell clients about your use of AI?",o:["Hide it completely","Be honest: I use AI but always fact-check and add local context","Say you never use AI","Don't discuss process with clients"],a:1,e:"Honesty builds trust. Tell clients: 'I use AI for speed but always fact-check and add local context.' This makes them trust you MORE."},
+  {q:"How many portfolio pieces should you have by Day 15?",o:["5","10","15+","50"],a:2,e:"By Day 15, you need 15+ portfolio pieces. That's a mix of social media posts, business writing, designs, and video scripts."},
+  {q:"AI's Hindi/Punjabi content quality typically rates at what level?",o:["10/10 perfect","Hindi 7/10, Punjabi 6/10 — needs your editing","0/10 doesn't work at all","Same as English 9/10"],a:1,e:"AI's Hindi is about 7/10 and Punjabi about 6/10. Both need human editing for cultural authenticity. English is about 9/10. That's why YOU add value."},
+  {q:"What's the key difference between checking facts about a local shop vs a general question?",o:["No difference","AI may confidently invent local details like phone numbers and addresses","Local questions are easier for AI","AI always gets local info right"],a:1,e:"AI may confidently invent local details — fake phone numbers, wrong addresses, made-up shop names. Always verify local information through direct sources."},
+  {q:"How does understanding AI limitations increase your earning potential?",o:["It doesn't","Clients trust you more when you're honest about limitations = longer contracts = more money","You can charge more for being pessimistic","Limitations don't affect earnings"],a:1,e:"Honesty about limitations builds client trust. Trust = longer contracts and referrals = more sustained income. Blind AI copy-paste leads to errors and lost clients."},
+  {q:"For the multilingual content task, what makes Punjabi content a competitive advantage?",o:["It's easier to write","Most freelancers only offer English — Punjabi gives you a unique market edge","AI writes perfect Punjabi","Punjabi businesses don't need content"],a:1,e:"Most freelancers only offer English content. If you can deliver professional English + Hindi + Punjabi, you serve a market most competitors can't touch."},
+  {q:"What should NEVER be shared with AI tools?",o:["Business ideas","Client confidential data, Aadhaar, bank details, passwords","Restaurant menus","Social media content"],a:1,e:"Never share client confidential data, Aadhaar numbers, bank details, or passwords with AI. Conversations may be stored and are not guaranteed private."},
+  {q:"The commercial output workflow is: Pick Business → ChatGPT → ___ → Portfolio. What's missing?",o:["Canva Design","Fact-Check","Payment","Sleep"],a:1,e:"The workflow: Pick Business → ChatGPT content → FACT-CHECK → Portfolio. Never skip the fact-checking step — it's what separates professionals from amateurs."},
+  {q:"By end of Day 3, how many portfolio pieces should a hustler have?",o:["0 — portfolio starts later","3 pieces","6+ pieces","20+ pieces"],a:2,e:"By end of Day 3, you should have 6+ pieces: 3 from the 10-Prompt Challenge (Day 2) + 3 trilingual social media posts (Day 3)."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct>=75?'Deep Dive Master!':pct>=50?'Solid!':'Keep Learning!'}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}%</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

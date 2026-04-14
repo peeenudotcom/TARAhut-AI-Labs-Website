@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 7: Few-Shot & Zero-Shot Prompting — Generative AI & Prompt Engineering | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'&#127919;  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'&#10003; ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
+.acc-tracker{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;margin:2rem 0}
+.acc-tracker h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem;color:var(--c1)}
+.acc-bar{height:24px;background:var(--bg);border-radius:var(--rs);overflow:hidden;margin:.5rem 0}
+.acc-fill{height:100%;background:var(--gbrand);border-radius:var(--rs);transition:width .6s ease;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fff;font-weight:700}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">&#2361;&#2367;&#2306;</button>
+  <button class="lang-btn" onclick="setLang('pa')">&#2602;&#2672;</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 07 &middot; Prompt Engineering &middot; 2026</div>
+  <h1>
+    <span data-lang-en>Few-Shot &amp; Zero-Shot<br><span class="gr">Prompting</span></span>
+    <span data-lang-hi style="display:none"><span class="gr">Few-Shot</span> और<br>Zero-Shot प्रॉम्प्टिंग</span>
+    <span data-lang-pa style="display:none"><span class="gr">Few-Shot</span> ਅਤੇ<br>Zero-Shot ਪ੍ਰੋਮਪਟਿੰਗ</span>
+  </h1>
+  <div class="hero-brand">Generative AI &amp; Prompt Engineering &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>Teach AI by showing it examples. Master classification, extraction, and formatting with accuracy tracking. Go from inconsistent output to production-ready precision. "AI nu examples dikhao, te oh pattern samajh jaanda hai."</p></div>
+  <div data-lang-hi style="display:none"><p>AI को उदाहरण दिखाकर सिखाएं। Classification, extraction और formatting में master बनें। "AI ko examples dikhao, wo pattern samajh jaata hai."</p></div>
+  <div data-lang-pa style="display:none"><p>AI ਨੂੰ ਉਦਾਹਰਣਾਂ ਦਿਖਾ ਕੇ ਸਿਖਾਓ। Classification, extraction ਅਤੇ formatting ਵਿੱਚ ਮਾਹਰ ਬਣੋ। "AI ਨੂੰ examples ਦਿਖਾਓ, ਉਹ pattern ਸਮਝ ਜਾਂਦਾ ਹੈ।"</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Session &rarr;</span>
+      <span data-lang-hi style="display:none">सेशन शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">
+      <span data-lang-en>&#9889; Jump to Quiz</span>
+      <span data-lang-hi style="display:none">&#9889; क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">&#9889; ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Prompt Engineering</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Zero vs Few-Shot</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Classification Lab</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Extraction &amp; Formatting</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Accuracy Tracking</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: ZERO-SHOT vs FEW-SHOT -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>Zero-Shot, One-Shot, <span class="gr">Few-Shot</span></h2>
+    <h2 data-lang-hi style="display:none">Zero-Shot, One-Shot, <span class="gr">Few-Shot</span></h2>
+    <h2 data-lang-pa style="display:none">Zero-Shot, One-Shot, <span class="gr">Few-Shot</span></h2>
+    <p>"Teach me without words." Show 3 positive movie reviews labelled POSITIVE, then show an unlabelled review. Everyone gets it instantly. AI works the same way &mdash; it learns patterns from examples in your prompt. "Examples dikhao, AI samajh jaanda hai."</p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128218;</div><div class="call-body"><h4>Session 6 Recap: CoT + ToT</h4><p>Last session you learned <strong>chain-of-thought</strong> (linear reasoning) and <strong>tree-of-thought</strong> (branching exploration). CoT teaches AI HOW to think. Today, few-shot teaches AI WHAT PATTERN to follow. Together with CRISP, you now have a complete prompt engineering toolkit. "CoT = soch da tarika, Few-Shot = pattern da tarika."</p></div></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">&#127919;</div>
+      <h4>Zero-Shot: No Examples</h4>
+      <p>"Classify this email as spam or not spam." AI uses only its training knowledge. Works for simple tasks but fails on nuanced or ambiguous inputs. "Bina example de &mdash; AI guess karda hai."</p>
+      <div class="vc-badge">&#10005; Inconsistent on Edge Cases</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">&#128161;</div>
+      <h4>Few-Shot: 3-5 Examples</h4>
+      <p>"Example 1: 'Limited offer!' = Spam. Example 2: 'Your invoice' = Not Spam. Now classify..." AI follows the demonstrated pattern with precision. "Examples de naal &mdash; AI pattern follow karda hai."</p>
+      <div class="vc-badge">&#10003; Consistent &amp; Accurate</div>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The Three Levels of Teaching AI</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">Level 0</span><span class="crd-icon">&#128683;</span><h3>Zero-Shot</h3><p><strong>No examples given.</strong> "Classify this customer review as positive, negative, or neutral." AI relies entirely on its training. Good for obvious cases. Fails on sarcasm like "Oh great, another Monday" &mdash; zero-shot might call this positive. "Koi udaharan nahi &mdash; AI apne training te depend karda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Level 1</span><span class="crd-icon">&#9757;&#65039;</span><h3>One-Shot</h3><p><strong>One example given.</strong> "Example: 'Absolutely love it!' = Positive. Now classify: 'Not bad, could be better.'" Slight improvement. One example helps set the format but doesn't cover edge cases. Better than zero, but limited.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Level 3-5</span><span class="crd-icon">&#128200;</span><h3>Few-Shot</h3><p><strong>3-5 diverse examples.</strong> Include clear positive, clear negative, sarcastic, mixed, and neutral examples. AI now handles ambiguity because it has seen the RANGE. "3-5 examples de naal AI 90%+ accuracy de sakda hai." This is the sweet spot for most tasks.</p></div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What Makes Examples Effective?</h4><p>Five rules for powerful few-shot examples: (1) <strong>Representative</strong> &mdash; cover the range of inputs. (2) <strong>Diverse</strong> &mdash; include edge cases, not just easy ones. (3) <strong>Consistent format</strong> &mdash; every example follows the exact same structure. (4) <strong>Correct</strong> &mdash; wrong examples teach wrong patterns. (5) <strong>Minimal but sufficient</strong> &mdash; usually 3-5 is enough; more than 7 rarely helps. "Sahi examples = sahi output."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Mere paas real-world tasks ne jinnan te AI consistent output nahi denda."</strong> &mdash; That changes today. Few-shot prompting transforms AI from a guessing machine into a reliable classification and extraction engine. Consistency is the difference between a toy and a tool.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Warm-Up: Sarcasm Test</h4>
+    <p>Copy this to ChatGPT or Claude WITHOUT any examples:</p>
+    <ul>
+      <li>"Classify these as Positive, Negative, or Neutral: (1) Oh great, another meeting (2) Best purchase I ever regretted (3) Not the worst thing ever"</li>
+      <li>Note the results. We will add few-shot examples in Section 2 and compare accuracy.</li>
+    </ul>
+  </div>
+
+  <p class="curiosity-hook">Next: Build your first classification system with few-shot examples.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Classification Lab &rarr;</button></div>
+</div>
+
+<!-- S2: CLASSIFICATION LAB -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Classification <span class="gr">Lab</span></h2>
+    <h2 data-lang-hi style="display:none">Classification <span class="gr">लैब</span></h2>
+    <h2 data-lang-pa style="display:none">Classification <span class="gr">ਲੈਬ</span></h2>
+    <p>Build few-shot classifiers for sentiment analysis, email categorization, and lead scoring. Measure accuracy gains from zero-shot to few-shot in real time. "Har task te zero-shot vs few-shot da comparison karo."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab 1: Sentiment Classification (Zero-Shot)</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">First, test WITHOUT examples. Note the accuracy:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Classify each customer review as POSITIVE, NEGATIVE, or NEUTRAL.\n\n1. \"Best dal makhani I have ever had in Amritsar! Will come back.\"\n2. \"Oh wonderful, another 45-minute wait for cold food.\"\n3. \"Food was okay. Nothing special but nothing terrible.\"\n4. \"The paneer tikka was decent but overpriced at 450 rupees.\"\n5. \"Absolutely terrible service. Never again.\"\n6. \"Not bad for a Tuesday lunch. The lassi was nice.\"\n7. \"Love love love this place! Best in Punjab hands down.\"\n8. \"Meh. I have had better at the dhaba around the corner.\"\n9. \"Great ambiance but the food did not match the price.\"\n10. \"The butter chicken lived up to the hype. 10/10 would recommend.\"')">&#128203; Click to copy: Zero-shot sentiment classification &mdash; 10 Punjab restaurant reviews</div>
+    <div class="demo-out">Record your results. How many does AI get right without examples? Sarcasm and mixed reviews are where zero-shot typically struggles.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab 2: Sentiment Classification (Few-Shot)</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">NOW add 5 examples covering the full range, then classify the same 10 reviews:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'You are a sentiment classifier for restaurant reviews in Punjab. Classify each review as POSITIVE, NEGATIVE, or NEUTRAL.\n\nHere are examples of how to classify:\n\nReview: \"Amazing food and great service! Best restaurant in Jalandhar.\"\nClassification: POSITIVE\n\nReview: \"Horrible experience. Cold food, rude staff, never coming back.\"\nClassification: NEGATIVE\n\nReview: \"It was fine. Nothing to write home about.\"\nClassification: NEUTRAL\n\nReview: \"Oh great, another overpriced place with tiny portions.\" (sarcasm)\nClassification: NEGATIVE\n\nReview: \"The food was good but the 40-minute wait and high prices brought it down.\"\nClassification: NEUTRAL\n\nNow classify these 10 reviews using the same format:\n\n1. \"Best dal makhani I have ever had in Amritsar! Will come back.\"\n2. \"Oh wonderful, another 45-minute wait for cold food.\"\n3. \"Food was okay. Nothing special but nothing terrible.\"\n4. \"The paneer tikka was decent but overpriced at 450 rupees.\"\n5. \"Absolutely terrible service. Never again.\"\n6. \"Not bad for a Tuesday lunch. The lassi was nice.\"\n7. \"Love love love this place! Best in Punjab hands down.\"\n8. \"Meh. I have had better at the dhaba around the corner.\"\n9. \"Great ambiance but the food did not match the price.\"\n10. \"The butter chicken lived up to the hype. 10/10 would recommend.\"')">&#128203; Click to copy: Few-shot sentiment classification &mdash; same 10 reviews with 5 examples</div>
+    <div class="demo-out">Compare: few-shot typically gets 9-10/10 right. The sarcasm example (#4 in the few-shot template) is the key that unlocks accuracy on reviews #2 and #8.</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Email Categorization Challenge</h3>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab 3: Email Categorization (Few-Shot)</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Classify business emails using few-shot examples:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'You are an email classifier for a Punjab-based IT services company. Classify each email into exactly ONE category: INQUIRY, COMPLAINT, ORDER, SPAM, or INTERNAL.\n\nExamples:\n\nEmail: \"Hi, I saw your website. Can you build a custom CRM for our manufacturing unit in Ludhiana? What are your rates?\"\nCategory: INQUIRY\n\nEmail: \"The app you built keeps crashing every time we try to generate invoices. This is unacceptable. Fix it immediately.\"\nCategory: COMPLAINT\n\nEmail: \"Please proceed with the Standard Web Package at 1.5 lakh. PO attached. Delivery expected by March 15.\"\nCategory: ORDER\n\nEmail: \"Congratulations! You have won a free iPhone 15. Click here to claim your prize now!!!\"\nCategory: SPAM\n\nEmail: \"Team, please update the sprint board before tomorrow standup. Also, Amrit is on leave Thursday.\"\nCategory: INTERNAL\n\nNow classify these emails:\n\n1. \"We need 3 more developer licenses for the ERP module. Please invoice us at the agreed rate.\"\n2. \"Your AI chatbot gave a client wrong pricing information AGAIN. This is the third time this month.\"\n3. \"Dear Sir, we are interested in your AI training programs for our staff of 50 in Chandigarh.\"\n4. \"URGENT: Verify your bank account details to avoid suspension. Click the secure link below.\"\n5. \"Hey Priya, can you share the client presentation deck from last Friday? Thanks.\"\n6. \"We want to upgrade from Basic to Enterprise plan. What is the price difference?\"\n7. \"The payment gateway integration is broken. Customers cannot complete purchases.\"\n8. \"Make ₹50,000 daily from home! No investment needed! Join our exclusive WhatsApp group.\"')">&#128203; Click to copy: Few-shot email categorization &mdash; 8 emails for a Punjab IT company</div>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#128293;</div><div class="call-body"><h4>Punjab Business Context Matters</h4><p>Your few-shot examples should reflect <strong>local business context</strong>. An email mentioning "Ludhiana manufacturing unit" is clearly an inquiry, not spam. Context-aware examples improve accuracy because AI learns the DOMAIN, not just the category. "Local context = better classification."</p></div></div>
+
+  <div class="micro-win">You've built 3 classifiers. Compare zero-shot vs few-shot accuracy &mdash; the difference is the lesson.</div>
+  <p class="curiosity-hook">Next: Extract structured data from messy text &mdash; the business goldmine.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Extraction &amp; Formatting &rarr;</button></div>
+</div>
+
+<!-- S3: EXTRACTION & FORMATTING -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% through! Now the high-value extraction skills.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Extraction &amp; <span class="gr">Formatting</span></h2>
+    <h2 data-lang-hi style="display:none">Extraction और <span class="gr">Formatting</span></h2>
+    <h2 data-lang-pa style="display:none">Extraction ਅਤੇ <span class="gr">Formatting</span></h2>
+    <p>Few-shot is not just for classification. It is incredibly powerful for extracting structured data from unstructured text and converting formats. These are skills businesses pay for. "Messy data nu clean data vich badlo &mdash; businesses ede layi paise dende ne."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; Few-Shot Extraction Pipeline</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#128196;</div><div class="vn-label">Raw Text</div><div class="vn-sub">Unstructured input</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#128218;</div><div class="vn-label">Few-Shot Examples</div><div class="vn-sub">2-3 input-output pairs</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">&#9881;&#65039;</div><div class="vn-label">Pattern Match</div><div class="vn-sub">AI learns the structure</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#128202;</div><div class="vn-label">Structured Output</div><div class="vn-sub">Clean, consistent data</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Raw invoice text becomes structured JSON. Messy resumes become clean tables.</strong> Few-shot examples define the extraction pattern.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab 4: Invoice Data Extraction</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Extract structured data from messy invoice text using few-shot examples:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'You are an invoice data extraction system. Given raw invoice text, extract the structured data in the exact format shown.\n\nExample 1:\nInput: \"Invoice from Singh Manufacturing Ludhiana dated 15-Jan-2026, INV-2026-0042, for 500 bicycle frames at ₹1,200 each, total ₹6,00,000 plus 18% GST = ₹7,08,000. Payment due: 15-Feb-2026. Contact: accounts@singhmanufacturing.in\"\nOutput:\n- Company: Singh Manufacturing, Ludhiana\n- Invoice No: INV-2026-0042\n- Date: 15-Jan-2026\n- Items: 500 bicycle frames @ ₹1,200\n- Subtotal: ₹6,00,000\n- GST (18%): ₹1,08,000\n- Total: ₹7,08,000\n- Due Date: 15-Feb-2026\n- Contact: accounts@singhmanufacturing.in\n\nExample 2:\nInput: \"Khalsa Textiles Amritsar, Invoice KT-889, March 3 2026. Supply of 200 meters raw cotton fabric ₹350/meter. Subtotal 70000. GST 12% = 8400. Grand total 78400. Pay by April 3. Phone: 98765-43210\"\nOutput:\n- Company: Khalsa Textiles, Amritsar\n- Invoice No: KT-889\n- Date: 03-Mar-2026\n- Items: 200 meters raw cotton fabric @ ₹350/meter\n- Subtotal: ₹70,000\n- GST (12%): ₹8,400\n- Total: ₹78,400\n- Due Date: 03-Apr-2026\n- Contact: 98765-43210\n\nNow extract from these invoices:\n\nInvoice A: \"Gill Transport Services Jalandhar inv GT-2026-156 dtd 22 Feb 2026 for transportation of 3 containers Ludhiana to Delhi ₹45000 per container total 135000 gst 5% ₹6750 payable amt ₹141750 due within 30 days contact gill.transport@gmail.com\"\n\nInvoice B: \"Patiala Agro Supplies invoice PAS/441 January 28, 2026. 50 bags wheat seeds premium quality at Rs 2800 per bag. Amount 140000. IGST 5% 7000. Total payable one lakh forty seven thousand. Due 27 Feb 2026. WhatsApp 98140-55555\"')">&#128203; Click to copy: Few-shot invoice extraction &mdash; 2 Punjab business invoices</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Lab 5: Resume Parsing</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Extract candidate profiles from unstructured resume text:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'You are a resume parser. Extract structured candidate profiles from raw resume text.\n\nExample:\nInput: \"Gurpreet Kaur, B.Tech CSE from Punjabi University Patiala 2022. 2 years at Infosys Chandigarh as Junior Developer. Skills: Python, React, SQL, AWS. Email gurpreet.kaur@email.com Phone 98765-11111. Looking for senior developer roles.\"\nOutput:\n| Field | Value |\n|---|---|\n| Name | Gurpreet Kaur |\n| Education | B.Tech CSE, Punjabi University Patiala (2022) |\n| Experience | 2 years |\n| Current Role | Junior Developer, Infosys Chandigarh |\n| Skills | Python, React, SQL, AWS |\n| Email | gurpreet.kaur@email.com |\n| Phone | 98765-11111 |\n| Looking For | Senior Developer roles |\n\nNow parse these resumes:\n\nResume 1: \"Amrit Singh Sidhu graduated from GNDU Amritsar with MBA Marketing in 2021. Worked 3 years at HCL Technologies Mohali in digital marketing team lead role. Expert in SEO, Google Ads, social media marketing, content strategy, and HubSpot. Contact amrit.sidhu@gmail.com, 70876-22222. Seeking marketing manager positions in Chandigarh tricity.\"\n\nResume 2: \"Harmanpreet Dhillon, diploma in graphic design from Chandigarh College of Art 2020. Freelancer for 4 years serving 50+ clients across Punjab. Proficient in Figma Adobe Creative Suite Canva and motion graphics. Portfolio harmandhillon.design. Reach at harman.dhillon@outlook.com or 98140-33333. Open to full-time UI/UX roles.\"')">&#128203; Click to copy: Few-shot resume parsing &mdash; 2 Punjab professionals</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Format Conversion: Unstructured to Structured</h3>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Use Case</span><span class="crd-icon">&#128196;</span><h3>Meeting Notes &rarr; Action Items</h3><p>Convert rambling meeting transcripts into structured action items with owners, deadlines, and priorities. A PA's dream tool. Few-shot examples ensure consistent output format every time.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Use Case</span><span class="crd-icon">&#128176;</span><h3>Bank Statements &rarr; Categories</h3><p>Turn raw transaction descriptions into categorized expenses: "NEFT to Reliance Jio" becomes "Telecom/Internet, ₹999." Few-shot handles Punjabi business transaction patterns.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Use Case</span><span class="crd-icon">&#128202;</span><h3>Product Reviews &rarr; Insights</h3><p>Extract Product Name, Rating, Key Praise, Key Complaint, and Recommendation from verbose reviews. Structured data that drives business decisions.</p></div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Pro Tip: JSON Output for Developers</h4><p>If you're building applications, ask for JSON output in your few-shot examples. Instead of table format, show one example as JSON: <code>{"company": "Singh Manufacturing", "total": 708000}</code>. AI will follow that structure for all subsequent extractions. <strong>This is how production AI pipelines work.</strong></p></div></div>
+
+  <div class="micro-win">You can now extract structured data from any messy text. That is a marketable skill.</div>
+  <p class="curiosity-hook">Next: Track and optimize your accuracy like a data scientist.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Accuracy Tracking &rarr;</button></div>
+</div>
+
+<!-- S4: ACCURACY TRACKING -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Now quantify your results.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Accuracy <span class="gr">Tracking</span></h2>
+    <h2 data-lang-hi style="display:none">Accuracy <span class="gr">ट्रैकिंग</span></h2>
+    <h2 data-lang-pa style="display:none">Accuracy <span class="gr">ਟ੍ਰੈਕਿੰਗ</span></h2>
+    <p>Professional prompt engineers don't just "feel" that their prompts work. They MEASURE accuracy, find the optimal example count, and iterate. "Professional prompt engineer measure karda hai &mdash; sirf feel nahi karda."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128202; Accuracy Optimization Process</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#128683;</div><div class="vn-label">Zero-Shot</div><div class="vn-sub">Baseline: ~60-70%</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#9757;&#65039;</div><div class="vn-label">1 Example</div><div class="vn-sub">Improvement: ~75%</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">&#128200;</div><div class="vn-label">3 Examples</div><div class="vn-sub">Strong: ~85-90%</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#127919;</div><div class="vn-label">5 Examples</div><div class="vn-sub">Peak: ~90-95%</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Sweet spot: 3-5 examples.</strong> Beyond 5, accuracy gains plateau but token costs increase. Test to find YOUR optimal count. "3-5 examples da sweet spot hai."</div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128202;</div><div class="call-body"><h4>How to Measure Accuracy</h4><p>For each task: (1) Prepare 10 test inputs with <strong>known correct answers</strong>. (2) Run with 0, 1, 3, 5, and 7 examples. (3) Count correct answers at each level. (4) Calculate: Accuracy = Correct / Total x 100%. (5) Find the sweet spot where adding more examples stops helping. "Ground truth set banao, har level test karo, sweet spot labho."</p></div></div>
+
+  <div class="micro-action">
+    <h4>Accuracy Challenge: Find Your Sweet Spot</h4>
+    <p>Pick ONE classification task from your work (email sorting, lead scoring, support ticket categorization). Test with 1, 3, 5, and 7 examples on 10 test inputs.</p>
+    <ul>
+      <li>Record accuracy at each level in a simple table</li>
+      <li>At what point do more examples stop improving accuracy?</li>
+      <li>Document the "sweet spot" &mdash; this saves tokens and money</li>
+      <li>Most participants find 3-5 is optimal. Your results may vary by task.</li>
+    </ul>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Common Accuracy Killers</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">Killer 1</span><span class="crd-icon">&#128683;</span><h3>Biased Examples</h3><p>All examples are "easy" positive cases. When AI encounters sarcasm or mixed sentiment, it defaults to positive. <strong>Fix:</strong> Include at least one edge case and one ambiguous example. "Sirf easy examples deo ge ta hard cases te fail hoga."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Killer 2</span><span class="crd-icon">&#128260;</span><h3>Inconsistent Format</h3><p>Example 1 outputs "POSITIVE" while Example 2 outputs "Pos." and Example 3 outputs "This is positive." <strong>Fix:</strong> Use EXACTLY the same output format in every example. Consistency is non-negotiable.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Killer 3</span><span class="crd-icon">&#9888;&#65039;</span><h3>Wrong Labels</h3><p>An example labels "The food was terrible" as POSITIVE. AI learns from YOUR mistakes. <strong>Fix:</strong> Double-check every example label before using it. One wrong example poisons the entire set. "Galat udaharan galat sikhiya denda hai."</p></div>
+  </div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 7 Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128218; Can explain zero-shot vs one-shot vs few-shot prompting</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128200; Built a sentiment classifier with 3-5 few-shot examples</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128231; Built an email categorization few-shot prompt</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128196; Built an invoice extraction few-shot prompt</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128100; Built a resume parsing few-shot prompt</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128202; Measured accuracy improvement from zero-shot to few-shot</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#127919; Found the optimal example count for at least one task</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#9888;&#65039; Can identify the 3 accuracy killers (biased, inconsistent, wrong labels)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128176; Created a production-ready few-shot prompt for your own work</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128293; Ready for Session 8: System Prompts &amp; Custom Instructions</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You now quantify prompt performance like a professional. Data beats intuition.</div>
+  <p class="curiosity-hook">Next: Quiz time! Prove your few-shot mastery.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your few-shot mastery.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions picked randomly from a pool of 20. Advanced-level questions about few-shot prompting, classification, extraction, and accuracy optimization. "Har sawaal tuhadi samajh test karda hai."</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question deepened your understanding of few-shot prompting.</div>
+  <p class="curiosity-hook">Next: Your homework and Session 8 preview.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2 data-lang-en>Session 7 <span class="gr">Complete!</span></h2>
+    <h2 data-lang-hi style="display:none">सेशन 7 <span class="gr">पूरा!</span></h2>
+    <h2 data-lang-pa style="display:none">ਸੈਸ਼ਨ 7 <span class="gr">ਮੁਕੰਮਲ!</span></h2>
+    <p>"Tusi aaj few-shot prompting master kar liya &mdash; AI nu examples naal sikhana." Here's what you learned and what's next.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128218;</span><div class="vi-label" style="color:var(--c5)">Zero vs Few-Shot</div><div class="vi-desc">No examples vs 3-5 examples</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128202;</span><div class="vi-label" style="color:var(--c1)">Classification</div><div class="vi-desc">Sentiment, email, lead scoring</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128196;</span><div class="vi-label" style="color:var(--c2)">Extraction</div><div class="vi-desc">Invoice, resume, review parsing</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128200;</span><div class="vi-label" style="color:var(--c4)">Accuracy</div><div class="vi-desc">Measure, optimize, iterate</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; Difference between zero-shot, one-shot, and few-shot prompting<br>&#9989; How to build classifiers for sentiment, email, and lead scoring<br>&#9989; How to extract structured data from invoices and resumes<br>&#9989; The 5 rules for effective examples (representative, diverse, consistent, correct, minimal)<br>&#9989; How to measure and optimize accuracy (sweet spot: 3-5 examples)<br>&#9989; The 3 accuracy killers and how to avoid them</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Session 8</h4>
+    <p>"Practice naal hi mastery aundi hai!"</p>
+    <ul>
+      <li><strong>Create 3 production-ready few-shot prompts</strong> for tasks in your actual work. Each must have 3-5 examples.</li>
+      <li><strong>Test each on at least 5 new inputs.</strong> Document accuracy for your portfolio.</li>
+      <li><strong>Find the sweet spot</strong> for at least one task &mdash; test with 1, 3, 5, 7 examples.</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Session 8 &mdash; System Prompts &amp; Custom Instructions</h4><p>"Kal assi AI personas banaange &mdash; system prompts naal. Same model, wildly different personality. Tusi 3 AI personas banaoge te stress test karoge. From individual prompts to permanent AI identities."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%207%20of%20Prompt%20Engineering!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"Tusi aaj few-shot prompting master kar liya. Kal system prompts te custom instructions. Tusi AI tools nahi bana rahe &mdash; tusi AI expertise bana rahe ho." You're building skills that 99% of AI users don't have.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="prompt-08.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 8: System Prompts &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Generative AI &amp; Prompt Engineering &middot; Session 07: Few-Shot &amp; Zero-Shot Prompting &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === REVEALS ===
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Outstanding! You have mastered Session 7!':checked>=5?'Great progress! Almost there.':'Keep going — check off each item as you complete it.'}`;}
+
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='Copied! Now paste into ChatGPT, Claude, or Gemini';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+// === QUIZ ===
+const allQ=[
+  {q:"What is the key difference between zero-shot and few-shot prompting?",o:["Zero-shot is faster","Few-shot provides examples for AI to learn the pattern","Zero-shot is more accurate","Few-shot requires API access"],a:1,e:"Few-shot provides examples in the prompt so AI can learn the expected pattern. Zero-shot relies entirely on the model's training knowledge with no examples."},
+  {q:"How many examples typically represent the 'sweet spot' for few-shot prompting?",o:["1 example","3-5 examples","10-15 examples","As many as possible"],a:1,e:"3-5 examples is the sweet spot. Beyond 5, accuracy improvements are marginal while token costs increase significantly."},
+  {q:"Why did the sarcasm example improve sentiment classification accuracy?",o:["Sarcasm is always negative","The example taught AI to recognize indirect negative sentiment through word patterns","AI cannot detect sarcasm","Sarcasm examples are optional"],a:1,e:"Sarcasm uses positive-sounding words ('Oh great', 'wonderful') with negative intent. A sarcastic example teaches AI this pattern, which zero-shot often misses."},
+  {q:"What happens if your few-shot examples have inconsistent output formats?",o:["AI picks the best format","Accuracy drops because AI is confused about the expected output structure","It does not matter","AI automatically standardizes"],a:1,e:"Inconsistent formatting confuses the pattern matcher. If examples use 'POSITIVE', 'Pos.', and 'positive', AI may produce unpredictable format variations."},
+  {q:"What is the purpose of including edge cases in few-shot examples?",o:["To make the prompt longer","To teach AI how to handle ambiguous or unusual inputs correctly","Edge cases are not important","To test the AI"],a:1,e:"Edge cases (sarcasm, mixed sentiment, ambiguous categories) teach AI the boundary decisions. Without them, AI defaults to safe/common classifications."},
+  {q:"For invoice extraction, why is providing 2 example input-output pairs better than instructions alone?",o:["It saves tokens","Examples show AI the EXACT output structure expected, eliminating ambiguity","Instructions are always worse","Two examples are required by the API"],a:1,e:"Examples demonstrate the exact extraction format (field names, order, formatting). Instructions describe what you want; examples SHOW what you want."},
+  {q:"What is a key advantage of few-shot prompting for resume parsing in Punjab businesses?",o:["It translates resumes","Few-shot can handle local education institutions, company names, and skill descriptions that zero-shot might misinterpret","It makes resumes look better","It only works for English resumes"],a:1,e:"Local context like 'GNDU Amritsar', 'HCL Mohali', and Punjab-specific skills are better parsed when examples demonstrate how to handle regional references."},
+  {q:"If zero-shot gets 6/10 correct on a classification task and 3-shot gets 9/10, what should you do next?",o:["Stop, 9/10 is good enough","Test with 5 examples to see if accuracy improves further before stopping","Add 20 more examples","Switch to a different AI model"],a:1,e:"Test incrementally: 3 shots gave 90%. Try 5 shots to see if you can reach 95%+. If 5 and 7 give the same result, 5 is your sweet spot (fewer tokens, same accuracy)."},
+  {q:"Which of these is NOT one of the five rules for effective few-shot examples?",o:["Representative","Diverse","Maximum length","Correct"],a:2,e:"The five rules are: Representative, Diverse, Consistent format, Correct, and Minimal but sufficient. Maximum length is not a rule — in fact, examples should be concise."},
+  {q:"Why might few-shot prompting be especially valuable for a small business owner in Chandigarh?",o:["It is free","It automates classification and extraction tasks that would otherwise require hiring staff or manual work","It replaces their entire team","It only works for big companies"],a:1,e:"Small businesses can use few-shot prompts to automate email sorting, invoice processing, lead scoring, and customer sentiment analysis — tasks that otherwise need manual effort."},
+  {q:"What is the 'accuracy killer' of using biased examples?",o:["The prompt becomes too long","AI over-represents the pattern shown in examples, failing on underrepresented cases","Biased examples are more accurate","There is no such killer"],a:1,e:"If all examples are easy/positive cases, AI learns that bias and struggles with negative, neutral, or ambiguous inputs that were not represented."},
+  {q:"When extracting data from invoices, why is JSON format preferred for production applications?",o:["JSON looks professional","JSON is machine-readable, making it easy to integrate into databases and applications","JSON is the only format AI knows","JSON uses fewer tokens"],a:1,e:"JSON output can be directly parsed by code, stored in databases, and processed by applications. This makes few-shot extraction production-ready, not just a demo."},
+  {q:"What should you do if few-shot classification accuracy plateaus at 80%?",o:["Accept 80% as the limit","Review examples for bias, add edge cases, try different example combinations, or use chain-of-thought within examples","Use more examples (15+)","Switch to zero-shot"],a:1,e:"When accuracy plateaus, the issue is usually example quality, not quantity. Add edge cases, diversify examples, or combine few-shot with CoT reasoning for complex cases."},
+  {q:"In one-shot prompting, what is the main limitation compared to few-shot?",o:["One-shot costs more tokens","One example cannot represent the full range of possible inputs and edge cases","One-shot is always wrong","One-shot does not work with Claude"],a:1,e:"A single example sets format but cannot cover edge cases, ambiguity, or the full range of expected inputs. 3-5 examples provide much better coverage."},
+  {q:"How does few-shot prompting relate to CRISP framework from Session 5?",o:["They are unrelated","Few-shot examples can be included in the Instructions and Specifics components of CRISP","CRISP replaces few-shot","Few-shot replaces CRISP"],a:1,e:"CRISP structures the overall prompt. Few-shot examples fit within the Instructions/Specifics sections. CRISP + few-shot + CoT together create professional-grade prompts."},
+  {q:"What is the relationship between CoT (Session 6) and few-shot (Session 7)?",o:["They are the same thing","CoT teaches AI HOW to think; few-shot teaches AI WHAT pattern to follow","CoT is better than few-shot","Few-shot includes CoT automatically"],a:1,e:"CoT adds reasoning structure (think step by step). Few-shot adds pattern structure (here are examples to follow). They are complementary tools in your prompt engineering toolkit."},
+  {q:"If your email classifier misclassifies 'We need 3 more licenses' as INQUIRY instead of ORDER, what should you add?",o:["More SPAM examples","An example showing a purchase request classified as ORDER","Remove the INQUIRY category","A longer system prompt"],a:1,e:"The classifier needs an example distinguishing purchase/order requests from general inquiries. Adding: 'Please proceed with 5 seats at agreed rate' = ORDER teaches this boundary."},
+  {q:"Why is measuring accuracy on 10 test inputs better than testing on 2-3?",o:["10 is a round number","Larger test sets reduce the impact of any single lucky/unlucky result, giving more reliable accuracy measurements","10 is the minimum required","There is no difference"],a:1,e:"With 2-3 test inputs, one correct/incorrect answer swings accuracy by 33-50%. With 10 inputs, each result contributes only 10%, giving a more stable and reliable measurement."},
+  {q:"What is the maximum number of few-shot examples after which returns typically diminish?",o:["3","5-7","15","There is no limit"],a:1,e:"Beyond 5-7 examples, accuracy gains are typically marginal. Additional examples consume tokens (costing money and context window) without proportional accuracy improvement."},
+  {q:"Which task benefits LEAST from few-shot prompting?",o:["Sentiment classification with sarcasm","Invoice data extraction","Simple factual questions like 'What is the capital of India?'","Lead scoring for sales teams"],a:2,e:"Simple factual recall does not need examples — zero-shot handles it perfectly. Few-shot shines on ambiguous classification, structured extraction, and nuanced categorization tasks."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='You have mastered few-shot prompting. Ready for system prompts.';}else if(pct>=50){tier='Good Progress!';msg='Solid foundation. Review the accuracy tracking section.';}else{tier='Keep Learning!';msg='Re-read the classification lab and try the experiments again.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up &rarr;</button></div>`;return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next &rarr;</button></div>`;
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

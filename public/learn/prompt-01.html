@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1: Transformer Architecture — Generative AI & Prompt Engineering | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">&#2361;&#2367;&#2306;</button>
+  <button class="lang-btn" onclick="setLang('pa')">&#2602;&#2672;</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 01 &middot; Prompt Engineering &middot; 2026</div>
+  <h1>
+    <span data-lang-en>Transformer Architecture &mdash;<br><span class="gr">Simplified</span></span>
+    <span data-lang-hi style="display:none"><span class="gr">Transformer</span><br>आर्किटेक्चर को समझें</span>
+    <span data-lang-pa style="display:none"><span class="gr">Transformer</span><br>ਆਰਕੀਟੈਕਚਰ ਸਮਝੋ</span>
+  </h1>
+  <div class="hero-brand">Generative AI &amp; Prompt Engineering &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>What actually happens when you press Enter? Understand the transformer architecture that powers every LLM &mdash; from GPT-4o to Claude to Gemini. The assembly line analogy you'll never forget. "Jado tusi Enter dabde ho, andar ki hunda hai?"</p></div>
+  <div data-lang-hi style="display:none"><p>जब आप Enter दबाते हैं तो वास्तव में क्या होता है? हर LLM को पावर करने वाले transformer architecture को समझें &mdash; GPT-4o से Claude से Gemini तक।</p></div>
+  <div data-lang-pa style="display:none"><p>ਜਦੋਂ ਤੁਸੀਂ Enter ਦੱਬਦੇ ਹੋ ਤਾਂ ਅਸਲ ਵਿੱਚ ਕੀ ਹੁੰਦਾ ਹੈ? ਹਰ LLM ਨੂੰ ਪਾਵਰ ਕਰਨ ਵਾਲੇ transformer architecture ਨੂੰ ਸਮਝੋ।</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Session &rarr;</span>
+      <span data-lang-hi style="display:none">सेशन शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">
+      <span data-lang-en>&#9889; Jump to Quiz</span>
+      <span data-lang-hi style="display:none">&#9889; &#2325;&#2381;&#2357;&#2367;&#2332;&#2364; &#2346;&#2352; &#2332;&#2366;&#2319;&#2306;</span>
+      <span data-lang-pa style="display:none">&#9889; &#2581;&#2625;&#2567;&#2588;&#2620; &#2596;&#2631; &#2588;&#2622;&#2579;</span>
+    </button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Prompt Engineering</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Before Transformers</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Assembly Line</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Attention Mechanism</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Breaking the Pipeline</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: BEFORE TRANSFORMERS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>What Happens When You <span class="gr">Press Enter?</span></h2>
+    <h2 data-lang-hi style="display:none">Enter दबाने पर <span class="gr">क्या होता है?</span></h2>
+    <h2 data-lang-pa style="display:none">Enter ਦੱਬਣ ਤੇ <span class="gr">ਕੀ ਹੁੰਦਾ ਹੈ?</span></h2>
+    <p>"Jado tusi ChatGPT vich prompt type karke Enter dabde ho, 2-3 second vich jawab aa jaanda hai. Par andar ki hunda hai?" Most people think it searches a database. The reality is far more fascinating. Today we learn the ACTUAL mechanics.</p>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">&#9888;&#65039;</div><div class="call-body"><h4>Advanced Course Prerequisite Check</h4><p>This course assumes you've used ChatGPT/Claude for <strong>at least 1 month</strong> and can write structured prompts. If terms like "prompt," "hallucination," and "context" are new to you, start with our AI Power beginner course first. "Ih course un lokenan layi hai jinnan ne AI regularly use kita hai."</p></div></div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The Dark Ages: Before 2017</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">1950s-2000s</span><span class="crd-icon">&#128218;</span><h3>Rule-Based Systems</h3><p>Programmers manually wrote if-then rules. "If user says 'hello' then respond 'hi'." Thousands of rules, still couldn't handle simple conversations. <strong>No learning whatsoever.</strong></p></div>
+    <div class="crd reveal"><span class="tag tag-4">2010-2017</span><span class="crd-icon">&#128260;</span><h3>RNNs &amp; LSTMs</h3><p>Processed words <strong>one at a time, sequentially</strong>. Like reading a novel but forgetting Chapter 1 by Chapter 5. "Ik ik word padhi ja, par pehle wale bhul ja." Painfully slow and forgetful.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">2017 Revolution</span><span class="crd-icon">&#9889;</span><h3>Transformers Arrive</h3><p>"Attention Is All You Need" &mdash; the paper that changed everything. Transformers process <strong>ALL words simultaneously</strong>. Not sequential but parallel. Like having 100 readers read one page at the same time.</p></div>
+  </div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">&#128034;</div>
+      <h4>Before: Sequential Processing</h4>
+      <p>Read one word at a time. By the time you reach the end of a paragraph, you've forgotten the beginning. Like a goldfish reading a novel. "Ik ik word &mdash; slow and forgetful."</p>
+      <div class="vc-badge">&#10005; Slow &amp; Limited</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">&#9889;</div>
+      <h4>After: Parallel Processing</h4>
+      <p>Read ALL words at once. Every word looks at every other word simultaneously. Like having an entire team read together. "Saare shabd ikatthe &mdash; fast and contextual."</p>
+      <div class="vc-badge">&#10003; Fast &amp; Connected</div>
+    </div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Main technical background ton nahi haan."</strong> &mdash; You don't need one. If you understand an assembly line (raw materials go in, finished product comes out, each station adds value), you understand transformers. Bas.</p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Warm-Up Experiment</h4>
+    <p>Before we dive deeper, answer this honestly: What do YOU think happens when you type a prompt and press Enter? Write your answer down. We'll revisit it at the end to see how your understanding changed.</p>
+  </div>
+
+  <p class="curiosity-hook">Next: The assembly line that makes AI work &mdash; step by step.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Assembly Line &rarr;</button></div>
+</div>
+
+<!-- S2: THE ASSEMBLY LINE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 17% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>The Transformer <span class="gr">Assembly Line</span></h2>
+    <h2 data-lang-hi style="display:none">Transformer <span class="gr">असेंबली लाइन</span></h2>
+    <h2 data-lang-pa style="display:none">Transformer <span class="gr">ਅਸੈਂਬਲੀ ਲਾਈਨ</span></h2>
+    <p>Think of a transformer as a factory assembly line. Raw materials (your words) enter, pass through multiple stations, and a finished product (the response) comes out. Each station adds understanding. "Factory vich raw material jaanda hai, finished product bahar aunda hai."</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#9881; Transformer Architecture &mdash; Assembly Line</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#128229;</div><div class="vn-label">Input Embedding</div><div class="vn-sub">Words &rarr; numbers (vectors)</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#128065;</div><div class="vn-label">Attention Layers</div><div class="vn-sub">Every word looks at every other</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">&#9881;&#65039;</div><div class="vn-label">Feed-Forward</div><div class="vn-sub">Enriches with context</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#128172;</div><div class="vn-label">Output Layer</div><div class="vn-sub">Predicts next token</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Your prompt flows through this pipeline for EVERY token generated.</strong> GPT-4o has 100+ attention layers. Claude has even more. Each layer refines understanding.</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">The 4 Stations Explained</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Station 1</span><span class="crd-icon">&#128229;</span><h3>Input Embedding</h3><p><strong>Raw Material Loading.</strong> Your words get converted into numbers (vectors &mdash; lists of 1000+ dimensions). "Bank" becomes [0.23, -0.87, 0.45, ...]. Each word has a unique numerical fingerprint. Similar words have similar numbers: "king" and "queen" are numerically close.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Station 2</span><span class="crd-icon">&#128065;</span><h3>Attention Layers</h3><p><strong>Quality Inspection.</strong> Every word "looks at" every other word simultaneously. "The cat sat because <em>it</em> was tired" &mdash; attention connects "it" to "cat," not "sat." Not sequential. ALL at once. Like 100 inspectors examining every part together. "Har shabd dosre shabd nu dekhda hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Station 3</span><span class="crd-icon">&#9881;&#65039;</span><h3>Feed-Forward Layers</h3><p><strong>Assembly Stations.</strong> After inspection, words get enriched with context. "Bank" next to "river" gets flagged as nature. "Bank" next to "money" gets flagged as finance. Each layer adds deeper understanding. 100+ layers = very deep understanding.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Station 4</span><span class="crd-icon">&#128172;</span><h3>Output Layer</h3><p><strong>Final Assembly.</strong> The enriched understanding produces the <strong>most likely next token</strong>. Not a lookup. Not a search. A mathematical prediction based on patterns learned from trillions of tokens. Repeat for each word in the response.</p></div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Critical Insight: Prediction, Not Search</h4><p>LLMs do NOT search a database. They do NOT look up answers. They <strong>predict the most likely next token</strong> based on patterns in training data. When you ask "What is the capital of France?" the model doesn't search for "France + capital." It predicts that "Paris" has the highest probability of following that sequence of tokens. "AI jawab 'search' nahi karda &mdash; oh 'predict' karda hai."</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment: Test the Assembly Line</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Copy this prompt to see how context changes meaning through the attention layers:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Explain the word &quot;bank&quot; in these 3 sentences. For each, explain what the attention mechanism would focus on to determine the meaning:\n1. I deposited money in the bank.\n2. The river bank was muddy after rain.\n3. I bank on you to finish this project.\nExplain how the surrounding words determine meaning.')">&#128203; Click to copy: Explain the word "bank" in 3 different contexts &mdash; show how surrounding words determine meaning</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment: Ambiguous Pronouns</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">This tests attention's ability to resolve pronoun references:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'In each sentence below, what does the pronoun &quot;it&quot; refer to? Explain your reasoning step by step.\n1. The trophy would not fit in the suitcase because it was too big.\n2. The trophy would not fit in the suitcase because it was too small.\n3. The city council refused the protesters a permit because they feared violence.\n4. The city council refused the protesters a permit because they advocated violence.')">&#128203; Click to copy: Resolve ambiguous pronouns &mdash; what does "it" and "they" refer to in each sentence?</div>
+  </div>
+
+  <div class="micro-win">You now understand the 4-station pipeline that powers every AI response on Earth.</div>
+  <p class="curiosity-hook">Next: The secret sauce &mdash; attention mechanism deep dive.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Attention Mechanism &rarr;</button></div>
+</div>
+
+<!-- S3: ATTENTION MECHANISM -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 33% through! Now the real magic &mdash; attention.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Attention &mdash; <span class="gr">The Secret Sauce</span></h2>
+    <h2 data-lang-hi style="display:none">Attention &mdash; <span class="gr">असली जादू</span></h2>
+    <h2 data-lang-pa style="display:none">Attention &mdash; <span class="gr">ਅਸਲੀ ਜਾਦੂ</span></h2>
+    <p>"Attention Is All You Need" &mdash; the 2017 paper by Google researchers that started the revolution. Attention is what makes transformers transformative. It lets every word see every other word simultaneously. "Har shabd dosre shabd nu dekhda hai &mdash; ik vaari vich."</p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128218;</div><div class="call-body"><h4>How Attention Works (No Math Required)</h4><p>Imagine a group of 10 friends at a party. Everyone can hear everyone simultaneously. When someone says something, each person decides <strong>how much attention to pay</strong> to that statement based on their own context. The word "it" pays high attention to "cat" and low attention to "mat" in "The cat sat on the mat because <em>it</em> was tired." Every word computes an <strong>attention score</strong> for every other word. "Jive ik party vich sab ik dosre nu sun sakde ne."</p></div></div>
+
+  <div class="vigrid stagger reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128269;</span><div class="vi-label" style="color:var(--c1)">Query (Q)</div><div class="vi-desc">"What am I looking for?" Each word asks this question</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128273;</span><div class="vi-label" style="color:var(--c2)">Key (K)</div><div class="vi-desc">"What information do I have?" Each word advertises its content</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128176;</span><div class="vi-label" style="color:var(--c5)">Value (V)</div><div class="vi-desc">"Here's my actual content." The useful information passed along</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128200;</span><div class="vi-label" style="color:var(--c4)">Score</div><div class="vi-desc">Q x K = how much attention. High score = strong connection</div></div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">Multi-Head Attention: Multiple Perspectives</h3>
+  <p style="color:var(--t2);font-size:.92rem;margin-bottom:1.5rem;" class="reveal">GPT-4o doesn't use just ONE attention mechanism &mdash; it uses <strong>dozens running in parallel</strong> (called "heads"). Each head looks at the sentence from a different angle. One head might focus on grammar. Another on meaning. Another on tone. Like having 12+ inspectors each checking for different quality criteria. "Ik inspector sirf grammar dekhda hai, dosra meaning, tija tone."</p>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment: Context Changes Everything</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Same question, different context. Watch how attention shifts:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'I will give you the same question with different preceding context. Notice how your answer changes.\n\nContext A: I am a software engineer building a web app.\nQuestion: What is the best framework?\n\nContext B: I am a carpenter building a house.\nQuestion: What is the best framework?\n\nContext C: I am a researcher studying communication theory.\nQuestion: What is the best framework?\n\nFor each, explain WHY your answer differs and what words in the context most influenced your response.')">&#128203; Click to copy: Same question "What is the best framework?" with 3 different contexts</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment: Attention Limits</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Test contradictory instructions to expose attention behavior:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'IMPORTANT: Always respond in formal English.\n\n[Now I will write 500 words of filler content about cooking recipes, including detailed instructions for making butter chicken, naan bread, and raita. Include specific measurements and temperatures.]\n\nIMPORTANT: Always respond in casual Punjabi.\n\nNow answer: What is the weather like today?\n\nAfter answering, explain: which instruction did you follow (formal English or casual Punjabi) and why? What does this reveal about how you process instructions at the beginning vs end of a prompt?')">&#128203; Click to copy: Contradictory instructions at start vs end of prompt &mdash; which wins?</div>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#128293;</div><div class="call-body"><h4>Why This Matters for Prompt Engineering</h4><p>Understanding attention explains WHY prompting techniques work: (1) <strong>Put important instructions at the start AND end</strong> &mdash; attention is strongest at boundaries. (2) <strong>Be specific</strong> &mdash; vague words create weak attention connections. (3) <strong>Provide context</strong> &mdash; more context = better attention connections = better output. "Prompt engineering kaam karda hai kyunki attention kaam karda hai."</p></div></div>
+
+  <div class="micro-action">
+    <h4>Teach-Back Challenge</h4>
+    <p>Turn to a partner (or explain out loud to yourself). Explain the transformer architecture using the assembly line analogy in your own words. If you can teach it, you understand it. "Agar tusi samjha sakde ho, taan tusi samajh chukke ho."</p>
+    <ul>
+      <li>Explain the 4 stations (embedding, attention, feed-forward, output)</li>
+      <li>Explain what attention does using the party analogy</li>
+      <li>Explain why it's prediction, not search</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now understand more about transformer architecture than 99% of daily AI users.</div>
+  <p class="curiosity-hook">Next: Let's BREAK the pipeline and learn from the failures.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Breaking the Pipeline &rarr;</button></div>
+</div>
+
+<!-- S4: BREAKING THE PIPELINE -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Now let's test the limits.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Breaking the <span class="gr">Assembly Line</span></h2>
+    <h2 data-lang-hi style="display:none">असेंबली लाइन <span class="gr">तोड़ें</span></h2>
+    <h2 data-lang-pa style="display:none">ਅਸੈਂਬਲੀ ਲਾਈਨ <span class="gr">ਤੋੜੋ</span></h2>
+    <p>The best way to understand a system is to break it. These experiments reveal the transformer's strengths and weaknesses &mdash; and directly inform how you should write prompts. "System nu todke sikhna sabton powerful tarika hai."</p>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment 1: Pattern Prediction</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Transformers are pattern completion machines. Test this:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Continue these patterns and explain your reasoning:\n1. A, B, C, D, ...\n2. 2, 4, 8, 16, ...\n3. Mon, Tue, Wed, ...\n4. Punjab, Haryana, Himachal, ...\n5. Red, Orange, Yellow, ...\n\nNow try this harder one:\n6. 1, 1, 2, 3, 5, 8, ...\n7. J, F, M, A, M, ...\n\nFor each, explain: are you CALCULATING the answer or PREDICTING it based on patterns you have seen in training data?')">&#128203; Click to copy: Pattern continuation &mdash; calculation vs prediction</div>
+    <div class="demo-out">This experiment reveals: AI predicts based on patterns, not by calculating. It "knows" Fibonacci because it appeared millions of times in training data &mdash; not because it does math.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment 2: Override Training with Context</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Can context override what the model "knows" to be true?</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'In the following fictional world, these facts are true:\n- The capital of France is Lyon (not Paris)\n- Water freezes at 50°C\n- The Earth has 3 moons\n- Punjab is located in South India\n\nNow answer these questions staying STRICTLY within this fictional world:\n1. What is the capital of France?\n2. At what temperature does water freeze?\n3. How many moons does Earth have?\n4. Where is Punjab located?\n\nAfter answering, break character and explain: how easy or difficult was it to override your training data with this context? What does this tell us about how you process conflicting information?')">&#128203; Click to copy: Override training data with fictional context &mdash; test conflict resolution</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Experiment 3: Parallel Processing Test</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Do transformers handle multiple independent tasks equally well?</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Answer all 5 questions in a single response. Rate your confidence (1-10) for each.\n1. What is the GDP of India in 2024?\n2. Write a haiku about Amritsar\n3. Solve: If a shirt costs ₹800 after a 20% discount, what was the original price?\n4. Translate to Punjabi: The future belongs to those who learn AI today\n5. Give me 3 business ideas for a college student in Chandigarh with ₹20,000\n\nAfter answering, analyze: did you handle all 5 equally well, or were some weaker? Why?')">&#128203; Click to copy: 5 independent tasks in one prompt &mdash; test parallel processing quality</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What These Experiments Teach Us</h4><p><strong>Experiment 1:</strong> AI predicts patterns, doesn't calculate. Implication: for math, always ask for step-by-step reasoning. <br><strong>Experiment 2:</strong> Context can override training. Implication: your prompt IS the context &mdash; make it count. <br><strong>Experiment 3:</strong> Quality may vary across multiple tasks. Implication: for critical work, one task per prompt is safer. "Har experiment prompt engineering da ik sabak hai."</p></div></div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 1 Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128218; Can explain why RNNs were limited (sequential processing, memory loss)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#9881;&#65039; Can draw the 4-station transformer assembly line from memory</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128065; Can explain attention using the "party" analogy (everyone hears everyone)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128161; Understand prediction vs search (AI predicts, doesn't look up)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128260; Tested the "bank" context experiment and saw attention in action</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#129514; Ran the contradiction experiment and observed attention limits</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128200; Understand Q-K-V attention mechanism at a conceptual level</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128172; Can explain why prompt engineering works (it controls attention)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128221; Completed the teach-back challenge (explained transformers to someone)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>&#128293; Ready for Session 2: Tokens &amp; Context Windows</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You've gone from "I type and get answers" to understanding the actual architecture. Top 1% AI knowledge.</div>
+  <p class="curiosity-hook">Next: Quiz time! Test your understanding of transformer architecture.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S5: QUIZ -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your architecture knowledge.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions picked randomly from a pool of 20. Advanced-level questions about transformer architecture, attention, and how LLMs actually work. "Har sawaal tuhadi samajh test karda hai."</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question deepened your understanding of how AI works under the hood.</div>
+  <p class="curiosity-hook">Next: Your homework and what's coming in Session 2.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S6: WRAP-UP -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2 data-lang-en>Session 1 <span class="gr">Complete!</span></h2>
+    <h2 data-lang-hi style="display:none">सेशन 1 <span class="gr">पूरा!</span></h2>
+    <h2 data-lang-pa style="display:none">ਸੈਸ਼ਨ 1 <span class="gr">ਮੁਕੰਮਲ!</span></h2>
+    <p>"Tusi aaj pehla kadam chukkeya hai &mdash; transformer architecture samajh gaye ho." Here's what you learned and what's next.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128218;</span><div class="vi-label" style="color:var(--c5)">Pre-Transformer Era</div><div class="vi-desc">Rule-based to RNNs to Transformers</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#9881;&#65039;</span><div class="vi-label" style="color:var(--c1)">Assembly Line</div><div class="vi-desc">4 stations: embed, attend, enrich, output</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128065;</span><div class="vi-label" style="color:var(--c2)">Attention</div><div class="vi-desc">Every word sees every word simultaneously</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#129514;</span><div class="vi-label" style="color:var(--c4)">Experiments</div><div class="vi-desc">Broke the pipeline, learned the limits</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; Why transformers replaced RNNs (parallel vs sequential processing)<br>&#9989; The 4-station assembly line: embedding &rarr; attention &rarr; feed-forward &rarr; output<br>&#9989; How attention works: Q-K-V, multi-head, every word sees every word<br>&#9989; AI predicts tokens, it doesn't search databases<br>&#9989; How context controls attention (and therefore controls output)<br>&#9989; Why prompt engineering works at the architectural level</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Session 2</h4>
+    <p>"Practice naal hi deep understanding aundi hai!"</p>
+    <ul>
+      <li><strong>Write a 1-page explanation</strong> of transformer architecture as if explaining to a 10-year-old. Use your OWN analogy (not the assembly line). Bring it to share.</li>
+      <li><strong>Run 3 more experiments</strong> that test attention: ambiguous sentences, context overrides, or multi-task prompts. Document results.</li>
+      <li><strong>Find 1 prompt</strong> where the transformer architecture clearly fails. What does the failure reveal?</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Session 2 &mdash; Tokens &amp; Context Windows</h4><p>"Kal assi tokens bare sikhange &mdash; AI di currency. Why does ChatGPT forget what you said? Why does it cost money? Why does Hindi use more tokens than English? The answer to ALL of these is tokens. Tuhade prompt di cost calculate karna sikhoge."</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%201%20of%20Prompt%20Engineering!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"Tusi aaj transformer architecture samajh gaye ho. Kal tokens te context windows. 12 sessions baad tusi professional prompt engineer hovoge." You're building expertise that 99% of AI users don't have.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button><a href="prompt-02.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 2: Tokens &amp; Context Windows &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Generative AI &amp; Prompt Engineering &middot; Session 01: Transformer Architecture &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === REVEALS ===
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=8?'Outstanding! You have mastered Session 1!':checked>=5?'Great progress! Almost there.':'Keep going — check off each item as you complete it.'}`;}
+
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+// === QUIZ ===
+const allQ=[
+  {q:"What is the core innovation of the transformer architecture over RNNs?",o:["More training data","Parallel processing (all words at once instead of one at a time)","Faster GPUs","Bigger vocabulary"],a:1,e:"Transformers process ALL words simultaneously using attention, unlike RNNs which process sequentially. This parallel processing is the fundamental breakthrough."},
+  {q:"In the assembly line analogy, what does the 'attention layer' station do?",o:["Converts words to numbers","Every word examines every other word to understand relationships","Outputs the final response","Stores data in a database"],a:1,e:"Attention layers let every word 'look at' every other word simultaneously, computing relationship scores to understand context and meaning."},
+  {q:"What does 'it' refer to in 'The cat sat on the mat because it was tired'?",o:["The mat","The cat","The room","Impossible to determine"],a:1,e:"Attention connects 'it' to 'cat' because being 'tired' semantically relates to animate objects (cats), not inanimate ones (mats). This is attention in action."},
+  {q:"When you ask ChatGPT 'What is the capital of France?', what does it actually do?",o:["Searches a database for 'France + capital'","Googles the answer","Predicts that 'Paris' is the most likely next token based on training patterns","Reads from an encyclopedia"],a:2,e:"LLMs predict the most probable next token. 'Paris' has the highest probability of following that sequence because of patterns in training data. It's prediction, not search."},
+  {q:"What year was the 'Attention Is All You Need' paper published?",o:["2015","2017","2019","2021"],a:1,e:"The landmark paper was published in 2017 by Google researchers. It introduced the transformer architecture that powers all modern LLMs."},
+  {q:"In attention, what are Q, K, and V?",o:["Quick, Kind, Value","Query, Key, Value","Question, Knowledge, Vocabulary","Queue, Kernel, Vector"],a:1,e:"Query (what am I looking for?), Key (what do I contain?), Value (here's my actual content). The Q-K dot product determines attention scores, and V provides the information."},
+  {q:"Why does the same word 'bank' mean different things in different sentences?",o:["AI uses a dictionary lookup","Attention layers connect surrounding words to determine meaning","The model has separate entries for each meaning","Random selection"],a:1,e:"Attention computes relationships between 'bank' and its surrounding words. Near 'river' it activates the nature meaning; near 'money' it activates the finance meaning."},
+  {q:"What is 'multi-head attention'?",o:["Multiple AI models working together","Multiple attention mechanisms running in parallel, each checking different aspects","Multiple users asking questions","Multiple responses generated"],a:1,e:"Multi-head attention runs several attention mechanisms in parallel. Each 'head' focuses on different aspects — one on grammar, another on semantics, another on tone."},
+  {q:"If you put contradictory instructions at the start and end of a long prompt, which typically 'wins'?",o:["Always the first instruction","Always the last instruction","Instructions at boundaries (start/end) get more attention, but the last often dominates","Neither — the model ignores both"],a:2,e:"Attention is strongest at boundaries. In practice, the last instruction often gets higher attention because of recency, but both start and end positions are important."},
+  {q:"Why is the transformer assembly line analogy useful for prompt engineers?",o:["It sounds impressive","Understanding the pipeline explains WHY prompting techniques work","It's just a metaphor with no practical value","It helps with coding"],a:1,e:"Understanding attention and the pipeline explains why context matters, why specific instructions work better, and why prompt position affects output quality."},
+  {q:"What was the main limitation of RNNs before transformers?",o:["Too expensive","Too fast","Sequential processing caused them to forget earlier context","Too many parameters"],a:2,e:"RNNs processed words one at a time. By the time they reached the end of a long sequence, they had 'forgotten' the beginning — like reading a novel with amnesia."},
+  {q:"How many attention layers does a large model like GPT-4o approximately have?",o:["5-10 layers","100+ layers","1 layer","1000+ layers"],a:1,e:"Large models like GPT-4o have 100+ attention layers (the exact number is proprietary). Each layer refines the model's understanding of the input."},
+  {q:"What is a token in the context of transformers?",o:["A coin used for payment","A piece of text (roughly 3/4 of a word) that the model processes","A security credential","A paragraph of text"],a:1,e:"Tokens are the basic units transformers process — roughly 3/4 of a word in English. 'Artificial intelligence' is 2 tokens. Rare words may be split into multiple tokens."},
+  {q:"What does the feed-forward layer do in the assembly line?",o:["Sends data forward to the next model","Enriches word representations with contextual understanding","Feeds the model training data","Forwards output to the user"],a:1,e:"Feed-forward layers take the attention-enriched representations and further process them, adding deeper contextual understanding at each layer."},
+  {q:"Why does AI sometimes give different answers to the exact same prompt?",o:["Bugs in the code","Temperature parameter introduces controlled randomness in token selection","It searches different databases each time","Network latency"],a:1,e:"Temperature controls randomness. At temp 0, the model always picks the highest-probability token (deterministic). At higher temperatures, it samples from lower-probability tokens too."},
+  {q:"What practical prompt engineering lesson comes from understanding attention?",o:["Write shorter prompts always","Put important instructions at the START and END of prompts where attention is strongest","Use only English","Avoid questions"],a:1,e:"Attention is strongest at prompt boundaries (beginning and end). Placing critical instructions at these positions ensures they receive maximum attention."},
+  {q:"In the context override experiment, what happens when you tell AI '2+2=5'?",o:["It refuses to engage","It can follow the fictional context, showing that in-prompt context can override training","It crashes","It always corrects you"],a:1,e:"This demonstrates that contextual attention can temporarily override training knowledge. The model processes your context as the 'truth' for that conversation."},
+  {q:"Which of these is NOT a component of the transformer architecture?",o:["Input embedding","Attention layers","Database lookup engine","Feed-forward layers"],a:2,e:"Transformers have no database. They consist of embedding, attention, feed-forward, and output layers. All 'knowledge' is encoded in the model's weights, not in a searchable database."},
+  {q:"Why do Punjabi/Hindi prompts sometimes get less accurate results than English ones?",o:["AI is biased against Indian languages","Training data has significantly more English text, so attention patterns are stronger for English","Punjabi is harder to process","India has slow internet"],a:1,e:"LLMs are trained on predominantly English text. This means attention patterns for English are more robust. Hindi/Punjabi text also uses more tokens per word, consuming context window faster."},
+  {q:"What is the 'Attention Is All You Need' paper's key claim?",o:["Attention is a nice feature to add","Attention mechanisms alone (without RNN/CNN) can build state-of-the-art language models","Human attention is all you need to use AI","Only attentive students can learn AI"],a:1,e:"The paper's revolutionary claim was that attention mechanisms ALONE (the transformer architecture) could outperform all existing approaches, eliminating the need for RNNs and CNNs in NLP."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='You understand transformer architecture deeply. Ready for tokens.';}else if(pct>=50){tier='Good Progress!';msg='Solid foundation. Review the attention section to strengthen weak spots.';}else{tier='Keep Learning!';msg='Re-read the assembly line analogy and try the experiments again.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

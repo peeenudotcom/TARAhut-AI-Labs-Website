@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 16: Advanced Prompt Engineering — CRISP Framework — AI Hustler 45 · Uplrn AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.lang-toggle{position:fixed;top:12px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);padding:4px;border-radius:99px;border:1px solid var(--bd)}
+.lang-btn{padding:5px 12px;border-radius:99px;font-size:.7rem;font-weight:700;cursor:pointer;border:none;background:none;color:var(--t3);font-family:'JetBrains Mono',monospace;transition:all .3s}
+.lang-btn.active{background:var(--brand);color:#fff}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}
+.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'> ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+.prompt-block{padding:1.2rem 1.5rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin:1rem 0;cursor:pointer;transition:all .3s;line-height:1.7}
+.prompt-block:hover{background:rgba(0,240,255,.06);border-color:rgba(0,240,255,.4)}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:140px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">HI</button>
+  <button class="lang-btn" onclick="setLang('pa')">PA</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 16 &middot; AI Hustler 45 &middot; Phase 2</div>
+  <h1>Advanced <span class="gr">Prompt Engineering</span></h1>
+  <div class="hero-brand">AI Hustler 45 &mdash; Applied Skills &mdash; Uplrn AI Labs</div>
+  <p data-en="Master the CRISP framework, chain-of-thought prompting, and mega-prompts that produce complete client deliverables in one shot." data-hi="CRISP framework, chain-of-thought prompting, aur mega-prompts seekho jo ek shot mein poora client deliverable bana dein." data-pa="CRISP framework, chain-of-thought prompting, te mega-prompts sikho jo ek shot vich poora client deliverable bana den.">Master the CRISP framework, chain-of-thought prompting, and mega-prompts that produce complete client deliverables in one shot.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Start Session &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s6')">Jump to Quiz</button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Hustler 45</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>5-Block vs CRISP</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>CRISP Deep Dive</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Chain-of-Thought</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Mega-Prompts</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Prompt Library</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+    <button class="nav-btn" data-s="s7"><span class="nn">07</span>Wrap-Up</button>
+  </div>
+</nav>
+
+<!-- S1: 5-BLOCK vs CRISP -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-en="Phase 2 Begins &mdash; <span class='gr'>Level Up Your Prompts</span>" data-hi="Phase 2 Shuru &mdash; <span class='gr'>Prompts Ka Level Up</span>" data-pa="Phase 2 Shuru &mdash; <span class='gr'>Prompts Da Level Up</span>">Phase 2 Begins &mdash; <span class="gr">Level Up Your Prompts</span></h2>
+    <p data-en="Phase 1 gave you tools. Phase 2 turns those tools into money. The CRISP framework is your upgrade from basic prompting to professional-grade AI outputs worth thousands." data-hi="Phase 1 mein tools seekhe. Phase 2 mein un tools se paise kamaoge. CRISP framework tumhara upgrade hai basic prompting se professional-grade AI outputs tak." data-pa="Phase 1 vich tools sikhe. Phase 2 vich un tools naal paise kamaoge. CRISP framework tuhada upgrade hai basic prompting ton professional-grade AI outputs tak.">Phase 1 gave you tools. Phase 2 turns those tools into money. The CRISP framework is your upgrade from basic prompting to professional-grade AI outputs worth thousands.</p>
+  </div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">📝</div>
+      <h4>5-Block Framework (Phase 1)</h4>
+      <p data-en="Good for quick tasks: social posts, emails, translations. Like ordering from a menu." data-hi="Quick tasks ke liye achha: social posts, emails, translations. Menu se order karne jaisa." data-pa="Quick tasks lai changga: social posts, emails, translations. Menu ton order karan varga.">Good for quick tasks: social posts, emails, translations. Like ordering from a menu.</p>
+      <div class="vc-badge">Basic Level</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">🏗️</div>
+      <h4>CRISP Framework (Phase 2)</h4>
+      <p data-en="For complex, high-value deliverables: full strategies, marketing plans, client proposals. Like hiring a consultant." data-hi="Complex, high-value deliverables ke liye: full strategies, marketing plans, client proposals. Consultant hire karne jaisa." data-pa="Complex, high-value deliverables lai: full strategies, marketing plans, client proposals. Consultant hire karan varga.">For complex, high-value deliverables: full strategies, marketing plans, client proposals. Like hiring a consultant.</p>
+      <div class="vc-badge">Professional Level</div>
+    </div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">💰</div><div class="call-body"><h4>The Money Difference</h4><p data-en="A 5-Block prompt produces a social media post worth ₹200. A CRISP mega-prompt produces a complete marketing strategy worth ₹10,000+. <strong>Same AI tool, different prompt skill = 50x more value.</strong>" data-hi="5-Block prompt se ₹200 ka social media post banta hai. CRISP mega-prompt se ₹10,000+ ki complete marketing strategy banti hai. <strong>Same AI tool, different prompt skill = 50x zyada value.</strong>" data-pa="5-Block prompt naal ₹200 da social media post banda hai. CRISP mega-prompt naal ₹10,000+ di complete marketing strategy bandi hai. <strong>Same AI tool, different prompt skill = 50x vadh value.</strong>">A 5-Block prompt produces a social media post worth ₹200. A CRISP mega-prompt produces a complete marketing strategy worth ₹10,000+. <strong>Same AI tool, different prompt skill = 50x more value.</strong></p></div></div>
+
+  <div class="emotional-hook" data-en="<strong>Phase 2 shuru. Ab skill building se business building pe shift karte hain.</strong> Pehle 15 din mein tools seekhe, ab un tools se paise kamaoge." data-hi="<strong>Phase 2 shuru. Ab skill building se business building pe shift karte hain.</strong> Pehle 15 din mein tools seekhe, ab un tools se paise kamaoge." data-pa="<strong>Phase 2 shuru. Hun skill building ton business building te shift karde haan.</strong> Pehle 15 din vich tools sikhe, hun un tools naal paise kamaoge."><strong>Phase 2 shuru. Ab skill building se business building pe shift karte hain.</strong> Pehle 15 din mein tools seekhe, ab un tools se paise kamaoge.</div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;" data-en="When to Use Which Framework" data-hi="Kaunsa Framework Kab Use Karein" data-pa="Kihda Framework Kaddon Vrto">When to Use Which Framework</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-4">5-Block</span><span class="crd-icon">⚡</span><h3>Quick Tasks (2-5 min)</h3><p>Single social media post, email draft, product description, caption writing, simple translation, quick response template.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">CRISP</span><span class="crd-icon">🏗️</span><h3>Complex Deliverables (10-20 min)</h3><p>Full marketing strategy, 30-day content calendar, business launch plan, complete client proposal, customer retention campaign.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">MEGA-PROMPT</span><span class="crd-icon">🚀</span><h3>One-Shot Packages (5 min)</h3><p>Complete deliverable in a single prompt: strategy + calendar + sample posts + budget + KPIs. Worth ₹5,000-25,000 per output.</p></div>
+  </div>
+
+  <div class="micro-win">You already know 5-Block from Phase 1. Today you graduate to the professional league.</div>
+  <p class="curiosity-hook">Next: The CRISP framework broken down letter by letter.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: CRISP Deep Dive &rarr;</button></div>
+</div>
+
+<!-- S2: CRISP DEEP DIVE -->
+<div class="sec" id="s2">
+  <div class="progress-marker">Section 1 complete! 14% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>The CRISP <span class="gr">Framework</span></h2>
+    <p data-en="Five letters. Five elements. The difference between amateur AI use and professional-grade outputs that clients pay thousands for." data-hi="Paanch letters. Paanch elements. Amateur AI use aur professional-grade outputs ke beech ka fark jo clients hazaaron mein pay karte hain." data-pa="Panj letters. Panj elements. Amateur AI use te professional-grade outputs vich fark jo clients hazaaraan vich pay karde ne.">Five letters. Five elements. The difference between amateur AI use and professional-grade outputs that clients pay thousands for.</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal">
+      <span class="tag tag-1">C</span><span class="crd-icon">🎭</span>
+      <h3>Character</h3>
+      <p data-en="Detailed persona with expertise, years of experience, specialization. Not just 'you are a marketer' but 'You are a 15-year veteran digital marketing consultant who specializes in scaling local businesses in North India from ₹0 to ₹50K monthly revenue using AI tools.'" data-hi="Detailed persona with expertise, experience, specialization. Sirf 'you are a marketer' nahi balki 'You are a 15-year veteran digital marketing consultant jo North India ke local businesses ko ₹0 se ₹50K monthly revenue tak scale karta hai AI tools se.'" data-pa="Detailed persona with expertise, experience, specialization. Sirf 'you are a marketer' nahi balke 'You are a 15-year veteran digital marketing consultant jo North India de local businesses nu ₹0 ton ₹50K monthly revenue tak scale karda hai AI tools naal.'">Detailed persona with expertise, years of experience, specialization. Not just "you are a marketer" but "You are a 15-year veteran digital marketing consultant who specializes in scaling local businesses in North India from ₹0 to ₹50K monthly revenue using AI tools."</p>
+    </div>
+    <div class="crd reveal">
+      <span class="tag tag-2">R</span><span class="crd-icon">📋</span>
+      <h3>Request</h3>
+      <p>Multi-layered task with sub-tasks. "Create a complete 30-day launch plan including daily tasks, content calendar, budget allocation, and KPI tracking." Not just "make a plan" but a structured ask with clear components.</p>
+    </div>
+    <div class="crd reveal">
+      <span class="tag tag-3">I</span><span class="crd-icon">📊</span>
+      <h3>Information</h3>
+      <p>Rich context: business details, target audience, budget, competitors, constraints. The more specific the information, the more tailored and valuable the output. Include numbers, locations, demographics.</p>
+    </div>
+    <div class="crd reveal">
+      <span class="tag tag-4">S</span><span class="crd-icon">📝</span>
+      <h3>Steps</h3>
+      <p>Explicit step-by-step instructions for the AI to follow. "Step 1: Analyze the business type. Step 2: Identify 3 target segments. Step 3: Create content pillars..." This prevents AI from skipping important parts.</p>
+    </div>
+    <div class="crd reveal">
+      <span class="tag tag-5">P</span><span class="crd-icon">✨</span>
+      <h3>Polishing</h3>
+      <p>Output format, tone, length, examples to follow, things to avoid. "Format as a professional PDF-ready document. Use bullet points. Tone: confident but approachable. Include Hindi phrases where natural."</p>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 1: CRISP vs 5-Block — Side by Side</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">See the dramatic quality difference between a basic prompt and a CRISP prompt for the same task:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div style="padding:1rem;background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.15);border-radius:var(--rs)">
+        <p style="font-size:.7rem;font-weight:700;color:var(--c3);margin-bottom:.5rem;font-family:'JetBrains Mono',monospace">5-BLOCK (BASIC)</p>
+        <p style="font-size:.82rem;color:var(--t2)">"Write a social media strategy for a restaurant."</p>
+      </div>
+      <div style="padding:1rem;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:var(--rs)">
+        <p style="font-size:.7rem;font-weight:700;color:var(--c5);margin-bottom:.5rem;font-family:'JetBrains Mono',monospace">CRISP (PROFESSIONAL)</p>
+        <p style="font-size:.82rem;color:var(--t2)">"[C] You are a restaurant marketing specialist with 10 years of experience in North Indian food businesses. [R] Create a complete 30-day social media strategy including daily posts, hashtag strategy, and engagement plan. [I] Client: Raju Dhaba, Ludhiana. Budget: ₹5000/month. Target: families, office workers within 3km. Currently 200 followers. [S] Step 1: Analyze target audience. Step 2: Create content pillars. Step 3: Design posting schedule. Step 4: Write 10 sample posts. [P] Format as a professional document. Include Hindi captions. Use emojis sparingly."</p>
+      </div>
+    </div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy the full CRISP prompt and test it in ChatGPT yourself. See the difference in output quality.</div>
+    <div class="demo-out" id="demo1out">The CRISP version produces a document worth ₹10,000. The 5-Block version produces a generic list worth ₹200.</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">⚠️</div><div class="call-body"><h4 data-en="Common Mistake: Vague Information Block" data-hi="Common Mistake: Vague Information Block" data-pa="Common Mistake: Vague Information Block">Common Mistake: Vague Information Block</h4><p data-en="The #1 reason CRISP prompts fail is a weak Information block. 'A restaurant in Punjab' is vague. 'Raju Dhaba in Ludhiana, serving North Indian thalis since 2015, 40 seats, ₹150-300 average order, peak time 12-2pm and 7-9pm' is specific. <strong>Specificity = quality.</strong>" data-hi="CRISP prompts fail hone ka #1 reason hai weak Information block. 'Punjab mein ek restaurant' vague hai. 'Ludhiana ka Raju Dhaba, 2015 se North Indian thalis, 40 seats, ₹150-300 average order, peak time 12-2pm aur 7-9pm' specific hai. <strong>Specificity = quality.</strong>" data-pa="CRISP prompts fail hon da #1 reason hai weak Information block. 'Punjab vich ek restaurant' vague hai. 'Ludhiana da Raju Dhaba, 2015 ton North Indian thalis, 40 seats, ₹150-300 average order, peak time 12-2pm te 7-9pm' specific hai. <strong>Specificity = quality.</strong>">The #1 reason CRISP prompts fail is a weak Information block. "A restaurant in Punjab" is vague. "Raju Dhaba in Ludhiana, serving North Indian thalis since 2015, 40 seats, ₹150-300 average order, peak time 12-2pm and 7-9pm" is specific. <strong>Specificity = quality.</strong></p></div></div>
+
+  <div class="micro-action">
+    <h4>Practice: Grade This CRISP Prompt</h4>
+    <p>Look at this prompt and identify which CRISP element is missing or weak:</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-top:.5rem">"You are a marketing expert. Create a social media plan for a salon. Make it professional and include posts for the month."</p>
+    <ul>
+      <li>Character: "marketing expert" — too vague. Needs specialization and experience level.</li>
+      <li>Request: "social media plan" — needs sub-tasks defined.</li>
+      <li>Information: "a salon" — zero specifics. Where? What services? Budget? Target audience?</li>
+      <li>Steps: MISSING entirely. No step-by-step instructions.</li>
+      <li>Polishing: "professional" and "include posts" — needs format, tone, length specifics.</li>
+    </ul>
+  </div>
+
+  <div class="identity-shift" data-en="5-Block is your calculator. CRISP is your spreadsheet. Mega-prompts are your entire accounting system. Each level multiplies your earning potential." data-hi="5-Block tumhara calculator hai. CRISP tumhara spreadsheet hai. Mega-prompts tumhara poora accounting system hai. Har level earning potential multiply karta hai." data-pa="5-Block tuhada calculator hai. CRISP tuhada spreadsheet hai. Mega-prompts tuhada poora accounting system hai. Har level earning potential multiply karda hai.">5-Block is your calculator. CRISP is your spreadsheet. Mega-prompts are your entire accounting system. Each level multiplies your earning potential.</div>
+
+  <p class="curiosity-hook">Next: Chain-of-thought prompting — make AI think before it answers.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Chain-of-Thought &rarr;</button></div>
+</div>
+
+<!-- S3: CHAIN-OF-THOUGHT -->
+<div class="sec" id="s3">
+  <div class="progress-marker">28% through! Chain-of-thought is a game-changer.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Chain-of-Thought <span class="gr">Prompting</span></h2>
+    <p data-en="Give AI time to think. Just like you make better decisions when you think step-by-step, AI produces dramatically better outputs when you tell it to reason first." data-hi="AI ko sochne ka mauka do. Jaise tum step-by-step sochne pe better decisions lete ho, AI bhi reason karne pe dramatically better output deta hai." data-pa="AI nu sochne da mauka deo. Jive tusi step-by-step sochne te better decisions lende ho, AI vi reason karan te dramatically better output dinda hai.">Give AI time to think. Just like you make better decisions when you think step-by-step, AI produces dramatically better outputs when you tell it to reason first.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Chain-of-Thought Process</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">🤔</div><div class="vn-label">Think</div><div class="vn-sub">"Analyze first"</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">📊</div><div class="vn-label">Evaluate</div><div class="vn-sub">"Consider options"</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">🎯</div><div class="vn-label">Recommend</div><div class="vn-sub">"Pick the best"</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">📝</div><div class="vn-label">Create</div><div class="vn-sub">"Produce output"</div></div>
+    </div>
+    <div class="vflow-caption"><strong>AI ko sochne ka mauka do, tabhi accha output aayega.</strong></div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">3 Chain-of-Thought Techniques</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">TECHNIQUE 1</span><span class="crd-icon">🔗</span><h3>"Think Step by Step"</h3><p>Add "Think step by step before answering" to any prompt. Forces AI to show its reasoning. Works especially well for analysis, strategy, and problem-solving tasks.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">TECHNIQUE 2</span><span class="crd-icon">📊</span><h3>"Analyze, Then Create"</h3><p>"First analyze the business situation, then recommend a strategy, then create the deliverable." Separates thinking from doing. Better structured outputs.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">TECHNIQUE 3</span><span class="crd-icon">🔀</span><h3>"Consider 3 Approaches"</h3><p>"Consider 3 different approaches for this problem. Evaluate pros and cons of each. Pick the best one and explain why." Gets AI to explore multiple paths before committing.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 2: Without vs With Chain-of-Thought</h4></div>
+    <div class="vcompare" style="margin:1rem 0">
+      <div class="vcompare-card vs-wrong">
+        <h4>Without CoT</h4>
+        <p>"What social media strategy should a new gym in Patiala use?"</p>
+        <div class="vc-badge">Generic answer</div>
+      </div>
+      <div class="vcompare-card vs-right">
+        <h4>With CoT</h4>
+        <p>"Think step by step: First analyze what type of people join gyms in Patiala (demographics, motivation). Then evaluate 3 different social media strategies. Pick the best one with reasoning. Finally, create a 2-week content plan."</p>
+        <div class="vc-badge">Detailed strategy</div>
+      </div>
+    </div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Think step by step. First analyze what type of people join gyms in a tier-2 Punjab city like Patiala — their age, income, motivation, social media habits. Then evaluate 3 different social media strategies (content-heavy, influencer-based, offer-driven). Pick the best one with clear reasoning. Finally, create a detailed 2-week content plan with specific post ideas, captions, and posting times."</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 3: Chain-of-Thought for Client Analysis</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">Use CoT to analyze a real business scenario before recommending services:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "I'm going to describe a local business. Think step by step through this analysis: Business: Lovely Boutique, a women's clothing store in Jalandhar. They have an Instagram with 800 followers but post only 2-3 times a month. No Google listing. No WhatsApp Business. Owner says sales have dropped 20% this year. Step 1: Identify the 3 biggest problems. Step 2: Rank them by impact and ease of fixing. Step 3: Recommend which problem to solve first and why. Step 4: Create a specific action plan for the first 30 days."</div>
+    <div class="demo-out">This produces a consulting-quality analysis that would cost ₹5,000-10,000 from a marketing agency.</div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">💡</div><div class="call-body"><h4>Pro Tip: Combine CRISP + Chain-of-Thought</h4><p>Put chain-of-thought instructions inside the <strong>Steps</strong> section of your CRISP prompt. "Step 1: Think about the business context. Step 2: Analyze 3 possible approaches. Step 3: Select the best one with reasoning. Step 4: Create the deliverable based on your analysis." This produces the highest quality outputs possible.</p></div></div>
+
+  <div class="micro-win">Chain-of-thought turns AI from a content generator into a strategic consultant. Same tool, better instructions.</div>
+  <p class="curiosity-hook">Next: Mega-prompts — one prompt, one complete package.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Mega-Prompts &rarr;</button></div>
+</div>
+
+<!-- S4: MEGA-PROMPTS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">43% complete! Mega-prompts are where the money is.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>Mega-Prompts &mdash; <span class="gr">One Prompt, One Package</span></h2>
+    <p data-en="A well-crafted mega-prompt can produce in 2 minutes what takes 30 minutes with multiple small prompts. Ek prompt, poora package. Yeh hai professional level." data-hi="Ek achhi mega-prompt 2 minute mein woh produce karti hai jo 30 minute lagte hain multiple small prompts se. Ek prompt, poora package. Yeh hai professional level." data-pa="Ek changgi mega-prompt 2 minute vich oh produce kardi hai jo 30 minute lagde ne multiple small prompts naal. Ek prompt, poora package. Eh hai professional level.">A well-crafted mega-prompt can produce in 2 minutes what takes 30 minutes with multiple small prompts. Ek prompt, poora package. Yeh hai professional level.</p>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">🏭</div><div class="call-body"><h4>Your Prompt Factory</h4><p data-en="Think of mega-prompts as your factory. <strong>Input = client brief. Output = deliverable.</strong> You build the factory once, then run different client briefs through it. Each run produces a package worth ₹5,000-25,000." data-hi="Mega-prompts ko apni factory samjho. <strong>Input = client brief. Output = deliverable.</strong> Factory ek baar banao, phir different client briefs run karo. Har run se ₹5,000-25,000 ka package banta hai." data-pa="Mega-prompts nu apni factory samjho. <strong>Input = client brief. Output = deliverable.</strong> Factory ek vaar banao, fer different client briefs run karo. Har run ton ₹5,000-25,000 da package banda hai.">Think of mega-prompts as your factory. <strong>Input = client brief. Output = deliverable.</strong> You build the factory once, then run different client briefs through it. Each run produces a package worth ₹5,000-25,000.</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 4: Complete Social Media Strategy Mega-Prompt</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">This single prompt produces a full client deliverable. Copy and test it:</p>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "[CHARACTER] You are a senior social media strategist with 12 years of experience working with local businesses across North India. You specialize in turning zero-presence businesses into thriving online brands using organic content and WhatsApp marketing. [REQUEST] Create a COMPLETE social media marketing strategy that includes: (a) Target audience analysis, (b) Content pillars and themes, (c) 30-day content calendar with specific post ideas, (d) 5 ready-to-use sample posts with captions and hashtags, (e) Posting schedule with best times, (f) Monthly budget recommendation. [INFORMATION] Client: Sweet Corner, a traditional mithai shop in Amritsar, Punjab. In business for 25 years. Known locally for peda and barfi. Has a WhatsApp number but no WhatsApp Business. No Instagram, no Facebook page, no Google listing. Monthly marketing budget: ₹5,000-8,000. Target customers: local families, NRI connections, wedding/event planners. Competition: 3 other sweet shops within 1km, all with basic Instagram presence. [STEPS] Step 1: Analyze the target audience segments and their social media behavior. Step 2: Define 4 content pillars. Step 3: Create the 30-day calendar. Step 4: Write 5 sample posts. Step 5: Recommend posting times for Punjab audience. Step 6: Create budget breakdown. [POLISHING] Format as a professional strategy document with clear headers and sections. Use bullet points for action items. Include Hindi/Punjabi phrases where natural. Tone: confident, practical, achievable. Length: comprehensive but scannable."</div>
+    <div class="demo-out">This 500-word mega-prompt produces a 2,000+ word strategy document that would take a marketing agency 2-3 hours to create manually. You do it in 2 minutes.</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Demo 5: Business Launch Plan Mega-Prompt</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "[CHARACTER] You are a business launch consultant who has helped 50+ local businesses in Punjab and Haryana launch their digital presence. [REQUEST] Create a complete 30-day digital launch plan including: (a) Week-by-week breakdown, (b) Daily action items, (c) Content calendar, (d) Platform setup checklist, (e) Budget allocation, (f) KPI tracking template. [INFORMATION] Business: A new unisex salon opening in Mohali next month. Owner: 28-year-old with good skills but no marketing experience. Budget: ₹15,000 for first month. Location: near a college campus. Services: haircut, facial, cleanup, bridal packages. [STEPS] Step 1: Define launch goals and KPIs. Step 2: Create pre-launch buzz strategy (Week 1). Step 3: Design launch week activities (Week 2). Step 4: Plan post-launch growth tactics (Weeks 3-4). Step 5: Build daily task checklist. Step 6: Create measurement dashboard. [POLISHING] Format as a week-by-week action plan. Use checkboxes for tasks. Include estimated time for each task. Tone: encouraging, practical."</div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2rem 0 1rem;">5 Mega-Prompt Templates for Your Library</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">TEMPLATE 1</span><span class="crd-icon">📱</span><h3>Full Social Media Strategy</h3><p>Complete strategy + calendar + sample posts + posting schedule. Swap in client name and details. Output: ₹10,000 deliverable.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">TEMPLATE 2</span><span class="crd-icon">🚀</span><h3>Business Launch Plan</h3><p>30-day launch blueprint with daily tasks, content calendar, budget allocation, KPI tracking. Output: ₹15,000 deliverable.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">TEMPLATE 3</span><span class="crd-icon">📅</span><h3>Monthly Content Package</h3><p>30 posts designed, captioned, and scheduled. Includes hashtag research and best posting times. Output: ₹5,000-8,000 deliverable.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">TEMPLATE 4</span><span class="crd-icon">🔄</span><h3>Customer Retention Campaign</h3><p>Win-back strategy for businesses losing customers. Includes WhatsApp campaigns, loyalty programs, and re-engagement posts. Output: ₹8,000 deliverable.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">TEMPLATE 5</span><span class="crd-icon">🎉</span><h3>Festival Marketing Plan</h3><p>Complete festival campaign: pre-festival build-up, festival day content, post-festival follow-up. Diwali, Baisakhi, Eid-ready. Output: ₹5,000 deliverable.</p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Your Assignment: Build Your Prompt Library</h4>
+    <p data-en="Create all 5 CRISP mega-prompts from the templates above. Test each one with a real business scenario. Save the prompts AND the outputs. This library becomes your core business asset." data-hi="Upar ke 5 templates se CRISP mega-prompts banao. Har ek ko real business scenario se test karo. Prompts AUR outputs save karo. Yeh library tumhara core business asset banega." data-pa="Upar de 5 templates ton CRISP mega-prompts banao. Har ek nu real business scenario naal test karo. Prompts TE outputs save karo. Eh library tuhada core business asset banega.">Create all 5 CRISP mega-prompts from the templates above. Test each one with a real business scenario. Save the prompts AND the outputs. This library becomes your core business asset.</p>
+  </div>
+
+  <div class="identity-shift">Yeh tumhari factory hai. Input = client brief, output = deliverable. Professional AI service provider banne ka pehla step.</div>
+  <p class="curiosity-hook">Next: Build your professional prompt library with hands-on practice.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Prompt Library &rarr;</button></div>
+</div>
+
+<!-- S5: PROMPT LIBRARY BUILDER -->
+<div class="sec" id="s5">
+  <div class="progress-marker">57% done! Time to build your professional toolkit.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2>Build Your <span class="gr">Professional Prompt Library</span></h2>
+    <p data-en="Your prompt library is your most valuable business asset. A well-organized collection of tested mega-prompts that produce consistent, high-quality deliverables for any client." data-hi="Tumhari prompt library tumhara sabse valuable business asset hai. Tested mega-prompts ka organized collection jo kisi bhi client ke liye consistent, high-quality deliverables produce kare." data-pa="Tuhadi prompt library tuhada sabton valuable business asset hai. Tested mega-prompts da organized collection jo kisi vi client lai consistent, high-quality deliverables produce kare.">Your prompt library is your most valuable business asset. A well-organized collection of tested mega-prompts that produce consistent, high-quality deliverables for any client.</p>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Prompt Library Organization</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">📁</div><div class="vn-label">Categories</div><div class="vn-sub">By service type</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">📝</div><div class="vn-label">Templates</div><div class="vn-sub">CRISP mega-prompts</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">🧪</div><div class="vn-label">Tested</div><div class="vn-sub">Real outputs saved</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">⭐</div><div class="vn-label">Rated</div><div class="vn-sub">Quality scored</div></div>
+    </div>
+    <div class="vflow-caption"><strong>Every prompt should be tested, refined, and rated before it enters your library.</strong></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Interactive: CRISP Prompt Builder</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem">Fill in each CRISP element below to build your own mega-prompt:</p>
+    <p style="font-size:.78rem;color:var(--c1);font-family:'JetBrains Mono',monospace;margin-bottom:.5rem">C — CHARACTER</p>
+    <textarea class="demo-in" id="crispC" placeholder="e.g., You are a 10-year veteran social media strategist specializing in local businesses in Punjab..." style="min-height:60px"></textarea>
+    <p style="font-size:.78rem;color:var(--c2);font-family:'JetBrains Mono',monospace;margin-bottom:.5rem">R — REQUEST</p>
+    <textarea class="demo-in" id="crispR" placeholder="e.g., Create a complete 30-day content strategy including calendar, sample posts, and budget..." style="min-height:60px"></textarea>
+    <p style="font-size:.78rem;color:var(--c3);font-family:'JetBrains Mono',monospace;margin-bottom:.5rem">I — INFORMATION</p>
+    <textarea class="demo-in" id="crispI" placeholder="e.g., Client: Raju Sweets, Jalandhar. 15-year-old mithai shop. Budget: ₹8,000/month. No social media..." style="min-height:60px"></textarea>
+    <p style="font-size:.78rem;color:var(--c4);font-family:'JetBrains Mono',monospace;margin-bottom:.5rem">S — STEPS</p>
+    <textarea class="demo-in" id="crispS" placeholder="e.g., Step 1: Analyze target audience. Step 2: Define content pillars. Step 3: Create calendar..." style="min-height:60px"></textarea>
+    <p style="font-size:.78rem;color:var(--c5);font-family:'JetBrains Mono',monospace;margin-bottom:.5rem">P — POLISHING</p>
+    <textarea class="demo-in" id="crispP" placeholder="e.g., Format as professional document with headers. Include Hindi phrases. Tone: confident. Use bullet points..." style="min-height:60px"></textarea>
+    <button class="btn btn-glow btn-sm" onclick="buildCRISP()" style="margin-bottom:1rem">Build & Copy CRISP Prompt</button>
+    <div class="demo-out" id="crispOut">Your assembled CRISP mega-prompt will appear here. Then paste it into ChatGPT or Claude.</div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">🎯</div><div class="call-body"><h4>Rating Your Prompts</h4><p>After testing each prompt, rate the output on 3 criteria: <strong>(1) Completeness</strong> — did it include all requested elements? <strong>(2) Quality</strong> — would a client pay for this? <strong>(3) Specificity</strong> — is it tailored to the business, not generic? Score each 1-5. Only prompts scoring 12+ out of 15 go in your library.</p></div></div>
+
+  <div class="checklist">
+    <h4>Day 16 Session Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand the difference between 5-Block and CRISP frameworks</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Can name all 5 CRISP elements from memory (Character, Request, Information, Steps, Polishing)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created at least 1 CRISP mega-prompt for social media strategy</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created at least 1 CRISP mega-prompt for business launch plan</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created at least 1 CRISP mega-prompt for content package</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tested all mega-prompts and saved outputs</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand chain-of-thought prompting and when to use it</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Built initial prompt library with 5+ tested prompts</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Rated each prompt output (Completeness, Quality, Specificity)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Saved prompt library in organized Google Doc/Drive folder</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off</div>
+  </div>
+
+  <div class="micro-win">Your CRISP prompt library is your professional toolkit. Guard it, grow it, profit from it.</div>
+  <p class="curiosity-hook">Next: Test your knowledge with the Day 16 quiz.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S6: QUIZ -->
+<div class="sec" id="s6">
+  <div class="progress-marker">Almost there! Quiz time.</div>
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions on CRISP, chain-of-thought, and mega-prompts. Instant feedback.</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <p class="curiosity-hook">Next: Your homework and what is coming in Day 17.</p>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Next: Wrap-Up &rarr;</button></div>
+</div>
+
+<!-- S7: WRAP-UP -->
+<div class="sec" id="s7">
+  <div class="sec-head">
+    <div class="over">Section 07</div>
+    <h2>Day 16 <span class="gr">Complete!</span></h2>
+    <p data-en="You've upgraded from basic prompts to professional mega-prompts. Your earning potential just multiplied." data-hi="Tum basic prompts se professional mega-prompts pe upgrade ho gaye. Tumhari earning potential abhi multiply ho gayi." data-pa="Tusi basic prompts ton professional mega-prompts te upgrade ho gaye. Tuhadi earning potential hun multiply ho gayi.">You have upgraded from basic prompts to professional mega-prompts. Your earning potential just multiplied.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🏗️</span><div class="vi-label" style="color:var(--c1)">CRISP Framework</div><div class="vi-desc">5 elements for pro prompts</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">🔗</span><div class="vi-label" style="color:var(--c2)">Chain-of-Thought</div><div class="vi-desc">Make AI think first</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">🚀</span><div class="vi-label" style="color:var(--c4)">Mega-Prompts</div><div class="vi-desc">One prompt, full package</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">📁</span><div class="vi-label" style="color:var(--c5)">Prompt Library</div><div class="vi-desc">Your business asset</div></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">🎯</div><div class="call-body"><h4>3 Key Takeaways</h4><p>1. <strong>CRISP = professional-grade prompting.</strong> Character, Request, Information, Steps, Polishing.<br>2. <strong>Chain-of-thought = smarter AI responses.</strong> Make AI analyze before creating.<br>3. <strong>One great mega-prompt can produce a ₹10,000 deliverable</strong> in under 2 minutes.</p></div></div>
+
+  <div class="micro-action">
+    <h4>Homework Before Day 17</h4>
+    <ul>
+      <li><strong>Create 3 more CRISP mega-prompts</strong> for service types not covered in class</li>
+      <li><strong>Test and refine each prompt</strong> — run it at least twice, improve after each run</li>
+      <li><strong>Save your complete prompt library</strong> in a Google Doc with clear categories</li>
+      <li><strong>Be ready for Day 17:</strong> You will visit real businesses in the field</li>
+    </ul>
+  </div>
+
+  <div class="callout call-2"><div class="call-ico">📍</div><div class="call-body"><h4>Preview: Day 17 — Field Visit</h4><p>Tomorrow you leave the classroom and visit real businesses. You will observe their marketing gaps, talk to owners, and identify opportunities. <strong>Your CRISP prompts will turn those observations into proposals worth real money.</strong></p></div></div>
+
+  <div class="identity-shift">Phase 2 has begun. Ab skill building se business building. Ek achhi mega-prompt = ₹10,000 ka deliverable. You are now a professional AI service provider.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45 Program</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back to Quiz</button><a href="hustler-17.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 17: Field Visit &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">Uplrn AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &mdash; Phase 2: Applied Skills &middot; Day 16: Advanced Prompt Engineering &middot; uplrn.ai</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 Uplrn AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6','s7'];
+let curLang='en';
+function setLang(l){curLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));
+document.querySelectorAll('[data-'+l+']').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});}
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct+'%';pt.style.display='block';
+  if(id==='s6'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}initReveals();
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked}/${total} complete (${pct}%)`;}
+function copyPrompt(el){const text=el.textContent.replace('Click to copy: ','').replace('Click to copy:','');navigator.clipboard.writeText(text).then(()=>{const o=el.textContent;el.textContent='Copied! Paste into ChatGPT or Claude.';setTimeout(()=>el.textContent=o,3000);}).catch(()=>{});}
+function buildCRISP(){const c=document.getElementById('crispC').value.trim(),r=document.getElementById('crispR').value.trim(),i=document.getElementById('crispI').value.trim(),s=document.getElementById('crispS').value.trim(),p=document.getElementById('crispP').value.trim();
+if(!c&&!r&&!i&&!s&&!p){document.getElementById('crispOut').textContent='Fill in at least some fields to build your prompt.';return;}
+const prompt=`[CHARACTER] ${c}\n\n[REQUEST] ${r}\n\n[INFORMATION] ${i}\n\n[STEPS] ${s}\n\n[POLISHING] ${p}`;
+document.getElementById('crispOut').textContent=prompt;navigator.clipboard.writeText(prompt).catch(()=>{});}
+
+const allQ=[
+  {q:"What does 'C' stand for in the CRISP framework?",o:["Content","Character","Client","Creation"],a:1,e:"C = Character. A detailed persona with expertise, years of experience, and specialization. This sets the AI's perspective and quality level."},
+  {q:"What does 'R' stand for in CRISP?",o:["Result","Request","Research","Review"],a:1,e:"R = Request. A multi-layered task with sub-tasks clearly defined. Not just 'make a plan' but specific deliverables listed out."},
+  {q:"Which CRISP element is most commonly weak in beginner prompts?",o:["Character","Request","Information","Polishing"],a:2,e:"Information is the #1 weak point. 'A restaurant in Punjab' is vague. Specific details like name, location, budget, audience, competitors make outputs dramatically better."},
+  {q:"What is chain-of-thought prompting?",o:["Writing very long prompts","Telling AI to think step-by-step before answering","Asking multiple questions in a row","Using AI to chain multiple tools"],a:1,e:"Chain-of-thought prompting tells AI to reason through a problem step-by-step before providing its answer. This produces more thoughtful, structured outputs."},
+  {q:"A CRISP mega-prompt can produce a deliverable worth approximately:",o:["₹100-200","₹500-1,000","₹5,000-25,000","₹1,00,000+"],a:2,e:"A well-crafted CRISP mega-prompt can produce deliverables worth ₹5,000-25,000 — complete strategies, launch plans, and marketing packages that clients pay real money for."},
+  {q:"What is the key difference between 5-Block and CRISP?",o:["5-Block is for images, CRISP is for text","5-Block is free, CRISP is paid","5-Block is for quick tasks, CRISP is for complex high-value deliverables","5-Block is Hindi, CRISP is English"],a:2,e:"5-Block handles quick tasks (posts, emails). CRISP handles complex, multi-part deliverables worth thousands — strategies, launch plans, complete packages."},
+  {q:"What is a mega-prompt?",o:["A very short prompt","A prompt with 500+ words that produces a complete deliverable in one shot","A prompt that uses all 4 AI tools","A prompt written in multiple languages"],a:1,e:"A mega-prompt is a detailed, 300-500 word prompt that produces a complete client deliverable in a single response — strategy + calendar + samples + budget in one go."},
+  {q:"Why should you save and rate your prompt outputs?",o:["To show off on social media","To build a reusable library that produces consistent quality for clients","To submit for grading","To compare AI tools"],a:1,e:"Your prompt library is your core business asset. Tested, rated prompts produce consistent quality. You build the factory once, then run different client briefs through it."},
+  {q:"Which chain-of-thought technique asks AI to explore multiple options?",o:["Think step by step","Analyze then create","Consider 3 different approaches and pick the best","None of the above"],a:2,e:"The 'Consider 3 approaches' technique makes AI explore multiple paths, evaluate pros/cons, and pick the best one with reasoning — producing more thoughtful recommendations."},
+  {q:"What does the 'S' in CRISP stand for?",o:["Strategy","Steps","Style","Summary"],a:1,e:"S = Steps. Explicit step-by-step instructions for the AI to follow. This prevents AI from skipping important parts of complex deliverables."},
+  {q:"How should you organize your prompt library?",o:["Random order","By date created","By service type with tested outputs and quality ratings","Alphabetically"],a:2,e:"Organize by service type (social media, launch plans, content packages) with each prompt tested, output saved, and rated for completeness, quality, and specificity."},
+  {q:"What is the 'P' in CRISP?",o:["Prompt","Price","Polishing","Platform"],a:2,e:"P = Polishing. Output format, tone, length, examples to follow, things to avoid. This shapes the final presentation of the deliverable."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let msg;if(pct>=75)msg='Excellent! CRISP framework mastered.';else if(pct>=50)msg='Good progress! Review the sections you missed.';else msg='Review CRISP elements and try again.';
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Wrap-Up</button></div>`;return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next</button></div>`;
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>
