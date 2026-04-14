@@ -3,581 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 15: Final Project & Graduation | TARAhut AI Labs</title>
+<title>Day 15: Final Project + Certification — Master Claude in 15 Days · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#059669;--green-d:#047857;--green-l:#d1fae5;--accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;--radius:12px;--gold:#fbbf24}
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-user-select:none;user-select:none}
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.particle{position:absolute;border-radius:50%;animation:float linear infinite}
-@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
-nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
-.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
-.nav-inner::-webkit-scrollbar{display:none}
-.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
-.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
-.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
-.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 50%,#1a1a2e 100%);padding:70px 24px 60px;text-align:center;position:relative;z-index:1;overflow:hidden}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(5,150,105,0.2) 0%,transparent 70%)}
-.hero-badge{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--accent));color:#1a1a2e;font-size:0.75em;font-weight:800;padding:6px 18px;border-radius:20px;margin-bottom:16px;letter-spacing:.05em}
-.hero h1{font-size:clamp(2em,5vw,3.2em);font-weight:900;line-height:1.15;margin-bottom:12px}
-.hero h1 span{color:var(--green)}
-.hero h1 .gold{color:var(--gold)}
-.hero p{color:var(--muted);font-size:1.05em;max-width:600px;margin:0 auto 24px}
-.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
-.hero-meta span{background:rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1)}
-.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
-.section{display:none;animation:fadeIn .4s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800}
-.section-header p{color:var(--muted);margin-top:8px}
-.section-header{margin-bottom:28px}
-.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
-.card:hover{border-color:var(--green);transform:translateY(-2px)}
-.card-icon{font-size:1.8em;margin-bottom:10px}
-.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
-.card p{font-size:0.875em;color:var(--muted)}
-.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
-.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
-.callout.gold{background:rgba(251,191,36,0.1);border-color:var(--gold)}
-.callout strong{color:var(--green);display:block;margin-bottom:4px}
-.callout.amber strong{color:var(--accent)}
-.callout.gold strong{color:var(--gold)}
-.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative}
-.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
-.code-box span.hl{color:#79c0ff}.code-box span.gr{color:#3fb950}.code-box span.am{color:#e3b341}.code-box span.gold{color:var(--gold)}
-.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
-.copy-btn:hover{background:var(--green);color:#fff}
-.table-wrap{overflow-x:auto;margin:20px 0}
-table{width:100%;border-collapse:collapse;font-size:0.875em}
-th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
-td{padding:10px 14px;border-bottom:1px solid var(--border)}
-tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
-.steps{margin:20px 0}
-.step{display:flex;gap:16px;margin-bottom:16px}
-.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
-.step-body h4{font-weight:700;margin-bottom:4px}
-.step-body p{color:var(--muted);font-size:0.875em}
-.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
-.highlight-box h3{color:var(--green);margin-bottom:8px}
-/* BRIEF BOX */
-.brief-box{background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(245,158,11,0.05));border:2px solid var(--gold);border-radius:var(--radius);padding:28px;margin:24px 0}
-.brief-box h3{color:var(--gold);font-size:1.1em;margin-bottom:16px}
-.deliverable{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:12px 0}
-.deliverable-num{font-size:0.72em;font-weight:700;color:var(--gold);margin-bottom:6px}
-.deliverable h4{font-weight:700;margin-bottom:6px}
-.deliverable p{font-size:0.875em;color:var(--muted)}
-/* RECAP */
-.day-pill{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:8px 16px;margin:4px;font-size:0.82em;transition:.2s}
-.day-pill:hover{border-color:var(--green);background:rgba(5,150,105,0.1)}
-.day-num{font-weight:800;color:var(--green);font-size:0.9em}
-.day-topic{color:var(--text)}
-/* GRADUATION */
-.grad-section{background:linear-gradient(135deg,#0a2a1a,#0f172a,#1a1a2e);border:1px solid rgba(251,191,36,0.3);border-radius:var(--radius);padding:40px 32px;text-align:center;margin:24px 0;position:relative;overflow:hidden}
-.grad-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(251,191,36,0.08) 0%,transparent 70%)}
-.grad-trophy{font-size:5em;margin-bottom:16px;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.grad-title{font-size:clamp(1.6em,3vw,2.4em);font-weight:900;color:var(--gold);margin-bottom:12px}
-.grad-sub{color:var(--muted);font-size:1em;max-width:550px;margin:0 auto 24px;line-height:1.8}
-.grad-message{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius);padding:24px;margin:24px 0;font-size:1em;line-height:1.9;font-style:italic;color:var(--text)}
-/* SHARE */
-.share-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0}
-.share-box h4{font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.share-content{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:0.85em;line-height:1.8;color:var(--text);white-space:pre-wrap}
-.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none;display:inline-block}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:var(--green-d)}
-.btn-secondary{background:var(--bg3);color:var(--text)}
-.btn-gold{background:linear-gradient(90deg,var(--gold),var(--accent));color:#1a1a2e;font-weight:800}
-.btn-gold:hover{opacity:0.9}
-.cta-section{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:32px;text-align:center;margin:32px 0}
-.cta-section h3{font-size:1.4em;font-weight:800;margin-bottom:8px}
-.cta-section p{color:var(--muted);margin-bottom:20px}
-/* QUIZ */
-.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.quiz-header h3{font-size:1.3em;font-weight:800}
-.quiz-progress{font-size:0.82em;color:var(--muted)}
-.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
-.q-text{font-weight:600;margin-bottom:14px}
-.q-num{font-size:0.75em;color:var(--gold);font-weight:700;margin-bottom:6px}
-.options{display:flex;flex-direction:column;gap:10px}
-.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
-.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
-.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
-.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
-.option.disabled{cursor:default}
-.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
-.quiz-feedback.show{display:block}
-.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
-.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
-.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
-.quiz-score{text-align:center;padding:28px;display:none}
-.quiz-score.show{display:block}
-.score-circle{width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--gold) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.6em;font-weight:900}
-.score-msg{font-size:1.2em;font-weight:800;margin-bottom:8px;color:var(--gold)}
-.score-sub{color:var(--muted);font-size:0.9em;margin-bottom:20px}
-.completion-cert{background:linear-gradient(135deg,rgba(251,191,36,0.15),rgba(5,150,105,0.1));border:2px solid var(--gold);border-radius:var(--radius);padding:28px;margin:24px 0;text-align:center;display:none}
-.completion-cert.show{display:block}
-/* TIMELINE */
-.timeline{margin:24px 0}
-.tl-item{display:flex;gap:16px;margin-bottom:12px;align-items:flex-start}
-.tl-dot{flex-shrink:0;width:12px;height:12px;border-radius:50%;background:var(--green);margin-top:6px}
-.tl-week{font-size:0.72em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
-.tl-body p{color:var(--muted);font-size:0.875em}
-.tl-body strong{color:var(--text)}
-@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(-100vh) rotate(720deg);opacity:0}}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;pointer-events:none;display:none}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.cert-preview{text-align:center;padding:3rem 2rem;margin:2rem 0;border:3px solid var(--brand);border-radius:var(--r);background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04))}
+.cert-preview h3{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:.5rem;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled. This content is copyrighted by TARAhut AI Labs.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
 </style>
 </head>
-<body oncontextmenu="return false">
-<div id="particles"></div>
-<nav>
+<body>
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 15 &middot; THE FINALE &middot; 2026</div>
+  <h1>Final Project &<br><span class="gr">Certification</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>This is it. 15 days of learning, practising, and building. Today you choose your capstone project, build it, and celebrate your mastery. You earned this moment.</p>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">Begin the Finale &rarr;</button>
+    <button class="btn btn-ghost" onclick="jumpTo('s4')">&#127881; Jump to Celebration</button>
+  </div>
+</section>
+
+<nav class="nav" id="mainNav">
   <div class="nav-inner">
-    <div class="nav-brand">TARAhut AI Labs</div>
-    <button class="nav-btn active" onclick="showSection(0)">1. Final Challenge</button>
-    <button class="nav-btn" onclick="showSection(1)">2. Execution Framework</button>
-    <button class="nav-btn" onclick="showSection(2)">3. Presentation Guide</button>
-    <button class="nav-btn" onclick="showSection(3)">4. Course Recap</button>
-    <button class="nav-btn" onclick="showSection(4)">5. Graduation Quiz</button>
+    <span class="nav-brand">Master Claude</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Project Options</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Build & Polish</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Presentation Tips</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>15-Day Mastery</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Celebration</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>What's Next</button>
   </div>
 </nav>
 
-<div class="hero">
-  <div class="hero-badge">DAY 15 — FINAL DAY</div>
-  <h1>Final Project &amp;<br><span class="gold">Graduation</span></h1>
-  <p>You've arrived. 15 days ago, you opened a browser and discovered Claude. Today, you build something real — and earn what you've worked for.</p>
-  <div class="hero-meta"><span>Real-World Project</span><span>Graduation Quiz</span><span>Certificate</span><span>tarahutailabs.com</span></div>
+<!-- S1: PROJECT OPTIONS -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2>Choose Your <span class="gr">Capstone Project</span></h2>
+    <p>Four project options, each designed to showcase different skills you've mastered. Choose the one that matches your interests and strengths. All are equally valid.</p>
+  </div>
+
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">OPTION A</span><span class="crd-icon">&#128200;</span><h3>Business Analysis</h3><p>Complete analysis of a local Punjab business using Projects + Artifacts. Include: SWOT analysis, competitor mapping, 3-month growth plan, marketing strategy, financial projections. <strong>Best for:</strong> Business owners, MBA students, aspiring consultants. <strong>Deliverable:</strong> A complete business analysis document that could be presented to an investor.</p></div>
+    <div class="crd"><span class="tag tag-1">OPTION B</span><span class="crd-icon">&#128240;</span><h3>Content Campaign</h3><p>30-day content plan with 10 pieces actually created. Include: content calendar, 5 social media posts, 2 blog outlines, 2 WhatsApp marketing messages, 1 email newsletter. At least 3 pieces in Hindi or Punjabi. <strong>Best for:</strong> Marketers, freelancers, social media managers. <strong>Deliverable:</strong> Ready-to-publish content portfolio.</p></div>
+    <div class="crd"><span class="tag tag-2">OPTION C</span><span class="crd-icon">&#9881;</span><h3>Automation System</h3><p>Personal + business workflow built with Claude. Include: morning briefing prompt, evening review, 10-template prompt library, 3 automation workflow designs, 1 working HTML tool (from Day 11). <strong>Best for:</strong> Productivity enthusiasts, operations managers, entrepreneurs. <strong>Deliverable:</strong> Complete Claude operating system.</p></div>
+    <div class="crd"><span class="tag tag-3">OPTION D</span><span class="crd-icon">&#127760;</span><h3>Multilingual Launch</h3><p>Same business presented in 3 languages (English + Hindi + Punjabi). Include: landing page descriptions, social media content, WhatsApp messages, festival campaign, bilingual menu or invoice. <strong>Best for:</strong> Anyone targeting diverse Indian audiences. <strong>Deliverable:</strong> Complete multilingual business package.</p></div>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#128161;</div><div class="call-body"><h4>How to Choose</h4><p>Pick the project that excites you most. There's no wrong choice. If you run a business &mdash; Option A or D. If you create content &mdash; Option B. If you love systems and productivity &mdash; Option C. If you serve multilingual audiences &mdash; Option D. <strong>The best project is the one you'll actually complete with enthusiasm.</strong></p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>15 days ago, you didn't know what Claude was.</strong> Today, you're choosing between building a business analysis, a content campaign, an automation system, or a multilingual launch. <strong>Look how far you've come.</strong></p>
+  </div>
+
+  <div class="micro-action">
+    <h4>Decide Now</h4>
+    <p>Pick your project option (A, B, C, or D). Write it down. Tell someone. Commitment turns intention into action. You have the skills. Now show what you can build.</p>
+  </div>
+
+  <div class="identity-shift">You're not submitting homework. You're building something real that demonstrates genuine AI mastery.</div>
+
+  <div class="micro-win">You've chosen your capstone project. Now let's build it with the best prompts.</div>
+
+  <p class="curiosity-hook">Next: The CRISP prompt for planning your project, plus polish and refinement techniques.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Build & Polish &rarr;</button></div>
 </div>
 
-<div class="container">
-
-<!-- S1 — FINAL CHALLENGE -->
-<div class="section active" id="s0">
-  <div class="section-header">
-    <div class="section-tag">Section 1</div>
-    <h2>The Final Challenge</h2>
-    <p>A real-world brief from a real business need. Your job: build a complete Claude-powered solution.</p>
+<!-- S2: BUILD & POLISH -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Project chosen! Now let's build it step by step.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2>Build & <span class="gr">Polish</span></h2>
+    <p>Use the CRISP framework to plan your project, then polish it to presentation quality. Two key prompts that make your final project shine.</p>
   </div>
 
-  <div class="brief-box">
-    <h3>The Brief: Kotkapura Clinic Modernization</h3>
-    <p style="font-size:0.9em;color:var(--muted);margin-bottom:20px">Dr. Harpreet Singh runs a busy family practice clinic in Kotkapura, Punjab. He sees 40-60 patients daily. His biggest problems: patients don't know what to expect, appointment scheduling is chaotic via phone calls, and he can't communicate in Hindi or Punjabi at scale. He wants to modernize — without a big IT budget.</p>
-
-    <div class="deliverable">
-      <div class="deliverable-num">DELIVERABLE 1</div>
-      <h4>Patient FAQ Claude Project</h4>
-      <p>Build a Claude Project for the clinic with: system prompt defining Claude as "Clinic Assistant," uploaded FAQ covering: appointment timings (Mon-Sat 9am-2pm, 5pm-8pm), fees (consultation ₹300, follow-up ₹150), common specialties, emergency guidance. The Project should respond warmly in Hindi or English based on the patient's language.</p>
-    </div>
-
-    <div class="deliverable">
-      <div class="deliverable-num">DELIVERABLE 2</div>
-      <h4>Appointment Confirmation Artifact Templates</h4>
-      <p>Create Claude Artifacts for 3 appointment scenarios: (A) New Patient Confirmation, (B) Follow-up Reminder, (C) Appointment Rescheduling Notice. Each in English + Hindi. Formatted for WhatsApp sending. Include clinic name, doctor's name, time, what to bring, directions.</p>
-    </div>
-
-    <div class="deliverable">
-      <div class="deliverable-num">DELIVERABLE 3</div>
-      <h4>Hindi & Punjabi Communication Templates</h4>
-      <p>Using CRISP prompts, generate: (A) Hindi post-visit care instructions for common conditions (fever, cold, injury), (B) Punjabi WhatsApp broadcast for seasonal health tips, (C) Hindi appointment reminder script for the clinic's WhatsApp Business account. All culturally adapted for Punjabi patients.</p>
-    </div>
-
-    <div class="deliverable">
-      <div class="deliverable-num">DELIVERABLE 4</div>
-      <h4>API Integration Plan</h4>
-      <p>Write a 1-page document (using Claude) explaining: How the clinic could use Claude API to power a WhatsApp chatbot for appointment booking. Include: what the system prompt would say, estimated cost for 200 patient interactions/month, what Zapier automation would look like, and what the clinic needs to get started (API key, budget, developer).</p>
-    </div>
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 1: CRISP Project Planning Prompt</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">CRISP = Context, Role, Instructions, Specifics, Parameters. Use this framework to plan your entire capstone project:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'**Context:** I am completing a 15-day Claude mastery course by TARAhut AI Labs. This is my final capstone project. I chose Option [A/B/C/D]: [Project Name].\n\n**Role:** Act as my project advisor and co-builder. Help me create a professional-quality capstone project that demonstrates mastery of Claude.\n\n**Instructions:**\n1. First, create a detailed project plan with clear deliverables and a timeline (I have 2-3 hours today).\n2. Break the project into 5-6 specific tasks I can complete sequentially.\n3. For each task, give me the exact prompt I should use with Claude.\n4. Show me what the final deliverable should look like (structure, sections, length).\n5. Include quality checks — what makes this project good vs great.\n\n**Specifics:**\n- Business/topic: [Your business or topic — e.g., a sweet shop in Kotkapura, a coaching centre in Ludhiana]\n- Audience: [Who will see this — e.g., course instructors, business partners, my own use]\n- Languages: [English, Hindi, Punjabi — specify which]\n- Must include at least one Punjab-local reference\n\n**Parameters:**\n- Professional quality, presentation-ready\n- 2-3 hours of work maximum\n- Use all relevant Claude skills from the 15-day course\n- Output in structured, organised format')">&#128203; Click to copy: CRISP project planning prompt. Fill in: your chosen option (A/B/C/D), business/topic, audience, languages. Gets you: detailed plan, 5-6 tasks, exact prompts for each, quality checklist. Professional capstone project in 2-3 hours.</div>
+    <p style="color:var(--t2);font-size:.85rem"><strong style="color:var(--t1)">Why CRISP works:</strong> It gives Claude all the context it needs to be your perfect project advisor. The more specific you are about your business and audience, the better Claude's guidance will be.</p>
   </div>
 
-  <div class="callout gold">
-    <strong>Why This Brief?</strong>
-    This is a real problem. Dr. Harpreet's clinic might be fictional, but clinics, schools, shops, and small businesses with exactly these challenges exist on every street in Punjab. Completing this challenge means you can solve real problems for real businesses — starting this week.
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 2: Polish & Refine Prompt</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">After building your project, use this prompt to elevate it from good to outstanding:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'ਮੇਰੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਹੋਰ ਵਧੀਆ ਬਣਾਓ ਜੀ।\n\nI have completed my capstone project draft. Please review and polish it:\n\n[PASTE YOUR ENTIRE PROJECT HERE]\n\nPlease:\n1. **Quality Check** — Rate each section 1-10 and explain why. Identify the weakest section.\n2. **Professional Polish** — Rewrite any section that scores below 7/10 to make it presentation-ready.\n3. **Missing Elements** — What should I add that I missed? (data, examples, visuals, cultural context)\n4. **Punjab Relevance** — Does it feel genuinely connected to Punjab/local context? If not, suggest additions.\n5. **Presentation Flow** — Reorganise if needed for maximum impact when presenting.\n6. **Executive Summary** — Write a 100-word summary of the entire project that I can use as an introduction.\n7. **One Wow Factor** — Add one element that will make this project memorable and impressive.')">&#128203; Click to copy: &#2606;&#2631;&#2608;&#2631; &#2602;&#2637;&#2608;&#2635;&#2588;&#2632;&#2581;&#2591; &#2600;&#2626;&#2672; &#2617;&#2635;&#2608; &#2613;&#2599;&#2624;&#2566; &#2604;&#2595;&#2622;&#2579; &#2588;&#2624;&#2404; Polish my capstone project: rate sections 1-10, rewrite weak parts, add missing elements, check Punjab relevance, improve flow, write executive summary, add one wow factor.</div>
+    <p style="color:var(--t2);font-size:.85rem"><strong style="color:var(--t1)">The polish step is what separates good from great.</strong> Most people stop at the first draft. Running your project through this polish prompt adds 30-40% more quality in just 10 minutes.</p>
   </div>
 
-  <div class="callout amber">
-    <strong>Time Allocation</strong>
-    This project is designed for 90 minutes. Each deliverable should take approximately 20-25 minutes. If you get stuck, ask Claude: "I'm working on [deliverable] for a clinic project. Help me structure this."
+  <div class="callout call-1"><div class="call-ico">&#127775;</div><div class="call-body"><h4>Presentation Tips</h4><p><strong>Structure:</strong> Start with the problem (2 min). Show your solution (5 min). Demo the best part live (3 min). Share what you learned (2 min). Total: 10-12 minutes.<br><strong>What makes a great demo:</strong> Show something working, not just talking about it. Open a real HTML file. Show real content in Punjabi. Display actual data analysis results.<br><strong>Confidence:</strong> You built this with AI. You understand the tools. You can explain every prompt you used. Own your expertise.</p></div></div>
+
+  <div class="micro-win">You have everything you need to build and polish a professional capstone project.</div>
+
+  <div class="micro-action">
+    <h4>Build It Now</h4>
+    <p>Copy the CRISP prompt. Fill in your details. Paste into Claude. Follow the plan step by step. When done, run the polish prompt. You'll have a professional capstone project in 2-3 hours.</p>
   </div>
+
+  <div class="identity-shift">You're not just learning AI. You're building with AI. That's the difference between knowledge and skill.</div>
+
+  <p class="curiosity-hook">Next: Presentation tips for maximum impact, then the 15-day mastery checklist.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Presentation Tips &rarr;</button></div>
 </div>
 
-<!-- S2 — EXECUTION FRAMEWORK -->
-<div class="section" id="s1">
-  <div class="section-header">
-    <div class="section-tag">Section 2</div>
-    <h2>Execution Framework</h2>
-    <p>Which Claude features for each deliverable, time allocation, and quality checklist.</p>
+<!-- S3: PRESENTATION TIPS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; Project built and polished! Now let's make your presentation unforgettable.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2>Present Like a <span class="gr">Pro</span></h2>
+    <p>Your project is ready. Now present it in a way that makes people sit up and pay attention. These tips work for course presentations, client pitches, and business meetings.</p>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <tr><th>Deliverable</th><th>Claude Feature</th><th>Time</th><th>Key Prompt Element</th></tr>
-      <tr><td>Patient FAQ Project</td><td>Claude Projects + Custom System Prompt</td><td>20 min</td><td>Role: "You are Dr. Harpreet's clinic assistant"</td></tr>
-      <tr><td>Appointment Templates</td><td>Claude Artifacts</td><td>25 min</td><td>Format for WhatsApp (short, clear, emoji-friendly)</td></tr>
-      <tr><td>Hindi/Punjabi Content</td><td>CRISP Prompts + Cultural Adaptation</td><td>25 min</td><td>Specify script (Devanagari/Gurmukhi) + cultural tone</td></tr>
-      <tr><td>API Integration Plan</td><td>Claude as Strategic Advisor</td><td>20 min</td><td>Ask Claude to write the document for you</td></tr>
-    </table>
+  <div class="callout call-brand"><div class="call-ico">&#127908;</div><div class="call-body"><h4>The 10-Minute Presentation Structure</h4><p><strong>Minutes 1-2: The Problem.</strong> What challenge did you solve? Make it relatable. "Every coaching centre in Kotkapura writes fee receipts by hand..."<br><strong>Minutes 3-7: Your Solution.</strong> Walk through what you built. Show the actual output. Explain which Claude techniques you used.<br><strong>Minutes 7-9: Live Demo.</strong> Show something working. Open the HTML file. Display the content. This is the wow moment.<br><strong>Minutes 9-10: What You Learned.</strong> Share your biggest insight from the 15-day journey. End with impact: "This saves 10 hours per week" or "This reaches 3x more customers."</p></div></div>
+
+  <div class="callout call-2"><div class="call-ico">&#128161;</div><div class="call-body"><h4>What Makes a Presentation Memorable</h4><p><strong>Show, don't tell.</strong> Don't say "I can build websites." Open a browser and show the website you built.<br><strong>Use numbers.</strong> "This tool saves &#8377;15,000/month" is 10x more powerful than "This tool saves money."<br><strong>Tell a story.</strong> "When I started Day 1, I didn't know what an API was. Today I understand the entire architecture."<br><strong>Use local context.</strong> Punjab references make your project feel real, not theoretical.<br><strong>End strong.</strong> Your last sentence should be memorable. Practice it.</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 3: Opening Line Generator</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Get Claude to write a powerful opening line for your presentation:</p>
+    <textarea class="demo-in" id="freePrompt" placeholder="Example: My capstone project is a fee receipt generator for coaching centres in Kotkapura. Write me 5 powerful opening lines for my presentation that grab attention immediately. Mix English and Punjabi options."></textarea>
+    <button class="btn btn-glow btn-sm" onclick="copyFreePrompt()" style="margin-bottom:.75rem">&#128203; Copy This Prompt</button>
+    <div class="demo-out" id="freeOut">Describe your project and Claude will write attention-grabbing opening lines for your presentation.</div>
   </div>
 
-  <h3 style="margin:24px 0 16px">Executing Deliverable 1: The Claude Project</h3>
-  <div class="code-box">
-    <div class="code-label">Clinic Project System Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gold">## Clinic Assistant — Dr. Harpreet's Family Practice, Kotkapura</span><br><br>
-    You are the AI assistant for Dr. Harpreet Singh's family practice clinic in Kotkapura, Punjab.<br><br>
-    <span class="gr">Your role:</span> Help patients with information about the clinic — timings, fees, appointments, directions, and general health process guidance. You do NOT provide medical advice or diagnosis.<br><br>
-    <span class="am">Clinic Information:</span><br>
-    - Timings: Mon-Sat: 9am-2pm and 5pm-8pm. Sundays: 10am-12pm (emergency only)<br>
-    - Fees: New consultation ₹300, Follow-up ₹150, Emergency after-hours ₹500<br>
-    - Location: [Clinic address, Kotkapura]<br>
-    - WhatsApp for appointments: [Number]<br><br>
-    <span class="hl">Language:</span> Respond in the same language the patient uses. Hindi → reply in Hindi. Punjabi → reply in Punjabi. English → reply in English. Use आप (aap) and ਤੁਸੀਂ respectfully.<br><br>
-    <span class="gr">Important:</span> Always end with "For medical questions, please visit the clinic or call [number]." You cannot diagnose or prescribe.
+  <div class="emotional-hook">
+    <p><strong>The best presentations don't showcase tools. They showcase transformation.</strong> You're not presenting a chatbot or a website or a content plan. You're presenting the story of someone who went from AI-curious to AI-capable in 15 days. <strong>That story is powerful. Tell it.</strong></p>
   </div>
 
-  <h3 style="margin:24px 0 16px">Executing Deliverable 2: Appointment Templates</h3>
-  <div class="code-box">
-    <div class="code-label">Appointment Template Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    Create a Claude Artifact with 3 WhatsApp message templates for Dr. Harpreet's clinic:<br><br>
-    <span class="gr">Template A — New Patient Confirmation (English + Hindi):</span><br>
-    Include: patient name placeholder, appointment date/time, what to bring (Aadhaar, previous reports if any), clinic address, "Reply 1 to confirm, 2 to reschedule."<br><br>
-    <span class="am">Template B — Follow-up Reminder (English + Hindi):</span><br>
-    Include: previous visit date, follow-up appointment, medication reminder, "Take care and rest well."<br><br>
-    <span class="hl">Template C — Rescheduling Notice (English + Hindi):</span><br>
-    Include: apology for inconvenience, new suggested slots (3 options), how to confirm. Warm, professional, not corporate.<br><br>
-    <span class="gr">Format each as a WhatsApp message:</span> Under 200 words, use emojis appropriately (1-2 max), paragraphs for readability on mobile.
-  </div>
+  <div class="micro-win">You know how to structure and deliver a memorable presentation. Now let's review your full 15-day journey.</div>
 
-  <h3 style="margin:24px 0 16px">Quality Checklist</h3>
-  <div class="highlight-box">
-    <h3>Before Submitting — Check Every Deliverable</h3>
-    <div class="grid-2" style="margin:12px 0 0">
-      <ul style="padding-left:18px;color:var(--muted);font-size:0.875em">
-        <li style="margin-bottom:8px">Project system prompt includes: role, information, language rules, disclaimer</li>
-        <li style="margin-bottom:8px">Templates are under 200 words and formatted for mobile WhatsApp</li>
-        <li style="margin-bottom:8px">Hindi content uses Devanagari script (not Roman transliteration)</li>
-        <li style="margin-bottom:8px">Punjabi content uses Gurmukhi script with ਤੁਸੀਂ for address</li>
-      </ul>
-      <ul style="padding-left:18px;color:var(--muted);font-size:0.875em">
-        <li style="margin-bottom:8px">API integration plan includes: system prompt, cost estimate, Zapier flow</li>
-        <li style="margin-bottom:8px">Cultural adaptation — not just translation — in regional content</li>
-        <li style="margin-bottom:8px">All content has a warm, human tone (not corporate)</li>
-        <li style="margin-bottom:8px">Each deliverable solves a real patient communication problem</li>
-      </ul>
-    </div>
-  </div>
+  <p class="curiosity-hook">Next: The complete 15-day mastery checklist. How many skills have you mastered?</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: 15-Day Mastery &rarr;</button></div>
 </div>
 
-<!-- S3 — PRESENTATION GUIDE -->
-<div class="section" id="s2">
-  <div class="section-header">
-    <div class="section-tag">Section 3</div>
-    <h2>Presentation Guide</h2>
-    <p>5-minute presentation structure: Problem → Approach → Features Used → Demo → Results. How to present your final project.</p>
+<!-- S4: 15-DAY MASTERY CHECKLIST -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#129504; This is the big one. Your complete 15-day skill inventory.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2>15-Day <span class="gr">Skills Mastered</span></h2>
+    <p>Every day, every skill, every transformation. Check off what you've mastered. This is your proof of learning.</p>
   </div>
 
-  <div class="callout">
-    <strong>Why Present?</strong>
-    Presenting forces clarity. If you can explain it in 5 minutes, you truly understand it. Your presentation also becomes the foundation for pitching Claude solutions to real businesses — starting with businesses you know.
+  <div class="checklist">
+    <h4>&#127942; Complete 15-Day Mastery Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 1:</strong> Understand Claude, Constitutional AI, and Anthropic's mission</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 2:</strong> Master Claude's interface, keyboard shortcuts, and settings</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 3:</strong> Write effective prompts using role, context, and format instructions</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 4:</strong> Use advanced prompt techniques: chain-of-thought, few-shot, constraints</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 5:</strong> Create professional business writing: emails, proposals, reports</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 6:</strong> Generate marketing content: social media, ads, campaigns</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 7:</strong> Analyse data, create summaries, and extract insights from documents</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 8:</strong> Use Claude Projects for organised, context-rich workspaces</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 9:</strong> Work with Artifacts to create and iterate on documents and code</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 10:</strong> Apply Claude to education, research, and knowledge building</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 11:</strong> Build websites and tools with Claude (HTML, CSS, Python, debugging)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 12:</strong> Create automation systems: morning briefing, prompt library, Zapier</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 13:</strong> Create vernacular content: Hindi, Punjabi, cultural adaptation, festivals</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 14:</strong> Understand Claude API: structure, temperature, system prompts, pricing</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label><strong>Day 15:</strong> Complete capstone project demonstrating comprehensive Claude mastery</label></div>
+    <div class="check-score" id="checkScore">Tap each day as you've mastered it &rarr; your mastery score appears here</div>
   </div>
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <h4>The Problem (60 seconds)</h4>
-        <p>Start with the human story. "Dr. Harpreet's clinic serves 60 patients a day. Each appointment booking requires a phone call. Hindi and Punjabi patients don't get information in their language. The doctor spends 2 hours/day on administrative communication." Make the audience feel the pain before you show the solution.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <h4>The Approach (60 seconds)</h4>
-        <p>Explain your strategy: "I decided to use 4 Claude features that work together: a Project for consistent clinic identity, Artifacts for ready-to-use templates, CRISP prompts for multilingual content, and an API integration plan for future automation." One sentence per deliverable.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <h4>Claude Features Used (60 seconds)</h4>
-        <p>Name and briefly explain each feature: "Claude Projects gave the clinic AI a consistent identity. Artifacts created reusable WhatsApp templates. CRISP prompting generated authentic Hindi and Punjabi content — not just translations. The API plan shows a path to full automation." Technical competence builds credibility.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <h4>Live Demo (90 seconds)</h4>
-        <p>Show, don't tell. Open your Claude Project and ask it a patient question — in Hindi. Show the appointment template in Devanagari. Read one line of the Punjabi health tip. Let the audience see it working. Real-time demonstration beats any explanation.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-body">
-        <h4>Results & Impact (60 seconds)</h4>
-        <p>Estimate the impact: "If implemented: 2 hours saved daily on administrative communication. Patients get answers instantly in their own language. WhatsApp template automation could handle 90% of appointment confirmations. Estimated API cost: ₹300/month. Time saved value: ₹15,000+/month." Close with: "This took me 90 minutes to build. Imagine what I can build in a week."</p>
-      </div>
-    </div>
-  </div>
+  <div class="callout call-3"><div class="call-ico">&#128202;</div><div class="call-body"><h4>Your Mastery Level</h4><p><strong>15/15:</strong> Complete mastery. You are in the top 0.1% of AI users in India.<br><strong>12-14:</strong> Advanced user. Review the missed days and you'll be at full mastery.<br><strong>8-11:</strong> Intermediate. Strong foundation. Revisit the hands-on days (11-14) for depth.<br><strong>Below 8:</strong> Go back and complete the sessions you missed. Each day builds on the previous.</p></div></div>
 
-  <div class="callout amber">
-    <strong>Pro Tip: Ask Claude to Help You Prepare</strong>
-    Tell Claude: "I'm presenting a 5-minute solution for a clinic's patient communication using Claude AI. Help me structure a compelling 5-minute presentation script based on this outline." Claude will give you a polished script you can practice from.
-  </div>
+  <div class="micro-win">You've reviewed your entire 15-day journey. Every skill checked is a skill you own.</div>
+
+  <div class="identity-shift">This checklist isn't just boxes. Each one represents a real skill you can use every day for the rest of your career.</div>
+
+  <p class="curiosity-hook">Next: The celebration you've earned. Confetti, certificates, and a heartfelt farewell.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Celebration! &rarr;</button></div>
 </div>
 
-<!-- S4 — RECAP -->
-<div class="section" id="s3">
-  <div class="section-header">
-    <div class="section-tag">Section 4</div>
-    <h2>15-Day Journey Recap</h2>
-    <p>What you learned, what you can do now, and what CRISP mastery really means.</p>
+<!-- S5: CELEBRATION -->
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">&#127881; CELEBRATION</div>
+    <h2>You <span class="gr">Did It!</span></h2>
+    <p>15 days. Hundreds of prompts. Real projects built. Real skills mastered. This moment is yours.</p>
   </div>
 
-  <div class="callout gold">
-    <strong>You Did This.</strong>
-    15 days. 15 sessions. 30 hours. From "what is Claude?" to building AI-powered solutions for real businesses. Let that sink in for a moment.
+  <div style="text-align:center;margin:2rem 0"><button class="btn btn-glow" onclick="launchConfetti()" style="font-size:1.1rem;padding:18px 40px">&#127881; Launch Celebration! &#127881;</button></div>
+
+  <div class="cert-preview">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3);margin-bottom:1rem;letter-spacing:2px">CERTIFICATE OF COMPLETION</p>
+    <h3>Master Claude in 15 Days</h3>
+    <p style="font-size:1.1rem;color:var(--t2);margin:.5rem 0">This certifies that</p>
+    <p style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--t1);margin:.5rem 0">[Your Name]</p>
+    <p style="color:var(--t2);margin:.5rem 0">has successfully completed the 15-day Claude AI mastery programme</p>
+    <p style="color:var(--t2);margin:.5rem 0">including capstone project presentation</p>
+    <p style="font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);margin-top:1rem">TARAhut AI Labs &middot; 2026</p>
+    <p style="font-size:.8rem;color:var(--t3);margin-top:.5rem">Kotkapura, Punjab &middot; tarahutailabs.com</p>
   </div>
 
-  <h3 style="margin:24px 0 16px">Your 15-Day Journey</h3>
-  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0">
-    <div class="day-pill"><span class="day-num">D1</span><span class="day-topic">What is Claude?</span></div>
-    <div class="day-pill"><span class="day-num">D2</span><span class="day-topic">Interface & Basics</span></div>
-    <div class="day-pill"><span class="day-num">D3</span><span class="day-topic">CRISP Framework</span></div>
-    <div class="day-pill"><span class="day-num">D4</span><span class="day-topic">Advanced Prompting</span></div>
-    <div class="day-pill"><span class="day-num">D5</span><span class="day-topic">Claude Projects</span></div>
-    <div class="day-pill"><span class="day-num">D6</span><span class="day-topic">Artifacts</span></div>
-    <div class="day-pill"><span class="day-num">D7</span><span class="day-topic">Styles & Memory</span></div>
-    <div class="day-pill"><span class="day-num">D8</span><span class="day-topic">Business Use Cases</span></div>
-    <div class="day-pill"><span class="day-num">D9</span><span class="day-topic">Content Creation</span></div>
-    <div class="day-pill"><span class="day-num">D10</span><span class="day-topic">Claude Cowork</span></div>
-    <div class="day-pill"><span class="day-num">D11</span><span class="day-topic">Code (No Coding)</span></div>
-    <div class="day-pill"><span class="day-num">D12</span><span class="day-topic">Automation</span></div>
-    <div class="day-pill"><span class="day-num">D13</span><span class="day-topic">Hindi & Punjabi AI</span></div>
-    <div class="day-pill"><span class="day-num">D14</span><span class="day-topic">Claude API</span></div>
-    <div class="day-pill"><span class="day-num">D15</span><span class="day-topic">Final Project</span></div>
+  <div class="emotional-hook">
+    <p><strong>Remember Day 1?</strong> You weren't sure what Claude was. You'd heard about AI but never really used it. Now you can build websites, analyse data, create multilingual content, understand APIs, and automate workflows. <strong>In 15 days, you transformed from an AI beginner to an AI builder.</strong> Not many people can say that.</p>
   </div>
 
-  <h3 style="margin:28px 0 16px">What You Can NOW Do</h3>
-  <div class="grid-2">
-    <div class="card"><div class="card-icon">✍️</div><h3>Content at Scale</h3><p>Blogs, social media, multilingual content — you can produce in hours what used to take weeks. And it's better quality.</p></div>
-    <div class="card"><div class="card-icon">🏗️</div><h3>Build Without Coding</h3><p>HTML landing pages, Python scripts, automation tools — you can build real, working tools for your business.</p></div>
-    <div class="card"><div class="card-icon">🌐</div><h3>Vernacular AI</h3><p>Hindi and Punjabi content that resonates authentically — opening markets that your English-only competitors can't reach.</p></div>
-    <div class="card"><div class="card-icon">⚡</div><h3>Systemized Workflows</h3><p>Morning briefings, client responses, weekly reports — your Claude system saves 5-10 hours every week, automatically.</p></div>
-    <div class="card"><div class="card-icon">🤖</div><h3>AI Consulting</h3><p>You can now audit a business, identify AI opportunities, and build Claude-powered solutions. This is a marketable skill.</p></div>
-    <div class="card"><div class="card-icon">🔌</div><h3>API-Ready Thinking</h3><p>You understand the API, its possibilities, and how to plan integrations. You speak the language of the AI builder.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#128155;</div><div class="call-body"><h4>A Message from TARAhut AI Labs</h4><p>We built this course because we believe <strong>AI skills should be accessible to everyone in Punjab and beyond</strong> &mdash; not just engineers in Bangalore or MBAs in Mumbai. Every demo used local examples. Every prompt was relevant to your life. Every skill you learned can be applied tomorrow. <strong>We are proud of you.</strong> Go build amazing things. And when you do, come back and tell us about it.</p></div></div>
+
+  <div style="text-align:center;padding:2rem;margin:2rem 0;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)">
+    <p style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--brand);margin-bottom:1rem">&#2596;&#2625;&#2616;&#2624;&#2562; &#2567;&#2617; &#2581;&#2608; &#2598;&#2623;&#2673;&#2596;&#2622;! &#2604;&#2617;&#2625;&#2596; &#2613;&#2599;&#2622;&#2568;&#2624;&#2566;&#2562;!</p>
+    <p style="color:var(--t2);font-size:.95rem">You did it! Congratulations! Keep building, keep learning, keep growing.</p>
+    <p style="color:var(--t2);font-size:.95rem;margin-top:.5rem">From the entire TARAhut AI Labs team &mdash; we believe in you.</p>
   </div>
 
-  <div class="callout">
-    <strong>CRISP Mastery — What It Really Means</strong>
-    Most people prompt Claude like they're texting a friend. You now prompt Claude like a professional giving a brief to a highly capable expert. Context, Role, Instructions, Specifics, Purpose — you apply all 5 automatically. That difference determines everything: output quality, time saved, results delivered. This is the skill most people will never develop, because they never took the time to learn it properly. You did.
-  </div>
+  <div class="identity-shift">You started as a learner. You finish as a builder. That identity stays with you forever.</div>
+
+  <div class="micro-win">15 days completed. Skills mastered. Project built. You are now a Claude expert.</div>
+
+  <p class="curiosity-hook">One last section: What comes after Day 15?</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">What's Next &rarr;</button></div>
 </div>
 
-<!-- S5 — GRADUATION QUIZ + CELEBRATION -->
-<div class="section" id="s4">
-  <div class="section-header">
-    <div class="section-tag">Section 5 — FINAL</div>
-    <h2>Graduation Quiz</h2>
-    <p>10 comprehensive questions spanning all 15 days. This is your moment. Show what you know.</p>
+<!-- S6: WHAT'S NEXT -->
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>What Comes <span class="gr">Next?</span></h2>
+    <p>Day 15 is the end of the course but the beginning of your AI journey. Here's how to keep growing.</p>
   </div>
 
-  <div class="callout gold">
-    <strong>This is Not Just a Quiz</strong>
-    This graduation quiz is your proof. Proof that you didn't just watch — you learned. 10 questions covering your entire 15-day journey. Score 80%+ and you've genuinely mastered what most people will never learn.
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>3 Key Takeaways from the Entire Course</h4><p>&#9989; <strong>Claude is a skill multiplier, not a replacement.</strong> It makes everything you already do faster, better, and more professional. The person plus AI will always beat AI alone.<br>&#9989; <strong>The key skill is clear communication.</strong> Every advanced prompt technique &mdash; CRISP, chain-of-thought, few-shot, system prompts &mdash; comes down to communicating clearly what you want. This skill improves with practice.<br>&#9989; <strong>AI is moving fast. Keep learning.</strong> What you learned in 15 days is a strong foundation. New features launch every month. Stay curious, experiment weekly, and you'll stay ahead.</p></div></div>
+
+  <div class="micro-action">
+    <h4>Your Next Steps</h4>
+    <ul>
+      <li><strong>Use Claude daily</strong> for at least 30 days straight. Skills fade without practice.</li>
+      <li><strong>Build one real project per month</strong> &mdash; a tool, a content campaign, an analysis. Building is learning.</li>
+      <li><strong>Join the TARAhut AI community</strong> &mdash; share your work, learn from others, get feedback.</li>
+      <li><strong>Teach someone else.</strong> Teaching is the fastest way to deepen your own understanding.</li>
+      <li><strong>Follow Anthropic's blog</strong> for new Claude features and capabilities.</li>
+      <li><strong>Consider the API</strong> when you're ready to automate or build products.</li>
+    </ul>
   </div>
 
-  <div class="quiz-section" id="quizContainer"></div>
+  <div class="callout call-1"><div class="call-ico">&#128640;</div><div class="call-body"><h4>Advanced Learning Paths</h4><p><strong>For Business:</strong> Master Claude Projects for client work. Build industry-specific prompt libraries. Create AI-powered services you can sell.<br><strong>For Content:</strong> Build a vernacular content agency using Claude. Serve multiple languages at scale. Create a personal brand with AI-assisted content.<br><strong>For Technical:</strong> Learn the Claude API deeply. Build AI-powered web apps. Explore MCP (Model Context Protocol) for advanced integrations.<br><strong>For Education:</strong> Create Claude-powered learning materials. Build assessment systems. Develop multilingual educational content.</p></div></div>
 
-  <!-- GRADUATION SECTION (shown after quiz) -->
-  <div id="graduationSection" style="display:none;margin-top:32px">
-    <div class="grad-section">
-      <div class="grad-trophy">🎓</div>
-      <div class="grad-title">You Are a Claude Expert.</div>
-      <div class="grad-sub">15 days ago, you opened this course as someone who used Claude casually — maybe for quick questions, maybe just out of curiosity. Today, you're leaving as someone who understands AI at a level most people will never reach.</div>
-      <div class="grad-message">
-        "You started as someone who used Claude casually.<br>
-        You're leaving as a Claude expert.<br><br>
-        In 15 days, you've mastered what most people will never learn.<br>
-        You know CRISP. You've built Projects. You've created Artifacts.<br>
-        You've coded without coding. You've written in Hindi and Punjabi.<br>
-        You've planned API integrations. You've solved a real business problem.<br><br>
-        This isn't theory. This is power you can use starting today.<br>
-        Every business you meet has a problem Claude can solve.<br>
-        You now know how to solve it.<br><br>
-        — TARAhut AI Labs, Kotkapura, Punjab"
-      </div>
-    </div>
-
-    <h3 style="margin:28px 0 16px;font-size:1.1em;font-weight:700">Share Your Achievement</h3>
-
-    <div class="share-box">
-      <h4>💼 LinkedIn Post Template</h4>
-      <div class="share-content" id="linkedinTemplate">I just completed "Master Claude in 15 Days" by TARAhut AI Labs — and it genuinely changed how I work.
-
-In 15 days, I learned to:
-✅ Write CRISP prompts that get professional results every time
-✅ Build Claude Projects that know my business
-✅ Create content in Hindi, Punjabi, and English with cultural adaptation
-✅ Build web pages and automation tools — without writing code
-✅ Plan Claude API integrations for real business applications
-
-The final project: a complete AI-powered communication system for a local clinic — patient FAQ chatbot, appointment templates in 3 languages, and an API integration roadmap.
-
-If you're in Punjab or North India and want to actually master AI (not just use it occasionally), check out TARAhut AI Labs in Kotkapura.
-
-The 15-day course is worth every minute.
-
-tarahutailabs.com | #AI #Claude #AITraining #Punjab #TARAhutAILabs #MasterClaude</div>
-      <button class="btn btn-secondary" style="margin-top:12px" onclick="copyText('linkedinTemplate')">Copy LinkedIn Post</button>
-    </div>
-
-    <div class="share-box">
-      <h4>📱 WhatsApp Message Template</h4>
-      <div class="share-content" id="whatsappTemplate">🎓 *Master Claude in 15 Days — DONE!*
-
-ਯਾਰ, ਮੈਂ TARAhut AI Labs ਦਾ AI course complete ਕਰ ਲਿਆ! 🙏
-
-15 ਦਿਨਾਂ ਵਿੱਚ ਸਿੱਖਿਆ:
-👉 Claude AI ਨੂੰ expert ਵਾਂਗੂ use ਕਰਨਾ
-👉 Hindi ਤੇ Punjabi ਵਿੱਚ content ਬਣਾਉਣਾ
-👉 Coding ਤੋਂ ਬਿਨਾਂ website ਬਣਾਉਣਾ
-👉 AI system ਆਪਣੇ business ਲਈ ਤਿਆਰ ਕਰਨਾ
-
-ਜੇ ਤੁਸੀਂ ਵੀ AI ਸਿੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ — TARAhut AI Labs ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ, Kotkapura 🏫
-
-tarahutailabs.com 🌐</div>
-      <button class="btn btn-secondary" style="margin-top:12px" onclick="copyText('whatsappTemplate')">Copy WhatsApp Message</button>
-    </div>
-
-    <div class="cta-section">
-      <h3>Your Journey Continues</h3>
-      <p>You've mastered Claude. Now build with it. Our next program takes you from Claude expert to AI builder — creating real products, real automations, and real income with AI.</p>
-      <div style="font-size:1.1em;font-weight:800;color:var(--gold);margin-bottom:20px">
-        Master AI Builder — 90 Days
-      </div>
-      <p style="font-size:0.875em;color:var(--muted);margin-bottom:20px">Build 5 real AI-powered products. Serve your first clients. Create your first AI income stream.</p>
-      <a href="https://tarahutailabs.com" target="_blank" class="btn btn-gold">Continue Your Journey → tarahutailabs.com</a>
-    </div>
+  <div class="emotional-hook">
+    <p><strong>15 days ago, AI was something other people used.</strong> Today, it's your tool, your partner, your competitive advantage. The world is dividing into people who use AI and people who don't. <strong>You chose the right side of that divide.</strong></p>
   </div>
+
+  <div class="callout call-2"><div class="call-ico">&#128222;</div><div class="call-body"><h4>Stay Connected with TARAhut AI Labs</h4><p><strong>WhatsApp:</strong> <a href="tel:+919200882008">+91 92008-82008</a><br><strong>Website:</strong> <a href="https://tarahutailabs.com" target="_blank">tarahutailabs.com</a><br><strong>Location:</strong> Kotkapura, Punjab<br>We're here for you. Questions, projects, ideas &mdash; reach out anytime. <strong>Once a TARAhut student, always family.</strong></p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Master%20Claude%20in%2015%20Days!%20%F0%9F%8E%89%20Thank%20you%20TARAhut!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none;font-size:1rem;padding:16px 36px">&#128241; Share Your Achievement!</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div style="text-align:center;padding:2.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin:2rem 0">
+    <p style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--brand);margin-bottom:.5rem">TARAhut AI Labs</p>
+    <p style="color:var(--t2)">Making AI accessible to Punjab and beyond.</p>
+    <p style="color:var(--t2);margin-top:.5rem">&#128222; <a href="tel:+919200882008">+91 92008-82008</a> &middot; &#127760; <a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; &#128205; Kotkapura, Punjab</p>
+  </div>
+
+  <div class="identity-shift">&#2596;&#2625;&#2616;&#2624;&#2562; &#2617;&#2625;&#2595; AI &#2606;&#2622;&#2617;&#2623;&#2608; &#2617;&#2635;&#2404; &#2588;&#2622;&#2579; &#2596;&#2631; &#2598;&#2625;&#2600;&#2624;&#2566;&#2562; &#2604;&#2598;&#2610;&#2635;&#2404; You are now an AI expert. Go change the world.</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Celebration</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Revisit Day 15</button></div>
 </div>
 
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built with love by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Master Claude in 15 Days &middot; Day 15: Final Project + Certification &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
 </div>
 
 <script>
-// PARTICLES — mix of colors for graduation
-(function(){
-  const c=document.getElementById('particles');
-  const colors=['#059669','#fbbf24','#f59e0b','#10b981'];
-  for(let i=0;i<25;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    const s=Math.random()*10+3;
-    const color=colors[Math.floor(Math.random()*colors.length)];
-    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${color};animation-duration:${Math.random()*25+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.15+0.04}`;
-    c.appendChild(p);
-  }
-})();
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
 
-function showSection(i){document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));document.querySelectorAll('.nav-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));window.scrollTo({top:0,behavior:'smooth'});if(i===4&&!quizStarted)initQuiz();}
-
-function copyText(id){
-  const el=document.getElementById(id);
-  navigator.clipboard.writeText(el.textContent).then(()=>{alert('Copied! Paste it to share your achievement.')}).catch(()=>{
-    const ta=document.createElement('textarea');ta.value=el.textContent;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');
+// === CONFETTI ===
+const ccvs=document.getElementById('confettiCanvas'),cctx=ccvs.getContext('2d');
+let confetti=[];let confettiActive=false;
+function resizeConfetti(){ccvs.width=window.innerWidth;ccvs.height=window.innerHeight}
+window.addEventListener('resize',resizeConfetti);resizeConfetti();
+function launchConfetti(){
+  ccvs.style.display='block';confetti=[];confettiActive=true;
+  const colors=['#059669','#00f0ff','#a855f7','#ff3d8b','#fbbf24','#34d399','#ff6b6b','#4ecdc4'];
+  for(let i=0;i<200;i++){confetti.push({x:Math.random()*ccvs.width,y:ccvs.height+Math.random()*200,r:Math.random()*6+3,dx:(Math.random()-.5)*4,dy:-(Math.random()*12+6),rot:Math.random()*360,drot:(Math.random()-.5)*10,g:0.12+Math.random()*0.08,color:colors[Math.floor(Math.random()*colors.length)],shape:Math.random()>.5?'rect':'circle'})}
+  drawConfetti();
+  setTimeout(()=>{confettiActive=false;setTimeout(()=>{ccvs.style.display='none'},4000)},3000);
+}
+function drawConfetti(){
+  cctx.clearRect(0,0,ccvs.width,ccvs.height);
+  let alive=false;
+  confetti.forEach(c=>{
+    c.x+=c.dx;c.dy+=c.g;c.y+=c.dy;c.rot+=c.drot;c.dx*=0.99;
+    if(c.y<ccvs.height+50){alive=true;cctx.save();cctx.translate(c.x,c.y);cctx.rotate(c.rot*Math.PI/180);cctx.fillStyle=c.color;cctx.globalAlpha=Math.max(0,1-(c.y/ccvs.height));
+    if(c.shape==='rect'){cctx.fillRect(-c.r/2,-c.r*1.5,c.r,c.r*3)}else{cctx.beginPath();cctx.arc(0,0,c.r,0,Math.PI*2);cctx.fill()}
+    cctx.restore()}
   });
+  if(alive||confettiActive)requestAnimationFrame(drawConfetti);
 }
 
-// GRADUATION QUIZ — 10 comprehensive questions spanning all 15 days
-const ALL_QUESTIONS=[
-  {q:"CRISP stands for: Context, Role, Instructions, _____, Purpose. What fills the blank?",o:["Style","Specifics","Structure","Steps"],a:1,f:"CRISP = Context, Role, Instructions, Specifics, Purpose. The 5-element framework for professional Claude prompts that was introduced on Day 3 and used throughout the course."},
-  {q:"A Claude Project's System Prompt is best described as:",o:["A list of questions to ask Claude","Claude's permanent identity and knowledge base for all conversations within that project","The billing information for your project","A template for generating content"],a:1,f:"The Project System Prompt defines Claude's role, knowledge, tone, and rules permanently for every conversation in that project. It's the foundation of any systematic Claude use."},
-  {q:"The '90% Rule' for vernacular (Hindi/Punjabi) content means:",o:["Translate 90% of content and write 10% fresh","Claude produces 90% production-ready vernacular content — human native speakers review and refine the final 10%","Only 90% of AI-generated content is accurate","Use Claude for 90% of your content needs"],a:1,f:"Claude handles scale and quality at 90%. Human native speakers add the cultural nuance, regional idioms, and emotional accuracy that make up the final 10%. This combination beats both AI-only and human-only approaches."},
-  {q:"When building a web page with Claude, the recommended delivery format is:",o:["Separate HTML, CSS, and JavaScript files","A website hosted by Claude","A single HTML file containing all HTML, CSS, and JavaScript","A PDF mockup"],a:2,f:"Single HTML file = instant usability. Open in any browser, no setup, no dependencies. This is what you request: 'give me a single HTML file with HTML, CSS, and JS all inside.'"},
-  {q:"Which Cowork Brief component prevents Claude from making confident wrong decisions?",o:["The Goal section","The Expected Output format","Constraints specifying 'flag uncertain items with [REVIEW] rather than deciding'","The Checkpoint locations"],a:2,f:"The 'Uncertain Items Rule' in Constraints — 'If less than 80% confident, flag with [REVIEW]' — prevents Claude from guessing and presenting errors confidently. Critical for batch processing accuracy."},
-  {q:"The 'temperature' parameter in the Claude API controls:",o:["Server response speed","Claude's creativity level — low = consistent/predictable, high = creative/varied","The language Claude responds in","The maximum response length"],a:1,f:"Temperature: 0 = very consistent (good for support chatbots). 1 = more creative/varied (good for content generation). Most production apps use 0.3-0.7 as a balanced range."},
-  {q:"The Kotkapura clinic brief required which 4 Claude features?",o:["Projects, Cowork, Code, API","Artifacts, CRISP, Translation, Zapier","Projects + System Prompt, Artifacts, CRISP with Cultural Adaptation, API Integration Plan","Daily Briefing, Content Calendar, Email, Website"],a:2,f:"The Final Project used: (1) Claude Projects for clinic identity, (2) Artifacts for WhatsApp templates, (3) CRISP prompts + cultural adaptation for Hindi/Punjabi content, (4) API integration planning."},
-  {q:"The cultural adaptation principle 'family benefit framing' means:",o:["Adding family members' names to content","Framing business benefits in terms of family prosperity rather than individual achievement — 'grow your business for your family'","Only targeting content at families","Using family photos in marketing"],a:1,f:"Indian audiences (especially in Punjab) relate most deeply to family-centered framing. 'Grow your business so your family prospers' outperforms individualistic messaging like 'achieve personal success.'"},
-  {q:"The 15-minute morning Claude habit is recommended because:",o:["Claude only works in the mornings","Starting the day with briefing, priority-setting, and urgent drafts — before email chaos — sets direction and saves 5-10 hours per week","It's the cheapest time to use the API","Claude's responses are better in the morning"],a:1,f:"The morning ritual (briefing prompt + priorities + urgent drafts) creates proactive days instead of reactive ones. Compound benefit: daily practice improves prompts → more time saved → bigger results."},
-  {q:"Completing 'Master Claude in 15 Days' means you can now:",o:["Only use Claude for personal tasks","Build Claude-powered solutions for real businesses: content systems, automation tools, multilingual content, API-based chatbots — and consult for others","Use every Anthropic product for free","Teach the course to others immediately without preparation"],a:1,f:"You've developed a marketable skill set: CRISP prompting, Projects, Artifacts, multilingual content, code generation, API understanding, and complete solution-building. These are real, deployable capabilities that create real business value."}
-];
+// === NAV & SECTIONS ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'})}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pctDone=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pctDone<=50?`${pctDone}% — Building your capstone`:pctDone<=80?`${pctDone}% — Almost there!`:pctDone<100?`${pctDone}% — The finale!`:`100% — COURSE COMPLETE!`;pt.style.display='block';if(id==='s5')setTimeout(launchConfetti,500)}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1')}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id)}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
 
-let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore()}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);let msg=checked===total?'COMPLETE MASTERY! You checked every single day. Incredible.':checked>=12?'Advanced mastery! Review the unchecked days for full completion.':checked>=8?'Strong foundation! Complete the remaining days for full mastery.':'Keep going! Each day builds essential skills.';score.textContent=`${checked} of ${total} days mastered (${pct}%) — ${msg}`;if(checked===total)launchConfetti()}
 
-function initQuiz(){
-  quizStarted=true;
-  currentQuestions=ALL_QUESTIONS; // Use ALL 10 questions for graduation
-  currentQ=0;score=0;
-  renderQuiz();
-}
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Paste into Claude →';setTimeout(()=>el.textContent=orig,3000)}).catch(()=>{el.style.background='rgba(52,211,153,.1)'})}
+function copyFreePrompt(){const txt=document.getElementById('freePrompt').value.trim();if(!txt){document.getElementById('freeOut').textContent='⚠️ Describe your project first.';return}document.getElementById('freeOut').textContent='✅ Copied! Paste into Claude.';navigator.clipboard.writeText(txt).catch(()=>{})}
 
-function renderQuiz(){
-  const c=document.getElementById('quizContainer');
-  if(currentQ>=currentQuestions.length){showScore(c);return;}
-  answered=false;
-  const q=currentQuestions[currentQ];
-  c.innerHTML=`<div class="quiz-header"><h3>Graduation Quiz — All 15 Days</h3><div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div></div><div class="quiz-q"><div class="q-num" style="color:var(--gold)">Q${currentQ+1} of ${currentQuestions.length}</div><div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb"></div></div><div class="quiz-controls"><div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div><button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next Question →</button></div>`;
-}
-
-function selectAnswer(i){
-  if(answered)return;answered=true;
-  const q=currentQuestions[currentQ];
-  const opts=document.querySelectorAll('.option');
-  opts.forEach(o=>o.classList.add('disabled'));
-  opts[i].classList.add(i===q.a?'correct':'wrong');
-  if(i!==q.a)opts[q.a].classList.add('correct');
-  if(i===q.a)score++;
-  const fb=document.getElementById('qfb');
-  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
-  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
-  const nextBtn=document.getElementById('nextBtn');
-  nextBtn.style.display='block';
-  nextBtn.textContent=currentQ===currentQuestions.length-1?'See My Results 🎓':'Next Question →';
-}
-
-function nextQuestion(){currentQ++;renderQuiz();}
-
-function showScore(c){
-  const pct=Math.round((score/currentQuestions.length)*100);
-  const isPassed=pct>=80;
-  const msg=pct===100?'Perfect Score! Legendary.':pct>=90?'Outstanding!':pct>=80?'Graduated — Claude Expert!':pct>=60?'Almost there — review and retake':' Review the course and try again';
-
-  c.innerHTML=`<div class="quiz-score show">
-    <div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div>
-    <div class="score-msg">${msg}</div>
-    <div class="score-sub">${pct}% correct — ${score} out of ${currentQuestions.length} graduation questions</div>
-    ${isPassed?`<div style="margin:16px 0;padding:16px;background:rgba(251,191,36,0.1);border:1px solid var(--gold);border-radius:8px;font-size:0.9em;color:var(--gold)">You scored ${pct}% — You are officially a Claude Expert. TARAhut AI Labs certifies your commitment and competence.</div>`:''}
-    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      ${isPassed?'':'<button class="btn btn-secondary" onclick="initQuiz()">Retake Quiz</button>'}
-      <button class="btn btn-${isPassed?'gold':'primary'}" onclick="showGraduation(${isPassed})">${isPassed?'See Your Graduation 🎓':'Continue to Recap'}</button>
-    </div>
-  </div>`;
-}
-
-function showGraduation(passed){
-  document.getElementById('graduationSection').style.display='block';
-  document.getElementById('graduationSection').scrollIntoView({behavior:'smooth',block:'start'});
-  if(passed){
-    // Trigger celebration
-    createConfetti();
-  }
-}
-
-function createConfetti(){
-  const colors=['#059669','#fbbf24','#f59e0b','#10b981','#ffffff'];
-  for(let i=0;i<60;i++){
-    setTimeout(()=>{
-      const el=document.createElement('div');
-      el.style.cssText=`position:fixed;width:${Math.random()*12+4}px;height:${Math.random()*12+4}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}vw;top:100vh;z-index:9999;border-radius:${Math.random()>0.5?'50%':'2px'};animation:confetti ${Math.random()*2+2}s ease-out forwards`;
-      document.body.appendChild(el);
-      setTimeout(()=>el.remove(),4000);
-    },i*60);
-  }
-}
+document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
+<div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
 </body>
 </html>

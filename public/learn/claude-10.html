@@ -3,465 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 10: Claude Cowork | TARAhut AI Labs</title>
+<title>Day 10: Claude Cowork — Master Claude in 15 Days · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#059669;--green-d:#047857;--green-l:#d1fae5;--accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;--radius:12px}
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-user-select:none;user-select:none}
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.particle{position:absolute;border-radius:50%;background:var(--green);animation:float linear infinite}
-@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
-nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
-.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
-.nav-inner::-webkit-scrollbar{display:none}
-.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
-.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
-.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
-.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 60%);padding:60px 24px 50px;text-align:center;position:relative;z-index:1}
-.hero-badge{display:inline-block;background:var(--green);color:#fff;font-size:0.75em;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.05em}
-.hero h1{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;line-height:1.2;margin-bottom:12px}
-.hero h1 span{color:var(--green)}
-.hero p{color:var(--muted);font-size:1.05em;max-width:580px;margin:0 auto 24px}
-.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
-.hero-meta span{background:var(--bg2);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
-.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
-.section{display:none;animation:fadeIn .4s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800;line-height:1.25}
-.section-header p{color:var(--muted);margin-top:8px}
-.section-header{margin-bottom:28px}
-.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
-.card:hover{border-color:var(--green);transform:translateY(-2px)}
-.card-icon{font-size:1.8em;margin-bottom:10px}
-.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
-.card p{font-size:0.875em;color:var(--muted)}
-.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
-.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
-.callout strong{color:var(--green);display:block;margin-bottom:4px}
-.callout.amber strong{color:var(--accent)}
-.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative}
-.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
-.code-box span.hl{color:#79c0ff}.code-box span.gr{color:#3fb950}.code-box span.am{color:#e3b341}
-.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
-.copy-btn:hover{background:var(--green);color:#fff}
-.table-wrap{overflow-x:auto;margin:20px 0}
-table{width:100%;border-collapse:collapse;font-size:0.875em}
-th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
-td{padding:10px 14px;border-bottom:1px solid var(--border)}
-tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
-.steps{margin:20px 0}
-.step{display:flex;gap:16px;margin-bottom:16px}
-.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
-.step-body h4{font-weight:700;margin-bottom:4px}
-.step-body p{color:var(--muted);font-size:0.875em}
-.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
-.highlight-box h3{color:var(--green);margin-bottom:8px}
-.decision-tree{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:20px 0}
-.dt-row{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.dt-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
-.dt-icon{font-size:2em;flex-shrink:0}
-.dt-body h4{font-weight:700;margin-bottom:6px}
-.dt-body p{color:var(--muted);font-size:0.875em}
-.dt-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.tag{display:inline-block;background:rgba(5,150,105,0.15);color:var(--green);font-size:0.75em;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(5,150,105,0.3);margin:2px}
-.tag.red{background:rgba(239,68,68,0.1);color:#f87171;border-color:rgba(239,68,68,0.3)}
-.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.quiz-header h3{font-size:1.3em;font-weight:800}
-.quiz-progress{font-size:0.82em;color:var(--muted)}
-.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
-.q-text{font-weight:600;margin-bottom:14px}
-.q-num{font-size:0.75em;color:var(--green);font-weight:700;margin-bottom:6px}
-.options{display:flex;flex-direction:column;gap:10px}
-.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
-.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
-.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
-.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
-.option.disabled{cursor:default}
-.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
-.quiz-feedback.show{display:block}
-.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
-.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
-.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
-.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:var(--green-d)}
-.btn-secondary{background:var(--bg3);color:var(--text)}
-.btn-secondary:hover{background:var(--border)}
-.quiz-score{text-align:center;padding:28px;display:none}
-.quiz-score.show{display:block}
-.score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
-.score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
-.score-sub{color:var(--muted);font-size:0.9em}
-.task-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:12px 0}
-.task-card h4{font-weight:700;margin-bottom:8px;color:var(--green)}
-.task-card ul{padding-left:18px;color:var(--muted);font-size:0.875em}
-.task-card ul li{margin-bottom:4px}
-@media(max-width:600px){.dt-row{flex-direction:column}}
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing disabled.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
 </style>
 </head>
-<body oncontextmenu="return false">
-<div id="particles"></div>
-<nav>
-  <div class="nav-inner">
-    <div class="nav-brand">TARAhut AI Labs</div>
-    <button class="nav-btn active" onclick="showSection(0)">1. What is Cowork?</button>
-    <button class="nav-btn" onclick="showSection(1)">2. Setting Up Tasks</button>
-    <button class="nav-btn" onclick="showSection(2)">3. Real Examples</button>
-    <button class="nav-btn" onclick="showSection(3)">4. Cowork vs Converse</button>
-    <button class="nav-btn" onclick="showSection(4)">5. Quiz</button>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="hero-badge">DAY 10 — INTERMEDIATE</div>
-  <h1>Claude <span>Cowork</span></h1>
-  <p>Claude working in the background while you focus on what matters. Autonomous multi-step tasks, file management, and batch processing — delegated properly.</p>
-  <div class="hero-meta"><span>5 Sections</span><span>25 Quiz Questions</span><span>~90 min</span><span>tarahutailabs.com</span></div>
-</div>
-
-<div class="container">
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas><div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<section class="hero" id="heroSection"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 10 &middot; Master Claude in 15 Days &middot; 2026</div>
+  <h1>Claude <span class="gr">Cowork</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Claude's background task mode on Desktop. Set up research, content generation, and document tasks that run while you focus on other work. What takes 3 hours manually takes 15 minutes with Cowork.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Day 10 &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button></div>
+</section>
+<nav class="nav" id="mainNav"><div class="nav-inner"><span class="nav-brand">Master Claude</span><button class="nav-btn on" data-s="s1"><span class="nn">01</span>What is Cowork</button><button class="nav-btn" data-s="s2"><span class="nn">02</span>Setting Up Tasks</button><button class="nav-btn" data-s="s3"><span class="nn">03</span>Monitoring &amp; Chains</button><button class="nav-btn" data-s="s4"><span class="nn">04</span>Advanced Workshop</button><button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button><button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button></div></nav>
 
 <!-- S1 -->
-<div class="section active" id="s0">
-  <div class="section-header">
-    <div class="section-tag">Section 1</div>
-    <h2>What is Cowork?</h2>
-    <p>Claude Desktop's most powerful feature — autonomous background work that frees you to focus on higher-value tasks.</p>
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01</div><h2>What is <span class="gr">Claude Cowork</span>?</h2><p>Cowork is Claude's background task mode available on the Claude Desktop app. You give Claude a complex task, and it works on it in the background while you continue doing other things. Think of it as delegating to a smart assistant who taps your shoulder when done.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Cowork vs Regular Chat: The Key Difference</h4><p>In regular chat, you wait for each response. You type, Claude responds, you read, you type again. <strong>With Cowork, you set up a task and walk away.</strong> Claude works on it in the background &mdash; researching, writing, analysing, creating &mdash; and notifies you when done. You can review the output, provide feedback, and Claude continues refining. It is like having an employee who works independently but checks in with you for direction.</p></div></div>
+  <div class="cgrid">
+    <div class="crd"><span class="tag tag-brand">BACKGROUND</span><span class="crd-icon">&#9881;</span><h3>Works While You Work</h3><p>Start a Cowork task, then switch to email, meetings, or other work. Claude processes your task in the background on the Desktop app. <strong>No waiting, no babysitting.</strong> You come back to a completed deliverable.</p></div>
+    <div class="crd"><span class="tag tag-1">COMPLEX</span><span class="crd-icon">&#128736;</span><h3>Handles Multi-Step Tasks</h3><p>Cowork excels at tasks that require multiple steps: research a topic, analyse findings, write a report, format it professionally. <strong>One instruction, multiple deliverables.</strong> Claude plans and executes the full workflow.</p></div>
+    <div class="crd"><span class="tag tag-2">INTERACTIVE</span><span class="crd-icon">&#128172;</span><h3>Check-ins and Guidance</h3><p>Claude can pause mid-task to ask clarifying questions or show you progress. You provide direction and Claude continues. <strong>Like managing a junior employee</strong> &mdash; you set the direction, they do the work, you review and guide.</p></div>
   </div>
-  <div class="callout">
-    <strong>The Cowork Concept</strong>
-    Traditional Claude: You ask → Claude answers → you act. Cowork: You brief Claude on a multi-step task → Claude executes autonomously → you review the completed work. It's the difference between chatting with an assistant and delegating to a capable team member.
-  </div>
-  <div class="grid-2">
-    <div class="card"><div class="card-icon">🤖</div><h3>Autonomous Execution</h3><p>Claude can handle multi-step tasks without you prompting each step. Set it up once, review the results.</p></div>
-    <div class="card"><div class="card-icon">📁</div><h3>File Management</h3><p>Organize folders, process documents, rename files by convention, create structured reports from raw data.</p></div>
-    <div class="card"><div class="card-icon">📧</div><h3>Batch Processing</h3><p>Process 20 emails, analyze 10 documents, categorize 50 items — work that would take hours done in minutes.</p></div>
-    <div class="card"><div class="card-icon">📅</div><h3>Content Pipelines</h3><p>Build a full content calendar, generate multiple variations, organize and structure outputs in your preferred format.</p></div>
-  </div>
-
-  <h3 style="margin:28px 0 16px">Cowork vs Traditional Conversation</h3>
-  <div class="table-wrap">
-    <table>
-      <tr><th>Aspect</th><th>Traditional Conversation</th><th>Cowork Mode</th></tr>
-      <tr><td>Task Type</td><td>One-off questions and responses</td><td>Multi-step, structured tasks</td></tr>
-      <tr><td>Your Role</td><td>Active participant throughout</td><td>Brief once, review at the end</td></tr>
-      <tr><td>Best For</td><td>Creative, nuanced, exploratory work</td><td>Routine, batch, systematic work</td></tr>
-      <tr><td>Output</td><td>Single response</td><td>Structured deliverable(s)</td></tr>
-      <tr><td>Your Attention</td><td>Required continuously</td><td>Required at start and end only</td></tr>
-    </table>
-  </div>
-
-  <div class="callout amber">
-    <strong>Important: Cowork Requires Clear Briefing</strong>
-    Because Claude executes autonomously, vague briefs lead to wrong outputs. The quality of your Cowork output is directly proportional to the quality of your brief. Section 2 teaches you exactly how to brief correctly.
-  </div>
-
-  <div class="highlight-box">
-    <h3>What Cowork Can Access</h3>
-    <p style="color:var(--muted);margin-bottom:12px">With Claude Desktop and appropriate setup, Cowork can work with:</p>
-    <div class="grid-2" style="margin:0">
-      <div><ul style="padding-left:18px;color:var(--muted);font-size:0.875em"><li>Local files and folders on your computer</li><li>Documents, PDFs, spreadsheets</li><li>Text files and structured data</li></ul></div>
-      <div><ul style="padding-left:18px;color:var(--muted);font-size:0.875em"><li>Content you paste or upload</li><li>Previously generated Claude outputs</li><li>Templates and frameworks you provide</li></ul></div>
-    </div>
-  </div>
+  <div class="callout call-2"><div class="call-ico">&#128293;</div><div class="call-body"><h4>When to Use Cowork vs Regular Chat</h4><p><strong>Use Regular Chat when:</strong> Quick questions, simple tasks, real-time brainstorming, short conversations<br><strong>Use Cowork when:</strong> Multi-step research projects, document creation that needs multiple drafts, competitive analysis, content calendar generation, any task that takes Claude more than 5 minutes to complete<br><br><strong>Rule of thumb:</strong> If the task has more than 3 steps or would take you more than 30 minutes manually, Cowork is the better choice.</p></div></div>
+  <div class="emotional-hook"><p><strong>ਕੋਟਕਪੂਰੇ ਦੇ ਇੱਕ ਕਾਰੋਬਾਰੀ ਦੀ ਕਹਾਣੀ:</strong> Manpreet runs an export business. Every Monday morning, she spends 3 hours preparing competitor reports, market updates, and client briefs. <strong>With Cowork, she starts all three tasks at 9 AM, goes to her first meeting at 9:05 AM, and by 9:30 AM all three reports are ready for review.</strong> She went from 3 hours of preparation to 5 minutes of setup + 10 minutes of review. That is Cowork.</p></div>
+  <div class="micro-action"><h4>Requirements for Cowork</h4><ul><li><strong>Claude Desktop app</strong> (macOS or Windows) &mdash; Cowork is not available on the web</li><li><strong>Claude Pro subscription</strong> ($20/month) for best experience</li><li>A clear, detailed task description (the better your brief, the better the output)</li></ul></div>
+  <div class="micro-win">You understand what Cowork is and when to use it. This feature alone justifies the Claude Pro subscription for professionals.</div>
+  <div class="identity-shift">You are not chatting with AI anymore. You are delegating tasks to an AI employee who works in the background.</div>
+  <p class="curiosity-hook">Next: Set up your first three Cowork tasks.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Setting Up Tasks &rarr;</button></div>
 </div>
 
 <!-- S2 -->
-<div class="section" id="s1">
-  <div class="section-header">
-    <div class="section-tag">Section 2</div>
-    <h2>Setting Up Cowork Tasks</h2>
-    <p>The 4-part Cowork Brief: Clear goal, expected output, constraints, checkpoints. Master this and Claude delivers every time.</p>
-  </div>
-
-  <div class="callout">
-    <strong>The Cowork Brief Framework</strong>
-    A proper Cowork brief has 4 essential components. Skipping any one of them leads to incomplete or misaligned outputs. Think of it as writing a job description for a highly capable assistant.
-  </div>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <h4>Clear Goal</h4>
-        <p>What exactly needs to be accomplished? Be specific about the end state. "Organize my documents" is not a goal. "Create a folder structure with categories: Clients, Finance, Marketing, Operations and move each document into the correct category" is a goal.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <h4>Expected Output</h4>
-        <p>What should the result look like? Format, structure, length, naming conventions. "Give me a table with columns: Email Sender, Subject, Category, Action Required, Priority (1-3)" tells Claude exactly what you want.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <h4>Constraints</h4>
-        <p>What rules must be followed? "Don't delete anything," "Flag uncertain items with a ? rather than deciding," "Use the existing naming convention: YYYY-MM-DD_Description," "If something doesn't fit a category, create an 'Uncategorized' group."</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <h4>Checkpoints</h4>
-        <p>Where should Claude pause and confirm? "After categorizing the first 5 items, show me your logic before continuing" or "If you're unsure about more than 10% of items, stop and ask me."</p>
-      </div>
-    </div>
-  </div>
-
-  <h3 style="margin:24px 0 16px">The Perfect Cowork Brief Template</h3>
-  <div class="code-box">
-    <div class="code-label">Cowork Brief Template</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">GOAL:</span> [What you want accomplished — be specific about the end state]<br><br>
-    <span class="am">INPUT:</span> [What you're providing — documents, data, list of emails, etc.]<br><br>
-    <span class="hl">EXPECTED OUTPUT:</span> [Exact format of what you want back — table, document, list with specific columns/sections]<br><br>
-    <span class="gr">CONSTRAINTS:</span><br>
-    - [Rule 1: e.g., don't delete anything, flag uncertain items]<br>
-    - [Rule 2: naming conventions, format rules]<br>
-    - [Rule 3: what to do if something doesn't fit]<br><br>
-    <span class="am">CHECKPOINTS:</span> [When to pause and confirm with me before continuing]<br><br>
-    <span class="hl">QUALITY CHECK:</span> [How I'll know the output is complete and correct]
-  </div>
-
-  <div class="callout amber">
-    <strong>The "Uncertain Items" Rule</strong>
-    Always include a constraint for uncertainty: "If you're not 80% sure about a categorization, flag it with [REVIEW] rather than deciding." This prevents Claude from making confident wrong decisions that you discover later.
-  </div>
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! Now hands-on with real Cowork tasks.</div>
+  <div class="sec-head"><div class="over">Section 02</div><h2>Setting Up <span class="gr">Cowork Tasks</span></h2><p>Three practical Cowork demos: competitor research, content calendar generation, and a bilingual SOP manual. Each shows you how to brief Claude for maximum quality background work.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 1: Competitor Research Task</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Set up a Cowork task that researches your competitors and produces a comprehensive report while you handle other work:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'COWORK TASK: Competitor Research Report\n\nI need you to research and compile a comprehensive competitor analysis for my business. Work through this independently and present a finished report.\n\nMy Business: Kaur Coaching Centre, Moga, Punjab — IELTS and PTE coaching for students going abroad. Fee: ₹25,000 per course. 3 teachers, 1 location.\n\nCompetitors to research:\n1. British Council Chandigarh (premium, branded)\n2. Local IELTS centres in Moga (3-4 small institutes)\n3. Online platforms: Magoosh, IELTSliz, YouTube free prep\n4. Other Punjab coaching chains (Dolphin, Touchstone)\n\nFor EACH competitor provide:\n- Pricing (exact or estimated)\n- Location/accessibility from Moga\n- Strengths and weaknesses\n- Student reviews/reputation\n- Unique selling points\n- Threat level to my business (HIGH/MEDIUM/LOW)\n\nThen provide:\n- Competitive advantage map (where I win, where they win)\n- 5 strategic recommendations ranked by impact\n- 3 quick wins I can implement this week\n- Suggested positioning statement\n\nAll prices in ₹. Be honest — flag where competitors genuinely beat me. Format as a professional report with headers and tables.')">&#128203; Click to copy: Cowork competitor research task for IELTS coaching centre in Moga — full analysis with recommendations</div><p style="color:var(--t3);font-size:.8rem">This task might take Claude 5-10 minutes to complete in Cowork mode. Start it, go make chai, and come back to a finished report.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 2: Content Calendar Generation</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate a complete monthly content calendar with posts written, not just topics listed:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'COWORK TASK: May 2026 Content Calendar\n\nCreate a complete content calendar for TARAhut AI Labs for May 2026. Do not just list topics — write the actual content for each piece.\n\nBrand: TARAhut AI Labs — AI training for Punjab professionals\nPlatforms: Instagram, LinkedIn, Facebook, WhatsApp, YouTube\nLanguages: English (LinkedIn, Instagram), Hindi (Facebook, YouTube), Punjabi (WhatsApp)\n\nDeliver:\n1. CALENDAR TABLE: Date | Platform | Language | Content Type | Topic | Status\n2. 12 SOCIAL MEDIA POSTS fully written (4 English, 4 Hindi, 4 Punjabi)\n3. 4 BLOG POST OUTLINES with headlines, key points, and SEO keywords\n4. 2 VIDEO SCRIPT concepts with hooks and talking points\n5. 2 EMAIL NEWSLETTER drafts with subject lines\n6. CONTENT THEMES: Weekly themes that tie everything together\n7. HASHTAG STRATEGY: Platform-specific hashtag sets\n\nContext: May themes should include: AI in Indian business, summer learning season, start-of-financial-year planning. Reference Punjab-specific events and culture.')">&#128203; Click to copy: Full May 2026 content calendar — 12 written posts, 4 blog outlines, 2 video scripts, 2 newsletters, all multilingual</div><p style="color:var(--t3);font-size:.8rem">This single Cowork task replaces an entire content planning session. Claude generates actual written content, not just topic lists.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 3: Bilingual SOP Manual</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate a complete Standard Operating Procedures manual in both English and Hindi:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'COWORK TASK: Bilingual SOP Manual\n\nCreate a complete Standard Operating Procedures manual for a small restaurant in Bathinda, Punjab. Generate BOTH English and Hindi versions side by side.\n\nRestaurant: \"Bathinda Bites\" — casual dining + delivery, 20 seats, 8 staff\n\nSOPs needed (each with step-by-step instructions):\n1. Opening procedures (kitchen prep, cleaning, inventory check)\n2. Customer order flow (dine-in + delivery via Zomato/Swiggy)\n3. Food safety and hygiene (FSSAI compliance)\n4. Cash handling and billing (POS + UPI + cash)\n5. Closing procedures (cleaning, cash count, stock check)\n6. Customer complaint handling (in-person + online reviews)\n7. Staff scheduling and attendance\n8. Delivery packaging standards\n\nFor each SOP:\n- Step-by-step numbered instructions\n- Who is responsible (role, not name)\n- Time estimate for each step\n- Common mistakes to avoid\n- Quality check points\n\nFormat: Professional manual with table of contents. English on left, Hindi on right for each section. Include Bathinda-specific details (local suppliers, weather considerations for food storage).')">&#128203; Click to copy: Bilingual SOP manual (English + Hindi) for a Bathinda restaurant with 8 procedures, step-by-step instructions</div><p style="color:var(--t3);font-size:.8rem">A restaurant consultant charges &#8377;25,000-50,000 for an SOP manual. Cowork generates a comprehensive bilingual version in 10-15 minutes.</p></div>
+  <div class="callout call-3"><div class="call-ico">&#128200;</div><div class="call-body"><h4>Time Comparison: Manual vs Cowork</h4><p><strong>Competitor research report:</strong> 3 hours manually → 10 minutes with Cowork<br><strong>Monthly content calendar with written posts:</strong> 8 hours manually → 15 minutes with Cowork<br><strong>Bilingual SOP manual:</strong> 2-3 days manually → 15 minutes with Cowork<br><br><strong>Total for all three tasks:</strong> 14-19 hours manually → 40 minutes with Cowork. That is an entire work week compressed into a lunch break.</p></div></div>
+  <div class="micro-win">You have set up three production-grade Cowork tasks. Each one replaces hours of manual work.</div>
+  <div class="identity-shift">You are not doing the work. You are managing an AI employee who does the work while you focus on strategy and decisions.</div>
+  <p class="curiosity-hook">Next: How to monitor tasks, guide mid-task, and chain them together.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Monitoring &amp; Chains &rarr;</button></div>
 </div>
 
 <!-- S3 -->
-<div class="section" id="s2">
-  <div class="section-header">
-    <div class="section-tag">Section 3</div>
-    <h2>Real-World Cowork Examples</h2>
-    <p>Four complete Cowork briefs you can use or adapt immediately.</p>
-  </div>
-
-  <h3 style="margin-bottom:16px">Example 1: Organize a Document Folder</h3>
-  <div class="code-box">
-    <div class="code-label">Cowork Brief — Folder Organization</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">GOAL:</span> Organize 47 documents from my Downloads folder into a structured system.<br><br>
-    <span class="am">INPUT:</span> I'll paste the list of filenames below.<br><br>
-    <span class="hl">EXPECTED OUTPUT:</span> A table with columns: Original Filename | Suggested Folder | Suggested New Name | Reason. Then a summary of the folder structure you recommend.<br><br>
-    <span class="gr">CONSTRAINTS:</span><br>
-    - Use these 5 main categories: Clients, Finance, Legal, Marketing, Personal<br>
-    - Follow naming convention: Category_YYYY-MM_Description<br>
-    - If a file could go in 2 categories, choose the primary and note the secondary<br>
-    - Flag files you're less than 70% sure about with [REVIEW]<br><br>
-    <span class="am">CHECKPOINT:</span> Show me first 10 classifications before continuing. I'll confirm your logic.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Example 2: Process 20 Emails</h3>
-  <div class="code-box">
-    <div class="code-label">Cowork Brief — Email Processing</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">GOAL:</span> Process my 20 unread emails and create an action plan.<br><br>
-    <span class="am">INPUT:</span> [Paste email subjects, senders, and first 2 lines of each email]<br><br>
-    <span class="hl">EXPECTED OUTPUT:</span> A prioritized table:<br>
-    | # | From | Subject | Category | Action Required | Draft Reply Needed? | Priority (High/Med/Low) |<br><br>
-    Then below the table: Draft replies for all emails marked "Draft Reply Needed: Yes" — in professional but warm tone.<br><br>
-    <span class="gr">CONSTRAINTS:</span><br>
-    - Categories: Client Query, Payment, Partnership, Newsletter, Internal, Spam/Delete<br>
-    - Never draft replies to Newsletter or Spam<br>
-    - Keep draft replies under 150 words<br>
-    - If an email needs information I haven't provided, mark as [NEEDS MORE INFO]<br><br>
-    <span class="am">CHECKPOINT:</span> After categorizing all 20, pause for my approval before drafting replies.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Example 3: Create a Content Calendar</h3>
-  <div class="code-box">
-    <div class="code-label">Cowork Brief — Content Calendar</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">GOAL:</span> Create a 30-day social media content calendar for TARAhut AI Labs.<br><br>
-    <span class="am">INPUT:</span> Brand info — AI training institute, Kotkapura Punjab. Courses: Claude AI, ChatGPT, Business AI. Audience: entrepreneurs 25-45.<br><br>
-    <span class="hl">EXPECTED OUTPUT:</span> A 30-day calendar table:<br>
-    | Date | Platform | Content Type | Topic | Hook Line | Key Message | CTA |<br>
-    Include: Instagram (5x/week), LinkedIn (3x/week), Twitter (daily).<br>
-    Mix of content types: educational, inspirational, promotional, behind-the-scenes (80/20 rule).<br><br>
-    <span class="gr">CONSTRAINTS:</span><br>
-    - Max 2 promotional posts per week<br>
-    - Include at least 4 Hindi content posts<br>
-    - Avoid posting about the same topic two days in a row<br>
-    - Include 4 engagement posts (polls/questions) per week<br><br>
-    <span class="am">CHECKPOINT:</span> Show me Week 1 for approval before building Weeks 2-4.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Example 4: Analyze Multiple Documents</h3>
-  <div class="code-box">
-    <div class="code-label">Cowork Brief — Document Analysis</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">GOAL:</span> Analyze 8 competitor websites I've described below and identify gaps in our positioning.<br><br>
-    <span class="am">INPUT:</span> [Paste your notes/descriptions about each competitor's offerings, pricing, messaging]<br><br>
-    <span class="hl">EXPECTED OUTPUT:</span><br>
-    1. Competitor comparison table: Name | Courses | Price Range | Target Audience | Unique Claim | Weakness<br>
-    2. Our positioning gaps: What they offer that we don't<br>
-    3. Our positioning strengths: What we offer that they don't<br>
-    4. Top 3 content angles we should own that no one else is covering<br>
-    5. Recommended positioning statement for TARAhut AI Labs<br><br>
-    <span class="gr">CONSTRAINTS:</span><br>
-    - Base analysis only on information I've provided<br>
-    - Flag any conclusions that need verification<br>
-    - Be direct about weaknesses in our current positioning
-  </div>
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128293; 50% done! Advanced Cowork techniques next.</div>
+  <div class="sec-head"><div class="over">Section 03</div><h2>Monitoring &amp; <span class="gr">Cowork Chains</span></h2><p>How to monitor running tasks, guide Claude mid-task, and chain multiple Cowork tasks so the output of Task 1 feeds into Task 2.</p></div>
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Monitoring Running Tasks</h4><p>When a Cowork task is running, you can:<br><strong>Check progress:</strong> See how far Claude has gotten in the task<br><strong>Provide guidance:</strong> "Focus more on pricing comparisons, less on history"<br><strong>Redirect:</strong> "Actually, add a section about seasonal demand patterns"<br><strong>Approve mid-points:</strong> Claude may pause to show you interim work for approval before continuing<br><br>Think of it like managing a report from a junior analyst. You set the brief, check in periodically, provide direction, and review the final output.</p></div></div>
+  <div class="callout call-4"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Post-Completion Enhancement</h4><p>When Claude finishes a Cowork task, the output is a starting point. You should always:<br><strong>1. Review for accuracy</strong> &mdash; Verify key facts and figures<br><strong>2. Request refinements</strong> &mdash; "Make the executive summary more concise" or "Add more Punjab-specific examples"<br><strong>3. Ask for alternatives</strong> &mdash; "Give me 3 different versions of the positioning statement"<br><strong>4. Export and format</strong> &mdash; Copy the output into your actual documents<br><br><strong>The first output is 80% done. Your 20% review and refinement makes it 100%.</strong></p></div></div>
+  <div class="micro-action"><h4>Cowork Chains: The Power Move</h4><p>Chain multiple Cowork tasks where the output of one feeds into the next. This is the most advanced Cowork technique:</p><ul><li><strong>Task 1:</strong> "Research the top 10 trending AI tools for small businesses in India" → produces research report</li><li><strong>Task 2:</strong> "Based on the research above, write a 2000-word blog post for Punjab business owners" → produces draft</li><li><strong>Task 3:</strong> "Based on the blog post above, create 10 social media posts in English, Hindi, and Punjabi" → produces content</li></ul><p style="margin-top:.5rem">Each task compounds on the previous. The blog is grounded in real research. The social posts are extracted from the blog. <strong>Three Cowork tasks, one coherent content pipeline.</strong></p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 4: Cowork Chain Example</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Start with this first task. After it completes, use its output to feed Task 2:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'COWORK CHAIN — TASK 1 of 3: Market Research\n\nResearch the current state of online education in Punjab, India for 2026. Cover:\n1. Market size (₹ value) for online courses in Punjab\n2. Top 5 platforms Indians use for online learning\n3. Most popular course categories in Punjab (IT, English, business, etc.)\n4. Average willingness to pay for online courses in Tier-2/3 Punjab cities\n5. Key barriers to online education adoption in Punjab\n6. Success stories of Punjab-based online education businesses\n7. Government initiatives supporting digital education in Punjab\n\nPresent findings as a structured research brief. I will use this to feed into my next task (blog writing), so be thorough and include specific numbers wherever possible.')">&#128203; Click to copy: Cowork Chain Task 1 — Market research on online education in Punjab (output feeds Task 2)</div><div style="padding:1rem;background:rgba(168,85,247,.03);border:1px dashed rgba(168,85,247,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c2);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'COWORK CHAIN — TASK 2 of 3: Blog Post\n\nUsing the research brief above, write a comprehensive blog post:\n\nTitle: \"Why 2026 is the Year to Launch Your Online Course from Punjab\"\nTarget: Punjab professionals considering creating and selling online courses\nLength: 2000 words\nTone: Encouraging, practical, data-driven\n\nInclude all research findings naturally. Add practical steps for getting started. Reference Punjab-specific platforms, pricing, and audience behaviour. End with a strong CTA for TARAhut AI Labs courses.')">&#128203; Click to copy: Cowork Chain Task 2 — Blog post using Task 1 research (send after Task 1 completes)</div><p style="color:var(--t3);font-size:.8rem">The blog post will be significantly better because it is grounded in the structured research from Task 1. This is why chains matter.</p></div>
+  <div class="emotional-hook"><p><strong>Without Cowork chains:</strong> You write a blog post based on what you vaguely remember about the market. It is generic and lacks data. <strong>With Cowork chains:</strong> Task 1 produces thorough research. Task 2 writes a data-driven blog grounded in that research. Task 3 creates social content from the blog. <strong>Three tasks, zero guesswork, professional output at every stage.</strong></p></div>
+  <div class="micro-win">You know how to monitor tasks, enhance outputs, and chain Cowork tasks. This is advanced-level Claude usage.</div>
+  <div class="progress-marker">&#128640; Advanced techniques mastered! Workshop time.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Workshop &rarr;</button></div>
 </div>
 
 <!-- S4 -->
-<div class="section" id="s3">
-  <div class="section-header">
-    <div class="section-tag">Section 4</div>
-    <h2>Cowork vs Converse: The Decision Framework</h2>
-    <p>Knowing when to delegate versus when to collaborate is what separates power users from everyone else.</p>
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67%! Design your own Cowork task.</div>
+  <div class="sec-head"><div class="over">Section 04</div><h2>Advanced <span class="gr">Workshop</span></h2><p>Design a Cowork task for your own business. Use the free-text area to brief Claude on a real task you need done this week.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 5: Your Cowork Task</h4></div><textarea class="demo-in" id="freePrompt" placeholder="COWORK TASK: [Task Name]\n\nI need you to [describe what you want done]. Work through this independently.\n\nMy Business: [Name, location, industry, size]\n\nDeliver:\n1. [First deliverable]\n2. [Second deliverable]\n3. [Third deliverable]\n\nFormat: [How you want the output structured]\nLanguage: [English/Hindi/Punjabi/bilingual]"></textarea><button class="btn btn-glow btn-sm" onclick="copyFreePrompt()" style="margin-bottom:.75rem">&#128203; Copy Task</button><div class="demo-out" id="freeOut">Your Cowork task will appear here. Paste it into Claude Desktop's Cowork mode.</div></div>
+  <div class="callout call-brand"><div class="call-ico">&#128640;</div><div class="call-body"><h4>Best Practices for Cowork Briefs</h4><p><strong>Be specific:</strong> "Research competitors" is vague. "Research 5 named competitors with pricing, strengths, weaknesses, and threat level" is actionable.<br><strong>Define deliverables:</strong> List exactly what you want produced (report, table, list, document).<br><strong>Set constraints:</strong> Word counts, formatting preferences, language, tone.<br><strong>Provide context:</strong> Business name, industry, location, target audience.<br><strong>State the end goal:</strong> "I will use this for a bank loan application" helps Claude optimise the output.</p></div></div>
+  <div class="micro-win">You can now design professional Cowork briefs that produce production-grade outputs.</div>
+  <div class="checklist">
+    <h4>&#9989; Day 10 Cowork Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand what Cowork is and when to use it vs regular chat</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Know that Cowork requires Claude Desktop app</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Set up a competitor research Cowork task</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Set up a content calendar generation task</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Set up a bilingual SOP manual task</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand monitoring, guidance, and post-completion enhancement</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand Cowork chains (Task 1 output feeds Task 2)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Tried the Cowork chain demo (research → blog)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Designed my own Cowork task using the workshop area</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Can explain the time savings (14-19 hours → 40 minutes)</label></div>
+    <div class="check-score" id="checkScore">Tap each item &rarr; progress score appears here</div>
   </div>
-
-  <div class="callout">
-    <strong>The Core Rule</strong>
-    Routine + batch + systematic = Cowork. Creative + nuanced + exploratory = Direct Conversation. Most people use direct conversation for everything — including tasks that Cowork would handle 5x faster.
-  </div>
-
-  <div class="decision-tree">
-    <div class="dt-row">
-      <div class="dt-icon">🔄</div>
-      <div class="dt-body">
-        <h4>Use Cowork: Batch & Systematic Tasks</h4>
-        <p>Tasks with a clear pattern, multiple similar items, or a defined process that repeats. You know what good looks like. Claude just needs to execute the pattern at scale.</p>
-        <div class="dt-tags">
-          <span class="tag">Process 20+ emails</span>
-          <span class="tag">Categorize documents</span>
-          <span class="tag">Generate content calendar</span>
-          <span class="tag">Analyze multiple inputs</span>
-          <span class="tag">Create report from data</span>
-        </div>
-      </div>
-    </div>
-    <div class="dt-row">
-      <div class="dt-icon">💬</div>
-      <div class="dt-body">
-        <h4>Use Direct Conversation: Creative & Nuanced Tasks</h4>
-        <p>Tasks requiring judgment, creativity, iteration, or where you need to co-develop the thinking with Claude. The back-and-forth IS the value.</p>
-        <div class="dt-tags">
-          <span class="tag">Writing strategy</span>
-          <span class="tag">Business decisions</span>
-          <span class="tag">Creative brainstorming</span>
-          <span class="tag">Problem solving</span>
-          <span class="tag">Learning new concepts</span>
-        </div>
-      </div>
-    </div>
-    <div class="dt-row">
-      <div class="dt-icon">⚡</div>
-      <div class="dt-body">
-        <h4>Hybrid: Brief First, Converse to Refine</h4>
-        <p>For complex deliverables: start with a Cowork brief for the structural work, then switch to conversation mode to refine, edit, and perfect specific sections.</p>
-        <div class="dt-tags">
-          <span class="tag">Long reports</span>
-          <span class="tag">Complete proposals</span>
-          <span class="tag">Course content</span>
-          <span class="tag">Website copy</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <h3 style="margin:24px 0 16px">Quick Decision Checklist</h3>
-  <div class="highlight-box">
-    <h3>Ask These Questions Before Starting</h3>
-    <div class="steps" style="margin-top:12px">
-      <div class="step"><div class="step-num">?</div><div class="step-body"><h4>Can I describe exactly what good output looks like?</h4><p>Yes → Cowork candidate. No → Start a conversation to figure it out first.</p></div></div>
-      <div class="step"><div class="step-num">?</div><div class="step-body"><h4>Are there 5+ similar items to process?</h4><p>Yes → Cowork is much faster. No → Direct conversation is probably fine.</p></div></div>
-      <div class="step"><div class="step-num">?</div><div class="step-body"><h4>Do I need to think through the approach with Claude?</h4><p>Yes → Direct conversation. No → Write the brief and delegate.</p></div></div>
-      <div class="step"><div class="step-num">?</div><div class="step-body"><h4>Will errors be hard to catch?</h4><p>Yes → Add more checkpoints to your Cowork brief. Or use conversation mode with careful review at each step.</p></div></div>
-    </div>
-  </div>
-
-  <div class="callout amber">
-    <strong>The Time Test</strong>
-    If setting up a Cowork brief takes 10 minutes but saves 2 hours — always Cowork. If it takes 10 minutes to write the brief and would only take 15 minutes in conversation — just converse. Cowork makes sense when scale or batch size makes it worthwhile.
-  </div>
+  <div class="identity-shift">You are no longer doing the work yourself. You are a manager who delegates to Claude and focuses on decisions. That is a 10x productivity shift.</div>
+  <p class="curiosity-hook">Next: 8 quiz questions to lock in Cowork mastery.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
 </div>
 
-<!-- QUIZ -->
-<div class="section" id="s4">
-  <div class="section-header">
-    <div class="section-tag">Section 5</div>
-    <h2>Knowledge Check</h2>
-    <p>Test your understanding of Claude Cowork.</p>
-  </div>
-  <div class="quiz-section" id="quizContainer"></div>
+<!-- S5 -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Quiz time!</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Test Your <span class="gr">Understanding</span></h2><p>8 from 18 questions. Instant feedback.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Cowork knowledge locked in.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
 </div>
 
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2>Day 10 <span class="gr">Complete!</span></h2><p>Takeaways, homework, and Day 11 preview.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>3 Key Takeaways</h4><p>&#9989; <strong>Cowork = background tasks</strong> &mdash; delegate complex work to Claude and focus on what only you can do<br>&#9989; <strong>Quality briefs = quality outputs</strong> &mdash; specific deliverables, context, and constraints produce the best results<br>&#9989; <strong>Cowork chains are the power move</strong> &mdash; research feeds writing feeds content creation, each task compounding on the last</p></div></div>
+  <div class="micro-action"><h4>Homework Before Day 11</h4><ul><li>Install <strong>Claude Desktop app</strong> if you have not already</li><li>Run your <strong>first real Cowork task</strong> from the demos</li><li>Try a <strong>2-task Cowork chain</strong> (research → write)</li><li>Design a <strong>Cowork brief for your own business</strong> using the workshop template</li><li>Share your Cowork output in the <strong>WhatsApp group</strong></li></ul></div>
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Day 11 &mdash; Claude for Coding</h4><p>Tomorrow you explore <strong>Claude's coding capabilities</strong> &mdash; even if you are not a programmer. Generate simple scripts, automate Excel tasks, create web pages, debug code, and understand how Claude assists developers. <strong>You do not need to code. You need to know what Claude can code FOR you.</strong></p></div></div>
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=Day%2010%20done!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a><a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a></div>
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem"><h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3><p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a> &middot; &#127760; <a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; &#128205; Kotkapura</p></div>
+  <div class="identity-shift">Day 10 complete. You have reached the halfway mark of the course. You are now managing Claude, not just using it. That is the difference between a user and a professional.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
 </div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Master Claude in 15 Days &middot; Day 10 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p></div>
 
 <script>
-(function(){const c=document.getElementById('particles');for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*8+4;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.12+0.04}`;c.appendChild(p)}})();
-
-function showSection(i){document.querySelectorAll('.section').forEach((s,idx)=>{s.classList.toggle('active',idx===i)});document.querySelectorAll('.nav-btn').forEach((b,idx)=>{b.classList.toggle('active',idx===i)});window.scrollTo({top:0,behavior:'smooth'});if(i===4&&!quizStarted)initQuiz();}
-
-const ALL_QUESTIONS=[
-  {q:"What is the primary difference between Cowork and a traditional Claude conversation?",o:["Cowork is faster at typing","Cowork executes multi-step tasks autonomously after a brief","Cowork only works for coding tasks","Cowork requires an internet connection"],a:1,f:"Cowork: Brief once → autonomous execution → review results. Traditional: Active back-and-forth participation throughout."},
-  {q:"What are the 4 components of a proper Cowork Brief?",o:["Goal, Timeline, Budget, Review","Goal, Input, Output, Feedback","Goal, Expected Output, Constraints, Checkpoints","Task, Role, Style, Length"],a:2,f:"The Cowork Brief Framework: Clear Goal + Expected Output + Constraints + Checkpoints. Skipping any one leads to misaligned results."},
-  {q:"The 'Uncertain Items Rule' means Claude should:",o:["Decide confidently for all items","Flag uncertain items with [REVIEW] rather than deciding","Skip uncertain items entirely","Ask for help on every item"],a:1,f:"The Uncertain Items Rule prevents Claude from making confident wrong decisions. Flag with [REVIEW] so you can make the call yourself."},
-  {q:"When is Cowork NOT the right choice?",o:["When you have 20+ emails to process","When you need to organize documents","When you need creative brainstorming with back-and-forth iteration","When creating a content calendar"],a:2,f:"Creative, nuanced, exploratory tasks benefit from direct conversation. The back-and-forth iteration IS the value in these cases."},
-  {q:"A 'checkpoint' in a Cowork brief is:",o:["The final output format","A point where Claude pauses to confirm before continuing","The beginning of the task","A summary at the end"],a:1,f:"Checkpoints are moments where Claude pauses and shows you its work before proceeding — preventing error accumulation in long tasks."},
-  {q:"Which task is BEST suited for Cowork mode?",o:["Brainstorming a new business idea","Deciding on your brand positioning","Categorizing and renaming 50 files by convention","Writing the opening paragraph of a speech"],a:2,f:"File categorization is systematic, repeatable, and benefits from batch processing — classic Cowork territory."},
-  {q:"The 'Time Test' for Cowork means:",o:["Cowork should always be faster than conversation","Cowork makes sense when the time saved exceeds the time to write the brief","You should time Claude's responses","Cowork tasks must complete in under 10 minutes"],a:1,f:"Cowork is worthwhile when scale makes it efficient: if the brief takes 10 min but saves 2 hours, always Cowork."},
-  {q:"In the email processing Cowork brief, what constraint prevents Claude from drafting unnecessary replies?",o:["Drafts are limited to 150 words","Never draft replies to Newsletter or Spam emails","Only draft replies to Client emails","All emails get a draft reply"],a:1,f:"The constraint 'Never draft replies to Newsletter or Spam' ensures Claude doesn't waste effort on emails that don't need responses."},
-  {q:"The 80/20 content rule in the content calendar means:",o:["80% promotional, 20% educational","80% educational/value content, 20% promotional","80% Instagram, 20% other platforms","80% English, 20% Hindi"],a:1,f:"The 80/20 social media rule: 80% value-giving content (educational, inspirational, behind-the-scenes), 20% promotional. This builds trust before selling."},
-  {q:"What should you do before writing a Cowork brief if you're unsure of the approach?",o:["Start with Cowork anyway","Skip the checkpoint step","Have a direct conversation with Claude first to figure out the approach","Write a very long brief"],a:2,f:"If you can't describe exactly what good output looks like, have a conversation first. Cowork works best when you have a clear vision of success."},
-  {q:"Which Cowork brief component describes the FORMAT of the output?",o:["Goal","Constraints","Expected Output","Checkpoints"],a:2,f:"Expected Output specifies exactly what you want back — table format, columns, document structure, naming conventions."},
-  {q:"The Hybrid approach (Brief + Converse) is best for:",o:["Simple single-step tasks","Complex deliverables needing structural work then refinement","Batch processing of identical items","Quick one-off questions"],a:1,f:"Hybrid: Use Cowork brief for structural/systematic work, then switch to conversation to refine, edit, and perfect specific sections."},
-  {q:"In the document analysis brief, what constraint prevents Claude from making things up?",o:["Keep it under 500 words","Flag uncertain conclusions","Base analysis only on information provided","Use bullet points"],a:2,f:"'Base analysis only on information I've provided' prevents Claude from fabricating competitor information it doesn't actually have."},
-  {q:"What is 'autonomous execution' in the context of Cowork?",o:["Claude working without electricity","Claude completing multiple steps without requiring prompting at each step","Claude working on your behalf online","Claude executing code on your computer"],a:1,f:"Autonomous execution means Claude handles the full task workflow — multiple steps — based on your initial brief, without needing a prompt for each step."},
-  {q:"Which factor does NOT determine whether to use Cowork vs Conversation?",o:["Whether there are 5+ similar items to process","Whether you need to think through the approach","Whether the task is creative and nuanced","Whether Claude has internet access"],a:3,f:"The Cowork vs Conversation decision is based on task type (batch/systematic vs creative/nuanced), not internet access."},
-  {q:"A good Cowork goal description is:",o:["Organize my documents","Create a folder structure with 5 categories and move each document to the correct category","Do something with my files","Help with documents"],a:1,f:"Specific, actionable, describes the exact end state. Vague goals like 'organize my documents' lead to misaligned outputs."},
-  {q:"For the content calendar Cowork brief, what approval step was included?",o:["Approve the full calendar before writing any content","Approve Week 1 before building Weeks 2-4","Approve each post individually","No approval steps were needed"],a:1,f:"Checkpoints in multi-part Cowork tasks prevent wasted effort: approve Week 1's approach before Claude generates 3 more weeks in the wrong direction."},
-  {q:"In Cowork, what happens if Claude encounters an item that doesn't fit any category?",o:["It skips the item","It should be specified in the Constraints section what to do","Claude automatically creates new categories","Claude stops the entire task"],a:1,f:"Constraints must cover edge cases: 'If a file doesn't fit a category, place it in Uncategorized and flag for review.' Leaving edge cases undefined leads to unpredictable outputs."},
-  {q:"The email processing Cowork output uses a table format because:",o:["Tables are Claude's default format","Tables make batch information scannable and actionable at a glance","Tables are faster to generate","Tables look more professional"],a:1,f:"For batch outputs, tables allow you to quickly scan all items, spot patterns, and take action — much faster than reading 20 separate paragraphs."},
-  {q:"Which is an example of a 'routine and batch' task appropriate for Cowork?",o:["Deciding your business strategy for next year","Writing a personalized speech for a specific event","Categorizing and drafting responses for 20 customer enquiries","Brainstorming your brand name"],a:2,f:"20 customer enquiries follows a pattern — categorize by type, draft standard response. Systematic, repeatable, scalable = perfect Cowork task."},
-  {q:"What does GOAL in the Cowork brief framework specify?",o:["When the task should be done","What you want accomplished — the specific end state","Who will use the output","How long the output should be"],a:1,f:"GOAL specifies the specific end state — what does success look like? Not how, not when, but what specifically needs to exist when done."},
-  {q:"Why is Cowork called 'autonomous background work'?",o:["It runs when your computer is sleeping","Claude executes multi-step tasks without your continuous involvement","It works on autopilot permanently","Claude accesses the internet automatically"],a:1,f:"Autonomous background work means you brief Claude, then Claude handles execution — you're freed to focus on other things and review results when done."},
-  {q:"What kind of output format should you specify in a Cowork brief for email analysis?",o:["Just ask for a summary","Specific table columns: From, Subject, Category, Action Required, Priority","A bullet list of email topics","A paragraph for each email"],a:1,f:"Specific column names in your expected output ensure Claude structures data exactly as you need it — ready to use without reformatting."},
-  {q:"The competitor analysis Cowork brief ends with asking for:",o:["A list of all competitors' prices","A recommended positioning statement for TARAhut AI Labs","The top-selling competitor's strategy","A copy of competitors' websites"],a:1,f:"The analysis culminates in a recommended positioning statement — turning data into actionable strategic direction for TARAhut AI Labs."},
-  {q:"Which metaphor best describes the relationship between a good Cowork brief and output quality?",o:["The brief is like a title — short and sweet","A good brief is like a job description — the more specific, the better the applicant's performance","The brief doesn't matter; Claude always figures it out","A good brief is like a recipe — follow it exactly"],a:1,f:"Like a job description, a specific, detailed Cowork brief helps Claude understand exactly what success looks like — resulting in far better outputs than vague instructions."}
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pctDone=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pctDone<=25?`${pctDone}%`:pctDone<=50?`${pctDone}% — Momentum`:pctDone<=75?`${pctDone}% — Almost`:pctDone<100?`${pctDone}% — Finish!`:`100% — Done!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore()}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked}/${total} — ${checked===total?'Ready for Day 11!':'Keep going!'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied!';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+function copyFreePrompt(){const txt=document.getElementById('freePrompt').value.trim();if(!txt){document.getElementById('freeOut').textContent='⚠️ Write your task first.';return;}document.getElementById('freeOut').textContent='✅ Copied! Paste into Claude Desktop Cowork.';navigator.clipboard.writeText(txt).catch(()=>{});}
+const qData=[
+  {q:"What is Claude Cowork?",o:["A co-working office space","Claude's background task mode on Desktop where Claude works independently while you do other things","A team collaboration feature","A video calling tool"],a:1,e:"Cowork is Claude's background task mode on the Desktop app. You set up a task, Claude works on it independently, and notifies you when done."},
+  {q:"Where is Cowork available?",o:["Only on claude.ai website","Only on mobile app","Claude Desktop app (macOS/Windows)","All platforms equally"],a:2,e:"Cowork is a feature of the Claude Desktop application. It is not available on the web version or mobile app."},
+  {q:"When should you use Cowork instead of regular chat?",o:["For simple questions","For tasks with 3+ steps or that would take 30+ minutes manually","Never — regular chat is always better","Only for coding"],a:1,e:"Cowork excels at multi-step tasks (research + analysis + writing) that take significant time. Simple questions are better handled in regular chat."},
+  {q:"What is a Cowork chain?",o:["A physical chain for your laptop","Multiple Cowork tasks where each task's output feeds into the next task","A chain of chat messages","A security feature"],a:1,e:"Cowork chains link tasks sequentially: Task 1 (research) output feeds Task 2 (writing), which feeds Task 3 (content creation). Each task compounds on the previous one."},
+  {q:"How much time can Cowork save on competitor research?",o:["No time savings","3 hours manually → ~10 minutes with Cowork","It takes longer","Exactly 1 minute saved"],a:1,e:"A comprehensive competitor analysis that takes 3 hours of manual research, comparison, and writing can be completed by Cowork in approximately 10 minutes."},
+  {q:"What should you do after a Cowork task completes?",o:["Accept everything without review","Review for accuracy, request refinements, ask for alternatives, then export","Delete the output","Start over from scratch"],a:1,e:"Post-completion: review accuracy, request refinements ('make the summary more concise'), ask for alternatives ('3 versions of the positioning statement'), then export to your documents."},
+  {q:"What makes a good Cowork brief?",o:["Just saying 'do the thing'","Specific deliverables, context (business details), constraints (format, language, word count), and stated end goal","The shorter the better","Only technical jargon"],a:1,e:"Quality briefs include specific deliverables, business context, formatting constraints, and the end goal (e.g., 'for a bank loan application'). Better briefs produce better outputs."},
+  {q:"Can you guide Claude during a running Cowork task?",o:["No — once started it cannot be changed","Yes — you can provide guidance, redirect focus, and approve mid-points","Only by restarting entirely","Only with the paid plan"],a:1,e:"You can monitor progress, provide guidance ('focus more on pricing'), redirect ('add a seasonal demand section'), and approve interim work during a running Cowork task."},
+  {q:"How much would a restaurant SOP manual cost from a consultant?",o:["₹500","₹25,000-50,000","₹10","Free"],a:1,e:"Restaurant consultants charge ₹25K-50K for comprehensive SOP manuals. Cowork generates bilingual versions in 10-15 minutes."},
+  {q:"What is the total time for 3 major tasks manually vs Cowork?",o:["Same amount of time","14-19 hours manually → 40 minutes with Cowork","Cowork takes longer","1 hour vs 30 minutes"],a:1,e:"Competitor research (3 hrs) + content calendar (8 hrs) + SOP manual (3-8 hrs) = 14-19 hours. With Cowork: 10 + 15 + 15 = 40 minutes total."},
+  {q:"What percentage of the output does your review and refinement contribute?",o:["0% — Claude does everything perfectly","The first output is 80% done; your 20% review makes it 100%","50/50 equal split","100% — Claude output is useless"],a:1,e:"Claude's Cowork output is typically 80% of the way there. Your review, refinements, and domain expertise add the crucial 20% that makes it production-ready."},
+  {q:"Why do Cowork chains produce better content than single prompts?",o:["They do not — single prompts are better","Each task is grounded in the thorough research from the previous task, not guesswork","Chains are just faster","Chains use a different AI model"],a:1,e:"In a chain, the blog post is grounded in actual research (Task 1), and social content is extracted from the finished blog (Task 2). Each step compounds quality."},
+  {q:"What is the minimum information a Cowork brief should include?",o:["Just the topic name","Business context, specific deliverables, format preferences, and language requirements","Only the deadline","Just 'write something good'"],a:1,e:"Minimum: what your business is, what you want produced (specific deliverables), how you want it formatted, and what language. Without these, output is generic."},
+  {q:"Which Cowork task is best for weekly recurring use?",o:["SOP manual (one-time task)","Competitor monitoring and content calendar generation (repeat monthly/weekly)","Restaurant setup (one-time)","None — Cowork is one-time only"],a:1,e:"Competitor monitoring and content calendars are ideal recurring Cowork tasks. SOPs and manuals are typically one-time creations."},
+  {q:"What is the rule of thumb for choosing Cowork over chat?",o:["Always use Cowork","If the task has 3+ steps or takes 30+ minutes manually, use Cowork","Never use Cowork","Only use for English tasks"],a:1,e:"Tasks with multiple steps or significant manual time investment benefit most from Cowork's background processing capability."},
+  {q:"How does Cowork handle bilingual tasks?",o:["It cannot do bilingual work","Claude generates both language versions simultaneously in a single task","You must run separate tasks for each language","Only English is supported"],a:1,e:"Cowork handles bilingual tasks in a single run — like the SOP manual that generates English and Hindi versions together, saving you from running separate tasks."},
+  {q:"What should the 'end goal' in a brief communicate?",o:["Nothing — it is not important","How the output will be used (e.g., 'for a bank loan' or 'for a client presentation') so Claude optimises accordingly","Your personal goals in life","The history of your company"],a:1,e:"Stating the end goal ('for a MUDRA loan application') helps Claude optimise tone, formality, detail level, and structure for that specific use case."},
+  {q:"What differentiates Cowork from just sending a long prompt in chat?",o:["Nothing — they are identical","Cowork runs in the background (you can do other work), handles multi-step tasks better, and supports mid-task guidance","Chat is better for long tasks","Cowork is only for coding"],a:1,e:"Cowork processes tasks in the background while you work elsewhere, excels at multi-step workflows, and allows mid-task guidance — chat requires you to wait for each response."}
 ];
-
-let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
-function initQuiz(){quizStarted=true;currentQuestions=shuffle([...ALL_QUESTIONS]).slice(0,8);currentQ=0;score=0;renderQuiz();}
-function renderQuiz(){
-  const c=document.getElementById('quizContainer');
-  if(currentQ>=currentQuestions.length){showScore(c);return;}
-  answered=false;
-  const q=currentQuestions[currentQ];
-  c.innerHTML=`<div class="quiz-header"><h3>Day 10 Quiz</h3><div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div></div><div class="quiz-q"><div class="q-num">Q${currentQ+1}</div><div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb"></div></div><div class="quiz-controls"><div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div><button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next Question →</button></div>`;
-}
-function selectAnswer(i){
-  if(answered)return;answered=true;
-  const q=currentQuestions[currentQ];
-  const opts=document.querySelectorAll('.option');
-  opts.forEach(o=>o.classList.add('disabled'));
-  opts[i].classList.add(i===q.a?'correct':'wrong');
-  if(i!==q.a)opts[q.a].classList.add('correct');
-  if(i===q.a)score++;
-  const fb=document.getElementById('qfb');
-  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
-  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
-  document.getElementById('nextBtn').style.display='block';
-}
-function nextQuestion(){currentQ++;renderQuiz();}
-function showScore(c){
-  const pct=Math.round((score/currentQuestions.length)*100);
-  const msg=pct>=80?'Excellent!':pct>=60?'Good work!':'Review and retry!';
-  c.innerHTML=`<div class="quiz-score show"><div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div><div class="score-msg">${msg}</div><div class="score-sub">${pct}% — ${score} of ${currentQuestions.length} correct</div><div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-secondary" onclick="showSection(0)">Review Content</button></div></div>`;
-}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=activeQuiz.length){const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:'claude-10',score:sc,total:activeQuiz.length})})}catch(e){}let tier,tierColor,msg;if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='Cowork mastered!';}else if(pct>=50){tier='Good!';tierColor='var(--c1)';msg='Review chains section.';}else{tier='Practice!';tierColor='var(--c4)';msg='Try the demos.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}% — ${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=activeQuiz[cq];const ltr=['A','B','C','D'];let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ()}
+document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
+<div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
 </body>
 </html>

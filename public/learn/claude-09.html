@@ -3,593 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 9: Content Creation with Claude | TARAhut AI Labs</title>
+<title>Day 9: Content Creation — Master Claude in 15 Days · TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#059669;--green-d:#047857;--green-l:#d1fae5;--green-f:#ecfdf5;
-  --accent:#f59e0b;--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;
-  --text:#f1f5f9;--muted:#94a3b8;--border:#334155;--card:#1e293b;
-  --radius:12px;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
-
-/* PARTICLES */
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.particle{position:absolute;border-radius:50%;background:var(--green);opacity:0.15;animation:float linear infinite}
-@keyframes float{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
-
-/* COPY PROTECTION */
-body{-webkit-user-select:none;user-select:none}
-
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px}
-.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
-.nav-inner::-webkit-scrollbar{display:none}
-.nav-brand{font-weight:800;color:var(--green);font-size:0.85em;white-space:nowrap;margin-right:12px}
-.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78em;cursor:pointer;white-space:nowrap;transition:.2s}
-.nav-btn:hover,.nav-btn.active{background:var(--green);border-color:var(--green);color:#fff}
-
-/* HERO */
-.hero{background:linear-gradient(135deg,#064e3b 0%,#0f172a 60%);padding:60px 24px 50px;text-align:center;position:relative;z-index:1}
-.hero-badge{display:inline-block;background:var(--green);color:#fff;font-size:0.75em;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.05em}
-.hero h1{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;line-height:1.2;margin-bottom:12px}
-.hero h1 span{color:var(--green)}
-.hero p{color:var(--muted);font-size:1.05em;max-width:580px;margin:0 auto 24px}
-.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:0.82em;color:var(--muted)}
-.hero-meta span{background:var(--bg2);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
-
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
-
-/* SECTION */
-.section{display:none;animation:fadeIn .4s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.section-header{margin-bottom:28px}
-.section-tag{font-size:0.75em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.section-header h2{font-size:clamp(1.5em,3vw,2em);font-weight:800;line-height:1.25}
-.section-header p{color:var(--muted);margin-top:8px;font-size:1em}
-
-/* CARDS */
-.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:24px 0}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s}
-.card:hover{border-color:var(--green);transform:translateY(-2px)}
-.card-icon{font-size:1.8em;margin-bottom:10px}
-.card h3{font-size:1em;font-weight:700;color:var(--text);margin-bottom:6px}
-.card p{font-size:0.875em;color:var(--muted)}
-
-/* CALLOUT */
-.callout{background:rgba(5,150,105,0.1);border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin:20px 0}
-.callout.amber{background:rgba(245,158,11,0.1);border-color:var(--accent)}
-.callout strong{color:var(--green);display:block;margin-bottom:4px}
-.callout.amber strong{color:var(--accent)}
-
-/* CODE BOX */
-.code-box{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;font-family:'Courier New',monospace;font-size:0.82em;color:#e6edf3;line-height:1.6;position:relative;overflow:hidden}
-.code-label{font-size:0.7em;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Segoe UI',sans-serif}
-.code-box span.hl{color:#79c0ff}
-.code-box span.gr{color:#3fb950}
-.code-box span.am{color:#e3b341}
-.copy-btn{position:absolute;top:12px;right:12px;background:var(--bg3);border:none;color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.72em;cursor:pointer;transition:.2s}
-.copy-btn:hover{background:var(--green);color:#fff}
-
-/* TABLE */
-.table-wrap{overflow-x:auto;margin:20px 0}
-table{width:100%;border-collapse:collapse;font-size:0.875em}
-th{background:var(--green);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
-td{padding:10px 14px;border-bottom:1px solid var(--border)}
-tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
-
-/* STEP LIST */
-.steps{counter-reset:step;margin:20px 0}
-.step{display:flex;gap:16px;margin-bottom:16px}
-.step-num{flex-shrink:0;width:32px;height:32px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#fff}
-.step-body h4{font-weight:700;margin-bottom:4px}
-.step-body p{color:var(--muted);font-size:0.875em}
-
-/* CRISP */
-.crisp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:24px 0}
-.crisp-card{border-radius:var(--radius);padding:16px 12px;text-align:center;border:1.5px solid}
-.crisp-letter{font-size:2em;font-weight:900;line-height:1}
-.crisp-word{font-weight:700;font-size:0.85em;margin-top:4px}
-.crisp-desc{font-size:0.75em;margin-top:4px;opacity:.7;line-height:1.4}
-.cc{background:#1c1700;color:#d97706;border-color:#78350f}.cr{background:#0a0f1c;color:#60a5fa;border-color:#1e3a8a}
-.ci{background:#120d1c;color:#a78bfa;border-color:#4c1d95}.cs{background:#1c0a0f;color:#fb7185;border-color:#881337}
-.cp{background:#0a1c14;color:var(--green);border-color:var(--green-d)}
-
-/* QUIZ */
-.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:16px}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.quiz-header h3{font-size:1.3em;font-weight:800}
-.quiz-progress{font-size:0.82em;color:var(--muted)}
-.quiz-q{margin-bottom:28px;animation:fadeIn .3s ease}
-.quiz-q .q-text{font-weight:600;margin-bottom:14px;font-size:1em}
-.quiz-q .q-num{font-size:0.75em;color:var(--green);font-weight:700;margin-bottom:6px}
-.options{display:flex;flex-direction:column;gap:10px}
-.option{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:.2s;font-size:0.9em;text-align:left}
-.option:hover:not(.disabled){border-color:var(--green);background:rgba(5,150,105,0.1)}
-.option.correct{background:rgba(5,150,105,0.2);border-color:var(--green);color:#fff}
-.option.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#fff}
-.option.disabled{cursor:default}
-.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.875em;display:none}
-.quiz-feedback.show{display:block}
-.quiz-feedback.correct-fb{background:rgba(5,150,105,0.15);border:1px solid var(--green);color:var(--green)}
-.quiz-feedback.wrong-fb{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
-.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px}
-.btn{padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;transition:.2s;font-size:0.9em;border:none}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:var(--green-d)}
-.btn-secondary{background:var(--bg3);color:var(--text)}
-.btn-secondary:hover{background:var(--border)}
-.quiz-score{text-align:center;padding:28px;display:none}
-.quiz-score.show{display:block}
-.score-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green) var(--pct),var(--bg3) 0);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4em;font-weight:900}
-.score-msg{font-size:1.1em;font-weight:700;margin-bottom:8px}
-.score-sub{color:var(--muted);font-size:0.9em}
-
-/* TAG */
-.tag{display:inline-block;background:rgba(5,150,105,0.15);color:var(--green);font-size:0.75em;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(5,150,105,0.3);margin:2px}
-.tag.amber{background:rgba(245,158,11,0.15);color:var(--accent);border-color:rgba(245,158,11,0.3)}
-
-/* COMPARISON */
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
-.compare-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
-.compare-box.good{border-color:var(--green)}
-.compare-box.bad{border-color:#ef4444}
-.compare-label{font-size:0.75em;font-weight:700;margin-bottom:10px}
-.compare-box.good .compare-label{color:var(--green)}
-.compare-box.bad .compare-label{color:#ef4444}
-
-/* HIGHLIGHT BOX */
-.highlight-box{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(5,150,105,0.05));border:1px solid rgba(5,150,105,0.3);border-radius:var(--radius);padding:22px;margin:20px 0}
-.highlight-box h3{color:var(--green);margin-bottom:8px}
-
-/* LANG CARD */
-.lang-demo{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:12px 0}
-.lang-label{font-size:0.72em;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-.lang-text{font-size:0.9em;line-height:1.7}
-
-@media(max-width:600px){.crisp-grid{grid-template-columns:repeat(2,1fr)}.compare{grid-template-columns:1fr}}
+:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--g2:linear-gradient(135deg,var(--c3),var(--c4));--g3:linear-gradient(135deg,var(--c5),var(--c1));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap;letter-spacing:.3px}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(0,240,255,.06)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action h4::before{content:'🎯  '}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r);letter-spacing:.3px}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}.micro-win::before{content:'✓ ';color:var(--brand)}.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}}body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media print{body{display:none !important}body::after{content:"Printing is disabled.";display:block;font-size:2rem;padding:4rem;text-align:center;color:#333}}
 </style>
 </head>
-<body oncontextmenu="return false">
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas><div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<section class="hero" id="heroSection"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 09 &middot; Master Claude in 15 Days &middot; 2026</div>
+  <h1>Content <span class="gr">Creation</span></h1>
+  <div class="hero-brand">Master Claude in 15 Days &mdash; TARAhut AI Labs</div>
+  <p>Build a complete content creation system: blog pipelines, trilingual social media, video scripts, newsletters, and a content calendar. Become a one-person content team.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Day 9 &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s5')">&#9889; Jump to Quiz</button></div>
+</section>
+<nav class="nav" id="mainNav"><div class="nav-inner"><span class="nav-brand">Master Claude</span><button class="nav-btn on" data-s="s1"><span class="nn">01</span>Blog Pipeline</button><button class="nav-btn" data-s="s2"><span class="nn">02</span>Trilingual Social Media</button><button class="nav-btn" data-s="s3"><span class="nn">03</span>Video Scripts &amp; Newsletters</button><button class="nav-btn" data-s="s4"><span class="nn">04</span>Your Content Workshop</button><button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button><button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button></div></nav>
 
-<div id="particles"></div>
-
-<nav>
-  <div class="nav-inner">
-    <div class="nav-brand">TARAhut AI Labs</div>
-    <button class="nav-btn active" onclick="showSection(0)">1. Claude as Content Machine</button>
-    <button class="nav-btn" onclick="showSection(1)">2. Blog & Articles</button>
-    <button class="nav-btn" onclick="showSection(2)">3. Social Media</button>
-    <button class="nav-btn" onclick="showSection(3)">4. Multilingual</button>
-    <button class="nav-btn" onclick="showSection(4)">5. Quiz</button>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="hero-badge">DAY 9 — INTERMEDIATE</div>
-  <h1>Content Creation<br>with <span>Claude</span></h1>
-  <p>From blank page to published content — blogs, social media, multilingual posts, and ad copy. Master Claude as your content engine.</p>
-  <div class="hero-meta">
-    <span>5 Sections</span>
-    <span>25 Quiz Questions</span>
-    <span>~90 min</span>
-    <span>tarahutailabs.com</span>
-  </div>
+<!-- S1: BLOG PIPELINE -->
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01</div><h2>The 5-Step <span class="gr">Blog Pipeline</span></h2><p>Most people ask Claude to "write a blog post." That produces mediocre content. The 5-step pipeline produces professional, SEO-optimised articles that rank and convert.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The 5 Steps: Research → Outline → Draft → Edit → SEO</h4><p>Each step is a separate prompt in the SAME conversation. Step 1 researches the topic deeply. Step 2 creates a detailed outline. Step 3 writes the first draft based on the outline. Step 4 edits for quality (tone, readability, flow). Step 5 optimises for SEO (meta title, description, keywords, headers). <strong>The result is 10x better than a single "write me a blog post" prompt.</strong></p></div></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 1: Complete Blog Pipeline</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Send these 5 prompts sequentially in one conversation. Wait for each response before sending the next:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 1 — RESEARCH:\nResearch the topic \"How Small Businesses in Punjab Can Use AI in 2026\" for a blog post. Find:\n- 5 specific AI tools relevant to Punjab small businesses (with pricing)\n- 3 real success stories of Indian small businesses using AI\n- Current AI adoption statistics for India/Punjab\n- Common fears and misconceptions about AI among small business owners\n- 5 practical use cases: accounting, customer service, marketing, inventory, hiring\n\nTarget audience: Business owners in Punjab aged 30-55, semi-technical, Hindi/English bilingual.')">&#128203; Click to copy: Step 1 — Research (topic analysis, stats, use cases for Punjab AI blog)</div>
+    <div style="padding:1rem;background:rgba(168,85,247,.03);border:1px dashed rgba(168,85,247,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c2);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 2 — OUTLINE:\nBased on your research, create a detailed blog outline with:\n- Compelling headline (5 options — pick the most clickable one)\n- Hook paragraph concept (emotional opening that resonates with Punjab business owners)\n- 6-8 main sections with subpoints for each\n- Data points to include in each section\n- Call-to-action concept at the end\n- Estimated word count: 1500-2000 words\n- Reading time: 8-10 minutes')">&#128203; Click to copy: Step 2 — Outline (headline options, section structure, data placement)</div>
+    <div style="padding:1rem;background:rgba(52,211,153,.03);border:1px dashed rgba(52,211,153,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c5);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 3 — DRAFT:\nWrite the full blog post based on the outline above. Guidelines:\n- Conversational, warm tone (like talking to a friend over chai)\n- Mix of English and Hindi terms where natural\n- Short paragraphs (3-4 sentences max)\n- Include specific examples from Punjab businesses\n- Use bullet points and numbered lists for scanability\n- Add a personal anecdote or relatable story in the opening\n- 1500-2000 words')">&#128203; Click to copy: Step 3 — Draft (full article with conversational tone, local examples)</div>
+    <div style="padding:1rem;background:rgba(251,191,36,.03);border:1px dashed rgba(251,191,36,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c4);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 4 — EDIT:\nReview the draft above as a professional editor. Fix:\n1. Remove any AI-sounding phrases (\"in the ever-evolving landscape\", \"it is important to note\", \"delve into\")\n2. Strengthen the opening hook — make it impossible to stop reading\n3. Check flow between sections — add transitions where needed\n4. Verify all claims have supporting data or examples\n5. Tighten any sentences that are too wordy\n6. Ensure the CTA is clear and compelling\n7. Check reading level — aim for 8th grade readability\n\nShow me the edited version with major changes highlighted.')">&#128203; Click to copy: Step 4 — Edit (remove AI slop, tighten writing, improve hooks)</div>
+    <div style="padding:1rem;background:rgba(255,61,139,.03);border:1px dashed rgba(255,61,139,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c3);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'STEP 5 — SEO OPTIMISATION:\nOptimise the blog post for search engines:\n1. SEO title (under 60 characters, includes primary keyword)\n2. Meta description (under 160 characters, compelling click-bait)\n3. Primary keyword + 5 secondary keywords\n4. Ensure H2/H3 headers contain keywords naturally\n5. Suggest 3 internal link opportunities\n6. Suggest 5 external authority links to add\n7. Alt text suggestions for 3 images that should accompany this post\n8. Social media snippet for sharing (Twitter-length + LinkedIn-length)')">&#128203; Click to copy: Step 5 — SEO (meta tags, keywords, headers, social snippets)</div>
+    <p style="color:var(--t3);font-size:.8rem">5 prompts, 1 conversation, 1 publish-ready blog post with SEO. What takes content agencies 2-3 days takes you 20 minutes.</p></div>
+  <div class="micro-win">You now have a complete blog production pipeline. This is how professional content teams work — not single prompts.</div>
+  <div class="emotional-hook"><p><strong>A content agency in Chandigarh charges &#8377;5,000-15,000 per SEO-optimised blog post.</strong> With this pipeline, you produce the same quality in 20 minutes. If you publish 4 posts per month, you just saved &#8377;20,000-60,000. <strong>Over a year, that is &#8377;2.4-7.2 lakhs in content costs eliminated.</strong></p></div>
+  <div class="identity-shift">You are not someone who asks AI to write. You are a content producer who runs a professional pipeline.</div>
+  <p class="curiosity-hook">Next: Create the same message in English, Hindi, and Punjabi — native quality in all three.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Trilingual Social &rarr;</button></div>
 </div>
 
-<div class="container">
-
-<!-- SECTION 1 -->
-<div class="section active" id="s0">
-  <div class="section-header">
-    <div class="section-tag">Section 1</div>
-    <h2>Claude as Content Machine</h2>
-    <p>Why Claude's writing quality is genuinely premium — and how to unlock it for every content format.</p>
-  </div>
-
-  <div class="callout">
-    <strong>The Content Reality</strong>
-    Most people use Claude like a search engine — type a question, get an answer. But Claude is a full-stack content studio. Blog posts, social media threads, ad copy, video scripts, email sequences — Claude does all of it, at professional quality, in minutes.
-  </div>
-
-  <div class="grid-2">
-    <div class="card"><div class="card-icon">📝</div><h3>Blog Posts & Articles</h3><p>Research-backed, SEO-ready, 1000–3000 word articles with structure, examples, and authority.</p></div>
-    <div class="card"><div class="card-icon">📱</div><h3>Social Media Content</h3><p>Instagram captions, LinkedIn posts, Twitter threads, YouTube descriptions — all platform-optimized.</p></div>
-    <div class="card"><div class="card-icon">🎬</div><h3>Video Scripts</h3><p>YouTube intros, Reels scripts, explainer videos — Claude understands pacing and engagement hooks.</p></div>
-    <div class="card"><div class="card-icon">📣</div><h3>Ad Copy</h3><p>Facebook ads, Google ads, landing page copy, email subject lines — persuasive and conversion-focused.</p></div>
-    <div class="card"><div class="card-icon">🌐</div><h3>Multilingual Content</h3><p>English → Hindi → Punjabi with cultural adaptation, not just literal translation.</p></div>
-    <div class="card"><div class="card-icon">📧</div><h3>Email Sequences</h3><p>Welcome emails, nurture sequences, newsletters — maintained brand voice across every touchpoint.</p></div>
-  </div>
-
-  <h3 style="margin:28px 0 12px">Why Claude's Writing is Premium</h3>
-  <div class="steps">
-    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Context Understanding</h4><p>Claude doesn't just follow instructions — it understands the purpose behind your content and writes accordingly.</p></div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Tone Adaptability</h4><p>Switch from formal white paper to casual Instagram caption in the same conversation. Claude adapts instantly.</p></div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Structural Intelligence</h4><p>Claude knows that a blog post needs an intro hook, that a LinkedIn post needs a pattern interrupt, that ad copy needs a CTA.</p></div></div>
-    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Iteration Speed</h4><p>Don't like the first draft? Say "make it shorter" or "more emotional" and get a new version in seconds.</p></div></div>
-    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Brand Voice Memory</h4><p>Using Claude Projects, you can upload your brand guidelines and Claude will maintain your voice consistently.</p></div></div>
-  </div>
-
-  <div class="callout amber">
-    <strong>The CRISP Content Formula</strong>
-    Every great content prompt has all 5 CRISP elements. Missing even one degrades the output dramatically.
-  </div>
-  <div class="crisp-grid">
-    <div class="crisp-card cc"><div class="crisp-letter">C</div><div class="crisp-word">Context</div><div class="crisp-desc">Who's the audience? What platform? What's the goal?</div></div>
-    <div class="crisp-card cr"><div class="crisp-letter">R</div><div class="crisp-word">Role</div><div class="crisp-desc">Expert content writer, social media strategist, copywriter</div></div>
-    <div class="crisp-card ci"><div class="crisp-letter">I</div><div class="crisp-word">Instructions</div><div class="crisp-desc">Format, length, tone, key points to include</div></div>
-    <div class="crisp-card cs"><div class="crisp-letter">S</div><div class="crisp-word">Specifics</div><div class="crisp-desc">Topic, keywords, examples, brand voice guidelines</div></div>
-    <div class="crisp-card cp"><div class="crisp-letter">P</div><div class="crisp-word">Purpose</div><div class="crisp-desc">Educate, engage, convert, build authority, drive traffic</div></div>
-  </div>
-
-  <div class="highlight-box">
-    <h3>Your Content Workflow with Claude</h3>
-    <div class="steps" style="margin-top:12px">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Brief Claude</h4><p>Give it the full CRISP context — audience, platform, topic, tone, goal.</p></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Review & Refine</h4><p>Get the first draft, then iterate with specific feedback.</p></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Repurpose</h4><p>Turn one blog post into 5 social posts, 3 email teasers, and 1 video script.</p></div></div>
-    </div>
-  </div>
+<!-- S2: TRILINGUAL SOCIAL -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 done! Blog pipeline mastered. Now trilingual content.</div>
+  <div class="sec-head"><div class="over">Section 02</div><h2>Trilingual <span class="gr">Social Media</span></h2><p>One message, three languages, native quality in each. This is the superpower that lets Punjab businesses reach every audience segment.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 2: Trilingual Social Post</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate the same marketing message as native-quality social media content in English, Hindi, and Punjabi:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a social media post for TARAhut AI Labs announcing a new \"Master Claude in 15 Days\" course batch starting May 1, 2026. Price: ₹5,000. Location: Online + Offline in Kotkapura.\n\nGenerate THREE versions — each should feel NATIVE to that language, not translated:\n\n1. ENGLISH (Instagram/LinkedIn):\n- Professional, aspirational tone\n- Include 2-3 relevant hashtags\n- CTA: WhatsApp link to register\n- 150-200 words\n\n2. HINDI (Facebook/Instagram):\n- Warm, conversational tone (like talking to a younger brother/sister)\n- Use natural Hindi — not formal textbook Hindi\n- Include emojis that resonate with Indian audience\n- CTA with WhatsApp number\n- 150-200 words in Devanagari script\n\n3. ਪੰਜਾਬੀ (WhatsApp/Facebook):\n- Casual, desi, relatable tone\n- Use Punjabi idioms or sayings where natural\n- Feel like a WhatsApp forward from a trusted friend\n- CTA with WhatsApp number\n- 100-150 words in Gurmukhi script\n\nIMPORTANT: These should NOT be translations of each other. Each should feel like it was originally written in that language for that platform and audience.')">&#128203; Click to copy: Trilingual social post (English + Hindi + Punjabi) for AI course announcement — native quality, not translations</div><p style="color:var(--t3);font-size:.8rem">The key instruction: "NOT translations of each other." Each version should feel originally written in that language. Claude handles this brilliantly.</p></div>
+  <div class="callout call-3"><div class="call-ico">&#128200;</div><div class="call-body"><h4>Why Native &gt; Translated</h4><p><strong>Translated content feels off.</strong> Direct Hindi translation of English marketing sounds like a government notice. Direct Punjabi translation sounds robotic. <strong>Native content resonates.</strong> English for LinkedIn professionals. Hindi for Facebook's pan-India audience. Punjabi for WhatsApp groups where trust is personal. Each platform, each language, each audience needs its own voice.</p></div></div>
+  <div class="micro-action"><h4>The Trilingual Content Strategy</h4><ul><li><strong>English:</strong> LinkedIn, Instagram (urban/professional audience), blog, website</li><li><strong>Hindi:</strong> Facebook, Instagram Reels (pan-India reach), YouTube descriptions</li><li><strong>Punjabi:</strong> WhatsApp groups, Facebook local groups, personal messages, voice notes scripts</li></ul></div>
+  <div class="micro-win">You can now create native-quality content in 3 languages from a single prompt. That is a 3x content multiplier.</div>
+  <div class="emotional-hook"><p><strong>A social media manager in Chandigarh</strong> posts only in English. Reaches 20% of the potential audience. <strong>You post in 3 languages.</strong> Your English post reaches professionals. Your Hindi post reaches pan-India users. Your Punjabi WhatsApp message reaches the uncle who will actually enrol. <strong>Same effort, 3x the reach.</strong></p></div>
+  <div class="identity-shift">You are not managing one social media presence. You are running a trilingual content operation.</div>
+  <p class="curiosity-hook">Next: YouTube scripts and email newsletters.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Scripts &amp; Newsletters &rarr;</button></div>
 </div>
 
-<!-- SECTION 2 -->
-<div class="section" id="s1">
-  <div class="section-header">
-    <div class="section-tag">Section 2</div>
-    <h2>Blog & Article Writing</h2>
-    <p>The iterative 4-step process: Outline → Draft → Edit → SEO Optimize. Never stare at a blank page again.</p>
-  </div>
-
-  <div class="callout">
-    <strong>The Iterative Writing Process</strong>
-    Professional writers don't write in one shot. They outline, draft, refine, optimize. Claude makes each step faster and better. The key: treat each step as a separate conversation turn.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Step 1: Generate a Smart Outline</h3>
-  <div class="code-box">
-    <div class="code-label">CRISP Prompt — Blog Outline</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">Context:</span> I run a small business training institute in Kotkapura, Punjab. My readers are local entrepreneurs aged 25-45.<br>
-    <span class="gr">Role:</span> Act as an expert content strategist with deep expertise in small business and digital marketing.<br>
-    <span class="am">Instructions:</span> Create a detailed blog post outline for a 1200-word article. Include: compelling H1 title, 4-5 H2 sections with bullet points of what to cover, intro hook idea, and conclusion CTA.<br>
-    <span class="hl">Specifics:</span> Topic: "5 Ways Indian Small Businesses Can Use AI to Save 10 Hours a Week." Target keywords: AI for small business, AI productivity India.<br>
-    <span class="gr">Purpose:</span> Build authority and drive enquiries for our AI training course.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Step 2: Write the Full Draft</h3>
-  <div class="code-box">
-    <div class="code-label">CRISP Prompt — Full Draft</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">Now write the full article based on this outline.</span><br><br>
-    <span class="am">Tone:</span> Warm, expert, conversational — like a knowledgeable friend explaining clearly.<br>
-    <span class="hl">Include:</span> Real examples from Indian businesses, 2-3 relatable scenarios, a strong opening hook, and a closing paragraph that invites readers to join our course.<br>
-    <span class="gr">Length:</span> 1200-1400 words. Use subheadings, short paragraphs, occasional bold for key points.<br>
-    <span class="am">Avoid:</span> Jargon, overly technical language, Western-only examples.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Step 3: Edit & Strengthen</h3>
-  <div class="code-box">
-    <div class="code-label">CRISP Prompt — Edit Pass</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    Review this article draft for: <br>
-    1. Opening hook strength — is it compelling enough to keep reading?<br>
-    2. Flow between sections — does each section transition naturally?<br>
-    3. Weak sentences — flag any that are vague or could be cut.<br>
-    4. Examples — are they relatable to an Indian small business audience?<br>
-    5. CTA — does the closing call-to-action feel natural, not pushy?<br><br>
-    Provide specific rewrites for any weak areas, not just commentary.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Step 4: SEO Optimization</h3>
-  <div class="code-box">
-    <div class="code-label">CRISP Prompt — SEO Pass</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    Optimize this article for SEO. Provide:<br>
-    1. SEO title (under 60 characters, includes primary keyword)<br>
-    2. Meta description (150-160 characters, includes keyword, drives clicks)<br>
-    3. Suggested URL slug<br>
-    4. 3-4 related long-tail keywords to naturally weave in<br>
-    5. 1-2 suggested internal link anchor text ideas<br>
-    6. Alt text for 2 suggested images that would pair well with this post<br><br>
-    <span class="am">Primary keyword:</span> AI for small business India<br>
-    <span class="hl">Secondary keyword:</span> AI productivity tools 2025
-  </div>
-
-  <div class="callout amber">
-    <strong>Power Move: Repurpose in One Prompt</strong>
-    After the article is done, say: "Now create: (1) a LinkedIn post summarizing the key insight, (2) 3 Instagram caption options, (3) an email subject line for sending this to my newsletter." One article becomes a full week of content.
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <tr><th>Blog Element</th><th>What to Ask Claude</th><th>Quality Booster</th></tr>
-      <tr><td>Opening Hook</td><td>"Write 5 different opening hooks for this topic"</td><td>Test which grabs you most</td></tr>
-      <tr><td>H2 Headings</td><td>"Rewrite these headings to be more compelling"</td><td>Add numbers, power words</td></tr>
-      <tr><td>Examples</td><td>"Give me 3 Indian business examples for this point"</td><td>Specify city/industry for local SEO</td></tr>
-      <tr><td>CTA</td><td>"Write 3 different CTAs — soft, medium, strong"</td><td>Test different urgency levels</td></tr>
-      <tr><td>Title</td><td>"Generate 10 title options for this article"</td><td>Use CoSchedule Headline Analyzer</td></tr>
-    </table>
-  </div>
+<!-- S3: SCRIPTS & NEWSLETTERS -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128293; 50%! Video scripts and newsletter time.</div>
+  <div class="sec-head"><div class="over">Section 03</div><h2>Video Scripts &amp; <span class="gr">Newsletters</span></h2><p>Two more content formats: YouTube explainer scripts that hook viewers in 3 seconds, and email newsletters that get opened and read.</p></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 3: 60-Second YouTube Script</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate a tight 60-second explainer video script with hooks, visuals, and CTA:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a 60-second YouTube Shorts/Reels explainer script.\n\nTopic: \"3 AI Tools Every Punjab Business Owner Should Use in 2026\"\n\nFormat:\n- HOOK (0-3 seconds): Pattern interrupt — a bold statement or question that stops scrolling\n- INTRO (3-8 seconds): Quick context — who this is for and why they should care\n- TOOL 1 (8-20 seconds): Name, what it does, one specific example for Punjab business\n- TOOL 2 (20-35 seconds): Name, what it does, one specific example\n- TOOL 3 (35-50 seconds): Name, what it does, one specific example\n- CTA (50-60 seconds): Clear next step + subscribe prompt\n\nFor each section include:\n- Exact dialogue (what to say)\n- [VISUAL] notes for what to show on screen\n- Timing in seconds\n- Energy level (HIGH/MEDIUM/CALM)\n\nTone: Energetic but authentic. Mix English and Hindi naturally. Speaking speed: 150 words/minute for 60 seconds = ~150 words total. Keep it tight.')">&#128203; Click to copy: 60-second YouTube script with hooks, visuals, timing, and energy cues for Punjab AI tools explainer</div><p style="color:var(--t3);font-size:.8rem">Notice the structure: hook in 3 seconds, visual cues, energy levels, and exact word count for timing. This is professional scriptwriting.</p></div>
+  <div class="callout call-2"><div class="call-ico">&#127775;</div><div class="call-body"><h4>Why Scripts Need This Level of Detail</h4><p><strong>A 60-second video has zero margin for rambling.</strong> Every second counts. The hook must stop scrolling in 3 seconds or you lose the viewer forever. Visual cues ensure your editor knows exactly what to show. Energy levels guide your delivery. Word count ensures you do not run over. <strong>This prompt produces scripts that professional YouTubers pay &#8377;2,000-5,000 per minute for.</strong></p></div></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 4: Email Newsletter</h4></div><p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Generate a complete email newsletter with subject line, preview text, and structured content:</p><div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write a weekly email newsletter for TARAhut AI Labs subscribers.\n\nNewsletter name: \"AI Punjab Weekly\"\nAudience: Punjab professionals and business owners learning AI\nDate: April 13, 2026\n\nInclude:\n1. SUBJECT LINE: 3 options (curiosity-driven, under 50 chars, emoji optional)\n2. PREVIEW TEXT: What shows after subject in inbox (under 90 chars)\n3. GREETING: Warm, personal (use \"you\" language)\n4. MAIN STORY: \"How a Ludhiana shopkeeper increased sales 40% using Claude\" — write a compelling 200-word case study\n5. QUICK TIP: One actionable AI tip readers can use today (with copy-paste prompt)\n6. TOOL OF THE WEEK: Recommend one free AI tool with a use case\n7. UPCOMING: Tease next week content + upcoming course dates\n8. SIGN-OFF: Personal, warm, with WhatsApp link\n\nTone: Like a knowledgeable friend sharing tips over chai. Not corporate. Not salesy. Genuine value in every section.')">&#128203; Click to copy: Weekly email newsletter with 8 sections — subject lines, case study, tip, tool recommendation, and warm sign-off</div><p style="color:var(--t3);font-size:.8rem">This is a complete newsletter template. Change the main story each week and you have consistent, professional email content.</p></div>
+  <div class="micro-win">You now have templates for video scripts and newsletters. Combined with blogs and social posts, you are a complete content operation.</div>
+  <div class="callout call-1"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Content Multiplication Effect</h4><p>One blog post feeds your entire content calendar:<br><strong>Blog post</strong> → Extract 5 <strong>social media quotes</strong> → Condense into a <strong>60-second video script</strong> → Expand into a <strong>newsletter feature</strong> → Translate into <strong>Hindi and Punjabi versions</strong><br><br>One piece of deep content = 10+ pieces of distributed content. <strong>This is how solo creators compete with entire content teams.</strong></p></div></div>
+  <div class="identity-shift">You are not creating content piece by piece. You are running a content multiplication system.</div>
+  <p class="curiosity-hook">Next: Your turn — create content for YOUR project using everything you learned.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Your Workshop &rarr;</button></div>
 </div>
 
-<!-- SECTION 3 -->
-<div class="section" id="s2">
-  <div class="section-header">
-    <div class="section-tag">Section 3</div>
-    <h2>Social Media Content</h2>
-    <p>Platform-specific content that actually gets engagement. Each platform has its own language — Claude speaks all of them.</p>
+<!-- S4: WORKSHOP -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 67% done! Time to create content for YOUR business.</div>
+  <div class="sec-head"><div class="over">Section 04</div><h2>Your Content <span class="gr">Workshop</span></h2><p>Create real content for your business. Use the free-text area to build a content piece you can actually publish this week.</p></div>
+  <div class="micro-action"><h4>Pick Your Content Challenge</h4><ul><li>A blog post for your business website using the 5-step pipeline</li><li>Trilingual social media posts for an announcement</li><li>A 60-second video script for Reels/Shorts</li><li>An email newsletter for your customer list</li><li>A content calendar for the next month</li></ul></div>
+  <div class="demo"><div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Demo 5: Your Content Creation Prompt</h4></div><textarea class="demo-in" id="freePrompt" placeholder="Example: Create a content calendar for my tuition centre in Bathinda for May 2026. Include 4 blog topics, 12 social media posts (4 English, 4 Hindi, 4 Punjabi), 2 video scripts, and 2 newsletter issues. Theme: exam preparation season..."></textarea><button class="btn btn-glow btn-sm" onclick="copyFreePrompt()" style="margin-bottom:.75rem">&#128203; Copy This Prompt</button><div class="demo-out" id="freeOut">Your content prompt will appear here. Paste into Claude and start creating.</div></div>
+  <div class="callout call-4"><div class="call-ico">&#9888;</div><div class="call-body"><h4>Content Calendar Pro Tip</h4><p>Ask Claude to create a <strong>monthly content calendar</strong> as a table: Date | Platform | Language | Content Type | Topic | Status. This gives you a publishing schedule you can actually follow. <strong>Consistency beats quality in content marketing.</strong> A good post every week beats a perfect post once a month.</p></div></div>
+  <div class="emotional-hook"><p><strong>Before this course:</strong> You spent 3 hours writing one mediocre Instagram caption in English only. <strong>After today:</strong> In the same 3 hours, you produce a full blog post, 3 trilingual social posts, a video script, and a newsletter. <strong>That is not incremental improvement. That is a fundamental shift in what is possible.</strong></p></div>
+  <div class="micro-win">You have completed the content creation workshop. You are now a one-person content team.</div>
+  <div class="checklist">
+    <h4>&#9989; Day 9 Content Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand the 5-step blog pipeline (Research → Outline → Draft → Edit → SEO)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Generated a blog post using at least 3 of the 5 pipeline steps</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created trilingual social media content (English + Hindi + Punjabi)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Verified that each language version feels native, not translated</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Generated a 60-second video script with hooks, visuals, and timing</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created an email newsletter with subject line, case study, and CTA</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Understand the content multiplication effect (1 blog → 10+ pieces)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Created a content prompt for my own business using the free-text area</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Planned or drafted a monthly content calendar</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Shared my best content piece in the WhatsApp group</label></div>
+    <div class="check-score" id="checkScore">Tap each item &rarr; progress score appears here</div>
   </div>
-
-  <div class="grid-2">
-    <div class="card"><div class="card-icon">📸</div><h3>Instagram</h3><p>Emotional captions, hashtag strategy, carousel scripts, story sequences.</p></div>
-    <div class="card"><div class="card-icon">💼</div><h3>LinkedIn</h3><p>Thought leadership posts, personal stories, professional insights, lead-generating content.</p></div>
-    <div class="card"><div class="card-icon">🐦</div><h3>Twitter/X</h3><p>Threads that educate, single punchy tweets, engagement bait done right.</p></div>
-    <div class="card"><div class="card-icon">▶️</div><h3>YouTube</h3><p>Descriptions that rank, chapters, end screen scripts, community post ideas.</p></div>
-  </div>
-
-  <h3 style="margin:24px 0 16px">Instagram Caption — CRISP Template</h3>
-  <div class="code-box">
-    <div class="code-label">Instagram Caption Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">Context:</span> Instagram post for TARAhut AI Labs. Image shows a student learning on a laptop with a mentor.<br>
-    <span class="gr">Role:</span> Expert social media copywriter for Indian education brands.<br>
-    <span class="am">Instructions:</span> Write 3 caption options: (A) emotional/story-driven, (B) educational/value-driven, (C) FOMO/urgency-driven. Each 150-200 words. Include a question at the end to drive comments. Add 20 relevant hashtags below each caption.<br>
-    <span class="hl">Specifics:</span> Brand: TARAhut AI Labs, Kotkapura. Course: Master Claude in 15 Days. Audience: professionals 25-40, Punjab region.<br>
-    <span class="gr">Purpose:</span> Drive course enquiries and build community engagement.
-  </div>
-
-  <h3 style="margin:24px 0 16px">LinkedIn Post — CRISP Template</h3>
-  <div class="code-box">
-    <div class="code-label">LinkedIn Post Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">Context:</span> LinkedIn post for a professional audience of Indian entrepreneurs and managers.<br>
-    <span class="gr">Role:</span> Thought leader in AI adoption for Indian businesses.<br>
-    <span class="am">Instructions:</span> Write a LinkedIn post using the hook-story-lesson-CTA format. Start with a bold, counterintuitive statement (pattern interrupt). Use short paragraphs (1-2 lines). Include a real scenario. End with a question that invites comments. Length: 200-280 words.<br>
-    <span class="hl">Specifics:</span> Topic: "Why most people waste their time with AI because they ask the wrong questions."<br>
-    <span class="gr">Purpose:</span> Build authority, attract course leads, drive connection requests.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Twitter Thread — CRISP Template</h3>
-  <div class="code-box">
-    <div class="code-label">Twitter Thread Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    Write a 10-tweet thread on "How to use Claude AI to create a week of content in 2 hours."<br><br>
-    <span class="am">Format:</span><br>
-    - Tweet 1: Hook/bold claim (under 200 chars)<br>
-    - Tweets 2-9: One actionable tip each with example<br>
-    - Tweet 10: CTA + ask for retweet<br><br>
-    <span class="hl">Rules:</span> Each tweet stands alone. No filler. Every tweet must have one specific, actionable insight. Use numbers, bullets, emojis sparingly. Add [Thread] to first tweet.
-  </div>
-
-  <h3 style="margin:24px 0 16px">YouTube Description — CRISP Template</h3>
-  <div class="code-box">
-    <div class="code-label">YouTube Description Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    Write a YouTube video description for a video titled: "I Used Claude AI for 30 Days — Here's What Changed in My Business"<br><br>
-    <span class="am">Include:</span><br>
-    - Hook paragraph (2-3 lines, front-loaded keywords)<br>
-    - What viewers will learn (bullet points)<br>
-    - Timestamps for 6 chapters<br>
-    - Links section (course, website, social)<br>
-    - Relevant hashtags (5-7)<br>
-    - Disclaimer/CTA at bottom<br><br>
-    <span class="hl">Target keywords:</span> Claude AI, AI for business India, AI productivity 2025
-  </div>
-
-  <div class="highlight-box">
-    <h3>Content Repurposing Matrix</h3>
-    <p style="color:var(--muted);margin-bottom:12px">One piece of content → multiple platform formats</p>
-    <div class="table-wrap">
-      <table>
-        <tr><th>Source Content</th><th>Instagram</th><th>LinkedIn</th><th>Twitter</th><th>YouTube</th></tr>
-        <tr><td>Blog Post</td><td>Quote carousel (5 slides)</td><td>Summary post + CTA</td><td>10-tweet thread</td><td>Full video script</td></tr>
-        <tr><td>Case Study</td><td>Before/after story caption</td><td>Lessons learned post</td><td>Result stat tweet</td><td>Testimonial-style video</td></tr>
-        <tr><td>How-To Guide</td><td>Step carousel</td><td>Personal experience post</td><td>Tips thread</td><td>Tutorial script</td></tr>
-      </table>
-    </div>
-  </div>
+  <div class="identity-shift">You are no longer "bad at content." You are a content creator with a professional system. Identity upgraded.</div>
+  <p class="curiosity-hook">Next: 8 quiz questions on content creation mastery.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quiz &rarr;</button></div>
 </div>
 
-<!-- SECTION 4 -->
-<div class="section" id="s3">
-  <div class="section-header">
-    <div class="section-tag">Section 4</div>
-    <h2>Multilingual Content</h2>
-    <p>English → Hindi → Punjabi. Claude doesn't just translate — it culturally adapts your content for authentic regional impact.</p>
-  </div>
-
-  <div class="callout">
-    <strong>Beyond Translation</strong>
-    Translation converts words. Cultural adaptation converts meaning. A social media caption that works in English might feel cold in Hindi or unnatural in Punjabi. Claude understands the cultural layer — idioms, formality levels, regional references, and emotional resonance.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Example: Instagram Caption in 3 Languages</h3>
-  <div class="lang-demo">
-    <div class="lang-label">English (Original)</div>
-    <div class="lang-text">Ready to take your business to the next level? Our 15-day AI masterclass will change how you work forever. Limited seats. Real skills. Real results. DM us to enrol today. 🚀</div>
-  </div>
-  <div class="lang-demo">
-    <div class="lang-label">Hindi (Culturally Adapted)</div>
-    <div class="lang-text">क्या आप भी अपने काम को और बेहतर बनाना चाहते हैं? हमारे 15-दिन के AI कोर्स में सीखें वो सब जो आपके बिज़नेस को नई ऊंचाई पर ले जाए। सीमित सीटें उपलब्ध हैं — आज ही जुड़ें। 💡 DM करें या call करें।</div>
-  </div>
-  <div class="lang-demo">
-    <div class="lang-label">Punjabi (Gurmukhi Script)</div>
-    <div class="lang-text">ਆਪਣੇ ਕਾਰੋਬਾਰ ਨੂੰ ਅਗਲੇ ਪੱਧਰ 'ਤੇ ਲੈ ਜਾਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਸਾਡੇ 15-ਦਿਨਾਂ AI ਕੋਰਸ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ ਅਤੇ ਸਿੱਖੋ ਉਹ ਸਭ ਜੋ ਤੁਹਾਡੇ ਕੰਮ ਨੂੰ ਬਦਲ ਦੇਵੇਗਾ। ਅੱਜ ਹੀ ਸੰਪਰਕ ਕਰੋ। 🙏</div>
-  </div>
-
-  <h3 style="margin:24px 0 16px">Multilingual CRISP Prompt</h3>
-  <div class="code-box">
-    <div class="code-label">Multilingual Content Prompt</div>
-    <button class="copy-btn" onclick="event.stopPropagation()">Copy</button>
-    <span class="gr">Context:</span> Creating social media content for a training institute in Kotkapura, Punjab targeting local entrepreneurs.<br>
-    <span class="gr">Role:</span> Expert bilingual copywriter fluent in English, Hindi, and Punjabi with deep understanding of Punjabi business culture.<br>
-    <span class="am">Instructions:</span> Create this Instagram caption in 3 versions: (1) English, (2) Hindi (Devanagari script), (3) Punjabi (Gurmukhi script). Do NOT just translate — culturally adapt each version to feel native to that language's audience. Include appropriate emojis and a call to action.<br>
-    <span class="hl">Content:</span> [Your English caption here]<br>
-    <span class="gr">Notes:</span> Hindi should feel warm and motivational. Punjabi should feel community-oriented and respectful. Avoid overly formal language in both.
-  </div>
-
-  <h3 style="margin:24px 0 16px">Cultural Adaptation Principles</h3>
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-icon">🇮🇳</div>
-      <h3>Hindi Adaptation Tips</h3>
-      <p>Use respectful second-person (आप). Incorporate motivational phrasing. Blend English business terms naturally (like "business," "course," "AI"). Keep sentences conversational and warm.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🙏</div>
-      <h3>Punjabi Adaptation Tips</h3>
-      <p>Use ਤੁਸੀਂ for respectful address. Include community references. Gurmukhi script shows authenticity. Blend Roman script for technical terms. End with ਧੰਨਵਾਦ (thank you) or ਜੀ for respect.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <h3>When to Use Each Language</h3>
-      <p>English: Professional audiences, SEO content, pan-India reach. Hindi: Mass market, emotional stories, motivational content. Punjabi: Local community, personal trust, cultural events.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">⚠️</div>
-      <h3>Always Human-Review</h3>
-      <p>Claude's Hindi is excellent. Punjabi is good. Always have a native speaker review before publishing — especially idioms, culturally sensitive references, and formal communications.</p>
-    </div>
-  </div>
-
-  <div class="callout amber">
-    <strong>The 90% Rule</strong>
-    Claude's multilingual content is 90% ready. That final 10% — the idioms, the cultural nuance, the regional slang — needs a human eye. Use Claude to scale, use humans to perfect. This combination beats hiring a full content team.
-  </div>
+<!-- S5 -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#129504; Quiz time!</div>
+  <div class="sec-head"><div class="over">Section 05</div><h2>Test Your <span class="gr">Understanding</span></h2><p>8 from 18 questions. Instant feedback.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Content creation knowledge locked in.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Wrap-Up &rarr;</button></div>
 </div>
 
-<!-- SECTION 5 — QUIZ -->
-<div class="section" id="s4">
-  <div class="section-header">
-    <div class="section-tag">Section 5</div>
-    <h2>Knowledge Check</h2>
-    <p>Test your understanding of Day 9 — Content Creation with Claude.</p>
-  </div>
-  <div class="quiz-section" id="quizContainer"></div>
+<!-- S6 -->
+<div class="sec" id="s6">
+  <div class="sec-head"><div class="over">Section 06</div><h2>Day 9 <span class="gr">Complete!</span></h2><p>Takeaways, homework, and Day 10 preview.</p></div>
+  <div class="callout call-brand"><div class="call-ico">&#127881;</div><div class="call-body"><h4>3 Key Takeaways</h4><p>&#9989; <strong>The 5-step pipeline</strong> (Research → Outline → Draft → Edit → SEO) produces 10x better content than single prompts<br>&#9989; <strong>Trilingual content</strong> in English, Hindi, and Punjabi triples your reach — each version must feel native, not translated<br>&#9989; <strong>Content multiplication</strong> turns 1 blog post into 10+ distributed pieces across platforms and languages</p></div></div>
+  <div class="micro-action"><h4>Homework Before Day 10</h4><ul><li>Publish <strong>one blog post</strong> using the 5-step pipeline</li><li>Create <strong>trilingual social posts</strong> for one announcement</li><li>Write a <strong>60-second video script</strong> and record it (even on your phone)</li><li>Draft your first <strong>email newsletter</strong> using the template</li><li>Create a <strong>content calendar</strong> for the next 2 weeks</li></ul></div>
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Day 10 &mdash; Claude Cowork</h4><p>Tomorrow you discover <strong>Claude Cowork</strong> &mdash; Claude's background task mode on Desktop. Set up research tasks, content calendar generation, and bilingual SOP manuals that run while you work on other things. Learn to monitor, guide, and chain Cowork tasks. <strong>What takes 3 hours manually takes 15 minutes with Cowork.</strong></p></div></div>
+  <div style="text-align:center;margin:2.5rem 0"><a href="https://wa.me/919200882008?text=Day%209%20done!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a><a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a></div>
+  <div style="text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-top:1.5rem"><h3 style="font-family:'Syne',sans-serif;margin-bottom:.5rem;">TARAhut AI Labs</h3><p style="color:var(--t2)">&#128222; <a href="tel:+919200882008">+91 92008-82008</a> &middot; &#127760; <a href="https://tarahutailabs.com">tarahutailabs.com</a> &middot; &#128205; Kotkapura</p></div>
+  <div class="identity-shift">Day 9 done. You are a one-person content team with a professional system. That is a career-defining skill.</div>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Quiz</button><button class="btn btn-glow btn-sm" onclick="go('s1')">&#128260; Start Over</button></div>
 </div>
 
-</div><!-- /container -->
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">TARAhut AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">Master Claude in 15 Days &middot; Day 09 &middot; tarahutailabs.com</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p></div>
 
 <script>
-// PARTICLES
-(function(){
-  const c=document.getElementById('particles');
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    const s=Math.random()*8+4;
-    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*20}s;opacity:${Math.random()*0.12+0.04}`;
-    c.appendChild(p);
-  }
-})();
-
-// SECTION NAV
-function showSection(i){
-  document.querySelectorAll('.section').forEach((s,idx)=>{s.classList.toggle('active',idx===i)});
-  document.querySelectorAll('.nav-btn').forEach((b,idx)=>{b.classList.toggle('active',idx===i)});
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(i===4&&!quizStarted) initQuiz();
-}
-
-// QUIZ DATA — 25 Questions
-const ALL_QUESTIONS=[
-  {q:"What does CRISP stand for in prompt engineering?",o:["Context, Role, Input, Style, Purpose","Context, Role, Instructions, Specifics, Purpose","Creative, Relevant, Iterative, Specific, Professional","Clear, Relevant, Informative, Simple, Purposeful"],a:1,f:"CRISP = Context, Role, Instructions, Specifics, Purpose — the 5 elements of a perfect prompt."},
-  {q:"Which content format does Claude NOT excel at creating?",o:["Blog posts and articles","Social media captions","Real-time live sports commentary","Video scripts"],a:2,f:"Claude can't access real-time information. All text-based content formats are within its capabilities."},
-  {q:"In the iterative blog writing process, what is Step 3?",o:["SEO Optimization","Generate Outline","Edit and Strengthen","Publish and Promote"],a:2,f:"The 4 steps are: Outline → Draft → Edit & Strengthen → SEO Optimize."},
-  {q:"What is the recommended length for a LinkedIn post according to the CRISP template?",o:["50-100 words","200-280 words","500-600 words","800+ words"],a:1,f:"LinkedIn posts work best at 200-280 words — long enough for depth, short enough to read fully."},
-  {q:"Cultural adaptation differs from translation in that it:",o:["Changes the language only","Adapts meaning, tone, and cultural references","Adds more words to the content","Only changes grammar"],a:1,f:"Cultural adaptation converts meaning, not just words — including idioms, tone, regional references, and emotional resonance."},
-  {q:"Which script is used for authentic Punjabi content?",o:["Devanagari","Roman","Gurmukhi","Arabic"],a:2,f:"Gurmukhi is the script used for Punjabi language, showing cultural authenticity for Punjab audiences."},
-  {q:"The 'repurpose in one prompt' technique means:",o:["Writing the same content multiple times","Converting one piece of content into multiple platform formats","Deleting old content and rewriting it","Copying content from other sources"],a:1,f:"One blog post becomes Instagram captions, LinkedIn posts, Twitter threads, and email teasers — maximizing content ROI."},
-  {q:"What should you always do before publishing Claude's multilingual content?",o:["Translate it back to English","Have a native speaker review it","Add more emojis","Make it longer"],a:1,f:"The '90% Rule' — Claude gives you 90% ready content. Human native speakers catch the cultural nuances in the final 10%."},
-  {q:"Which element of CRISP tells Claude the 'why' behind your content?",o:["Context","Role","Instructions","Purpose"],a:3,f:"Purpose tells Claude the end goal — educate, engage, convert, build authority — shaping how it writes."},
-  {q:"A Twitter thread should have which structure?",o:["One long tweet with all information","Hook tweet, content tweets, CTA tweet","Question, answer, question, answer","Introduction, body, conclusion, appendix"],a:1,f:"Twitter threads: Hook/bold claim → actionable content tweets → CTA. Each tweet should stand alone."},
-  {q:"For Indian small business content, Claude should avoid:",o:["Local examples","Jargon and Western-only examples","Short paragraphs","Conversational tone"],a:1,f:"Content should use relatable Indian business examples and avoid jargon or exclusively Western references."},
-  {q:"The SEO optimization step should produce:",o:["Just the article text","Meta description, SEO title, slug, keywords","Social media captions","Email newsletter"],a:1,f:"SEO pass produces: SEO title (under 60 chars), meta description (150-160 chars), URL slug, related keywords, internal link suggestions, and alt text ideas."},
-  {q:"Which platform benefits most from the 'hook-story-lesson-CTA' format?",o:["Instagram","Twitter","LinkedIn","YouTube Description"],a:2,f:"LinkedIn's hook-story-lesson-CTA format performs exceptionally well for professional thought leadership content."},
-  {q:"What is the optimal meta description length for SEO?",o:["50-80 characters","100-120 characters","150-160 characters","200+ characters"],a:2,f:"Meta descriptions should be 150-160 characters — long enough to be informative, short enough to display fully in search results."},
-  {q:"When using Claude for content, 'brand voice memory' is best achieved through:",o:["Repeating your style in every prompt","Using Claude Projects with uploaded brand guidelines","Writing longer prompts","Using different Claude models"],a:1,f:"Claude Projects allow you to upload brand guidelines once, and Claude maintains your voice consistently across all content."},
-  {q:"Which Hindi pronoun should be used for respectful address in business content?",o:["तुम (tum)","तू (tu)","आप (aap)","वो (vo)"],a:2,f:"आप (aap) is the respectful second-person pronoun in Hindi, appropriate for professional and business communications."},
-  {q:"What makes an Instagram caption drive comments?",o:["Using more hashtags","Ending with a question","Making it longer","Using all caps"],a:1,f:"Questions at the end of Instagram captions directly invite the audience to engage in comments — a proven engagement strategy."},
-  {q:"The 'Content Repurposing Matrix' concept means:",o:["Deleting old content","Creating one content piece and adapting it for multiple platforms","Writing content in multiple languages","Using templates for every post"],a:1,f:"The repurposing matrix maximizes ROI: one blog → Instagram carousel + LinkedIn post + Twitter thread + YouTube script."},
-  {q:"What is 'pattern interrupt' in LinkedIn content?",o:["A technical error in the post","Starting with a bold counterintuitive statement that stops scrolling","Adding many images to a post","Using unusual fonts"],a:1,f:"A pattern interrupt is an opening line that's so surprising or counterintuitive that it stops someone's scroll and compels them to read more."},
-  {q:"For YouTube, a properly structured description should include:",o:["Just the video title repeated","Hook paragraph, chapters, links, hashtags, and CTA","Only hashtags","The full video transcript"],a:1,f:"YouTube descriptions need: keyword-rich hook, chapter timestamps, resource links, relevant hashtags, and a clear call-to-action."},
-  {q:"Claude's Tone Adaptability means it can:",o:["Only write in formal English","Switch between formal, casual, technical, emotional tones instantly","Only write in one consistent style","Require style settings to be configured first"],a:1,f:"Claude adapts instantly — from formal white paper to casual Instagram caption in the same conversation, with no configuration needed."},
-  {q:"What is the purpose of H2 headings in blog SEO?",o:["Making the post look longer","Breaking content into sections and signaling topic structure to search engines","Replacing the need for a meta description","Removing the need for an introduction"],a:1,f:"H2 headings structure the content for readers AND signal topic organization to search engines, improving both UX and SEO."},
-  {q:"Why should Punjabi content include community-oriented language?",o:["Because Google requires it","Because Punjabi culture places high value on community, family, and collective identity","Because it is grammatically required","Because English words don't translate"],a:1,f:"Punjabi culture is deeply community and family-oriented. Content that reflects these values resonates more authentically with Punjabi audiences."},
-  {q:"The 'Edit & Strengthen' prompt should ask Claude to:",o:["Translate the article","Provide specific rewrites for weak sections, not just commentary","Add more keywords","Make the article shorter"],a:1,f:"Editing prompts should demand specific rewrites — 'fix this' not just 'this is weak.' Getting actionable rewrites is more valuable than critique alone."},
-  {q:"Which is the correct order of the iterative blog writing process?",o:["Draft → Outline → Edit → SEO","Outline → Draft → Edit → SEO","SEO → Outline → Draft → Edit","Edit → Draft → Outline → SEO"],a:1,f:"The professional content process: Outline (structure) → Draft (write) → Edit (strengthen) → SEO (optimize). This sequence builds quality systematically."}
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6'];
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pctDone=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');pt.textContent=pctDone<=25?`${pctDone}%`:pctDone<=50?`${pctDone}% — Momentum`:pctDone<=75?`${pctDone}% — Almost`:pctDone<100?`${pctDone}% — Finish!`:`100% — Done!`;pt.style.display='block';if(id==='s5'&&!quizStarted)initQuiz();}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore()}function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;score.textContent=`${checked}/${total} — ${checked===total?'Ready for Day 10!':'Keep going!'}`;}
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied!';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+function copyFreePrompt(){const txt=document.getElementById('freePrompt').value.trim();if(!txt){document.getElementById('freeOut').textContent='⚠️ Type first.';return;}document.getElementById('freeOut').textContent='✅ Copied! Paste into Claude.';navigator.clipboard.writeText(txt).catch(()=>{});}
+const qData=[
+  {q:"What is the 5-step blog pipeline?",o:["Write, Post, Share, Like, Repeat","Research → Outline → Draft → Edit → SEO","Just ask Claude to write a blog","Copy from competitors"],a:1,e:"The pipeline produces professional content: Research gathers data, Outline structures it, Draft writes it, Edit polishes it, SEO optimises for search."},
+  {q:"Why should trilingual content NOT be direct translation?",o:["Translation is always fine","Each language has its own cultural nuances, idioms, and platform expectations that translation misses","It takes too long","Claude cannot translate"],a:1,e:"Direct translation sounds robotic. Native content uses language-specific idioms, cultural references, and platform-appropriate tone that resonate with each audience."},
+  {q:"How many words should a 60-second video script contain?",o:["500 words","1000 words","Approximately 150 words at 150 wpm speaking pace","50 words"],a:2,e:"At 150 words per minute speaking pace, a 60-second script should be ~150 words. Going over means rushing or running long."},
+  {q:"What is the content multiplication effect?",o:["Copying the same post everywhere","1 blog post → 10+ distributed pieces across platforms and languages","Posting more frequently","Using paid ads"],a:1,e:"One deep blog post can be extracted into social quotes, condensed into video scripts, expanded into newsletters, and translated — multiplying your content output."},
+  {q:"What should a YouTube hook achieve in the first 3 seconds?",o:["Show your logo","Stop the viewer from scrolling with a bold statement or question","Play background music","Read the full title"],a:1,e:"The first 3 seconds determine if viewers keep watching. A pattern interrupt (surprising statement, provocative question, visual shock) stops the scroll."},
+  {q:"What makes a good email newsletter subject line?",o:["As long and detailed as possible","Under 50 characters, curiosity-driven, specific enough to promise value","ALL CAPS WITH EXCLAMATION MARKS","Just 'Newsletter #7'"],a:1,e:"Effective subject lines are short (under 50 chars), create curiosity, and promise specific value. They determine whether your email gets opened or ignored."},
+  {q:"Which platform is best for Punjabi-language content?",o:["LinkedIn","Twitter/X","WhatsApp groups and Facebook local groups where trust is personal","Reddit"],a:2,e:"Punjabi content resonates best on WhatsApp (personal, trusted) and Facebook local groups (community). LinkedIn and Twitter audiences expect English or Hindi."},
+  {q:"Step 4 of the blog pipeline (Edit) should remove:",o:["All formatting","AI-sounding phrases like 'delve into', 'it is important to note', 'in the ever-evolving landscape'","All statistics","The conclusion"],a:1,e:"AI slop phrases make content feel robotic. Professional editing removes these patterns and replaces them with natural, human-sounding language."},
+  {q:"How much does a content agency charge per SEO blog post?",o:["₹100","₹5,000-15,000 typically","₹1 lakh","They do it for free"],a:1,e:"Content agencies charge ₹5K-15K per optimised blog post. The 5-step pipeline produces comparable quality in 20 minutes."},
+  {q:"What energy level should the hook of a 60-second video be?",o:["Calm and sleepy","HIGH — energetic to match the pattern interrupt","Whispered","Monotone"],a:1,e:"The hook needs HIGH energy to match the pattern interrupt. It must convey excitement and urgency to keep viewers watching."},
+  {q:"Why run the 5 pipeline steps in the same conversation?",o:["Does not matter","Each step builds on the previous — Claude maintains context for coherent content","Separate conversations are better","It saves money"],a:1,e:"Same conversation means the outline reflects research, the draft follows the outline, edits improve the draft, and SEO optimises the edited version. Context compounds."},
+  {q:"What should a newsletter MAIN STORY contain?",o:["Only self-promotion","A compelling case study with specific results (name, business, outcome)","Random AI news","Nothing — skip to the CTA"],a:1,e:"A specific case study with real results (e.g., 'Ludhiana shopkeeper increased sales 40% using Claude') provides genuine value and builds credibility."},
+  {q:"How does the trilingual strategy affect reach?",o:["No impact","Approximately 3x reach by covering professional, pan-India, and local audiences","Reduces reach due to confusion","Only helps in Punjab"],a:1,e:"English reaches professionals, Hindi reaches pan-India users, Punjabi reaches local audiences. Each language accesses a different segment, roughly tripling total reach."},
+  {q:"What is the most important instruction for trilingual content?",o:["Use Google Translate","Each version should feel NATIVE — originally written in that language, not translated","Make them identical","Only use formal language"],a:1,e:"The key instruction is native quality. Each version must feel like it was originally written in that language for that platform, using appropriate idioms and tone."},
+  {q:"How many pieces can one blog post generate through multiplication?",o:["Just 1 — the blog post itself","10+ pieces across social media, video, newsletter, and translations","Exactly 3","100+"],a:1,e:"One blog generates 5+ social quotes, 1-2 video scripts, a newsletter feature, and 2 translated versions — totaling 10+ distributed content pieces."},
+  {q:"What makes Step 5 (SEO) effective?",o:["Just adding random keywords everywhere","Meta title under 60 chars, meta description under 160 chars, keywords in headers, alt text, social snippets","Making the blog longer","Adding more images"],a:1,e:"Effective SEO includes optimised meta tags, strategic keyword placement in headers, internal/external links, image alt text, and social sharing snippets."},
+  {q:"For an email newsletter, what tone works best?",o:["Corporate and formal","Like a knowledgeable friend sharing tips over chai — warm, genuine, valuable","Aggressive sales pitch","Academic and technical"],a:1,e:"Newsletters with a warm, personal tone (like advice from a trusted friend) get higher open rates and engagement than corporate or salesy approaches."},
+  {q:"What is the annual content cost savings from the 5-step pipeline?",o:["₹0","₹2.4-7.2 lakhs if replacing agency content for 4 posts/month","₹100","₹50 lakhs"],a:1,e:"At ₹5K-15K per post × 4 posts/month × 12 months = ₹2.4L-7.2L annually. The pipeline replaces this at near-zero marginal cost."}
 ];
-
-let quizStarted=false,currentQuestions=[],currentQ=0,score=0,answered=false;
-
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5)}
-
-function initQuiz(){
-  quizStarted=true;
-  currentQuestions=shuffle([...ALL_QUESTIONS]).slice(0,8);
-  currentQ=0;score=0;
-  renderQuiz();
-}
-
-function renderQuiz(){
-  const c=document.getElementById('quizContainer');
-  if(currentQ>=currentQuestions.length){showScore(c);return;}
-  answered=false;
-  const q=currentQuestions[currentQ];
-  c.innerHTML=`
-    <div class="quiz-header">
-      <h3>Day 9 Quiz</h3>
-      <div class="quiz-progress">Question ${currentQ+1} of ${currentQuestions.length} &nbsp;|&nbsp; Score: ${score}</div>
-    </div>
-    <div class="quiz-q">
-      <div class="q-num">Q${currentQ+1}</div>
-      <div class="q-text">${q.q}</div>
-      <div class="options">
-        ${q.o.map((o,i)=>`<button class="option" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
-      </div>
-      <div class="quiz-feedback" id="qfb"></div>
-    </div>
-    <div class="quiz-controls">
-      <div style="font-size:0.8em;color:var(--muted)">Select an answer to continue</div>
-      <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" style="display:none">Next Question →</button>
-    </div>`;
-}
-
-function selectAnswer(i){
-  if(answered)return;answered=true;
-  const q=currentQuestions[currentQ];
-  const opts=document.querySelectorAll('.option');
-  opts.forEach(o=>o.classList.add('disabled'));
-  opts[i].classList.add(i===q.a?'correct':'wrong');
-  if(i!==q.a)opts[q.a].classList.add('correct');
-  if(i===q.a)score++;
-  const fb=document.getElementById('qfb');
-  fb.className='quiz-feedback show '+(i===q.a?'correct-fb':'wrong-fb');
-  fb.innerHTML=(i===q.a?'Correct! ':'Incorrect. ')+q.f;
-  document.getElementById('nextBtn').style.display='block';
-}
-
-function nextQuestion(){currentQ++;renderQuiz();}
-
-function showScore(c){
-  const pct=Math.round((score/currentQuestions.length)*100);
-  const msg=pct>=80?'Excellent work!':pct>=60?'Good effort!':'Review and retry!';
-  c.innerHTML=`
-    <div class="quiz-score show">
-      <div class="score-circle" style="--pct:${pct*3.6}deg">${score}/${currentQuestions.length}</div>
-      <div class="score-msg">${msg}</div>
-      <div class="score-sub">${pct}% correct — ${score} out of ${currentQuestions.length} questions</div>
-      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="initQuiz()">Retake Quiz (New Questions)</button>
-        <button class="btn btn-secondary" onclick="showSection(0)">Review Content</button>
-      </div>
-    </div>`;
-}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let activeQuiz=shuffle([...qData]).slice(0,8);let cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){activeQuiz=shuffle([...qData]).slice(0,8);cq=0;sc=0;ans=new Array(activeQuiz.length).fill(false);quizStarted=true;renderQ()}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=activeQuiz.length){const pct=Math.round(sc/activeQuiz.length*100);try{fetch('/api/learn/quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:'claude-09',score:sc,total:activeQuiz.length})})}catch(e){}let tier,tierColor,msg;if(pct>=75){tier='Excellent!';tierColor='var(--brand)';msg='Content creation mastered!';}else if(pct>=50){tier='Good!';tierColor='var(--c1)';msg='Review the pipeline steps.';}else{tier='Practice more!';tierColor='var(--c4)';msg='Try each demo hands-on.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${activeQuiz.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct}% — ${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">Wrap-Up →</button></div>`;return;}const q=activeQuiz[cq];const ltr=['A','B','C','D'];let prog=activeQuiz.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Q${cq+1}/${activeQuiz.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=activeQuiz[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ()}
+document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.ctrlKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.metaKey&&(e.key==="s"||e.key==="u"||e.key==="p"||e.key==="c")){e.preventDefault()}if(e.key==="F12"||e.key==="PrintScreen"){e.preventDefault()}});document.addEventListener("copy",function(e){e.preventDefault()});document.addEventListener("cut",function(e){e.preventDefault()});
 </script>
+<div style="text-align:center;padding:1.5rem;border-top:1px solid #1e1e3a;margin-top:2rem;font-size:.7rem;color:#333;">&copy; 2026 TARAhut AI Labs. All rights reserved. Unauthorized reproduction, distribution, or copying of this material is strictly prohibited. This content is licensed exclusively for enrolled TARAhut AI Labs students. tarahutailabs.com</div>
 </body>
 </html>
