@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 32: Deliver Day 1 — First Client Project — AI Hustler 45 · Uplrn AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;--brand:#059669;--t1:#eeeef6;--t2:#9999b8;--t3:#55556e;--bd:#1e1e3a;--r:14px;--rs:8px;--g1:linear-gradient(135deg,var(--c1),var(--c2));--gbrand:linear-gradient(135deg,var(--brand),var(--c1))}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden}a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 6px;border-radius:4px;font-size:.9em;color:var(--c1)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}.lang-toggle{position:fixed;top:12px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);padding:4px;border-radius:99px;border:1px solid var(--bd)}.lang-btn{padding:5px 12px;border-radius:99px;font-size:.7rem;font-weight:700;cursor:pointer;border:none;background:none;color:var(--t3);font-family:'JetBrains Mono',monospace;transition:all .3s}.lang-btn.active{background:var(--brand);color:#fff}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5.5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}.hero>p{max-width:620px;font-size:1.1rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both;position:relative;z-index:1}.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both;position:relative;z-index:1}@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}.btn-glow:hover{transform:translateY(-3px)}.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}.btn-sm{padding:10px 22px;font-size:.85rem}.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.85rem;padding:0 14px;flex-shrink:0}.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}.sec.on{display:block;animation:secIn .45s ease-out}@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.sec-head{margin-bottom:3rem}.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s;position:relative;overflow:hidden}.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3)}.crd:hover::after{transform:scaleX(1)}.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}.call-body p{color:var(--t2);font-size:.9rem}.call-body strong{color:var(--t1)}.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}.micro-action p{color:var(--t2);font-size:.9rem}.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}.micro-action li{margin-bottom:.3rem}.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}.emotional-hook strong{color:var(--t1)}.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace}.micro-win::before{content:'> ';color:var(--brand)}.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}.check-item:hover{background:rgba(0,240,255,.03)}.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}.check-item.checked label{color:var(--c5);text-decoration:line-through}.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap}.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}.q-prog{display:flex;gap:5px;margin-bottom:2rem}.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1)}.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}.q-opts{display:flex;flex-direction:column;gap:.65rem}.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}.q-opt:hover{border-color:rgba(0,240,255,.3)}.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0}.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg)}.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff}.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}.q-fb.show{display:block;animation:fadeSlide .3s ease}.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}.q-score-box{text-align:center;padding:3rem 2rem}.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}.foot p{font-size:.82rem;color:var(--t3)}.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:100px;text-align:center}.vflow-node .vn-icon{font-size:1.8rem}.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2)}.vflow-node.glow-green{border-color:rgba(52,211,153,.2)}.vflow-node.glow-purple{border-color:rgba(168,85,247,.2)}.vflow-node.glow-gold{border-color:rgba(251,191,36,.2)}.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6}.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1)}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3)}.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s,transform .7s}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}.prompt-block{padding:1.2rem 1.5rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin:1rem 0;cursor:pointer;line-height:1.7}.prompt-block:hover{background:rgba(0,240,255,.06)}@media(max-width:768px){.cgrid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}}</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div><canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:140px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+<div class="lang-toggle"><button class="lang-btn active" onclick="setLang('en')">EN</button><button class="lang-btn" onclick="setLang('hi')">HI</button><button class="lang-btn" onclick="setLang('pa')">PA</button></div>
+
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Day 32 &middot; AI Hustler 45 &middot; 2026</div>
+  <h1>Deliver<br><span class="gr">Day 1</span></h1>
+  <div class="hero-brand">AI Hustler 45 &mdash; Phase 3: Earning &mdash; Uplrn AI Labs</div>
+  <p data-en="Today you are not a student. You are a service provider. Create your first real client content pack: social media posts, GMB optimization, WhatsApp Business setup. AI makes it fast. Your skills make it professional." data-hi="Aaj tum student nahi ho. Tum service provider ho. Apna pehla real client content pack banao: social media posts, GMB optimization, WhatsApp Business setup. AI fast banata hai. Tumhari skills professional banati hain." data-pa="Ajj tusi student nahi ho. Tusi service provider ho. Apna pehla real client content pack banao: social media posts, GMB optimization, WhatsApp Business setup. AI fast bananda hai. Tuhadian skills professional banaundiyan ne.">Today you are not a student. You are a service provider. Create your first real client content pack: social media posts, GMB optimization, WhatsApp Business setup. AI makes it fast. Your skills make it professional.</p>
+  <div class="hero-btns"><button class="btn btn-glow" onclick="startLearning()">Start Working &rarr;</button><button class="btn btn-ghost" onclick="jumpTo('s5')">Checklist</button></div>
+</section>
+
+<nav class="nav" id="mainNav"><div class="nav-inner"><span class="nav-brand">AI Hustler 45</span>
+  <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Client Status</button>
+  <button class="nav-btn" data-s="s2"><span class="nn">02</span>Content Pack</button>
+  <button class="nav-btn" data-s="s3"><span class="nn">03</span>GMB Setup</button>
+  <button class="nav-btn" data-s="s4"><span class="nn">04</span>WhatsApp Setup</button>
+  <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quality Check</button>
+  <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+  <button class="nav-btn" data-s="s7"><span class="nn">07</span>Wrap-Up</button>
+</div></nav>
+
+<div class="sec on" id="s1">
+  <div class="sec-head"><div class="over">Section 01 &mdash; Status Check</div><h2>You Are Now <span class="gr">a Service Provider</span></h2>
+    <p data-en="Identity shift: from today, you deliver professional work to paying clients. The classroom is a co-working space. The trainer is your quality reviewer. Let us start with a status check." data-hi="Identity shift: aaj se tum paying clients ko professional work deliver karte ho. Classroom ek co-working space hai. Trainer tumhara quality reviewer hai. Status check se shuru karte hain." data-pa="Identity shift: ajj ton tusi paying clients nu professional work deliver karde ho. Classroom ek co-working space hai. Trainer tuhada quality reviewer hai. Status check ton shuru karde haan.">Identity shift: from today, you deliver professional work to paying clients. The classroom is a co-working space. The trainer is your quality reviewer. Let us start with a status check.</p></div>
+
+  <div class="identity-shift">Aaj se tum students nahi ho -- tum service providers ho.</div>
+
+  <div class="micro-action"><h4>Round Robin Status Check (Each Student)</h4>
+    <ul>
+      <li><strong>Client name and business type:</strong> ___</li>
+      <li><strong>Package sold:</strong> ___</li>
+      <li><strong>Onboarding info collected?</strong> (logo, photos, business details)</li>
+      <li><strong>What needs to be delivered:</strong> ___</li>
+    </ul>
+    <p style="margin-top:.8rem"><strong>Students without a client:</strong> Pair with a student who has a client. You assist and learn the delivery process. This is equally valuable -- you learn by doing real work.</p>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">📞</div><div class="call-body"><h4>Missing Onboarding Info?</h4>
+    <p>If you closed a deal but have not collected logo, photos, or business details: <strong>call the client NOW</strong>. Do it in class with trainer coaching. "Ji namaste, main kal se aapka kaam start kar raha hoon. Bas kuch cheezein chahiye -- aapka logo, 5-6 product photos, aur business ka address/timing. WhatsApp pe bhej dijiye."</p></div></div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Content Pack &rarr;</button></div>
+</div>
+
+<div class="sec" id="s2">
+  <div class="progress-marker">14% through! Create the content pack with AI speed.</div>
+  <div class="sec-head"><div class="over">Section 02 &mdash; Content Pack</div><h2>AI-Powered <span class="gr">Content Creation</span></h2>
+    <p data-en="Use CRISP mega-prompts to generate captions, hashtags, and a content calendar. Use Canva for all designs with client brand colors and real photos. Create 12-15 social media posts in batch." data-hi="CRISP mega-prompts se captions, hashtags, aur content calendar generate karo. Canva se sab designs banao client ke brand colors aur real photos ke saath. Batch mein 12-15 social media posts banao." data-pa="CRISP mega-prompts ton captions, hashtags, te content calendar generate karo. Canva ton sab designs banao client de brand colors te real photos de naal. Batch vich 12-15 social media posts banao.">Use CRISP mega-prompts to generate captions, hashtags, and a content calendar. Use Canva for all designs with client brand colors and real photos. Create 12-15 social media posts in batch.</p></div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">⚡</div><div class="call-body"><h4>The AI Speed Advantage</h4>
+    <p data-en="<strong>AI ke bina yeh kaam 3 din lagta. AI ke saath 3 ghante mein ho jaayega.</strong> This is your competitive advantage. Speed + quality = happy client = referrals." data-hi="<strong>AI ke bina yeh kaam 3 din lagta. AI ke saath 3 ghante mein ho jaayega.</strong> Yeh tumhara competitive advantage hai. Speed + quality = happy client = referrals." data-pa="<strong>AI ton bina eh kaam 3 din lagda. AI de naal 3 ghante vich ho jayega.</strong> Eh tuhada competitive advantage hai. Speed + quality = happy client = referrals."><strong>AI ke bina yeh kaam 3 din lagta. AI ke saath 3 ghante mein ho jaayega.</strong> This is your competitive advantage. Speed + quality = happy client = referrals.</p></div></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Mega-Prompt: Generate Full Month Content</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Create a complete social media content plan for [Client Business Name], a [business type] in [city]. Generate 15 Instagram posts: 5 product/service showcases, 3 behind-the-scenes, 2 customer testimonial templates, 2 educational tips, 2 festival/seasonal posts, 1 team introduction. For each post: caption (2-3 lines in Hindi-English mix + 1 call-to-action), 5 relevant hashtags, and image description for Canva design. Keep tone warm, professional, and local."</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>Canva Design Workflow</h4></div>
+    <div class="demo-out">Step 1: Open Canva → Instagram Post template (1080x1080)
+Step 2: Set client brand colors (ask for hex codes or match from logo)
+Step 3: Upload client's logo and product photos
+Step 4: Design 3 template styles: Product Post, Quote/Tip Post, Offer Post
+Step 5: Duplicate and customize for each of the 15 posts
+Step 6: Export all as PNG, organized in a folder
+
+PRO TIP: Create 3 templates, then duplicate. 15 unique designs in 90 minutes.</div>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">Content Pack Delivery Workflow</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">🤖</div><div class="vn-label">AI Generate</div><div class="vn-sub">Captions + plan</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">🎨</div><div class="vn-label">Canva Design</div><div class="vn-sub">12-15 posts</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">📋</div><div class="vn-label">Organize</div><div class="vn-sub">Delivery doc</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">✅</div><div class="vn-label">Quality Check</div><div class="vn-sub">Trainer review</div></div>
+    </div>
+  </div>
+
+  <div class="micro-action"><h4>Under-Promise, Over-Deliver</h4>
+    <p>Client ko 12 posts bole the? <strong>15 do.</strong> Woh khush honge aur refer karenge. Always deliver MORE than promised. This is how you build a reputation that brings clients to you without marketing.</p>
+  </div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: GMB Setup &rarr;</button></div>
+</div>
+
+<div class="sec" id="s3">
+  <div class="progress-marker">28% through! Set up Google My Business for your client.</div>
+  <div class="sec-head"><div class="over">Section 03 &mdash; GMB Setup</div><h2>Google My Business <span class="gr">Optimization</span></h2>
+    <p>Complete GMB profile with business details, optimized description, posts, Q&A, and photos. Make the client visible on Google Maps.</p></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>AI Prompt: GMB Description + Q&A</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Create a Google My Business profile for [Client Business Name], a [business type] in [city]. Include: (1) Optimized description with relevant local keywords (750 characters max), (2) 5 Google Posts (offers, updates, events), (3) 5 FAQ pairs (common customer questions and professional answers), (4) List of categories to select. Keep it local, keyword-rich, and natural."</div>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">STEP 1</span><span class="crd-icon">📝</span><h3>Complete Profile</h3><p>Business name, address, phone, hours, website, description. Every field filled. Google ranks complete profiles higher.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">STEP 2</span><span class="crd-icon">📸</span><h3>Photo Gallery</h3><p>Upload 10+ photos: storefront, interior, products, team. Businesses with photos get 42% more direction requests on Google.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">STEP 3</span><span class="crd-icon">📢</span><h3>5 Google Posts</h3><p>Offers, updates, new products. Posts keep the profile active and show Google (and customers) that the business is alive and thriving.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">STEP 4</span><span class="crd-icon">❓</span><h3>5 Q&A Pairs</h3><p>Add common questions and professional answers. Customers searching find answers immediately. Shows the business is responsive and organized.</p></div>
+  </div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: WhatsApp Setup &rarr;</button></div>
+</div>
+
+<div class="sec" id="s4">
+  <div class="progress-marker">43% through! WhatsApp Business setup for the client.</div>
+  <div class="sec-head"><div class="over">Section 04 &mdash; WhatsApp Setup</div><h2>WhatsApp Business <span class="gr">Client Setup</span></h2>
+    <p>Professional profile, catalog with products, 10 quick replies, greeting message. Everything you learned on Day 20 -- now do it for a real client.</p></div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>AI Prompt: WhatsApp Quick Replies for Client</h4></div>
+    <div class="prompt-block" onclick="copyPrompt(this)">Click to copy: "Create 10 WhatsApp Business quick reply templates for [Client Business Name], a [business type] in [city]. Include: greeting, thank you, price inquiry, hours, location, booking/order, review request, follow-up, festival greeting, closing. Each under 200 characters. Hindi-English mix. Warm and professional tone."</div>
+  </div>
+
+  <div class="micro-action"><h4>WhatsApp Business Setup Checklist</h4>
+    <ul>
+      <li>Professional profile photo (logo or storefront)</li>
+      <li>Business description (optimized, under 256 chars)</li>
+      <li>Address, hours, email, website filled</li>
+      <li>Catalog with 5+ products/services (images + descriptions + prices)</li>
+      <li>10 quick reply templates set up</li>
+      <li>Greeting message configured</li>
+      <li>Away message configured</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">📄</div><div class="call-body"><h4>The Delivery Document</h4>
+    <p>Create a Google Doc that organizes EVERYTHING you created: <strong>"Here is what we created for you."</strong> Sections: Social Media Posts (with images), Content Calendar, GMB Profile (screenshot), WhatsApp Setup (screenshot), Quick Replies list. This document IS the deliverable. It is what you hand to the client.</p></div></div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Quality Check &rarr;</button></div>
+</div>
+
+<div class="sec" id="s5">
+  <div class="progress-marker">57% through! Quality check before sending to client.</div>
+  <div class="sec-head"><div class="over">Section 05 &mdash; Quality Check</div><h2>Trainer <span class="gr">Quality Review</span></h2>
+    <p data-en="Every deliverable must be client-ready quality. Trainer personally reviews every student's work before it goes to the client. Better to delay 10 minutes than deliver sloppy work." data-hi="Har deliverable client-ready quality ka hona chahiye. Trainer personally har student ka kaam review karega client ko bhejna se pehle. 10 minute late hona better hai sloppy kaam deliver karne se." data-pa="Har deliverable client-ready quality da hona chahida hai. Trainer personally har student da kaam review karega client nu bhejan ton pehle. 10 minute late hona better hai sloppy kaam deliver karan ton.">Every deliverable must be client-ready quality. Trainer personally reviews every student's work before it goes to the client. Better to delay 10 minutes than deliver sloppy work.</p></div>
+
+  <div class="checklist">
+    <h4>Deliver Day 1 Quality Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Minimum 8 social media posts designed and captioned</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>All designs use client brand colors and logo</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Captions are error-free (no typos, proper grammar)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Fonts are readable on mobile phone screen</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>GMB profile draft completed (if applicable)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>WhatsApp Business setup done (if applicable)</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Delivery document organized and ready</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Trainer reviewed and approved work quality</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Client handover meeting scheduled for tomorrow</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Invoice prepared with correct amount and UPI details</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">⚠️</div><div class="call-body"><h4>Quality Standards (Non-Negotiable)</h4>
+    <p>"Yeh post client ko nahi bhej sakte. Color match nahi ho raha. Canva mein fix karo, 5 minute mein." <strong>Be brutal on quality today.</strong> Every deliverable represents your professional reputation. One sloppy post = lost client. One stunning post = referral.</p></div></div>
+
+  <div class="micro-win">AI ke bina yeh kaam 3 din lagta. AI ke saath 3 ghante. Yeh tumhara competitive advantage hai.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Quiz &rarr;</button></div>
+</div>
+
+<div class="sec" id="s6">
+  <div class="progress-marker">71% through! Delivery knowledge check.</div>
+  <div class="sec-head"><div class="over">Quiz</div><h2>Client Delivery <span class="gr">Knowledge Check</span></h2><p>8 questions on content creation, GMB, WhatsApp setup, and quality standards.</p></div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Wrap-Up &rarr;</button></div>
+</div>
+
+<div class="sec" id="s7">
+  <div class="sec-head"><div class="over">Wrap-Up</div><h2>Day 32 <span class="gr">Complete!</span></h2>
+    <p>Content pack created. GMB optimized. WhatsApp set up. Tomorrow: deliver to client, collect your first payment.</p></div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">🎨</span><div class="vi-label" style="color:var(--c1)">Content</div><div class="vi-desc">12-15 posts created</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">📍</span><div class="vi-label" style="color:var(--c2)">GMB</div><div class="vi-desc">Profile optimized</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">📱</span><div class="vi-label" style="color:var(--c4)">WhatsApp</div><div class="vi-desc">Business setup done</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">📄</span><div class="vi-label" style="color:var(--c5)">Document</div><div class="vi-desc">Delivery ready</div></div>
+  </div>
+
+  <div class="micro-action"><h4>Homework (Complete Tonight)</h4><ul>
+    <li>Finish ALL remaining deliverables tonight</li>
+    <li>Schedule client handover meeting for tomorrow (in-person or WhatsApp video)</li>
+    <li>Prepare the delivery document (organized, professional)</li>
+    <li>Have your invoice ready (Zoho or Google Docs template)</li>
+    <li>Practice the handover presentation once</li>
+  </ul></div>
+
+  <div class="callout call-2"><div class="call-ico">📍</div><div class="call-body"><h4>Preview: Day 33 -- Deliver, Close &amp; Collect</h4>
+    <p>Tomorrow is the emotional peak: complete deliverables, hand over to client, collect your <strong>FIRST PAYMENT</strong>. Have your UPI QR code ready. This is the day that changes everything.</p></div></div>
+
+  <div class="identity-shift">First real client project: done. Tomorrow you hand it over and collect payment. You are a professional.</div>
+
+  <div class="sec-foot">Uplrn AI Labs &middot; uplrn.ai &middot; AI Hustler 45</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back</button><a href="hustler-33.html" class="btn btn-glow btn-sm" style="text-decoration:none">Day 33: Deliver &amp; Collect &rarr;</a></div>
+</div>
+
+<div class="foot" id="mainFoot" style="display:none"><p>Built by <span class="brand">Uplrn AI Labs</span></p><p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI Hustler 45 &middot; Day 32 &middot; uplrn.ai</p><p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 Uplrn AI Labs.</p></div>
+
+<script>
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}window.addEventListener('resize',resizeCvs);resizeCvs();for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});requestAnimationFrame(drawPts)}drawPts();
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');const secIds=['s1','s2','s3','s4','s5','s6','s7'];let curLang='en';
+function setLang(l){curLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));document.querySelectorAll('[data-'+l+']').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});}
+function go(id){secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';const pt=document.getElementById('progText');pt.textContent=Math.round((idx+1)/secIds.length*100)+'%';pt.style.display='block';if(id==='s6'&&!quizStarted)initQuiz();const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+function initReveals(){const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vigrid,.progress-marker,.crd,.quiz-box';document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});document.querySelectorAll('.cgrid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal'))c.classList.add('reveal');});});document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});function observeReveals(){document.querySelectorAll('.reveal,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}function updateCheckScore(){const t=document.querySelectorAll('.check-item').length;const c=document.querySelectorAll('.check-item.checked').length;const s=document.getElementById('checkScore');if(s)s.textContent=`${c}/${t} complete`;}
+function copyPrompt(el){const text=el.textContent.replace(/^Click to copy:\s*/,'');navigator.clipboard.writeText(text).then(()=>{const o=el.textContent;el.textContent='Copied!';setTimeout(()=>el.textContent=o,2500);}).catch(()=>{});}
+const allQ=[{q:"How many social media posts should you create minimum for a client content pack?",o:["3","5","8-12","50"],a:2,e:"Minimum 8 posts, ideally 12-15. This gives 3-4 weeks of content. Batch creation is the key to efficiency."},{q:"What makes AI-powered delivery a competitive advantage?",o:["It is free","Speed: 3 hours vs 3 days without AI","It writes perfect copy always","None of the above"],a:1,e:"AI enables you to deliver in hours what would take days manually. Speed + quality = competitive moat."},{q:"What should the delivery document include?",o:["Only images","Everything organized: posts, calendar, GMB, WhatsApp setup","Just a link to Google Drive","Nothing, just send files"],a:1,e:"A professional delivery document organizes ALL deliverables. It shows the client exactly what they received."},{q:"Before sending any work to a client, you should:",o:["Just send it","Get trainer quality review first","Post it on your own social media","Wait a week"],a:1,e:"Trainer reviews every deliverable for quality. Better to delay 10 minutes than deliver sloppy work."},{q:"Why should you deliver MORE than promised?",o:["It wastes time","It builds reputation and generates referrals","Clients demand it","There is no reason"],a:1,e:"Under-promise, over-deliver. 12 posts promised? Deliver 15. Happy clients refer. This is how businesses grow."},{q:"What design rule ensures posts look good on phones?",o:["Small fonts look professional","Large text, bright colors, clear pricing","Black and white only","Use as much text as possible"],a:1,e:"Mobile screens are small. Large text, bright colors, and clear layout ensure readability."},{q:"GMB profiles with photos receive how many more direction requests?",o:["10% more","25% more","42% more","No difference"],a:2,e:"Businesses with 10+ photos on GMB get 42% more direction requests. Visual content drives real foot traffic."},{q:"If a client has not sent their logo and photos, you should:",o:["Wait until they send","Call them NOW and ask for it","Skip the logo","Cancel the project"],a:1,e:"Call immediately. 'Ji namaste, bas kuch cheezein chahiye -- logo, 5-6 photos. WhatsApp pe bhej dijiye.' Do not wait."}];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){const box=document.getElementById('quizBox');if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${pct}%</p><p style="color:var(--t2);margin-bottom:1.5rem">${pct>=75?'Delivery pro!':pct>=50?'Almost there!':'Review the delivery workflow.'}</p><button class="btn btn-glow" onclick="initQuiz()">Retake</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Wrap-Up</button></div>`;return;}const q=qPool[cq];const ltr=['A','B','C','D'];box.innerHTML=`<div class="q-prog">${qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('')}</div><div class="q-head"><span class="qn">Q${cq+1}/${qPool.length}</span>${q.q}</div><div class="q-opts">${q.o.map((o,i)=>`<div class="q-opt" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('')}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next</button></div>`;}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML='Correct! '+q.e}else{fb.className='q-fb show fb-no';fb.innerHTML='Not quite. '+q.e}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

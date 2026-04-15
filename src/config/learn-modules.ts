@@ -474,6 +474,348 @@ export const courseConfigs: Record<string, CourseConfig> = {
       ]},
     ],
   },
+  'ai-power-8-week': {
+    id: 'ai-power-8-week',
+    title: 'AI Power Program (8 Weeks)',
+    slug: 'ai-power-8-week',
+    totalSessions: 16,
+    filePrefix: 'power',
+    modules: [
+      { session: 1, title: 'AI Foundations — What is AI?', description: 'Introduction to AI, types, and real-world applications', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: true, deliverable: 'AI landscape understanding + first conversations', previewQuestions: [
+        { q: 'What does AI stand for?', options: ['Automatic Intelligence', 'Artificial Intelligence', 'Advanced Internet'], answer: 1 },
+        { q: 'Which is an example of Generative AI?', options: ['Calculator', 'ChatGPT', 'Microsoft Excel'], answer: 1 },
+        { q: 'AI is best used for...', options: ['Replacing humans entirely', 'Augmenting human capabilities', 'Only entertainment'], answer: 1 },
+      ]},
+      { session: 2, title: 'Prompt Engineering — CRISP Framework', description: 'Master the CRISP framework for effective AI prompts', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: '20 structured prompts using CRISP', previewQuestions: [
+        { q: 'CRISP stands for...', options: ['Create, Run, Iterate, Ship, Publish', 'Context, Role, Instructions, Specifications, Parameters', 'Copy, Read, Improve, Send, Print'], answer: 1 },
+        { q: 'A vague prompt gives...', options: ['Better results', 'Vague, generic results', 'Faster output'], answer: 1 },
+        { q: 'The best prompts include...', options: ['One word', 'Context, role, and specific instructions', 'Just a question mark'], answer: 1 },
+      ]},
+      { session: 3, title: 'Professional Writing with AI', description: 'Business emails, reports, and professional documents', week: 2, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: false, deliverable: 'Professional document portfolio', previewQuestions: [
+        { q: 'AI-generated text should always be...', options: ['Used as-is', 'Reviewed and edited by you', 'Ignored'], answer: 1 },
+        { q: 'For business emails, AI helps most with...', options: ['Replacing thinking', 'Drafting and tone adjustment', 'Sending automatically'], answer: 1 },
+        { q: 'Professional writing with AI requires...', options: ['No human input', 'Clear prompts with context and tone', 'Only ChatGPT'], answer: 1 },
+      ]},
+      { session: 4, title: 'Academic & Application Writing', description: 'SOPs, cover letters, and academic documents', week: 2, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'SOP + cover letter drafts', previewQuestions: [
+        { q: 'An SOP should be...', options: ['Generic and copied', 'Personal and specific to the program', 'Very short'], answer: 1 },
+        { q: 'AI helps with applications by...', options: ['Writing everything for you', 'Helping structure and refine YOUR story', 'Submitting automatically'], answer: 1 },
+        { q: 'The most important part of a cover letter is...', options: ['Length', 'Matching your skills to the role', 'Using fancy words'], answer: 1 },
+      ]},
+      { session: 5, title: 'AI Design & Visual Content', description: 'Canva AI, image generation, and visual branding', week: 3, tools: ['Canva', 'DALL-E', 'Midjourney'], isFree: false, deliverable: 'Brand kit + social media designs', previewQuestions: [
+        { q: 'Canva AI can...', options: ['Only make logos', 'Generate designs, remove backgrounds, and resize', 'Replace Photoshop entirely'], answer: 1 },
+        { q: 'Brand consistency means...', options: ['Using random colors', 'Using the same fonts, colors, and style everywhere', 'Changing design daily'], answer: 1 },
+        { q: 'AI image generation works best with...', options: ['One-word prompts', 'Detailed descriptions of what you want', 'No instructions'], answer: 1 },
+      ]},
+      { session: 6, title: 'AI Video & Personal Branding', description: 'HeyGen, CapCut, and video marketing', week: 3, tools: ['HeyGen', 'CapCut', 'Runway'], isFree: false, deliverable: 'Personal branding video', previewQuestions: [
+        { q: 'HeyGen is used for...', options: ['Text editing', 'AI avatar videos', 'Spreadsheets'], answer: 1 },
+        { q: 'Personal branding videos should...', options: ['Be 30 minutes long', 'Be short, clear, and show your expertise', 'Have no script'], answer: 1 },
+        { q: 'CapCut helps with...', options: ['Writing code', 'Video editing with AI features', 'Email marketing'], answer: 1 },
+      ]},
+      { session: 7, title: "AI for Punjab's Industries", description: 'Apply AI to agriculture, textiles, and local business', week: 4, tools: ['ChatGPT', 'Claude', 'Canva'], isFree: false, deliverable: 'Industry-specific AI solutions', previewQuestions: [
+        { q: 'AI can help Punjab farmers by...', options: ['Replacing them', 'Predicting weather, pest control, and crop planning', 'Only entertainment'], answer: 1 },
+        { q: 'Local businesses benefit from AI through...', options: ['Nothing', 'Marketing, customer service, and operations', 'Only large companies use AI'], answer: 1 },
+        { q: 'The best AI solutions for local industries are...', options: ['Copied from Silicon Valley', 'Customized for local needs and languages', 'Only in English'], answer: 1 },
+      ]},
+      { session: 8, title: 'AI Business Plan Workshop', description: 'Create a complete business plan using AI', week: 4, tools: ['ChatGPT', 'Claude', 'Canva'], isFree: false, deliverable: 'Complete AI-assisted business plan', previewQuestions: [
+        { q: 'A business plan should include...', options: ['Only the idea', 'Problem, solution, market, revenue model, and team', 'Just financials'], answer: 1 },
+        { q: 'AI helps with business planning by...', options: ['Making decisions for you', 'Market research, financial projections, and competitor analysis', 'Guaranteeing success'], answer: 1 },
+        { q: 'The most important part of a business plan is...', options: ['The logo', 'Solving a real problem for real customers', 'The font choice'], answer: 1 },
+      ]},
+      { session: 9, title: 'No-Code Automation', description: 'Zapier, Make, and workflow automation', week: 5, tools: ['Zapier', 'Make'], isFree: false, deliverable: '3 automated workflows', previewQuestions: [
+        { q: 'No-code automation means...', options: ['No computers needed', 'Building workflows without writing code', 'Only for developers'], answer: 1 },
+        { q: 'Zapier connects...', options: ['Physical machines', 'Different apps and services automatically', 'Only Google products'], answer: 1 },
+        { q: 'A good automation saves...', options: ['Nothing', 'Time on repetitive tasks', 'Only money'], answer: 1 },
+      ]},
+      { session: 10, title: 'AI Chatbots & Custom GPTs', description: 'Build AI assistants for businesses', week: 5, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Custom GPT + chatbot prototype', previewQuestions: [
+        { q: 'A Custom GPT is...', options: ['A new AI company', 'A specialized ChatGPT with custom instructions', 'A coding language'], answer: 1 },
+        { q: 'Business chatbots are useful for...', options: ['Replacing all employees', '24/7 customer support and FAQ handling', 'Only tech companies'], answer: 1 },
+        { q: 'The key to a good chatbot is...', options: ['Making it sound robotic', 'Clear instructions and relevant knowledge', 'Using the most expensive AI'], answer: 1 },
+      ]},
+      { session: 11, title: 'AI Freelancing Masterclass', description: 'Start earning with AI skills on freelancing platforms', week: 6, tools: ['All tools'], isFree: false, deliverable: 'Freelancing profile + first gig proposal', previewQuestions: [
+        { q: 'The best freelancing platforms for AI work are...', options: ['Only Fiverr', 'Upwork, Fiverr, and direct outreach', 'None exist'], answer: 1 },
+        { q: 'A strong freelancing profile needs...', options: ['No portfolio', 'Skills, portfolio, and client testimonials', 'Only a photo'], answer: 1 },
+        { q: 'Pricing AI services should be based on...', options: ['Hours worked', 'Value delivered to the client', 'Random guessing'], answer: 1 },
+      ]},
+      { session: 12, title: 'Career & Exam Preparation with AI', description: 'Use AI for competitive exams and career growth', week: 6, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Study plan + practice papers', previewQuestions: [
+        { q: 'AI can help exam preparation by...', options: ['Taking the exam for you', 'Creating practice questions and explaining concepts', 'Cheating'], answer: 1 },
+        { q: 'The best way to use AI for studying is...', options: ['Copy-pasting answers', 'Active learning: ask questions, get explanations, practice', 'Only reading AI output'], answer: 1 },
+        { q: 'AI career tools help with...', options: ['Getting hired automatically', 'Resume building, interview prep, and skill gap analysis', 'Nothing useful'], answer: 1 },
+      ]},
+      { session: 13, title: 'AI for Data & Research', description: 'Data analysis, research, and insights with AI', week: 7, tools: ['ChatGPT', 'Claude', 'Google Sheets'], isFree: false, deliverable: 'Data analysis report', previewQuestions: [
+        { q: 'AI helps with data analysis by...', options: ['Making up data', 'Finding patterns, summarizing, and visualizing data', 'Only large datasets'], answer: 1 },
+        { q: 'Research with AI should always...', options: ['Be taken at face value', 'Be verified with primary sources', 'Replace libraries'], answer: 1 },
+        { q: 'The best AI for data work is...', options: ['Any single tool', 'The right tool for the specific task', 'The most expensive one'], answer: 1 },
+      ]},
+      { session: 14, title: 'Future-Proofing & AI Agents', description: 'AI agents, trends, and staying relevant', week: 7, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Future-proofing career plan', previewQuestions: [
+        { q: 'AI agents can...', options: ['Only chat', 'Take actions, use tools, and complete multi-step tasks', 'Replace all jobs tomorrow'], answer: 1 },
+        { q: 'To stay relevant in the AI era...', options: ['Ignore AI', 'Keep learning and adapting', 'Only learn one tool'], answer: 1 },
+        { q: 'The most future-proof skill is...', options: ['Memorization', 'Learning how to learn', 'Using one specific tool'], answer: 1 },
+      ]},
+      { session: 15, title: 'Capstone Project Building', description: 'Build your final project combining all skills', week: 8, tools: ['All tools'], isFree: false, deliverable: 'Capstone project draft', previewQuestions: [
+        { q: 'A capstone project should demonstrate...', options: ['One tool only', 'Integration of multiple AI tools and skills', 'Speed over quality'], answer: 1 },
+        { q: 'The best projects solve...', options: ['Imaginary problems', 'Real problems for real people', 'Only technical challenges'], answer: 1 },
+        { q: 'Documentation is important because...', options: ['Teachers require it', 'It shows your thinking process and makes work reusable', 'It wastes time'], answer: 1 },
+      ]},
+      { session: 16, title: 'Demo Day & Certification', description: 'Present your project and earn your certificate', week: 8, tools: [], isFree: false, deliverable: 'Final presentation + certificate', previewQuestions: [
+        { q: 'A good demo presentation...', options: ['Is very long', 'Tells a story: problem, solution, results', 'Has no visuals'], answer: 1 },
+        { q: 'After certification, you should...', options: ['Stop learning', 'Apply skills professionally and keep growing', 'Wait for instructions'], answer: 1 },
+        { q: 'The most valuable outcome of this course is...', options: ['The certificate', 'The skills and confidence to use AI professionally', 'Attendance'], answer: 1 },
+      ]},
+    ],
+  },
+  'prompt-engineering': {
+    id: 'prompt-engineering',
+    title: 'Generative AI & Prompt Engineering',
+    slug: 'prompt-engineering',
+    totalSessions: 12,
+    filePrefix: 'prompt',
+    modules: [
+      { session: 1, title: 'Transformer Architecture', description: 'How LLMs work under the hood', week: 1, tools: ['ChatGPT', 'Claude'], isFree: true, deliverable: 'Understanding of transformer architecture', previewQuestions: [
+        { q: 'Transformers process text using...', options: ['Rules-based parsing', 'Attention mechanisms', 'Simple pattern matching'], answer: 1 },
+        { q: 'Self-attention allows the model to...', options: ['Ignore context', 'Weigh the importance of each word relative to others', 'Only read left to right'], answer: 1 },
+        { q: 'LLMs generate text by...', options: ['Looking up answers in a database', 'Predicting the next most likely token', 'Copying from the internet'], answer: 1 },
+      ]},
+      { session: 2, title: 'Tokens & Context Windows', description: 'Understanding tokenization and context limits', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Token counting exercises', previewQuestions: [
+        { q: 'A token is roughly...', options: ['A full sentence', 'About 4 characters or 3/4 of a word', 'One letter'], answer: 1 },
+        { q: 'Context window determines...', options: ['Output quality', 'How much text the model can process at once', 'Response speed'], answer: 1 },
+        { q: 'When you exceed the context window...', options: ['The model crashes', 'Earlier content gets forgotten or truncated', 'Nothing happens'], answer: 1 },
+      ]},
+      { session: 3, title: 'Temperature & Parameters', description: 'Control AI output with temperature and other settings', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Parameter comparison experiments', previewQuestions: [
+        { q: 'Higher temperature makes output...', options: ['More deterministic', 'More creative and random', 'Shorter'], answer: 1 },
+        { q: 'Temperature 0 is best for...', options: ['Creative writing', 'Factual, consistent answers', 'Poetry'], answer: 1 },
+        { q: 'Top-p sampling controls...', options: ['Speed', 'The diversity of token selection', 'Model size'], answer: 1 },
+      ]},
+      { session: 4, title: 'Model Comparison Deep Dive', description: 'GPT-4 vs Claude vs Gemini — strengths and use cases', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: false, deliverable: 'Model comparison matrix', previewQuestions: [
+        { q: 'Claude excels at...', options: ['Image generation', 'Long document analysis and careful reasoning', 'Only code'], answer: 1 },
+        { q: 'The best model depends on...', options: ['Price only', 'The specific task and requirements', 'Popularity'], answer: 1 },
+        { q: 'Multi-model strategy means...', options: ['Using only one model', 'Using the right model for each task', 'Switching models randomly'], answer: 1 },
+      ]},
+      { session: 5, title: 'CRISP Framework', description: 'Master the CRISP framework for structured prompting', week: 2, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: '20 CRISP-structured prompts', previewQuestions: [
+        { q: 'CRISP stands for...', options: ['Create, Run, Iterate, Ship, Publish', 'Context, Role, Instructions, Specifications, Parameters', 'Copy, Read, Improve, Send, Print'], answer: 1 },
+        { q: 'The Role component helps by...', options: ['Making AI funny', 'Giving the AI a perspective and expertise level', 'Nothing'], answer: 1 },
+        { q: 'Specifications in CRISP include...', options: ['Only word count', 'Format, length, tone, audience, and constraints', 'Just the topic'], answer: 1 },
+      ]},
+      { session: 6, title: 'Chain-of-Thought Prompting', description: 'Guide AI through step-by-step reasoning', week: 2, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Chain-of-thought prompt library', previewQuestions: [
+        { q: 'Chain-of-thought prompting asks the AI to...', options: ['Give one-word answers', 'Think step by step through the problem', 'Skip reasoning'], answer: 1 },
+        { q: 'CoT is most useful for...', options: ['Simple greetings', 'Complex reasoning, math, and analysis tasks', 'Image generation'], answer: 1 },
+        { q: '"Let\'s think step by step" is an example of...', options: ['Few-shot prompting', 'Zero-shot chain-of-thought', 'System prompts'], answer: 1 },
+      ]},
+      { session: 7, title: 'Few-Shot & Zero-Shot Prompting', description: 'Teaching AI by example vs. instruction alone', week: 2, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Few-shot prompt templates', previewQuestions: [
+        { q: 'Few-shot prompting means...', options: ['Using AI briefly', 'Giving examples for the AI to follow', 'Writing short prompts'], answer: 1 },
+        { q: 'Zero-shot prompting relies on...', options: ['Many examples', 'Clear instructions without examples', 'No prompt at all'], answer: 1 },
+        { q: 'Few-shot works best when...', options: ['The task is obvious', 'The output format is specific and consistent', 'You have no examples'], answer: 1 },
+      ]},
+      { session: 8, title: 'System Prompts & Custom Instructions', description: 'Configure AI behavior with system-level prompts', week: 3, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: '5 system prompt templates', previewQuestions: [
+        { q: 'A system prompt...', options: ['Is visible to end users', 'Sets the AI\'s behavior, role, and boundaries', 'Only works in ChatGPT'], answer: 1 },
+        { q: 'Custom instructions persist across...', options: ['One message', 'An entire conversation', 'Only the first response'], answer: 1 },
+        { q: 'The best system prompts include...', options: ['Just "be helpful"', 'Role, constraints, output format, and guardrails', 'Nothing specific'], answer: 1 },
+      ]},
+      { session: 9, title: 'Role-Based Prompting & Multi-Step Workflows', description: 'Assign roles and build complex AI workflows', week: 3, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Multi-step workflow templates', previewQuestions: [
+        { q: 'Role-based prompting assigns AI a...', options: ['Random personality', 'Specific expertise and perspective', 'Human name'], answer: 1 },
+        { q: 'Multi-step workflows break tasks into...', options: ['One big prompt', 'Sequential, manageable steps', 'Random order'], answer: 1 },
+        { q: 'The benefit of role-based prompting is...', options: ['Entertainment', 'More focused, expert-level responses', 'Longer responses'], answer: 1 },
+      ]},
+      { session: 10, title: 'Prompt Chaining', description: 'Connect multiple prompts for complex outputs', week: 3, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Prompt chain templates', previewQuestions: [
+        { q: 'Prompt chaining means...', options: ['Writing one long prompt', 'Using the output of one prompt as input to the next', 'Repeating the same prompt'], answer: 1 },
+        { q: 'Chaining is useful for...', options: ['Simple questions', 'Complex tasks that require multiple processing steps', 'Only coding'], answer: 1 },
+        { q: 'The key to good chaining is...', options: ['Speed', 'Clear input/output contracts between steps', 'Using one tool only'], answer: 1 },
+      ]},
+      { session: 11, title: 'Custom GPTs & Claude Projects', description: 'Build permanent AI tools for businesses', week: 4, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: '3 Custom GPTs + 2 Claude Projects', previewQuestions: [
+        { q: 'Custom GPTs are best for...', options: ['One-time tasks', 'Recurring tasks that need consistent AI behavior', 'General chatting'], answer: 1 },
+        { q: 'Claude Projects differ from Custom GPTs by...', options: ['Being free', 'Supporting document uploads and persistent context', 'Being simpler'], answer: 1 },
+        { q: 'The best Custom GPTs solve...', options: ['Everything', 'One specific business problem very well', 'Nothing practical'], answer: 1 },
+      ]},
+      { session: 12, title: 'Final Capstone Project', description: 'Build a complete AI solution combining all techniques', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Capstone project + presentation + certificate', previewQuestions: [
+        { q: 'The capstone should integrate at least...', options: ['1 technique', '4+ prompting techniques', 'Only system prompts'], answer: 1 },
+        { q: 'The pass mark for the capstone is...', options: ['50/100', '70/100', '90/100'], answer: 1 },
+        { q: 'After this course, the best next step is...', options: ['Stop learning', 'Explore AI agents, RAG, and advanced topics', 'Repeat the course'], answer: 1 },
+      ]},
+    ],
+  },
+  'ai-hustler-45': {
+    id: 'ai-hustler-45',
+    title: 'AI Hustler 45',
+    slug: 'ai-hustler-45',
+    totalSessions: 35,
+    filePrefix: 'hustler',
+    modules: [
+      { session: 1, title: 'AI Foundations — What is AI?', description: 'Introduction to AI tools and landscape', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: true, deliverable: 'AI tool accounts + first conversations', previewQuestions: [
+        { q: 'What does AI stand for?', options: ['Automatic Intelligence', 'Artificial Intelligence', 'Advanced Internet'], answer: 1 },
+        { q: 'Which is an AI tool?', options: ['Microsoft Word', 'ChatGPT', 'Calculator'], answer: 1 },
+        { q: 'AI is best at...', options: ['Replacing humans', 'Augmenting human capabilities', 'Only entertainment'], answer: 1 },
+      ]},
+      { session: 2, title: 'AI Landscape & Choosing Tools', description: 'Compare tools and choose the right one for each task', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: false, deliverable: 'Tool comparison matrix', previewQuestions: [
+        { q: 'The best AI tool depends on...', options: ['Popularity', 'The specific task', 'Price only'], answer: 1 },
+        { q: 'Claude is especially good at...', options: ['Image generation', 'Long document analysis', 'Only coding'], answer: 1 },
+        { q: 'You should use multiple AI tools because...', options: ['It is fun', 'Each has different strengths', 'One tool does everything'], answer: 0 },
+      ]},
+      { session: 3, title: 'AI Deep Dive — Hands-On All Tools', description: 'Practice with every major AI tool', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini', 'Canva'], isFree: false, deliverable: 'Multi-tool output comparison', previewQuestions: [
+        { q: 'Hands-on practice is important because...', options: ['Reading is enough', 'You learn by doing', 'AI tools are simple'], answer: 1 },
+        { q: 'When comparing tools, test with...', options: ['Different prompts', 'The same prompt across all tools', 'No prompts'], answer: 1 },
+        { q: 'The goal of deep dive is...', options: ['Speed', 'Understanding each tool\'s strengths and limits', 'Memorizing menus'], answer: 1 },
+      ]},
+      { session: 4, title: 'Prompt Engineering — 5-Block Framework', description: 'Master structured prompting for business use', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Prompt library with 20+ prompts', previewQuestions: [
+        { q: 'A structured prompt includes...', options: ['One word', 'Role, context, task, format, and constraints', 'Just a question'], answer: 1 },
+        { q: 'Better prompts give...', options: ['Slower responses', 'More accurate and useful outputs', 'No difference'], answer: 1 },
+        { q: 'The 5-Block Framework helps by...', options: ['Making prompts longer', 'Organizing your instructions clearly', 'Confusing the AI'], answer: 1 },
+      ]},
+      { session: 5, title: 'ChatGPT Deep Dive — English Content', description: 'Create business content in English using ChatGPT', week: 2, tools: ['ChatGPT'], isFree: false, deliverable: 'Business content portfolio (English)', previewQuestions: [
+        { q: 'Business content should be...', options: ['Very long', 'Clear, professional, and action-oriented', 'Informal always'], answer: 1 },
+        { q: 'ChatGPT helps businesses by...', options: ['Replacing writers', 'Drafting content quickly that humans refine', 'Nothing'], answer: 1 },
+        { q: 'The best content prompts specify...', options: ['Nothing', 'Audience, tone, format, and purpose', 'Only the topic'], answer: 1 },
+      ]},
+      { session: 6, title: 'ChatGPT Deep Dive — Hindi & Punjabi', description: 'Create multilingual business content', week: 2, tools: ['ChatGPT'], isFree: false, deliverable: 'Business content in Hindi and Punjabi', previewQuestions: [
+        { q: 'Multilingual content matters because...', options: ['It looks impressive', 'Local businesses need content in local languages', 'AI only works in English'], answer: 1 },
+        { q: 'For Hindi/Punjabi content, you should...', options: ['Translate from English', 'Create directly in the target language with cultural context', 'Use Google Translate only'], answer: 1 },
+        { q: 'Regional language content helps businesses...', options: ['Nothing', 'Connect with local customers authentically', 'Only in rural areas'], answer: 1 },
+      ]},
+      { session: 7, title: 'Canva AI — Social Media Graphics', description: 'Design professional social media content with Canva AI', week: 2, tools: ['Canva'], isFree: false, deliverable: '10 social media designs', previewQuestions: [
+        { q: 'Canva AI can...', options: ['Only make logos', 'Generate designs, edit photos, and create brand kits', 'Replace Photoshop completely'], answer: 1 },
+        { q: 'Good social media designs are...', options: ['Very text-heavy', 'Visual, branded, and clear', 'Always complex'], answer: 1 },
+        { q: 'Consistent branding means...', options: ['Random colors', 'Same fonts, colors, and style across all posts', 'Different every time'], answer: 1 },
+      ]},
+      { session: 8, title: 'Canva AI — Marketing Materials', description: 'Create flyers, brochures, and business cards', week: 2, tools: ['Canva'], isFree: false, deliverable: 'Marketing materials set', previewQuestions: [
+        { q: 'Marketing materials should...', options: ['Be as cheap as possible', 'Look professional and reflect the brand', 'Use clip art'], answer: 1 },
+        { q: 'Canva templates save time by...', options: ['Doing everything automatically', 'Providing professional starting points you customize', 'Limiting creativity'], answer: 1 },
+        { q: 'A good business card includes...', options: ['Everything about the business', 'Name, title, contact info, and brand colors', 'Only a phone number'], answer: 1 },
+      ]},
+      { session: 9, title: 'Canva AI — Professional Portfolio', description: 'Build a portfolio that wins clients', week: 3, tools: ['Canva'], isFree: false, deliverable: 'Professional portfolio', previewQuestions: [
+        { q: 'A portfolio shows...', options: ['Your education only', 'Your best work and results', 'Everything you ever made'], answer: 1 },
+        { q: 'Portfolio pieces should include...', options: ['Just images', 'The problem, your solution, and the results', 'Only text'], answer: 1 },
+        { q: 'The best portfolios are...', options: ['Very long', 'Curated to show range and quality', 'Generic templates'], answer: 1 },
+      ]},
+      { session: 10, title: 'Video AI — HeyGen Avatars', description: 'Create AI avatar marketing videos', week: 3, tools: ['HeyGen'], isFree: false, deliverable: 'AI avatar marketing video', previewQuestions: [
+        { q: 'HeyGen creates...', options: ['Written content', 'AI avatar videos from text scripts', 'Music'], answer: 1 },
+        { q: 'AI videos help businesses by...', options: ['Nothing', 'Creating professional video content without filming', 'Replacing TV'], answer: 1 },
+        { q: 'A good video script is...', options: ['Very long', 'Short, clear, and has a call to action', 'Improvised'], answer: 1 },
+      ]},
+      { session: 11, title: 'Video AI — Voiceovers & CapCut', description: 'AI voiceovers and video editing', week: 3, tools: ['CapCut', 'ElevenLabs'], isFree: false, deliverable: 'Edited video with AI voiceover', previewQuestions: [
+        { q: 'AI voiceovers are useful for...', options: ['Nothing', 'Creating professional narration without recording', 'Only music'], answer: 1 },
+        { q: 'CapCut helps with...', options: ['Writing', 'Video editing with AI-powered features', 'Spreadsheets'], answer: 1 },
+        { q: 'Good video editing keeps videos...', options: ['As long as possible', 'Engaging, paced well, and focused', 'Silent'], answer: 1 },
+      ]},
+      { session: 12, title: 'Video AI — 3 Types of Marketing Videos', description: 'Create testimonial, explainer, and promo videos', week: 3, tools: ['CapCut', 'HeyGen', 'Canva'], isFree: false, deliverable: '3 marketing video types', previewQuestions: [
+        { q: 'The 3 types of marketing videos are...', options: ['Random, funny, long', 'Testimonial, explainer, and promotional', 'Only ads'], answer: 1 },
+        { q: 'Testimonial videos work because...', options: ['They are cheap', 'Real people sharing real results builds trust', 'They are short'], answer: 1 },
+        { q: 'An explainer video should...', options: ['Be 30 minutes', 'Clearly explain the product/service in under 2 minutes', 'Have no visuals'], answer: 1 },
+      ]},
+      { session: 13, title: 'Digital Marketing Fundamentals Day 1', description: 'SEO, content marketing, and online presence basics', week: 4, tools: ['ChatGPT', 'Google'], isFree: false, deliverable: 'Digital marketing plan', previewQuestions: [
+        { q: 'SEO stands for...', options: ['Social Email Outreach', 'Search Engine Optimization', 'Simple Email Operations'], answer: 1 },
+        { q: 'Content marketing is about...', options: ['Spamming posts', 'Creating valuable content that attracts customers', 'Only paid ads'], answer: 1 },
+        { q: 'Every business needs...', options: ['TV ads', 'An online presence (Google, social media, website)', 'Only word of mouth'], answer: 1 },
+      ]},
+      { session: 14, title: 'Digital Marketing — Social Media Strategy', description: 'Build a complete social media strategy', week: 4, tools: ['ChatGPT', 'Canva', 'Meta'], isFree: false, deliverable: 'Social media strategy document', previewQuestions: [
+        { q: 'A social media strategy defines...', options: ['Random posting', 'Goals, audience, content pillars, and schedule', 'Only hashtags'], answer: 1 },
+        { q: 'Content pillars are...', options: ['Building supports', '3-5 topic categories you consistently post about', 'Only educational content'], answer: 1 },
+        { q: 'Posting consistency matters because...', options: ['It wastes time', 'Algorithms favor regular, quality content', 'Once a month is enough'], answer: 1 },
+      ]},
+      { session: 15, title: 'Portfolio Building + Phase 1 Exam', description: 'Compile portfolio and take Phase 1 certification exam', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Complete portfolio + Phase 1 certificate', previewQuestions: [
+        { q: 'A portfolio should contain...', options: ['Everything', 'Your best work organized by service type', 'Only one project'], answer: 1 },
+        { q: 'The Phase 1 exam tests...', options: ['Memory', 'Your ability to create a complete business package under time pressure', 'Speed typing'], answer: 1 },
+        { q: 'Phase 2 focuses on...', options: ['More theory', 'Applied skills and real client work', 'Taking a break'], answer: 1 },
+      ]},
+      { session: 16, title: 'Advanced Prompt Engineering — CRISP', description: 'Advanced prompting techniques for client work', week: 5, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Advanced prompt library', previewQuestions: [
+        { q: 'Advanced prompting differs from basic by...', options: ['Being longer', 'Using structured frameworks and chaining', 'Being more confusing'], answer: 1 },
+        { q: 'CRISP framework improves prompts by...', options: ['Making them shorter', 'Providing structure: Context, Role, Instructions, Specs, Parameters', 'Nothing'], answer: 1 },
+        { q: 'Client-ready prompts must be...', options: ['Complicated', 'Consistent, professional, and produce quality output', 'Generic'], answer: 1 },
+      ]},
+      { session: 17, title: 'Field Visit — Real Business Needs', description: 'Visit local businesses and understand their digital needs', week: 5, tools: [], isFree: false, deliverable: 'Business needs audit reports', previewQuestions: [
+        { q: 'Field visits help you understand...', options: ['Nothing new', 'Real problems businesses face that you can solve', 'Only theory'], answer: 1 },
+        { q: 'When visiting a business, you should...', options: ['Pitch immediately', 'Listen, observe, and take notes first', 'Criticize their marketing'], answer: 1 },
+        { q: 'A business audit checks...', options: ['Their finances', 'Their online presence: GMB, social media, website, reviews', 'Their employees'], answer: 1 },
+      ]},
+      { session: 18, title: 'Service Packages + Proposals', description: 'Create professional service packages and proposals', week: 5, tools: ['Canva', 'ChatGPT'], isFree: false, deliverable: 'Service package proposals', previewQuestions: [
+        { q: 'Service packages should be...', options: ['One-size-fits-all', 'Tiered (basic/growth/premium) for different budgets', 'Very expensive only'], answer: 1 },
+        { q: 'A proposal should include...', options: ['Just a price', 'Problem, solution, deliverables, timeline, and price', 'Only your resume'], answer: 1 },
+        { q: 'Tiered pricing helps because...', options: ['It confuses clients', 'Clients choose the level that fits their budget', 'Only premium sells'], answer: 1 },
+      ]},
+      { session: 19, title: 'Contracts + Client Onboarding', description: 'Set up professional client relationships', week: 5, tools: ['ChatGPT', 'Canva'], isFree: false, deliverable: 'Contract template + onboarding checklist', previewQuestions: [
+        { q: 'A contract protects...', options: ['Only the client', 'Both you and the client', 'Nobody'], answer: 1 },
+        { q: 'Client onboarding should include...', options: ['Nothing formal', 'Welcome message, timeline, deliverables, and communication plan', 'Only an invoice'], answer: 1 },
+        { q: 'Setting expectations early prevents...', options: ['Good results', 'Scope creep and misunderstandings', 'Client happiness'], answer: 1 },
+      ]},
+      { session: 20, title: 'WhatsApp Marketing Campaigns', description: 'Build effective WhatsApp marketing for businesses', week: 6, tools: ['WhatsApp Business'], isFree: false, deliverable: 'WhatsApp marketing campaign', previewQuestions: [
+        { q: 'WhatsApp Business is useful for...', options: ['Personal chats only', 'Catalogs, auto-replies, and broadcast lists', 'Only large companies'], answer: 1 },
+        { q: 'Broadcast lists differ from groups because...', options: ['They are the same', 'Messages appear as individual chats to recipients', 'They are public'], answer: 1 },
+        { q: 'Good WhatsApp marketing is...', options: ['Spamming everyone', 'Targeted, valuable, and permission-based', 'Daily messages'], answer: 1 },
+      ]},
+      { session: 21, title: 'Google My Business Deep Dive', description: 'Master GMB for local business visibility', week: 6, tools: ['Google Business'], isFree: false, deliverable: 'Optimized GMB profile', previewQuestions: [
+        { q: 'GMB helps businesses by...', options: ['Nothing', 'Appearing in local Google search and Maps results', 'Only for restaurants'], answer: 1 },
+        { q: 'A complete GMB profile includes...', options: ['Just a name', 'Photos, hours, services, posts, and reviews', 'Only the address'], answer: 1 },
+        { q: 'GMB posts should be...', options: ['Never updated', 'Posted weekly with offers, updates, and photos', 'Only text'], answer: 1 },
+      ]},
+      { session: 22, title: 'Meta Business Suite', description: 'Manage Facebook and Instagram professionally', week: 6, tools: ['Meta Business Suite'], isFree: false, deliverable: 'Scheduled social media week', previewQuestions: [
+        { q: 'Meta Business Suite manages...', options: ['Only Facebook', 'Facebook and Instagram from one dashboard', 'Only ads'], answer: 1 },
+        { q: 'Scheduling posts helps by...', options: ['Wasting time', 'Maintaining consistency without daily effort', 'Nothing'], answer: 1 },
+        { q: 'Business Suite insights show...', options: ['Nothing useful', 'Reach, engagement, and audience demographics', 'Only follower count'], answer: 1 },
+      ]},
+      { session: 23, title: 'Sarvam AI + Multilingual Content', description: 'Create content in Indian languages using Sarvam AI', week: 7, tools: ['Sarvam AI', 'ChatGPT'], isFree: false, deliverable: 'Multilingual marketing content', previewQuestions: [
+        { q: 'Sarvam AI specializes in...', options: ['English only', 'Indian languages including Hindi, Punjabi, Tamil', 'Only code'], answer: 1 },
+        { q: 'Multilingual marketing helps businesses...', options: ['Nothing', 'Reach customers in their preferred language', 'Only in cities'], answer: 1 },
+        { q: 'Good multilingual content is...', options: ['Direct translation', 'Culturally adapted and natural-sounding', 'Always formal'], answer: 1 },
+      ]},
+      { session: 24, title: 'Objection Handling Mastery', description: 'Handle client objections and close deals', week: 7, tools: [], isFree: false, deliverable: 'Objection handling scripts', previewQuestions: [
+        { q: 'The LAAR framework stands for...', options: ['Look, Ask, Answer, Run', 'Listen, Acknowledge, Address, Redirect', 'Leave, Avoid, Argue, Reject'], answer: 1 },
+        { q: 'When a client says "it\'s too expensive"...', options: ['Lower your price immediately', 'Show the ROI and value compared to the cost', 'Walk away'], answer: 1 },
+        { q: 'Objections are actually...', options: ['Rejections', 'Buying signals that need addressing', 'Insults'], answer: 1 },
+      ]},
+      { session: 25, title: 'Workflow Automation', description: 'Automate repetitive tasks for efficiency', week: 7, tools: ['Zapier', 'Make'], isFree: false, deliverable: 'Automated client workflows', previewQuestions: [
+        { q: 'Automation saves...', options: ['Nothing', 'Time on repetitive tasks so you can focus on growth', 'Only money'], answer: 1 },
+        { q: 'A good automation candidate is...', options: ['Creative work', 'Repetitive tasks done the same way every time', 'One-time projects'], answer: 1 },
+        { q: 'Zapier connects...', options: ['Physical devices', 'Different apps to work together automatically', 'Only Google products'], answer: 1 },
+      ]},
+      { session: 26, title: 'Phase 2 Practical Exam', description: 'Pitch a complete client package under pressure', week: 7, tools: [], isFree: false, deliverable: 'Phase 2 certification', previewQuestions: [
+        { q: 'The Phase 2 exam is...', options: ['Written test', 'A 15-minute live pitch to a simulated client', 'Multiple choice'], answer: 1 },
+        { q: 'Pass mark for Phase 2 is...', options: ['50/100', '70/100', '90/100'], answer: 1 },
+        { q: 'The exam tests...', options: ['Memory', 'Real client-facing skills under pressure', 'Speed'], answer: 1 },
+      ]},
+      { session: 27, title: 'Business Skills for Freelancers', description: 'Invoicing, tax basics, income tracking, time management', week: 8, tools: ['Canva', 'Google Sheets'], isFree: false, deliverable: 'Complete freelancing business setup', previewQuestions: [
+        { q: 'A professional invoice must include...', options: ['Just the amount', 'Invoice number, date, services, amount, payment details', 'Only your name'], answer: 1 },
+        { q: 'GST registration is needed above...', options: ['₹5 lakh/year', '₹20 lakh/year', '₹50 lakh/year'], answer: 1 },
+        { q: 'Time blocking helps freelancers...', options: ['Work less', 'Handle multiple clients without burnout', 'Avoid clients'], answer: 1 },
+      ]},
+      { session: 28, title: 'Field Work Day 1 — Guided Sprint', description: 'Trainer demonstrates live business approaches', week: 8, tools: [], isFree: false, deliverable: 'Observation notes + approach scripts', previewQuestions: [
+        { q: 'Field work starts with...', options: ['Cold calling', 'Watching the trainer approach businesses first', 'Sending emails'], answer: 1 },
+        { q: 'During trainer demos, you should...', options: ['Just watch', 'Take detailed notes on what works', 'Do nothing'], answer: 1 },
+        { q: 'The first approach should always...', options: ['Start with pricing', 'Build rapport and ask about their business', 'Criticize their marketing'], answer: 1 },
+      ]},
+      { session: 29, title: 'Field Work Day 2 — Solo Sprint', description: 'Students approach businesses in pairs', week: 8, tools: [], isFree: false, deliverable: '5+ business approaches + contact info collected', previewQuestions: [
+        { q: 'Approaching in pairs helps with...', options: ['Nothing', 'Safety and confidence', 'Speed'], answer: 1 },
+        { q: 'A successful approach ends with...', options: ['A sale', 'Contact info and permission to follow up', 'Nothing'], answer: 1 },
+        { q: 'Free trials help because...', options: ['You lose money', 'Businesses can see value before committing', 'They always convert'], answer: 1 },
+      ]},
+      { session: 30, title: 'Field Work Day 3 — Follow-Up Sprint', description: 'Follow up with leads and convert to clients', week: 9, tools: ['WhatsApp'], isFree: false, deliverable: 'Follow-up messages sent + meetings scheduled', previewQuestions: [
+        { q: 'Follow-up should happen within...', options: ['A month', '24-48 hours of first meeting', 'Never'], answer: 1 },
+        { q: 'The best follow-up includes...', options: ['Just "are you interested?"', 'A quick win or free audit showing immediate value', 'A price list'], answer: 1 },
+        { q: 'Most deals close after...', options: ['First contact', '2-3 follow-ups', 'One email'], answer: 1 },
+      ]},
+      { session: 31, title: 'Field Work Day 4 — Intensive Outreach', description: 'Maximum business outreach and conversion', week: 9, tools: ['WhatsApp', 'Canva'], isFree: false, deliverable: 'Client pipeline with 10+ leads', previewQuestions: [
+        { q: 'Intensive outreach means...', options: ['Spamming', 'Focused, high-volume quality approaches', 'One email'], answer: 1 },
+        { q: 'A client pipeline tracks...', options: ['Nothing', 'All leads from first contact to signed deal', 'Only payments'], answer: 1 },
+        { q: 'The goal of Day 31 is...', options: ['Rest', 'Maximum qualified leads in the pipeline', 'Theory review'], answer: 1 },
+      ]},
+      { session: 32, title: 'Deliver Day 1 — First Client Project', description: 'Execute your first paid client project', week: 9, tools: ['All tools'], isFree: false, deliverable: 'First client deliverables', previewQuestions: [
+        { q: 'First client delivery should be...', options: ['Average', 'Exceptional — first impressions matter most', 'Quick and dirty'], answer: 1 },
+        { q: 'Client communication during delivery should be...', options: ['None until done', 'Regular updates showing progress', 'Only when problems arise'], answer: 1 },
+        { q: 'Quality control means...', options: ['Skipping review', 'Checking every deliverable before sending to client', 'Only spell check'], answer: 1 },
+      ]},
+      { session: 33, title: 'Deliver, Close & Collect — FIRST PAYMENT', description: 'Complete delivery, close the deal, collect your first payment', week: 9, tools: ['All tools'], isFree: false, deliverable: 'First payment received', previewQuestions: [
+        { q: 'Collecting payment should happen...', options: ['Eventually', 'Immediately upon delivery with a professional invoice', 'Only if they offer'], answer: 1 },
+        { q: 'After first payment, you should...', options: ['Disappear', 'Ask for a testimonial and discuss ongoing services', 'Lower your prices'], answer: 1 },
+        { q: 'Your first payment proves...', options: ['Nothing', 'Your skills have real market value', 'You got lucky'], answer: 1 },
+      ]},
+      { session: 34, title: 'Scale, Systematize & Grow', description: 'Build systems to go from 1 client to 5+', week: 10, tools: ['Google Sheets', 'Canva'], isFree: false, deliverable: 'Growth plan + retainer packages + testimonials', previewQuestions: [
+        { q: 'Scaling requires...', options: ['Working 5x harder', 'Systems: templates, SOPs, automation', 'Luck'], answer: 1 },
+        { q: 'Monthly retainers provide...', options: ['Unpredictable income', 'Predictable recurring revenue', 'Less work'], answer: 1 },
+        { q: 'The 90-day plan targets...', options: ['₹1,000/month', '₹25,000-35,000/month with 5-7 clients', '₹1,00,000/month'], answer: 1 },
+      ]},
+      { session: 35, title: 'Demo Day + Graduation', description: 'Present your best work and earn your certificate', week: 10, tools: [], isFree: false, deliverable: 'Final presentation + TARAhut AI Hustler 45 certificate', previewQuestions: [
+        { q: 'Demo Day presentation is...', options: ['30 minutes', '5 minutes: best work + client story + income', 'Optional'], answer: 1 },
+        { q: 'After graduation, the alumni network provides...', options: ['Nothing', 'Ongoing support, referrals, and learning', 'A job'], answer: 1 },
+        { q: 'The most important outcome of AI Hustler 45 is...', options: ['The certificate', 'The skills and confidence to earn independently', 'Attendance'], answer: 1 },
+      ]},
+    ],
+  },
 };
 
 // Backward-compatible export for existing code that imports learnModules
