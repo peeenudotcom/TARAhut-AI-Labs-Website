@@ -31,10 +31,25 @@
 .vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 15px rgba(0,240,255,.04)}.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-left.visible{opacity:1;transform:translateX(0)}.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-right.visible{opacity:1;transform:translateX(0)}.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.reveal-scale.visible{opacity:1;transform:scale(1)}.reveal-fade{opacity:0;transition:opacity .8s ease}.reveal-fade.visible{opacity:1}.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
 @media(max-width:768px){.cgrid,.tool-grid{grid-template-columns:1fr}.sec{padding:2rem 1rem 4rem}.vflow-row{flex-direction:column}.vflow-arrow{transform:rotate(90deg)}.vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
+@media(max-width:768px){.lang-btn{padding:5px 8px;font-size:.65rem}}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<!-- Floating language switcher (visible before nav appears) -->
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -59,6 +74,12 @@
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Report Writing</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -334,6 +355,50 @@ function initQuiz(){cq=0;sc=0;ans=new Array(qData.length).fill(false);quizStarte
 function renderQ(){const box=document.getElementById('quizBox');if(cq>=qData.length){const pct=Math.round(sc/qData.length*100);let tier,tierColor,msg;if(pct>=75){tier='Research Expert!';tierColor='var(--brand)';msg='You have the skills to research, analyze, and report like a professional analyst.';}else if(pct>=50){tier='Good Progress!';tierColor='var(--c1)';msg='Solid foundation. Review the data analysis and reporting sections to strengthen your skills.';}else{tier='Keep Learning!';tierColor='var(--c4)';msg='Re-read the sections. These research skills will set you apart in any career.';}box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qData.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:${tierColor}">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s6')" style="margin-left:.8rem">See Wrap-Up →</button></div>`;return;}const q=qData[cq];const ltr=['A','B','C','D'];let prog=qData.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qData.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;}
 function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qData[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
 function nxtQ(){cq++;renderQ();}
+
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{
+    en:document.querySelector('.hero h1')?.innerHTML||'',
+    hi:'फ्रीलांसिंग और कमाई के लिए AI',
+    pa:'ਫ੍ਰੀਲਾਂਸਿੰਗ ਅਤੇ ਕਮਾਈ ਲਈ AI'
+  },
+  '.hero-btns .btn-glow':{
+    en:'Start Session →',hi:'सेशन शुरू करें →',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ →'
+  },
+  '.hero-btns .btn-ghost':{
+    en:'⚡ Jump to Quiz',hi:'⚡ क्विज़ पर जाएं',pa:'⚡ ਕੁਇਜ਼ ਤੇ ਜਾਓ'
+  }
+};
+// Capture original hero h1 on load
+document.addEventListener('DOMContentLoaded',()=>{
+  const h1=document.querySelector('.hero h1');
+  if(h1)langMap['.hero h1'].en=h1.innerHTML;
+});
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){
+      els.forEach((el,i)=>{if(val[i])el.innerHTML=val[i][lang]||val[i].en;});
+    }else{
+      els.forEach(el=>{el.innerHTML=val[lang]||val.en;});
+    }
+  }
+  const navVis=document.getElementById('mainNav')?.style.display!=='none';
+  const lf=document.getElementById('langFloat');
+  if(lf)lf.classList.toggle('hide',navVis);
+}
+// Show/hide floating lang button based on nav visibility
+const origSL=startLearning;
+startLearning=function(){origSL();const lf=document.getElementById('langFloat');if(lf)lf.classList.add('hide');};
 </script>
 </body>
 </html>

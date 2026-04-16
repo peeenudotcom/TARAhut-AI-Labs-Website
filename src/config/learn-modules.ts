@@ -816,6 +816,144 @@ export const courseConfigs: Record<string, CourseConfig> = {
       ]},
     ],
   },
+  'ai-for-digital-marketing': {
+    id: 'ai-for-digital-marketing',
+    title: 'AI for Digital Marketing',
+    slug: 'ai-for-digital-marketing',
+    totalSessions: 12,
+    filePrefix: 'dm',
+    modules: [
+      { session: 1, title: 'AI Fundamentals + The Marketing Opportunity', description: 'Understand AI landscape and its impact on digital marketing', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: true, deliverable: 'AI marketing opportunity analysis', previewQuestions: [
+        { q: 'What is the biggest advantage of AI in marketing?', options: ['It replaces marketers', 'It automates repetitive tasks and personalizes at scale', 'It only works for big companies'], answer: 1 },
+        { q: 'Which AI tool is best for marketing copy?', options: ['Only ChatGPT', 'It depends on the task — different tools have different strengths', 'AI cannot write marketing copy'], answer: 1 },
+        { q: 'AI in marketing is most useful for...', options: ['Replacing creativity', 'Data-driven decisions and content creation at scale', 'Only email marketing'], answer: 1 },
+      ]},
+      { session: 2, title: 'Understanding the Digital Customer Journey', description: 'Map customer journeys and identify AI touchpoints', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'AI-enhanced customer journey map', previewQuestions: [
+        { q: 'The customer journey starts with...', options: ['Purchase', 'Awareness — the customer discovers your brand', 'Loyalty'], answer: 1 },
+        { q: 'AI improves the customer journey by...', options: ['Removing human interaction', 'Personalizing each touchpoint based on behavior data', 'Making it longer'], answer: 1 },
+        { q: 'A customer journey map helps you...', options: ['Nothing', 'Identify gaps and opportunities in your marketing funnel', 'Only track sales'], answer: 1 },
+      ]},
+      { session: 3, title: 'AI-Powered Social Media Marketing', description: 'Master Facebook, Instagram & YouTube marketing with AI', week: 1, tools: ['ChatGPT', 'Canva', 'Meta Business Suite'], isFree: false, deliverable: '7-day social media content calendar with AI-generated posts', previewQuestions: [
+        { q: 'The best social media strategy is...', options: ['Post randomly', 'Consistent, planned content aligned with business goals', 'Only paid ads'], answer: 1 },
+        { q: 'AI helps social media marketing by...', options: ['Posting automatically without strategy', 'Generating content ideas, captions, hashtags, and visuals', 'Replacing the marketing team'], answer: 1 },
+        { q: 'Content pillars are...', options: ['Building supports', '3-5 core topic categories you consistently create around', 'Only educational posts'], answer: 1 },
+      ]},
+      { session: 4, title: 'Content Marketing with AI', description: 'Create blogs, newsletters & marketing copy using AI', week: 2, tools: ['ChatGPT', 'Claude', 'Canva'], isFree: false, deliverable: 'Blog post + newsletter + marketing copy portfolio', previewQuestions: [
+        { q: 'Content marketing works because...', options: ['People love ads', 'Valuable content builds trust and attracts customers organically', 'It is cheap'], answer: 1 },
+        { q: 'AI-written content should always be...', options: ['Published as-is', 'Reviewed, fact-checked, and edited by a human', 'Ignored'], answer: 1 },
+        { q: 'The best AI copywriting prompt includes...', options: ['Just the topic', 'Audience, tone, format, key points, and CTA', 'Nothing specific'], answer: 1 },
+      ]},
+      { session: 5, title: 'AI for SEO & Search Marketing', description: 'Optimize content for search engines using AI tools', week: 2, tools: ['ChatGPT', 'Claude', 'Google Search Console'], isFree: false, deliverable: 'SEO-optimized content + keyword strategy', previewQuestions: [
+        { q: 'SEO stands for...', options: ['Social Email Outreach', 'Search Engine Optimization', 'Simple Easy Operations'], answer: 1 },
+        { q: 'AI helps SEO by...', options: ['Hacking Google rankings', 'Generating keyword ideas, meta descriptions, and optimized content', 'Replacing Google'], answer: 1 },
+        { q: 'The most important SEO factor is...', options: ['Keyword stuffing', 'High-quality, relevant content that answers user queries', 'Paying Google'], answer: 1 },
+      ]},
+      { session: 6, title: 'AI-Powered Email Marketing & Automation', description: 'Build automated email campaigns with AI', week: 2, tools: ['ChatGPT', 'Mailchimp'], isFree: false, deliverable: '5-email automated sequence', previewQuestions: [
+        { q: 'Email marketing ROI is...', options: ['Very low', 'One of the highest of any marketing channel (~36x)', 'Only for big companies'], answer: 1 },
+        { q: 'AI improves email marketing by...', options: ['Sending more spam', 'Personalizing subject lines, content, and send times', 'Nothing'], answer: 1 },
+        { q: 'A good email sequence includes...', options: ['One email', 'Welcome, value, story, offer, and follow-up emails', 'Only sales emails'], answer: 1 },
+      ]},
+      { session: 7, title: 'AI Video Marketing & Visual Content', description: 'Create professional marketing videos with AI', week: 3, tools: ['HeyGen', 'CapCut', 'Canva'], isFree: false, deliverable: 'Marketing video + thumbnail + visual content set', previewQuestions: [
+        { q: 'Video marketing is important because...', options: ['People prefer reading', 'Video gets 2x more engagement than text on social media', 'Only for YouTube'], answer: 1 },
+        { q: 'AI video tools like HeyGen can...', options: ['Only edit existing videos', 'Create AI avatar videos from text scripts in minutes', 'Replace professional studios completely'], answer: 1 },
+        { q: 'A good marketing video is...', options: ['As long as possible', 'Short, engaging, with a clear CTA within 60 seconds', 'Only about features'], answer: 1 },
+      ]},
+      { session: 8, title: 'AI for Paid Advertising', description: 'Create & optimize Google Ads and Meta Ads with AI', week: 3, tools: ['ChatGPT', 'Google Ads', 'Meta Ads'], isFree: false, deliverable: 'Ad campaign setup + AI-generated ad variations', previewQuestions: [
+        { q: 'Paid advertising works best when...', options: ['You spend the most money', 'Ads are targeted, relevant, and well-optimized', 'You run one ad forever'], answer: 1 },
+        { q: 'AI helps paid ads by...', options: ['Making them free', 'Generating ad copy variations, audience suggestions, and bid optimization', 'Replacing the ad platform'], answer: 1 },
+        { q: 'A/B testing means...', options: ['Testing A and B grades', 'Running two versions to see which performs better', 'Testing on mobile only'], answer: 1 },
+      ]},
+      { session: 9, title: 'WhatsApp & Conversational Marketing', description: 'Build AI-powered WhatsApp marketing campaigns', week: 3, tools: ['WhatsApp Business', 'ChatGPT'], isFree: false, deliverable: 'WhatsApp marketing campaign + chatbot flow', previewQuestions: [
+        { q: 'WhatsApp marketing in India is powerful because...', options: ['Everyone uses it', 'Over 500M users with 95%+ open rates', 'It is free'], answer: 1 },
+        { q: 'AI chatbots on WhatsApp help by...', options: ['Spamming customers', 'Providing instant 24/7 responses and qualifying leads', 'Replacing salespeople completely'], answer: 1 },
+        { q: 'Permission-based marketing means...', options: ['Messaging anyone', 'Only messaging people who opted in to receive messages', 'Asking permission after messaging'], answer: 1 },
+      ]},
+      { session: 10, title: 'AI Analytics, Reporting & ROI', description: 'Measure marketing performance with AI-powered analytics', week: 4, tools: ['Google Analytics', 'ChatGPT', 'Google Sheets'], isFree: false, deliverable: 'Marketing dashboard + ROI report', previewQuestions: [
+        { q: 'Marketing ROI measures...', options: ['How much you spent', 'Revenue generated relative to marketing investment', 'Only website traffic'], answer: 1 },
+        { q: 'AI helps analytics by...', options: ['Making numbers up', 'Identifying patterns, predicting trends, and generating insights', 'Only creating charts'], answer: 1 },
+        { q: 'The most important marketing metric depends on...', options: ['Nothing', 'Your specific business goals (leads, sales, awareness)', 'Always follower count'], answer: 1 },
+      ]},
+      { session: 11, title: 'Building Your AI Marketing Agency', description: 'Package skills into services and attract clients', week: 4, tools: ['Canva', 'ChatGPT', 'Claude'], isFree: false, deliverable: 'Service packages + pricing + portfolio website', previewQuestions: [
+        { q: 'An AI marketing agency differs from traditional by...', options: ['Nothing', 'Delivering faster, more personalized work using AI tools', 'Being cheaper'], answer: 1 },
+        { q: 'Tiered pricing (basic/growth/premium) helps because...', options: ['It confuses clients', 'Clients choose the level matching their budget', 'Only premium sells'], answer: 1 },
+        { q: 'The first step to getting clients is...', options: ['Buying ads', 'Building a portfolio that demonstrates results', 'Waiting for referrals'], answer: 1 },
+      ]},
+      { session: 12, title: 'Capstone — Complete AI Marketing Campaign', description: 'Plan, create & present a full AI-powered marketing campaign', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Complete marketing campaign + presentation + certificate', previewQuestions: [
+        { q: 'A complete marketing campaign includes...', options: ['Just social media posts', 'Strategy, content, ads, email, analytics, and reporting', 'Only paid advertising'], answer: 1 },
+        { q: 'The capstone must demonstrate...', options: ['One skill', 'Integration of all 11 sessions into a cohesive campaign', 'Only theory knowledge'], answer: 1 },
+        { q: 'After this course, the best next step is...', options: ['Stop learning', 'Start your AI marketing agency or service business', 'Repeat the course'], answer: 1 },
+      ]},
+    ],
+  },
+  'master-ai-builder': {
+    id: 'master-ai-builder',
+    title: 'Master AI Builder',
+    slug: 'master-ai-builder',
+    totalSessions: 12,
+    filePrefix: 'builder',
+    modules: [
+      { session: 1, title: 'AI Awakening — Understanding AI & Builder Mindset', description: 'Introduction to AI and the builder mindset', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: true, deliverable: 'AI landscape map + personal builder roadmap', previewQuestions: [
+        { q: 'The AI builder mindset focuses on...', options: ['Consuming AI content', 'Building products and solutions using AI tools', 'Only learning theory'], answer: 1 },
+        { q: 'The best AI builders start by...', options: ['Learning everything first', 'Identifying a real problem to solve, then using AI to solve it', 'Only watching tutorials'], answer: 1 },
+        { q: 'AI tools are evolving so fast that...', options: ['You should wait to learn', 'Building skills now gives you a massive advantage', 'They will replace builders'], answer: 1 },
+      ]},
+      { session: 2, title: 'No-Code AI Tools', description: 'Build apps without coding using Bubble, Softr, Glide', week: 1, tools: ['Bubble', 'Softr', 'Glide'], isFree: false, deliverable: 'Working no-code app prototype', previewQuestions: [
+        { q: 'No-code tools are useful because...', options: ['Coding is dead', 'You can build and test ideas quickly without programming', 'They make better apps'], answer: 1 },
+        { q: 'Bubble is best for...', options: ['Simple forms', 'Complex web apps with custom logic and databases', 'Only mobile apps'], answer: 1 },
+        { q: 'The biggest advantage of no-code for AI builders is...', options: ['Cost savings', 'Speed — you can go from idea to prototype in hours', 'No learning needed'], answer: 1 },
+      ]},
+      { session: 3, title: 'AI Chatbots & Assistants', description: 'Build Custom GPTs and Claude Projects for businesses', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: '3 custom AI assistants for different use cases', previewQuestions: [
+        { q: 'Custom GPTs are powerful because...', options: ['They are free', 'You can create specialized AI tools for specific tasks', 'They replace all software'], answer: 1 },
+        { q: 'A good AI assistant needs...', options: ['No configuration', 'Clear instructions, relevant knowledge, and defined boundaries', 'Only a name'], answer: 1 },
+        { q: 'Claude Projects differ from Custom GPTs by...', options: ['Being identical', 'Supporting persistent document context and longer conversations', 'Being simpler'], answer: 1 },
+      ]},
+      { session: 4, title: 'AI Automation — Workflows & Triggers', description: 'Automate business processes with Zapier, Make, n8n', week: 2, tools: ['Zapier', 'Make', 'n8n'], isFree: false, deliverable: '5 automated workflows for common business tasks', previewQuestions: [
+        { q: 'Automation is most valuable for...', options: ['One-time tasks', 'Repetitive tasks that follow the same pattern', 'Creative work'], answer: 1 },
+        { q: 'Zapier connects apps by...', options: ['Manual copy-paste', 'Triggers and actions — when X happens, do Y', 'Only within Google'], answer: 1 },
+        { q: 'n8n differs from Zapier by...', options: ['Being the same', 'Being open-source and self-hostable with more complex logic', 'Being simpler'], answer: 1 },
+      ]},
+      { session: 5, title: 'AI Website Building', description: 'Build websites with v0, Bolt, Lovable, and Cursor', week: 2, tools: ['v0', 'Bolt', 'Cursor'], isFree: false, deliverable: 'Complete website built with AI tools', previewQuestions: [
+        { q: 'AI website builders like v0 work by...', options: ['Picking templates', 'Generating code from natural language descriptions', 'Only making logos'], answer: 1 },
+        { q: 'Cursor helps developers by...', options: ['Replacing them', 'AI-powered code editing, debugging, and generation', 'Only formatting code'], answer: 1 },
+        { q: 'The best approach to AI website building is...', options: ['Accept whatever AI generates', 'Describe clearly, iterate, and customize the output', 'Only use templates'], answer: 1 },
+      ]},
+      { session: 6, title: 'AI for Data & Analytics', description: 'Analyze data using Sheets AI, Pandas AI, Julius', week: 2, tools: ['Google Sheets', 'Julius AI'], isFree: false, deliverable: 'Data analysis report with AI-generated insights', previewQuestions: [
+        { q: 'AI data analysis helps by...', options: ['Making up numbers', 'Finding patterns and insights humans might miss', 'Only making charts'], answer: 1 },
+        { q: 'Julius AI can...', options: ['Only open files', 'Analyze data, create visualizations, and answer questions in plain English', 'Replace data scientists'], answer: 1 },
+        { q: 'The most important data skill is...', options: ['Complex formulas', 'Asking the right questions about your data', 'Memorizing functions'], answer: 1 },
+      ]},
+      { session: 7, title: 'AI Voice & Video Apps', description: 'Build voice and video tools with ElevenLabs, HeyGen, Descript', week: 3, tools: ['ElevenLabs', 'HeyGen', 'Descript'], isFree: false, deliverable: 'AI voiceover + avatar video + edited content', previewQuestions: [
+        { q: 'ElevenLabs is best known for...', options: ['Image generation', 'Ultra-realistic AI voice cloning and text-to-speech', 'Video editing'], answer: 1 },
+        { q: 'AI video tools help businesses by...', options: ['Nothing', 'Creating professional video content without expensive production', 'Only for entertainment'], answer: 1 },
+        { q: 'Voice cloning should be used...', options: ['To impersonate anyone', 'Ethically — only with consent and for legitimate purposes', 'Never'], answer: 1 },
+      ]},
+      { session: 8, title: 'AI APIs & Integration Basics', description: 'Learn OpenAI API and Claude API fundamentals', week: 3, tools: ['OpenAI API', 'Claude API'], isFree: false, deliverable: 'Working API integration + custom AI tool', previewQuestions: [
+        { q: 'An API is...', options: ['A programming language', 'A way for software applications to communicate with each other', 'Only for developers'], answer: 1 },
+        { q: 'The OpenAI API lets you...', options: ['Use ChatGPT for free', 'Build custom applications powered by GPT models', 'Only send text messages'], answer: 1 },
+        { q: 'API keys should be...', options: ['Shared publicly', 'Kept secret and stored securely as environment variables', 'Put in the HTML'], answer: 1 },
+      ]},
+      { session: 9, title: 'Building SaaS Products with AI', description: 'Go from idea to MVP using AI tools', week: 3, tools: ['v0', 'Cursor', 'Supabase'], isFree: false, deliverable: 'SaaS MVP with landing page, auth, and core feature', previewQuestions: [
+        { q: 'MVP stands for...', options: ['Most Valuable Product', 'Minimum Viable Product — the simplest version that solves the problem', 'Maximum Value Plan'], answer: 1 },
+        { q: 'The best SaaS ideas come from...', options: ['Copying competitors', 'Real problems you or others experience repeatedly', 'Random brainstorming'], answer: 1 },
+        { q: 'AI accelerates SaaS building by...', options: ['Writing all the code perfectly', 'Helping with code, copy, design, and iteration speed', 'Making it effortless'], answer: 1 },
+      ]},
+      { session: 10, title: 'AI Agents & Multi-Step Workflows', description: 'Build autonomous AI agents that complete complex tasks', week: 4, tools: ['Claude', 'LangChain', 'CrewAI'], isFree: false, deliverable: 'Working AI agent that completes a multi-step business task', previewQuestions: [
+        { q: 'AI agents differ from chatbots by...', options: ['Being more expensive', 'Taking autonomous actions and using tools to complete tasks', 'Being the same thing'], answer: 1 },
+        { q: 'Multi-step workflows are useful for...', options: ['Simple Q&A', 'Complex tasks requiring research, analysis, and action', 'Only coding'], answer: 1 },
+        { q: 'The key challenge with AI agents is...', options: ['Speed', 'Reliability — ensuring they complete tasks correctly', 'They are too simple'], answer: 1 },
+      ]},
+      { session: 11, title: 'Monetization & Launching Your AI Product', description: 'Price, market, and launch your AI-powered product', week: 4, tools: ['Stripe', 'Canva', 'ChatGPT'], isFree: false, deliverable: 'Launch plan + pricing strategy + marketing materials', previewQuestions: [
+        { q: 'The best pricing strategy for AI products is...', options: ['Always free', 'Value-based — price based on the problem you solve, not your costs', 'As expensive as possible'], answer: 1 },
+        { q: 'A good launch includes...', options: ['Just posting on social media', 'Landing page, waitlist, demo, content, and outreach strategy', 'Only Product Hunt'], answer: 1 },
+        { q: 'The most common reason AI products fail is...', options: ['Bad technology', 'Not solving a real problem that people will pay for', 'Competition'], answer: 1 },
+      ]},
+      { session: 12, title: 'Capstone — Build & Present Your AI Product', description: 'Complete your AI product and present to panel', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Working AI product + pitch deck + demo + certificate', previewQuestions: [
+        { q: 'The capstone should demonstrate...', options: ['One tool', 'End-to-end product building skills from idea to launch', 'Only theory'], answer: 1 },
+        { q: 'A good product demo shows...', options: ['Every feature', 'The core problem, solution, and key user flow', 'Only the tech stack'], answer: 1 },
+        { q: 'After Master AI Builder, the best path is...', options: ['Stop building', 'Launch your product, get users, iterate, and keep building', 'Wait for better AI'], answer: 1 },
+      ]},
+    ],
+  },
 };
 
 // Backward-compatible export for existing code that imports learnModules

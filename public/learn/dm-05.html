@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5: AI for SEO & Search Marketing — AI for Digital Marketing | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">&#2361;&#2367;&#2306;</button>
+  <button class="lang-btn" onclick="setLang('pa')">&#2602;&#2672;</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 05 &middot; AI Digital Marketing &middot; 2026</div>
+  <h1>
+    <span data-lang-en>AI for SEO & Search Marketing &mdash;<br><span class="gr">SEO & Search</span></span>
+    <span data-lang-hi style="display:none">AI से SEO और सर्च मार्केटिंग</span>
+    <span data-lang-pa style="display:none">AI ਨਾਲ SEO ਅਤੇ ਸਰਚ ਮਾਰਕੀਟਿੰਗ</span>
+  </h1>
+  <div class="hero-brand">AI for Digital Marketing &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>Master SEO with AI — keyword research, on-page optimization, meta descriptions, local SEO for Indian businesses, and Google Search Console.</p></div>
+  <div data-lang-hi style="display:none"><p>कीवर्ड रिसर्च, ऑन-पेज SEO और कंटेंट ऑप्टिमाइज़ेशन AI टूल्स से सीखें।</p></div>
+  <div data-lang-pa style="display:none"><p>ਕੀਵਰਡ ਰਿਸਰਚ, ਆਨ-ਪੇਜ SEO ਅਤੇ ਸਮੱਗਰੀ ਅਨੁਕੂਲਨ AI ਟੂਲਾਂ ਨਾਲ ਸਿੱਖੋ।</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Session &rarr;</span>
+      <span data-lang-hi style="display:none">सेशन शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s5')">
+      <span data-lang-en>&#9889; Jump to Quiz</span>
+      <span data-lang-hi style="display:none">&#9889; क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">&#9889; ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Digital Marketing</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>Key Concepts</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Tools & Techniques</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Hands-On Practice</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Best Practices</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Assignment</button>
+  </div>
+</nav>
+
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>Key Concepts: <span class="gr">SEO & Search</span></h2>
+    <h2 data-lang-hi style="display:none">मुख्य अवधारणाएं: <span class="gr">AI से SEO और सर्च मार्केटिंग</span></h2>
+    <h2 data-lang-pa style="display:none">ਮੁੱਖ ਧਾਰਨਾਵਾਂ: <span class="gr">AI ਨਾਲ SEO ਅਤੇ ਸਰਚ ਮਾਰਕੀਟਿੰਗ</span></h2>
+    <p data-lang-en>Master SEO with AI — keyword research, on-page optimization, meta descriptions, local SEO for Indian businesses, and Google Search Console.</p>
+    <p data-lang-hi style="display:none">कीवर्ड रिसर्च, ऑन-पेज SEO और कंटेंट ऑप्टिमाइज़ेशन AI टूल्स से सीखें।</p>
+    <p data-lang-pa style="display:none">ਕੀਵਰਡ ਰਿਸਰਚ, ਆਨ-ਪੇਜ SEO ਅਤੇ ਸਮੱਗਰੀ ਅਨੁਕੂਲਨ AI ਟੂਲਾਂ ਨਾਲ ਸਿੱਖੋ।</p>
+  </div>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Concept</span><span class="crd-icon">&#128161;</span><h3>Core Understanding</h3><p>Learn the fundamental concepts of SEO & Search and why they matter for AI builders and marketers. Real-world examples from Indian businesses show the impact.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Tool</span><span class="crd-icon">&#129302;</span><h3>AI Tools in Action</h3><p>Hands-on with the best AI tools for ai for seo & search marketing. Step-by-step demos, prompt templates you can copy, and real output examples you can use immediately.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Practice</span><span class="crd-icon">&#127919;</span><h3>Apply It Now</h3><p>Practice exercises designed for Indian market context. Build something real you can add to your portfolio or deliver to a client today.</p></div>
+  </div>
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why This Matters</h4><p>Mastering SEO & Search is a high-demand skill in the Indian market. Businesses are actively looking for people who can help them leverage AI for ai for seo & search marketing. <strong>This skill alone can earn you ₹5K-25K per client per month.</strong></p></div></div>
+  <div class="micro-action reveal"><h4>Try This Now</h4><p>Open ChatGPT or Claude and try the prompts from this section. Save your best outputs — they become part of your professional portfolio.</p></div>
+  <div class="sec-nav">
+    <span></span>
+    <button class="btn btn-glow btn-sm" onclick="go('s2')">Next &rarr;</button>
+  </div>
+</div>
+<div class="sec" id="s2">
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Tools & Techniques: <span class="gr">SEO & Search</span></h2>
+    <h2 data-lang-hi style="display:none">टूल्स और तकनीक: <span class="gr">AI से SEO और सर्च मार्केटिंग</span></h2>
+    <h2 data-lang-pa style="display:none">ਟੂਲ ਅਤੇ ਤਕਨੀਕਾਂ: <span class="gr">AI ਨਾਲ SEO ਅਤੇ ਸਰਚ ਮਾਰਕੀਟਿੰਗ</span></h2>
+    <p data-lang-en>Master SEO with AI — keyword research, on-page optimization, meta descriptions, local SEO for Indian businesses, and Google Search Console.</p>
+    <p data-lang-hi style="display:none">कीवर्ड रिसर्च, ऑन-पेज SEO और कंटेंट ऑप्टिमाइज़ेशन AI टूल्स से सीखें।</p>
+    <p data-lang-pa style="display:none">ਕੀਵਰਡ ਰਿਸਰਚ, ਆਨ-ਪੇਜ SEO ਅਤੇ ਸਮੱਗਰੀ ਅਨੁਕੂਲਨ AI ਟੂਲਾਂ ਨਾਲ ਸਿੱਖੋ।</p>
+  </div>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Concept</span><span class="crd-icon">&#128161;</span><h3>Core Understanding</h3><p>Learn the fundamental concepts of SEO & Search and why they matter for AI builders and marketers. Real-world examples from Indian businesses show the impact.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Tool</span><span class="crd-icon">&#129302;</span><h3>AI Tools in Action</h3><p>Hands-on with the best AI tools for ai for seo & search marketing. Step-by-step demos, prompt templates you can copy, and real output examples you can use immediately.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Practice</span><span class="crd-icon">&#127919;</span><h3>Apply It Now</h3><p>Practice exercises designed for Indian market context. Build something real you can add to your portfolio or deliver to a client today.</p></div>
+  </div>
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why This Matters</h4><p>Mastering SEO & Search is a high-demand skill in the Indian market. Businesses are actively looking for people who can help them leverage AI for ai for seo & search marketing. <strong>This skill alone can earn you ₹5K-25K per client per month.</strong></p></div></div>
+  <div class="micro-action reveal"><h4>Try This Now</h4><p>Open ChatGPT or Claude and try the prompts from this section. Save your best outputs — they become part of your professional portfolio.</p></div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s3')">Next &rarr;</button>
+  </div>
+</div>
+<div class="sec" id="s3">
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Hands-On Practice: <span class="gr">SEO & Search</span></h2>
+    <h2 data-lang-hi style="display:none">प्रैक्टिकल अभ्यास: <span class="gr">AI से SEO और सर्च मार्केटिंग</span></h2>
+    <h2 data-lang-pa style="display:none">ਹੈਂਡਜ਼-ਆਨ ਅਭਿਆਸ: <span class="gr">AI ਨਾਲ SEO ਅਤੇ ਸਰਚ ਮਾਰਕੀਟਿੰਗ</span></h2>
+    <p data-lang-en>Master SEO with AI — keyword research, on-page optimization, meta descriptions, local SEO for Indian businesses, and Google Search Console.</p>
+    <p data-lang-hi style="display:none">कीवर्ड रिसर्च, ऑन-पेज SEO और कंटेंट ऑप्टिमाइज़ेशन AI टूल्स से सीखें।</p>
+    <p data-lang-pa style="display:none">ਕੀਵਰਡ ਰਿਸਰਚ, ਆਨ-ਪੇਜ SEO ਅਤੇ ਸਮੱਗਰੀ ਅਨੁਕੂਲਨ AI ਟੂਲਾਂ ਨਾਲ ਸਿੱਖੋ।</p>
+  </div>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Concept</span><span class="crd-icon">&#128161;</span><h3>Core Understanding</h3><p>Learn the fundamental concepts of SEO & Search and why they matter for AI builders and marketers. Real-world examples from Indian businesses show the impact.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Tool</span><span class="crd-icon">&#129302;</span><h3>AI Tools in Action</h3><p>Hands-on with the best AI tools for ai for seo & search marketing. Step-by-step demos, prompt templates you can copy, and real output examples you can use immediately.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Practice</span><span class="crd-icon">&#127919;</span><h3>Apply It Now</h3><p>Practice exercises designed for Indian market context. Build something real you can add to your portfolio or deliver to a client today.</p></div>
+  </div>
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why This Matters</h4><p>Mastering SEO & Search is a high-demand skill in the Indian market. Businesses are actively looking for people who can help them leverage AI for ai for seo & search marketing. <strong>This skill alone can earn you ₹5K-25K per client per month.</strong></p></div></div>
+  <div class="micro-action reveal"><h4>Try This Now</h4><p>Open ChatGPT or Claude and try the prompts from this section. Save your best outputs — they become part of your professional portfolio.</p></div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s4')">Next &rarr;</button>
+  </div>
+</div>
+<div class="sec" id="s4">
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Best Practices: <span class="gr">SEO & Search</span></h2>
+    <h2 data-lang-hi style="display:none">सर्वोत्तम अभ्यास: <span class="gr">AI से SEO और सर्च मार्केटिंग</span></h2>
+    <h2 data-lang-pa style="display:none">ਸਭ ਤੋਂ ਵਧੀਆ ਅਭਿਆਸ: <span class="gr">AI ਨਾਲ SEO ਅਤੇ ਸਰਚ ਮਾਰਕੀਟਿੰਗ</span></h2>
+    <p data-lang-en>Master SEO with AI — keyword research, on-page optimization, meta descriptions, local SEO for Indian businesses, and Google Search Console.</p>
+    <p data-lang-hi style="display:none">कीवर्ड रिसर्च, ऑन-पेज SEO और कंटेंट ऑप्टिमाइज़ेशन AI टूल्स से सीखें।</p>
+    <p data-lang-pa style="display:none">ਕੀਵਰਡ ਰਿਸਰਚ, ਆਨ-ਪੇਜ SEO ਅਤੇ ਸਮੱਗਰੀ ਅਨੁਕੂਲਨ AI ਟੂਲਾਂ ਨਾਲ ਸਿੱਖੋ।</p>
+  </div>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Concept</span><span class="crd-icon">&#128161;</span><h3>Core Understanding</h3><p>Learn the fundamental concepts of SEO & Search and why they matter for AI builders and marketers. Real-world examples from Indian businesses show the impact.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Tool</span><span class="crd-icon">&#129302;</span><h3>AI Tools in Action</h3><p>Hands-on with the best AI tools for ai for seo & search marketing. Step-by-step demos, prompt templates you can copy, and real output examples you can use immediately.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Practice</span><span class="crd-icon">&#127919;</span><h3>Apply It Now</h3><p>Practice exercises designed for Indian market context. Build something real you can add to your portfolio or deliver to a client today.</p></div>
+  </div>
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why This Matters</h4><p>Mastering SEO & Search is a high-demand skill in the Indian market. Businesses are actively looking for people who can help them leverage AI for ai for seo & search marketing. <strong>This skill alone can earn you ₹5K-25K per client per month.</strong></p></div></div>
+  <div class="micro-action reveal"><h4>Try This Now</h4><p>Open ChatGPT or Claude and try the prompts from this section. Save your best outputs — they become part of your professional portfolio.</p></div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button>
+    <button class="btn btn-glow btn-sm" onclick="go('s5')">Next &rarr;</button>
+  </div>
+</div>
+<div class="sec" id="s5">
+  <div class="sec-head">
+    <div class="over">Quiz</div>
+    <h2 data-lang-en>Test Your <span class="gr">Knowledge</span></h2>
+    <h2 data-lang-hi style="display:none">अपना <span class="gr">ज्ञान</span> परखें</h2>
+    <h2 data-lang-pa style="display:none">ਆਪਣਾ <span class="gr">ਗਿਆਨ</span> ਪਰਖੋ</h2>
+    <p data-lang-en>8 questions randomly selected. Score 75%+ to master this session!</p>
+    <p data-lang-hi style="display:none">8 सवाल रैंडमली चुने गए। इस सेशन में महारत के लिए 75%+ स्कोर करें!</p>
+    <p data-lang-pa style="display:none">8 ਸਵਾਲ ਰੈਂਡਮਲੀ ਚੁਣੇ ਗਏ। ਇਸ ਸੈਸ਼ਨ ਵਿੱਚ ਮੁਹਾਰਤ ਲਈ 75%+ ਸਕੋਰ ਕਰੋ!</p>
+  </div>
+  <div class="quiz-box" id="quizBox"><div style="text-align:center;padding:3rem"><button class="btn btn-glow" onclick="initQuiz()">Start Quiz</button></div></div>
+</div>
+<div class="sec" id="s6">
+  <div class="sec-head">
+    <div class="over">Assignment</div>
+    <h2 data-lang-en>Session 5 <span class="gr">Assignment</span></h2>
+    <h2 data-lang-hi style="display:none">सेशन 5 <span class="gr">असाइनमेंट</span></h2>
+    <h2 data-lang-pa style="display:none">ਸੈਸ਼ਨ 5 <span class="gr">ਅਸਾਈਨਮੈਂਟ</span></h2>
+    <p data-lang-en>Complete a practical project applying everything from Session 5: AI for SEO & Search Marketing. Use AI tools to create deliverables you can add to your portfolio. Document your process and results.</p>
+    <p data-lang-hi style="display:none">इस सेशन में सीखी गई सभी बातों को लागू करते हुए एक प्रैक्टिकल प्रोजेक्ट पूरा करें।</p>
+    <p data-lang-pa style="display:none">ਇਸ ਸੈਸ਼ਨ ਵਿੱਚ ਸਿੱਖੀਆਂ ਸਾਰੀਆਂ ਗੱਲਾਂ ਨੂੰ ਲਾਗੂ ਕਰਦੇ ਹੋਏ ਇੱਕ ਪ੍ਰੈਕਟੀਕਲ ਪ੍ਰੋਜੈਕਟ ਪੂਰਾ ਕਰੋ।</p>
+  </div>
+  <div class="checklist">
+    <h4>Assignment Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Complete all section exercises</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Create at least 3 AI-generated deliverables</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Save all prompts used in your prompt library</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Document your process and results</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Add deliverables to your portfolio</label></div>
+    <div class="check-score" id="checkScore">0 of 5 complete (0%)</div>
+  </div>
+  <div class="sec-nav">
+    <button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back to Quiz</button>
+    <span style="font-size:.82rem;color:var(--t3)">Next: Session 6</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p><span class="brand">TARAhut AI Labs</span> &mdash; AI for Digital Marketing</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,240,255,'+p.o+')';ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(0,240,255,'+(0.08*(1-d/120))+')';ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=["s1","s2","s3","s4","s5","s6"];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector('[data-s="'+id+'"]')?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct<=25?pct+'% — Great start':pct<=50?pct+'% — Building':pct<=75?pct+'% — Almost there':pct+'% — Finish strong!';pt.style.display='block';
+  if(id==='s5'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === REVEALS ===
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal'))c.classList.add('reveal');});});
+}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=checked+' of '+total+' complete ('+pct+'%)';}
+
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='Copied!';setTimeout(()=>el.textContent=orig,3000);});}
+
+// === QUIZ ===
+const allQ=[{"q":"What is the primary focus of this session on AI for SEO & Search Marketing?","o":["General AI history","Practical hands-on skills with SEO & Search","Only theory","Entertainment"],"a":1,"e":"This session focuses on practical, hands-on skills with SEO & Search that you can apply immediately for real businesses."},{"q":"The best AI tool depends on...","o":["Price only","The specific task and your requirements","Popularity","Which is newest"],"a":1,"e":"Different AI tools excel at different tasks. Always choose based on what you need to accomplish."},{"q":"When using AI for business tasks, you should always...","o":["Trust AI output blindly","Review, edit, and verify AI-generated content","Use only one tool","Avoid AI entirely"],"a":1,"e":"Always review and verify AI output. AI is a powerful tool but requires human oversight for accuracy and quality."},{"q":"The biggest advantage of AI in this area is...","o":["It replaces human workers","It dramatically speeds up work while maintaining quality","It is free","It works without internet"],"a":1,"e":"AI's primary advantage is speed — tasks that took hours now take minutes, freeing you to focus on strategy and client relationships."},{"q":"For Indian businesses specifically, AI helps by...","o":["Nothing special","Handling multilingual content and understanding local context","Only English content","Reducing quality"],"a":1,"e":"AI tools now handle Hindi, Punjabi, and other Indian languages well, making them especially powerful for local Indian businesses."},{"q":"The most important skill for using AI effectively is...","o":["Programming","Prompt engineering — writing clear, specific instructions","Graphic design","Mathematics"],"a":1,"e":"Prompt engineering is the most valuable skill. Clear, specific prompts produce dramatically better AI outputs."},{"q":"What should you do if AI gives incorrect information?","o":["Use it anyway","Verify with reliable sources and correct it","Stop using AI","Report the tool as broken"],"a":1,"e":"Always cross-check important AI outputs with reliable sources. AI can be confidently wrong (hallucinations)."},{"q":"How can you monetize these skills?","o":["You cannot","Offer services to local businesses at ₹5K-25K/month per client","Only through full-time jobs","Wait for better AI"],"a":1,"e":"These skills are immediately monetizable — local businesses need help with digital tools and will pay ₹5K-25K+ per month for reliable service."}];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='You have mastered Session 5! Ready for the next session.';}else if(pct>=50){tier='Good Progress!';msg='Solid start. Review the sections you found challenging.';}else{tier='Keep Learning!';msg='Re-read the session content and try again.';}
+    box.innerHTML='<div class="q-score-box"><div class="big">'+sc+'/'+qPool.length+'</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">'+tier+'</p><p style="color:var(--t2);margin-bottom:.5rem">'+pct+'% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">'+msg+'</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go(\'s6\')" style="margin-left:.8rem">Assignment \u2192</button></div>';return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>'<div class="q-dot '+(i<cq?'done':i===cq?'cur':'')+'"></div>').join('');
+  let opts=q.o.map((o,i)=>'<div class="q-opt" data-i="'+i+'" onclick="selAns('+i+')"><span class="ol">'+ltr[i]+'</span><span>'+o+'</span></div>').join('');
+  box.innerHTML='<div class="q-prog">'+prog+'</div><div class="q-head"><span class="qn">Question '+(cq+1)+' of '+qPool.length+'</span>'+q.q+'</div><div class="q-opts">'+opts+'</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: '+sc+'/'+cq+'</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next \u2192</button></div>';
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML='\u2705 Correct! '+q.e}else{fb.className='q-fb show fb-no';fb.innerHTML='\u274c Not quite. '+q.e}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent='Score: '+sc+'/'+(cq+1);}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>

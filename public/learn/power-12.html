@@ -227,11 +227,26 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
   .vflow-arrow{transform:rotate(90deg)}
   .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
+
+/* Language Switcher */
+.lang-switch{display:flex;align-items:center;gap:2px;margin-left:auto;padding:0 12px;flex-shrink:0}
+.lang-btn{padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.lang-btn:hover{color:var(--t2);background:rgba(0,240,255,.04)}
+.lang-btn.active{color:var(--c1);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06)}
+.lang-float{position:fixed;top:12px;right:12px;z-index:300;display:flex;gap:2px;padding:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:10px}
+.lang-float.hide{display:none}
+@media(max-width:768px){.lang-btn{padding:5px 8px;font-size:.65rem}}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progBar"></div>
+<!-- Floating language switcher (visible before nav appears) -->
+<div class="lang-float" id="langFloat">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+</div>
 <canvas id="particleCanvas"></canvas>
 <div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
 
@@ -258,6 +273,12 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
     <button class="nav-btn" data-s="s4"><span class="nn">04</span>Career Planning</button>
     <button class="nav-btn" data-s="s5"><span class="nn">05</span>Quiz</button>
     <button class="nav-btn" data-s="s6"><span class="nn">06</span>Wrap-Up</button>
+
+    <div class="lang-switch" id="langNav">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
+    </div>
   </div>
 </nav>
 
@@ -672,6 +693,50 @@ function selAns(i){
   document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;
 }
 function nxtQ(){cq++;renderQ();}
+
+
+// ===========================
+// LANGUAGE TRANSLATION ENGINE
+// ===========================
+let currentLang='en';
+const langMap={
+  '.hero h1':{
+    en:document.querySelector('.hero h1')?.innerHTML||'',
+    hi:'अपनी AI टूलकिट बनाना',
+    pa:'ਆਪਣੀ AI ਟੂਲਕਿੱਟ ਬਣਾਉਣਾ'
+  },
+  '.hero-btns .btn-glow':{
+    en:'Start Session →',hi:'सेशन शुरू करें →',pa:'ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ →'
+  },
+  '.hero-btns .btn-ghost':{
+    en:'⚡ Jump to Quiz',hi:'⚡ क्विज़ पर जाएं',pa:'⚡ ਕੁਇਜ਼ ਤੇ ਜਾਓ'
+  }
+};
+// Capture original hero h1 on load
+document.addEventListener('DOMContentLoaded',()=>{
+  const h1=document.querySelector('.hero h1');
+  if(h1)langMap['.hero h1'].en=h1.innerHTML;
+});
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===(lang==='en'?'EN':lang==='hi'?'हिंदी':'ਪੰਜਾਬੀ'));
+  });
+  for(const[sel,val]of Object.entries(langMap)){
+    const els=document.querySelectorAll(sel);
+    if(Array.isArray(val)){
+      els.forEach((el,i)=>{if(val[i])el.innerHTML=val[i][lang]||val[i].en;});
+    }else{
+      els.forEach(el=>{el.innerHTML=val[lang]||val.en;});
+    }
+  }
+  const navVis=document.getElementById('mainNav')?.style.display!=='none';
+  const lf=document.getElementById('langFloat');
+  if(lf)lf.classList.toggle('hide',navVis);
+}
+// Show/hide floating lang button based on nav visibility
+const origSL=startLearning;
+startLearning=function(){origSL();const lf=document.getElementById('langFloat');if(lf)lf.classList.add('hide');};
 </script>
 </body>
 </html>

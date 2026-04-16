@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1: AI Fundamentals + The Marketing Opportunity — AI for Digital Marketing | TARAhut AI Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e;--bg2:#0c0c1a;--bg3:#111126;--bg4:#181838;
+  --c1:#00f0ff;--c2:#a855f7;--c3:#ff3d8b;--c4:#fbbf24;--c5:#34d399;
+  --brand:#059669;
+  --t1:#eeeef6;--t2:#9999b8;--t3:#55556e;
+  --bd:#1e1e3a;--r:14px;--rs:8px;
+  --g1:linear-gradient(135deg,var(--c1),var(--c2));
+  --g2:linear-gradient(135deg,var(--c3),var(--c4));
+  --g3:linear-gradient(135deg,var(--c5),var(--c1));
+  --gbrand:linear-gradient(135deg,var(--brand),var(--c1));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;overflow-x:hidden;user-select:none}
+a{color:var(--c1);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);padding:2px 8px;border-radius:4px;font-size:.88em;color:var(--c1)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--c1);border-radius:9px}
+@media print{body{display:none!important}}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gbrand);z-index:9999;transition:width .4s ease;width:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border:1px solid rgba(5,150,105,.4);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--brand);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem;animation:fadeSlide .7s ease both;backdrop-filter:blur(6px);background:rgba(5,150,105,.06)}
+.hero-chip .live{width:7px;height:7px;border-radius:50%;background:var(--brand);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,7.5vw,5rem);font-weight:800;line-height:1.05;margin-bottom:1.2rem;animation:fadeSlide .7s .1s ease both}
+.hero h1 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-brand{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);margin-bottom:1rem;animation:fadeSlide .7s .15s ease both}
+.hero>p{max-width:620px;font-size:1.05rem;color:var(--t2);margin-bottom:2.5rem;animation:fadeSlide .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeSlide .7s .3s ease both}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn{padding:14px 30px;border-radius:99px;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-glow{background:var(--brand);color:#fff;box-shadow:0 0 30px rgba(5,150,105,.25)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(5,150,105,.4);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--t1);border:1px solid var(--bd)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,240,255,.04)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb-1{width:500px;height:500px;background:rgba(5,150,105,.07);top:-10%;left:-10%;animation:orbFloat 18s ease-in-out infinite alternate}
+.orb-2{width:400px;height:400px;background:rgba(168,85,247,.06);bottom:-5%;right:-5%;animation:orbFloat 22s ease-in-out infinite alternate-reverse}
+.orb-3{width:350px;height:350px;background:rgba(0,240,255,.04);top:40%;left:50%;animation:orbFloat 15s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}100%{transform:translate(-20px,20px)}}
+.nav{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:none}
+.nav-inner{display:flex;align-items:center;max-width:1300px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;color:var(--brand);white-space:nowrap;font-size:.82rem;padding:0 14px;flex-shrink:0}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .3s;white-space:nowrap}
+.nav-btn:hover{color:var(--t2)}.nav-btn.on{color:var(--c1);border-bottom-color:var(--c1)}
+.nav-btn .nn{font-family:'JetBrains Mono',monospace;font-size:.65rem;opacity:.45;margin-right:5px}
+.sec{display:none;max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem 5rem;position:relative;z-index:1}
+.sec.on{display:block;animation:secIn .45s ease-out}
+@keyframes secIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{margin-bottom:3rem}
+.sec-head .over{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c1);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px}
+.sec-head .over::before{content:'';width:24px;height:1.5px;background:var(--c1)}
+.sec-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.sec-head h2 .gr{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-head>p{font-size:1.05rem;color:var(--t2);max-width:680px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin:2rem 0}
+.crd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+.crd::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--g1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.crd:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.crd:hover::after{transform:scaleX(1)}
+.crd-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.crd h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.crd p{color:var(--t2);font-size:.9rem;line-height:1.7}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:.75rem}
+.tag-1{background:rgba(0,240,255,.1);color:var(--c1)}.tag-2{background:rgba(168,85,247,.1);color:var(--c2)}
+.tag-3{background:rgba(255,61,139,.1);color:var(--c3)}.tag-4{background:rgba(251,191,36,.1);color:var(--c4)}
+.tag-5{background:rgba(52,211,153,.1);color:var(--c5)}.tag-brand{background:rgba(5,150,105,.12);color:var(--brand)}
+.callout{padding:1.5rem 1.75rem;border-radius:var(--r);margin:2rem 0;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.callout::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.call-1{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.1)}.call-1::before{background:var(--c1)}
+.call-2{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.1)}.call-2::before{background:var(--c4)}
+.call-3{background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1)}.call-3::before{background:var(--c5)}
+.call-4{background:rgba(255,61,139,.04);border:1px solid rgba(255,61,139,.1)}.call-4::before{background:var(--c3)}
+.call-brand{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.15)}.call-brand::before{background:var(--brand)}
+.call-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.call-body h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.call-body p{color:var(--t2);font-size:.9rem}
+.call-body strong{color:var(--t1)}
+.micro-action{background:linear-gradient(135deg,rgba(5,150,105,.08),rgba(0,240,255,.04));border:1px solid rgba(5,150,105,.25);border-radius:var(--r);padding:1.5rem 1.75rem;margin:2rem 0}
+.micro-action h4{color:var(--brand);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.micro-action h4::before{content:'🎯  '}
+.micro-action p{color:var(--t2);font-size:.9rem}
+.micro-action ul{padding-left:1.2rem;color:var(--t2);font-size:.9rem;margin-top:.5rem}
+.micro-action li{margin-bottom:.3rem}
+.emotional-hook{background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(255,61,139,.04));border-left:3px solid var(--c2);padding:1.5rem 1.75rem;border-radius:0 var(--r) var(--r) 0;margin:2rem 0;font-style:italic;color:var(--t2);font-size:.92rem}
+.emotional-hook strong{color:var(--t1)}
+.progress-marker{text-align:center;padding:1.5rem;margin:1.5rem 0;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;color:var(--brand);border:1px dashed rgba(5,150,105,.25);border-radius:var(--r);background:rgba(5,150,105,.03)}
+.identity-shift{text-align:center;padding:20px 28px;margin:28px 0;font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--brand);border:1px solid rgba(5,150,105,.2);background:rgba(5,150,105,.04);border-radius:var(--r)}
+.micro-win{text-align:center;padding:12px;margin:24px 0;font-size:.82rem;color:var(--c5);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.micro-win::before{content:'✓ ';color:var(--brand)}
+.curiosity-hook{font-family:'Syne',sans-serif;font-size:.9rem;color:var(--c2);font-style:italic;margin:16px 0 8px;text-align:center}
+.checklist{margin:2rem 0;padding:1.75rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem;font-size:1rem}
+.check-item{display:flex;align-items:center;gap:12px;padding:.75rem;border-radius:var(--rs);cursor:pointer;transition:all .3s;margin-bottom:.4rem;border:1px solid transparent}
+.check-item:hover{background:rgba(0,240,255,.03);border-color:rgba(0,240,255,.1)}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:.9rem;color:var(--t2)}
+.check-item.checked label{color:var(--c5);text-decoration:line-through}
+.check-score{margin-top:1rem;padding:.75rem 1rem;background:rgba(5,150,105,.06);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--brand)}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+.tool-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;transition:all .35s;position:relative;overflow:hidden}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(5,150,105,.3);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gbrand);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:8px}
+.tool-card p{color:var(--t2);font-size:.85rem;margin-bottom:.75rem}
+.demo{margin:2.5rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.demo-dots{display:flex;gap:5px}.demo-dots i{width:9px;height:9px;border-radius:50%;display:block}
+.demo-dots i:nth-child(1){background:#ff5f57}.demo-dots i:nth-child(2){background:#febc2e}.demo-dots i:nth-child(3){background:#28c840}
+.demo-bar h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.demo-in{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--t1);font-family:'Nunito Sans',sans-serif;font-size:.92rem;outline:none;transition:all .3s;margin-bottom:1rem;resize:vertical;min-height:80px}
+.demo-in:focus{border-color:var(--c1);box-shadow:0 0 16px rgba(0,240,255,.1)}
+.demo-out{padding:1.2rem;background:rgba(0,240,255,.02);border:1px dashed rgba(0,240,255,.15);border-radius:var(--rs);min-height:56px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c5);white-space:pre-wrap;transition:all .3s}
+.quiz-box{margin:2rem 0;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r)}
+.q-prog{display:flex;gap:5px;margin-bottom:2rem}
+.q-dot{flex:1;height:4px;border-radius:9px;background:var(--bd);transition:all .4s}
+.q-dot.done{background:var(--c5)}.q-dot.cur{background:var(--c1);box-shadow:0 0 8px rgba(0,240,255,.3)}
+.q-head{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.q-head .qn{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--c1);display:block;margin-bottom:.3rem}
+.q-opts{display:flex;flex-direction:column;gap:.65rem}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;transition:all .3s;font-size:.9rem}
+.q-opt:hover{border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.03)}
+.q-opt .ol{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.q-opt.ok{border-color:var(--c5);background:rgba(52,211,153,.06)}.q-opt.ok .ol{background:var(--c5);color:var(--bg);border-color:var(--c5)}
+.q-opt.no{border-color:var(--c3);background:rgba(255,61,139,.06)}.q-opt.no .ol{background:var(--c3);color:#fff;border-color:var(--c3)}
+.q-fb{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--rs);font-size:.88rem;display:none}
+.q-fb.show{display:block;animation:fadeSlide .3s ease}
+.q-fb.fb-ok{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);color:var(--c5)}
+.q-fb.fb-no{background:rgba(255,61,139,.06);border:1px solid rgba(255,61,139,.15);color:var(--c3)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.q-score-box{text-align:center;padding:3rem 2rem}
+.q-score-box .big{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;background:var(--gbrand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-nav{display:flex;justify-content:space-between;margin-top:2.5rem;flex-wrap:wrap;gap:1rem}
+.sec-foot{text-align:center;margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--t3)}
+.foot{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bd);margin-top:3rem;position:relative;z-index:1}
+.foot p{font-size:.82rem;color:var(--t3)}
+.foot .brand{font-family:'Syne',sans-serif;font-weight:800;color:var(--brand)}
+.vflow{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;margin:2.5rem 0;position:relative;overflow:hidden}
+.vflow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:.5}
+.vflow-title{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--c1);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.75rem;opacity:.7}
+.vflow-row{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.vflow-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.2rem 1.5rem;border-radius:var(--r);border:1px solid var(--bd);background:var(--bg3);min-width:110px;text-align:center;transition:all .4s}
+.vflow-node:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.vflow-node .vn-icon{font-size:1.8rem;margin-bottom:.2rem}
+.vflow-node .vn-label{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--t1)}
+.vflow-node .vn-sub{font-size:.68rem;color:var(--t3)}
+.vflow-node.glow-cyan{border-color:rgba(0,240,255,.2);box-shadow:0 0 15px rgba(0,240,255,.05)}
+.vflow-node.glow-purple{border-color:rgba(168,85,247,.2);box-shadow:0 0 15px rgba(168,85,247,.05)}
+.vflow-node.glow-green{border-color:rgba(52,211,153,.2);box-shadow:0 0 15px rgba(52,211,153,.05)}
+.vflow-node.glow-pink{border-color:rgba(255,61,139,.2);box-shadow:0 0 15px rgba(255,61,139,.05)}
+.vflow-node.glow-gold{border-color:rgba(251,191,36,.2);box-shadow:0 0 15px rgba(251,191,36,.05)}
+.vflow-arrow{color:var(--c1);font-size:1.3rem;flex-shrink:0;opacity:.6;animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.vflow-caption{text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--t2)}
+.vflow-caption strong{color:var(--t1)}
+.vcompare{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0}
+@media(max-width:600px){.vcompare{grid-template-columns:1fr}}
+.vcompare-card{background:var(--bg2);border-radius:var(--r);padding:1.75rem;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.vcompare-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.vcompare-card.vs-wrong{border:1px solid rgba(255,61,139,.2)}.vcompare-card.vs-wrong::before{background:var(--c3)}
+.vcompare-card.vs-right{border:1px solid rgba(52,211,153,.2)}.vcompare-card.vs-right::before{background:var(--c5)}
+.vcompare-card:hover{transform:translateY(-4px)}
+.vcompare-card .vc-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+.vcompare-card h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.vcompare-card.vs-wrong h4{color:var(--c3)}
+.vcompare-card.vs-right h4{color:var(--c5)}
+.vcompare-card p{color:var(--t2);font-size:.85rem}
+.vcompare-card .vc-badge{display:inline-block;padding:4px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.75rem}
+.vcompare-card.vs-wrong .vc-badge{background:rgba(255,61,139,.1);color:var(--c3)}
+.vcompare-card.vs-right .vc-badge{background:rgba(52,211,153,.1);color:var(--c5)}
+.vigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:2rem 0}
+.vigrid-item{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all .4s}
+.vigrid-item:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vigrid-item .vi-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.vigrid-item .vi-label{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--t1);margin-bottom:.25rem}
+.vigrid-item .vi-desc{font-size:.68rem;color:var(--t3);line-height:1.5}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
+.reveal-fade.visible{opacity:1}
+.stagger>*:nth-child(1){transition-delay:.05s}.stagger>*:nth-child(2){transition-delay:.12s}.stagger>*:nth-child(3){transition-delay:.19s}.stagger>*:nth-child(4){transition-delay:.26s}.stagger>*:nth-child(5){transition-delay:.33s}.stagger>*:nth-child(6){transition-delay:.4s}
+/* Language Toggle */
+.lang-bar{position:fixed;top:8px;right:12px;z-index:10001;display:flex;gap:4px;background:rgba(6,6,14,.85);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px;padding:3px}
+.lang-btn{padding:6px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;cursor:pointer;border:none;transition:all .3s;color:var(--t3);background:transparent;letter-spacing:.5px}
+.lang-btn:hover{color:var(--t1)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 0 12px rgba(5,150,105,.3)}
+[data-lang-hi],[data-lang-pa]{display:none}
+body.lang-hi [data-lang-en]{display:none}
+body.lang-hi [data-lang-hi]{display:block}
+body.lang-pa [data-lang-en]{display:none}
+body.lang-pa [data-lang-pa]{display:block}
+body.lang-hi .hero h1 [data-lang-en],body.lang-pa .hero h1 [data-lang-en]{display:none}
+body.lang-hi .hero h1 [data-lang-hi],body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+body.lang-hi .hero h1 [data-lang-hi]{display:inline}
+body.lang-pa .hero h1 [data-lang-pa]{display:inline}
+.lang-note{text-align:center;padding:8px;font-size:.7rem;color:var(--t3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--bd);display:none}
+body.lang-hi .lang-note,body.lang-pa .lang-note{display:block}
+@media(max-width:768px){
+  .cgrid,.tool-grid{grid-template-columns:1fr}
+  .sec{padding:2rem 1rem 4rem}
+  .vflow-row{flex-direction:column}
+  .vflow-arrow{transform:rotate(90deg)}
+  .vigrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<canvas id="particleCanvas"></canvas>
+<div id="progText" style="position:fixed;top:4px;right:12px;z-index:10000;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--t3);display:none"></div>
+
+<!-- Language Toggle -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('hi')">&#2361;&#2367;&#2306;</button>
+  <button class="lang-btn" onclick="setLang('pa')">&#2602;&#2672;</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="hero-chip"><span class="live"></span>Session 01 &middot; AI for Digital Marketing &middot; 2026</div>
+  <h1>
+    <span data-lang-en>AI Fundamentals &mdash;<br><span class="gr">The Marketing Opportunity</span></span>
+    <span data-lang-hi style="display:none">AI की बुनियाद &mdash;<br><span class="gr">मार्केटिंग का मौका</span></span>
+    <span data-lang-pa style="display:none">AI ਦੀ ਬੁਨਿਆਦ &mdash;<br><span class="gr">ਮਾਰਕੀਟਿੰਗ ਦਾ ਮੌਕਾ</span></span>
+  </h1>
+  <div class="hero-brand">AI for Digital Marketing &mdash; TARAhut AI Labs</div>
+  <div data-lang-en><p>What is AI really? How can it transform your marketing career? Today we demystify AI, explore the top tools, and discover why digital marketers who use AI earn 3x more. "AI koi jadu nahi &mdash; ih ik tool hai jo tuhadi marketing game badal dega."</p></div>
+  <div data-lang-hi style="display:none"><p>AI वास्तव में क्या है? यह आपके मार्केटिंग करियर को कैसे बदल सकता है? आज हम AI को समझेंगे, टॉप टूल्स एक्सप्लोर करेंगे, और जानेंगे कि AI वाले डिजिटल मार्केटर्स 3 गुना ज़्यादा कमाते हैं।</p></div>
+  <div data-lang-pa style="display:none"><p>AI ਅਸਲ ਵਿੱਚ ਕੀ ਹੈ? ਇਹ ਤੁਹਾਡੇ ਮਾਰਕੀਟਿੰਗ ਕਰੀਅਰ ਨੂੰ ਕਿਵੇਂ ਬਦਲ ਸਕਦਾ ਹੈ? ਅੱਜ ਅਸੀਂ AI ਸਮਝਾਂਗੇ, ਟੌਪ ਟੂਲ ਐਕਸਪਲੋਰ ਕਰਾਂਗੇ, ਅਤੇ ਜਾਣਾਂਗੇ ਕਿ AI ਵਾਲੇ ਮਾਰਕੀਟਰ 3 ਗੁਣਾ ਵੱਧ ਕਮਾਉਂਦੇ ਹਨ।</p></div>
+  <div class="hero-btns">
+    <button class="btn btn-glow" onclick="startLearning()">
+      <span data-lang-en>Start Session &rarr;</span>
+      <span data-lang-hi style="display:none">सेशन शुरू करें &rarr;</span>
+      <span data-lang-pa style="display:none">ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ &rarr;</span>
+    </button>
+    <button class="btn btn-ghost" onclick="jumpTo('s6')">
+      <span data-lang-en>&#9889; Jump to Quiz</span>
+      <span data-lang-hi style="display:none">&#9889; क्विज़ पर जाएं</span>
+      <span data-lang-pa style="display:none">&#9889; ਕੁਇਜ਼ ਤੇ ਜਾਓ</span>
+    </button>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <span class="nav-brand">AI Digital Marketing</span>
+    <button class="nav-btn on" data-s="s1"><span class="nn">01</span>What is AI?</button>
+    <button class="nav-btn" data-s="s2"><span class="nn">02</span>Live Tool Demos</button>
+    <button class="nav-btn" data-s="s3"><span class="nn">03</span>Marketing Industry</button>
+    <button class="nav-btn" data-s="s4"><span class="nn">04</span>Career Paths</button>
+    <button class="nav-btn" data-s="s5"><span class="nn">05</span>Ethics &amp; Limits</button>
+    <button class="nav-btn" data-s="s6"><span class="nn">06</span>Quiz</button>
+    <button class="nav-btn" data-s="s7"><span class="nn">07</span>Assignment</button>
+  </div>
+</nav>
+
+<!-- S1: WHAT IS AI -->
+<div class="sec on" id="s1">
+  <div class="sec-head">
+    <div class="over">Section 01</div>
+    <h2 data-lang-en>What Is <span class="gr">Artificial Intelligence?</span></h2>
+    <h2 data-lang-hi style="display:none">AI <span class="gr">क्या है?</span></h2>
+    <h2 data-lang-pa style="display:none">AI <span class="gr">ਕੀ ਹੈ?</span></h2>
+    <p data-lang-en>Forget the sci-fi movies. AI is not robots taking over the world. It is a tool &mdash; like electricity was in 1900. Those who learned to use electricity first built empires. Those who learn AI first will do the same. "AI koi movie da villain nahi &mdash; ih tuhada sabton powerful assistant hai."</p>
+    <p data-lang-hi style="display:none">साइंस-फिक्शन फ़िल्में भूल जाइए। AI रोबोट नहीं है जो दुनिया पर कब्ज़ा कर रहे हैं। यह एक टूल है &mdash; जैसे 1900 में बिजली थी। जिसने पहले बिजली सीखी, उसने साम्राज्य बनाया।</p>
+    <p data-lang-pa style="display:none">ਸਾਇੰਸ-ਫਿਕਸ਼ਨ ਫ਼ਿਲਮਾਂ ਭੁੱਲ ਜਾਓ। AI ਰੋਬੋਟ ਨਹੀਂ ਹੈ ਜੋ ਦੁਨੀਆ ਤੇ ਕਬਜ਼ਾ ਕਰ ਰਹੇ ਹਨ। ਇਹ ਇੱਕ ਟੂਲ ਹੈ &mdash; ਜਿਵੇਂ 1900 ਵਿੱਚ ਬਿਜਲੀ ਸੀ।</p>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">AI in Simple Terms</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Concept</span><span class="crd-icon">&#129302;</span><h3>Artificial Intelligence</h3><p>A computer system that can do tasks that normally need human intelligence &mdash; understanding language, recognizing images, making decisions, creating content. <strong>Think of it as a very smart intern</strong> that works 24/7, never gets tired, and learns from trillions of examples. "Ik aisa assistant jo kabhi thakda nahi."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Key Type</span><span class="crd-icon">&#128172;</span><h3>Large Language Models (LLMs)</h3><p>The type of AI you will use MOST as a marketer. LLMs like ChatGPT, Claude, and Gemini understand and generate human language. They can write copy, answer questions, translate, summarize, and brainstorm. <strong>They predict the next word</strong> based on patterns from trillions of words.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Important</span><span class="crd-icon">&#9888;&#65039;</span><h3>AI is NOT Magic</h3><p>AI does not think. It does not understand like humans. It predicts statistically likely outputs based on training data. This means: <strong>garbage in = garbage out</strong>. Your prompts determine your results. "Tuhada prompt hi tuhada result decide karda hai." Better prompts = better marketing.</p></div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Why Should Marketers Care About AI?</h4><p>According to McKinsey (2025), <strong>marketing and sales will see the highest impact from generative AI</strong> across all industries. AI can handle 60-70% of repetitive marketing tasks: writing captions, generating ad copy, researching competitors, creating content calendars, and analyzing data. The marketers who adopt AI now will be the leaders of tomorrow. "Jo aaj AI seekhega, oh kal lead karega."</p></div></div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128200; The AI Revolution Timeline</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#128187;</div><div class="vn-label">2020</div><div class="vn-sub">GPT-3 launched</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#128293;</div><div class="vn-label">Nov 2022</div><div class="vn-sub">ChatGPT released</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">&#9889;</div><div class="vn-label">2023-24</div><div class="vn-sub">Claude, Gemini, GPT-4</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#127793;</div><div class="vn-label">2025-26</div><div class="vn-sub">AI-native marketing era</div></div>
+    </div>
+    <div class="vflow-caption"><strong>We are at the beginning of the AI era.</strong> Learning AI marketing now is like learning social media marketing in 2012 &mdash; early movers win big.</div>
+  </div>
+
+  <div class="emotional-hook">
+    <p><strong>"Main tech nahi jaanda/jaandi."</strong> &mdash; You don't need to be technical. If you can type a message on WhatsApp, you can use AI tools. This course will teach you step by step, from absolute zero. Bas, seekhne da mann hona chahida hai.</p>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Types of AI You Will Use</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-1">Text</span><span class="crd-icon">&#128221;</span><h3>Text Generation AI</h3><p>ChatGPT, Claude, Gemini &mdash; write captions, blogs, emails, ad copy, scripts. <strong>Your primary marketing tools.</strong> Can produce in English, Hindi, Punjabi, and 100+ languages. The backbone of AI-powered marketing content creation.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Image</span><span class="crd-icon">&#127912;</span><h3>Image Generation AI</h3><p>DALL-E, Midjourney, Canva AI, Adobe Firefly &mdash; create social media graphics, product photos, logos, banners. <strong>No design skills needed.</strong> Describe what you want in words, get professional visuals in seconds.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Video</span><span class="crd-icon">&#127909;</span><h3>Video AI</h3><p>CapCut, InVideo AI, ElevenLabs &mdash; create video content, add captions, voiceovers, transitions. <strong>One person can now produce content</strong> that used to require a team of 5. Short-form video is king in 2026.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Analytics</span><span class="crd-icon">&#128202;</span><h3>Analytics AI</h3><p>Meta Advantage+, Google AI campaigns, Jasper &mdash; analyze performance data, optimize ads, predict trends. <strong>Let AI crunch the numbers</strong> while you focus on strategy and creativity. Data-driven decisions without a data science degree.</p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Quick Exercise</h4>
+    <p>Before we continue, list 5 marketing tasks you do regularly (or would need to do for a client). Examples: writing Instagram captions, creating WhatsApp messages, designing posters, writing blog posts, responding to customer queries. We will revisit this list and show how AI can handle each one.</p>
+    <ul>
+      <li>Task 1: _______________</li>
+      <li>Task 2: _______________</li>
+      <li>Task 3: _______________</li>
+      <li>Task 4: _______________</li>
+      <li>Task 5: _______________</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now understand what AI is, what LLMs are, and why marketers need AI skills.</div>
+  <p class="curiosity-hook">Next: See AI in action &mdash; live demos with ChatGPT, Claude, and Gemini.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><div></div><button class="btn btn-glow btn-sm" onclick="go('s2')">Next: Live Tool Demos &rarr;</button></div>
+</div>
+
+<!-- S2: LIVE TOOL DEMOS -->
+<div class="sec" id="s2">
+  <div class="progress-marker">&#9989; Section 1 complete! You're 14% through this session.</div>
+  <div class="sec-head">
+    <div class="over">Section 02</div>
+    <h2 data-lang-en>Live Demos: <span class="gr">ChatGPT, Claude, Gemini</span></h2>
+    <h2 data-lang-hi style="display:none">लाइव डेमो: <span class="gr">ChatGPT, Claude, Gemini</span></h2>
+    <h2 data-lang-pa style="display:none">ਲਾਈਵ ਡੈਮੋ: <span class="gr">ChatGPT, Claude, Gemini</span></h2>
+    <p data-lang-en>Time to get your hands dirty. We will explore the three most powerful AI tools side by side. Each has its own personality, strengths, and best use cases. "Tinnon tools nu samjho &mdash; kihda ki kaam hai, kiddan use karna hai."</p>
+    <p data-lang-hi style="display:none">अब हाथ गंदे करने का समय है। हम तीन सबसे शक्तिशाली AI टूल्स को साथ-साथ एक्सप्लोर करेंगे।</p>
+    <p data-lang-pa style="display:none">ਹੁਣ ਹੱਥ ਗੰਦੇ ਕਰਨ ਦਾ ਸਮਾਂ ਹੈ। ਅਸੀਂ ਤਿੰਨ ਸਭ ਤੋਂ ਤਾਕਤਵਰ AI ਟੂਲ ਨਾਲ-ਨਾਲ ਐਕਸਪਲੋਰ ਕਰਾਂਗੇ।</p>
+  </div>
+
+  <div class="tool-grid stagger">
+    <div class="tool-card reveal">
+      <h3>&#128994; ChatGPT (OpenAI)</h3>
+      <p><strong>Best for:</strong> General marketing content, brainstorming, ad copy, translations, image generation (DALL-E built-in)</p>
+      <p><strong>Free tier:</strong> GPT-4o mini with limits</p>
+      <p><strong>Paid:</strong> $20/month for GPT-4o, DALL-E, file upload, web browsing</p>
+      <p><strong>Marketing strength:</strong> Versatile, widely used, great plugin ecosystem. Best for quick content generation and brainstorming. "Sabton popular &mdash; sabton versatile."</p>
+      <p style="color:var(--c1);font-size:.8rem;margin-top:.5rem">chat.openai.com</p>
+    </div>
+    <div class="tool-card reveal">
+      <h3>&#128995; Claude (Anthropic)</h3>
+      <p><strong>Best for:</strong> Long-form content, nuanced writing, strategic planning, detailed analysis, document processing</p>
+      <p><strong>Free tier:</strong> Claude 3.5 Sonnet with limits</p>
+      <p><strong>Paid:</strong> $20/month for Claude Opus, extended thinking, file analysis</p>
+      <p><strong>Marketing strength:</strong> Best writing quality, follows complex instructions precisely, excellent for brand voice consistency. "Sabton accha likhda hai &mdash; brand voice maintain karda hai."</p>
+      <p style="color:var(--c1);font-size:.8rem;margin-top:.5rem">claude.ai</p>
+    </div>
+    <div class="tool-card reveal">
+      <h3>&#128309; Gemini (Google)</h3>
+      <p><strong>Best for:</strong> Research, data analysis, Google Workspace integration, real-time web access, YouTube content</p>
+      <p><strong>Free tier:</strong> Gemini 1.5 Flash (generous limits)</p>
+      <p><strong>Paid:</strong> $20/month for Gemini Advanced, Google One integration</p>
+      <p><strong>Marketing strength:</strong> Real-time web data, Google Analytics integration, YouTube insights. Best for SEO and data-driven marketing. "Google da apna AI &mdash; sabton best research layi."</p>
+      <p style="color:var(--c1);font-size:.8rem;margin-top:.5rem">gemini.google.com</p>
+    </div>
+  </div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">&#128148;</div>
+      <h4>Marketing WITHOUT AI</h4>
+      <p>Write 1 Instagram caption: 20-30 minutes. Create a blog post: 3-4 hours. Research competitors: full day. Design 10 social media posts: 2 days. Total: 15-20 hours per week for one client.</p>
+      <div class="vc-badge">&#10005; Slow &amp; Limited</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">&#9889;</div>
+      <h4>Marketing WITH AI</h4>
+      <p>Write 1 Instagram caption: 2 minutes. Create a blog post: 30 minutes. Research competitors: 1 hour. Design 10 social media posts: 1 hour. Total: 3-5 hours per week for one client.</p>
+      <div class="vc-badge">&#10003; 5x Faster</div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Live Demo 1: Write an Instagram Caption</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Try this prompt in all 3 tools and compare results:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Write an Instagram caption for a new Punjabi restaurant in Chandigarh launching their weekend brunch buffet at ₹599. Include:\n- Hook that stops scrolling\n- 3-4 lines of engaging copy\n- Call to action\n- 5-7 relevant hashtags\n- Add food emojis\nTone: Warm, inviting, slightly playful\nTarget: Young professionals aged 22-35 in Chandigarh/Mohali/Panchkula')">&#128203; Click to copy: Instagram caption for a Punjabi restaurant brunch launch</div>
+    <div class="demo-out">Copy this prompt into ChatGPT, Claude, AND Gemini. Compare: Which caption is most creative? Which follows your instructions best? Which would YOU post?</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Live Demo 2: Competitor Analysis</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">See how AI can do research that would take hours manually:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Act as a digital marketing strategist. I run a boutique gym in Mohali, Punjab. My competitors are:\n1. Anytime Fitness Mohali\n2. Gold\'s Gym Chandigarh\n3. Cult.fit Chandigarh\n\nAnalyze their likely digital marketing strategies:\n- What social media platforms are they probably using?\n- What content types work best for gyms?\n- What are their likely pricing strategies?\n- Where are the gaps I can exploit as a boutique gym?\n\nGive me 5 specific strategies to differentiate myself digitally.\nFormat as a clear table + action items.')">&#128203; Click to copy: Competitor analysis for a boutique gym in Mohali</div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>&#129514; Live Demo 3: Multilingual Content</h4></div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">AI can create content in multiple languages instantly:</p>
+    <div style="padding:1rem;background:rgba(0,240,255,.03);border:1px dashed rgba(0,240,255,.2);border-radius:var(--rs);font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--c1);margin-bottom:.75rem;cursor:pointer" onclick="copyPrompt(this,'Create a WhatsApp marketing message for a Diwali sale at a clothing boutique in Ludhiana. Create 3 versions:\n\n1. English version (professional but warm)\n2. Hindi version (conversational, use common Hindi)\n3. Punjabi version (casual, friendly, use Gurmukhi script)\n\nEach version should include:\n- Greeting\n- Sale details (40% off on ethnic wear)\n- Urgency element\n- Store address mention (GT Road, Ludhiana)\n- WhatsApp-friendly formatting with emojis\n- Call to action\n\nMake each version feel NATURAL in that language, not like a translation.')">&#128203; Click to copy: Trilingual WhatsApp marketing message for a Diwali sale</div>
+  </div>
+
+  <div class="callout call-1 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>Pro Tip: Use Multiple Tools</h4><p>The best marketers do not stick to one AI tool. Use <strong>ChatGPT for brainstorming</strong> (fast, creative), <strong>Claude for final copy</strong> (best writing quality), and <strong>Gemini for research</strong> (real-time data). Think of them as different team members. "Tinn tools = tinn team members. Sabda apna-apna kaam."</p></div></div>
+
+  <div class="micro-win">You have now used 3 AI tools and seen how they handle real marketing tasks differently.</div>
+  <p class="curiosity-hook">Next: Understanding the digital marketing industry &mdash; where the money is.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s1')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s3')">Next: Marketing Industry &rarr;</button></div>
+</div>
+
+<!-- S3: DIGITAL MARKETING INDUSTRY -->
+<div class="sec" id="s3">
+  <div class="progress-marker">&#128170; 28% through! Now let's look at the BIG picture.</div>
+  <div class="sec-head">
+    <div class="over">Section 03</div>
+    <h2 data-lang-en>Digital Marketing <span class="gr">Industry Overview</span></h2>
+    <h2 data-lang-hi style="display:none">डिजिटल मार्केटिंग <span class="gr">इंडस्ट्री ओवरव्यू</span></h2>
+    <h2 data-lang-pa style="display:none">ਡਿਜੀਟਲ ਮਾਰਕੀਟਿੰਗ <span class="gr">ਇੰਡਸਟ੍ਰੀ ਓਵਰਵਿਊ</span></h2>
+    <p data-lang-en>The Indian digital marketing industry is worth ₹50,000+ crore and growing at 30% per year. Every business &mdash; from the kirana store on your street to Reliance &mdash; needs digital marketing. And now, AI is making it possible for ONE person to do what agencies charge lakhs for. "Har business nu digital marketing chahidi hai &mdash; aur AI naal tusi ikleeyan karo jo agency kardi hai."</p>
+    <p data-lang-hi style="display:none">भारतीय डिजिटल मार्केटिंग इंडस्ट्री ₹50,000+ करोड़ की है और 30% प्रति वर्ष बढ़ रही है। हर बिज़नेस को डिजिटल मार्केटिंग चाहिए।</p>
+    <p data-lang-pa style="display:none">ਭਾਰਤੀ ਡਿਜੀਟਲ ਮਾਰਕੀਟਿੰਗ ਇੰਡਸਟ੍ਰੀ ₹50,000+ ਕਰੋੜ ਦੀ ਹੈ ਅਤੇ 30% ਪ੍ਰਤੀ ਸਾਲ ਵਧ ਰਹੀ ਹੈ।</p>
+  </div>
+
+  <div class="vigrid stagger reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128200;</span><div class="vi-label" style="color:var(--c1)">₹50,000 Cr+</div><div class="vi-desc">Indian digital marketing industry size (2025)</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128640;</span><div class="vi-label" style="color:var(--c2)">30% Growth</div><div class="vi-desc">Year-over-year industry growth rate</div></div>
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#128188;</span><div class="vi-label" style="color:var(--c5)">9 Lakh+ Jobs</div><div class="vi-desc">Digital marketing job openings in India</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128176;</span><div class="vi-label" style="color:var(--c4)">₹4-25 LPA</div><div class="vi-desc">Salary range for digital marketers</div></div>
+    <div class="vigrid-item" style="border-color:rgba(255,61,139,.2)"><span class="vi-icon">&#127760;</span><div class="vi-label" style="color:var(--c3)">900M+ Users</div><div class="vi-desc">Internet users in India (2025)</div></div>
+    <div class="vigrid-item" style="border-color:rgba(5,150,105,.2)"><span class="vi-icon">&#128241;</span><div class="vi-label" style="color:var(--brand)">500M+</div><div class="vi-desc">WhatsApp users in India &mdash; biggest market</div></div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">Digital Marketing Channels You Will Learn</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-2">Channel 1</span><span class="crd-icon">&#128247;</span><h3>Social Media Marketing</h3><p>Instagram, Facebook, LinkedIn, YouTube, X (Twitter). Create engaging content, build community, run organic campaigns. <strong>Instagram Reels and YouTube Shorts are king in 2026</strong> &mdash; short-form video gets 3x more engagement than static posts. AI makes content creation 5x faster.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">Channel 2</span><span class="crd-icon">&#128269;</span><h3>Search Engine Marketing</h3><p>SEO (organic) + Google Ads (paid). <strong>91% of online experiences start with a search engine.</strong> Local SEO is gold for small businesses: "best gym near me," "CA in Chandigarh." AI tools can research keywords, write meta descriptions, and optimize content in minutes.</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Channel 3</span><span class="crd-icon">&#128231;</span><h3>Email Marketing</h3><p>Still the <strong>highest ROI channel</strong> &mdash; ₹42 return for every ₹1 spent. Welcome sequences, newsletters, promotional emails, abandoned cart recovery. AI can write entire email sequences that convert. Not dead &mdash; just evolving. "Email dead nahi hai &mdash; AI naal hor powerful ho gaya hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Channel 4</span><span class="crd-icon">&#128176;</span><h3>Paid Advertising</h3><p>Meta Ads (Instagram/Facebook), Google Ads, YouTube Ads. <strong>The fastest way to get clients results.</strong> AI now handles targeting, bidding, and creative optimization through Meta Advantage+ and Google AI campaigns. Learn the strategy, let AI optimize.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Channel 5</span><span class="crd-icon">&#128172;</span><h3>WhatsApp Marketing</h3><p>India's secret weapon. <strong>98% open rate</strong> vs 20% for email. WhatsApp Business API, broadcast lists, catalogs, automated responses. Local businesses LOVE WhatsApp marketing because their customers are already there. "Sab WhatsApp te hain &mdash; waheen market karo."</p></div>
+    <div class="crd reveal"><span class="tag tag-brand">Channel 6</span><span class="crd-icon">&#128221;</span><h3>Content Marketing</h3><p>Blogs, videos, podcasts, infographics. <strong>Content is the foundation</strong> of all other channels. SEO needs content. Social media needs content. Email needs content. AI makes you a content machine &mdash; one person can produce what used to need a team of 5.</p></div>
+  </div>
+
+  <div class="callout call-3 reveal"><div class="call-ico">&#127793;</div><div class="call-body"><h4>Local Business Opportunity in Punjab</h4><p>Punjab has 15 lakh+ MSMEs (small businesses), and less than 20% have proper digital marketing. Immigration consultants, coaching centers, restaurants, boutiques, gyms, salons &mdash; they ALL need digital marketing but cannot afford big agencies. <strong>This is YOUR opportunity.</strong> Learn AI-powered marketing, serve 5-10 local businesses, earn ₹50K-2L+ per month. "Punjab da har chhota business tuhada potential client hai."</p></div></div>
+
+  <div class="emotional-hook">
+    <p><strong>"Par main sirf ik banda/bandi haan. Ik agency nu replace kiven karaan?"</strong> &mdash; That is exactly what AI enables. One AI-powered marketer can serve 5-10 clients simultaneously. You handle strategy and client relationships. AI handles the execution. You become a one-person agency earning agency-level income.</p>
+  </div>
+
+  <div class="micro-win">You now know the 6 key digital marketing channels and the massive opportunity in local business marketing.</div>
+  <p class="curiosity-hook">Next: Which career path is right for you? Freelancer vs agency vs in-house.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s2')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s4')">Next: Career Paths &rarr;</button></div>
+</div>
+
+<!-- S4: CAREER PATHS -->
+<div class="sec" id="s4">
+  <div class="progress-marker">&#128293; 57% done! Now let's talk about YOUR career path.</div>
+  <div class="sec-head">
+    <div class="over">Section 04</div>
+    <h2 data-lang-en>Career Paths: <span class="gr">Freelancer vs Agency vs In-House</span></h2>
+    <h2 data-lang-hi style="display:none">करियर पथ: <span class="gr">फ्रीलांसर vs एजेंसी vs इन-हाउस</span></h2>
+    <h2 data-lang-pa style="display:none">ਕਰੀਅਰ ਪਾਥ: <span class="gr">ਫ੍ਰੀਲਾਂਸਰ vs ਏਜੰਸੀ vs ਇਨ-ਹਾਊਸ</span></h2>
+    <p data-lang-en>There is no single "right" path in digital marketing. Your lifestyle, goals, and personality determine which path suits you best. Let us break down each option honestly. "Tuhade sapne aur tuhadi lifestyle decide karegi ki tuhade layi ki sahi hai."</p>
+    <p data-lang-hi style="display:none">डिजिटल मार्केटिंग में कोई एक "सही" रास्ता नहीं है। आपकी लाइफस्टाइल, गोल्स और पर्सनालिटी तय करेगी कि कौन सा रास्ता सही है।</p>
+    <p data-lang-pa style="display:none">ਡਿਜੀਟਲ ਮਾਰਕੀਟਿੰਗ ਵਿੱਚ ਕੋਈ ਇੱਕ "ਸਹੀ" ਰਸਤਾ ਨਹੀਂ ਹੈ।</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-5">Path 1</span><span class="crd-icon">&#128075;</span><h3>Freelancer / Solopreneur</h3><p><strong>Income:</strong> ₹30K-5L+/month (depends on clients)<br><strong>Freedom:</strong> Work from anywhere, choose your hours<br><strong>Clients:</strong> Serve 3-10 local businesses<br><strong>Skills needed:</strong> All-rounder, client management, self-discipline<br><strong>Best for:</strong> Self-starters who want independence<br><strong>Risk:</strong> Income instability initially<br>"Apni marzi da boss &mdash; par discipline chahidi hai."</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Path 2</span><span class="crd-icon">&#127970;</span><h3>Agency (Start or Join)</h3><p><strong>Income:</strong> ₹20K-1L+/month (employee) or ₹2L-20L+/month (owner)<br><strong>Growth:</strong> Build a team, scale to many clients<br><strong>Clients:</strong> 15-50+ businesses<br><strong>Skills needed:</strong> Team management, sales, systems<br><strong>Best for:</strong> Leaders and builders<br><strong>Risk:</strong> Higher overhead, team management<br>"Agency bana ke team banao &mdash; sabton zyada scale."</p></div>
+    <div class="crd reveal"><span class="tag tag-1">Path 3</span><span class="crd-icon">&#128188;</span><h3>In-House Marketer</h3><p><strong>Income:</strong> ₹4-25 LPA (salary + benefits)<br><strong>Stability:</strong> Fixed salary, PF, health insurance<br><strong>Focus:</strong> One brand, deep expertise<br><strong>Skills needed:</strong> Specialization, corporate navigation<br><strong>Best for:</strong> Those who prefer stability and depth<br><strong>Risk:</strong> Limited to one industry/brand<br>"Ik company, ik brand &mdash; deep kaam, stable income."</p></div>
+  </div>
+
+  <div class="vflow reveal">
+    <div class="vflow-title">&#128200; Your Income Growth Timeline with AI Skills</div>
+    <div class="vflow-row">
+      <div class="vflow-node glow-cyan"><div class="vn-icon">&#127793;</div><div class="vn-label">Month 1-3</div><div class="vn-sub">Learn & practice<br>₹0 (investing in skills)</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-purple"><div class="vn-icon">&#128176;</div><div class="vn-label">Month 3-6</div><div class="vn-sub">First clients<br>₹15K-30K/mo</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-gold"><div class="vn-icon">&#128200;</div><div class="vn-label">Month 6-12</div><div class="vn-sub">Growing portfolio<br>₹40K-80K/mo</div></div>
+      <div class="vflow-arrow">&rarr;</div>
+      <div class="vflow-node glow-green"><div class="vn-icon">&#128640;</div><div class="vn-label">Year 2+</div><div class="vn-sub">Established<br>₹1L-5L+/mo</div></div>
+    </div>
+    <div class="vflow-caption"><strong>These are realistic numbers for someone who completes this course and takes action.</strong> AI skills accelerate every stage of this timeline.</div>
+  </div>
+
+  <div class="callout call-2 reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Hybrid Model (Our Recommendation)</h4><p>The smartest approach: <strong>Start freelancing while building toward an agency.</strong> Month 1-6: freelance with 3-5 clients. Month 6-12: hire a VA (virtual assistant), take on 8-10 clients. Year 2: formalize as an agency with 2-3 team members. This way you have income from day one, learn by doing, and scale naturally. "Freelance se shuru karo, agency ki taraf badho."</p></div></div>
+
+  <h3 class="reveal" style="font-family:'Syne',sans-serif;margin:2.5rem 0 1rem;">What You Can Charge as an AI-Powered Marketer</h3>
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-4">Service</span><span class="crd-icon">&#128247;</span><h3>Social Media Management</h3><p><strong>₹8K-25K/month per client.</strong> 15-30 posts per month, caption writing, scheduling, basic engagement. AI does 70% of the work (content creation). You handle strategy and client communication. 5 clients = ₹40K-1.25L/month.</p></div>
+    <div class="crd reveal"><span class="tag tag-1">Service</span><span class="crd-icon">&#128176;</span><h3>Paid Ads Management</h3><p><strong>₹10K-50K/month per client + 10-15% of ad spend.</strong> Meta Ads, Google Ads setup and optimization. AI handles creative testing and audience optimization. High-value service that clients happily pay for because ROI is directly measurable.</p></div>
+    <div class="crd reveal"><span class="tag tag-5">Service</span><span class="crd-icon">&#128221;</span><h3>Content Marketing Package</h3><p><strong>₹15K-40K/month per client.</strong> Blog posts (4-8/month), social media content, email newsletters. AI can generate first drafts in minutes &mdash; you refine and add brand personality. One person with AI = output of a 3-person content team.</p></div>
+    <div class="crd reveal"><span class="tag tag-3">Service</span><span class="crd-icon">&#127760;</span><h3>Complete Digital Marketing</h3><p><strong>₹25K-1L+/month per client.</strong> Full-stack: social media + paid ads + content + email + WhatsApp + SEO. Premium service for businesses serious about growth. 3-5 full-service clients = ₹75K-5L+/month. "Pura package do &mdash; premium charge karo."</p></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Career Path Self-Assessment</h4>
+    <p>Answer these questions honestly to find your best path:</p>
+    <ul>
+      <li>Do I prefer working independently or in a team? (Independent = freelance, Team = agency/in-house)</li>
+      <li>Am I comfortable with income uncertainty? (Yes = freelance, No = in-house initially)</li>
+      <li>Do I want to build a business or have a career? (Business = agency, Career = in-house)</li>
+      <li>How quickly do I need income? (Now = in-house job, 3-6 months = freelance)</li>
+      <li>Am I good at sales and client management? (Yes = freelance/agency, No = start in-house)</li>
+    </ul>
+  </div>
+
+  <div class="micro-win">You now have clarity on the three career paths and realistic income expectations.</div>
+  <p class="curiosity-hook">Next: The ethical side &mdash; what you MUST know about AI limitations.</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s3')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s5')">Next: Ethics & Limits &rarr;</button></div>
+</div>
+
+<!-- S5: ETHICS & LIMITATIONS -->
+<div class="sec" id="s5">
+  <div class="progress-marker">&#128293; 71% done! Critical topic ahead &mdash; AI ethics and limitations.</div>
+  <div class="sec-head">
+    <div class="over">Section 05</div>
+    <h2 data-lang-en>AI Ethics &amp; <span class="gr">Limitations</span></h2>
+    <h2 data-lang-hi style="display:none">AI नैतिकता और <span class="gr">सीमाएं</span></h2>
+    <h2 data-lang-pa style="display:none">AI ਨੈਤਿਕਤਾ ਅਤੇ <span class="gr">ਸੀਮਾਵਾਂ</span></h2>
+    <p data-lang-en>AI is powerful, but it is not perfect. Understanding its limitations will make you a BETTER marketer, not a weaker one. The marketers who blindly trust AI output will fail. Those who understand its limits will thrive. "AI nu samajhna &mdash; uski limitations nu samajhna &mdash; ih hai asli skill."</p>
+    <p data-lang-hi style="display:none">AI शक्तिशाली है, लेकिन परफेक्ट नहीं। इसकी सीमाओं को समझना आपको बेहतर मार्केटर बनाएगा।</p>
+    <p data-lang-pa style="display:none">AI ਤਾਕਤਵਰ ਹੈ, ਪਰ ਪਰਫੈਕਟ ਨਹੀਂ। ਇਸ ਦੀਆਂ ਸੀਮਾਵਾਂ ਸਮਝਣਾ ਤੁਹਾਨੂੰ ਬਿਹਤਰ ਮਾਰਕੀਟਰ ਬਣਾਏਗਾ।</p>
+  </div>
+
+  <div class="cgrid stagger">
+    <div class="crd reveal"><span class="tag tag-3">Limitation 1</span><span class="crd-icon">&#128163;</span><h3>Hallucinations</h3><p>AI sometimes makes things up with confidence. It can cite fake statistics, invent product features, or create false testimonials. <strong>ALWAYS fact-check AI output</strong> before publishing marketing content. A wrong claim in an ad can damage your client's reputation &mdash; and yours. "AI kabhi-kabhi jhooth bol deta hai &mdash; confidently. Hamesha check karo."</p></div>
+    <div class="crd reveal"><span class="tag tag-4">Limitation 2</span><span class="crd-icon">&#128338;</span><h3>Outdated Information</h3><p>AI models have a knowledge cutoff date. ChatGPT and Claude may not know about events from the last few months. For marketing, this means: <strong>verify current prices, offers, trends, and statistics independently.</strong> AI is great for strategy and content structure, but double-check facts.</p></div>
+    <div class="crd reveal"><span class="tag tag-2">Limitation 3</span><span class="crd-icon">&#128100;</span><h3>No Real Understanding</h3><p>AI does not understand your client's business like you do. It has never visited their store, met their customers, or understood their unique challenges. <strong>YOU bring the human insight, local knowledge, and emotional intelligence.</strong> AI is the tool. You are the strategist. "AI tool hai, tusi strategist ho."</p></div>
+    <div class="crd reveal"><span class="tag tag-1">Limitation 4</span><span class="crd-icon">&#128274;</span><h3>Privacy & Data</h3><p><strong>Never share client's confidential data with AI tools</strong> &mdash; passwords, financial data, personal customer information, trade secrets. Whatever you type into ChatGPT/Claude may be used for training. Use anonymized data. Tell clients how you use AI. Transparency builds trust.</p></div>
+  </div>
+
+  <div class="callout call-4 reveal"><div class="call-ico">&#9888;&#65039;</div><div class="call-body"><h4>Ethical Marketing with AI: The Rules</h4><p>1. <strong>Disclose AI usage</strong> when asked &mdash; be transparent with clients about your workflow.<br>2. <strong>Never plagiarize</strong> &mdash; AI-generated content should be edited and personalized, not copy-pasted blindly.<br>3. <strong>Fact-check everything</strong> &mdash; especially statistics, testimonials, and claims.<br>4. <strong>Respect copyright</strong> &mdash; AI-generated images may unintentionally replicate copyrighted designs.<br>5. <strong>Add human value</strong> &mdash; your unique perspective, local insights, and creativity are what differentiate you.<br>"AI se kaam chura ke dene ka nahi &mdash; AI se kaam better karke dene ka."</p></div></div>
+
+  <div class="vcompare">
+    <div class="vcompare-card vs-wrong reveal-left">
+      <div class="vc-icon">&#128683;</div>
+      <h4>Wrong Way to Use AI</h4>
+      <p>Copy-paste AI output directly without editing. Blindly trust all statistics and claims. Share client confidential data with AI. Claim all content is "handwritten" when it is AI-generated. Ignore brand voice and tone.</p>
+      <div class="vc-badge">&#10005; Lazy & Risky</div>
+    </div>
+    <div class="vcompare-card vs-right reveal-right">
+      <div class="vc-icon">&#9989;</div>
+      <h4>Right Way to Use AI</h4>
+      <p>Use AI for first drafts, then edit and personalize. Fact-check all claims and statistics. Use anonymized data. Be transparent about your AI-powered workflow. Add your unique brand voice and local insights to every piece.</p>
+      <div class="vc-badge">&#10003; Smart & Professional</div>
+    </div>
+  </div>
+
+  <div class="callout call-brand reveal"><div class="call-ico">&#128161;</div><div class="call-body"><h4>The Human + AI Formula</h4><p>The future of marketing is not AI replacing humans. It is <strong>humans who use AI replacing humans who do not.</strong> Your value as a marketer comes from: understanding the client's business, local market knowledge, creative strategy, emotional intelligence, and relationship management. AI amplifies all of these. "AI tuhadi jagah nahi lega &mdash; par AI wala marketer zaroor lega."</p></div></div>
+
+  <div class="checklist">
+    <h4>&#9989; Session 1 Ethics Checklist</h4>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will always fact-check AI-generated statistics and claims</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will never share client confidential data with AI tools</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will edit and personalize all AI output before delivering to clients</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will be transparent about using AI in my workflow</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will respect copyright and intellectual property</label></div>
+    <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>I will always add human value: local insights, brand voice, strategy</label></div>
+    <div class="check-score" id="checkScore">Tap items to check them off &rarr; your progress score will appear here</div>
+  </div>
+
+  <div class="micro-win">You now understand AI's limitations and how to use it ethically &mdash; this sets you apart from 90% of AI users.</div>
+  <p class="curiosity-hook">Next: Test your understanding with a quiz!</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s4')">&larr; Previous</button><button class="btn btn-glow btn-sm" onclick="go('s6')">Next: Quiz &rarr;</button></div>
+</div>
+
+<!-- S6: QUIZ -->
+<div class="sec" id="s6">
+  <div class="progress-marker">&#129504; Almost there! Quiz time &mdash; test your Session 1 knowledge.</div>
+  <div class="sec-head">
+    <div class="over">Section 06</div>
+    <h2>Test Your <span class="gr">Understanding</span></h2>
+    <p>8 questions randomly selected from a pool of 20. Test your knowledge of AI fundamentals, digital marketing channels, career paths, and ethical AI usage. "Har sawaal tuhadi samajh test karda hai."</p>
+  </div>
+  <div class="quiz-box" id="quizBox"></div>
+  <div class="micro-win">Every question deepened your understanding of AI and digital marketing.</div>
+  <p class="curiosity-hook">Next: Your first assignment &mdash; hands-on with 3 AI tools!</p>
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s5')">&larr; Back</button><button class="btn btn-glow btn-sm" onclick="go('s7')">Next: Assignment &rarr;</button></div>
+</div>
+
+<!-- S7: ASSIGNMENT & WRAP-UP -->
+<div class="sec" id="s7">
+  <div class="sec-head">
+    <div class="over">Section 07</div>
+    <h2 data-lang-en>Session 1 <span class="gr">Complete!</span></h2>
+    <h2 data-lang-hi style="display:none">सेशन 1 <span class="gr">पूरा!</span></h2>
+    <h2 data-lang-pa style="display:none">ਸੈਸ਼ਨ 1 <span class="gr">ਮੁਕੰਮਲ!</span></h2>
+    <p>"Tusi aaj AI aur digital marketing di duniya vich pehla kadam chukkeya hai." Here is what you learned and your first assignment.</p>
+  </div>
+
+  <div class="vigrid reveal" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+    <div class="vigrid-item" style="border-color:rgba(52,211,153,.2)"><span class="vi-icon">&#129302;</span><div class="vi-label" style="color:var(--c5)">AI Basics</div><div class="vi-desc">What AI is, what LLMs are, how they work</div></div>
+    <div class="vigrid-item" style="border-color:rgba(0,240,255,.2)"><span class="vi-icon">&#128187;</span><div class="vi-label" style="color:var(--c1)">3 AI Tools</div><div class="vi-desc">ChatGPT, Claude, Gemini compared</div></div>
+    <div class="vigrid-item" style="border-color:rgba(168,85,247,.2)"><span class="vi-icon">&#128200;</span><div class="vi-label" style="color:var(--c2)">Industry</div><div class="vi-desc">₹50,000 Cr+ market, 6 channels</div></div>
+    <div class="vigrid-item" style="border-color:rgba(251,191,36,.2)"><span class="vi-icon">&#128188;</span><div class="vi-label" style="color:var(--c4)">Career Paths</div><div class="vi-desc">Freelancer, agency, in-house</div></div>
+    <div class="vigrid-item" style="border-color:rgba(255,61,139,.2)"><span class="vi-icon">&#9878;&#65039;</span><div class="vi-label" style="color:var(--c3)">Ethics</div><div class="vi-desc">Limitations, fact-checking, privacy</div></div>
+  </div>
+
+  <div class="micro-action">
+    <h4>Assignment: 10 Marketing Tasks Across 3 AI Tools</h4>
+    <p>Complete all 10 tasks. Use ChatGPT for some, Claude for others, and Gemini for the rest. Note which tool performed best for each task.</p>
+    <ul>
+      <li><strong>Task 1 (ChatGPT):</strong> Write 3 Instagram captions for a local coffee shop in your city</li>
+      <li><strong>Task 2 (Claude):</strong> Write a 300-word blog post introduction about "Why Small Businesses Need Social Media in 2026"</li>
+      <li><strong>Task 3 (Gemini):</strong> Research the top 5 trending digital marketing strategies in India for 2026</li>
+      <li><strong>Task 4 (ChatGPT):</strong> Create a WhatsApp promotional message for a salon's Diwali offer</li>
+      <li><strong>Task 5 (Claude):</strong> Write a professional email pitching your digital marketing services to a local business</li>
+      <li><strong>Task 6 (Gemini):</strong> Analyze the Instagram strategy of any successful Indian brand (Zomato, Amul, etc.)</li>
+      <li><strong>Task 7 (ChatGPT):</strong> Generate 10 content ideas for a gym's Instagram page</li>
+      <li><strong>Task 8 (Claude):</strong> Write a Google Ads headline + description for a Chandigarh-based immigration consultant</li>
+      <li><strong>Task 9 (Gemini):</strong> Create a comparison table: Instagram vs Facebook vs LinkedIn for B2B marketing</li>
+      <li><strong>Task 10 (Any tool):</strong> Ask the AI to explain one digital marketing concept in Punjabi/Hindi that you found confusing today</li>
+    </ul>
+  </div>
+
+  <div class="callout call-brand"><div class="call-ico">&#127891;</div><div class="call-body"><h4>What You Learned Today</h4><p>&#9989; What AI is and how LLMs work (prediction, not search)<br>&#9989; Hands-on experience with ChatGPT, Claude, and Gemini<br>&#9989; Digital marketing industry overview: ₹50,000 Cr+, 6 channels, massive opportunity<br>&#9989; Career paths: freelancer vs agency vs in-house (with realistic income ranges)<br>&#9989; AI ethics: hallucinations, privacy, transparency, fact-checking<br>&#9989; The Human + AI formula for marketing success</p></div></div>
+
+  <div class="callout call-2"><div class="call-ico">&#128302;</div><div class="call-body"><h4>Preview: Session 2 &mdash; Digital Marketing Fundamentals + Niche Selection</h4><p>"Kal assi marketing funnel sikhange &mdash; awareness se action tak. 5 proven niches jinnan vich paise hain: coaching, immigration, gyms, boutiques, local services. Apna niche choose karoge aur ik real client pick karoge. Asli kaam shuru hunda hai!" Get ready to choose your niche and find your first real client.</p></div></div>
+
+  <div style="text-align:center;margin:2.5rem 0">
+    <a href="https://wa.me/919200882008?text=I%20completed%20Session%201%20of%20AI%20for%20Digital%20Marketing!" target="_blank" class="btn btn-glow" style="margin-right:12px;margin-bottom:12px;text-decoration:none">&#128241; Message TARAhut</a>
+    <a href="https://tarahutailabs.com" target="_blank" class="btn btn-ghost" style="text-decoration:none">&#127760; Visit TARAhut</a>
+  </div>
+
+  <div class="identity-shift">"Tusi aaj AI aur digital marketing di duniya vich enter ho gaye. 12 sessions baad tusi ik AI-powered digital marketer hovoge jo local businesses di growth karega. Ih sirf ik course nahi &mdash; ih tuhada career change hai."</div>
+
+  <div class="sec-foot">TARAhut AI Labs &middot; tarahutailabs.com &middot; +91 92008-82008</div>
+  <div class="sec-nav"><button class="btn btn-ghost btn-sm" onclick="go('s6')">&larr; Back to Quiz</button><a href="dm-02.html" class="btn btn-glow btn-sm" style="text-decoration:none">Session 2: Marketing Fundamentals &rarr;</a></div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot" id="mainFoot" style="display:none">
+  <p>Built as an interactive training module by <span class="brand">TARAhut AI Labs</span></p>
+  <p style="margin-top:.3rem;font-size:.72rem;color:var(--t3)">AI for Digital Marketing &middot; Session 01: AI Fundamentals + The Marketing Opportunity &middot; tarahutailabs.com</p>
+  <p style="margin-top:.3rem;font-size:.65rem;color:#333">&copy; 2026 TARAhut AI Labs. All rights reserved.</p>
+</div>
+
+<script>
+// === LANGUAGE TOGGLE ===
+function setLang(lang){
+  document.body.classList.remove('lang-hi','lang-pa');
+  if(lang!=='en') document.body.classList.add('lang-'+lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick*="\''+lang+'\'"]').classList.add('active');
+  document.querySelectorAll('[data-lang-en],[data-lang-hi],[data-lang-pa]').forEach(el=>{
+    if(el.hasAttribute('data-lang-'+lang)){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else if(el.hasAttribute('data-lang-en')&&lang==='en'){el.style.display=el.tagName==='SPAN'?'inline':'block'}
+    else{el.style.display='none'}
+  });
+  localStorage.setItem('tarahut-lang',lang);
+}
+(function(){const saved=localStorage.getItem('tarahut-lang');if(saved&&saved!=='en')setLang(saved)})();
+
+// === COPY PROTECTION ===
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['c','u','s','a','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12'||e.keyCode===123)e.preventDefault()});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+// === PARTICLES ===
+const cvs=document.getElementById('particleCanvas'),ctx=cvs.getContext('2d');let pts=[];
+function resizeCvs(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+window.addEventListener('resize',resizeCvs);resizeCvs();
+for(let i=0;i<60;i++)pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.5+.5,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,o:Math.random()*.5+.2});
+function drawPts(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>cvs.width)p.dx*=-1;if(p.y<0||p.y>cvs.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${p.o})`;ctx.fill()});
+pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,240,255,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}})});
+requestAnimationFrame(drawPts)}drawPts();
+
+// === NAV ===
+const navBtns=document.querySelectorAll('.nav-btn'),secs=document.querySelectorAll('.sec');
+const secIds=['s1','s2','s3','s4','s5','s6','s7'];
+function go(id){
+  secs.forEach(s=>s.classList.remove('on'));navBtns.forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.querySelector(`[data-s="${id}"]`)?.classList.add('on');
+  requestAnimationFrame(function(){var navEl=document.getElementById('mainNav');var navH=navEl?navEl.offsetHeight:50;var secEl=document.getElementById(id);if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}});
+  const idx=secIds.indexOf(id);document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  const pct=Math.round((idx+1)/secIds.length*100);const pt=document.getElementById('progText');
+  pt.textContent=pct<=25?`${pct}% — Great start`:pct<=50?`${pct}% — Building`:pct<=75?`${pct}% — Almost there`:`${pct}% — Finish strong!`;pt.style.display='block';
+  if(id==='s6'&&!quizStarted)initQuiz();
+  const sec=document.getElementById(id);sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>el.classList.remove('visible'));
+  setTimeout(()=>{observeReveals();sec.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight*.9)el.classList.add('visible');});},100);
+}
+navBtns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function startLearning(){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go('s1');}
+function jumpTo(id){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block';go(id);}
+window.addEventListener('scroll',()=>{if(window.scrollY>window.innerHeight*.6){document.getElementById('mainNav').style.display='block';document.getElementById('mainFoot').style.display='block'}});
+
+// === REVEALS ===
+function initReveals(){
+  const sel='.callout,.micro-action,.emotional-hook,.identity-shift,.micro-win,.curiosity-hook,.demo,.checklist,.vflow,.vcompare,.vigrid,.progress-marker,.crd,.tool-card,.quiz-box';
+  document.querySelectorAll(sel).forEach(el=>{if(!el.classList.contains('reveal')&&!el.classList.contains('reveal-left')&&!el.classList.contains('reveal-right')&&!el.classList.contains('reveal-scale')&&!el.classList.contains('reveal-fade'))el.classList.add('reveal');});
+  document.querySelectorAll('.cgrid,.tool-grid,.vigrid,.vflow-row').forEach(el=>{if(!el.classList.contains('stagger'))el.classList.add('stagger');});
+  document.querySelectorAll('.stagger').forEach(p=>{p.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')&&!c.classList.contains('reveal-left')&&!c.classList.contains('reveal-right'))c.classList.add('reveal');});});
+  document.querySelectorAll('.vcompare').forEach(comp=>{const cards=comp.children;if(cards[0]){cards[0].classList.remove('reveal');cards[0].classList.add('reveal-left');}if(cards[1]){cards[1].classList.remove('reveal');cards[1].classList.add('reveal-right');}});
+  document.querySelectorAll('.identity-shift,.micro-win').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-scale');});
+  document.querySelectorAll('.curiosity-hook').forEach(el=>{el.classList.remove('reveal');el.classList.add('reveal-fade');});
+}initReveals();
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.classList.contains('stagger'))e.target.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade').forEach(c=>c.classList.add('visible'));}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-fade,.stagger').forEach(el=>revealObserver.observe(el));}observeReveals();
+setTimeout(()=>{document.querySelectorAll('.sec.on .reveal,.sec.on .reveal-left,.sec.on .reveal-right,.sec.on .reveal-scale,.sec.on .reveal-fade').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('visible');})},300);
+
+// === CHECKLIST ===
+function toggleCheck(item){const cb=item.querySelector('input[type=checkbox]');cb.checked=!cb.checked;item.classList.toggle('checked',cb.checked);updateCheckScore();}
+function updateCheckScore(){const total=document.querySelectorAll('.check-item').length;const checked=document.querySelectorAll('.check-item.checked').length;const score=document.getElementById('checkScore');if(!score)return;const pct=Math.round(checked/total*100);score.textContent=`${checked} of ${total} complete (${pct}%) — ${checked>=5?'Excellent! You are committed to ethical AI marketing!':checked>=3?'Great progress! Keep going.':'Check off each item as you commit to it.'}`;}
+
+// === COPY ===
+function copyPrompt(el,text){navigator.clipboard.writeText(text).then(()=>{const orig=el.textContent;el.textContent='✅ Copied! Now paste into ChatGPT, Claude, or Gemini →';setTimeout(()=>el.textContent=orig,3000);}).catch(()=>{el.style.background='rgba(52,211,153,.1)';});}
+
+// === QUIZ ===
+const allQ=[
+  {q:"What is the best way to describe what AI (specifically LLMs) actually does?",o:["Searches a database for answers","Thinks like a human brain","Predicts the most likely next word based on patterns","Copies content from the internet"],a:2,e:"LLMs like ChatGPT predict the statistically most likely next token based on patterns learned from training data. They don't search, think, or copy — they predict."},
+  {q:"Which AI tool is generally considered best for high-quality, nuanced writing?",o:["ChatGPT","Claude","Gemini","All are identical"],a:1,e:"Claude (by Anthropic) is widely recognized for superior writing quality, better instruction following, and maintaining consistent brand voice in long-form content."},
+  {q:"What is the approximate size of India's digital marketing industry?",o:["₹5,000 Crore","₹50,000+ Crore","₹5 Lakh Crore","₹500 Crore"],a:1,e:"India's digital marketing industry is valued at ₹50,000+ Crore and growing at approximately 30% year-over-year, making it one of the fastest-growing sectors."},
+  {q:"What is a 'hallucination' in AI terms?",o:["When AI dreams","When AI generates confident but false information","When AI crashes","When AI refuses to answer"],a:1,e:"AI hallucination is when the model generates information that sounds confident and plausible but is factually incorrect. This is why fact-checking AI output is essential for marketers."},
+  {q:"Which digital marketing channel has the highest ROI (Return on Investment)?",o:["Social Media Marketing","Paid Advertising","Email Marketing","WhatsApp Marketing"],a:2,e:"Email marketing consistently delivers the highest ROI — approximately ₹42 return for every ₹1 spent. It remains one of the most cost-effective marketing channels."},
+  {q:"What is the WhatsApp open rate in India?",o:["20%","50%","75%","98%"],a:3,e:"WhatsApp has a 98% open rate in India, compared to roughly 20% for email. This makes WhatsApp marketing incredibly powerful for local businesses."},
+  {q:"How much faster can an AI-powered marketer work compared to a traditional marketer?",o:["2x faster","5x faster","Same speed","10x faster"],a:1,e:"AI-powered marketers can work approximately 5x faster — reducing tasks like content creation, research, and planning from hours to minutes."},
+  {q:"What should you NEVER share with AI tools like ChatGPT?",o:["Marketing strategies","Content ideas","Client confidential data (passwords, financial info, personal data)","Industry trends"],a:2,e:"Never share client confidential data with AI tools — passwords, financial information, personal customer data, or trade secrets. Data entered into AI tools may be used for training."},
+  {q:"What is the recommended career path for beginners in AI digital marketing?",o:["Jump straight to starting an agency","Get an in-house job first, never freelance","Start freelancing, then scale toward an agency","Only do paid advertising"],a:2,e:"The hybrid model is recommended: start freelancing with 3-5 clients, then gradually scale toward an agency as you build experience, systems, and a portfolio."},
+  {q:"Which AI tool is best for research and real-time web data?",o:["ChatGPT","Claude","Gemini","None of them"],a:2,e:"Gemini (Google) has the best integration with real-time web data, Google Search, YouTube insights, and Google Analytics, making it ideal for research tasks."},
+  {q:"How many MSMEs (small businesses) does Punjab have?",o:["5 Lakh","15 Lakh+","50 Lakh","1 Lakh"],a:1,e:"Punjab has 15 Lakh+ MSMEs, and less than 20% have proper digital marketing — representing a massive opportunity for AI-powered digital marketers."},
+  {q:"What is the 'Human + AI Formula' for marketing?",o:["Replace humans with AI completely","Use AI for everything without editing","Humans bring strategy and local insight, AI handles execution","Only use AI for data analysis"],a:2,e:"The Human + AI Formula means humans provide strategy, client relationships, local knowledge, and creative direction while AI handles content generation, research, and repetitive execution."},
+  {q:"What is the realistic monthly income range for a freelance AI marketer with 5 clients?",o:["₹5K-10K","₹40K-1.25L+","₹10L+","₹1K-5K"],a:1,e:"With 5 social media management clients at ₹8K-25K each, a freelance AI marketer can earn ₹40K-1.25L+ per month — a realistic range for someone 3-6 months into their career."},
+  {q:"Why is short-form video (Reels, Shorts) important for marketers in 2026?",o:["It's cheaper to produce","It gets 3x more engagement than static posts","Clients don't care about video","Only YouTubers need video"],a:1,e:"Short-form video (Instagram Reels, YouTube Shorts, WhatsApp Status) gets approximately 3x more engagement than static posts, making it the most effective content format in 2026."},
+  {q:"What was ChatGPT's public release date?",o:["January 2020","November 2022","March 2024","July 2021"],a:1,e:"ChatGPT was publicly released on November 30, 2022, and reached 100 million users in just 2 months — the fastest-growing consumer application in history."},
+  {q:"Which of these is NOT an ethical AI marketing practice?",o:["Fact-checking AI output","Being transparent about AI usage","Copy-pasting AI output without editing","Adding human insights to AI content"],a:2,e:"Copy-pasting AI output without editing is unethical and unprofessional. Always edit, personalize, fact-check, and add your unique brand voice to AI-generated content."},
+  {q:"What is the primary benefit of using multiple AI tools (ChatGPT + Claude + Gemini)?",o:["It's more expensive so it must be better","Each tool has different strengths for different tasks","Using more tools impresses clients","There is no benefit"],a:1,e:"Each AI tool has different strengths: ChatGPT for brainstorming, Claude for quality writing, Gemini for research. Using all three strategically gives you the best results."},
+  {q:"What percentage of online experiences begin with a search engine?",o:["50%","71%","91%","35%"],a:2,e:"91% of online experiences begin with a search engine, making SEO (Search Engine Optimization) one of the most important digital marketing channels."},
+  {q:"What does 'garbage in = garbage out' mean for AI marketing?",o:["AI produces garbage content","The quality of AI output depends on the quality of your prompt","AI has a garbage filter","You should throw away AI output"],a:1,e:"'Garbage in = garbage out' means your prompt determines your results. Vague, poorly structured prompts produce vague, low-quality outputs. Better prompts = better marketing content."},
+  {q:"What is the main advantage of AI for a solo marketer serving local businesses?",o:["AI replaces the need for clients","AI lets one person produce output equivalent to a 3-5 person team","AI makes marketing free","AI eliminates the need for strategy"],a:1,e:"AI enables a solo marketer to produce content, research, and campaigns equivalent to a 3-5 person team, making it possible to serve 5-10 clients while maintaining quality."}
+];
+let qPool=[],cq=0,sc=0,ans=[],quizStarted=false;
+function initQuiz(){qPool=allQ.sort(()=>Math.random()-.5).slice(0,8);cq=0;sc=0;ans=new Array(8).fill(false);quizStarted=true;renderQ();}
+function renderQ(){
+  const box=document.getElementById('quizBox');
+  if(cq>=qPool.length){const pct=Math.round(sc/qPool.length*100);let tier,msg;if(pct>=75){tier='Excellent!';msg='You have a strong foundation in AI and digital marketing. Ready for Week 2!';}else if(pct>=50){tier='Good Progress!';msg='Solid start. Review the sections you found challenging before moving on.';}else{tier='Keep Learning!';msg='Re-read the session content and try the live demos again before Session 2.';}
+    box.innerHTML=`<div class="q-score-box"><div class="big">${sc}/${qPool.length}</div><p style="font-size:1.15rem;margin:1rem 0;color:var(--brand)">${tier}</p><p style="color:var(--t2);margin-bottom:.5rem">${pct}% Correct</p><p style="color:var(--t2);margin-bottom:1.5rem">${msg}</p><button class="btn btn-glow" onclick="initQuiz()">Retake Quiz</button><button class="btn btn-ghost" onclick="go('s7')" style="margin-left:.8rem">Assignment →</button></div>`;return;}
+  const q=qPool[cq];const ltr=['A','B','C','D'];
+  let prog=qPool.map((_,i)=>`<div class="q-dot ${i<cq?'done':i===cq?'cur':''}"></div>`).join('');
+  let opts=q.o.map((o,i)=>`<div class="q-opt" data-i="${i}" onclick="selAns(${i})"><span class="ol">${ltr[i]}</span><span>${o}</span></div>`).join('');
+  box.innerHTML=`<div class="q-prog">${prog}</div><div class="q-head"><span class="qn">Question ${cq+1} of ${qPool.length}</span>${q.q}</div><div class="q-opts">${opts}</div><div class="q-fb" id="qfb"></div><div class="q-nav"><span style="font-size:.82rem;color:var(--t3)">Score: ${sc}/${cq}</span><button class="btn btn-glow btn-sm" id="nxtBtn" style="display:none" onclick="nxtQ()">Next →</button></div>`;
+}
+function selAns(i){if(ans[cq])return;ans[cq]=true;const q=qPool[cq],opts=document.querySelectorAll('.q-opt'),fb=document.getElementById('qfb');opts.forEach((o,j)=>{o.style.cursor='default';if(j===q.a)o.classList.add('ok');if(j===i&&i!==q.a)o.classList.add('no')});if(i===q.a){sc++;fb.className='q-fb show fb-ok';fb.innerHTML=`✅ Correct! ${q.e}`}else{fb.className='q-fb show fb-no';fb.innerHTML=`❌ Not quite. ${q.e}`}document.getElementById('nxtBtn').style.display='inline-flex';document.querySelector('.q-nav span').textContent=`Score: ${sc}/${cq+1}`;}
+function nxtQ(){cq++;renderQ();}
+</script>
+</body>
+</html>
