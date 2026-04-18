@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Course } from '@/config/courses';
+import { CourseCover, hasCourseCover } from '@/components/marketing/course-cover';
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
@@ -60,43 +61,50 @@ export function CoursesGrid({
                 href={`/courses/${course.slug}`}
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/30 hover:bg-white/[0.06] hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1"
               >
-                {/* Card header with photo */}
-                <div className="relative h-44 w-full overflow-hidden">
-                  {/* Course thumbnail */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={course.thumbnail}
-                    alt={course.title}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                {/* Card header with cover artwork */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  {hasCourseCover(course.slug) ? (
+                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]">
+                      <CourseCover slug={course.slug} />
+                    </div>
+                  ) : (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={course.thumbnail}
+                        alt={course.title}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
 
-                  {/* Dark overlay for readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1225] via-black/40 to-black/20" />
+                      {/* Dark overlay for readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1225] via-black/40 to-black/20" />
 
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2 z-10">
-                    <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-semibold border ${levelColors[course.level]}`}>
-                      {course.level}
-                    </span>
-                    {course.isNew && (
-                      <span className="inline-block rounded-full bg-emerald-500 px-3 py-1 text-[11px] font-semibold text-white shadow-md shadow-emerald-500/30">
-                        New
-                      </span>
-                    )}
-                  </div>
+                      {/* Badges */}
+                      <div className="absolute top-3 left-3 flex gap-2 z-10">
+                        <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-semibold border ${levelColors[course.level]}`}>
+                          {course.level}
+                        </span>
+                        {course.isNew && (
+                          <span className="inline-block rounded-full bg-emerald-500 px-3 py-1 text-[11px] font-semibold text-white shadow-md shadow-emerald-500/30">
+                            New
+                          </span>
+                        )}
+                      </div>
 
-                  {/* Duration pill */}
-                  <div className="absolute top-3 right-3 z-10">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-sm px-3 py-1 text-[11px] font-medium text-gray-300 border border-white/10">
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {course.duration}
-                    </span>
-                  </div>
+                      {/* Duration pill */}
+                      <div className="absolute top-3 right-3 z-10">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-sm px-3 py-1 text-[11px] font-medium text-gray-300 border border-white/10">
+                          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {course.duration}
+                        </span>
+                      </div>
 
-                  {/* Bottom gradient fade into card body */}
-                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0D1225] to-transparent" />
+                      {/* Bottom gradient fade into card body */}
+                      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0D1225] to-transparent" />
+                    </>
+                  )}
                 </div>
 
                 {/* Content */}
