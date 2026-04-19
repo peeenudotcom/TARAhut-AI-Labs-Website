@@ -118,7 +118,7 @@ export function HeroSection() {
                            bg-white/[0.06] border border-[#fbbf24]/30 text-[#fbbf24] font-semibold
                            hover:bg-[#fbbf24]/10 hover:border-[#fbbf24]/50 transition-all"
               >
-                Buy Any Course — <span className="line-through text-gray-500 mr-1">₹4,999</span> ₹999
+                Buy Any Online Course at ₹999/- <span className="text-[10px] text-[#fbbf24]/70 ml-1">(Limited Time Offer)</span>
               </Link>
               <Link
                 href="/courses"
