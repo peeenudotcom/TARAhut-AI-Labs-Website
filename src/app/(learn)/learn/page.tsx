@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { courseConfigs } from '@/config/learn-modules';
-import type { LearnModule } from '@/config/learn-modules';
 
 export const metadata = {
   title: 'TARAhut Learning Engine',
@@ -61,48 +60,58 @@ export default function LearnLandingPage() {
         </div>
       </section>
 
-      {/* ── Course sections ── */}
-      {courses.map((course) => {
-        const weekNums = [...new Set(course.modules.map((m) => m.week))].sort((a, b) => a - b);
-        const freeSession = course.modules.find((m) => m.isFree);
-        const courseParam = course.id !== 'ai-tools-mastery-beginners' ? `?course=${course.id}` : '';
-
-        return (
-          <section key={course.id} className="mx-auto max-w-6xl px-6 pb-24">
-            {/* Course header */}
-            <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-[#1e1e3a] pb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-[#e2e8f0]">{course.title}</h2>
-                <p className="mt-1 text-sm text-[#94a3b8]">{course.totalSessions} sessions</p>
-              </div>
-              {freeSession && (
-                <Link
-                  href={`/learn/session/${freeSession.session}${courseParam}`}
-                  className="text-sm font-semibold text-[#059669] hover:underline"
-                >
-                  Try Session 1 free →
-                </Link>
-              )}
-            </div>
-
-            {weekNums.map((week) => {
-              const weekModules = course.modules.filter((m) => m.week === week);
-              return (
-                <div key={week} className="mb-12">
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#059669]">
-                    Week {week}
-                  </p>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {weekModules.map((mod) => (
-                      <SessionCard key={mod.session} mod={mod} courseParam={courseParam} />
-                    ))}
-                  </div>
+      {/* ── Course Cards ── */}
+      <section className="mx-auto max-w-6xl px-6 pb-12">
+        <p className="mb-8 text-center text-sm font-semibold uppercase tracking-widest text-[#94a3b8]">
+          9 Courses · 142 Sessions · 3 Languages
+        </p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {courses.map((course) => {
+            const freeSession = course.modules.find((m) => m.isFree);
+            const courseParam = course.id !== 'ai-tools-mastery-beginners' ? `?course=${course.id}` : '';
+            return (
+              <div
+                key={course.id}
+                className="group relative flex flex-col rounded-2xl border border-[#1e1e3a] bg-[#0c0c1a] p-6 transition hover:border-[#059669]/50 hover:shadow-lg hover:shadow-[#059669]/10"
+              >
+                {course.icon && (
+                  <span className="mb-3 text-3xl">{course.icon}</span>
+                )}
+                <h3 className="mb-1 text-lg font-bold text-[#e2e8f0] group-hover:text-[#00f0ff] transition">
+                  {course.title}
+                </h3>
+                {course.tagline && (
+                  <p className="mb-3 text-xs font-semibold text-[#059669]">{course.tagline}</p>
+                )}
+                <p className="mb-4 flex-1 text-xs leading-relaxed text-[#94a3b8]">
+                  {course.description || `${course.totalSessions} interactive sessions with hands-on projects.`}
+                </p>
+                <div className="mb-5 flex flex-wrap items-center gap-3 text-[10px] font-semibold uppercase tracking-wider text-[#94a3b8]">
+                  <span>{course.totalSessions} sessions</span>
+                  <span className="h-1 w-1 rounded-full bg-[#94a3b8]" />
+                  <span>{course.duration || 'Self-paced'}</span>
                 </div>
-              );
-            })}
-          </section>
-        );
-      })}
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Link
+                    href={`/learn/course/${course.slug}`}
+                    className="flex-1 rounded-lg border border-[#1e1e3a] bg-[#06060e] px-4 py-2.5 text-center text-xs font-semibold text-[#e2e8f0] transition hover:border-[#059669]/40 hover:text-[#00f0ff]"
+                  >
+                    View Course
+                  </Link>
+                  {freeSession && (
+                    <Link
+                      href={`/learn/session/${freeSession.session}${courseParam}`}
+                      className="flex-1 rounded-lg bg-[#059669] px-4 py-2.5 text-center text-xs font-semibold text-white transition hover:bg-[#047857]"
+                    >
+                      Try Free →
+                    </Link>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ── Enroll CTA ── */}
       <section className="border-t border-[#1e1e3a] bg-[#0c0c1a] px-6 py-20 text-center">
@@ -136,51 +145,3 @@ export default function LearnLandingPage() {
   );
 }
 
-function SessionCard({ mod, courseParam }: { mod: LearnModule; courseParam: string }) {
-  if (mod.isFree) {
-    return (
-      <Link
-        href={`/learn/session/${mod.session}${courseParam}`}
-        className="group relative flex flex-col rounded-xl border-2 border-[#059669] bg-[#0c0c1a] p-5 transition hover:border-[#10b981] hover:shadow-lg hover:shadow-[#059669]/20"
-      >
-        <span className="mb-1 inline-flex w-fit rounded-full bg-[#059669]/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#059669]">
-          Free Preview
-        </span>
-        <p className="mb-0.5 text-xs font-medium text-[#94a3b8]">Session {mod.session}</p>
-        <h3 className="mb-2 text-sm font-bold text-[#e2e8f0] group-hover:text-[#00f0ff] transition">
-          {mod.title}
-        </h3>
-        <p className="text-xs leading-relaxed text-[#94a3b8]">{mod.description}</p>
-        <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#059669]">
-          Start now
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
-            <path fillRule="evenodd" d="M2 8a.75.75 0 01.75-.75h8.69L8.22 4.03a.75.75 0 011.06-1.06l4.5 4.25a.75.75 0 010 1.06l-4.5 4.25a.75.75 0 01-1.06-1.06l3.22-3.22H2.75A.75.75 0 012 8z" clipRule="evenodd" />
-          </svg>
-        </div>
-      </Link>
-    );
-  }
-
-  return (
-    <div className="relative flex flex-col overflow-hidden rounded-xl border border-[#1e1e3a] bg-[#0c0c1a] p-5 opacity-70">
-      {/* blur overlay */}
-      <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-[#06060e]/60 backdrop-blur-[2px]">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          className="h-7 w-7 text-[#94a3b8]"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-        </svg>
-        <span className="text-xs text-[#94a3b8]">Enroll to unlock</span>
-      </div>
-
-      <p className="mb-0.5 text-xs font-medium text-[#94a3b8]">Session {mod.session}</p>
-      <h3 className="mb-2 text-sm font-bold text-[#e2e8f0]">{mod.title}</h3>
-      <p className="text-xs leading-relaxed text-[#94a3b8]">{mod.description}</p>
-    </div>
-  );
-}

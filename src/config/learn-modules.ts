@@ -15,12 +15,24 @@ export interface CourseConfig {
   slug: string;
   totalSessions: number;
   filePrefix: string; // 'session' for Tools Mastery, 'claude' for Master Claude
+  tagline?: string;
+  description?: string;
+  audience?: string;
+  duration?: string;
+  icon?: string;
+  highlights?: string[];
   modules: LearnModule[];
 }
 
 export const courseConfigs: Record<string, CourseConfig> = {
   'ai-tools-mastery-beginners': {
     id: 'ai-tools-mastery-beginners',
+    tagline: 'Zero to AI-confident in 16 sessions',
+    description: 'The perfect starting point for anyone new to AI. Learn ChatGPT, Claude, Gemini, and 10+ tools through hands-on projects. No coding, no jargon — just practical AI skills you can use from Day 1.',
+    audience: 'Complete beginners, students, small business owners, professionals wanting to add AI to their toolkit',
+    duration: '4 weeks (16 sessions)',
+    icon: '🚀',
+    highlights: ['Master ChatGPT, Claude & Gemini', 'Build a personal prompt library', 'Create Custom GPTs for business', 'No coding required — 100% beginner-friendly'],
     title: 'AI Tools Mastery for Beginners',
     slug: 'ai-tools-mastery-beginners',
     totalSessions: 16,
@@ -254,6 +266,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'master-claude-15-days': {
     id: 'master-claude-15-days',
+    tagline: 'Become a Claude power user in 15 days',
+    description: 'Deep dive into Anthropic\u2019s Claude — the AI that writes like a human. Master long-form content, document analysis, coding assistance, and advanced prompting techniques.',
+    audience: 'Content creators, writers, developers, business professionals who want to specialize in Claude',
+    duration: '15 days (15 sessions)',
+    icon: '🧠',
+    highlights: ['Master Claude\u2019s unique strengths', 'Long-form content & document analysis', 'Claude Projects & artifacts', 'Advanced prompting techniques'],
     title: 'Master Claude in 15 Days',
     slug: 'master-claude-15-days',
     totalSessions: 15,
@@ -338,6 +356,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'ai-explorer-junior': {
     id: 'ai-explorer-junior',
+    tagline: 'AI adventures for young minds',
+    description: 'Designed for school students (Class 6-10). Explore AI through fun projects, creative experiments, and age-appropriate tools. Build your first AI projects and understand the technology shaping your future.',
+    audience: 'School students (Class 6-10), young learners curious about AI',
+    duration: '3 weeks (12 sessions)',
+    icon: '🎮',
+    highlights: ['Age-appropriate AI education', 'Fun, project-based learning', 'Creative AI experiments', 'Build your first AI projects'],
     title: 'AI Explorer for School Kids — Junior',
     slug: 'ai-explorer-junior',
     totalSessions: 12,
@@ -407,6 +431,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'ai-explorer-senior': {
     id: 'ai-explorer-senior',
+    tagline: 'Advanced AI for senior students',
+    description: 'For senior school students (Class 11-12) and college freshers. Go beyond basics into prompt engineering, AI-powered research, content creation, and career preparation with AI tools.',
+    audience: 'Senior school students (Class 11-12), college students, young professionals',
+    duration: '3 weeks (12 sessions)',
+    icon: '🔬',
+    highlights: ['Advanced prompt engineering', 'AI-powered research & writing', 'Career preparation with AI', 'Build a professional AI portfolio'],
     title: 'AI Explorer for School Kids — Senior',
     slug: 'ai-explorer-senior',
     totalSessions: 12,
@@ -476,6 +506,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'ai-power-8-week': {
     id: 'ai-power-8-week',
+    tagline: 'Intensive 8-week AI transformation',
+    description: 'The most comprehensive AI program for working professionals. 8 weeks of intensive training covering every major AI tool, automation, content creation, data analysis, and freelancing with AI.',
+    audience: 'Working professionals, career changers, freelancers wanting to 10x their productivity',
+    duration: '8 weeks (16 sessions)',
+    icon: '⚡',
+    highlights: ['Most comprehensive program', 'Cover 20+ AI tools', 'Automation & workflow building', 'Freelancing income strategies'],
     title: 'AI Power Program (8 Weeks)',
     slug: 'ai-power-8-week',
     totalSessions: 16,
@@ -565,6 +601,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'prompt-engineering': {
     id: 'prompt-engineering',
+    tagline: 'Master the art of talking to AI',
+    description: 'The skill that separates average AI users from power users. Learn RCTF framework, chain-of-thought, few-shot prompting, system prompts, and build reusable prompt libraries for any industry.',
+    audience: 'Anyone who uses AI tools and wants dramatically better results',
+    duration: '4 weeks (12 sessions)',
+    icon: '✍️',
+    highlights: ['RCTF & CRISP frameworks', 'Chain-of-thought & few-shot techniques', 'Build a prompt library', 'System prompts & Custom GPTs'],
     title: 'Generative AI & Prompt Engineering',
     slug: 'prompt-engineering',
     totalSessions: 12,
@@ -634,6 +676,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'ai-hustler-45': {
     id: 'ai-hustler-45',
+    tagline: 'From zero to earning with AI in 45 days',
+    description: 'The flagship program. 35 sessions covering AI tools, content creation, digital marketing, client acquisition, field work, and your FIRST PAID CLIENT. Graduate with real income, not just a certificate.',
+    audience: 'Aspiring freelancers, job seekers, anyone who wants to earn with AI skills',
+    duration: '10 weeks (35 sessions)',
+    icon: '💰',
+    highlights: ['Get your FIRST paid client', 'Real field work & client pitching', 'Complete freelancing business setup', 'Portfolio + certificate + income'],
     title: 'AI Hustler 45',
     slug: 'ai-hustler-45',
     totalSessions: 35,
@@ -818,6 +866,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'ai-for-digital-marketing': {
     id: 'ai-for-digital-marketing',
+    tagline: 'AI-powered digital marketing mastery',
+    description: 'Learn to run marketing campaigns 5x faster using AI. Cover social media, SEO, email marketing, paid ads, WhatsApp marketing, analytics, and build your own AI marketing agency.',
+    audience: 'Marketing professionals, business owners, aspiring digital marketers',
+    duration: '4 weeks (12 sessions)',
+    icon: '📈',
+    highlights: ['Social media marketing with AI', 'SEO & content marketing', 'Paid ads & email automation', 'Build your AI marketing agency'],
     title: 'AI for Digital Marketing',
     slug: 'ai-for-digital-marketing',
     totalSessions: 12,
@@ -887,6 +941,12 @@ export const courseConfigs: Record<string, CourseConfig> = {
   },
   'master-ai-builder': {
     id: 'master-ai-builder',
+    tagline: 'Build real AI products from scratch',
+    description: 'The builder\u2019s path. Learn no-code tools, AI APIs, chatbots, automation, website building, SaaS development, and AI agents. Graduate with a working AI product you can sell.',
+    audience: 'Aspiring builders, entrepreneurs, developers wanting to build AI products',
+    duration: '4 weeks (12 sessions)',
+    icon: '🛠️',
+    highlights: ['No-code AI app building', 'AI APIs & integrations', 'Build & launch a SaaS product', 'AI agents & automation'],
     title: 'Master AI Builder',
     slug: 'master-ai-builder',
     totalSessions: 12,
