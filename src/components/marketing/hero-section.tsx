@@ -114,11 +114,12 @@ export function HeroSection() {
               </Link>
               <Link
                 href="/learn"
-                className="px-7 py-3.5 text-sm rounded-lg
+                className="px-7 py-3.5 text-sm rounded-lg text-center
                            bg-white/[0.06] border border-[#fbbf24]/30 text-[#fbbf24] font-semibold
                            hover:bg-[#fbbf24]/10 hover:border-[#fbbf24]/50 transition-all"
               >
-                Buy Any Online Course at ₹999/- <span className="text-[10px] text-[#fbbf24]/70 ml-1">(Limited Time Offer)</span>
+                Buy Any Online Course at ₹999/-
+                <span className="block text-[10px] text-[#fbbf24]/60 font-normal mt-0.5">(Limited Time Offer)</span>
               </Link>
               <Link
                 href="/courses"
