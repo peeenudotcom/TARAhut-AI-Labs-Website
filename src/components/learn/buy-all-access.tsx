@@ -16,10 +16,11 @@ interface BuyCourseProps {
   courseTitle: string;
   totalSessions: number;
   price?: number;
+  originalPrice?: number;
   returnCustomer?: boolean;
 }
 
-export function BuyCourse({ courseId, courseTitle, totalSessions, price = 999, returnCustomer = false }: BuyCourseProps) {
+export function BuyCourse({ courseId, courseTitle, totalSessions, price = 999, originalPrice, returnCustomer = false }: BuyCourseProps) {
   const [step, setStep] = useState<Step>('form');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -145,8 +146,8 @@ export function BuyCourse({ courseId, courseTitle, totalSessions, price = 999, r
         <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-center">
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-4xl font-extrabold text-white">₹{price}</span>
-            {!returnCustomer && (
-              <span className="text-lg text-white/60 line-through">₹2,999</span>
+            {!returnCustomer && originalPrice && (
+              <span className="text-lg text-white/60 line-through">₹{originalPrice.toLocaleString('en-IN')}</span>
             )}
           </div>
           <p className="mt-1 text-sm text-white/80">

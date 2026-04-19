@@ -20,6 +20,8 @@ export interface CourseConfig {
   audience?: string;
   duration?: string;
   icon?: string;
+  originalPrice?: number;
+  onlinePrice?: number;
   highlights?: string[];
   modules: LearnModule[];
 }
@@ -32,6 +34,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Complete beginners, students, small business owners, professionals wanting to add AI to their toolkit',
     duration: '4 weeks (16 sessions)',
     icon: '🚀',
+    originalPrice: 4999,
+    onlinePrice: 999,
     highlights: ['Master ChatGPT, Claude & Gemini', 'Build a personal prompt library', 'Create Custom GPTs for business', 'No coding required — 100% beginner-friendly'],
     title: 'AI Tools Mastery for Beginners',
     slug: 'ai-tools-mastery-beginners',
@@ -271,6 +275,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Content creators, writers, developers, business professionals who want to specialize in Claude',
     duration: '15 days (15 sessions)',
     icon: '🧠',
+    originalPrice: 9999,
+    onlinePrice: 999,
     highlights: ['Master Claude\u2019s unique strengths', 'Long-form content & document analysis', 'Claude Projects & artifacts', 'Advanced prompting techniques'],
     title: 'Master Claude in 15 Days',
     slug: 'master-claude-15-days',
@@ -361,6 +367,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'School students (Class 6-10), young learners curious about AI',
     duration: '3 weeks (12 sessions)',
     icon: '🎮',
+    originalPrice: 2999,
+    onlinePrice: 999,
     highlights: ['Age-appropriate AI education', 'Fun, project-based learning', 'Creative AI experiments', 'Build your first AI projects'],
     title: 'AI Explorer for School Kids — Junior',
     slug: 'ai-explorer-junior',
@@ -436,6 +444,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Senior school students (Class 11-12), college students, young professionals',
     duration: '3 weeks (12 sessions)',
     icon: '🔬',
+    originalPrice: 3999,
+    onlinePrice: 999,
     highlights: ['Advanced prompt engineering', 'AI-powered research & writing', 'Career preparation with AI', 'Build a professional AI portfolio'],
     title: 'AI Explorer for School Kids — Senior',
     slug: 'ai-explorer-senior',
@@ -511,6 +521,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Working professionals, career changers, freelancers wanting to 10x their productivity',
     duration: '8 weeks (16 sessions)',
     icon: '⚡',
+    originalPrice: 9999,
+    onlinePrice: 999,
     highlights: ['Most comprehensive program', 'Cover 20+ AI tools', 'Automation & workflow building', 'Freelancing income strategies'],
     title: 'AI Power Program (8 Weeks)',
     slug: 'ai-power-8-week',
@@ -606,6 +618,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Anyone who uses AI tools and wants dramatically better results',
     duration: '4 weeks (12 sessions)',
     icon: '✍️',
+    originalPrice: 5999,
+    onlinePrice: 999,
     highlights: ['RCTF & CRISP frameworks', 'Chain-of-thought & few-shot techniques', 'Build a prompt library', 'System prompts & Custom GPTs'],
     title: 'Generative AI & Prompt Engineering',
     slug: 'prompt-engineering',
@@ -681,6 +695,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Aspiring freelancers, job seekers, anyone who wants to earn with AI skills',
     duration: '10 weeks (35 sessions)',
     icon: '💰',
+    originalPrice: 7999,
+    onlinePrice: 999,
     highlights: ['Get your FIRST paid client', 'Real field work & client pitching', 'Complete freelancing business setup', 'Portfolio + certificate + income'],
     title: 'AI Hustler 45',
     slug: 'ai-hustler-45',
@@ -871,6 +887,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Marketing professionals, business owners, aspiring digital marketers',
     duration: '4 weeks (12 sessions)',
     icon: '📈',
+    originalPrice: 24999,
+    onlinePrice: 999,
     highlights: ['Social media marketing with AI', 'SEO & content marketing', 'Paid ads & email automation', 'Build your AI marketing agency'],
     title: 'AI for Digital Marketing',
     slug: 'ai-for-digital-marketing',
@@ -946,6 +964,8 @@ export const courseConfigs: Record<string, CourseConfig> = {
     audience: 'Aspiring builders, entrepreneurs, developers wanting to build AI products',
     duration: '4 weeks (12 sessions)',
     icon: '🛠️',
+    originalPrice: 24999,
+    onlinePrice: 999,
     highlights: ['No-code AI app building', 'AI APIs & integrations', 'Build & launch a SaaS product', 'AI agents & automation'],
     title: 'Master AI Builder',
     slug: 'master-ai-builder',
