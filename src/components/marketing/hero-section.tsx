@@ -1,246 +1,263 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { Award, MapPin } from 'lucide-react'
 
 export function HeroSection() {
   return (
     <section
-      className="relative overflow-hidden min-h-[95vh] flex items-center"
-      style={{ backgroundColor: '#020617' }}
+      className="relative overflow-hidden pt-32 pb-24"
+      style={{ backgroundColor: '#080f14', color: '#e2e9f0' }}
     >
-      {/* 🌌 Background Glow */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute top-[-20%] left-[10%] w-[700px] h-[700px] rounded-full blur-[140px]"
-          style={{ background: 'rgba(16,185,129,0.14)' }}
-        />
-        <div
-          className="absolute bottom-[-20%] right-[5%] w-[500px] h-[500px] rounded-full blur-[120px]"
-          style={{ background: 'rgba(13,148,136,0.10)' }}
-        />
-      </div>
-
-      {/* 🌐 Grid Overlay */}
+      {/* Dot grid pattern */}
       <div
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'linear-gradient(to right,rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.06) 1px,transparent 1px)',
+            'radial-gradient(rgba(153,247,255,0.08) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
         }}
       />
 
-      {/* 🎯 Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 w-full">
-        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr] md:gap-16 items-center">
+      {/* Ambient glows */}
+      <div
+        className="pointer-events-none absolute top-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full"
+        style={{ background: 'rgba(153,247,255,0.10)', filter: 'blur(120px)' }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 left-[-5%] w-[400px] h-[400px] rounded-full"
+        style={{ background: 'rgba(0,106,106,0.10)', filter: 'blur(100px)' }}
+      />
 
-          {/* LEFT — Copy and CTAs */}
-          <div className="text-center md:text-left">
-            {/* Trust Badge — honest narrow claim */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+
+          {/* LEFT — copy */}
+          <div className="lg:col-span-7 space-y-8 font-[family-name:var(--font-manrope)]">
+            {/* Trust badge */}
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase"
+              style={{
+                color: '#99f7ff',
+                border: '1px solid rgba(153,247,255,0.2)',
+                background: 'rgba(29,39,46,0.5)',
+                backdropFilter: 'blur(20px)',
+              }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6
-                              rounded-full bg-white/5 border border-emerald-400/20
-                              backdrop-blur-md text-sm text-emerald-300">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                🇮🇳 First Offline AI Labs of Punjab
-              </div>
-            </motion.div>
+              <span className="relative flex h-2 w-2">
+                <span
+                  className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping"
+                  style={{ background: '#99f7ff' }}
+                />
+                <span
+                  className="relative inline-flex rounded-full h-2 w-2"
+                  style={{ background: '#99f7ff' }}
+                />
+              </span>
+              Punjab&apos;s First Offline AI Training Center
+            </div>
 
             {/* Heading */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white leading-[1.05]"
+            <h1
+              className="font-[family-name:var(--font-space-grotesk)] text-5xl lg:text-7xl font-bold leading-[1.1]"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #99f7ff 0%, #ffffff 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                color: 'transparent',
+              }}
             >
-              Learn AI Skills{' '}
-              <span className="block mt-2">
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
-                  That Actually Pay
-                </span>
-              </span>
-            </motion.h1>
+              Learn AI Skills <br />That Actually Pay
+            </h1>
 
-            {/* Subheading */}
-            <motion.p
-              className="mt-6 text-base md:text-lg text-gray-400 leading-relaxed max-w-xl mx-auto md:mx-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
+            {/* Subhead */}
+            <p
+              className="text-lg lg:text-xl max-w-2xl leading-relaxed"
+              style={{ color: '#a5acb3' }}
             >
-              Master ChatGPT, Claude, Canva AI &amp; Automation at Punjab&apos;s first dedicated
-              offline AI training center — hands-on projects, real outcomes, no fluff.
-            </motion.p>
+              Master{' '}
+              <span className="font-semibold" style={{ color: '#99f7ff' }}>
+                ChatGPT, Claude, Canva AI &amp; Automation
+              </span>{' '}
+              at Punjab&apos;s first dedicated offline AI training center — hands-on projects,
+              real outcomes, no fluff.
+            </p>
 
-            {/* Fear Removal Line */}
-            <motion.p
-              className="mt-3 text-sm text-gray-500"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-            >
-              No coding required &nbsp;•&nbsp; Beginner friendly &nbsp;•&nbsp; Real projects
-            </motion.p>
-
-            {/* Location Badge */}
-            <motion.div
-              className="mt-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <span className="inline-flex items-center gap-2 px-5 py-2
-                              rounded-full bg-emerald-500/10 border border-emerald-400/20
-                              text-sm text-emerald-300">
-                📍 Offline AI Training in Kotkapura (Punjab)
-              </span>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              className="mt-10 flex justify-center md:justify-start gap-4 flex-wrap"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55 }}
-            >
-              {/* Primary */}
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-4 pt-4">
               <a
                 href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-7 py-3.5 text-sm rounded-lg
-                           bg-[#059669] text-black font-semibold
-                           hover:bg-[#047857] transition-colors"
+                className="px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  backgroundImage: 'linear-gradient(to right, #99f7ff, #00f1fe)',
+                  color: '#005f64',
+                  boxShadow: '0 0 30px rgba(0,241,254,0.4)',
+                }}
               >
-                📅 Book Free Demo
+                Book Free Demo
               </a>
-
-              {/* Secondary */}
               <Link
                 href="/courses"
-                className="px-7 py-3.5 text-sm rounded-lg
-                           border border-white/10 text-gray-300
-                           hover:bg-white/5 hover:text-white transition-colors"
+                className="px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300"
+                style={{
+                  border: '1px solid #42494f',
+                  background: 'rgba(29,39,46,0.5)',
+                  backdropFilter: 'blur(20px)',
+                  color: '#e2e9f0',
+                }}
               >
-                Explore Courses →
+                Explore Courses
               </Link>
-            </motion.div>
+            </div>
 
-            {/* Tools strip */}
-            <motion.div
-              className="mt-12 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.75 }}
-            >
-              <span className="text-gray-500 font-medium">Tools you&apos;ll master:</span>
-              {['ChatGPT', 'Claude', 'Canva AI', 'Midjourney', 'Python', '10+ more'].map((tool) => (
-                <span
-                  key={tool}
-                  className="rounded-full bg-white/[0.05] border border-white/10 px-3 py-1 text-xs font-medium text-gray-400"
-                >
-                  {tool}
-                </span>
-              ))}
-            </motion.div>
+            {/* Tools */}
+            <div className="pt-12 space-y-4">
+              <p
+                className="text-xs tracking-widest uppercase"
+                style={{ color: '#6f767d' }}
+              >
+                Tools you&apos;ll master
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {['ChatGPT', 'Claude', 'Canva AI', 'Midjourney', 'Python'].map((tool) => (
+                  <span
+                    key={tool}
+                    className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+                    style={{
+                      background: 'rgba(29,39,46,0.5)',
+                      backdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(255,255,255,0.05)',
+                      color: '#e2e9f0',
+                    }}
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* RIGHT — Founder portrait */}
-          <motion.div
-            className="relative flex items-center justify-center md:justify-end"
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
-          >
-            <div className="relative">
-              {/* Decorative emerald glow behind photo */}
-              <div className="absolute -inset-6 rounded-[40px] bg-gradient-to-br from-emerald-400/30 via-teal-400/20 to-transparent blur-2xl" />
+          {/* RIGHT — founder */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative group">
+              {/* Outer glow */}
+              <div
+                className="absolute -inset-1 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to right, rgba(153,247,255,0.2), rgba(140,243,243,0.2))',
+                }}
+              />
 
-              {/* Decorative ring */}
-              <div className="absolute -inset-3 rounded-[32px] border border-emerald-400/30" />
-
-              {/* Photo container */}
-              <div className="relative rounded-[28px] overflow-hidden ring-1 ring-white/10 shadow-2xl shadow-emerald-500/20 w-[280px] sm:w-[340px] md:w-[380px] aspect-[4/5] bg-gradient-to-b from-slate-800 to-slate-900">
+              {/* Glass frame (3D perspective tilt) */}
+              <div
+                className="relative rounded-2xl overflow-hidden p-2"
+                style={{
+                  background: 'rgba(29,39,46,0.5)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  transform: 'perspective(1200px) rotateY(-6deg) rotateX(2deg)',
+                  transformStyle: 'preserve-3d',
+                }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/parveen-sukhija.jpg"
                   alt="Parveen Sukhija — Founder, TARAhut AI Labs"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 18%' }}
+                  className="w-full h-auto rounded-lg object-cover filter grayscale-[0.2] hover:grayscale-0 transition-all duration-500"
+                  style={{ objectPosition: 'center 18%', aspectRatio: '4 / 5' }}
                 />
+              </div>
 
-                {/* Bottom gradient overlay */}
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
-
-                {/* Bottom label */}
-                <div className="absolute inset-x-4 bottom-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 mb-2 rounded-full bg-emerald-400/20 backdrop-blur-sm border border-emerald-300/30">
-                    <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full animate-pulse" />
-                    <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-200">
-                      Meet the Man Behind the Idea
+              {/* Top-right: 25+ Years */}
+              <div
+                className="absolute -top-6 -right-6 p-4 rounded-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500"
+                style={{
+                  background: 'rgba(29,39,46,0.5)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 20px 40px -10px rgba(153,247,255,0.1)',
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ background: 'rgba(153,247,255,0.2)', color: '#99f7ff' }}
+                  >
+                    <Award className="w-5 h-5" strokeWidth={2.25} />
+                  </div>
+                  <div>
+                    <p className="font-[family-name:var(--font-space-grotesk)] text-xl font-bold text-white leading-none">
+                      25+ Years
+                    </p>
+                    <p
+                      className="text-[10px] uppercase tracking-widest mt-1"
+                      style={{ color: '#a5acb3' }}
+                    >
+                      Experience
                     </p>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Parveen Sukhija</h3>
-                  <p className="text-xs text-emerald-200/90">Founder · TARAhut AI Labs</p>
                 </div>
               </div>
 
-              {/* Floating credibility cards — dark frosted-glass style
-                  (high contrast against photo without looking blocky) */}
-              <motion.div
-                className="absolute left-4 top-4 z-20 bg-slate-900/85 backdrop-blur-xl border border-emerald-400/30 rounded-2xl px-4 py-3 shadow-2xl shadow-black/50"
-                initial={{ opacity: 0, x: -20, y: -10 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.6, type: 'spring', stiffness: 200 }}
+              {/* Bottom-left: Punjab, India */}
+              <div
+                className="absolute -bottom-8 -left-8 p-4 rounded-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500"
+                style={{
+                  background: 'rgba(29,39,46,0.5)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 20px 40px -10px rgba(6,182,212,0.15)',
+                }}
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                  Experience
-                </p>
-                <p className="text-xl font-black text-white mt-1 leading-none tracking-tight">25+ Years</p>
-                <p className="text-[10px] text-gray-300 mt-1">Education &amp; Tech</p>
-              </motion.div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ background: 'rgba(140,243,243,0.2)', color: '#8cf3f3' }}
+                  >
+                    <MapPin className="w-5 h-5" strokeWidth={2.25} />
+                  </div>
+                  <div>
+                    <p className="font-[family-name:var(--font-space-grotesk)] text-lg font-bold text-white leading-none">
+                      Punjab, India
+                    </p>
+                    <p
+                      className="text-[10px] uppercase tracking-widest mt-1"
+                      style={{ color: '#a5acb3' }}
+                    >
+                      HQ Center
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-              <motion.div
-                className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 bg-slate-900/85 backdrop-blur-xl border border-emerald-400/30 rounded-2xl px-4 py-3 shadow-2xl shadow-black/50"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.1, duration: 0.6 }}
+              {/* Name badge on photo (bottom-right) */}
+              <div
+                className="absolute bottom-6 right-6 px-4 py-2 rounded-lg"
+                style={{
+                  background: 'rgba(29,39,46,0.7)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                }}
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                  📍 Based in
+                <p
+                  className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold"
+                  style={{ color: '#99f7ff' }}
+                >
+                  Parveen Sukhija
                 </p>
-                <p className="text-base font-black text-white mt-1 leading-none">Kotkapura</p>
-                <p className="text-[10px] text-gray-300 mt-1">Punjab, India</p>
-              </motion.div>
+                <p className="text-[10px] uppercase text-slate-300">
+                  Founder, TARAhut AI Labs
+                </p>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex flex-col items-center gap-1"
-        >
-          <span className="text-xs text-gray-400">Scroll</span>
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" className="text-gray-400">
-            <path d="M10 4v12m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

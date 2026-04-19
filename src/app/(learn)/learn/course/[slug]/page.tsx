@@ -4,7 +4,7 @@ import { courseConfigs } from '@/config/learn-modules';
 import type { Metadata } from 'next';
 
 const WHATSAPP_ENROLL_URL =
-  'https://wa.me/919999999999?text=Hi%2C%20I%20want%20to%20enroll%20in%20the%20TARAhut%20AI%20course';
+  'https://wa.me/919200882008?text=Hi%2C%20I%20want%20to%20enroll%20in%20the%20TARAhut%20AI%20course';
 
 type Props = { params: Promise<{ slug: string }> };
 
