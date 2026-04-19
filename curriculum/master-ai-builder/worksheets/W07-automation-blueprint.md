@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 07: Automation Blueprint
 
@@ -139,4 +139,4 @@ Use this list for inspiration:
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 07*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 07*

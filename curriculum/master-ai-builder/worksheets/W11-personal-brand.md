@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 11: Personal Brand Canvas
 
@@ -227,4 +227,4 @@ Use these scripts as starting points. Customize each one before sending.
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 11*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 11*

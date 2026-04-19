@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 04: Brand Kit Assembly Checklist
 
@@ -129,4 +129,4 @@ Tone: Formal [ ] Casual [ ] Friendly [ ] Authoritative [ ] Playful [ ]
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 04*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 04*

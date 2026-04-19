@@ -1,6 +1,6 @@
 # AI Explorer for School Kids -- Junior (Class 5-7)
 
-## TARAhut AI Labs / Uplrn AI Labs, Punjab, India
+## TARAhut AI Labs, Punjab, India
 
 ---
 
@@ -177,7 +177,7 @@ AI Explorer Junior is a fun, hands-on introduction to Artificial Intelligence de
 
 - All session materials provided digitally via shared drive
 - Trainer must complete 1-day orientation before delivering this course
-- Weekly trainer check-in calls with Uplrn curriculum team
+- Weekly trainer check-in calls with TARAhut curriculum team
 - Student feedback collected via simple smiley-face forms (Session 8 and 16)
 - Parent feedback collected at Showcase Day
 - Batch photos/videos taken for marketing (with consent)

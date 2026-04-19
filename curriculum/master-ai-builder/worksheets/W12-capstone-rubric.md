@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 12: Capstone Project Rubric + Planning Template
 
@@ -190,4 +190,4 @@ ___________________________________________________________________________
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 12*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 12*

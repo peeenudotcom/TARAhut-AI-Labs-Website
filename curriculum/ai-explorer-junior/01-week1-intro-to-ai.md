@@ -1,6 +1,6 @@
 # Week 1: Introduction to AI
 
-## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs / Uplrn AI Labs
+## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs
 
 ---
 

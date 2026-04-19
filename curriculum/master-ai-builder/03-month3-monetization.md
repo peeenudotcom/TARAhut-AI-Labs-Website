@@ -63,7 +63,7 @@ By the end of Month 3, students will: complete a real client project, launch fre
 | 0:15–0:45 | **Production Sprint (30 min)** — Create the 2 business videos: (1) Product/service showcase (faceless or HeyGen, 30-60s), (2) Business intro/welcome video (HeyGen avatar or voice-over, 30-60s). Both with captions, music, and CTA. | Put a timer on screen. Create energy. "You have 30 minutes. GO." Music playing (instrumental). Sprint energy. |
 | 0:45–1:10 | **Google Business Profile** — (1) If the business has one: write an optimization guide (better photos, updated hours, respond to reviews, add products). (2) If they don't: create a step-by-step setup guide with screenshots. Use AI to write the guide. | Use **Worksheet W09-C: Google Business Optimization Checklist**. |
 | 1:10–1:15 | **Break** | |
-| 1:15–1:50 | **Polish & Package** — Assemble everything into a professional client delivery: (1) Cover page with their business name + "Prepared by [student name] — Uplrn AI Labs", (2) Table of contents, (3) Each deliverable with explanation, (4) All files organized in a Google Drive folder. Quality check: peer review — swap with a partner. | Presentation matters. "If you email this to a business owner, would they take you seriously?" |
+| 1:15–1:50 | **Polish & Package** — Assemble everything into a professional client delivery: (1) Cover page with their business name + "Prepared by [student name] — TARAhut AI Labs", (2) Table of contents, (3) Each deliverable with explanation, (4) All files organized in a Google Drive folder. Quality check: peer review — swap with a partner. | Presentation matters. "If you email this to a business owner, would they take you seriously?" |
 | 1:50–2:00 | **Wrap-Up** — 2 best packs shown. Preview: tomorrow is the client presentation — pitching your work. **Homework:** Practice presenting your pack. 5-minute presentation: what you found, what you built, what you recommend. | |
 
 ---
@@ -369,7 +369,7 @@ By the end of Month 3, students will: complete a real client project, launch fre
 | Portfolio (50+ pieces, quality) | 10% |
 | Attendance + participation | 10% |
 
-**Certificate issued:** Uplrn AI Labs — Master AI Builder
+**Certificate issued:** TARAhut AI Labs — Master AI Builder
 **Certificate with Distinction:** 85%+ overall score
 **Portfolio count at graduation:** 50+ pieces minimum
 

@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 02: AI Tool Comparison Matrix
 
@@ -106,4 +106,4 @@ Try each task in all 3 tools. Write which tool won and why.
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 02*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 02*

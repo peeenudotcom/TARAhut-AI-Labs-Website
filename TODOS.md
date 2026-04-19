@@ -1,4 +1,4 @@
-# TODOS — Uplrn AI Labs
+# TODOS — TARAhut AI Labs
 
 ## Phase 2: WhatsApp Assessment Chatbot
 **What:** Build a WhatsApp chatbot that runs the same 8-question business assessment via conversation.

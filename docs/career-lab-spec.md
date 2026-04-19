@@ -1,6 +1,6 @@
 # AI Career Lab – Career Path Finder
 
-## Complete Product Specification for Uplrn AI Labs
+## Complete Product Specification for TARAhut AI Labs
 
 ---
 
@@ -372,7 +372,7 @@ Career stability: AI roles are projected to grow 40% by 2027"
 
 WhatsApp pre-filled message:
 ```
-"Hi, I just took an AI career assessment at Uplrn AI Labs. 
+"Hi, I just took an AI career assessment at TARAhut AI Labs. 
 It says I have the profile of an [career title]. 
 Starting salary: [X] LPA. Can we discuss this? 
 See full details: [URL with result]"
@@ -385,7 +385,7 @@ See full details: [URL with result]"
 ```
 "People Like You"
 
-"127 people with a similar profile joined Uplrn AI Labs last quarter.
+"127 people with a similar profile joined TARAhut AI Labs last quarter.
 42 are already using AI professionally."
 ```
 
@@ -646,9 +646,9 @@ Generate a canvas-based image (or use HTML-to-canvas) sized for Instagram Storie
 │  Earning Potential: 8-18 LPA    │
 │                                 │
 │  Find yours in 60 seconds:      │
-│  uplrn.ai/career-lab            │
+│  tarahutailabs.com/career-lab            │
 │  ─────────────────────────────  │
-│  Uplrn AI Labs                  │
+│  TARAhut AI Labs                  │
 └─────────────────────────────────┘
 ```
 
@@ -709,7 +709,7 @@ INSERT INTO career_lab_counter (id, count) VALUES (1, 2847);
 When URL has `?standalone=true`:
 - Hide site header/navigation
 - Hide site footer
-- Show minimal Uplrn logo (top left)
+- Show minimal TARAhut logo (top left)
 - Full-screen experience
 - Used for: paid ads, WhatsApp sharing, event kiosks
 
@@ -734,7 +734,7 @@ Top Match: AI Business Analyst
 
 ### Primary CTA (after results)
 ```
-Hi, I just used the AI Career Lab at Uplrn AI Labs.
+Hi, I just used the AI Career Lab at TARAhut AI Labs.
 
 My profile: [identity]
 Top career match: [career title]
@@ -768,7 +768,7 @@ Find yours in 60 seconds (free, no signup):
 ## SEO & Meta
 
 ```
-Title: "AI Career Lab – Find Your AI Career Path in 60 Seconds | Uplrn AI Labs"
+Title: "AI Career Lab – Find Your AI Career Path in 60 Seconds | TARAhut AI Labs"
 Description: "Free AI-powered career discovery tool. Answer 5 questions, get your personalized AI career path, salary potential, and 90-day roadmap. No signup required."
 OG Image: Pre-designed card showing the tool interface
 ```

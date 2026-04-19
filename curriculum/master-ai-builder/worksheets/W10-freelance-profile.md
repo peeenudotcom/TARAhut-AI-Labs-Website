@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 10: Freelance Launch Checklist
 
@@ -157,4 +157,4 @@ Design 3 clear packages so clients can easily pick what they need.
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 10*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 10*

@@ -304,7 +304,7 @@ Make real money. Students approach 25+ businesses across multiple field days, cl
 | 1:20-1:35 | **CERTIFICATION CEREMONY** | **Results and Certificates.** Trainer announces: (1) Class statistics: total businesses approached, total contacts made, total clients closed, total income earned as a class, (2) Individual grades announced (Distinction, Merit, Pass, Provisional), (3) Certificates distributed one by one. Each student comes to the front. Handshake, photo, certificate. Guests hand out certificates. Special awards (if applicable): "Highest Earner," "Most Businesses Approached," "Best Presentation," "Most Improved." | Make this formal and special. Even a simple ceremony feels significant when done with intention. Certificate photos go on TARAhut Instagram/WhatsApp immediately. |
 | 1:35-1:45 | Alumni Launch | **Alumni Network Activation.** (1) Add all students to the "AI Hustler Alumni" WhatsApp group. This group is PERMANENT: weekly tips, job leads, client referrals, peer support. (2) Explain alumni benefits: monthly group calls, referral network (overflow clients shared), advanced training invites, priority for future TARAhut programs. (3) Accountability buddy system: each student picks an accountability partner from the batch. Weekly Sunday check-in: "Kitne clients approach kiye? Kitna kamaya?" | The alumni group is the long-term value. Students who stay active in the alumni group earn 3x more than those who don't (track this metric over time). |
 | 1:45-1:55 | **TRAINER CLOSE** | Trainer's closing speech. Keep it personal and powerful: "Main tumhare saath 35 din raha. Maine dekha hai ki tum kya se kya ban gaye ho. Kuch ne pehli baar clients se baat ki -- dar lag raha tha, but kiya. Kuch ne pehli baar paise kamaye -- apni mehnat se, apni skill se. Yeh sirf shuruat hai. 90 din mein jo plan banaya hai, usse follow karo. Alumni group mein active raho. Ek dusre ki help karo. Aur yaad rakhna: tum ab AI service professionals ho. Koi tumse yeh nahi chheen sakta." | This is the trainer's moment too. Be genuine. If you've seen real transformation in these students, say it. Specific examples: "[Name], tu pehle din bola tha ki 'mujhse nahi hoga.' Aaj tune ₹8,000 ka deal close kiya." |
-| 1:55-2:00 | Group Photo + Close | Class group photo with certificates. Individual photos for social media. Final cheer/clap. "AI Hustler 45 -- Batch [number] -- graduated!" Session ends. Chai/snacks if available. | Tag TARAhut and Uplrn AI Labs on all social posts. These graduation photos are the #1 marketing asset for future batches. |
+| 1:55-2:00 | Group Photo + Close | Class group photo with certificates. Individual photos for social media. Final cheer/clap. "AI Hustler 45 -- Batch [number] -- graduated!" Session ends. Chai/snacks if available. | Tag TARAhut and TARAhut AI Labs on all social posts. These graduation photos are the #1 marketing asset for future batches. |
 
 ### Demo Day Evaluation Rubric
 
@@ -318,7 +318,7 @@ Make real money. Students approach 25+ businesses across multiple field days, cl
 
 | Grade | Requirement | Certificate |
 |---|---|---|
-| Distinction | 85%+ overall + income earned during program | Gold Certificate + Featured on Uplrn website + Priority referral network |
+| Distinction | 85%+ overall + income earned during program | Gold Certificate + Featured on TARAhut website + Priority referral network |
 | Merit | 70-84% overall + income earned or strong pipeline | Silver Certificate + Referral network access |
 | Pass | 60-69% overall | Certificate of Completion |
 | Provisional | Below 60% OR no income and no pipeline | Provisional Certificate (30-day conversion window: earn income, submit proof, upgrade to Pass) |
@@ -381,4 +381,4 @@ Phase 3: "I AM earning with AI"
 *Phase 3 complete. Students graduate as certified AI Hustlers.*
 *Document version: 1.0*
 *Last updated: April 2026*
-*Curriculum design: TARAhut AI Labs / Uplrn AI Labs*
+*Curriculum design: TARAhut AI Labs*

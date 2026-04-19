@@ -3,7 +3,7 @@
 ## Program Overview
 
 **Course Title:** AI for Digital Marketing
-**Provider:** TARAhut AI Labs / Uplrn AI Labs
+**Provider:** TARAhut AI Labs
 **Location:** Punjab, India (franchise-ready for any center)
 **Duration:** 12 Weeks (48 Sessions)
 **Schedule:** 4 days/week, 2 hours per session (120 minutes)
@@ -82,7 +82,7 @@ Every session follows this EXACT structure. Do not deviate.
 - Minimum 1 year hands-on experience running digital marketing campaigns
 - Proficiency with Meta Ads Manager (must have managed at least INR 50,000 in ad spend)
 - Working knowledge of all tools in the tool stack (see below)
-- Completed the Uplrn Trainer Certification Program (internal)
+- Completed the TARAhut Trainer Certification Program (internal)
 - Comfortable teaching in English/Hindi/Punjabi
 
 ### Trainer Responsibilities
@@ -182,7 +182,7 @@ Every session follows this EXACT structure. Do not deviate.
 
 ### Certification
 - **Certificate Title:** Certified AI Digital Marketing Professional
-- **Issued By:** TARAhut AI Labs / Uplrn AI Labs
+- **Issued By:** TARAhut AI Labs
 - **Validity:** Lifetime (with digital verification)
 - **Requirement:** Minimum 70% overall score + attendance above 80%
 
@@ -249,4 +249,4 @@ Students will be able to:
 
 ---
 
-*This manual is proprietary to TARAhut AI Labs / Uplrn AI Labs. Do not distribute outside of authorized franchise centers.*
+*This manual is proprietary to TARAhut AI Labs. Do not distribute outside of authorized franchise centers.*

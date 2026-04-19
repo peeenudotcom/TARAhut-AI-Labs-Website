@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 03: 7-Day Content Calendar
 
@@ -81,4 +81,4 @@ Write down 10 content ideas you can use in the future. Use AI to brainstorm if n
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 03*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 03*

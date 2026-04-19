@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 06: Voiceover Script Template
 
@@ -179,4 +179,4 @@ Write scripts for AI voiceovers using ElevenLabs or similar tools. Mark pauses w
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 06*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 06*

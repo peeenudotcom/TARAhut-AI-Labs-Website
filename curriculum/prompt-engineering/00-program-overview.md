@@ -2,7 +2,7 @@
 
 ## Program Overview
 
-**Provider:** TARAhut AI Labs / Uplrn AI Labs, Punjab, India
+**Provider:** TARAhut AI Labs, Punjab, India
 **Course Code:** GAPE-ADV-2026
 **Price:** INR 5,999
 **Level:** Advanced
@@ -118,10 +118,10 @@ Passing score: 60%. Students who score below may be redirected to a beginner cou
 
 ### Certification
 Participants who complete all 12 sessions and pass the final assessment (minimum 60%) receive:
-- **Uplrn AI Labs Professional Certificate -- Generative AI & Prompt Engineering (Advanced)**
+- **TARAhut AI Labs Professional Certificate -- Generative AI & Prompt Engineering (Advanced)**
 - Digital badge for LinkedIn
 - Portfolio review and endorsement letter
-- Access to Uplrn AI Labs professional alumni network
+- Access to TARAhut AI Labs professional alumni network
 
 ---
 
@@ -142,7 +142,7 @@ Participants who complete all 12 sessions and pass the final assessment (minimum
 
 ## Franchise Trainer Requirements
 
-- Completion of Uplrn AI Labs Advanced Trainer Certification
+- Completion of TARAhut AI Labs Advanced Trainer Certification
 - Minimum 6 months of daily AI tool usage (ChatGPT, Claude, Gemini)
 - Demonstrated prompt engineering expertise (portfolio submission required)
 - Ability to explain technical concepts (transformer architecture, tokenization) using analogies

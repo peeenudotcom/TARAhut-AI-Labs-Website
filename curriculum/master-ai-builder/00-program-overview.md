@@ -4,7 +4,7 @@
 **Program Code:** MAB-90
 **Version:** 1.0
 **Last Updated:** April 2026
-**Created by:** TARAhut AI Labs / Uplrn AI Labs
+**Created by:** TARAhut AI Labs
 
 ---
 
@@ -21,7 +21,7 @@
 | Tools covered | 20+ AI tools |
 | Portfolio output | 50+ real deliverables |
 | Price | INR 24,999 (MRP INR 49,999) |
-| Certification | Uplrn AI Labs — Master AI Builder Certificate |
+| Certification | TARAhut AI Labs — Master AI Builder Certificate |
 
 ---
 

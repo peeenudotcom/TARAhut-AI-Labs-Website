@@ -1,7 +1,7 @@
 # Weeks 3-4: Sessions 9-16 -- Trainer Session Plans
 
 **Program:** AI Power -- 8-Week Program
-**By:** TARAhut AI Labs / Uplrn AI Labs
+**By:** TARAhut AI Labs
 
 ---
 

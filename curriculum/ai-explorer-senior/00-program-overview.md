@@ -2,7 +2,7 @@
 
 ## Program Overview
 
-**Provider:** TARAhut AI Labs / Uplrn AI Labs, Punjab, India
+**Provider:** TARAhut AI Labs, Punjab, India
 **Course Code:** AIX-SR-2026
 **Price:** INR 3,999
 **Level:** Intermediate (Senior School)
@@ -62,7 +62,7 @@ Students will learn prompt engineering fundamentals, use AI for board exam prepa
 - A working chatbot they built themselves
 - LinkedIn profile and content creation skills
 - Understanding of AI career paths and opportunities
-- Certificate of Completion from Uplrn AI Labs
+- Certificate of Completion from TARAhut AI Labs
 
 ---
 
@@ -139,7 +139,7 @@ Students will learn prompt engineering fundamentals, use AI for board exam prepa
 
 ## Franchise Trainer Requirements
 
-- Completion of Uplrn AI Labs Trainer Certification
+- Completion of TARAhut AI Labs Trainer Certification
 - Familiarity with ChatGPT, Claude, and basic AI tools
 - Experience working with teenagers (Class 8-10 age group)
 - Ability to manage classroom energy and maintain engagement
@@ -161,6 +161,6 @@ Students will learn prompt engineering fundamentals, use AI for board exam prepa
 ## Certificate
 
 Students who complete all 16 sessions and pass the final assessment (minimum 60%) receive:
-- **Uplrn AI Labs Certificate of Completion -- AI Explorer Senior**
+- **TARAhut AI Labs Certificate of Completion -- AI Explorer Senior**
 - Digital badge for LinkedIn profile
-- Access to Uplrn AI Labs alumni community
+- Access to TARAhut AI Labs alumni community

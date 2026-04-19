@@ -769,7 +769,7 @@ export function CareerLab() {
   }
 
   function handleShare() {
-    const text = `I just discovered my AI career path: "${result?.identity}"! My Career Score is ${result?.score}/100. Find yours at uplrn.ai/tools/career-lab`
+    const text = `I just discovered my AI career path: "${result?.identity}"! My Career Score is ${result?.score}/100. Find yours at tarahutailabs.com/tools/career-lab`
     if (navigator.share) {
       navigator.share({ title: 'My AI Career Path', text }).catch(() => {})
     } else {

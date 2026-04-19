@@ -1,6 +1,6 @@
 # Week 3: Visual & Creative AI
 
-## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs / Uplrn AI Labs
+## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs
 
 ---
 

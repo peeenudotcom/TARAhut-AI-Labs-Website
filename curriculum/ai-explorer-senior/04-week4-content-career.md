@@ -43,11 +43,11 @@
 | 0:05-0:15 | 10 min | **Recap Week 3.** Quick check: "Is your bot ready for Showcase Day?" Address any last-minute bot issues. Transition: "Your bot shows what you can BUILD. Your LinkedIn shows WHO you are. Together, they make you stand out." | Keep the Week 3 recap brief -- the focus is on Week 4 content. If students have urgent bot issues, address them during independent practice time. |
 | 0:15-0:25 | 10 min | **Instruction: LinkedIn for Students -- Why It Matters.** Explain 5 benefits: (1) Scholarship applications look for digital presence (2) Internship applications in Class 11-12 (3) Competition and science fair documentation (4) Building a professional network early (5) Showcasing projects and AI skills. Show 2-3 sample student profiles on the projector. | Address the "but I am too young" objection directly: "The best time to plant a tree was 10 years ago. The second best time is today. The best time to make a LinkedIn profile is right now, while you have AI skills most adults do not have." |
 | 0:25-0:35 | 10 min | **Instruction: Anatomy of a Great Student Profile.** Walk through each section: (1) Profile photo (clear, professional-ish, no filters) (2) Headline (not just "student" -- something like "Class 10 Student | AI Enthusiast | Custom GPT Builder") (3) About section (4) Education (5) Skills (6) Projects. Show good vs bad examples for each. | The headline is the most important part. Live-demo using ChatGPT: "Write 5 LinkedIn headline options for a Class 10 student in Punjab who has learned AI prompt engineering and built a custom chatbot." Show the options. Let students see AI writing about THEM. |
-| 0:35-0:40 | 5 min | **Live Demo: AI-Powered Profile Writing.** Open ChatGPT. Prompt: "Write a LinkedIn About section for a 15-year-old Class 10 CBSE student from Punjab who recently completed an AI course at Uplrn AI Labs. They can do prompt engineering, built a custom chatbot, and are interested in technology careers. Keep it under 150 words, professional but friendly, showing personality." Show the result. Edit it together with class input. | Students see that AI can write ABOUT them. This is meta: using AI skills (from Week 1) to build their professional identity. Point this out explicitly. |
+| 0:35-0:40 | 5 min | **Live Demo: AI-Powered Profile Writing.** Open ChatGPT. Prompt: "Write a LinkedIn About section for a 15-year-old Class 10 CBSE student from Punjab who recently completed an AI course at TARAhut AI Labs. They can do prompt engineering, built a custom chatbot, and are interested in technology careers. Keep it under 150 words, professional but friendly, showing personality." Show the result. Edit it together with class input. | Students see that AI can write ABOUT them. This is meta: using AI skills (from Week 1) to build their professional identity. Point this out explicitly. |
 | 0:40-1:00 | 20 min | **Guided Practice: Create Your Profile.** Students follow the blueprint handout step by step: (1) Sign up or log in to LinkedIn (2) Upload profile photo (3) Use ChatGPT to generate headline options -- pick the best one (4) Use ChatGPT to draft their About section -- edit to make it personal (5) Add Education details. Trainer circulates helping with setup. | Age verification: LinkedIn requires users to be 16+. For students under 16, have them create the profile content in a Google Doc to publish later. Do NOT encourage lying about age. Discuss digital honesty. For students 16+, proceed with account creation. |
-| 1:00-1:15 | 15 min | **Guided Practice: Skills and Projects.** Students add: (1) Skills: Prompt Engineering, ChatGPT, AI Tools, Critical Thinking (2) Projects: their Custom GPT (with description) (3) Certifications: Uplrn AI Labs AI Explorer (upcoming). They use ChatGPT to write project descriptions. | Help students write project descriptions that sound professional but honest. "Do not say 'I built a world-class chatbot.' Say 'Built a custom GPT study buddy trained on Class 10 CBSE Science content that provides chapter-specific explanations and quiz questions.'" |
+| 1:00-1:15 | 15 min | **Guided Practice: Skills and Projects.** Students add: (1) Skills: Prompt Engineering, ChatGPT, AI Tools, Critical Thinking (2) Projects: their Custom GPT (with description) (3) Certifications: TARAhut AI Labs AI Explorer (upcoming). They use ChatGPT to write project descriptions. | Help students write project descriptions that sound professional but honest. "Do not say 'I built a world-class chatbot.' Say 'Built a custom GPT study buddy trained on Class 10 CBSE Science content that provides chapter-specific explanations and quiz questions.'" |
 | 1:15-1:20 | 5 min | **Break.** | Quick stretch. |
-| 1:20-1:40 | 20 min | **Independent Practice: Network Building.** Students connect with: (1) Their trainer (2) Uplrn AI Labs page (3) 5 classmates (4) 2-3 educational pages (CBSE, NCERT, etc.). They join 2 relevant LinkedIn groups (AI for Students, Education Technology). Discuss LinkedIn etiquette: personalized connection requests, no spam, professional behavior. | Supervise carefully. Discuss online safety: do not accept connection requests from strangers, do not share personal information (home address, phone number), do not click suspicious links. This is a digital safety lesson too. |
+| 1:20-1:40 | 20 min | **Independent Practice: Network Building.** Students connect with: (1) Their trainer (2) TARAhut AI Labs page (3) 5 classmates (4) 2-3 educational pages (CBSE, NCERT, etc.). They join 2 relevant LinkedIn groups (AI for Students, Education Technology). Discuss LinkedIn etiquette: personalized connection requests, no spam, professional behavior. | Supervise carefully. Discuss online safety: do not accept connection requests from strangers, do not share personal information (home address, phone number), do not click suspicious links. This is a digital safety lesson too. |
 | 1:40-1:55 | 15 min | **Independent Practice: First LinkedIn Post.** Students draft their FIRST LinkedIn post using AI. Prompt for ChatGPT: "Write a LinkedIn post for a Class 10 student announcing they are learning AI and have built their first chatbot. Keep it authentic, not braggy. Under 100 words. Include relevant hashtags." Students edit the draft to make it genuinely their own voice, then post (or save as draft). | The first post is always the hardest. Make it a class event: "Everyone post at the same time!" This removes individual fear. After posting, everyone likes and comments on each other's posts -- immediate engagement. |
 | 1:55-2:00 | 5 min | **Wrap-Up: Digital Identity Check.** Quick review: "Your LinkedIn is now live. You have a professional profile that most adults in India do not have. You are ahead." Preview Session 14: "Tomorrow, you become a video creator. AI will help you make professional videos without a camera team." | End on a confidence-building note. Students should feel proud of their professional profiles. |
 
@@ -163,7 +163,7 @@ FINAL PREPARATION for Showcase Day: (1) Practice your 1-minute chatbot presentat
 - Student laptops fully charged
 - Whiteboard and markers
 - Chairs arranged for audience (parents/teachers)
-- Printed certificates (from Uplrn AI Labs)
+- Printed certificates (from TARAhut AI Labs)
 - Printed feedback forms for audience (parents/teachers)
 - Timer for presentations
 - Camera/phone for documentation (photos and video of showcase)
@@ -176,7 +176,7 @@ FINAL PREPARATION for Showcase Day: (1) Practice your 1-minute chatbot presentat
 - Print audience feedback forms
 - Set up a "demo walk" area where parents can try students' chatbots
 - Have a running order (student presentation sequence)
-- Welcome sign: "Uplrn AI Labs -- AI Explorer Senior Showcase Day"
+- Welcome sign: "TARAhut AI Labs -- AI Explorer Senior Showcase Day"
 
 ### Minute-by-Minute Session Plan
 
@@ -192,13 +192,13 @@ FINAL PREPARATION for Showcase Day: (1) Practice your 1-minute chatbot presentat
 | 1:15-1:35 | 20 min | **Demo Walk: Parents Try the Bots.** Parents and teachers walk around, interact with students' chatbots, and ask questions. Students demo their bots, explain how they built them, and answer questions. Trainer circulates, facilitating conversations. | This is the most powerful part for parents. Seeing their child's creation and hearing them explain AI concepts is impactful. Take photos/videos. Help parents who are not tech-savvy interact with the bots. |
 | 1:35-1:40 | 5 min | **Audience Feedback.** Parents fill out feedback forms: (1) Was the course valuable? (2) What impressed you most? (3) Would you recommend this to other parents? (4) Interest in advanced courses? | Collect ALL feedback forms. This is invaluable for franchise operations and marketing. If parents are willing, get video testimonials on phone. |
 | 1:40-1:50 | 10 min | **Certificate Ceremony.** Trainer calls each student by name. Student walks up, receives certificate, handshake, and a brief personal compliment from the trainer. Photo with each student. Group photo at the end. | Make it feel special and formal. Call each name clearly. The personal compliment should reference something specific: "Priya built the best school reception bot I have ever seen." Parents love hearing their child praised specifically. |
-| 1:50-1:55 | 5 min | **Trainer Closing Speech.** "These students have not just learned AI tools. They have learned to think critically, build solutions, and present their work with confidence. They are ready for the AI future. Thank you to every parent for supporting them." Mention next steps: advanced courses at Uplrn AI Labs, alumni community access, continued learning. | This is also a soft pitch for advanced courses. Have brochures or QR codes ready for parents interested in the Generative AI & Prompt Engineering course or other offerings. |
+| 1:50-1:55 | 5 min | **Trainer Closing Speech.** "These students have not just learned AI tools. They have learned to think critically, build solutions, and present their work with confidence. They are ready for the AI future. Thank you to every parent for supporting them." Mention next steps: advanced courses at TARAhut AI Labs, alumni community access, continued learning. | This is also a soft pitch for advanced courses. Have brochures or QR codes ready for parents interested in the Generative AI & Prompt Engineering course or other offerings. |
 | 1:55-2:00 | 5 min | **Final Goodbye.** Students and parents mingle. Trainer is available for individual conversations. Exchange contact information for the alumni group. Take final group photos. | Be present and available. Parents often want to discuss their child's potential or ask about advanced learning paths. Have your course catalog and pricing ready for these conversations. |
 
 ### Post-Session Tasks (Trainer)
 - Process all certificates
 - Compile parent feedback forms into a summary report
-- Upload showcase photos/videos to the Uplrn AI Labs social media (with parent consent)
+- Upload showcase photos/videos to the TARAhut AI Labs social media (with parent consent)
 - Send thank-you messages to all parents via WhatsApp
 - Add all students to the alumni community
 - Identify students to invite for advanced courses
@@ -217,7 +217,7 @@ FINAL PREPARATION for Showcase Day: (1) Practice your 1-minute chatbot presentat
 - [ ] Photos/videos documented
 - [ ] Thank-you messages sent to parents
 - [ ] Advanced course interest list compiled
-- [ ] Final course report submitted to Uplrn AI Labs HQ
+- [ ] Final course report submitted to TARAhut AI Labs HQ
 
 ---
 

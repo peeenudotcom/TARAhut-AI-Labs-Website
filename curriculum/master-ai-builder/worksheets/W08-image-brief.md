@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 08: AI Image Generation Brief
 
@@ -189,4 +189,4 @@ Create detailed briefs for AI-generated images. The better your brief, the bette
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 08*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 08*

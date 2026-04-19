@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 09: Client Proposal Template
 
@@ -145,4 +145,4 @@ Rate each area from 1 (poor/missing) to 10 (excellent):
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 09*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 09*

@@ -161,7 +161,7 @@ FINAL PROJECT PREPARATION: (1) Choose your business problem (2) Identify which A
 - Projector with internet access and HDMI adapter
 - Participant laptops fully charged
 - Whiteboard and markers
-- Printed certificates (Uplrn AI Labs Professional Certificate)
+- Printed certificates (TARAhut AI Labs Professional Certificate)
 - Evaluation rubrics (print 1 per participant for peer evaluation + trainer copy)
 - Timer for presentations
 - Camera/phone for documentation
@@ -194,11 +194,11 @@ FINAL PROJECT PREPARATION: (1) Choose your business problem (2) Identify which A
 - Process and distribute all certificates (digital copies via email)
 - Compile peer and trainer evaluations into individual feedback reports
 - Send feedback reports to each participant within 3 days
-- Add all participants to the Uplrn AI Labs professional alumni network
+- Add all participants to the TARAhut AI Labs professional alumni network
 - Send course completion survey (for program improvement)
 - Upload class photos/videos (with consent)
 - Identify participants for potential roles: guest speakers, mentors, advanced course candidates
-- Complete franchise session report and submit to Uplrn AI Labs HQ
+- Complete franchise session report and submit to TARAhut AI Labs HQ
 - Follow up with participants after 2 weeks to see if they are using their AI workflows
 
 ---

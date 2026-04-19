@@ -20,7 +20,7 @@ const SUBDOMAIN_MAP: Record<string, string> = {
 const ROOT_DOMAINS = new Set([
   'tarahutailabs.com',
   'www.tarahutailabs.com',
-  'uplrn-ai-labs.vercel.app',
+  'tarahut-ai-labs-website.vercel.app',
   'localhost',
   'localhost:3000',
 ]);

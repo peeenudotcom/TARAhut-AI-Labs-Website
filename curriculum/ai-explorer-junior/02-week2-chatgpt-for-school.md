@@ -1,6 +1,6 @@
 # Week 2: ChatGPT for School
 
-## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs / Uplrn AI Labs
+## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs
 
 ---
 

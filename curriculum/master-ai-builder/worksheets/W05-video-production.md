@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 05: Video Production Worksheet
 
@@ -168,4 +168,4 @@ Before publishing any video, check all items:
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 05*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 05*

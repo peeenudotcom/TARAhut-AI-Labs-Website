@@ -1,6 +1,6 @@
 # AI Power -- 8-Week Program: Franchise Trainer Manual
 
-**Program by:** TARAhut AI Labs / Uplrn AI Labs, Punjab, India
+**Program by:** TARAhut AI Labs, Punjab, India
 **Version:** 1.0 | April 2026
 **Classification:** Internal -- Franchise Trainers Only
 

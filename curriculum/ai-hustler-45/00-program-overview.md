@@ -11,7 +11,7 @@
 | Price | INR 7,999 |
 | Pedagogy | 20-40-40 (20% theory, 40% guided practice, 40% independent work) |
 | Languages | English / Hindi / Punjabi |
-| Provider | TARAhut AI Labs / Uplrn AI Labs, Punjab, India |
+| Provider | TARAhut AI Labs, Punjab, India |
 | Promise | Students earn their FIRST REAL INCOME during the program |
 
 ---
@@ -97,7 +97,7 @@ Every session follows this exact structure. Trainers must not deviate.
 - 1 teaching assistant per 15 students recommended
 - For batches of 30+, two trainers required
 
-### Trainer Kit (Provided by Uplrn)
+### Trainer Kit (Provided by TARAhut)
 - Printed session plans for all 35 sessions
 - USB drive with all demo files, templates, and examples
 - Trainer WhatsApp group access for daily support
@@ -149,7 +149,7 @@ Every session follows this exact structure. Trainers must not deviate.
 
 | Grade | Score | Certificate |
 |---|---|---|
-| Distinction | 85%+ | Gold Certificate + Featured on Uplrn website + Priority referral network |
+| Distinction | 85%+ | Gold Certificate + Featured on TARAhut website + Priority referral network |
 | Merit | 70-84% | Silver Certificate + Referral network access |
 | Pass | 60-69% | Certificate of Completion |
 | Provisional | Below 60% OR no income earned | Provisional Certificate (30-day conversion window) |
@@ -226,4 +226,4 @@ Buffer days are NOT optional vacation. Every student must attend minimum 5 of 10
 
 *Document version: 1.0*
 *Last updated: April 2026*
-*Curriculum design: TARAhut AI Labs / Uplrn AI Labs*
+*Curriculum design: TARAhut AI Labs*

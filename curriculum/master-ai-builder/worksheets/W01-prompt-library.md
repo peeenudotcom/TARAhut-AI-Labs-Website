@@ -1,4 +1,4 @@
-# Uplrn AI Labs -- Master AI Builder Program
+# TARAhut AI Labs -- Master AI Builder Program
 
 ## Worksheet 01: My Prompt Library
 
@@ -59,4 +59,4 @@ ___________________________________________________________________________
 
 ---
 
-*Uplrn AI Labs -- Master AI Builder Program | Worksheet 01*
+*TARAhut AI Labs -- Master AI Builder Program | Worksheet 01*

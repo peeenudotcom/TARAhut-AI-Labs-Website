@@ -77,7 +77,7 @@ const features = [
   },
 ]
 
-export function WhyUplrn() {
+export function WhyTarahut() {
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Animated gradient orbs */}

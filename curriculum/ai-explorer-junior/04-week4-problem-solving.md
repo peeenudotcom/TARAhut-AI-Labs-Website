@@ -1,6 +1,6 @@
 # Week 4: Problem Solving & Showcase
 
-## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs / Uplrn AI Labs
+## AI Explorer Junior (Class 5-7) -- TARAhut AI Labs
 
 ---
 
@@ -126,7 +126,7 @@
 | 0:40-1:10 | 30 min | **Student Presentations (Round 2) + Gallery Walk** -- Remaining 7-8 students present (same format). Then 10-minute Gallery Walk: parents walk around the room viewing ALL projects on screens. Students stand by their project and explain to parents who visit. | For the gallery walk, each student should be at their station ready to explain. Some parents will linger at their own child's project -- encourage them to see others too. "Auntie ji, Sahil ka project bhi dekhiye -- bahut creative hai!" This is also a great time for informal parent-trainer conversations. |
 | 1:10-1:15 | 5 min | **Break** -- Serve chai/snacks to parents. Students mingle with their families. | Keep this brief but warm. Have helpers serve refreshments. |
 | 1:15-1:50 | 35 min | **Awards Ceremony + Certificate Distribution** -- **(1) Category Awards** (10 min): "Prompt Master" (best prompt skills), "AI Artist" (best visual work), "Story Star" (best creative writing), "Young Scientist" (best science project), "Problem Solver" (best solution), "Safety Champion" (best safety awareness), "Design Star" (best design work). **(2) Overall Awards** (5 min): "AI Explorer Champion" (highest total star points), "Most Improved," "Best Team Player." **(3) Certificate Distribution** (15 min): Every student receives their "AI Explorer Junior" certificate. Trainer calls each name, student comes to front, gets certificate, shakes hands, photo taken. **(4) Class Photo** (5 min): Group photo with all students, certificates, and trainer. | Make EVERY student feel special. Even if they didn't win a category award, the certificate is their achievement. Call each name clearly, smile, shake hand firmly. Parent photos are crucial -- wait for parents to take their photos. If any student seems left out, give them a spontaneous "Special Recognition" award. The class photo should include the course banner. |
-| 1:50-2:00 | 10 min | **Closing: Thank You + Next Steps** -- Trainer thanks parents for their support. Brief mention of what students can do next (advanced courses, practice at home, Uplrn AI Labs Senior course for when they're older). Hand out parent feedback forms. Students share one final learning: "Go around the room, ek ek line mein batao -- kya seekha?" End with a class cheer. | Collect feedback forms from parents -- CRITICAL for franchise reporting and improvement. Mention the Senior course (Class 8-10) for future enrollment. Share the Uplrn AI Labs social media handles for parents to follow. End on a high note: "Aapke bacche ab AI Explorer hain. They know how to use AI safely, creatively, and smartly. Be proud of them!" Final class cheer: trainer says "AI!" students shout "EXPLORER!" three times. |
+| 1:50-2:00 | 10 min | **Closing: Thank You + Next Steps** -- Trainer thanks parents for their support. Brief mention of what students can do next (advanced courses, practice at home, TARAhut AI Labs Senior course for when they're older). Hand out parent feedback forms. Students share one final learning: "Go around the room, ek ek line mein batao -- kya seekha?" End with a class cheer. | Collect feedback forms from parents -- CRITICAL for franchise reporting and improvement. Mention the Senior course (Class 8-10) for future enrollment. Share the TARAhut AI Labs social media handles for parents to follow. End on a high note: "Aapke bacche ab AI Explorer hain. They know how to use AI safely, creatively, and smartly. Be proud of them!" Final class cheer: trainer says "AI!" students shout "EXPLORER!" three times. |
 
 ---
 
@@ -175,9 +175,9 @@
 
 ## Post-Course Actions (Trainer)
 
-1. Enter all student scores and attendance into the Uplrn tracking system
+1. Enter all student scores and attendance into the TARAhut tracking system
 2. Send final report to parents (attendance, key achievements, areas for growth)
-3. Upload best student projects to the Uplrn portfolio showcase (with consent)
+3. Upload best student projects to the TARAhut portfolio showcase (with consent)
 4. Submit trainer self-reflection report to curriculum team
 5. Share any curriculum improvement suggestions
 6. Follow up with parents about Senior course (Class 8-10) enrollment
