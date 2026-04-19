@@ -7,7 +7,7 @@ import { Award, MapPin } from 'lucide-react'
 export function HeroSection() {
   return (
     <section
-      className="relative overflow-hidden min-h-[95vh] flex items-center"
+      className="relative overflow-hidden min-h-screen flex items-center"
       style={{ backgroundColor: '#020617' }}
     >
       {/* 🌌 Background Glow */}
@@ -33,8 +33,8 @@ export function HeroSection() {
       />
 
       {/* 🎯 Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 w-full">
-        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr] md:gap-16 items-center">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-12 md:py-16 lg:py-20 w-full">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-12 items-center">
 
           {/* LEFT — Copy and CTAs (from v1) */}
           <div className="text-center md:text-left">
@@ -98,33 +98,40 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div
-              className="mt-10 flex justify-center md:justify-start gap-4 flex-wrap"
+              className="mt-8 flex justify-center md:justify-start gap-4 flex-wrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55 }}
             >
-              <a
-                href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/learn"
                 className="px-7 py-3.5 text-sm rounded-lg
-                           bg-[#059669] text-black font-semibold
-                           hover:bg-[#047857] transition-colors"
+                           bg-[#059669] text-white font-semibold
+                           shadow-lg shadow-emerald-500/25
+                           hover:bg-[#047857] hover:scale-[1.02] active:scale-95 transition-all"
               >
-                📅 Book Free Demo
-              </a>
+                🚀 Try a Free AI Lesson
+              </Link>
+              <Link
+                href="/learn"
+                className="px-7 py-3.5 text-sm rounded-lg
+                           bg-white/[0.06] border border-[#fbbf24]/30 text-[#fbbf24] font-semibold
+                           hover:bg-[#fbbf24]/10 hover:border-[#fbbf24]/50 transition-all"
+              >
+                Buy Any Course — <span className="line-through text-gray-500 mr-1">₹4,999</span> ₹999
+              </Link>
               <Link
                 href="/courses"
                 className="px-7 py-3.5 text-sm rounded-lg
                            border border-white/10 text-gray-300
                            hover:bg-white/5 hover:text-white transition-colors"
               >
-                Explore Courses →
+                Explore Programs →
               </Link>
             </motion.div>
 
             <motion.div
-              className="mt-12 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
+              className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.75 }}
@@ -143,7 +150,7 @@ export function HeroSection() {
 
           {/* RIGHT — Founder portrait (from v3) */}
           <div className="relative flex items-center justify-center md:justify-end">
-            <div className="relative group">
+            <div className="relative group w-full max-w-[360px] md:max-w-[420px] lg:max-w-[460px]">
               <div
                 className="absolute -inset-1 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"
                 style={{
@@ -164,7 +171,7 @@ export function HeroSection() {
                 <img
                   src="/images/parveen-sukhija.jpg"
                   alt="Parveen Sukhija — Founder, TARAhut AI Labs"
-                  className="w-full h-auto rounded-lg object-cover filter grayscale-[0.2] hover:grayscale-0 transition-all duration-500"
+                  className="w-full h-auto max-h-[70vh] rounded-lg object-cover filter grayscale-[0.2] hover:grayscale-0 transition-all duration-500"
                   style={{ objectPosition: 'center 18%', aspectRatio: '4 / 5' }}
                 />
               </div>
