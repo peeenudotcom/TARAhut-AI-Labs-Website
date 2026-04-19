@@ -100,7 +100,7 @@ export default async function SessionPage({ params, searchParams }: Props) {
 
   return (
     <div
-      className="flex h-screen flex-col bg-[#06060e]"
+      className="flex flex-col bg-[#06060e]" style={{ height: 'calc(100vh - 52px)' }}
     >
       {/* ── Top bar ── */}
       <header className="flex shrink-0 items-center justify-between border-b border-[#1e1e3a] bg-[#0c0c1a] px-4 py-3">
