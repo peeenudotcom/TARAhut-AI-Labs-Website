@@ -8,6 +8,7 @@ import { CommunitySection } from '@/components/marketing/community-section'
 import { NewsletterSection } from '@/components/marketing/newsletter-section'
 import { PartnerBanner } from '@/components/marketing/partner-banner'
 import { FaqSection } from '@/components/marketing/faq-section'
+import { FreeLessonCta } from '@/components/marketing/free-lesson-cta'
 import { CtaSection } from '@/components/marketing/cta-section'
 import { EnrollmentToast } from '@/components/landing/enrollment-toast'
 
@@ -17,6 +18,7 @@ export default function HomePage() {
       <HeroSection />
       <StatsCounter />
       <CourseHighlights />
+      <FreeLessonCta />
       <WhyUplrn />
       <ToolsShowcase />
       <TestimonialsSection />

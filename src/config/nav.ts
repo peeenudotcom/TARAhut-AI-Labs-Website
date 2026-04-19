@@ -30,6 +30,7 @@ export const navEntries: NavEntry[] = [
       { label: 'Kids Senior', href: '/courses/ai-explorer-school-kids-senior', description: 'Class 8–10 program', icon: '🎓' },
     ],
   },
+  { label: 'Start Learning', href: '/learn' },
   {
     label: 'Free Tools',
     items: [
