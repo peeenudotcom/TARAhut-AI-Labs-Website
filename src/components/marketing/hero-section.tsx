@@ -1,149 +1,149 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Award, MapPin } from 'lucide-react'
 
 export function HeroSection() {
   return (
     <section
-      className="relative overflow-hidden pt-32 pb-24"
-      style={{ backgroundColor: '#080f14', color: '#e2e9f0' }}
+      className="relative overflow-hidden min-h-[95vh] flex items-center"
+      style={{ backgroundColor: '#020617' }}
     >
-      {/* Dot grid pattern */}
+      {/* 🌌 Background Glow */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute top-[-20%] left-[10%] w-[700px] h-[700px] rounded-full blur-[140px]"
+          style={{ background: 'rgba(16,185,129,0.14)' }}
+        />
+        <div
+          className="absolute bottom-[-20%] right-[5%] w-[500px] h-[500px] rounded-full blur-[120px]"
+          style={{ background: 'rgba(13,148,136,0.10)' }}
+        />
+      </div>
+
+      {/* 🌐 Grid Overlay */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="absolute inset-0"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(153,247,255,0.08) 1px, transparent 1px)',
+            'linear-gradient(to right,rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.06) 1px,transparent 1px)',
           backgroundSize: '40px 40px',
         }}
       />
 
-      {/* Ambient glows */}
-      <div
-        className="pointer-events-none absolute top-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full"
-        style={{ background: 'rgba(153,247,255,0.10)', filter: 'blur(120px)' }}
-      />
-      <div
-        className="pointer-events-none absolute bottom-0 left-[-5%] w-[400px] h-[400px] rounded-full"
-        style={{ background: 'rgba(0,106,106,0.10)', filter: 'blur(100px)' }}
-      />
+      {/* 🎯 Content */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28 w-full">
+        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr] md:gap-16 items-center">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-
-          {/* LEFT — copy */}
-          <div className="lg:col-span-7 space-y-8 font-[family-name:var(--font-manrope)]">
-            {/* Trust badge */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase"
-              style={{
-                color: '#99f7ff',
-                border: '1px solid rgba(153,247,255,0.2)',
-                background: 'rgba(29,39,46,0.5)',
-                backdropFilter: 'blur(20px)',
-              }}
+          {/* LEFT — Copy and CTAs (from v1) */}
+          <div className="text-center md:text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="relative flex h-2 w-2">
-                <span
-                  className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping"
-                  style={{ background: '#99f7ff' }}
-                />
-                <span
-                  className="relative inline-flex rounded-full h-2 w-2"
-                  style={{ background: '#99f7ff' }}
-                />
+              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6
+                              rounded-full bg-white/5 border border-emerald-400/20
+                              backdrop-blur-md text-sm text-emerald-300">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                🇮🇳 First Offline AI Labs of Punjab
+              </div>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white leading-[1.05]"
+            >
+              Learn AI Skills{' '}
+              <span className="block mt-2">
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
+                  That Actually Pay
+                </span>
               </span>
-              Punjab&apos;s First Offline AI Training Center
-            </div>
+            </motion.h1>
 
-            {/* Heading */}
-            <h1
-              className="font-[family-name:var(--font-space-grotesk)] text-5xl lg:text-7xl font-bold leading-[1.1]"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #99f7ff 0%, #ffffff 100%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: 'transparent',
-              }}
+            <motion.p
+              className="mt-6 text-base md:text-lg text-gray-400 leading-relaxed max-w-xl mx-auto md:mx-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35 }}
             >
-              Learn AI Skills <br />That Actually Pay
-            </h1>
+              Master ChatGPT, Claude, Canva AI &amp; Automation at Punjab&apos;s first dedicated
+              offline AI training center — hands-on projects, real outcomes, no fluff.
+            </motion.p>
 
-            {/* Subhead */}
-            <p
-              className="text-lg lg:text-xl max-w-2xl leading-relaxed"
-              style={{ color: '#a5acb3' }}
+            <motion.p
+              className="mt-3 text-sm text-gray-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
             >
-              Master{' '}
-              <span className="font-semibold" style={{ color: '#99f7ff' }}>
-                ChatGPT, Claude, Canva AI &amp; Automation
-              </span>{' '}
-              at Punjab&apos;s first dedicated offline AI training center — hands-on projects,
-              real outcomes, no fluff.
-            </p>
+              No coding required &nbsp;•&nbsp; Beginner friendly &nbsp;•&nbsp; Real projects
+            </motion.p>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            <motion.div
+              className="mt-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <span className="inline-flex items-center gap-2 px-5 py-2
+                              rounded-full bg-emerald-500/10 border border-emerald-400/20
+                              text-sm text-emerald-300">
+                📍 Offline AI Training in Kotkapura (Punjab)
+              </span>
+            </motion.div>
+
+            <motion.div
+              className="mt-10 flex justify-center md:justify-start gap-4 flex-wrap"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
+            >
               <a
                 href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  backgroundImage: 'linear-gradient(to right, #99f7ff, #00f1fe)',
-                  color: '#005f64',
-                  boxShadow: '0 0 30px rgba(0,241,254,0.4)',
-                }}
+                className="px-7 py-3.5 text-sm rounded-lg
+                           bg-[#059669] text-black font-semibold
+                           hover:bg-[#047857] transition-colors"
               >
-                Book Free Demo
+                📅 Book Free Demo
               </a>
               <Link
                 href="/courses"
-                className="px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300"
-                style={{
-                  border: '1px solid #42494f',
-                  background: 'rgba(29,39,46,0.5)',
-                  backdropFilter: 'blur(20px)',
-                  color: '#e2e9f0',
-                }}
+                className="px-7 py-3.5 text-sm rounded-lg
+                           border border-white/10 text-gray-300
+                           hover:bg-white/5 hover:text-white transition-colors"
               >
-                Explore Courses
+                Explore Courses →
               </Link>
-            </div>
+            </motion.div>
 
-            {/* Tools */}
-            <div className="pt-12 space-y-4">
-              <p
-                className="text-xs tracking-widest uppercase"
-                style={{ color: '#6f767d' }}
-              >
-                Tools you&apos;ll master
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {['ChatGPT', 'Claude', 'Canva AI', 'Midjourney', 'Python'].map((tool) => (
-                  <span
-                    key={tool}
-                    className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
-                    style={{
-                      background: 'rgba(29,39,46,0.5)',
-                      backdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255,255,255,0.05)',
-                      color: '#e2e9f0',
-                    }}
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <motion.div
+              className="mt-12 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.75 }}
+            >
+              <span className="text-gray-500 font-medium">Tools you&apos;ll master:</span>
+              {['ChatGPT', 'Claude', 'Canva AI', 'Midjourney', 'Python', '10+ more'].map((tool) => (
+                <span
+                  key={tool}
+                  className="rounded-full bg-white/[0.05] border border-white/10 px-3 py-1 text-xs font-medium text-gray-400"
+                >
+                  {tool}
+                </span>
+              ))}
+            </motion.div>
           </div>
 
-          {/* RIGHT — founder */}
-          <div className="lg:col-span-5 relative">
+          {/* RIGHT — Founder portrait (from v3) */}
+          <div className="relative flex items-center justify-center md:justify-end">
             <div className="relative group">
-              {/* Outer glow */}
               <div
                 className="absolute -inset-1 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"
                 style={{
@@ -152,15 +152,12 @@ export function HeroSection() {
                 }}
               />
 
-              {/* Glass frame (3D perspective tilt) */}
               <div
-                className="relative rounded-2xl overflow-hidden p-2"
+                className="relative rounded-2xl overflow-hidden p-2 transform rotate-2"
                 style={{
                   background: 'rgba(29,39,46,0.5)',
                   backdropFilter: 'blur(20px)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  transform: 'perspective(1200px) rotateY(-6deg) rotateX(2deg)',
-                  transformStyle: 'preserve-3d',
                 }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -172,7 +169,6 @@ export function HeroSection() {
                 />
               </div>
 
-              {/* Top-right: 25+ Years */}
               <div
                 className="absolute -top-6 -right-6 p-4 rounded-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500"
                 style={{
@@ -190,20 +186,14 @@ export function HeroSection() {
                     <Award className="w-5 h-5" strokeWidth={2.25} />
                   </div>
                   <div>
-                    <p className="font-[family-name:var(--font-space-grotesk)] text-xl font-bold text-white leading-none">
-                      25+ Years
-                    </p>
-                    <p
-                      className="text-[10px] uppercase tracking-widest mt-1"
-                      style={{ color: '#a5acb3' }}
-                    >
+                    <p className="text-xl font-bold text-white leading-none">25+ Years</p>
+                    <p className="text-[10px] uppercase tracking-widest mt-1" style={{ color: '#a5acb3' }}>
                       Experience
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Bottom-left: Punjab, India */}
               <div
                 className="absolute -bottom-8 -left-8 p-4 rounded-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500"
                 style={{
@@ -221,20 +211,14 @@ export function HeroSection() {
                     <MapPin className="w-5 h-5" strokeWidth={2.25} />
                   </div>
                   <div>
-                    <p className="font-[family-name:var(--font-space-grotesk)] text-lg font-bold text-white leading-none">
-                      Punjab, India
-                    </p>
-                    <p
-                      className="text-[10px] uppercase tracking-widest mt-1"
-                      style={{ color: '#a5acb3' }}
-                    >
+                    <p className="text-lg font-bold text-white leading-none">Punjab, India</p>
+                    <p className="text-[10px] uppercase tracking-widest mt-1" style={{ color: '#a5acb3' }}>
                       HQ Center
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Name badge on photo (bottom-right) */}
               <div
                 className="absolute bottom-6 right-6 px-4 py-2 rounded-lg"
                 style={{
@@ -243,10 +227,7 @@ export function HeroSection() {
                   border: '1px solid rgba(255,255,255,0.05)',
                 }}
               >
-                <p
-                  className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold"
-                  style={{ color: '#99f7ff' }}
-                >
+                <p className="text-sm font-bold" style={{ color: '#99f7ff' }}>
                   Parveen Sukhija
                 </p>
                 <p className="text-[10px] uppercase text-slate-300">

@@ -4,6 +4,7 @@ import { getUser } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { getCourseConfig } from '@/config/learn-modules';
 import { SessionViewer } from './session-viewer';
+import { BuyCtaBar, BuyPopup } from './buy-cta';
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
@@ -153,6 +154,16 @@ export default async function SessionPage({ params, searchParams }: Props) {
         watermarkName={displayName}
       />
 
+      {/* ── Buy CTA bar — only on free session for non-logged-in users ── */}
+      {isFreeSession && !user && (
+        <BuyCtaBar
+          courseId={courseId}
+          courseTitle={config.title}
+          courseSlug={config.slug}
+          totalSessions={config.totalSessions}
+        />
+      )}
+
       {/* ── Bottom tools row ── */}
       {mod.tools.length > 0 && (
         <footer className="shrink-0 border-t border-[#1e1e3a] bg-[#0c0c1a] px-4 py-2">
@@ -168,6 +179,16 @@ export default async function SessionPage({ params, searchParams }: Props) {
             ))}
           </div>
         </footer>
+      )}
+
+      {/* ── Popup CTA — appears after 90s on free session ── */}
+      {isFreeSession && !user && (
+        <BuyPopup
+          courseId={courseId}
+          courseTitle={config.title}
+          courseSlug={config.slug}
+          totalSessions={config.totalSessions}
+        />
       )}
     </div>
   );
