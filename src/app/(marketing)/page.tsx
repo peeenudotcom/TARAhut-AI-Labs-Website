@@ -1,7 +1,7 @@
 import { HeroSection } from '@/components/marketing/hero-section'
 import { StatsCounter } from '@/components/marketing/stats-counter'
 import { CourseHighlights } from '@/components/marketing/course-highlights'
-import { WhyUplrn } from '@/components/marketing/why-uplrn'
+import { WhyUplrn } from '@/components/marketing/why-tarahut'
 import { ToolsShowcase } from '@/components/marketing/tools-showcase'
 import { TestimonialsSection } from '@/components/marketing/testimonials-section'
 import { CommunitySection } from '@/components/marketing/community-section'
