@@ -4,7 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 export async function GET(req: NextRequest) {
   const { searchParams, origin } = new URL(req.url);
   const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/dashboard';
+  const next = searchParams.get('next') ?? '/learn/dashboard';
 
   if (!code) {
     console.error('[auth/callback] No code in query params');
