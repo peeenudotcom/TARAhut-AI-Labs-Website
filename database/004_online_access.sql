@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS online_purchases (
   amount INTEGER NOT NULL,
   razorpay_payment_id TEXT,
   razorpay_order_id TEXT,
-  access_type TEXT DEFAULT 'all_access' CHECK (access_type IN ('all_access', 'return_customer')),
+  access_type TEXT DEFAULT 'single_course' CHECK (access_type IN ('single_course', 'return_customer')),
   status TEXT DEFAULT 'active' CHECK (status IN ('active', 'expired', 'refunded')),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

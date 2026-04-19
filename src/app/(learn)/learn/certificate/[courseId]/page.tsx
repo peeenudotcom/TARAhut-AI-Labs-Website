@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { requireAuth } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { courseConfigs } from '@/config/learn-modules';
-import { BuyAllAccess } from '@/components/learn/buy-all-access';
+import { BuyCourse } from '@/components/learn/buy-all-access';
 
 type Props = { params: Promise<{ courseId: string }> };
 
@@ -144,11 +144,11 @@ export default async function CertificatePage({ params }: Props) {
                     Special Offer — Just For You
                   </h2>
                   <h3 className="mb-4 text-2xl font-bold text-white">
-                    Get All Access for just <span className="text-[#fbbf24]">₹799</span>
+                    Your next course for just <span className="text-[#fbbf24]">₹799</span>
                   </h3>
                   <p className="mb-6 text-[#94a3b8]">
-                    As a returning student, you get ₹200 off. Unlock all remaining courses
-                    and keep your learning momentum going.
+                    As a returning student, you get ₹200 off your next course.
+                    Pick one below and keep your learning momentum going.
                   </p>
 
                   <div className="mb-6 space-y-2">
@@ -156,13 +156,14 @@ export default async function CertificatePage({ params }: Props) {
                       Courses you can take next:
                     </p>
                     {remainingCourses.slice(0, 5).map((c) => (
-                      <div key={c.id} className="flex items-center gap-3 rounded-lg border border-[#1e1e3a] bg-[#0c0c1a] p-3">
+                      <Link key={c.id} href={`/learn/course/${c.slug}`} className="flex items-center gap-3 rounded-lg border border-[#1e1e3a] bg-[#0c0c1a] p-3 hover:border-[#059669]/40 transition">
                         <span className="text-xl">{c.icon}</span>
-                        <div>
+                        <div className="flex-1">
                           <p className="text-sm font-semibold text-white">{c.title}</p>
                           <p className="text-xs text-[#94a3b8]">{c.totalSessions} sessions</p>
                         </div>
-                      </div>
+                        <span className="text-xs font-bold text-[#fbbf24]">₹799</span>
+                      </Link>
                     ))}
                     {remainingCourses.length > 5 && (
                       <p className="text-xs text-[#94a3b8]">
@@ -172,7 +173,15 @@ export default async function CertificatePage({ params }: Props) {
                   </div>
                 </div>
 
-                <BuyAllAccess price={799} returnCustomer />
+                {remainingCourses[0] && (
+                  <BuyCourse
+                    courseId={remainingCourses[0].id}
+                    courseTitle={remainingCourses[0].title}
+                    totalSessions={remainingCourses[0].totalSessions}
+                    price={799}
+                    returnCustomer
+                  />
+                )}
               </div>
             )}
 

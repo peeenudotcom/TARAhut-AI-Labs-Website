@@ -12,6 +12,8 @@ export async function POST(req: NextRequest) {
       studentName,
       studentEmail,
       studentPhone,
+      courseId,
+      courseTitle,
       amount,
     } = await req.json();
 
@@ -29,6 +31,11 @@ export async function POST(req: NextRequest) {
     const db = createServiceClient();
     const isReturnCustomer = amount === 799;
 
+    const course = courseId ? courseConfigs[courseId] : null;
+    if (!course) {
+      return NextResponse.json({ error: 'Invalid course' }, { status: 400 });
+    }
+
     // 1. Save online purchase
     await db.from('online_purchases').insert({
       student_email: studentEmail,
@@ -37,7 +44,7 @@ export async function POST(req: NextRequest) {
       amount,
       razorpay_payment_id,
       razorpay_order_id,
-      access_type: isReturnCustomer ? 'return_customer' : 'all_access',
+      access_type: isReturnCustomer ? 'return_customer' : 'single_course',
       status: 'active',
     });
 
@@ -46,8 +53,8 @@ export async function POST(req: NextRequest) {
       student_name: studentName,
       student_email: studentEmail,
       student_phone: studentPhone || null,
-      course_slug: 'all-access',
-      course_title: isReturnCustomer ? 'All Access (Return Customer)' : 'All Access Pass',
+      course_slug: courseId,
+      course_title: courseTitle || course.title,
       amount,
       currency: 'INR',
       razorpay_order_id,
@@ -95,41 +102,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 4. Enroll in ALL courses + unlock session 1 of each
+    // 4. Enroll in the purchased course + unlock session 1
     if (userId) {
-      const allCourses = Object.values(courseConfigs);
+      // Enroll (upsert to avoid duplicates)
+      await db.from('learn_enrollments').upsert(
+        {
+          student_id: userId,
+          course_id: course.id,
+          enrolled_at: new Date().toISOString(),
+        },
+        { onConflict: 'student_id,course_id' }
+      );
 
-      for (const course of allCourses) {
-        // Enroll (upsert to avoid duplicates)
-        await db.from('learn_enrollments').upsert(
-          {
-            student_id: userId,
-            course_id: course.id,
-            enrolled_at: new Date().toISOString(),
-          },
-          { onConflict: 'student_id,course_id' }
-        );
-
-        // Unlock session 1
-        await db.from('session_unlocks').upsert(
-          {
-            student_id: userId,
-            course_id: course.id,
-            session_number: 1,
-            unlocked_at: new Date().toISOString(),
-            unlock_code_used: 'ONLINE_PURCHASE',
-          },
-          { onConflict: 'student_id,course_id,session_number' }
-        );
-      }
+      // Unlock session 1
+      await db.from('session_unlocks').upsert(
+        {
+          student_id: userId,
+          course_id: course.id,
+          session_number: 1,
+          unlocked_at: new Date().toISOString(),
+          unlock_code_used: 'ONLINE_PURCHASE',
+        },
+        { onConflict: 'student_id,course_id,session_number' }
+      );
     }
 
     return NextResponse.json({
       success: true,
       paymentId: razorpay_payment_id,
       message: userId
-        ? 'Payment successful! Check your email for login access.'
-        : 'Payment successful! We will send you access details shortly.',
+        ? `Payment successful! Check your email for login access to ${course.title}.`
+        : `Payment successful! We will send you access to ${course.title} shortly.`,
     });
   } catch (error) {
     console.error('Payment verify-and-enroll error:', error);

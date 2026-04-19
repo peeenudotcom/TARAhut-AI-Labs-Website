@@ -11,7 +11,15 @@ declare global {
 
 type Step = 'form' | 'paying' | 'success';
 
-export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: number; returnCustomer?: boolean }) {
+interface BuyCourseProps {
+  courseId: string;
+  courseTitle: string;
+  totalSessions: number;
+  price?: number;
+  returnCustomer?: boolean;
+}
+
+export function BuyCourse({ courseId, courseTitle, totalSessions, price = 999, returnCustomer = false }: BuyCourseProps) {
   const [step, setStep] = useState<Step>('form');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,8 +46,8 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
           name,
           email,
           phone,
-          courseSlug: 'all-access',
-          courseTitle: returnCustomer ? 'All Access (Return Customer)' : 'All Access Pass — 9 Courses',
+          courseSlug: courseId,
+          courseTitle,
           amount: price,
         }),
       });
@@ -52,9 +60,7 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
         amount: data.amount,
         currency: data.currency,
         name: 'TARAhut AI Labs',
-        description: returnCustomer
-          ? 'All Access Pass — Return Customer ₹799'
-          : 'All Access Pass — 9 Courses, 142 Sessions',
+        description: `${courseTitle} — ${totalSessions} Sessions`,
         order_id: data.orderId,
         prefill: { name, email, contact: phone },
         theme: { color: '#059669' },
@@ -72,6 +78,8 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
               studentName: name,
               studentEmail: email,
               studentPhone: phone,
+              courseId,
+              courseTitle,
               amount: price,
             }),
           });
@@ -111,10 +119,10 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
         <h3 className="text-2xl font-bold text-white mb-2">Payment Successful!</h3>
         <p className="text-[#94a3b8] mb-2">Payment ID: {paymentId}</p>
         <p className="text-[#94a3b8] mb-6">
-          Check your email for a magic link to access your courses. All 9 courses are now unlocked!
+          Check your email for a magic link to access {courseTitle}. Session 1 is ready!
         </p>
         <a
-          href={`https://wa.me/919200882008?text=Hi%2C+I+just+bought+All+Access+Pass.+Payment+ID%3A+${paymentId}+Name%3A+${encodeURIComponent(name)}`}
+          href={`https://wa.me/919200882008?text=Hi%2C+I+just+bought+${encodeURIComponent(courseTitle)}.+Payment+ID%3A+${paymentId}+Name%3A+${encodeURIComponent(name)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1eba57] transition"
@@ -138,16 +146,16 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-4xl font-extrabold text-white">₹{price}</span>
             {!returnCustomer && (
-              <span className="text-lg text-white/60 line-through">₹8,991</span>
+              <span className="text-lg text-white/60 line-through">₹2,999</span>
             )}
           </div>
           <p className="mt-1 text-sm text-white/80">
             {returnCustomer
               ? 'Welcome back! Special return customer price'
-              : '9 courses · 142 sessions · All access'}
+              : `${courseTitle} · ${totalSessions} sessions`}
           </p>
           {!returnCustomer && (
-            <p className="mt-1 text-xs text-white/60">That&apos;s ₹7 per session</p>
+            <p className="mt-1 text-xs text-white/60">That&apos;s ₹{Math.round(price / totalSessions)} per session</p>
           )}
         </div>
 
@@ -155,12 +163,12 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
           {/* What you get */}
           <div className="mb-6 space-y-2">
             {[
-              'All 9 courses unlocked',
-              '142 interactive sessions',
+              `${totalSessions} interactive sessions`,
               'EN / Hindi / Punjabi languages',
               'Quizzes after every session',
               'Certificate on completion',
               'Lifetime access',
+              'Learn at your own pace',
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <svg className="h-4 w-4 shrink-0 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -204,7 +212,7 @@ export function BuyAllAccess({ price = 999, returnCustomer = false }: { price?: 
               disabled={loading}
               className="w-full rounded-xl bg-[#059669] py-4 text-base font-bold text-white shadow-lg shadow-[#059669]/25 transition hover:bg-[#047857] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
             >
-              {loading ? 'Processing...' : `Buy All Access — ₹${price}`}
+              {loading ? 'Processing...' : `Buy Course — ₹${price}`}
             </button>
           </form>
 
