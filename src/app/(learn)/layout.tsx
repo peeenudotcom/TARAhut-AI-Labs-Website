@@ -7,9 +7,13 @@ export default async function LearnLayout({ children }: { children: React.ReactN
       <header className="sticky top-0 z-50 border-b border-[#1e1e3a] bg-[#06060e]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           {/* Logo → Home */}
-          <Link href="/" className="flex items-center gap-2 transition hover:opacity-80">
-            <span className="text-lg font-bold text-[#059669]">TARAhut</span>
-            <span className="text-xs text-[#94a3b8]">AI Labs</span>
+          <Link href="/" className="flex items-center transition hover:opacity-80">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-tarahut-white.png"
+              alt="TARAhut AI Labs"
+              className="h-7 w-auto sm:h-8"
+            />
           </Link>
 
           {/* Nav links */}
