@@ -135,6 +135,15 @@ export function EnrollmentCard({
       setError('Name and email are required.')
       return
     }
+
+    // If the student typed a promo code but hasn't clicked Apply yet,
+    // apply it first — this avoids them accidentally paying full price
+    // (or at all, for 100% off codes).
+    if (promoInput.trim() && !applied) {
+      await handleApplyPromo()
+      return
+    }
+
     setLoading(true)
     setError('')
     try {
