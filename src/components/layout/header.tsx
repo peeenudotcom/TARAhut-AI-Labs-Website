@@ -258,7 +258,7 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
     <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <button
         className={cn(
-          'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+          'flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
           'font-[family-name:var(--font-space-grotesk)]',
           isActive || open
             ? 'text-emerald-300'
@@ -364,7 +364,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {navEntries.map((entry) =>
             isDropdown(entry) ? (
               <DesktopDropdown key={entry.label} entry={entry} pathname={pathname} />
@@ -373,7 +373,7 @@ export function Header() {
                 key={entry.href}
                 href={entry.href}
                 className={cn(
-                  'rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+                  'whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
                   'font-[family-name:var(--font-space-grotesk)]',
                   pathname === entry.href
                     ? 'text-emerald-300'
@@ -386,19 +386,13 @@ export function Header() {
           )}
         </nav>
 
-        {/* Desktop CTAs */}
-        <div className="hidden items-center gap-2.5 lg:flex">
-          <Link
-            href={navCta.href}
-            className="inline-flex h-9 items-center justify-center rounded-lg border border-white/[0.1] bg-white/[0.03] px-4 text-xs font-semibold uppercase tracking-wider text-gray-200 transition-all hover:border-emerald-400/40 hover:bg-emerald-400/5 hover:text-emerald-200"
-          >
-            {navCta.label}
-          </Link>
+        {/* Desktop CTA */}
+        <div className="hidden items-center lg:flex">
           <a
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-[0_6px_20px_-6px_rgba(16,185,129,0.5)] transition-all hover:shadow-[0_10px_30px_-6px_rgba(16,185,129,0.6)] active:scale-[0.97]"
+            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-[0_6px_20px_-6px_rgba(16,185,129,0.5)] transition-all hover:shadow-[0_10px_30px_-6px_rgba(16,185,129,0.6)] active:scale-[0.97]"
           >
             Book Free Demo
           </a>
