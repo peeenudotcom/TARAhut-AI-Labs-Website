@@ -1,27 +1,62 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { createBrowserSupabase } from '@/lib/supabase'
 
+type Mode = 'password' | 'magic_link'
+
 export default function LoginPage() {
+  const searchParams = useSearchParams()
+  const nextPath = searchParams.get('next') ?? '/learn/dashboard'
+  const urlError = searchParams.get('error')
+
+  const [mode, setMode] = useState<Mode>('password')
   const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(
+    urlError === 'exchange_failed'
+      ? 'That sign-in link expired or was used already. Log in with your password instead.'
+      : ''
+  )
+  const [magicSent, setMagicSent] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handlePasswordLogin(e: React.FormEvent) {
     e.preventDefault()
-    if (!email) return
+    if (!email.trim() || !password) return
+    setLoading(true)
+    setError('')
 
+    const supabase = createBrowserSupabase()
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    })
+
+    if (authError) {
+      setError(authError.message)
+      setLoading(false)
+      return
+    }
+
+    // Full reload so server components pick up the new session cookie.
+    window.location.href = nextPath
+  }
+
+  async function handleMagicLink(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email.trim()) return
     setLoading(true)
     setError('')
 
     const supabase = createBrowserSupabase()
     const { error: authError } = await supabase.auth.signInWithOtp({
-      email,
+      email: email.trim().toLowerCase(),
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     })
 
@@ -31,7 +66,7 @@ export default function LoginPage() {
       return
     }
 
-    setSent(true)
+    setMagicSent(true)
     setLoading(false)
   }
 
@@ -47,69 +82,18 @@ export default function LoginPage() {
         />
       </div>
 
-      <div className="relative z-10 w-full max-w-md mx-auto px-6">
+      <div className="relative z-10 w-full max-w-md mx-auto px-6 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8"
+          className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md"
         >
-          {!sent ? (
-            <>
-              <h1 className="text-2xl font-semibold text-white mb-2">
-                Student Login
-              </h1>
-              <p className="text-gray-400 mb-8">
-                Enter your email and we&apos;ll send you a magic link to sign in.
-                No password needed.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-1.5">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-emerald-400 focus:outline-none transition-colors"
-                    required
-                  />
-                </div>
-
-                {error && (
-                  <p className="text-red-400 text-sm">{error}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500 text-black font-medium hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
-                >
-                  {loading ? 'Sending...' : 'Send Magic Link'}
-                </button>
-              </form>
-
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Don&apos;t have an account? Contact us on{' '}
-                <a
-                  href="https://wa.me/919200882008?text=Hi%2C+I+want+to+enroll+as+a+student+at+TARAhut+AI+Labs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-400 hover:underline"
-                >
-                  WhatsApp
-                </a>{' '}
-                to enroll.
-              </p>
-            </>
-          ) : (
-            <div className="text-center py-4">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+          {magicSent ? (
+            <div className="py-4 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15">
                 <svg
-                  className="w-8 h-8 text-emerald-400"
+                  className="h-8 w-8 text-emerald-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -122,27 +106,150 @@ export default function LoginPage() {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold text-white mb-2">
-                Check your email
-              </h2>
-              <p className="text-gray-400 mb-6">
-                We sent a magic link to{' '}
-                <span className="text-white font-medium">{email}</span>.
-                Click the link to sign in.
+              <h2 className="mb-2 text-xl font-semibold text-white">Check your email</h2>
+              <p className="mb-6 text-gray-400">
+                We sent a sign-in link to{' '}
+                <span className="font-medium text-white">{email}</span>. Open it{' '}
+                <span className="font-medium text-white">in this same browser</span>{' '}
+                so the session can complete.
               </p>
-              <p className="text-sm text-gray-500 mb-4">
-                Didn&apos;t receive it? Check your spam folder.
+              <p className="mb-4 text-sm text-gray-500">
+                Didn&apos;t receive it? Check spam, or{' '}
+                <button
+                  onClick={() => {
+                    setMagicSent(false)
+                    setMode('password')
+                  }}
+                  className="text-emerald-400 hover:underline"
+                >
+                  sign in with password instead
+                </button>
+                .
               </p>
-              <button
-                onClick={() => {
-                  setSent(false)
-                  setEmail('')
-                }}
-                className="text-sm text-emerald-400 hover:underline"
-              >
-                Try a different email
-              </button>
             </div>
+          ) : (
+            <>
+              <h1 className="mb-2 text-2xl font-semibold text-white">Log in</h1>
+              <p className="mb-8 text-gray-400">
+                Welcome back to TARAhut AI Labs.
+              </p>
+
+              {/* Mode toggle */}
+              <div className="mb-6 flex gap-1 rounded-lg border border-white/10 bg-white/[0.03] p-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('password')
+                    setError('')
+                  }}
+                  className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    mode === 'password'
+                      ? 'bg-white/[0.08] text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Password
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('magic_link')
+                    setError('')
+                  }}
+                  className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    mode === 'magic_link'
+                      ? 'bg-white/[0.08] text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Magic link
+                </button>
+              </div>
+
+              {mode === 'password' ? (
+                <form onSubmit={handlePasswordLogin} className="space-y-4">
+                  <div>
+                    <label className="mb-1.5 block text-sm text-gray-400">Email address</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      required
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-600 transition-colors focus:border-emerald-400 focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="mb-1.5 flex items-center justify-between">
+                      <label className="block text-sm text-gray-400">Password</label>
+                      <Link
+                        href="/auth/forgot-password"
+                        className="text-xs text-emerald-400 hover:underline"
+                      >
+                        Forgot?
+                      </Link>
+                    </div>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Your password"
+                      autoComplete="current-password"
+                      required
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-600 transition-colors focus:border-emerald-400 focus:outline-none"
+                    />
+                  </div>
+
+                  {error && <p className="text-sm text-red-400">{error}</p>}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full rounded-xl bg-emerald-500 px-6 py-3 font-medium text-white transition-colors hover:bg-emerald-600 disabled:opacity-60"
+                  >
+                    {loading ? 'Signing in…' : 'Log in'}
+                  </button>
+                </form>
+              ) : (
+                <form onSubmit={handleMagicLink} className="space-y-4">
+                  <div>
+                    <label className="mb-1.5 block text-sm text-gray-400">Email address</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      required
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-600 transition-colors focus:border-emerald-400 focus:outline-none"
+                    />
+                  </div>
+
+                  {error && <p className="text-sm text-red-400">{error}</p>}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full rounded-xl bg-emerald-500 px-6 py-3 font-medium text-white transition-colors hover:bg-emerald-600 disabled:opacity-60"
+                  >
+                    {loading ? 'Sending…' : 'Send magic link'}
+                  </button>
+
+                  <p className="text-center text-xs text-gray-500">
+                    Open the link in this same browser. Password login is more reliable.
+                  </p>
+                </form>
+              )}
+
+              <p className="mt-6 text-center text-sm text-gray-500">
+                New here?{' '}
+                <Link href="/signup" className="text-emerald-400 hover:underline">
+                  Create an account
+                </Link>
+              </p>
+            </>
           )}
         </motion.div>
       </div>
