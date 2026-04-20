@@ -77,7 +77,7 @@ export const navEntries: NavEntry[] = [
             href: '/courses/master-claude-15-days',
             description: '15-day deep dive',
             icon: '🧠',
-            image: '/images/courses/master-claude.jpg',
+            image: '/images/courses/prompt-engineering.jpg',
             tagline: '15-day intensive on Anthropic Claude — prompting, projects, artifacts, and agents.',
           },
           {

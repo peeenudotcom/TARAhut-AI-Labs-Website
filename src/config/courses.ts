@@ -343,7 +343,7 @@ export const courses: Course[] = [
     duration: '15 Days',
     level: 'Beginner',
     category: 'AI Tools',
-    thumbnail: '/images/courses/master-claude.jpg',
+    thumbnail: '/images/courses/prompt-engineering.jpg',
     rating: 0,
     studentsEnrolled: 0,
     instructorName: 'Parveen Sukhija',
