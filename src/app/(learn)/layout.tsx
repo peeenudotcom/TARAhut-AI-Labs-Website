@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default async function LearnLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-[#06060e] text-[#e2e8f0]">
+    <div className="bg-[#020617] text-[#e2e8f0]">
       {/* ── Learn Header ── */}
-      <header className="sticky top-0 z-50 border-b border-[#1e1e3a] bg-[#06060e]/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#1e1e3a] bg-[#020617]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           {/* Logo → Home */}
           <Link href="/" className="flex items-center transition hover:opacity-80">
