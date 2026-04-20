@@ -14,16 +14,16 @@ export default async function CertificatesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-1">
+      <h1 className="text-2xl font-semibold text-white mb-1">
         Certificates
       </h1>
-      <p className="text-slate-500 mb-8">
+      <p className="text-gray-400 mb-8">
         Your earned certificates from TARAhut AI Labs.
       </p>
 
       {(!certificates || certificates.length === 0) ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-          <p className="text-slate-500">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-12 text-center">
+          <p className="text-gray-400">
             No certificates yet. Complete a course to earn your first certificate.
           </p>
         </div>
@@ -36,12 +36,12 @@ export default async function CertificatesPage() {
             return (
               <div
                 key={cert.id}
-                className="bg-white rounded-xl border border-slate-200 p-6"
+                className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0">
                     <svg
-                      className="w-6 h-6 text-emerald-600"
+                      className="w-6 h-6 text-emerald-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -55,17 +55,17 @@ export default async function CertificatesPage() {
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-slate-900">
+                    <h3 className="font-semibold text-white">
                       {cert.course_title}
                     </h3>
-                    <p className="text-sm text-slate-500 mt-0.5">
+                    <p className="text-sm text-gray-400 mt-0.5">
                       Issued {new Date(cert.issued_at).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
                       })}
                     </p>
-                    <p className="text-xs text-slate-400 mt-1 font-mono">
+                    <p className="text-xs text-gray-500 mt-1 font-mono">
                       ID: {cert.verification_id}
                     </p>
                   </div>
@@ -75,7 +75,7 @@ export default async function CertificatesPage() {
                   <a
                     href={`/verify/${cert.verification_id}`}
                     target="_blank"
-                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-sm hover:bg-slate-200 transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-white/[0.05] text-gray-200 text-sm hover:bg-white/[0.1] transition-colors"
                   >
                     View Certificate
                   </a>
@@ -83,7 +83,7 @@ export default async function CertificatesPage() {
                     href={linkedinShareUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 text-sm hover:bg-blue-100 transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-300 text-sm hover:bg-blue-500/25 transition-colors"
                   >
                     Add to LinkedIn
                   </a>

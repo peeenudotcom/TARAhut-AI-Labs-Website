@@ -54,30 +54,30 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-1">
+      <h1 className="text-2xl font-semibold text-white mb-1">
         Welcome back
       </h1>
-      <p className="text-slate-500 mb-8">
+      <p className="text-gray-400 mb-8">
         Continue your AI learning journey.
       </p>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
-          <p className="text-sm text-slate-500">Enrolled Courses</p>
-          <p className="text-2xl font-semibold text-slate-900 mt-1">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5">
+          <p className="text-sm text-gray-400">Enrolled Courses</p>
+          <p className="text-2xl font-semibold text-white mt-1">
             {enrolledCourses.length}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 p-5">
-          <p className="text-sm text-slate-500">Certificates Earned</p>
-          <p className="text-2xl font-semibold text-slate-900 mt-1">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5">
+          <p className="text-sm text-gray-400">Certificates Earned</p>
+          <p className="text-2xl font-semibold text-white mt-1">
             {certificates?.length ?? 0}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 p-5 col-span-2 md:col-span-1">
-          <p className="text-sm text-slate-500">Overall Progress</p>
-          <p className="text-2xl font-semibold text-slate-900 mt-1">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5 col-span-2 md:col-span-1">
+          <p className="text-sm text-gray-400">Overall Progress</p>
+          <p className="text-2xl font-semibold text-white mt-1">
             {enrolledCourses.length > 0
               ? Math.round(
                   enrolledCourses.reduce((sum, c) => sum + c.progress, 0) /
@@ -90,20 +90,20 @@ export default async function DashboardPage() {
       </div>
 
       {/* Enrolled Courses */}
-      <h2 className="text-lg font-semibold text-slate-900 mb-4">
+      <h2 className="text-lg font-semibold text-white mb-4">
         Your Courses
       </h2>
 
       {enrolledCourses.length === 0 ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-          <p className="text-slate-500 mb-4">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-12 text-center">
+          <p className="text-gray-400 mb-4">
             You&apos;re not enrolled in any courses yet.
           </p>
           <a
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+enroll+in+a+course+at+TARAhut+AI+Labs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors"
+            className="inline-block px-6 py-2.5 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors"
           >
             Contact us to enroll
           </a>
@@ -114,30 +114,30 @@ export default async function DashboardPage() {
             <Link
               key={enrollment.id}
               href={`/dashboard/course/${course?.slug ?? ''}`}
-              className="bg-white rounded-xl border border-slate-200 p-6 hover:border-emerald-300 hover:shadow-sm transition-all"
+              className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-6 hover:border-emerald-400/40 hover:shadow-sm transition-all"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-slate-900">
+                  <h3 className="font-semibold text-white">
                     {course?.title ?? 'Unknown Course'}
                   </h3>
-                  <p className="text-sm text-slate-500 mt-0.5">
+                  <p className="text-sm text-gray-400 mt-0.5">
                     {course?.duration} &middot; {course?.level}
                   </p>
                 </div>
-                <span className="text-sm font-medium text-emerald-600">
+                <span className="text-sm font-medium text-emerald-400">
                   {progress}%
                 </span>
               </div>
 
               {/* Progress bar */}
-              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-white/[0.05] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-emerald-500 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 {completedLessons} of {totalLessons} lessons completed
               </p>
             </Link>

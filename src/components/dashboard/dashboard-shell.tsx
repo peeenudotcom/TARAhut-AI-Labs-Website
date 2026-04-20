@@ -42,12 +42,12 @@ export function DashboardShell({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#020617] text-gray-200">
       {/* Top bar */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
+      <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-[#020617]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           <div className="flex items-center gap-6">
-            <Link href="/" className="text-lg font-semibold text-slate-900">
+            <Link href="/" className="text-lg font-semibold text-white">
               TARAhut AI Labs
             </Link>
 
@@ -59,8 +59,8 @@ export function DashboardShell({
                   href={item.href}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     pathname === item.href
-                      ? 'bg-emerald-50 text-emerald-700'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-emerald-500/10 text-emerald-300'
+                      : 'text-gray-400 hover:bg-white/[0.04] hover:text-white'
                   }`}
                 >
                   <NavIcon icon={item.icon} />
@@ -71,12 +71,12 @@ export function DashboardShell({
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="hidden sm:block text-sm text-slate-500">
+            <span className="hidden sm:block text-sm text-gray-500">
               {userEmail}
             </span>
             <button
               onClick={handleLogout}
-              className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-sm text-gray-400 hover:text-white transition-colors"
             >
               Log out
             </button>
@@ -84,7 +84,7 @@ export function DashboardShell({
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-600"
+              className="md:hidden p-2 text-gray-400 hover:text-white"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d={mobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
@@ -95,7 +95,7 @@ export function DashboardShell({
 
         {/* Mobile nav */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t border-slate-200 px-4 py-2">
+          <nav className="md:hidden border-t border-white/[0.06] px-4 py-2">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -103,8 +103,8 @@ export function DashboardShell({
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium ${
                   pathname === item.href
-                    ? 'bg-emerald-50 text-emerald-700'
-                    : 'text-slate-600'
+                    ? 'bg-emerald-500/10 text-emerald-300'
+                    : 'text-gray-400 hover:bg-white/[0.04] hover:text-white'
                 }`}
               >
                 <NavIcon icon={item.icon} />

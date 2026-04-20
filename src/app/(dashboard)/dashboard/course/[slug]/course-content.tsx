@@ -85,20 +85,20 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-900">{course.title}</h1>
-        <p className="text-slate-500 mt-1">
+        <h1 className="text-2xl font-semibold text-white">{course.title}</h1>
+        <p className="text-gray-400 mt-1">
           {course.duration} &middot; {course.level} &middot; by {course.instructorName}
         </p>
 
         {/* Progress bar */}
         <div className="mt-4">
           <div className="flex justify-between text-sm mb-1.5">
-            <span className="text-slate-500">
+            <span className="text-gray-400">
               {completedCount} of {totalLessons} lessons
             </span>
-            <span className="font-medium text-emerald-600">{progress}%</span>
+            <span className="font-medium text-emerald-400">{progress}%</span>
           </div>
-          <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-white/[0.05] rounded-full overflow-hidden">
             <div
               className="h-full bg-emerald-500 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -109,19 +109,19 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
 
       {/* Certificate button */}
       {isComplete && (
-        <div className="mb-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
+        <div className="mb-8 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center">
           <p className="text-emerald-800 font-medium mb-3">
             Congratulations! You&apos;ve completed all lessons.
           </p>
           <button
             onClick={generateCertificate}
             disabled={certLoading}
-            className="px-6 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors disabled:opacity-50"
           >
             {certLoading ? 'Generating...' : 'Generate Certificate'}
           </button>
           {certMessage && (
-            <p className="mt-3 text-sm text-emerald-700">{certMessage}</p>
+            <p className="mt-3 text-sm text-emerald-300">{certMessage}</p>
           )}
         </div>
       )}
@@ -131,13 +131,13 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
         {course.syllabus.map((module, moduleIndex) => (
           <div
             key={moduleIndex}
-            className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+            className="bg-white/[0.03] rounded-xl border border-white/[0.08] overflow-hidden"
           >
-            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-              <h2 className="font-semibold text-slate-900">
+            <div className="px-6 py-4 bg-[#020617] border-b border-white/[0.08]">
+              <h2 className="font-semibold text-white">
                 Module {moduleIndex + 1}: {module.module}
               </h2>
-              <p className="text-sm text-slate-500 mt-0.5">
+              <p className="text-sm text-gray-400 mt-0.5">
                 {module.topics.length} lessons
               </p>
             </div>
@@ -153,13 +153,13 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
                     key={lessonKey}
                     onClick={() => toggleLesson(lessonKey)}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-3 px-6 py-3.5 text-left hover:bg-slate-50 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-3 px-6 py-3.5 text-left hover:bg-[#020617] transition-colors disabled:opacity-50"
                   >
                     <div
                       className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                         isChecked
                           ? 'bg-emerald-500 border-emerald-500'
-                          : 'border-slate-300'
+                          : 'border-white/[0.15]'
                       }`}
                     >
                       {isChecked && (
@@ -181,8 +181,8 @@ export function CourseContent({ course, enrollmentId, completedKeys: initial }: 
                     <span
                       className={`text-sm ${
                         isChecked
-                          ? 'text-slate-400 line-through'
-                          : 'text-slate-700'
+                          ? 'text-gray-500 line-through'
+                          : 'text-gray-200'
                       }`}
                     >
                       {topic}

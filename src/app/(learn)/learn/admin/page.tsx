@@ -126,13 +126,13 @@ export default async function LearnAdminPage({
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#020617] text-white">
       <div className="max-w-5xl mx-auto px-4 py-10">
 
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-900">Trainer Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-white">Trainer Dashboard</h1>
+          <p className="text-gray-400 text-sm mt-1">
             TARAhut Learning Engine — internal trainer view
           </p>
         </div>
@@ -146,7 +146,7 @@ export default async function LearnAdminPage({
               className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
                 cfg.id === COURSE_ID
                   ? 'bg-slate-900 text-white'
-                  : 'border border-slate-200 text-slate-600 hover:border-slate-400'
+                  : 'border border-white/[0.08] text-gray-300 hover:border-slate-400'
               }`}
             >
               {cfg.title}
@@ -156,12 +156,12 @@ export default async function LearnAdminPage({
 
         {/* Batch info */}
         {activeBatch ? (
-          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
+          <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
               Active Batch
             </h2>
-            <p className="font-semibold text-slate-900">{activeBatch.center_name}</p>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <p className="font-semibold text-white">{activeBatch.center_name}</p>
+            <p className="text-sm text-gray-400 mt-0.5">
               Started:{' '}
               {new Date(activeBatch.start_date).toLocaleDateString('en-IN', {
                 day: 'numeric',
@@ -169,7 +169,7 @@ export default async function LearnAdminPage({
                 year: 'numeric',
               })}
             </p>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <p className="text-sm text-gray-400 mt-0.5">
               Students enrolled: {enrollments.length}
             </p>
           </div>
@@ -181,8 +181,8 @@ export default async function LearnAdminPage({
 
         {/* Generate Code */}
         {activeBatch && (
-          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">
+          <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">
               Generate Daily Code
             </h2>
             <GenerateCodeForm batchId={activeBatch.id} />
@@ -191,26 +191,26 @@ export default async function LearnAdminPage({
 
         {/* Active Codes */}
         {(activeCodes?.length ?? 0) > 0 && (
-          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">
+          <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">
               Active Codes
             </h2>
             <div className="space-y-3">
               {activeCodes!.map((c) => (
                 <div
                   key={c.id}
-                  className="flex items-center justify-between bg-slate-50 rounded-lg px-4 py-3"
+                  className="flex items-center justify-between bg-[#020617] rounded-lg px-4 py-3"
                 >
                   <div>
-                    <span className="text-sm text-slate-500">Session {c.session_number}</span>
+                    <span className="text-sm text-gray-400">Session {c.session_number}</span>
                   </div>
                   <div className="text-center">
-                    <span className="font-mono text-3xl font-bold tracking-widest text-emerald-600">
+                    <span className="font-mono text-3xl font-bold tracking-widest text-emerald-400">
                       {c.code}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-gray-500">
                       Expires{' '}
                       {new Date(c.expires_at).toLocaleTimeString('en-IN', {
                         hour: '2-digit',
@@ -225,18 +225,18 @@ export default async function LearnAdminPage({
         )}
 
         {/* Student Progress Table */}
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+        <div className="bg-white/[0.03] rounded-xl border border-white/[0.08] overflow-hidden">
+          <div className="px-5 py-4 border-b border-white/[0.05]">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
               Student Progress
             </h2>
           </div>
           {studentRows.length === 0 ? (
-            <p className="text-slate-400 text-sm p-5">No enrolled students yet.</p>
+            <p className="text-gray-500 text-sm p-5">No enrolled students yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+                <thead className="bg-[#020617] text-gray-400 text-xs uppercase tracking-wide">
                   <tr>
                     <th className="text-left px-5 py-3 font-medium">Student</th>
                     <th className="text-left px-5 py-3 font-medium">Email</th>
@@ -246,11 +246,11 @@ export default async function LearnAdminPage({
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {studentRows.map((student) => (
-                    <tr key={student.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-5 py-3 font-medium text-slate-900">{student.name}</td>
-                      <td className="px-5 py-3 text-slate-500">{student.email}</td>
+                    <tr key={student.id} className="hover:bg-[#020617] transition-colors">
+                      <td className="px-5 py-3 font-medium text-white">{student.name}</td>
+                      <td className="px-5 py-3 text-gray-400">{student.email}</td>
                       <td className="px-5 py-3 text-center">
-                        <span className="inline-block bg-emerald-50 text-emerald-700 font-semibold rounded-full px-3 py-0.5 text-xs">
+                        <span className="inline-block bg-emerald-500/10 text-emerald-300 font-semibold rounded-full px-3 py-0.5 text-xs">
                           {student.sessionsUnlocked} / {courseConfig.totalSessions}
                         </span>
                       </td>
@@ -259,7 +259,7 @@ export default async function LearnAdminPage({
                           <span
                             className={`inline-block font-semibold rounded-full px-3 py-0.5 text-xs ${
                               student.quizAverage >= 90
-                                ? 'bg-emerald-50 text-emerald-700'
+                                ? 'bg-emerald-500/10 text-emerald-300'
                                 : student.quizAverage >= 70
                                 ? 'bg-amber-50 text-amber-700'
                                 : 'bg-red-50 text-red-700'
@@ -268,7 +268,7 @@ export default async function LearnAdminPage({
                             {student.quizAverage}%
                           </span>
                         ) : (
-                          <span className="text-slate-300 text-xs">No quizzes</span>
+                          <span className="text-gray-500 text-xs">No quizzes</span>
                         )}
                       </td>
                     </tr>

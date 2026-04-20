@@ -42,7 +42,7 @@ export default function GenerateCodeForm({ batchId }: { batchId: string }) {
         <div>
           <label
             htmlFor="session-select"
-            className="block text-sm text-slate-600 mb-1.5 font-medium"
+            className="block text-sm text-gray-300 mb-1.5 font-medium"
           >
             Session Number
           </label>
@@ -50,7 +50,7 @@ export default function GenerateCodeForm({ batchId }: { batchId: string }) {
             id="session-select"
             value={sessionNumber}
             onChange={(e) => setSessionNumber(Number(e.target.value))}
-            className="border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="border border-white/[0.15] rounded-lg px-3 py-2 text-sm text-white bg-white/[0.03] focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             {Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -62,7 +62,7 @@ export default function GenerateCodeForm({ batchId }: { batchId: string }) {
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-5 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Generating...' : 'Generate Code'}
         </button>
@@ -73,14 +73,14 @@ export default function GenerateCodeForm({ batchId }: { batchId: string }) {
       )}
 
       {result && (
-        <div className="mt-4 inline-flex items-center gap-4 bg-emerald-50 border border-emerald-200 rounded-xl px-6 py-4">
+        <div className="mt-4 inline-flex items-center gap-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-6 py-4">
           <div>
-            <p className="text-xs text-emerald-600 font-medium">Session {result.session_number} Code</p>
-            <p className="font-mono text-4xl font-bold tracking-widest text-emerald-700 mt-0.5">
+            <p className="text-xs text-emerald-400 font-medium">Session {result.session_number} Code</p>
+            <p className="font-mono text-4xl font-bold tracking-widest text-emerald-300 mt-0.5">
               {result.code}
             </p>
           </div>
-          <div className="text-xs text-slate-400 self-end pb-1">
+          <div className="text-xs text-gray-500 self-end pb-1">
             Expires{' '}
             {new Date(result.expires_at).toLocaleTimeString('en-IN', {
               hour: '2-digit',
