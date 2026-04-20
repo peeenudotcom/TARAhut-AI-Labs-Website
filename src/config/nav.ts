@@ -3,6 +3,9 @@ export interface NavItem {
   href: string;
   description?: string;
   icon?: string;
+  // If set, hovering this item swaps the mega-menu featured card to these values.
+  image?: string;
+  tagline?: string;
 }
 
 export interface NavGroup {
@@ -53,19 +56,66 @@ export const navEntries: NavEntry[] = [
         label: 'Adult Programs',
         accent: 'emerald',
         items: [
-          { label: 'AI Tools Mastery', href: '/courses/ai-tools-mastery-beginners', description: 'ChatGPT, Claude & 10+ tools', icon: '🤖' },
-          { label: 'AI for Marketing', href: '/courses/ai-digital-marketing', description: '12-week marketing program', icon: '📈' },
-          { label: 'Master Claude', href: '/courses/master-claude-15-days', description: '15-day deep dive', icon: '🧠' },
-          { label: 'AI Builder 90 Days', href: '/courses/master-ai-builder', description: 'Full-stack AI development', icon: '💻' },
+          {
+            label: 'AI Tools Mastery',
+            href: '/courses/ai-tools-mastery-beginners',
+            description: 'ChatGPT, Claude & 10+ tools',
+            icon: '🤖',
+            image: '/images/courses/ai-tools-mastery.png',
+            tagline: 'Get fluent in ChatGPT, Claude and 10+ AI tools for everyday work — no coding required.',
+          },
+          {
+            label: 'AI for Marketing',
+            href: '/courses/ai-digital-marketing',
+            description: '12-week marketing program',
+            icon: '📈',
+            image: '/images/courses/ai-digital-marketing.png',
+            tagline: '12-week program to run full AI-powered marketing for local businesses and brands.',
+          },
+          {
+            label: 'Master Claude',
+            href: '/courses/master-claude-15-days',
+            description: '15-day deep dive',
+            icon: '🧠',
+            image: '/images/courses/master-claude.jpg',
+            tagline: '15-day intensive on Anthropic Claude — prompting, projects, artifacts, and agents.',
+          },
+          {
+            label: 'AI Builder 90 Days',
+            href: '/courses/master-ai-builder',
+            description: 'Full-stack AI development',
+            icon: '💻',
+            image: '/images/courses/master-ai-builder.jpg',
+            tagline: '90-day pathway to ship full-stack AI apps — from prompt to production deployment.',
+          },
         ],
       },
       {
         label: 'For School Kids',
         accent: 'teal',
         items: [
-          { label: 'Kids Junior', href: '/courses/ai-explorer-school-kids-junior', description: 'Class 5–7 program', icon: '🎮' },
-          { label: 'Kids Senior', href: '/courses/ai-explorer-school-kids-senior', description: 'Class 8–10 program', icon: '🎓' },
-          { label: 'All Courses', href: '/courses', description: 'Browse all 9 programs', icon: '📚' },
+          {
+            label: 'Kids Junior',
+            href: '/courses/ai-explorer-school-kids-junior',
+            description: 'Class 5–7 program',
+            icon: '🎮',
+            image: '/images/courses/ai-explorer-junior.jpg',
+            tagline: 'A playful, hands-on intro to AI for Class 5–7 — curiosity, creativity, safety first.',
+          },
+          {
+            label: 'Kids Senior',
+            href: '/courses/ai-explorer-school-kids-senior',
+            description: 'Class 8–10 program',
+            icon: '🎓',
+            image: '/images/courses/ai-explorer-senior.jpg',
+            tagline: 'AI projects for Class 8–10 students — build real tools, portfolios, and confidence.',
+          },
+          {
+            label: 'All Courses',
+            href: '/courses',
+            description: 'Browse all 9 programs',
+            icon: '📚',
+          },
         ],
       },
     ],
