@@ -8,7 +8,7 @@ const featuredCourses = [
 
 export function FreeLessonCta() {
   return (
-    <section className="relative overflow-hidden bg-[#06060e] py-20 sm:py-28">
+    <section className="relative overflow-hidden py-20 sm:py-28">
       {/* Background glow */}
       <div
         aria-hidden

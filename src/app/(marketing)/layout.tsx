@@ -12,7 +12,7 @@ export default function MarketingLayout({
   return (
     <>
       <Header />
-      <main className="flex-1 pt-16 bg-[#0A0F1C]">
+      <main className="flex-1 pt-16 bg-[#020617]">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
