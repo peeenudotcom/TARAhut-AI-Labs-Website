@@ -113,7 +113,7 @@ export function FaqSection() {
         >
           <Link
             href="/faq"
-            className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-white/[0.03] backdrop-blur px-5 py-2.5 text-sm font-semibold text-emerald-400 transition-all hover:bg-white/[0.08] hover:border-emerald-500/50 hover:shadow-lg"
+            className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-transparent px-5 py-2.5 text-sm font-semibold text-emerald-400 transition-colors hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-300"
           >
             See all {allFaqs.length} questions
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

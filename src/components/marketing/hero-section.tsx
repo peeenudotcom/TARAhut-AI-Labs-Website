@@ -105,27 +105,20 @@ export function HeroSection() {
             >
               <Link
                 href="/learn"
-                className="px-7 py-3.5 text-sm rounded-lg
-                           bg-[#059669] text-white font-semibold
-                           shadow-lg shadow-emerald-500/25
-                           hover:bg-[#047857] hover:scale-[1.02] active:scale-95 transition-all"
+                className="inline-flex items-center justify-center rounded-lg bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-600"
               >
                 🚀 Try a Free AI Lesson
               </Link>
               <Link
                 href="/learn"
-                className="px-7 py-3.5 text-sm rounded-lg text-center
-                           bg-white/[0.06] border border-[#fbbf24]/30 text-[#fbbf24] font-semibold
-                           hover:bg-[#fbbf24]/10 hover:border-[#fbbf24]/50 transition-all"
+                className="inline-flex flex-col items-center justify-center rounded-lg border border-amber-400/40 bg-transparent px-6 py-3 text-sm font-semibold text-amber-300 transition-colors hover:border-amber-400/60 hover:bg-amber-400/10 hover:text-amber-200"
               >
                 Buy Any Online Course at ₹999/-
-                <span className="block text-[10px] text-[#fbbf24]/60 font-normal mt-0.5">(Limited Time Offer)</span>
+                <span className="mt-0.5 text-[10px] font-normal text-amber-300/60">(Limited Time Offer)</span>
               </Link>
               <Link
                 href="/courses"
-                className="px-7 py-3.5 text-sm rounded-lg
-                           border border-white/10 text-gray-300
-                           hover:bg-white/5 hover:text-white transition-colors"
+                className="inline-flex items-center justify-center rounded-lg border border-white/10 bg-transparent px-6 py-3 text-sm font-semibold text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
               >
                 Explore Programs →
               </Link>

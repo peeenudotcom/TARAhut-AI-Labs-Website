@@ -282,7 +282,7 @@ export function TestimonialsSection() {
           >
             <button
               onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.03] backdrop-blur px-5 py-2.5 text-sm font-semibold text-[#e53935] transition-all hover:bg-white/[0.08] hover:border-[#e53935]/40 hover:shadow-lg"
+              className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-transparent px-5 py-2.5 text-sm font-semibold text-emerald-400 transition-colors hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-300"
             >
               See all {testimonials.length} reviews
               <svg
@@ -306,7 +306,7 @@ export function TestimonialsSection() {
           >
             <button
               onClick={() => setShowAll(false)}
-              className="inline-flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.03] backdrop-blur px-5 py-2.5 text-sm font-semibold text-[#e53935] transition-all hover:bg-white/[0.08] hover:border-[#e53935]/40 hover:shadow-lg"
+              className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-transparent px-5 py-2.5 text-sm font-semibold text-emerald-400 transition-colors hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-300"
             >
               Show fewer reviews
               <svg

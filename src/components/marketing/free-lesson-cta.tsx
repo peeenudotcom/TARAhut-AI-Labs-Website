@@ -65,7 +65,7 @@ export function FreeLessonCta() {
         <div className="text-center">
           <Link
             href="/learn"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#059669] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-[#059669]/30 transition hover:bg-[#047857] active:scale-95"
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-600"
           >
             Browse All 9 Courses
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
