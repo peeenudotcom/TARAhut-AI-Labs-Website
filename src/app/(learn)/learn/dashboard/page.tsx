@@ -85,7 +85,7 @@ export default async function DashboardPage({
   const activeModules = courseConfig.modules;
   const allCourseIds = enrollments.map((e) => e.course_id).filter((id) => id in courseConfigs);
 
-  const [unlocksResult, quizResult, achievementsResult, streakResult] = await Promise.all([
+  const [unlocksResult, quizResult, achievementsResult, streakResult, purchaseResult, certificateResult] = await Promise.all([
     supabase
       .from('session_unlocks')
       .select('session_number')
@@ -107,7 +107,25 @@ export default async function DashboardPage({
       .eq('student_id', user.id)
       .eq('course_id', activeCourseId)
       .maybeSingle(),
+    // Did this student buy this course online (paid or promo-unlocked)?
+    // If so we skip the trainer-code flow and let them progress on their own.
+    supabase
+      .from('online_purchases')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .limit(1),
+    // Has a certificate already been issued for this course?
+    supabase
+      .from('certificates')
+      .select('certificate_number, issued_at')
+      .eq('student_id', user.id)
+      .eq('course_id', activeCourseId)
+      .maybeSingle(),
   ]);
+
+  const isOnlinePurchaser = (purchaseResult.data?.length ?? 0) > 0;
+  const certificate = certificateResult.data;
 
   const unlockedSessions = new Set<number>(
     (unlocksResult.data ?? []).map((r: UnlockRow) => r.session_number)
@@ -197,10 +215,45 @@ export default async function DashboardPage({
           />
         </div>
 
-        {/* ── Code entry ── */}
-        <div className="mb-10">
-          <CodeEntry />
-        </div>
+        {/* ── Certificate celebration (shown when course is complete) ── */}
+        {certificate && (
+          <div className="mb-10 rounded-2xl border border-[#059669]/40 bg-gradient-to-br from-[#059669]/10 to-[#00f0ff]/5 p-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <span className="text-4xl" aria-hidden>🎓</span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#059669]">
+                    Course Complete
+                  </p>
+                  <p className="mt-0.5 text-xl font-bold text-white">
+                    Congratulations, {displayName}!
+                  </p>
+                  <p className="mt-0.5 text-sm text-[#94a3b8]">
+                    Your certificate is ready. Issued{' '}
+                    {new Date(certificate.issued_at).toLocaleDateString('en-IN', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href={`/learn/certificate/${activeCourseId}`}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#059669] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#047857]"
+              >
+                View certificate →
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* ── Code entry — only for offline batch students ── */}
+        {!isOnlinePurchaser && !certificate && (
+          <div className="mb-10">
+            <CodeEntry />
+          </div>
+        )}
 
         {/* ── Stats row (4 cards) ── */}
         <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -389,6 +442,7 @@ export default async function DashboardPage({
                 mod={mod}
                 unlocked={unlocked}
                 courseId={activeCourseId}
+                isOnlinePurchaser={isOnlinePurchaser}
               />
             );
           })}
@@ -445,10 +499,12 @@ function ModuleCard({
   mod,
   unlocked,
   courseId,
+  isOnlinePurchaser,
 }: {
   mod: (typeof learnModules)[number];
   unlocked: boolean;
   courseId: string;
+  isOnlinePurchaser: boolean;
 }) {
   const courseParam = courseId !== 'ai-tools-mastery-beginners' ? `?course=${courseId}` : '';
   if (unlocked) {
@@ -505,7 +561,9 @@ function ModuleCard({
       <h3 className="mb-1 text-sm font-bold text-[#e2e8f0]">{mod.title}</h3>
       <p className="mb-4 text-xs leading-relaxed text-[#94a3b8]">{mod.description}</p>
       <span className="mt-auto inline-block rounded-lg border border-[#1e1e3a] px-3 py-1.5 text-xs font-semibold text-[#94a3b8]">
-        Enter code to unlock
+        {isOnlinePurchaser
+          ? `Complete Session ${mod.session - 1} to unlock`
+          : 'Enter code to unlock'}
       </span>
     </div>
   );
