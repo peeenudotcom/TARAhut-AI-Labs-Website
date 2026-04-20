@@ -486,10 +486,10 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium text-[#64748B]">Step {current} of {total}</span>
+        <span className="text-xs font-medium text-[#9CA3AF]">Step {current} of {total}</span>
         <span className="text-xs font-semibold text-[#059669]">{Math.round(pct)}%</span>
       </div>
-      <div className="h-2 w-full rounded-full bg-[#E2E8F0] overflow-hidden">
+      <div className="h-2 w-full rounded-full bg-[rgba(255,255,255,0.08)] overflow-hidden">
         <motion.div
           className="h-full rounded-full"
           style={{ background: 'linear-gradient(to right, #059669, #10B981)' }}
@@ -523,8 +523,8 @@ function SelectCard({
       className={cn(
         'relative w-full rounded-xl border-2 p-4 text-left transition-all duration-200',
         selected
-          ? 'border-[#059669] bg-[#F0FDF4] shadow-md shadow-emerald-500/10'
-          : 'border-[#E2E8F0] bg-white hover:border-[#059669]/40 hover:shadow-sm'
+          ? 'border-[#059669] bg-[rgba(16,185,129,0.1)] shadow-md shadow-emerald-500/10'
+          : 'border-[rgba(255,255,255,0.08)] bg-white/[0.03] hover:border-[#059669]/40 hover:shadow-sm'
       )}
       whileTap={{ scale: 0.98 }}
     >
@@ -532,7 +532,7 @@ function SelectCard({
         <div
           className={cn(
             'absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-md border-2 transition-all',
-            selected ? 'border-[#059669] bg-[#059669]' : 'border-[#CBD5E1]'
+            selected ? 'border-[#059669] bg-[#059669]' : 'border-[rgba(255,255,255,0.15)]'
           )}
         >
           {selected && (
@@ -545,8 +545,8 @@ function SelectCard({
       <div className="flex items-center gap-3">
         <span className="text-2xl">{icon}</span>
         <div>
-          <p className="text-sm font-semibold text-[#0F172A]">{label}</p>
-          {desc && <p className="text-xs text-[#64748B] mt-0.5">{desc}</p>}
+          <p className="text-sm font-semibold text-[#F1F5F9]">{label}</p>
+          {desc && <p className="text-xs text-[#9CA3AF] mt-0.5">{desc}</p>}
         </div>
       </div>
     </motion.button>
@@ -626,7 +626,7 @@ function RadarChart({ strengths }: { strengths: { label: string; value: number; 
             y={p.y}
             textAnchor="middle"
             dominantBaseline="middle"
-            className="text-[10px] font-semibold fill-[#475569]"
+            className="text-[10px] font-semibold fill-[#D1D5DB]"
           >
             {s.label}
           </text>
@@ -661,7 +661,7 @@ function CircularScore({ score, label, size = 80, color = '#059669' }: { score: 
       </svg>
       <div className="absolute flex flex-col items-center justify-center" style={{ width: size, height: size }}>
         <motion.span
-          className="text-lg font-bold text-[#0F172A]"
+          className="text-lg font-bold text-[#F1F5F9]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
@@ -669,7 +669,7 @@ function CircularScore({ score, label, size = 80, color = '#059669' }: { score: 
           {score}
         </motion.span>
       </div>
-      <span className="text-[10px] font-medium text-[#64748B] text-center leading-tight">{label}</span>
+      <span className="text-[10px] font-medium text-[#9CA3AF] text-center leading-tight">{label}</span>
     </div>
   )
 }
@@ -786,7 +786,7 @@ export function CareerLab() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-[rgba(255,255,255,0.04)]">
       <AnimatePresence mode="wait">
 
         {/* ── HOOK SCREEN ── */}
@@ -933,7 +933,7 @@ export function CareerLab() {
             transition={{ duration: 0.3 }}
             className="min-h-screen flex flex-col"
           >
-            <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-lg border-b border-[#E2E8F0] px-6 py-4">
+            <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-lg border-b border-[rgba(255,255,255,0.08)] px-6 py-4">
               <div className="max-w-2xl mx-auto">
                 <ProgressBar current={currentStepIndex} total={totalSteps} />
               </div>
@@ -945,8 +945,8 @@ export function CareerLab() {
                 {/* Q1: Status */}
                 {step === 'q1' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">What describes you best?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">This helps us tailor career paths to your stage in life.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">What describes you best?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">This helps us tailor career paths to your stage in life.</p>
                     <div className="mt-6 grid gap-3">
                       {STATUS_OPTIONS.map((opt) => (
                         <SelectCard
@@ -965,8 +965,8 @@ export function CareerLab() {
                 {/* Q2: Interests */}
                 {step === 'q2' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">What excites you most?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">Select all that apply — pick at least one.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">What excites you most?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">Select all that apply — pick at least one.</p>
                     <div className="mt-6 grid grid-cols-2 gap-3">
                       {INTEREST_OPTIONS.map((opt) => (
                         <SelectCard
@@ -985,8 +985,8 @@ export function CareerLab() {
                 {/* Q3: Personality */}
                 {step === 'q3' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">Which sounds more like you?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">Pick the one that resonates most.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">Which sounds more like you?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">Pick the one that resonates most.</p>
                     <div className="mt-6 grid gap-3">
                       {PERSONALITY_OPTIONS.map((opt) => (
                         <SelectCard
@@ -1005,8 +1005,8 @@ export function CareerLab() {
                 {/* Q4: Goals */}
                 {step === 'q4' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">What matters most to you?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">Select all your career goals.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">What matters most to you?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">Select all your career goals.</p>
                     <div className="mt-6 grid grid-cols-2 gap-3">
                       {GOAL_OPTIONS.map((opt) => (
                         <SelectCard
@@ -1025,8 +1025,8 @@ export function CareerLab() {
                 {/* Q5: Skill Level */}
                 {step === 'q5' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">Where are you on your AI journey?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">Be honest — this helps us set realistic expectations.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">Where are you on your AI journey?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">Be honest — this helps us set realistic expectations.</p>
                     <div className="mt-6 grid gap-3">
                       {SKILL_OPTIONS.map((opt) => (
                         <SelectCard
@@ -1045,8 +1045,8 @@ export function CareerLab() {
                 {/* Q6: Work Style */}
                 {step === 'q6' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">How do you prefer to work?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">Your work style shapes which AI roles suit you best.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">How do you prefer to work?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">Your work style shapes which AI roles suit you best.</p>
                     <div className="mt-6 grid gap-3">
                       {WORK_STYLE_OPTIONS.map((opt) => (
                         <SelectCard
@@ -1065,8 +1065,8 @@ export function CareerLab() {
                 {/* Q7: Time Commitment */}
                 {step === 'q7' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-[#0F172A]">How much time can you invest weekly?</h2>
-                    <p className="mt-2 text-sm text-[#64748B]">This helps us build a realistic roadmap for you.</p>
+                    <h2 className="text-2xl font-bold text-[#F1F5F9]">How much time can you invest weekly?</h2>
+                    <p className="mt-2 text-sm text-[#9CA3AF]">This helps us build a realistic roadmap for you.</p>
                     <div className="mt-6 grid gap-3">
                       {TIME_OPTIONS.map((opt) => (
                         <SelectCard
@@ -1086,7 +1086,7 @@ export function CareerLab() {
                 <div className="mt-8 flex items-center justify-between">
                   <button
                     onClick={goBack}
-                    className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-[#64748B] transition-colors hover:text-[#0F172A] hover:bg-[#F1F5F9]"
+                    className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-[#9CA3AF] transition-colors hover:text-[#F1F5F9] hover:bg-[rgba(255,255,255,0.06)]"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -1099,8 +1099,8 @@ export function CareerLab() {
                     className={cn(
                       'inline-flex items-center gap-2 rounded-xl px-8 py-3 text-sm font-semibold transition-all duration-200',
                       canProceed
-                        ? 'bg-[#059669] text-white shadow-md shadow-emerald-500/20 hover:bg-[#047857] hover:shadow-lg hover:shadow-emerald-500/30'
-                        : 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed'
+                        ? 'bg-[#059669] text-white shadow-md shadow-emerald-500/20 hover:bg-[#10B981] hover:shadow-lg hover:shadow-emerald-500/30'
+                        : 'bg-[rgba(255,255,255,0.08)] text-[#6B7280] cursor-not-allowed'
                     )}
                   >
                     {step === 'q7' ? 'Analyze My Career DNA' : 'Continue'}
@@ -1191,7 +1191,7 @@ export function CareerLab() {
             key="results"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen bg-[#F8FAFC]"
+            className="min-h-screen bg-[rgba(255,255,255,0.04)]"
           >
             {/* Hero result */}
             <div className="relative overflow-hidden" style={{ backgroundColor: '#020617' }}>
@@ -1257,22 +1257,22 @@ export function CareerLab() {
 
               {/* Career DNA Radar */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-6">Your Career DNA</h2>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-6">Your Career DNA</h2>
                 <div className="grid sm:grid-cols-2 gap-6 items-center">
                   <RadarChart strengths={result.strengths} />
                   <div className="space-y-3">
                     {result.strengths.map((s) => (
                       <div key={s.label}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-medium text-[#475569]">{s.label}</span>
+                          <span className="text-xs font-medium text-[#D1D5DB]">{s.label}</span>
                           <span className="text-xs font-bold" style={{ color: s.color }}>{s.value}%</span>
                         </div>
-                        <div className="h-2 rounded-full bg-[#F1F5F9] overflow-hidden">
+                        <div className="h-2 rounded-full bg-[rgba(255,255,255,0.06)] overflow-hidden">
                           <motion.div
                             className="h-full rounded-full"
                             style={{ backgroundColor: s.color }}
@@ -1294,33 +1294,33 @@ export function CareerLab() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-4">Top Career Matches For You</h2>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-4">Top Career Matches For You</h2>
                 <div className="grid gap-4">
                   {result.careers.map((career, i) => (
                     <motion.div
                       key={career.title}
-                      className="rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+                      className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 shadow-sm hover:shadow-md transition-shadow"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4] text-2xl border border-[#D1FAE5]">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[rgba(16,185,129,0.1)] text-2xl border border-[rgba(16,185,129,0.18)]">
                           {career.icon}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between flex-wrap gap-2">
-                            <h3 className="text-base font-bold text-[#0F172A]">{career.title}</h3>
-                            <span className="inline-flex items-center rounded-full bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-1 text-xs font-semibold text-[#059669]">
+                            <h3 className="text-base font-bold text-[#F1F5F9]">{career.title}</h3>
+                            <span className="inline-flex items-center rounded-full bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.18)] px-3 py-1 text-xs font-semibold text-[#059669]">
                               {career.salaryRange}
                             </span>
                           </div>
                           <p className="mt-2 text-sm text-[#059669] font-medium">{career.whyFits}</p>
-                          <p className="mt-1 text-sm text-[#64748B]">{career.whatYouDo}</p>
-                          <div className="mt-3 flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                          <p className="mt-1 text-sm text-[#9CA3AF]">{career.whatYouDo}</p>
+                          <div className="mt-3 flex items-center gap-1.5 text-xs text-[#6B7280]">
                             <span>In demand:</span>
-                            <span className="font-medium text-[#64748B]">{career.demandCountries}</span>
+                            <span className="font-medium text-[#9CA3AF]">{career.demandCountries}</span>
                           </div>
                         </div>
                       </div>
@@ -1331,23 +1331,23 @@ export function CareerLab() {
 
               {/* 90-Day Roadmap */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-6">Your 90-Day Roadmap</h2>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-6">Your 90-Day Roadmap</h2>
                 <div className="grid sm:grid-cols-3 gap-4">
                   {result.roadmap.map((r, i) => (
-                    <div key={r.month} className="relative rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-5">
+                    <div key={r.month} className="relative rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
                       <div className="flex items-center gap-2 mb-3">
                         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#059669] text-[11px] font-bold text-white">
                           {i + 1}
                         </span>
-                        <span className="text-sm font-bold text-[#0F172A]">{r.month}</span>
+                        <span className="text-sm font-bold text-[#F1F5F9]">{r.month}</span>
                       </div>
                       <h3 className="text-sm font-semibold text-[#059669]">{r.title}</h3>
-                      <p className="mt-1 text-xs text-[#64748B] leading-relaxed">{r.desc}</p>
+                      <p className="mt-1 text-xs text-[#9CA3AF] leading-relaxed">{r.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -1355,34 +1355,34 @@ export function CareerLab() {
 
               {/* ── WEEK-BY-WEEK LEARNING PLAN ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <h2 className="text-lg font-bold text-[#0F172A]">Your Weekly Learning Plan</h2>
-                  <span className="rounded-full bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-1 text-xs font-semibold text-[#059669]">
+                  <h2 className="text-lg font-bold text-[#F1F5F9]">Your Weekly Learning Plan</h2>
+                  <span className="rounded-full bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.18)] px-3 py-1 text-xs font-semibold text-[#059669]">
                     {TIME_OPTIONS.find(t => t.id === answers.timeCommitment)?.label || ''}/week
                   </span>
                 </div>
-                <p className="text-xs text-[#64748B] mb-6">Personalized based on your available time. Each week builds on the last.</p>
+                <p className="text-xs text-[#9CA3AF] mb-6">Personalized based on your available time. Each week builds on the last.</p>
                 <div className="space-y-4">
                   {(result.resources.weeklyPlan[answers.timeCommitment] || result.resources.weeklyPlan['5-10'] || []).map((wp, i) => (
-                    <div key={wp.week} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+                    <div key={wp.week} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#059669] text-[10px] font-bold text-white">{i + 1}</span>
-                        <span className="text-sm font-bold text-[#0F172A]">{wp.week}</span>
+                        <span className="text-sm font-bold text-[#F1F5F9]">{wp.week}</span>
                       </div>
                       <ul className="space-y-1.5 mb-3">
                         {wp.tasks.map((task, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-[#475569]">
-                            <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border border-[#CBD5E1] bg-white text-[8px] text-[#94A3B8]">{j + 1}</span>
+                          <li key={j} className="flex items-start gap-2 text-xs text-[#D1D5DB]">
+                            <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border border-[rgba(255,255,255,0.15)] bg-white/[0.03] text-[8px] text-[#6B7280]">{j + 1}</span>
                             {task}
                           </li>
                         ))}
                       </ul>
-                      <div className="rounded-lg bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-2">
+                      <div className="rounded-lg bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.18)] px-3 py-2">
                         <p className="text-[10px] font-semibold text-[#059669]">Milestone: {wp.milestone}</p>
                       </div>
                     </div>
@@ -1392,13 +1392,13 @@ export function CareerLab() {
 
               {/* ── FREE RESOURCES ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Free Resources to Start Today</h2>
-                <p className="text-xs text-[#64748B] mb-5">Curated specifically for your career path. All free or free-to-audit.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Free Resources to Start Today</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Curated specifically for your career path. All free or free-to-audit.</p>
                 <div className="grid gap-3">
                   {result.resources.freeResources.map((res) => (
                     <a
@@ -1406,16 +1406,16 @@ export function CareerLab() {
                       href={res.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group flex items-start gap-3 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
                     >
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white border border-[#E2E8F0] text-sm">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.03] border border-[rgba(255,255,255,0.08)] text-sm">
                         {res.type === 'youtube' ? '🎥' : res.type === 'course' ? '📚' : res.type === 'tool' ? '🔧' : res.type === 'book' ? '📖' : '🌐'}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{res.title}</p>
-                        <p className="text-xs text-[#64748B] mt-0.5 leading-relaxed">{res.desc}</p>
+                        <p className="text-sm font-semibold text-[#F1F5F9] group-hover:text-[#059669] transition-colors">{res.title}</p>
+                        <p className="text-xs text-[#9CA3AF] mt-0.5 leading-relaxed">{res.desc}</p>
                       </div>
-                      <svg className="h-4 w-4 shrink-0 mt-1 text-[#94A3B8] group-hover:text-[#059669] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 shrink-0 mt-1 text-[#6B7280] group-hover:text-[#059669] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -1425,13 +1425,13 @@ export function CareerLab() {
 
               {/* ── TOOLS TO LEARN ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Tools You Need to Learn</h2>
-                <p className="text-xs text-[#64748B] mb-5">Learn them in order — essential first, then level up.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Tools You Need to Learn</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Learn them in order — essential first, then level up.</p>
                 {(['essential', 'intermediate', 'advanced'] as const).map((cat) => {
                   const tools = result.resources.toolsToLearn.filter(t => t.category === cat)
                   if (tools.length === 0) return null
@@ -1440,9 +1440,9 @@ export function CareerLab() {
                       <div className="flex items-center gap-2 mb-2">
                         <span className={cn(
                           'rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                          cat === 'essential' ? 'bg-[#F0FDF4] text-[#059669] border border-[#D1FAE5]' :
-                          cat === 'intermediate' ? 'bg-[#EFF6FF] text-[#3B82F6] border border-[#BFDBFE]' :
-                          'bg-[#FAF5FF] text-[#8B5CF6] border border-[#E9D5FF]'
+                          cat === 'essential' ? 'bg-[rgba(16,185,129,0.1)] text-[#059669] border border-[rgba(16,185,129,0.18)]' :
+                          cat === 'intermediate' ? 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6] border border-[rgba(59,130,246,0.3)]' :
+                          'bg-[rgba(139,92,246,0.15)] text-[#8B5CF6] border border-[rgba(139,92,246,0.3)]'
                         )}>
                           {cat}
                         </span>
@@ -1454,11 +1454,11 @@ export function CareerLab() {
                             href={tool.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                            className="flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-3 py-2.5 transition-all hover:border-[#059669]/40 hover:shadow-sm"
                           >
-                            <span className="text-sm font-medium text-[#0F172A] truncate">{tool.name}</span>
+                            <span className="text-sm font-medium text-[#F1F5F9] truncate">{tool.name}</span>
                             {tool.free && (
-                              <span className="shrink-0 rounded bg-[#F0FDF4] px-1.5 py-0.5 text-[9px] font-bold text-[#059669]">FREE</span>
+                              <span className="shrink-0 rounded bg-[rgba(16,185,129,0.1)] px-1.5 py-0.5 text-[9px] font-bold text-[#059669]">FREE</span>
                             )}
                           </a>
                         ))}
@@ -1470,35 +1470,35 @@ export function CareerLab() {
 
               {/* ── PORTFOLIO PROJECTS ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Portfolio Project Ideas</h2>
-                <p className="text-xs text-[#64748B] mb-5">Build these to prove your skills. Each one is a talking point in interviews.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Portfolio Project Ideas</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Build these to prove your skills. Each one is a talking point in interviews.</p>
                 <div className="space-y-3">
                   {result.resources.portfolioProjects.map((project, i) => (
-                    <div key={project.title} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+                    <div key={project.title} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
                           <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#059669] text-xs font-bold text-white mt-0.5">{i + 1}</span>
                           <div>
-                            <p className="text-sm font-semibold text-[#0F172A]">{project.title}</p>
-                            <p className="text-xs text-[#64748B] mt-1 leading-relaxed">{project.desc}</p>
+                            <p className="text-sm font-semibold text-[#F1F5F9]">{project.title}</p>
+                            <p className="text-xs text-[#9CA3AF] mt-1 leading-relaxed">{project.desc}</p>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 mt-3 ml-10">
                         <span className={cn(
                           'rounded-full px-2 py-0.5 text-[10px] font-semibold',
-                          project.difficulty === 'beginner' ? 'bg-[#F0FDF4] text-[#059669]' :
-                          project.difficulty === 'intermediate' ? 'bg-[#EFF6FF] text-[#3B82F6]' :
-                          'bg-[#FAF5FF] text-[#8B5CF6]'
+                          project.difficulty === 'beginner' ? 'bg-[rgba(16,185,129,0.1)] text-[#059669]' :
+                          project.difficulty === 'intermediate' ? 'bg-[rgba(59,130,246,0.15)] text-[#3B82F6]' :
+                          'bg-[rgba(139,92,246,0.15)] text-[#8B5CF6]'
                         )}>
                           {project.difficulty}
                         </span>
-                        <span className="text-[10px] text-[#94A3B8]">{project.timeEstimate}</span>
+                        <span className="text-[10px] text-[#6B7280]">{project.timeEstimate}</span>
                       </div>
                     </div>
                   ))}
@@ -1507,13 +1507,13 @@ export function CareerLab() {
 
               {/* ── CERTIFICATIONS ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Certifications That Actually Matter</h2>
-                <p className="text-xs text-[#64748B] mb-5">Not all certs are equal. These are the ones employers and clients actually recognize.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Certifications That Actually Matter</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Not all certs are equal. These are the ones employers and clients actually recognize.</p>
                 <div className="space-y-3">
                   {result.resources.certifications.map((cert) => (
                     <a
@@ -1521,18 +1521,18 @@ export function CareerLab() {
                       href={cert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group block rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group block rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{cert.name}</p>
-                          <p className="text-xs text-[#64748B] mt-0.5">{cert.provider}</p>
+                          <p className="text-sm font-semibold text-[#F1F5F9] group-hover:text-[#059669] transition-colors">{cert.name}</p>
+                          <p className="text-xs text-[#9CA3AF] mt-0.5">{cert.provider}</p>
                         </div>
                         <span className={cn(
                           'shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold',
                           cert.cost === 'Free' || cert.cost.includes('Free')
-                            ? 'bg-[#F0FDF4] text-[#059669] border border-[#D1FAE5]'
-                            : 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]'
+                            ? 'bg-[rgba(16,185,129,0.1)] text-[#059669] border border-[rgba(16,185,129,0.18)]'
+                            : 'bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border border-[rgba(245,158,11,0.3)]'
                         )}>
                           {cert.cost}
                         </span>
@@ -1545,13 +1545,13 @@ export function CareerLab() {
 
               {/* ── INTERVIEW QUESTIONS ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <h2 className="text-lg font-bold text-[#0F172A]">Interview Questions to Prepare</h2>
+                  <h2 className="text-lg font-bold text-[#F1F5F9]">Interview Questions to Prepare</h2>
                   <button
                     onClick={() => setInterviewModalOpen(true)}
                     className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-semibold text-white transition-all hover:scale-105"
@@ -1563,12 +1563,12 @@ export function CareerLab() {
                     Practice with AI Coach
                   </button>
                 </div>
-                <p className="text-xs text-[#64748B] mb-5">Real questions asked in interviews for this career path. Practice answering each one.</p>
+                <p className="text-xs text-[#9CA3AF] mb-5">Real questions asked in interviews for this career path. Practice answering each one.</p>
                 <div className="space-y-2">
                   {result.resources.interviewQuestions.map((q, i) => (
-                    <div key={i} className="flex items-start gap-3 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0F172A] text-[9px] font-bold text-white mt-0.5">Q{i + 1}</span>
-                      <p className="text-sm text-[#0F172A] leading-relaxed">{q}</p>
+                    <div key={i} className="flex items-start gap-3 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-3">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F1F5F9] text-[9px] font-bold text-white mt-0.5">Q{i + 1}</span>
+                      <p className="text-sm text-[#F1F5F9] leading-relaxed">{q}</p>
                     </div>
                   ))}
                 </div>
@@ -1576,13 +1576,13 @@ export function CareerLab() {
 
               {/* ── JOB PLATFORMS ── */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Where to Find Jobs & Clients</h2>
-                <p className="text-xs text-[#64748B] mb-5">Don&apos;t just apply randomly. These platforms are best for your specific career path.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Where to Find Jobs & Clients</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Don&apos;t just apply randomly. These platforms are best for your specific career path.</p>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {result.resources.jobPlatforms.map((platform) => (
                     <a
@@ -1590,13 +1590,13 @@ export function CareerLab() {
                       href={platform.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
+                      className="group flex items-start gap-3 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 transition-all hover:border-[#059669]/40 hover:shadow-sm"
                     >
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#059669] transition-colors">{platform.name}</p>
-                        <p className="text-xs text-[#64748B] mt-0.5">{platform.bestFor}</p>
+                        <p className="text-sm font-semibold text-[#F1F5F9] group-hover:text-[#059669] transition-colors">{platform.name}</p>
+                        <p className="text-xs text-[#9CA3AF] mt-0.5">{platform.bestFor}</p>
                       </div>
-                      <svg className="h-4 w-4 shrink-0 text-[#94A3B8] group-hover:text-[#059669] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 shrink-0 text-[#6B7280] group-hover:text-[#059669] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -1606,21 +1606,21 @@ export function CareerLab() {
 
               {/* ── SKILL CHECKLIST ── */}
               <motion.section
-                className="rounded-2xl border border-[#059669]/20 bg-gradient-to-b from-[#F0FDF4] to-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[#059669]/20 bg-gradient-to-b from-[rgba(16,185,129,0.1)] to-white p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Skills Checklist</h2>
-                <p className="text-xs text-[#64748B] mb-5">Track your progress. Check off each skill as you learn it. Screenshot this and revisit monthly.</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Skills Checklist</h2>
+                <p className="text-xs text-[#9CA3AF] mb-5">Track your progress. Check off each skill as you learn it. Screenshot this and revisit monthly.</p>
                 <div className="space-y-2">
                   {result.resources.skillChecklist.map((skill, i) => (
-                    <label key={i} className="flex items-center gap-3 rounded-lg border border-[#E2E8F0] bg-white px-4 py-3 cursor-pointer hover:bg-[#F8FAFC] transition-colors">
+                    <label key={i} className="flex items-center gap-3 rounded-lg border border-[rgba(255,255,255,0.08)] bg-white/[0.03] px-4 py-3 cursor-pointer hover:bg-[rgba(255,255,255,0.04)] transition-colors">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 rounded border-[#CBD5E1] text-[#059669] focus:ring-[#059669]/20 accent-[#059669]"
+                        className="h-4 w-4 rounded border-[rgba(255,255,255,0.15)] text-[#059669] focus:ring-[#059669]/20 accent-[#059669]"
                       />
-                      <span className="text-sm text-[#0F172A]">{skill}</span>
+                      <span className="text-sm text-[#F1F5F9]">{skill}</span>
                     </label>
                   ))}
                 </div>
@@ -1629,43 +1629,43 @@ export function CareerLab() {
               {/* Global Opportunity + Parent Insight + Reality Check */}
               <div className="grid sm:grid-cols-3 gap-4">
                 <motion.div
-                  className="rounded-2xl border border-[#BFDBFE] bg-[#EFF6FF] p-5"
+                  className="rounded-2xl border border-[rgba(59,130,246,0.3)] bg-[rgba(59,130,246,0.15)] p-5"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0 }}
                 >
                   <span className="text-2xl">🌍</span>
-                  <h3 className="mt-2 text-sm font-bold text-[#1E40AF]">Global Opportunity</h3>
+                  <h3 className="mt-2 text-sm font-bold text-[#60A5FA]">Global Opportunity</h3>
                   <p className="mt-1 text-xs text-[#3B82F6] leading-relaxed">
                     This skill is in high demand in Australia, UK, Canada, USA, and the Middle East. Remote opportunities are growing 40% year-on-year.
                   </p>
                 </motion.div>
 
                 <motion.div
-                  className="rounded-2xl border border-[#D1FAE5] bg-[#F0FDF4] p-5"
+                  className="rounded-2xl border border-[rgba(16,185,129,0.18)] bg-[rgba(16,185,129,0.1)] p-5"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                 >
                   <span className="text-2xl">👨‍👩‍👧</span>
-                  <h3 className="mt-2 text-sm font-bold text-[#065F46]">Parent Insight</h3>
+                  <h3 className="mt-2 text-sm font-bold text-[#34D399]">Parent Insight</h3>
                   <p className="mt-1 text-xs text-[#059669] leading-relaxed">
                     This path offers strong career stability, above-average salaries, and global mobility. AI skills add value to any traditional degree.
                   </p>
                 </motion.div>
 
                 <motion.div
-                  className="rounded-2xl border border-[#FDE68A] bg-[#FFFBEB] p-5"
+                  className="rounded-2xl border border-[rgba(245,158,11,0.3)] bg-[rgba(245,158,11,0.15)] p-5"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                 >
                   <span className="text-2xl">&#9888;&#65039;</span>
-                  <h3 className="mt-2 text-sm font-bold text-[#92400E]">Reality Check</h3>
-                  <p className="mt-1 text-xs text-[#B45309] leading-relaxed">
+                  <h3 className="mt-2 text-sm font-bold text-[#FBBF24]">Reality Check</h3>
+                  <p className="mt-1 text-xs text-[#F59E0B] leading-relaxed">
                     Without AI skills, many traditional career paths face disruption. The window to build expertise is now — early movers have the biggest advantage.
                   </p>
                 </motion.div>
@@ -1673,13 +1673,13 @@ export function CareerLab() {
 
               {/* Salary Trajectory */}
               <motion.section
-                className="rounded-2xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-sm"
+                className="rounded-2xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-6 sm:p-8 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-1">Salary Growth Trajectory</h2>
-                <p className="text-xs text-[#64748B] mb-6">Projected earnings with dedicated AI skill development</p>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-1">Salary Growth Trajectory</h2>
+                <p className="text-xs text-[#9CA3AF] mb-6">Projected earnings with dedicated AI skill development</p>
                 <div className="flex items-end justify-between gap-4" style={{ height: 180 }}>
                   {[
                     { year: 'Year 1', amount: '₹4-8L', px: 48, color: '#D1FAE5' },
@@ -1698,7 +1698,7 @@ export function CareerLab() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: i * 0.1 }}
                       />
-                      <span className="text-[10px] font-medium text-[#64748B]">{bar.year}</span>
+                      <span className="text-[10px] font-medium text-[#9CA3AF]">{bar.year}</span>
                     </div>
                   ))}
                 </div>
@@ -1710,25 +1710,25 @@ export function CareerLab() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-lg font-bold text-[#0F172A] mb-4">People Like You</h2>
+                <h2 className="text-lg font-bold text-[#F1F5F9] mb-4">People Like You</h2>
                 <div className="grid sm:grid-cols-3 gap-4">
                   {[
                     { name: 'Rahul, 22', from: 'BCA Student', to: 'AI Analyst at TCS', time: '8 months', avatar: '👨‍💻' },
                     { name: 'Priya, 26', from: 'Marketing Exec', to: 'AI Marketing Lead', time: '6 months', avatar: '👩‍💼' },
                     { name: 'Ankit, 30', from: 'Teacher', to: 'AI Course Creator', time: '10 months', avatar: '👨‍🏫' },
                   ].map((story) => (
-                    <div key={story.name} className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+                    <div key={story.name} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-white/[0.03] p-4 shadow-sm">
                       <div className="flex items-center gap-3 mb-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F0FDF4] text-xl">{story.avatar}</span>
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(16,185,129,0.1)] text-xl">{story.avatar}</span>
                         <div>
-                          <p className="text-sm font-bold text-[#0F172A]">{story.name}</p>
-                          <p className="text-[10px] text-[#64748B]">{story.from}</p>
+                          <p className="text-sm font-bold text-[#F1F5F9]">{story.name}</p>
+                          <p className="text-[10px] text-[#9CA3AF]">{story.from}</p>
                         </div>
                       </div>
-                      <p className="text-xs text-[#475569]">
+                      <p className="text-xs text-[#D1D5DB]">
                         Now: <span className="font-semibold text-[#059669]">{story.to}</span>
                       </p>
-                      <p className="text-[10px] text-[#94A3B8] mt-1">Transformed in {story.time}</p>
+                      <p className="text-[10px] text-[#6B7280] mt-1">Transformed in {story.time}</p>
                     </div>
                   ))}
                 </div>
@@ -1736,7 +1736,7 @@ export function CareerLab() {
 
               {/* ── CONVERSION LAYER ── */}
               <motion.section
-                className="rounded-2xl bg-[#0F172A] p-8 sm:p-10 text-center"
+                className="rounded-2xl bg-[#F1F5F9] p-8 sm:p-10 text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -1791,7 +1791,7 @@ export function CareerLab() {
 
               {/* Live counter */}
               <div className="text-center py-4">
-                <p className="text-xs text-[#94A3B8]">
+                <p className="text-xs text-[#6B7280]">
                   <motion.span
                     className="font-semibold text-[#059669]"
                     initial={{ opacity: 0 }}
