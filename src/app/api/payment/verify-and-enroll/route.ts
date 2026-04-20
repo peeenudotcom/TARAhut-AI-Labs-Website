@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createServiceClient } from '@/lib/supabase';
 import { courseConfigs } from '@/config/learn-modules';
+import { grantCourseAccess } from '@/lib/course-access';
+import { validatePromoCode, computeDiscount } from '@/lib/promo';
+
+const COURSE_PRICE = 999;
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,9 +17,18 @@ export async function POST(req: NextRequest) {
       studentEmail,
       studentPhone,
       courseId,
+      courseSlug,
       courseTitle,
       amount,
+      promoCode,
     } = await req.json();
+
+    // Accept either courseId or courseSlug for backward compat with the two
+    // call sites that exist in the codebase.
+    const slug: string | undefined = courseId ?? courseSlug;
+    if (!slug) {
+      return NextResponse.json({ error: 'courseId or courseSlug is required' }, { status: 400 });
+    }
 
     // Verify Razorpay signature
     const body = razorpay_order_id + '|' + razorpay_payment_id;
@@ -29,16 +42,17 @@ export async function POST(req: NextRequest) {
     }
 
     const db = createServiceClient();
+    const normalizedEmail = (studentEmail as string).trim().toLowerCase();
     const isReturnCustomer = amount === 799;
 
-    const course = courseId ? courseConfigs[courseId] : null;
+    const course = slug ? courseConfigs[slug] : null;
     if (!course) {
       return NextResponse.json({ error: 'Invalid course' }, { status: 400 });
     }
 
-    // 1. Save online purchase
+    // 1. Record the purchase
     await db.from('online_purchases').insert({
-      student_email: studentEmail,
+      student_email: normalizedEmail,
       student_name: studentName,
       student_phone: studentPhone || null,
       amount,
@@ -48,12 +62,12 @@ export async function POST(req: NextRequest) {
       status: 'active',
     });
 
-    // 2. Also save to payments table for backward compat
+    // 2. Mirror to the legacy payments table
     await db.from('payments').insert({
       student_name: studentName,
-      student_email: studentEmail,
+      student_email: normalizedEmail,
       student_phone: studentPhone || null,
-      course_slug: courseId,
+      course_slug: slug,
       course_title: courseTitle || course.title,
       amount,
       currency: 'INR',
@@ -62,76 +76,52 @@ export async function POST(req: NextRequest) {
       status: 'paid',
     });
 
-    // 3. Create Supabase auth user (or find existing) via magic link
-    //    We'll send them a magic link to set up their account
-    const { data: existingUsers } = await db
-      .from('online_purchases')
-      .select('user_id')
-      .eq('student_email', studentEmail)
-      .not('user_id', 'is', null)
-      .limit(1);
-
-    let userId = existingUsers?.[0]?.user_id;
-
-    if (!userId) {
-      // Invite the user — this creates an auth.users entry and sends a magic link
-      const { data: inviteData, error: inviteError } = await db.auth.admin.inviteUserByEmail(
-        studentEmail,
-        { data: { name: studentName, phone: studentPhone } }
-      );
-
-      if (inviteError) {
-        // User might already exist — try to find them
-        const { data: { users } } = await db.auth.admin.listUsers();
-        const existing = users?.find(u => u.email === studentEmail);
-        if (existing) {
-          userId = existing.id;
-        } else {
-          console.error('Failed to create user:', inviteError);
-          // Continue anyway — purchase is saved, we can manually link later
+    // 3. Record promo redemption if a code was used on this payment.
+    //    Intentionally non-fatal — if we can't log the redemption the
+    //    student still paid and still gets access.
+    if (promoCode && normalizedEmail) {
+      const validation = await validatePromoCode(promoCode, normalizedEmail);
+      if (validation.ok) {
+        const { discountAmount } = computeDiscount(COURSE_PRICE, validation.discountPercent);
+        const { error: redemptionError } = await db.from('promo_redemptions').insert({
+          promo_code_id: validation.id,
+          student_email: normalizedEmail,
+          course_slug: slug,
+          discount_percent: validation.discountPercent,
+          discount_amount: discountAmount,
+          final_amount: amount,
+          razorpay_payment_id,
+        });
+        if (redemptionError) {
+          console.error('Promo redemption logging failed post-payment:', redemptionError);
         }
       } else {
-        userId = inviteData?.user?.id;
-      }
-
-      // Link user_id back to purchase
-      if (userId) {
-        await db.from('online_purchases')
-          .update({ user_id: userId })
-          .eq('razorpay_payment_id', razorpay_payment_id);
+        console.error(
+          'Promo re-validation failed at verify time:',
+          validation.error,
+          'for payment',
+          razorpay_payment_id
+        );
       }
     }
 
-    // 4. Enroll in the purchased course + unlock session 1
-    if (userId) {
-      // Enroll (upsert to avoid duplicates)
-      await db.from('learn_enrollments').upsert(
-        {
-          student_id: userId,
-          course_id: course.id,
-          enrolled_at: new Date().toISOString(),
-        },
-        { onConflict: 'student_id,course_id' }
-      );
-
-      // Unlock session 1
-      await db.from('session_unlocks').upsert(
-        {
-          student_id: userId,
-          course_id: course.id,
-          session_number: 1,
-          unlocked_at: new Date().toISOString(),
-          unlock_code_used: 'ONLINE_PURCHASE',
-        },
-        { onConflict: 'student_id,course_id,session_number' }
-      );
-    }
+    // 4. Invite/find the auth user + enroll + unlock session 1
+    const grant = await grantCourseAccess({
+      email: normalizedEmail,
+      name: studentName,
+      phone: studentPhone || null,
+      courseSlug: slug,
+      razorpayPaymentId: razorpay_payment_id,
+    });
 
     return NextResponse.json({
       success: true,
       paymentId: razorpay_payment_id,
-      message: userId
-        ? `Payment successful! Check your email for login access to ${course.title}.`
+      userInvited: grant.invited,
+      message: grant.userId
+        ? grant.invited
+          ? `Payment successful! We've emailed a sign-in link to set your password for ${course.title}.`
+          : `Payment successful! Log in with your existing account to access ${course.title}.`
         : `Payment successful! We will send you access to ${course.title} shortly.`,
     });
   } catch (error) {

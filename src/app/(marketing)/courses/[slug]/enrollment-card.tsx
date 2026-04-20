@@ -70,8 +70,8 @@ export function EnrollmentCard({
 
   async function handleApplyPromo() {
     if (!promoInput.trim()) return
-    if (!email.trim()) {
-      setPromoError('Enter your email above first, then apply the promo.')
+    if (!name.trim() || !email.trim()) {
+      setPromoError('Enter your name and email above first, then apply the promo.')
       return
     }
     setPromoLoading(true)
@@ -170,12 +170,13 @@ export function EnrollmentCard({
           razorpay_payment_id: string
           razorpay_signature: string
         }) => {
-          const verifyRes = await fetch('/api/payment/verify', {
+          const verifyRes = await fetch('/api/payment/verify-and-enroll', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...response,
               courseSlug,
+              courseId: courseSlug,
               courseTitle,
               studentName: name,
               studentEmail: email,
@@ -255,20 +256,39 @@ export function EnrollmentCard({
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-white">Payment Successful!</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Payment ID: {paymentId}
-                </p>
-                <p className="mt-2 text-sm text-gray-400">
-                  We&apos;ll send your course access details to your email shortly.
-                </p>
+                <h3 className="text-lg font-bold text-white">
+                  {applied && applied.finalAmount === 0
+                    ? 'Course Unlocked!'
+                    : 'Payment Successful!'}
+                </h3>
+                {applied && applied.finalAmount === 0 ? (
+                  <>
+                    <p className="mt-2 text-sm text-gray-400">
+                      Promo <span className="font-semibold text-emerald-300">{applied.code}</span> applied — you saved ₹{applied.discountAmount.toLocaleString('en-IN')}.
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400">
+                      Check your email for a sign-in link to set your password, then visit{' '}
+                      <a href="/learn/dashboard" className="text-emerald-400 hover:underline">your dashboard</a>.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Payment ID: {paymentId}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400">
+                      Check your email for a sign-in link to set your password, then visit{' '}
+                      <a href="/learn/dashboard" className="text-emerald-400 hover:underline">your dashboard</a>.
+                    </p>
+                  </>
+                )}
                 <a
-                  href={`${siteConfig.links.whatsapp}?text=Hi, I just paid for ${courseTitle}. Payment ID: ${paymentId}`}
+                  href={`${siteConfig.links.whatsapp}?text=Hi, I just ${applied && applied.finalAmount === 0 ? 'unlocked' : 'paid for'} ${courseTitle}. ${paymentId ? `Reference: ${paymentId}` : ''}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1eba57]"
                 >
-                  Share on WhatsApp for faster access
+                  Message us on WhatsApp
                 </a>
               </div>
             ) : (

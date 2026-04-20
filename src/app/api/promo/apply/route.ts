@@ -6,6 +6,7 @@ import {
   computeDiscount,
   errorMessage,
 } from '@/lib/promo';
+import { grantCourseAccess } from '@/lib/course-access';
 
 // The single price every online course sells for today.
 const COURSE_PRICE = 999;
@@ -24,6 +25,19 @@ export async function POST(req: NextRequest) {
     if (!code || !email || !courseSlug) {
       return NextResponse.json(
         { error: 'code, email, and courseSlug are required.' },
+        { status: 400 }
+      );
+    }
+
+    // For a 100%-off code we're about to create a real account and
+    // enrollment for this person — name is mandatory so it ends up on
+    // their certificate. We don't know the discount yet so we
+    // validate name presence only after we see the code is 100% off.
+    // But for partial discounts the Razorpay flow requires name too,
+    // so just require it up-front.
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return NextResponse.json(
+        { error: 'Please enter your full name above before applying a promo code.' },
         { status: 400 }
       );
     }
@@ -69,12 +83,14 @@ export async function POST(req: NextRequest) {
     // UNIQUE(promo_code_id, student_email) constraint is the source of
     // truth for one-per-user enforcement. If two requests race, one wins.
     const db = createServiceClient();
+    const normalizedEmail = email.trim().toLowerCase();
+    const promoRef = `PROMO_${code.trim().toUpperCase()}`;
 
     const { error: redemptionError } = await db
       .from('promo_redemptions')
       .insert({
         promo_code_id: validation.id,
-        student_email: email.trim().toLowerCase(),
+        student_email: normalizedEmail,
         course_slug: courseSlug,
         discount_percent: validation.discountPercent,
         discount_amount: discountAmount,
@@ -92,35 +108,49 @@ export async function POST(req: NextRequest) {
 
     // Record the free "purchase" so it shows up alongside paid enrollments.
     await db.from('online_purchases').insert({
-      student_email: email.trim().toLowerCase(),
-      student_name: name ?? email,
+      student_email: normalizedEmail,
+      student_name: name.trim(),
       student_phone: phone || null,
       amount: 0,
-      razorpay_payment_id: `PROMO_${code.trim().toUpperCase()}`,
+      razorpay_payment_id: promoRef,
       razorpay_order_id: null,
       access_type: 'single_course',
       status: 'active',
     });
 
     await db.from('payments').insert({
-      student_name: name ?? email,
-      student_email: email.trim().toLowerCase(),
+      student_name: name.trim(),
+      student_email: normalizedEmail,
       student_phone: phone || null,
       course_slug: courseSlug,
       course_title: courseTitle ?? courseSlug,
       amount: 0,
       currency: 'INR',
       razorpay_order_id: null,
-      razorpay_payment_id: `PROMO_${code.trim().toUpperCase()}`,
+      razorpay_payment_id: promoRef,
       status: 'paid',
+    });
+
+    // Grant real access: create/find the auth user, enroll, unlock Session 1.
+    // This is what turns "purchase row" into "student can log in and see
+    // the course".
+    const grant = await grantCourseAccess({
+      email: normalizedEmail,
+      name: name.trim(),
+      phone: phone || null,
+      courseSlug,
+      razorpayPaymentId: promoRef,
+      unlockCodeUsed: promoRef,
     });
 
     return NextResponse.json({
       freeUnlock: true,
       discountPercent: validation.discountPercent,
       finalAmount: 0,
-      message:
-        "Course unlocked! We'll email your access details shortly.",
+      userInvited: grant.invited,
+      message: grant.invited
+        ? "Course unlocked! We've emailed a sign-in link to set your password."
+        : 'Course unlocked! Log in with your existing account to access it.',
     });
   } catch (error) {
     console.error('Promo apply error:', error);
