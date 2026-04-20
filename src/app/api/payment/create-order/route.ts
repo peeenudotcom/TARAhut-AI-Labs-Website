@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { createServiceClient } from '@/lib/supabase';
-import { validatePromoCode, computeDiscount, errorMessage } from '@/lib/promo';
-
-// Single price for every online course. Server-authoritative — never
-// compute pricing from client input.
-const COURSE_PRICE = 999;
+import { quoteCoursePrice } from '@/lib/pricing-quote';
 
 function getRazorpay() {
   return new Razorpay({
@@ -22,33 +18,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Compute final amount server-side. If a promo is supplied, re-validate
-    // it here — never trust the client to tell us the discount.
-    let finalAmount = COURSE_PRICE;
-    let validatedPromoId: string | null = null;
-    let discountPercent = 0;
+    // Authoritative price: pricing config + server-validated promo.
+    // Never trust a client-supplied amount.
+    const quote = await quoteCoursePrice({ courseSlug, email, promoCode });
 
-    if (promoCode) {
-      const validation = await validatePromoCode(promoCode, email);
-      if (!validation.ok) {
-        return NextResponse.json(
-          { error: errorMessage(validation.error), code: validation.error },
-          { status: 400 }
-        );
-      }
-      const computed = computeDiscount(COURSE_PRICE, validation.discountPercent);
-      finalAmount = computed.finalAmount;
-      validatedPromoId = validation.id;
-      discountPercent = validation.discountPercent;
+    if (quote.promoError) {
+      return NextResponse.json(
+        { error: quote.promoErrorMessage ?? 'Invalid promo code.', code: quote.promoError },
+        { status: 400 }
+      );
+    }
 
-      // 100%-off codes should go through /api/promo/apply, not here. Block
-      // to avoid a Razorpay call with amount=0 (which Razorpay rejects).
-      if (finalAmount <= 0) {
-        return NextResponse.json(
-          { error: 'This code fully covers the course — please use the free unlock flow.' },
-          { status: 400 }
-        );
-      }
+    // 100%-off codes should go through /api/promo/apply, not here. Block
+    // to avoid a Razorpay call with amount=0 (which Razorpay rejects).
+    if (quote.finalAmount <= 0) {
+      return NextResponse.json(
+        { error: 'This code fully covers the course — please use the free unlock flow.' },
+        { status: 400 }
+      );
     }
 
     // Save lead to Supabase first (never lose a lead)
@@ -64,7 +51,7 @@ export async function POST(req: NextRequest) {
 
     // Create Razorpay order with the server-computed amount
     const order = await getRazorpay().orders.create({
-      amount: finalAmount * 100, // Razorpay expects paise
+      amount: quote.finalAmount * 100, // Razorpay expects paise
       currency: 'INR',
       receipt: `upl_${Date.now()}`,
       notes: {
@@ -73,12 +60,13 @@ export async function POST(req: NextRequest) {
         student_name: name,
         student_email: email,
         student_phone: phone || '',
-        // Stash the validated promo so /api/payment/verify can record the
-        // redemption atomically after Razorpay confirms payment.
-        promo_code_id: validatedPromoId ?? '',
-        promo_code: promoCode ? String(promoCode).trim().toUpperCase() : '',
-        promo_discount_percent: String(discountPercent),
-        original_amount: String(COURSE_PRICE),
+        // Stash the validated promo + base price so verify-and-enroll can
+        // record the redemption atomically after Razorpay confirms payment.
+        promo_code_id: quote.promo?.id ?? '',
+        promo_code: quote.promo?.code ?? '',
+        promo_discount_percent: String(quote.discountPercent),
+        original_amount: String(quote.basePrice),
+        is_return_customer: String(quote.isReturnCustomer),
       },
     });
 
@@ -87,9 +75,10 @@ export async function POST(req: NextRequest) {
       amount: order.amount,
       currency: order.currency,
       keyId: process.env.RAZORPAY_KEY_ID,
-      finalAmount,
-      originalAmount: COURSE_PRICE,
-      discountPercent,
+      finalAmount: quote.finalAmount,
+      originalAmount: quote.basePrice,
+      discountPercent: quote.discountPercent,
+      isReturnCustomer: quote.isReturnCustomer,
     });
   } catch (error) {
     console.error('Payment order error:', error);
