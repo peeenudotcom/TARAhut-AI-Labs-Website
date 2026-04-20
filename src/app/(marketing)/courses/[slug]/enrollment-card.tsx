@@ -26,6 +26,13 @@ interface EnrollmentCardProps {
   isSchoolCourse: boolean
 }
 
+type AppliedPromo = {
+  code: string
+  discountPercent: number
+  discountAmount: number
+  finalAmount: number
+}
+
 export function EnrollmentCard({
   courseSlug,
   courseTitle,
@@ -47,9 +54,80 @@ export function EnrollmentCard({
   const [loading, setLoading] = useState(false)
   const [paymentId, setPaymentId] = useState('')
 
+  const [promoOpen, setPromoOpen] = useState(false)
+  const [promoInput, setPromoInput] = useState('')
+  const [promoLoading, setPromoLoading] = useState(false)
+  const [promoError, setPromoError] = useState('')
+  const [applied, setApplied] = useState<AppliedPromo | null>(null)
+
   const discount = originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0
+
+  // The actual amount the student pays — either the course price, or the
+  // discounted amount when a promo is applied. 0 means free unlock.
+  const payableAmount = applied ? applied.finalAmount : price
+
+  async function handleApplyPromo() {
+    if (!promoInput.trim()) return
+    if (!email.trim()) {
+      setPromoError('Enter your email above first, then apply the promo.')
+      return
+    }
+    setPromoLoading(true)
+    setPromoError('')
+    try {
+      const res = await fetch('/api/promo/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: promoInput.trim(),
+          email,
+          name,
+          phone,
+          courseSlug,
+          courseTitle,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setPromoError(data.error ?? 'Could not apply this code.')
+        setPromoLoading(false)
+        return
+      }
+
+      if (data.freeUnlock) {
+        // 100% off path: server already recorded the redemption + free
+        // purchase. Jump straight to the success state.
+        setApplied({
+          code: promoInput.trim().toUpperCase(),
+          discountPercent: data.discountPercent,
+          discountAmount: price,
+          finalAmount: 0,
+        })
+        setPaymentId(`PROMO_${promoInput.trim().toUpperCase()}`)
+        setStep('success')
+      } else {
+        // Partial discount: just store the numbers; the actual redemption
+        // is recorded by /api/payment/verify after Razorpay confirms.
+        setApplied({
+          code: promoInput.trim().toUpperCase(),
+          discountPercent: data.discountPercent,
+          discountAmount: data.discountAmount,
+          finalAmount: data.finalAmount,
+        })
+      }
+    } catch {
+      setPromoError('Something went wrong. Please try again.')
+    }
+    setPromoLoading(false)
+  }
+
+  function handleRemovePromo() {
+    setApplied(null)
+    setPromoInput('')
+    setPromoError('')
+  }
 
   async function handlePayment(e: React.FormEvent) {
     e.preventDefault()
@@ -69,10 +147,13 @@ export function EnrollmentCard({
           phone,
           courseSlug,
           courseTitle,
-          amount: price,
+          promoCode: applied?.code,
         }),
       })
-      if (!res.ok) throw new Error('Failed to create order')
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error ?? 'Failed to create order')
+      }
       const data = await res.json()
       setStep('paying')
       const options = {
@@ -99,7 +180,8 @@ export function EnrollmentCard({
               studentName: name,
               studentEmail: email,
               studentPhone: phone,
-              amount: price,
+              amount: data.finalAmount ?? payableAmount,
+              promoCode: applied?.code,
             }),
           })
           if (verifyRes.ok) {
@@ -120,12 +202,13 @@ export function EnrollmentCard({
       }
       const rzp = new window.Razorpay(options)
       rzp.open()
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
       setStep('form')
     }
     setLoading(false)
   }
+
 
   return (
     <>
@@ -137,18 +220,30 @@ export function EnrollmentCard({
           <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-white">
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold">
-                ₹{price.toLocaleString('en-IN')}
+                ₹{payableAmount.toLocaleString('en-IN')}
               </span>
-              {originalPrice && (
+              {applied ? (
                 <span className="text-lg text-white/60 line-through">
-                  ₹{originalPrice.toLocaleString('en-IN')}
+                  ₹{price.toLocaleString('en-IN')}
                 </span>
+              ) : (
+                originalPrice && (
+                  <span className="text-lg text-white/60 line-through">
+                    ₹{originalPrice.toLocaleString('en-IN')}
+                  </span>
+                )
               )}
             </div>
-            {discount > 0 && (
-              <p className="mt-1 text-sm text-white/80">
-                {discount}% off — Limited time offer
+            {applied ? (
+              <p className="mt-1 text-sm text-white/90">
+                Promo <span className="font-semibold">{applied.code}</span> applied — you save ₹{applied.discountAmount.toLocaleString('en-IN')}
               </p>
+            ) : (
+              discount > 0 && (
+                <p className="mt-1 text-sm text-white/80">
+                  {discount}% off — Limited time offer
+                </p>
+              )
             )}
           </div>
 
@@ -214,6 +309,62 @@ export function EnrollmentCard({
                     <p className="text-sm text-red-600">{error}</p>
                   )}
 
+                  {/* Promo code */}
+                  <div>
+                    {!promoOpen && !applied && (
+                      <button
+                        type="button"
+                        onClick={() => setPromoOpen(true)}
+                        className="text-xs font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+                      >
+                        Have a promo code?
+                      </button>
+                    )}
+
+                    {promoOpen && !applied && (
+                      <div className="flex flex-col gap-2">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={promoInput}
+                            onChange={(e) => {
+                              setPromoInput(e.target.value)
+                              if (promoError) setPromoError('')
+                            }}
+                            placeholder="Enter code"
+                            className="flex-1 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm uppercase tracking-wider text-white placeholder:text-gray-500 focus:border-emerald-400/50 focus:outline-none focus:ring-1 focus:ring-emerald-400/10"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleApplyPromo}
+                            disabled={!promoInput.trim() || promoLoading}
+                            className="rounded-lg border border-emerald-400/40 px-3 py-2 text-xs font-semibold text-emerald-300 transition-colors hover:bg-emerald-400/10 hover:text-emerald-200 disabled:opacity-60"
+                          >
+                            {promoLoading ? 'Checking…' : 'Apply'}
+                          </button>
+                        </div>
+                        {promoError && (
+                          <p className="text-xs text-red-400">{promoError}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {applied && (
+                      <div className="flex items-center justify-between rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-3 py-2">
+                        <p className="text-xs text-emerald-300">
+                          <span className="font-semibold">{applied.code}</span> applied · {applied.discountPercent}% off
+                        </p>
+                        <button
+                          type="button"
+                          onClick={handleRemovePromo}
+                          className="text-xs font-medium text-gray-400 transition-colors hover:text-white"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   <button
                     type="submit"
                     disabled={loading || step === 'paying'}
@@ -232,7 +383,7 @@ export function EnrollmentCard({
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
-                        Pay ₹{price.toLocaleString('en-IN')} Now
+                        Pay ₹{payableAmount.toLocaleString('en-IN')} Now
                       </>
                     )}
                   </button>

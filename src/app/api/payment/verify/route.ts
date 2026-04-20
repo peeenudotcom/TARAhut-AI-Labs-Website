@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createServiceClient } from '@/lib/supabase';
+import { validatePromoCode, computeDiscount } from '@/lib/promo';
+
+const COURSE_PRICE = 999;
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +17,7 @@ export async function POST(req: NextRequest) {
       studentEmail,
       studentPhone,
       amount,
+      promoCode,
     } = await req.json();
 
     // Verify signature
@@ -41,6 +45,37 @@ export async function POST(req: NextRequest) {
       razorpay_payment_id,
       status: 'paid',
     });
+
+    // If the student used a promo code, record the redemption. This is
+    // the moment the code is "consumed" — one-per-user enforcement kicks
+    // in via the UNIQUE(promo_code_id, student_email) constraint.
+    if (promoCode && studentEmail) {
+      const validation = await validatePromoCode(promoCode, studentEmail);
+      if (validation.ok) {
+        const { discountAmount } = computeDiscount(COURSE_PRICE, validation.discountPercent);
+        const { error } = await db.from('promo_redemptions').insert({
+          promo_code_id: validation.id,
+          student_email: studentEmail.trim().toLowerCase(),
+          course_slug: courseSlug,
+          discount_percent: validation.discountPercent,
+          discount_amount: discountAmount,
+          final_amount: amount,
+          razorpay_payment_id,
+        });
+        // We don't fail the whole request if redemption logging fails —
+        // the student already paid, they should get access. Just log it.
+        if (error) {
+          console.error('Promo redemption logging failed post-payment:', error);
+        }
+      } else {
+        console.error(
+          'Promo re-validation failed at verify time:',
+          validation.error,
+          'for payment',
+          razorpay_payment_id
+        );
+      }
+    }
 
     return NextResponse.json({ success: true, paymentId: razorpay_payment_id });
   } catch (error) {

@@ -130,11 +130,19 @@ export default async function LearnAdminPage({
       <div className="max-w-5xl mx-auto px-4 py-10">
 
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">Trainer Dashboard</h1>
-          <p className="text-gray-400 text-sm mt-1">
-            TARAhut Learning Engine — internal trainer view
-          </p>
+        <div className="mb-6 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Trainer Dashboard</h1>
+            <p className="text-gray-400 text-sm mt-1">
+              TARAhut Learning Engine — internal trainer view
+            </p>
+          </div>
+          <Link
+            href="/learn/admin/promos"
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/15"
+          >
+            Promo codes →
+          </Link>
         </div>
 
         {/* Course tabs */}
