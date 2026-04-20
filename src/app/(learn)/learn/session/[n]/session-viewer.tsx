@@ -5,11 +5,9 @@ import { useEffect } from 'react'
 export function SessionViewer({
   sessionFile,
   sessionTitle,
-  watermarkName
 }: {
   sessionFile: string;
   sessionTitle: string;
-  watermarkName: string;
 }) {
   useEffect(() => {
     // Disable right-click on the wrapper
@@ -46,7 +44,7 @@ export function SessionViewer({
           className="rotate-[-35deg] text-4xl font-black tracking-widest text-white/[0.04] sm:text-6xl"
           style={{ userSelect: 'none' }}
         >
-          {watermarkName}
+          TARAhut AI Labs
         </p>
       </div>
 

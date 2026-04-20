@@ -151,7 +151,6 @@ export default async function SessionPage({ params, searchParams }: Props) {
       <SessionViewer
         sessionFile={sessionFile}
         sessionTitle={`Session ${sessionNum}: ${mod.title}`}
-        watermarkName={displayName}
       />
 
       {/* ── Buy CTA bar — only on free session for non-logged-in users ── */}
