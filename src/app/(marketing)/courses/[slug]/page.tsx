@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { courses } from '@/config/courses';
 import { schoolCourses } from '@/config/school-courses';
 import { siteConfig } from '@/config/site';
+import { getCoursePricing } from '@/config/pricing';
 import { Badge } from '@/components/ui/badge';
 import { CourseSyllabus } from './course-syllabus';
 import { SchoolCourseSyllabus } from './school-course-syllabus';
@@ -277,12 +278,16 @@ export default async function CourseDetailPage({
               )}
             </div>
 
-            {/* Right Column — Sticky Enrollment Card with Payment */}
+            {/* Right Column — Sticky Enrollment Card with Payment.
+                Pricing comes from src/config/pricing.ts (single source of
+                truth) so the displayed amount matches what the server
+                charges — `course.price` on the marketing config is only
+                used as a strike-through original. */}
             <EnrollmentCard
               courseSlug={course.slug}
               courseTitle={course.title}
-              price={course.price}
-              originalPrice={course.originalPrice}
+              price={getCoursePricing(course.slug).price}
+              originalPrice={getCoursePricing(course.slug).originalPrice ?? course.originalPrice}
               duration={course.duration}
               level={course.level}
               category={course.category}

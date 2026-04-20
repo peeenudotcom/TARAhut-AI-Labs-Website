@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase';
 import { rateLimit } from '@/lib/rate-limit';
-import {
-  validatePromoCode,
-  computeDiscount,
-  errorMessage,
-} from '@/lib/promo';
+import { quoteCoursePrice } from '@/lib/pricing-quote';
 import { grantCourseAccess } from '@/lib/course-access';
-
-// The single price every online course sells for today.
-const COURSE_PRICE = 999;
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,10 +24,8 @@ export async function POST(req: NextRequest) {
 
     // For a 100%-off code we're about to create a real account and
     // enrollment for this person — name is mandatory so it ends up on
-    // their certificate. We don't know the discount yet so we
-    // validate name presence only after we see the code is 100% off.
-    // But for partial discounts the Razorpay flow requires name too,
-    // so just require it up-front.
+    // their certificate. Partial-discount flows also need a name to
+    // prefill Razorpay, so require it up-front.
     if (!name || typeof name !== 'string' || !name.trim()) {
       return NextResponse.json(
         { error: 'Please enter your full name above before applying a promo code.' },
@@ -53,35 +44,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const validation = await validatePromoCode(code, email);
-    if (!validation.ok) {
+    const quote = await quoteCoursePrice({ courseSlug, email, promoCode: code });
+
+    if (quote.promoError) {
       return NextResponse.json(
-        { error: errorMessage(validation.error), code: validation.error },
+        { error: quote.promoErrorMessage ?? 'Invalid promo code.', code: quote.promoError },
         { status: 400 }
       );
     }
 
-    const { discountAmount, finalAmount } = computeDiscount(
-      COURSE_PRICE,
-      validation.discountPercent
-    );
-
     // Partial discount: don't redeem yet — let the client kick off Razorpay.
     // The /api/payment/create-order route will re-validate and atomically
     // record the redemption after payment succeeds.
-    if (finalAmount > 0) {
+    if (quote.finalAmount > 0) {
       return NextResponse.json({
         freeUnlock: false,
-        discountPercent: validation.discountPercent,
-        originalAmount: COURSE_PRICE,
-        discountAmount,
-        finalAmount,
+        discountPercent: quote.discountPercent,
+        originalAmount: quote.basePrice,
+        discountAmount: quote.discountAmount,
+        finalAmount: quote.finalAmount,
+        isReturnCustomer: quote.isReturnCustomer,
       });
     }
 
     // 100% off — redeem immediately. Record the redemption first; the
     // UNIQUE(promo_code_id, student_email) constraint is the source of
     // truth for one-per-user enforcement. If two requests race, one wins.
+    if (!quote.promo) {
+      return NextResponse.json(
+        { error: 'Unable to apply this code. Please try again or contact us.' },
+        { status: 400 }
+      );
+    }
+
     const db = createServiceClient();
     const normalizedEmail = email.trim().toLowerCase();
     const promoRef = `PROMO_${code.trim().toUpperCase()}`;
@@ -89,11 +84,11 @@ export async function POST(req: NextRequest) {
     const { error: redemptionError } = await db
       .from('promo_redemptions')
       .insert({
-        promo_code_id: validation.id,
+        promo_code_id: quote.promo.id,
         student_email: normalizedEmail,
         course_slug: courseSlug,
-        discount_percent: validation.discountPercent,
-        discount_amount: discountAmount,
+        discount_percent: quote.discountPercent,
+        discount_amount: quote.discountAmount,
         final_amount: 0,
       });
 
@@ -145,7 +140,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       freeUnlock: true,
-      discountPercent: validation.discountPercent,
+      discountPercent: quote.discountPercent,
       finalAmount: 0,
       userInvited: grant.invited,
       message: grant.invited

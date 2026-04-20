@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { requireAuth } from '@/lib/auth';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { courseConfigs } from '@/config/learn-modules';
+import { RETURN_CUSTOMER_PRICE } from '@/config/pricing';
 import { BuyCourse } from '@/components/learn/buy-all-access';
 
 type Props = { params: Promise<{ courseId: string }> };
@@ -144,10 +145,10 @@ export default async function CertificatePage({ params }: Props) {
                     Special Offer — Just For You
                   </h2>
                   <h3 className="mb-4 text-2xl font-bold text-white">
-                    Your next course for just <span className="text-[#fbbf24]">₹799</span>
+                    Your next course for just <span className="text-[#fbbf24]">₹{RETURN_CUSTOMER_PRICE}</span>
                   </h3>
                   <p className="mb-6 text-[#94a3b8]">
-                    As a returning student, you get ₹200 off your next course.
+                    As a returning student, you get a special price on your next course.
                     Pick one below and keep your learning momentum going.
                   </p>
 
@@ -162,7 +163,7 @@ export default async function CertificatePage({ params }: Props) {
                           <p className="text-sm font-semibold text-white">{c.title}</p>
                           <p className="text-xs text-[#94a3b8]">{c.totalSessions} sessions</p>
                         </div>
-                        <span className="text-xs font-bold text-[#fbbf24]">₹799</span>
+                        <span className="text-xs font-bold text-[#fbbf24]">₹{RETURN_CUSTOMER_PRICE}</span>
                       </Link>
                     ))}
                     {remainingCourses.length > 5 && (
@@ -178,7 +179,6 @@ export default async function CertificatePage({ params }: Props) {
                     courseId={remainingCourses[0].id}
                     courseTitle={remainingCourses[0].title}
                     totalSessions={remainingCourses[0].totalSessions}
-                    price={799}
                     returnCustomer
                   />
                 )}

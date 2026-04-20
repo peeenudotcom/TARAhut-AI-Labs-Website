@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import { siteConfig } from '@/config/site'
 
@@ -60,13 +60,40 @@ export function EnrollmentCard({
   const [promoError, setPromoError] = useState('')
   const [applied, setApplied] = useState<AppliedPromo | null>(null)
 
+  // Authoritative base price for this student. Starts from the prop
+  // (pricing config default) and is refreshed from /api/payment/price-quote
+  // once the student enters their email — so returning customers see ₹799.
+  const [basePrice, setBasePrice] = useState(price)
+  const [isReturnCustomer, setIsReturnCustomer] = useState(false)
+
+  useEffect(() => {
+    setBasePrice(price)
+  }, [price])
+
+  async function refreshQuote(forEmail: string) {
+    if (!forEmail.trim()) return
+    try {
+      const res = await fetch('/api/payment/price-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseSlug, email: forEmail }),
+      })
+      if (!res.ok) return
+      const q = await res.json()
+      if (typeof q.basePrice === 'number') setBasePrice(q.basePrice)
+      if (typeof q.isReturnCustomer === 'boolean') setIsReturnCustomer(q.isReturnCustomer)
+    } catch {
+      // Non-fatal — server remains authoritative at order creation.
+    }
+  }
+
   const discount = originalPrice
-    ? Math.round(((originalPrice - price) / originalPrice) * 100)
+    ? Math.round(((originalPrice - basePrice) / originalPrice) * 100)
     : 0
 
   // The actual amount the student pays — either the course price, or the
   // discounted amount when a promo is applied. 0 means free unlock.
-  const payableAmount = applied ? applied.finalAmount : price
+  const payableAmount = applied ? applied.finalAmount : basePrice
 
   async function handleApplyPromo() {
     if (!promoInput.trim()) return
@@ -102,14 +129,15 @@ export function EnrollmentCard({
         setApplied({
           code: promoInput.trim().toUpperCase(),
           discountPercent: data.discountPercent,
-          discountAmount: price,
+          discountAmount: basePrice,
           finalAmount: 0,
         })
         setPaymentId(`PROMO_${promoInput.trim().toUpperCase()}`)
         setStep('success')
       } else {
-        // Partial discount: just store the numbers; the actual redemption
-        // is recorded by /api/payment/verify after Razorpay confirms.
+        // Partial discount: server returned authoritative numbers — mirror them.
+        if (typeof data.originalAmount === 'number') setBasePrice(data.originalAmount)
+        if (typeof data.isReturnCustomer === 'boolean') setIsReturnCustomer(data.isReturnCustomer)
         setApplied({
           code: promoInput.trim().toUpperCase(),
           discountPercent: data.discountPercent,
@@ -190,7 +218,7 @@ export function EnrollmentCard({
               studentName: name,
               studentEmail: email,
               studentPhone: phone,
-              amount: data.finalAmount ?? payableAmount,
+              amount: data.finalAmount,
               promoCode: applied?.code,
             }),
           })
@@ -234,10 +262,10 @@ export function EnrollmentCard({
               </span>
               {applied ? (
                 <span className="text-lg text-white/60 line-through">
-                  ₹{price.toLocaleString('en-IN')}
+                  ₹{basePrice.toLocaleString('en-IN')}
                 </span>
               ) : (
-                originalPrice && (
+                originalPrice && !isReturnCustomer && (
                   <span className="text-lg text-white/60 line-through">
                     ₹{originalPrice.toLocaleString('en-IN')}
                   </span>
@@ -247,6 +275,10 @@ export function EnrollmentCard({
             {applied ? (
               <p className="mt-1 text-sm text-white/90">
                 Promo <span className="font-semibold">{applied.code}</span> applied — you save ₹{applied.discountAmount.toLocaleString('en-IN')}
+              </p>
+            ) : isReturnCustomer ? (
+              <p className="mt-1 text-sm text-white/90">
+                Welcome back! Special return customer price
               </p>
             ) : (
               discount > 0 && (
@@ -320,6 +352,7 @@ export function EnrollmentCard({
                       placeholder="Email address *"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      onBlur={(e) => refreshQuote(e.target.value)}
                       className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-emerald-400/50 focus:outline-none focus:ring-1 focus:ring-emerald-400/10"
                       required
                     />

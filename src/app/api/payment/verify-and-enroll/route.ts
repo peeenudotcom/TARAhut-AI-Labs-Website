@@ -3,9 +3,9 @@ import crypto from 'crypto';
 import { createServiceClient } from '@/lib/supabase';
 import { courseConfigs } from '@/config/learn-modules';
 import { grantCourseAccess } from '@/lib/course-access';
+import { hasPriorPurchase } from '@/lib/pricing-quote';
+import { getCoursePricing, RETURN_CUSTOMER_PRICE } from '@/config/pricing';
 import { validatePromoCode, computeDiscount } from '@/lib/promo';
-
-const COURSE_PRICE = 999;
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,12 +43,16 @@ export async function POST(req: NextRequest) {
 
     const db = createServiceClient();
     const normalizedEmail = (studentEmail as string).trim().toLowerCase();
-    const isReturnCustomer = amount === 799;
 
     const course = slug ? courseConfigs[slug] : null;
     if (!course) {
       return NextResponse.json({ error: 'Invalid course' }, { status: 400 });
     }
+
+    // Return-customer determination is based on whether the student had any
+    // prior active purchase *before* this one landed. Don't infer from the
+    // amount charged — a promo code could produce the same number.
+    const isReturnCustomer = await hasPriorPurchase(normalizedEmail);
 
     // 1. Record the purchase
     await db.from('online_purchases').insert({
@@ -78,11 +82,17 @@ export async function POST(req: NextRequest) {
 
     // 3. Record promo redemption if a code was used on this payment.
     //    Intentionally non-fatal — if we can't log the redemption the
-    //    student still paid and still gets access.
+    //    student still paid and still gets access. `basePrice` is the
+    //    pre-discount price the student would have paid: 799 if they
+    //    already had an active purchase when this payment was created,
+    //    else the course's onlinePrice.
     if (promoCode && normalizedEmail) {
       const validation = await validatePromoCode(promoCode, normalizedEmail);
       if (validation.ok) {
-        const { discountAmount } = computeDiscount(COURSE_PRICE, validation.discountPercent);
+        const basePrice = isReturnCustomer
+          ? RETURN_CUSTOMER_PRICE
+          : getCoursePricing(slug).price;
+        const { discountAmount } = computeDiscount(basePrice, validation.discountPercent);
         const { error: redemptionError } = await db.from('promo_redemptions').insert({
           promo_code_id: validation.id,
           student_email: normalizedEmail,

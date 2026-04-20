@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Script from 'next/script';
+import { getCoursePricing, RETURN_CUSTOMER_PRICE } from '@/config/pricing';
 
 declare global {
   interface Window {
@@ -22,6 +23,9 @@ interface BuyCourseProps {
   courseId: string;
   courseTitle: string;
   totalSessions: number;
+  // Override the displayed base price. Normally the component reads this
+  // from src/config/pricing.ts, but the certificate page passes a known
+  // return-customer price so the student sees 799 immediately.
   price?: number;
   originalPrice?: number;
   returnCustomer?: boolean;
@@ -31,10 +35,15 @@ export function BuyCourse({
   courseId,
   courseTitle,
   totalSessions,
-  price = 999,
+  price,
   originalPrice,
   returnCustomer = false,
 }: BuyCourseProps) {
+  const pricing = getCoursePricing(courseId);
+  const initialBase =
+    price ?? (returnCustomer ? RETURN_CUSTOMER_PRICE : pricing.price);
+  const displayOriginal = originalPrice ?? pricing.originalPrice;
+
   const [step, setStep] = useState<Step>('form');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,7 +58,34 @@ export function BuyCourse({
   const [promoError, setPromoError] = useState('');
   const [applied, setApplied] = useState<AppliedPromo | null>(null);
 
-  const payableAmount = applied ? applied.finalAmount : price;
+  // The authoritative base price for this student. Starts from the prop/
+  // config default and is refreshed from /api/payment/price-quote after
+  // the student enters their email (so returning customers see ₹799).
+  const [basePrice, setBasePrice] = useState(initialBase);
+  const [isReturnCustomer, setIsReturnCustomer] = useState(returnCustomer);
+
+  const payableAmount = applied ? applied.finalAmount : basePrice;
+
+  async function refreshQuote(forEmail: string) {
+    if (!forEmail.trim()) return;
+    try {
+      const res = await fetch('/api/payment/price-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseSlug: courseId, email: forEmail }),
+      });
+      if (!res.ok) return;
+      const q = await res.json();
+      if (typeof q.basePrice === 'number') setBasePrice(q.basePrice);
+      if (typeof q.isReturnCustomer === 'boolean') setIsReturnCustomer(q.isReturnCustomer);
+    } catch {
+      // Non-fatal — we'll still let Razorpay reflect the server price.
+    }
+  }
+
+  useEffect(() => {
+    setBasePrice(price ?? (returnCustomer ? RETURN_CUSTOMER_PRICE : pricing.price));
+  }, [courseId, price, returnCustomer, pricing.price]);
 
   async function handleApplyPromo() {
     if (!promoInput.trim()) return;
@@ -83,12 +119,15 @@ export function BuyCourse({
         setApplied({
           code: promoInput.trim().toUpperCase(),
           discountPercent: data.discountPercent,
-          discountAmount: price,
+          discountAmount: basePrice,
           finalAmount: 0,
         });
         setPaymentId(`PROMO_${promoInput.trim().toUpperCase()}`);
         setStep('success');
       } else {
+        // Server returned authoritative numbers; mirror them verbatim.
+        if (typeof data.originalAmount === 'number') setBasePrice(data.originalAmount);
+        if (typeof data.isReturnCustomer === 'boolean') setIsReturnCustomer(data.isReturnCustomer);
         setApplied({
           code: promoInput.trim().toUpperCase(),
           discountPercent: data.discountPercent,
@@ -170,7 +209,7 @@ export function BuyCourse({
               studentPhone: phone,
               courseId,
               courseTitle,
-              amount: data.finalAmount ?? payableAmount,
+              amount: data.finalAmount,
               promoCode: applied?.code,
             }),
           });
@@ -248,10 +287,10 @@ export function BuyCourse({
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-4xl font-extrabold text-white">₹{payableAmount}</span>
             {applied ? (
-              <span className="text-lg text-white/60 line-through">₹{price}</span>
+              <span className="text-lg text-white/60 line-through">₹{basePrice}</span>
             ) : (
-              !returnCustomer && originalPrice && (
-                <span className="text-lg text-white/60 line-through">₹{originalPrice.toLocaleString('en-IN')}</span>
+              !isReturnCustomer && displayOriginal && (
+                <span className="text-lg text-white/60 line-through">₹{displayOriginal.toLocaleString('en-IN')}</span>
               )
             )}
           </div>
@@ -261,13 +300,13 @@ export function BuyCourse({
             </p>
           ) : (
             <p className="mt-1 text-sm text-white/80">
-              {returnCustomer
+              {isReturnCustomer
                 ? 'Welcome back! Special return customer price'
                 : `${courseTitle} · ${totalSessions} sessions`}
             </p>
           )}
-          {!applied && !returnCustomer && (
-            <p className="mt-1 text-xs text-white/60">That&apos;s ₹{Math.round(price / totalSessions)} per session</p>
+          {!applied && !isReturnCustomer && (
+            <p className="mt-1 text-xs text-white/60">That&apos;s ₹{Math.round(basePrice / totalSessions)} per session</p>
           )}
         </div>
 
@@ -306,6 +345,7 @@ export function BuyCourse({
               placeholder="Email address *"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={(e) => refreshQuote(e.target.value)}
               className="w-full rounded-lg border border-[#1e1e3a] bg-[#06060e] px-4 py-3 text-sm text-white placeholder:text-[#94a3b8]/50 focus:border-[#059669] focus:outline-none"
               required
             />
