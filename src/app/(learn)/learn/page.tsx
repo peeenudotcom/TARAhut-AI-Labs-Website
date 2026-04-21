@@ -62,7 +62,7 @@ export default function LearnLandingPage() {
       </section>
 
       {/* ── Course Cards ── */}
-      <section className="mx-auto max-w-6xl px-6 pb-12">
+      <section id="courses" className="mx-auto max-w-6xl px-6 pb-12 scroll-mt-24">
         <p className="mb-8 text-center text-sm font-semibold uppercase tracking-widest text-[#94a3b8]">
           9 Courses · 142 Sessions · 3 Languages
         </p>
@@ -148,7 +148,16 @@ export default function LearnLandingPage() {
           </p>
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
+          <Link
+            href="#courses"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#059669] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#059669]/30 transition hover:bg-[#047857] active:scale-95"
+          >
+            Pick a Course & Pay ₹999
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+              <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+            </svg>
+          </Link>
           <Link
             href="/login"
             className="text-sm text-[#94a3b8] underline underline-offset-4 hover:text-[#e2e8f0] transition"
