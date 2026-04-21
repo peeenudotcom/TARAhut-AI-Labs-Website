@@ -17,6 +17,7 @@ import {
 } from '@/config/nav';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import {
   Sheet,
   SheetTrigger,
@@ -417,11 +418,15 @@ export function Header() {
 
   return (
     <motion.header
+      style={{
+        backgroundColor: scrolled ? 'var(--chrome-bg-translucent)' : 'transparent',
+        borderColor: scrolled ? 'var(--chrome-border)' : 'transparent',
+      }}
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 transition-all duration-300',
+        'theme-chrome fixed top-0 right-0 left-0 z-50 transition-all duration-300',
         scrolled
-          ? 'border-b border-white/[0.06] bg-[#020617]/70 shadow-[0_8px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-2xl'
-          : 'border-b border-transparent bg-[#020617]/25 backdrop-blur-2xl'
+          ? 'border-b shadow-[0_8px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-2xl'
+          : 'border-b border-transparent backdrop-blur-2xl'
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -460,6 +465,7 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-2 lg:flex">
+          <ThemeToggle />
           <Link
             href="/login"
             className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg px-3 text-xs font-semibold text-gray-300 transition-colors hover:text-emerald-300"
@@ -493,7 +499,11 @@ export function Header() {
                 </Button>
               }
             />
-            <SheetContent side="right" className="border-white/[0.08] bg-[#020617]">
+            <SheetContent
+              side="right"
+              className="theme-chrome"
+              style={{ backgroundColor: 'var(--chrome-bg)', borderColor: 'var(--chrome-border)' }}
+            >
               <SheetHeader>
                 <SheetTitle>
                   <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
@@ -521,6 +531,12 @@ export function Header() {
                   )
                 )}
                 <div className="mt-4 space-y-2 border-t border-white/[0.08] pt-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      Appearance
+                    </span>
+                    <ThemeToggle />
+                  </div>
                   <div className="grid grid-cols-2 gap-2">
                     <SheetClose
                       render={
