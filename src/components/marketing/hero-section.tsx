@@ -111,10 +111,12 @@ export function HeroSection() {
               </Link>
               <Link
                 href="/learn"
-                className="inline-flex flex-col items-center justify-center rounded-lg border border-amber-400/40 bg-transparent px-6 py-3 text-sm font-semibold text-amber-300 transition-colors hover:border-amber-400/60 hover:bg-amber-400/10 hover:text-amber-200"
+                className="inline-flex flex-col items-center justify-center rounded-lg border border-yellow-400/60 bg-yellow-400/[0.06] px-6 py-3 text-sm font-bold text-[#facc15] transition-all duration-200
+                           shadow-[0_0_18px_rgba(250,204,21,0.2)]
+                           hover:border-yellow-300 hover:bg-yellow-400/15 hover:text-yellow-200 hover:shadow-[0_0_28px_rgba(250,204,21,0.45)]"
               >
                 Buy Any Online Course at ₹999/-
-                <span className="mt-0.5 text-[10px] font-normal text-amber-300/60">(Limited Time Offer)</span>
+                <span className="mt-0.5 text-[10px] font-semibold tracking-wide text-yellow-300/85">(Limited Time Offer)</span>
               </Link>
               <Link
                 href="/courses"
@@ -124,8 +126,21 @@ export function HeroSection() {
               </Link>
             </motion.div>
 
+            {/* Social proof — the "atmosphere" around the galaxy. Sits
+                just above the tools ticker so users read trust before
+                scanning the toolset. */}
+            <motion.p
+              className="mt-8 flex items-center justify-center md:justify-start gap-2 font-mono text-[11px] uppercase tracking-widest text-emerald-300/80"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.68 }}
+            >
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
+              Trusted by 500+ students across Punjab
+            </motion.p>
+
             <motion.div
-              className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
+              className="mt-3 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-sm text-gray-600"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.75 }}
@@ -134,7 +149,12 @@ export function HeroSection() {
               {['ChatGPT', 'Claude', 'Canva AI', 'Midjourney', 'Python', '10+ more'].map((tool) => (
                 <span
                   key={tool}
-                  className="rounded-full bg-white/[0.05] border border-white/10 px-3 py-1 text-xs font-medium text-gray-400"
+                  tabIndex={0}
+                  className="group cursor-default rounded-full bg-white/[0.05] border border-white/10 px-3 py-1 text-xs font-medium text-gray-400
+                             transition-all duration-300 ease-out
+                             hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.08] hover:text-emerald-200
+                             hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]
+                             focus:outline-none focus-visible:border-emerald-400/60 focus-visible:text-emerald-100 focus-visible:shadow-[0_0_18px_rgba(16,185,129,0.45)]"
                 >
                   {tool}
                 </span>

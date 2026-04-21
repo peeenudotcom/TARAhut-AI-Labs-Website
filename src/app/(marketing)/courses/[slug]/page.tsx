@@ -7,20 +7,11 @@ import { siteConfig } from '@/config/site';
 import { getCoursePricing } from '@/config/pricing';
 import { getOnlineCourseLink } from '@/lib/course-mapping';
 import { Badge } from '@/components/ui/badge';
-import { CourseSyllabus } from './course-syllabus';
-import { SchoolCourseSyllabus } from './school-course-syllabus';
 import { EnrollmentCard } from './enrollment-card';
 import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
-import { VisualTimeline } from '@/components/courses/visual-timeline';
-import { HeroSpline } from '@/components/courses/hero-spline';
+import { VisualTimeline, type TimelinePhase } from '@/components/courses/visual-timeline';
 import { FreeSessionHook } from '@/components/landing/free-session-hook';
-
-// Spline scene used as the hero 3D background. Single shared scene
-// across all courses for now — can be parametrized per-course later if
-// the designer produces bespoke scenes.
-const HERO_SPLINE_URL =
-  'https://prod.spline.design/Z96Y7Jp-3zUe3N8o/scene.splinecode';
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-500/15 text-emerald-400',
@@ -98,12 +89,8 @@ export default async function CourseDetailPage({
           className="absolute inset-0 h-full w-full object-cover opacity-15"
         />
 
-        {/* 3D Spline scene — desktop only, after LCP, respects reduced-motion. */}
-        <HeroSpline url={HERO_SPLINE_URL} />
-
-        {/* Readability gradient on top of the Spline scene. Darkens the
-            bottom portion where the CTAs + meta row sit so text contrast
-            stays AA-compliant regardless of what the 3D scene renders. */}
+        {/* Readability gradient — darkens the bottom portion where the
+            CTAs + meta row sit so text contrast stays AA-compliant. */}
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#020617]/40 via-[#020617]/60 to-[#020617]" />
 
         {/* Emerald radial glow — the "AI Lab" signal the designer mocked up */}
@@ -300,27 +287,61 @@ export default async function CourseDetailPage({
                   the condensed accordion because their syllabus shape is
                   different (modules numbered 1..N with sessions per module)
                   and VisualTimeline expects the regular syllabus shape. */}
-              <div id="syllabus" className="mb-12 scroll-mt-24">
-                <h2 className="mb-2 text-2xl font-bold text-white">Course Syllabus</h2>
-                {schoolCourse ? (
-                  <>
-                    <p className="mb-4 text-sm text-gray-500">{schoolCourse.modules} modules · 12 sessions × 2 hours · 24 hours total</p>
-                    <SchoolCourseSyllabus syllabus={schoolCourse.syllabus} />
-                  </>
-                ) : (
-                  <>
-                    <p className="mb-6 text-sm text-gray-500">{course.syllabus.length} phases · {course.duration} · scroll to explore</p>
-                    <VisualTimeline phases={course.syllabus} />
-                  </>
-                )}
-              </div>
+              {(() => {
+                // Unified Pulse Path across all courses. School courses'
+                // richer syllabus (module, title, topics, activity, outcome)
+                // gets flattened into the timeline's {module, topics} shape
+                // so the same emerald-path scrollytelling applies regardless
+                // of course type — keeps the galaxy → HUD → path flow
+                // consistent for every planet.
+                const timelinePhases: TimelinePhase[] = schoolCourse
+                  ? schoolCourse.syllabus.map((m) => ({
+                      module: `Module ${m.module}: ${m.title}`,
+                      topics: [
+                        ...m.topics,
+                        ...(m.activity ? [`🎯 Activity — ${m.activity}`] : []),
+                        ...(m.outcome ? [`✨ Outcome — ${m.outcome}`] : []),
+                      ],
+                    }))
+                  : course.syllabus;
+
+                const totalSessions = timelinePhases.reduce(
+                  (n, m) => n + m.topics.length,
+                  0
+                );
+                const sprintWord = schoolCourse ? 'modules' : 'sprints';
+
+                return (
+                  <div id="syllabus" className="mb-12 scroll-mt-24">
+                    <div className="mb-6">
+                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
+                        &gt; The Journey
+                      </p>
+                      <h2 className="mt-2 font-['Space_Grotesk',sans-serif] text-3xl font-bold leading-tight text-white sm:text-4xl">
+                        {totalSessions}-Session Transformation
+                      </h2>
+                      <p className="mt-2 text-sm text-gray-500">
+                        {totalSessions} sessions across {timelinePhases.length} {sprintWord} · {course.duration} · scroll to light up the path
+                      </p>
+                    </div>
+                    <VisualTimeline phases={timelinePhases} />
+                  </div>
+                );
+              })()}
 
               {/* Tools */}
               <div className="mb-12">
                 <h2 className="mb-4 text-2xl font-bold text-white">Tools You Will Master</h2>
                 <div className="flex flex-wrap gap-2">
                   {(schoolCourse?.tools ?? course.tools).map((tool) => (
-                    <span key={tool} className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-white">
+                    <span
+                      key={tool}
+                      tabIndex={0}
+                      className="cursor-default rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-white
+                                 transition-all duration-300 ease-out
+                                 hover:-translate-y-0.5 hover:border-emerald-400/55 hover:bg-emerald-400/10 hover:text-emerald-100 hover:shadow-[0_0_18px_rgba(16,185,129,0.45)]
+                                 focus:outline-none focus-visible:border-emerald-400/70 focus-visible:text-emerald-100 focus-visible:shadow-[0_0_22px_rgba(16,185,129,0.55)]"
+                    >
                       {tool}
                     </span>
                   ))}
@@ -379,6 +400,7 @@ export default async function CourseDetailPage({
               enrolledCount={schoolCourse ? String(schoolCourse.enrolled) : course.studentsEnrolled > 0 ? `${course.studentsEnrolled}+` : 'New'}
               modulesCount={schoolCourse ? schoolCourse.modules : course.syllabus.length}
               isSchoolCourse={Boolean(schoolCourse)}
+              batchStartingSoon={course.batchStartingSoon}
             />
           </div>
         </div>
