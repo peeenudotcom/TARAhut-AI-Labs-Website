@@ -87,6 +87,21 @@ export default async function SessionPage({ params, searchParams }: Props) {
     redirect('/learn/dashboard');
   }
 
+  // Does this student already own a course? If so, the Session 1 upsell is
+  // noise — they've already converted. Only ask unpaid viewers (anon OR
+  // logged-in-but-no-purchase) to buy.
+  let hasCourseAccess = false;
+  if (user) {
+    const supabase = await createServerSupabase();
+    const { data: purchases } = await supabase
+      .from('online_purchases')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .limit(1);
+    hasCourseAccess = (purchases?.length ?? 0) > 0;
+  }
+
   const displayName =
     user?.user_metadata?.full_name ??
     user?.user_metadata?.name ??
@@ -153,8 +168,8 @@ export default async function SessionPage({ params, searchParams }: Props) {
         sessionTitle={`Session ${sessionNum}: ${mod.title}`}
       />
 
-      {/* ── Buy CTA bar — only on free session for non-logged-in users ── */}
-      {isFreeSession && !user && (
+      {/* ── Buy CTA bar — shown on free session to anyone who hasn't purchased ── */}
+      {isFreeSession && !hasCourseAccess && (
         <BuyCtaBar
           courseId={courseId}
           courseTitle={config.title}
@@ -180,8 +195,8 @@ export default async function SessionPage({ params, searchParams }: Props) {
         </footer>
       )}
 
-      {/* ── Popup CTA — appears after 90s on free session ── */}
-      {isFreeSession && !user && (
+      {/* ── Popup CTA — appears after 90s on free session to unpaid students ── */}
+      {isFreeSession && !hasCourseAccess && (
         <BuyPopup
           courseId={courseId}
           courseTitle={config.title}
