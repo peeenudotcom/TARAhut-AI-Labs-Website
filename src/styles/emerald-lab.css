@@ -1,0 +1,119 @@
+/* TARAhut Emerald Lab — visual tokens + glass/glow primitives.
+ *
+ * Scoped additions on top of the global theme: only brand-specific tokens
+ * live here (emerald shades + glow + motion curve). Structural tokens
+ * (background, foreground, border, card, radius) already come from
+ * globals.css via the Tailwind @theme mapping — reusing them keeps the
+ * two systems from drifting.
+ *
+ * Safe to delete this file without breaking the site: the .el-* classes
+ * below are additive, nothing depends on them existing.
+ */
+
+:root {
+  --brand-emerald: #059669;
+  --brand-emerald-hover: #047857;
+  --brand-emerald-soft: rgba(5, 150, 105, 0.08);
+  --brand-emerald-glow: rgba(5, 150, 105, 0.4);
+  --transition-lab: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Glass card ────────────────────────────────────────────────────────────
+ * Dark-mode default. A gentle glass surface with a hoverable emerald glow.
+ * Scoped so we don't blanket-apply to every element — callers opt in via
+ * `.el-glass-card`.
+ */
+.el-glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: border-color var(--transition-lab), box-shadow var(--transition-lab),
+    transform var(--transition-lab);
+}
+
+.el-glass-card:hover,
+.el-glass-card:focus-visible {
+  border-color: var(--brand-emerald);
+  box-shadow: 0 0 24px var(--brand-emerald-glow);
+  transform: translateY(-2px);
+}
+
+/* Softer hover — for dense grids (e.g. the syllabus tile grid) where full
+ * glow on every hovered tile becomes visual noise. Border brightens, no
+ * shadow, no lift. */
+.el-glass-card-subtle {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: border-color var(--transition-lab);
+}
+
+.el-glass-card-subtle:hover,
+.el-glass-card-subtle:focus-visible {
+  border-color: rgba(5, 150, 105, 0.5);
+}
+
+/* ── Emerald hook CTA ──────────────────────────────────────────────────────
+ * Used for the primary "Try Session 1 Free" conversion button. Pill-shaped,
+ * glowing, mixed-case (matches the rest of the site's CTA style).
+ */
+.el-cta-hook {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--brand-emerald);
+  color: #fff;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 0 25px var(--brand-emerald-glow);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--transition-lab), background-color var(--transition-lab),
+    box-shadow var(--transition-lab);
+}
+
+.el-cta-hook:hover,
+.el-cta-hook:focus-visible {
+  transform: scale(1.03);
+  background: var(--brand-emerald-hover);
+  box-shadow: 0 0 32px var(--brand-emerald-glow);
+  outline: none;
+}
+
+/* ── Price quote panel ─────────────────────────────────────────────────────
+ * Dashed emerald border signals "this is a live quote from the server"
+ * rather than a static price. Used around the refreshed-by-email-blur
+ * pricing display.
+ */
+.el-price-quote-panel {
+  background: var(--brand-emerald-soft);
+  border: 1px dashed var(--brand-emerald);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* ── Accessibility: honor reduced-motion preferences ───────────────────────
+ * Scrollytelling + hover lifts + CTA scale-up all become annoying or
+ * disorienting for users who opted out of motion. Kill the transforms
+ * and transitions for them — the color/border changes still communicate
+ * state without movement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .el-glass-card,
+  .el-glass-card-subtle,
+  .el-cta-hook {
+    transition: none;
+  }
+  .el-glass-card:hover,
+  .el-cta-hook:hover {
+    transform: none;
+  }
+}
