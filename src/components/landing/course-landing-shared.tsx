@@ -9,6 +9,7 @@ import { siteConfig } from '@/config/site'
 import { getOnlineCourseLink } from '@/lib/course-mapping'
 import { ExitIntentPopup } from './exit-intent-popup'
 import { EnrollmentToast } from './enrollment-toast'
+import { FreeSessionHook } from './free-session-hook'
 import { AskTara } from '@/components/chatbot/ask-tara'
 import { trackEvent } from '@/components/analytics/meta-pixel'
 
@@ -229,17 +230,18 @@ export function CourseLandingShared(props: CourseLandingProps) {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+              {/* Primary conversion hook — the free-session entry point is the
+                  highest-intent first touch and skips any price question up
+                  front. Keeps the secondary "Explore Syllabus" scroll link
+                  for visitors who want to see what they'd be committing to
+                  before clicking through. */}
+              <FreeSessionHook courseSlug={course.slug} />
               <a
-                href="#try-tool"
-                onClick={(e) => { e.preventDefault(); document.getElementById('try-tool')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className="group relative px-8 py-4 rounded-2xl font-semibold text-lg text-white overflow-hidden"
+                href="#enroll"
+                onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
+                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
               >
-                <div className="absolute inset-0" style={gradient} />
-                <span className="relative flex items-center gap-2">✨ Try Our Free Tool →</span>
-              </a>
-              <a href="#enroll" onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-medium hover:bg-white/5 transition-colors">
-                Enroll → ₹{course.price.toLocaleString('en-IN')}
+                Explore Syllabus →
               </a>
             </motion.div>
 
@@ -335,10 +337,14 @@ export function CourseLandingShared(props: CourseLandingProps) {
             </motion.div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {learnCards.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                  className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 transition-all hover:scale-[1.02]"
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = `rgba(${theme.primaryRgb},0.3)` }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="el-glass-card p-5 md:p-6"
+                >
                   <span className="text-3xl">{item.icon}</span>
                   <h3 className="mt-3 text-white font-bold text-base">{item.title}</h3>
                   <p className="mt-2 text-sm text-gray-400 leading-relaxed">{item.desc}</p>
@@ -424,8 +430,14 @@ export function CourseLandingShared(props: CourseLandingProps) {
             </motion.div>
             <div className="space-y-3">
               {valueItems.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}
-                  className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/15 transition-colors">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.04 }}
+                  className="el-glass-card-subtle flex items-start gap-4 p-4"
+                >
                   <span className="text-2xl shrink-0">{item.icon}</span>
                   <div>
                     <h3 className="text-white font-semibold text-sm">{item.item}</h3>
@@ -474,7 +486,7 @@ export function CourseLandingShared(props: CourseLandingProps) {
                   <h2 className="text-3xl md:text-4xl font-bold text-white">Start Your Journey</h2>
                   <p className="text-gray-500 mt-2 text-sm">Limited seats per batch</p>
                 </div>
-                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8">
+                <div className="el-glass-card p-6 sm:p-8" style={{ borderRadius: '1.5rem' }}>
                   <div className="text-center mb-6 pb-6 border-b border-white/10">
                     <div className="flex items-center justify-center gap-3">
                       {course.originalPrice && (
