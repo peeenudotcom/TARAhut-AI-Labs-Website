@@ -1,10 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import Script from 'next/script'
 import { motion } from 'framer-motion'
 import type { Course } from '@/config/courses'
 import { siteConfig } from '@/config/site'
+import { getOnlineCourseLink } from '@/lib/course-mapping'
 import { ExitIntentPopup } from './exit-intent-popup'
 import { EnrollmentToast } from './enrollment-toast'
 import { AskTara } from '@/components/chatbot/ask-tara'
@@ -168,6 +170,7 @@ export function CourseLandingShared(props: CourseLandingProps) {
 
   const savings = (course.originalPrice || 0) - course.price
   const discount = course.originalPrice ? Math.round((savings / course.originalPrice) * 100) : 0
+  const onlineLink = getOnlineCourseLink(course.slug)
 
   // Inline style helpers using theme
   const primaryBg = (opacity: number) => ({ backgroundColor: `rgba(${theme.primaryRgb},${opacity})` })
@@ -519,6 +522,21 @@ export function CourseLandingShared(props: CourseLandingProps) {
                     </a>
                   </div>
                 </div>
+
+                {/* Self-paced online alternative — cheaper path for students
+                    who can't (or don't want to) commit to the offline batch. */}
+                {onlineLink && (
+                  <Link
+                    href={onlineLink.href}
+                    className="group mt-4 flex items-center justify-between gap-3 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 px-5 py-3.5 text-sm text-cyan-200 transition hover:border-cyan-400/40 hover:bg-cyan-400/10 hover:text-cyan-100"
+                  >
+                    <span>
+                      <span className="font-semibold">Prefer self-paced online?</span>{' '}
+                      Get it for ₹{onlineLink.price.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-base transition-transform group-hover:translate-x-0.5">→</span>
+                  </Link>
+                )}
               </motion.div>
             )}
           </div>

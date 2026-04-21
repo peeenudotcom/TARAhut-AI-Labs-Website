@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import Script from 'next/script'
 import { siteConfig } from '@/config/site'
+import { getOnlineCourseLink } from '@/lib/course-mapping'
 
 declare global {
   interface Window {
@@ -94,6 +96,10 @@ export function EnrollmentCard({
   // The actual amount the student pays — either the course price, or the
   // discounted amount when a promo is applied. 0 means free unlock.
   const payableAmount = applied ? applied.finalAmount : basePrice
+
+  // Matching self-paced online course (if one exists). Used to offer a
+  // cheaper alternative to students who can't commit to the offline batch.
+  const onlineLink = getOnlineCourseLink(courseSlug)
 
   async function handleApplyPromo() {
     if (!promoInput.trim()) return
@@ -288,6 +294,21 @@ export function EnrollmentCard({
               )
             )}
           </div>
+
+          {/* Self-paced online alternative — cheaper path for students who
+              can't (or don't want to) commit to the offline batch. */}
+          {onlineLink && step !== 'success' && (
+            <Link
+              href={onlineLink.href}
+              className="group flex items-center justify-between gap-3 border-b border-white/[0.08] bg-[#00f0ff]/5 px-6 py-3 text-sm text-[#7dd3fc] transition hover:bg-[#00f0ff]/10 hover:text-[#00f0ff]"
+            >
+              <span>
+                <span className="font-semibold">Prefer self-paced online?</span>{' '}
+                Get it for ₹{onlineLink.price.toLocaleString('en-IN')}
+              </span>
+              <span className="text-base transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
+          )}
 
           <div className="p-6">
             {step === 'success' ? (
