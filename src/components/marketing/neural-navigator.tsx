@@ -1,206 +1,449 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Canvas } from '@react-three/fiber';
-import { Float, Line, MeshDistortMaterial, OrbitControls, Sphere, Text } from '@react-three/drei';
-import { courses } from '@/config/courses';
+import * as THREE from 'three';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Html, MeshDistortMaterial, OrbitControls } from '@react-three/drei';
+import { courses, type Course } from '@/config/courses';
 import { getOnlineCourseLink } from '@/lib/course-mapping';
 
-// Fixed aesthetic positions around the origin — the center node (index 0)
-// anchors the graph, the other 8 spread out. Matches the designer's layout
-// rather than computing sphere coords programmatically so the composition
-// reads intentionally.
-const NODE_POSITIONS: [number, number, number][] = [
-  [0, 0, 0],          // center — flagship
-  [-2, 1.2, 0.5],
-  [-2.5, -0.8, -1],
-  [2, 1.5, -0.5],
-  [2.2, -0.6, 1],
-  [1, -1.8, 1.2],
-  [-1.2, -2, 0.8],
-  [-0.5, 2, -1.5],
-  [3, 0, -2],
+// Emerald solar system: the flagship course is the central sun, the
+// remaining 8 courses orbit on emerald rings at varied speeds. Click a
+// planet → the camera cinematically zooms in toward it and a HUD info
+// card overlays with quick stats + deep-link into that course's
+// syllabus on its dedicated page.
+interface OrbitConfig {
+  radius: number;
+  speed: number;
+  size: number;
+  phase: number;
+}
+
+const ORBIT_CONFIG: OrbitConfig[] = [
+  { radius: 0,   speed: 0,    size: 0.55, phase: 0 },     // sun (flagship)
+  { radius: 1.4, speed: 1.10, size: 0.17, phase: 0.4 },
+  { radius: 1.9, speed: 0.85, size: 0.22, phase: 1.8 },
+  { radius: 2.5, speed: 0.70, size: 0.16, phase: 3.2 },
+  { radius: 3.1, speed: 0.55, size: 0.24, phase: 0.9 },
+  { radius: 3.7, speed: 0.45, size: 0.20, phase: 4.1 },
+  { radius: 4.3, speed: 0.55, size: 0.18, phase: 2.6 },
+  { radius: 4.9, speed: 0.28, size: 0.26, phase: 5.4 },
+  { radius: 5.5, speed: 0.20, size: 0.22, phase: 1.1 },
 ];
 
-// Map real course configs to the 9 node slots. Central node is the
-// flagship Master AI Builder; the rest follow the order they appear in
-// the courses config so it feels stable.
-const NODES = courses.slice(0, NODE_POSITIONS.length).map((course, i) => ({
-  slug: course.slug,
-  title: course.title,
-  shortTitle: shorten(course.title),
-  price: course.price,
-  position: NODE_POSITIONS[i],
-}));
-
 function shorten(title: string): string {
-  // The course titles are long enough that 3D text overlaps the node at
-  // normal sizes. Strip marketing suffixes ("for Beginners", "— 8-Week
-  // Program") so the floating label stays one line.
   return title
     .replace(' for Beginners', '')
     .replace(' — 8-Week Program', '')
+    .replace(' — 90 Day Program', '')
     .replace(' for School Kids', '')
     .replace(' in 15 Days', '')
     .replace('Generative AI & ', '');
 }
 
-interface Selected {
-  slug: string;
-  title: string;
-  price: number;
+// Planetary order derived from price: most expensive course is the
+// sun, remaining 8 orbit in price-descending order (inner orbits =
+// pricier, outer = entry-level). Tie-breaker is originalPrice so the
+// premium flagship still anchors when two courses share a headline
+// number. Derived at build time from the single source of truth, so
+// the galaxy stays in sync if prices change.
+const PLANETS = [...courses]
+  .sort((a, b) => b.price - a.price || (b.originalPrice ?? 0) - (a.originalPrice ?? 0))
+  .slice(0, ORBIT_CONFIG.length)
+  .map((course, i) => ({
+    slug: course.slug,
+    title: course.title,
+    shortTitle: shorten(course.title),
+    price: course.price,
+    ...ORBIT_CONFIG[i],
+  }));
+
+interface PlanetProps {
+  data: (typeof PLANETS)[number];
+  dimmed: boolean;
+  onSelect: (position: THREE.Vector3) => void;
 }
 
-interface NodeProps {
-  position: [number, number, number];
-  title: string;
-  onSelect: () => void;
-}
-
-function Node({ position, title, onSelect }: NodeProps) {
+function Planet({ data, dimmed, onSelect }: PlanetProps) {
+  const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
+  const isSun = data.radius === 0;
+
+  useFrame(({ clock }) => {
+    if (isSun || !groupRef.current) return;
+    const t = clock.getElapsedTime() * data.speed + data.phase;
+    groupRef.current.position.set(
+      Math.cos(t) * data.radius,
+      0,
+      Math.sin(t) * data.radius
+    );
+  });
+
+  const coreColor = hovered ? '#34d399' : '#10b981';
+  const haloColor = hovered ? '#6ee7b7' : '#34d399';
+  const dimFactor = dimmed ? 0.3 : 1;
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere
-        args={[0.22, 32, 32]}
-        position={position}
-        onClick={onSelect}
-        onPointerOver={() => {
-          setHovered(true);
-          document.body.style.cursor = 'pointer';
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          document.body.style.cursor = 'auto';
-        }}
-      >
-        <MeshDistortMaterial
-          color={hovered ? '#10b981' : '#059669'}
-          speed={4}
-          distort={0.3}
-          emissive="#059669"
-          emissiveIntensity={hovered ? 2 : 0.5}
-        />
-      </Sphere>
-      {hovered && (
-        <Text
-          position={[position[0], position[1] + 0.45, position[2]]}
-          fontSize={0.18}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
+    <>
+      {!isSun && <OrbitRing radius={data.radius} active={hovered} dimmed={dimmed} />}
+
+      <group ref={groupRef}>
+        <mesh raycast={() => null}>
+          <sphereGeometry args={[data.size * 3, 20, 20]} />
+          <meshBasicMaterial
+            color={coreColor}
+            transparent
+            opacity={(hovered ? 0.2 : isSun ? 0.14 : 0.08) * dimFactor}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+        <mesh raycast={() => null}>
+          <sphereGeometry args={[data.size * 1.7, 20, 20]} />
+          <meshBasicMaterial
+            color={haloColor}
+            transparent
+            opacity={(hovered ? 0.4 : isSun ? 0.3 : 0.22) * dimFactor}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+
+        <mesh
+          onClick={(e) => {
+            e.stopPropagation();
+            const pos = groupRef.current
+              ? groupRef.current.position.clone()
+              : new THREE.Vector3();
+            onSelect(pos);
+          }}
+          onPointerOver={(e) => {
+            e.stopPropagation();
+            setHovered(true);
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerOut={() => {
+            setHovered(false);
+            document.body.style.cursor = 'auto';
+          }}
         >
-          {title}
-        </Text>
-      )}
-    </Float>
+          <sphereGeometry args={[data.size, 32, 32]} />
+          <MeshDistortMaterial
+            color={coreColor}
+            speed={isSun ? 2 : 3}
+            distort={isSun ? 0.45 : 0.25}
+            emissive={coreColor}
+            emissiveIntensity={(hovered ? 1.4 : isSun ? 1.1 : 0.7) * (dimmed ? 0.4 : 1)}
+            transparent
+            opacity={dimmed ? 0.5 : 1}
+          />
+        </mesh>
+
+        {hovered && !dimmed && (
+          <Html
+            center
+            position={[0, data.size + 0.35, 0]}
+            style={{ pointerEvents: 'none' }}
+            zIndexRange={[20, 10]}
+          >
+            <span className="whitespace-nowrap rounded border border-emerald-400/40 bg-black/75 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-white/95 shadow-[0_0_14px_rgba(16,185,129,0.45)]">
+              {data.shortTitle}
+            </span>
+          </Html>
+        )}
+      </group>
+    </>
+  );
+}
+
+function OrbitRing({
+  radius,
+  active,
+  dimmed,
+}: {
+  radius: number;
+  active: boolean;
+  dimmed: boolean;
+}) {
+  const thickness = active ? 0.018 : 0.006;
+  return (
+    <mesh rotation={[Math.PI / 2, 0, 0]} raycast={() => null}>
+      <ringGeometry args={[radius - thickness, radius + thickness, 128]} />
+      <meshBasicMaterial
+        color={active ? '#34d399' : '#10b981'}
+        transparent
+        opacity={(active ? 0.75 : 0.18) * (dimmed ? 0.3 : 1)}
+        side={THREE.DoubleSide}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
+
+function ParallaxGroup({ children }: { children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    const g = ref.current;
+    if (!g) return;
+    const targetY = state.pointer.x * 0.15;
+    const targetX = -state.pointer.y * 0.1;
+    g.rotation.y += (targetY - g.rotation.y) * 0.05;
+    g.rotation.x += (targetX - g.rotation.x) * 0.05;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
+// Minimal shape of drei's OrbitControls ref we actually touch — avoids
+// pulling in three-stdlib types just for the ref.
+interface OrbitRef {
+  target: THREE.Vector3;
+  autoRotate: boolean;
+  update: () => void;
+}
+
+// Cinematic camera zoom. When a planet is selected, lerps the camera
+// toward a spot on the radial line through that planet (just past it,
+// slightly elevated) and pauses auto-rotate so the HUD reads clean.
+// When deselected, flies back to the default "whole galaxy" framing.
+function CameraController({
+  target,
+  orbitRef,
+}: {
+  target: THREE.Vector3 | null;
+  orbitRef: React.RefObject<OrbitRef | null>;
+}) {
+  const { camera } = useThree();
+  const defaultPos = useMemo(() => new THREE.Vector3(0, 4, 12), []);
+  const defaultLookAt = useMemo(() => new THREE.Vector3(0, 0, 0), []);
+
+  useFrame(() => {
+    let desiredPos: THREE.Vector3;
+    let desiredLookAt: THREE.Vector3;
+
+    if (target) {
+      // Sit camera radially outward from the planet (away from the sun)
+      // so the planet fills the foreground with the sun behind it.
+      const radial =
+        target.length() > 0.01
+          ? target.clone().normalize().multiplyScalar(2.4)
+          : new THREE.Vector3(0, 0, 3.5);
+      desiredPos = target.clone().add(radial).add(new THREE.Vector3(0, 1.2, 0));
+      desiredLookAt = target;
+    } else {
+      desiredPos = defaultPos;
+      desiredLookAt = defaultLookAt;
+    }
+
+    camera.position.lerp(desiredPos, 0.06);
+
+    const o = orbitRef.current;
+    if (o) {
+      o.target.lerp(desiredLookAt, 0.06);
+      o.autoRotate = !target;
+      o.update();
+    }
+  });
+
+  return null;
+}
+
+interface StatProps {
+  label: string;
+  value: string;
+}
+
+function HudStat({ label, value }: StatProps) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400/70">
+        {label}
+      </span>
+      <span className="text-sm font-semibold text-white">{value}</span>
+    </div>
   );
 }
 
 export function NeuralNavigator() {
-  const [selected, setSelected] = useState<Selected | null>(null);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
+  const orbitRef = useRef<OrbitRef>(null);
 
-  // Connection lines from center node to every outer node. Memoized so
-  // the Line meshes aren't recreated on every re-render.
-  const lines = useMemo(
-    () =>
-      NODES.slice(1).map((n) => ({
-        start: [0, 0, 0] as [number, number, number],
-        end: n.position,
-      })),
-    []
+  const selectedCourse: Course | null = useMemo(
+    () => (selectedSlug ? courses.find((c) => c.slug === selectedSlug) ?? null : null),
+    [selectedSlug]
   );
+  const selectedOnlineLink = selectedSlug ? getOnlineCourseLink(selectedSlug) : null;
 
-  const selectedOnlineLink = selected ? getOnlineCourseLink(selected.slug) : null;
-  const enrollHref = selected ? `/courses/${selected.slug}` : '#';
+  function handleSelect(slug: string, position: THREE.Vector3) {
+    setSelectedSlug(slug);
+    setCameraTarget(position);
+  }
+
+  function handleClose() {
+    setSelectedSlug(null);
+    setCameraTarget(null);
+  }
 
   return (
-    <div className="relative h-[420px] w-full overflow-hidden rounded-3xl border border-white/10 bg-[#020617] sm:h-[520px] lg:h-[560px]">
-      {/* Selection panel — appears when a node is clicked. Absolute-positioned
-          over the canvas so the 3D scene stays live in the background. */}
-      {selected && (
-        <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] rounded-2xl border border-emerald-500/30 bg-white/5 p-5 backdrop-blur-xl sm:max-w-sm">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-            Course selected
-          </p>
-          <h3 className="mt-1 text-xl font-bold text-white sm:text-2xl">{selected.title}</h3>
-          <p className="mt-2 text-sm text-white/70">
-            Starts at <span className="font-bold text-white">₹{selected.price.toLocaleString('en-IN')}</span>
-            {selectedOnlineLink && (
-              <>
-                {' '}· or <span className="font-bold text-emerald-300">₹{selectedOnlineLink.price.toLocaleString('en-IN')} online</span>
-              </>
-            )}
-          </p>
-          <div className="mt-4 flex gap-2">
-            <Link
-              href={enrollHref}
-              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-emerald-500"
-            >
-              Explore →
-            </Link>
-            {selectedOnlineLink && (
-              <Link
-                href={selectedOnlineLink.href}
-                className="rounded-lg border border-emerald-400/40 px-4 py-2 text-sm font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10"
-              >
-                Buy ₹999
-              </Link>
-            )}
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="rounded-lg bg-white/10 px-3 py-2 text-sm text-white transition-colors hover:bg-white/15"
-              aria-label="Close course details"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
+    <div className="relative h-[460px] w-full sm:h-[560px] lg:h-[600px]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-12 z-0"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.35) 0%, rgba(13,148,136,0.18) 35%, transparent 70%)',
+          filter: 'blur(30px)',
+        }}
+      />
 
-      <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#059669" />
-
-        <group>
-          {NODES.map((node) => (
-            <Node
-              key={node.slug}
-              position={node.position}
-              title={node.shortTitle}
-              onSelect={() =>
-                setSelected({ slug: node.slug, title: node.title, price: node.price })
-              }
-            />
-          ))}
-
-          {lines.map((l, i) => (
-            <Line
-              key={i}
-              points={[l.start, l.end]}
-              color="#059669"
-              lineWidth={0.6}
-              transparent
-              opacity={0.25}
-            />
-          ))}
-        </group>
-
-        <OrbitControls
-          enableZoom={false}
-          autoRotate
-          autoRotateSpeed={0.6}
-          makeDefault
-          enablePan={false}
+      <div className="relative z-[1] h-full w-full overflow-hidden rounded-3xl border border-emerald-400/5 bg-[#020617]/60 backdrop-blur-sm">
+        {/* Faint scientific grid — echoes the hero grid so the canvas
+            reads as a lab readout, not an empty void. Radial mask fades
+            the grid toward the center so the galaxy itself stays the
+            visual focus; the grid only shows where emptiness would
+            otherwise dominate. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, rgba(16,185,129,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.07) 1px, transparent 1px)',
+            backgroundSize: '36px 36px',
+            maskImage:
+              'radial-gradient(ellipse at 50% 45%, transparent 0%, transparent 25%, black 75%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse at 50% 45%, transparent 0%, transparent 25%, black 75%)',
+          }}
         />
-      </Canvas>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 45%, rgba(16,185,129,0.18) 0%, transparent 55%)',
+          }}
+        />
 
-      <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-[10px] uppercase tracking-widest text-white/40 sm:text-xs">
-        Click a node to explore TARAhut courses
-      </p>
+        {/* HUD info card — thin glowing emerald border on dark glass.
+            Appears top-left with corner brackets to read as a
+            heads-up-display rather than a standard web popup. */}
+        {selectedCourse && (
+          <div className="absolute top-4 left-4 z-20 w-[calc(100%-2rem)] sm:max-w-sm">
+            <div className="relative rounded-2xl border border-[#059669] bg-black/45 p-5 backdrop-blur-xl shadow-[0_0_32px_rgba(16,185,129,0.35)]">
+              {/* HUD corner brackets */}
+              <span className="pointer-events-none absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-emerald-400" />
+              <span className="pointer-events-none absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-emerald-400" />
+              <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-emerald-400" />
+              <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-emerald-400" />
+
+              <button
+                type="button"
+                onClick={handleClose}
+                className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-md text-white/50 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label="Close course details"
+              >
+                ✕
+              </button>
+
+              <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+                &gt; Target acquired
+              </p>
+              <h3 className="mt-1 pr-8 font-['Space_Grotesk',sans-serif] text-xl font-bold leading-tight text-white sm:text-2xl">
+                {selectedCourse.title}
+              </h3>
+              {selectedCourse.shortDescription && (
+                <p className="mt-1.5 text-xs leading-relaxed text-white/60 line-clamp-2">
+                  {selectedCourse.shortDescription}
+                </p>
+              )}
+
+              <div className="mt-4 grid grid-cols-3 gap-2 border-y border-emerald-500/20 py-3">
+                <HudStat
+                  label="Sessions"
+                  value={`${selectedCourse.syllabus.reduce((n, m) => n + m.topics.length, 0)}`}
+                />
+                <HudStat label="Duration" value={selectedCourse.duration} />
+                <HudStat label="Level" value={selectedCourse.level} />
+              </div>
+
+              {/* Pricing row — real price from courses config, with the
+                  original crossed through when there's a discount.
+                  Separate from the stat grid so the ₹ number reads as
+                  the commercial anchor, not just another data point. */}
+              <div className="mt-3 flex items-baseline gap-2">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400/70">
+                  Offline
+                </span>
+                <span className="text-xl font-bold text-white">
+                  ₹{selectedCourse.price.toLocaleString('en-IN')}
+                </span>
+                {selectedCourse.originalPrice && selectedCourse.originalPrice > selectedCourse.price && (
+                  <span className="text-xs text-white/40 line-through">
+                    ₹{selectedCourse.originalPrice.toLocaleString('en-IN')}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-4 flex flex-col gap-2">
+                <Link
+                  href={`/courses/${selectedCourse.slug}#syllabus`}
+                  className="flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all hover:bg-emerald-400 hover:shadow-[0_0_28px_rgba(16,185,129,0.8)]"
+                >
+                  Explore {selectedCourse.syllabus.reduce((n, m) => n + m.topics.length, 0)}-Session Journey →
+                </Link>
+                {selectedOnlineLink ? (
+                  <Link
+                    href={selectedOnlineLink.href}
+                    className="flex items-center justify-center rounded-lg border border-emerald-400/40 px-4 py-2 text-xs font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10"
+                  >
+                    Start with free lesson · ₹{selectedOnlineLink.price.toLocaleString('en-IN')} online
+                  </Link>
+                ) : (
+                  <Link
+                    href="/learn"
+                    className="flex items-center justify-center rounded-lg border border-emerald-400/40 px-4 py-2 text-xs font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10"
+                  >
+                    Start Free Lesson
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Canvas camera={{ position: [0, 4, 12], fov: 52 }}>
+          <ambientLight intensity={0.4} />
+          <pointLight position={[0, 0, 0]} intensity={2.2} color="#10b981" />
+          <pointLight position={[6, 6, 6]} intensity={0.6} color="#34d399" />
+
+          <ParallaxGroup>
+            {PLANETS.map((p) => (
+              <Planet
+                key={p.slug}
+                data={p}
+                dimmed={selectedSlug !== null && selectedSlug !== p.slug}
+                onSelect={(position) => handleSelect(p.slug, position)}
+              />
+            ))}
+          </ParallaxGroup>
+
+          <OrbitControls
+            ref={orbitRef as unknown as React.RefObject<never>}
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.25}
+            makeDefault
+          />
+
+          <CameraController target={cameraTarget} orbitRef={orbitRef} />
+        </Canvas>
+
+        <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-center font-mono text-[11px] uppercase tracking-widest text-white/70 sm:text-xs">
+          Navigate the TARAhut Galaxy
+        </p>
+      </div>
     </div>
   );
 }
