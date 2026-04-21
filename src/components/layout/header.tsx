@@ -459,7 +459,19 @@ export function Header() {
         </nav>
 
         {/* Desktop CTA */}
-        <div className="hidden items-center lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <Link
+            href="/login"
+            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg px-3 text-xs font-semibold text-gray-300 transition-colors hover:text-emerald-300"
+          >
+            Log in
+          </Link>
+          <Link
+            href="/signup"
+            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg border border-white/10 bg-white/[0.04] px-3 text-xs font-semibold text-white transition-colors hover:border-emerald-400/40 hover:text-emerald-200"
+          >
+            Sign up
+          </Link>
           <a
             href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
             target="_blank"
@@ -509,6 +521,28 @@ export function Header() {
                   )
                 )}
                 <div className="mt-4 space-y-2 border-t border-white/[0.08] pt-4">
+                  <div className="grid grid-cols-2 gap-2">
+                    <SheetClose
+                      render={
+                        <Link
+                          href="/login"
+                          className="inline-flex h-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm font-semibold text-white hover:border-emerald-400/40 hover:text-emerald-200"
+                        >
+                          Log in
+                        </Link>
+                      }
+                    />
+                    <SheetClose
+                      render={
+                        <Link
+                          href="/signup"
+                          className="inline-flex h-9 items-center justify-center rounded-lg bg-emerald-500/15 px-3 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/25"
+                        >
+                          Sign up
+                        </Link>
+                      }
+                    />
+                  </div>
                   <Button
                     className="w-full border border-emerald-500 bg-transparent text-emerald-300 hover:bg-white/[0.06]"
                     render={<Link href={navCta.href} />}

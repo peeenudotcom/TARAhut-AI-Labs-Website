@@ -133,6 +133,13 @@ export default async function DashboardPage({
   // Session 1 is always free
   unlockedSessions.add(1);
 
+  // Student has neither bought online NOR been unlocked by a trainer for any
+  // session beyond the free first one. They are stuck — the current UI only
+  // offered them a trainer code input without ever telling them where to get
+  // a code from. Surface the buy path first, then offer the code flow.
+  const unlockedBeyondFree = [...unlockedSessions].some((n) => n > 1);
+  const hasNoAccessYet = !isOnlinePurchaser && !unlockedBeyondFree && !certificate;
+
   const quizRows: QuizRow[] = quizResult.data ?? [];
   const avgScore =
     quizRows.length > 0
@@ -248,8 +255,59 @@ export default async function DashboardPage({
           </div>
         )}
 
-        {/* ── Code entry — only for offline batch students ── */}
-        {!isOnlinePurchaser && !certificate && (
+        {/* ── No-access state: student is logged in but has neither bought
+             online nor been unlocked by a trainer yet. Show a clear dual
+             path (buy vs enter trainer code) so they aren't stuck staring
+             at an empty code-entry input wondering where the code comes
+             from. ── */}
+        {hasNoAccessYet && (
+          <div className="mb-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 sm:p-8">
+            <h2 className="mb-2 text-xl font-bold text-white">
+              You don&apos;t have course access yet
+            </h2>
+            <p className="mb-6 text-sm text-[#94a3b8]">
+              Pick one of the paths below to start learning:
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Online path */}
+              <div className="rounded-xl border border-[#059669]/30 bg-[#059669]/5 p-5">
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#059669]">
+                  Option 1 · Buy online
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-white">
+                  Get a course for ₹999
+                </h3>
+                <p className="mb-4 text-sm text-[#94a3b8]">
+                  Instant access. Complete sessions at your own pace. Certificate when you finish.
+                </p>
+                <Link
+                  href="/learn"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#059669] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#047857]"
+                >
+                  Browse courses → ₹999
+                </Link>
+              </div>
+
+              {/* Offline path */}
+              <div className="rounded-xl border border-white/[0.08] bg-[#06060e] p-5">
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#94a3b8]">
+                  Option 2 · Enrolled at a TARAhut centre?
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-white">
+                  Enter today&apos;s trainer code
+                </h3>
+                <p className="mb-4 text-sm text-[#94a3b8]">
+                  Ask your trainer for today&apos;s 6-digit code to unlock your next session.
+                </p>
+                <CodeEntry />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Code entry only — for offline students already mid-course. */}
+        {!hasNoAccessYet && !isOnlinePurchaser && !certificate && (
           <div className="mb-10">
             <CodeEntry />
           </div>
