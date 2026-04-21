@@ -100,6 +100,44 @@
   padding: 20px;
 }
 
+/* ── Tool ticker ───────────────────────────────────────────────────────────
+ * Infinite horizontal marquee of course tools in the hero. Edges fade via
+ * mask-image so pills fade in and out of view instead of popping.
+ */
+.el-tool-ticker {
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  padding: 12px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.el-tool-ticker-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  animation: el-ticker-scroll 40s linear infinite;
+}
+
+.el-tool-ticker-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(5, 150, 105, 0.08);
+  border: 1px solid rgba(5, 150, 105, 0.35);
+  color: var(--brand-emerald);
+  padding: 8px 20px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+@keyframes el-ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* ── Accessibility: honor reduced-motion preferences ───────────────────────
  * Scrollytelling + hover lifts + CTA scale-up all become annoying or
  * disorienting for users who opted out of motion. Kill the transforms
@@ -115,5 +153,8 @@
   .el-glass-card:hover,
   .el-cta-hook:hover {
     transform: none;
+  }
+  .el-tool-ticker-track {
+    animation: none;
   }
 }
