@@ -26,6 +26,7 @@ interface EnrollmentCardProps {
   enrolledCount: string
   modulesCount: number
   isSchoolCourse: boolean
+  batchStartingSoon?: boolean
 }
 
 type AppliedPromo = {
@@ -47,6 +48,7 @@ export function EnrollmentCard({
   enrolledCount,
   modulesCount,
   isSchoolCourse,
+  batchStartingSoon,
 }: EnrollmentCardProps) {
   const [step, setStep] = useState<Step>('form')
   const [name, setName] = useState('')
@@ -262,6 +264,18 @@ export function EnrollmentCard({
         <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] shadow-lg">
           {/* Price header */}
           <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-white">
+            {batchStartingSoon && (
+              <div className="-mt-1 mb-3 flex items-center gap-2 rounded-md border border-amber-300/40 bg-black/30 px-2.5 py-1.5 backdrop-blur-sm">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-300 opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-amber-300" />
+                </span>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-amber-200">
+                  Batch starts soon
+                </span>
+                <span className="text-[11px] text-white/80">· secure your seat</span>
+              </div>
+            )}
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold">
                 ₹{payableAmount.toLocaleString('en-IN')}

@@ -142,7 +142,12 @@ export function AskTara() {
 
   return (
     <>
-      {/* Floating button (closed state) */}
+      {/* Floating button (closed state) — styled as a "tenth planet"
+          that escaped the galaxy. Liquid blob morphs its border-radius
+          continuously, the outer halo pulses in sync with the sun's
+          distort cadence (~2.5s) to create a visual bridge between the
+          curriculum and the assistant. A monospace label floats to the
+          left like an orbital tag on hover. */}
       <AnimatePresence>
         {!open && (
           <motion.button
@@ -152,28 +157,69 @@ export function AskTara() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ delay: 1.5, type: 'spring', stiffness: 200, damping: 20 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 group"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            className="group fixed bottom-6 right-6 z-50"
             aria-label="Chat with Ask TARA"
           >
-            <div className="relative flex items-center gap-3 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 pl-2 pr-5 py-2 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow">
-              {/* Pulsing ring */}
-              <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-30 animate-ping" />
-              <div className="relative h-11 w-11 rounded-full overflow-hidden ring-2 ring-white/40 shadow-inner">
-                <motion.img
-                  src="/images/chatbot/ask-tara.jpg"
-                  alt="Ask TARA"
-                  className="h-full w-full object-cover"
-                  style={{ objectPosition: 'center 30%' }}
-                  animate={{ scale: [1, 1.06, 1] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              </div>
-              <span className="relative text-white font-semibold text-sm whitespace-nowrap">
+            {/* Orbital label — mirrors the monospace hover labels on
+                the galaxy planets; appears on hover, sits to the left
+                like a trailing planet tag. */}
+            <div className="pointer-events-none absolute right-[88px] top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="whitespace-nowrap rounded border border-emerald-400/40 bg-black/80 px-2.5 py-1.5 font-mono text-[10px] font-medium uppercase tracking-widest text-white/95 shadow-[0_0_14px_rgba(16,185,129,0.55)]">
                 Ask TARA
               </span>
             </div>
+
+            {/* Outer emerald halo — pulses at the sun's cadence. */}
+            <motion.span
+              aria-hidden
+              className="absolute -inset-4 rounded-full"
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(16,185,129,0.55) 0%, rgba(16,185,129,0.15) 40%, transparent 70%)',
+                filter: 'blur(14px)',
+              }}
+              animate={{ scale: [1, 1.18, 1], opacity: [0.55, 0.95, 0.55] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            {/* Liquid blob container — morphs border-radius on a slow
+                cycle so the silhouette is never static. Scale pulse is
+                separately synced to the sun. */}
+            <motion.div
+              className="relative flex h-16 w-16 items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 ring-2 ring-emerald-300/40 shadow-[0_0_32px_rgba(16,185,129,0.65)]"
+              animate={{
+                borderRadius: [
+                  '62% 38% 36% 64% / 55% 44% 56% 45%',
+                  '44% 56% 60% 40% / 66% 34% 58% 42%',
+                  '54% 46% 44% 56% / 38% 62% 35% 65%',
+                  '62% 38% 36% 64% / 55% 44% 56% 45%',
+                ],
+                scale: [1, 1.04, 1],
+              }}
+              transition={{
+                borderRadius: { duration: 11, repeat: Infinity, ease: 'easeInOut' },
+                scale: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+              }}
+            >
+              <motion.img
+                src="/images/chatbot/ask-tara.jpg"
+                alt="Ask TARA"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: 'center 30%' }}
+                animate={{ scale: [1, 1.06, 1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              {/* Emerald emission rim — subtle inner glow on the planet edge */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  boxShadow: 'inset 0 0 18px rgba(16,185,129,0.55)',
+                }}
+              />
+            </motion.div>
           </motion.button>
         )}
       </AnimatePresence>
