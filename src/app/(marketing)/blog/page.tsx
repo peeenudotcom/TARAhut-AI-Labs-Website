@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { supabase, type Post } from '@/lib/supabase';
+import { getSupabase, type Post } from '@/lib/supabase';
 import { BlogExplorer } from './blog-explorer';
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function BlogPage() {
-  const { data: posts } = await supabase
+  const { data: posts } = await getSupabase()
     .from('posts')
     .select('*')
     .eq('published', true)

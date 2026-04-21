@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { marked } from 'marked';
-import { supabase, type Post } from '@/lib/supabase';
+import { getSupabase, type Post } from '@/lib/supabase';
 
 export const revalidate = 3600;
 
@@ -10,7 +10,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const { data } = await supabase.from('posts').select('title, excerpt').eq('slug', slug).single();
+  const { data } = await getSupabase().from('posts').select('title, excerpt').eq('slug', slug).single();
   if (!data) return { title: 'Post Not Found' };
   return { title: `${data.title} | TARAhut AI Labs Blog`, description: data.excerpt };
 }
@@ -32,7 +32,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const { data: post } = await supabase
+  const { data: post } = await getSupabase()
     .from('posts')
     .select('*')
     .eq('slug', slug)
