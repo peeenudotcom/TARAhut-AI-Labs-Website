@@ -73,16 +73,6 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${geistMono.variable} ${playfair.variable} ${spaceGrotesk.variable} ${manrope.variable} h-full antialiased`}
     >
-      <head>
-        {/* No-flash theme boot. Reads the saved theme before paint so users
-            don't see a dark → light flicker on light-mode reloads. */}
-        <script
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('tarahut:theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}})();`,
-          }}
-        />
-      </head>
       <body className="min-h-full flex flex-col">
         <OrganizationSchema />
         {children}
