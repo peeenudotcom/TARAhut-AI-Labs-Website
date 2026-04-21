@@ -825,7 +825,7 @@ function go(id){
     if(secEl){var secTop=secEl.getBoundingClientRect().top+window.pageYOffset-navH-4;window.scrollTo({top:Math.max(secTop,0),behavior:'smooth'});}
   });
   const idx=secIds.indexOf(id);
-  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';
+  document.getElementById('progBar').style.width=((idx+1)/secIds.length*100)+'%';try{if(window.parent!==window)window.parent.postMessage({type:'tarahut:section',section:id},window.location.origin);}catch(e){}
   const pctDone=Math.round((idx+1)/secIds.length*100);
   const pt=document.getElementById('progText');
   pt.textContent=pctDone<=25?`${pctDone}% — Great start`:pctDone<=50?`${pctDone}% — Building momentum`:pctDone<=75?`${pctDone}% — Almost there`:pctDone<100?`${pctDone}% — Finish strong!`:`100% — Session complete!`;

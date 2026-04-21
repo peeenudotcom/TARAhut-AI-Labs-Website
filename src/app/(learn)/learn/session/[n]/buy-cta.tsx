@@ -10,7 +10,41 @@ interface BuyCtaProps {
   totalSessions: number;
 }
 
+// "Near the end" means the iframe either reached the wrap-up section
+// (s6 / s5 depending on the course) or the student has been on the page
+// long enough that a prompt is no longer premature. Showing the upsell
+// right when they open the session feels spammy and — as the copy
+// literally says "Loved this session?" — makes no sense before they've
+// watched anything.
+const FALLBACK_SHOW_AFTER_MS = 8 * 60 * 1000; // 8 minutes
+const WRAP_UP_SECTIONS = new Set(['s5', 's6']);
+
+function useNearEndOfSession() {
+  const [nearEnd, setNearEnd] = useState(false);
+
+  useEffect(() => {
+    function onMessage(ev: MessageEvent) {
+      if (ev.origin !== window.location.origin) return;
+      const d = ev.data as { type?: string; section?: string } | null;
+      if (!d || d.type !== 'tarahut:section') return;
+      if (typeof d.section === 'string' && WRAP_UP_SECTIONS.has(d.section)) {
+        setNearEnd(true);
+      }
+    }
+    window.addEventListener('message', onMessage);
+    const fallback = window.setTimeout(() => setNearEnd(true), FALLBACK_SHOW_AFTER_MS);
+    return () => {
+      window.removeEventListener('message', onMessage);
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
+  return nearEnd;
+}
+
 export function BuyCtaBar({ courseId, courseTitle, courseSlug, totalSessions }: BuyCtaProps) {
+  const nearEnd = useNearEndOfSession();
+  if (!nearEnd) return null;
   return (
     <div className="shrink-0 border-t border-[#059669]/30 bg-gradient-to-r from-[#059669]/10 via-[#0c0c1a] to-[#059669]/10 px-4 py-3">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 max-w-5xl mx-auto">
@@ -47,35 +81,24 @@ export function BuyCtaBar({ courseId, courseTitle, courseSlug, totalSessions }: 
 }
 
 export function BuyPopup({ courseId, courseTitle, courseSlug, totalSessions }: BuyCtaProps) {
+  const nearEnd = useNearEndOfSession();
   const [show, setShow] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Check if already dismissed this session
+    // Per-session dismissal: once the student closes it, don't pester them
+    // again in the same browser session.
     const key = `buy-popup-${courseId}`;
     if (sessionStorage.getItem(key)) {
       setDismissed(true);
       return;
     }
-
-    // Show popup after 90 seconds of viewing
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 90000);
-
-    // Also show on scroll to bottom of iframe area
-    const handleScroll = () => {
-      if (window.scrollY > 500 && !show) {
-        setShow(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [courseId, show]);
+    // Wait ~4s after the student reaches the wrap-up so they can read the
+    // congratulations + "what you learned" first, THEN pop the modal.
+    if (!nearEnd) return;
+    const timer = window.setTimeout(() => setShow(true), 4000);
+    return () => window.clearTimeout(timer);
+  }, [courseId, nearEnd]);
 
   function dismiss() {
     setShow(false);
