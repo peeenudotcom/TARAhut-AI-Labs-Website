@@ -92,19 +92,19 @@ export default function LearnLandingPage() {
                   <span className="h-1 w-1 rounded-full bg-[#94a3b8]" />
                   <span>{course.duration || 'Self-paced'}</span>
                 </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
+                <div className="flex flex-col gap-2">
                   <Link
                     href={`/learn/course/${course.slug}`}
-                    className="flex-1 rounded-lg border border-[#1e1e3a] bg-[#06060e] px-4 py-2.5 text-center text-xs font-semibold text-[#e2e8f0] transition hover:border-[#059669]/40 hover:text-[#00f0ff]"
+                    className="rounded-lg bg-[#059669] px-4 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-[#059669]/20 transition hover:bg-[#047857] active:scale-[0.98]"
                   >
-                    View Course
+                    Buy Course — ₹999
                   </Link>
                   {freeSession && (
                     <Link
                       href={`/learn/session/${freeSession.session}${courseParam}`}
-                      className="flex-1 rounded-lg bg-[#059669] px-4 py-2.5 text-center text-xs font-semibold text-white transition hover:bg-[#047857]"
+                      className="rounded-lg border border-[#1e1e3a] bg-[#06060e] px-4 py-2.5 text-center text-xs font-semibold text-[#94a3b8] transition hover:border-[#059669]/40 hover:text-[#00f0ff]"
                     >
-                      Try Free →
+                      Try Session 1 Free →
                     </Link>
                   )}
                 </div>
