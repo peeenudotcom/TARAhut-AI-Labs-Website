@@ -13,7 +13,14 @@ import { EnrollmentCard } from './enrollment-card';
 import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
 import { VisualTimeline } from '@/components/courses/visual-timeline';
+import { HeroSpline } from '@/components/courses/hero-spline';
 import { FreeSessionHook } from '@/components/landing/free-session-hook';
+
+// Spline scene used as the hero 3D background. Single shared scene
+// across all courses for now — can be parametrized per-course later if
+// the designer produces bespoke scenes.
+const HERO_SPLINE_URL =
+  'https://prod.spline.design/Z96Y7Jp-3zUe3N8o/scene.splinecode';
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-500/15 text-emerald-400',
@@ -81,18 +88,28 @@ export default async function CourseDetailPage({
       <CourseSchema course={course} />
       {/* Hero */}
       <section className="relative overflow-hidden py-20 text-white border-b border-white/[0.08] sm:py-24" style={{ backgroundColor: '#020617' }}>
-        {/* Course thumbnail background */}
+        {/* Static thumbnail fallback — shown on mobile, reduced-motion, or
+            while the Spline scene is loading. Keeps the hero looking
+            intentional even when the 3D scene is skipped. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={course.thumbnail}
           alt=""
           className="absolute inset-0 h-full w-full object-cover opacity-15"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-[#020617]/60" />
+
+        {/* 3D Spline scene — desktop only, after LCP, respects reduced-motion. */}
+        <HeroSpline url={HERO_SPLINE_URL} />
+
+        {/* Readability gradient on top of the Spline scene. Darkens the
+            bottom portion where the CTAs + meta row sit so text contrast
+            stays AA-compliant regardless of what the 3D scene renders. */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#020617]/40 via-[#020617]/60 to-[#020617]" />
+
         {/* Emerald radial glow — the "AI Lab" signal the designer mocked up */}
         <div
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 z-[1] pointer-events-none"
           style={{
             background:
               'radial-gradient(circle at 50% 30%, rgba(5, 150, 105, 0.18) 0%, transparent 55%)',
@@ -100,7 +117,7 @@ export default async function CourseDetailPage({
         />
         {/* Grid overlay */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 z-[1] pointer-events-none"
           style={{
             backgroundImage:
               'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
