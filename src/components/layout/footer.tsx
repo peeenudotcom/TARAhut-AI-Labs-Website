@@ -66,7 +66,10 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] bg-[#070B14] text-[#94A3B8]">
+    <footer
+      className="theme-chrome border-t text-[#94A3B8]"
+      style={{ backgroundColor: 'var(--chrome-bg)', borderColor: 'var(--chrome-border)' }}
+    >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Company */}

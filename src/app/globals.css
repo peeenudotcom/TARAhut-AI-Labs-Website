@@ -49,24 +49,28 @@
 }
 
 :root {
-  /* Clean White + Emerald Green Theme — Wise.com aesthetic */
-  --background: #FFFFFF;
-  --foreground: #0F172A;
-  --card: #FFFFFF;
-  --card-foreground: #0F172A;
-  --popover: #FFFFFF;
-  --popover-foreground: #0F172A;
+  /* TARAhut brand — dark by default (emerald-on-near-black). Light mode
+     is available via [data-theme="light"] below and progressively migrates
+     surfaces off hardcoded hex values onto these vars. Most marketing
+     components still hardcode dark hex and will feel out of place on light
+     until migrated — that's intentional incremental work. */
+  --background: #020617;
+  --foreground: #E2E8F0;
+  --card: #0C0C1A;
+  --card-foreground: #E2E8F0;
+  --popover: #0C0C1A;
+  --popover-foreground: #E2E8F0;
   --primary: #059669;
   --primary-foreground: #FFFFFF;
-  --secondary: #F0FDF4;
-  --secondary-foreground: #0F172A;
-  --muted: #F8FAFC;
+  --secondary: #0F172A;
+  --secondary-foreground: #E2E8F0;
+  --muted: #0F172A;
   --muted-foreground: #94A3B8;
-  --accent: #F0FDF4;
-  --accent-foreground: #0F172A;
+  --accent: #064E3B;
+  --accent-foreground: #E2E8F0;
   --destructive: #EF4444;
-  --border: #E2E8F0;
-  --input: #E2E8F0;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
   --ring: #059669;
   --chart-1: #059669;
   --chart-2: #0D9488;
@@ -74,17 +78,21 @@
   --chart-4: #F59E0B;
   --chart-5: #EF4444;
   --radius: 0.625rem;
-  --sidebar: #F8FAFC;
-  --sidebar-foreground: #0F172A;
+  --sidebar: #0C0C1A;
+  --sidebar-foreground: #E2E8F0;
   --sidebar-primary: #059669;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F0FDF4;
-  --sidebar-accent-foreground: #0F172A;
-  --sidebar-border: #E2E8F0;
+  --sidebar-accent: #064E3B;
+  --sidebar-accent-foreground: #E2E8F0;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #059669;
+  /* Chrome tokens used by the header/footer so the toggle has visible effect. */
+  --chrome-bg: #0C0C1A;
+  --chrome-border: rgba(255, 255, 255, 0.08);
+  --chrome-bg-translucent: rgba(2, 6, 23, 0.7);
 }
 
-.dark {
+[data-theme="light"] {
   --background: #FFFFFF;
   --foreground: #0F172A;
   --card: #FFFFFF;
@@ -96,26 +104,24 @@
   --secondary: #F0FDF4;
   --secondary-foreground: #0F172A;
   --muted: #F8FAFC;
-  --muted-foreground: #94A3B8;
-  --accent: #F0FDF4;
+  --muted-foreground: #475569;
+  --accent: #ECFDF5;
   --accent-foreground: #0F172A;
   --destructive: #EF4444;
   --border: #E2E8F0;
   --input: #E2E8F0;
   --ring: #059669;
-  --chart-1: #059669;
-  --chart-2: #0D9488;
-  --chart-3: #10B981;
-  --chart-4: #F59E0B;
-  --chart-5: #EF4444;
   --sidebar: #F8FAFC;
   --sidebar-foreground: #0F172A;
   --sidebar-primary: #059669;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F0FDF4;
+  --sidebar-accent: #ECFDF5;
   --sidebar-accent-foreground: #0F172A;
   --sidebar-border: #E2E8F0;
   --sidebar-ring: #059669;
+  --chrome-bg: #FFFFFF;
+  --chrome-border: #E2E8F0;
+  --chrome-bg-translucent: rgba(255, 255, 255, 0.8);
 }
 
 @layer base {
@@ -128,6 +134,25 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Light-mode readability overrides for elements whose colors are hard-coded
+   for dark (text-gray-300, text-white, text-[#94a3b8]) in dozens of
+   components. Rather than rewrite every marketing component at once, nudge
+   these common classes at the page level when the light theme is active so
+   the nav, links, and muted text stay readable. This is scoped to the
+   header + footer chrome via the .theme-chrome class — component interiors
+   keep their dark aesthetic until they're migrated. */
+[data-theme="light"] .theme-chrome {
+  color: #0F172A;
+}
+[data-theme="light"] .theme-chrome .text-gray-300,
+[data-theme="light"] .theme-chrome .text-gray-400,
+[data-theme="light"] .theme-chrome .text-white {
+  color: #0F172A;
+}
+[data-theme="light"] .theme-chrome a:hover {
+  color: #059669;
 }
 
 /* Audience card hover reveal */
