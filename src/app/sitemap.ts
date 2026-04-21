@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { createServiceClient } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { siteConfig } from '@/config/site'
 import { courses } from '@/config/courses'
 import { schoolCourses } from '@/config/school-courses'
@@ -21,16 +21,24 @@ const staticRoutes = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const db = createServiceClient()
+  // Posts are public (published=true filter), so the anon key is enough —
+  // no need for the service-role client here. Also means Preview builds
+  // (which don't get SUPABASE_SERVICE_ROLE_KEY) can generate a sitemap.
+  let posts: { slug: string; created_at: string }[] = []
+  try {
+    const { data } = await getSupabase()
+      .from('posts')
+      .select('slug, created_at')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+    posts = data ?? []
+  } catch {
+    // Supabase unreachable (missing env in preview, network issue) — the
+    // sitemap still lists every known static + course route, which is what
+    // SEO needs for a preview deploy. Posts reappear on the next prod deploy.
+  }
 
-  // Fetch published blog posts
-  const { data: posts } = await db
-    .from('posts')
-    .select('slug, created_at')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  const blogRoutes: MetadataRoute.Sitemap = (posts ?? []).map((post) => ({
+  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
     lastModified: new Date(post.created_at),
     changeFrequency: 'monthly',
