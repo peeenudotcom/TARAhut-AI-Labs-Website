@@ -53,7 +53,7 @@ export function SessionViewer({
         src={sessionFile}
         title={sessionTitle}
         className="h-full w-full border-0"
-        sandbox="allow-scripts allow-same-origin allow-forms"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"
         referrerPolicy="no-referrer"
       />
     </div>
