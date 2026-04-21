@@ -5,12 +5,15 @@ import { courses } from '@/config/courses';
 import { schoolCourses } from '@/config/school-courses';
 import { siteConfig } from '@/config/site';
 import { getCoursePricing } from '@/config/pricing';
+import { getOnlineCourseLink } from '@/lib/course-mapping';
 import { Badge } from '@/components/ui/badge';
 import { CourseSyllabus } from './course-syllabus';
 import { SchoolCourseSyllabus } from './school-course-syllabus';
 import { EnrollmentCard } from './enrollment-card';
 import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
+import { VisualTimeline } from '@/components/courses/visual-timeline';
+import { FreeSessionHook } from '@/components/landing/free-session-hook';
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-500/15 text-emerald-400',
@@ -64,19 +67,37 @@ export default async function CourseDetailPage({
 
   const schoolCourse = schoolCourses.find((c) => c.slug === slug);
 
+  // Online equivalent (null when no matching self-paced course exists).
+  // Drives the primary "Try Session 1 Free" hero CTA.
+  const onlineLink = getOnlineCourseLink(course.slug);
+
+  // Tools shown in the hero ticker — prefer school course tools list when
+  // available so kid-specific branding takes precedence. The ticker duplicates
+  // the array to create a seamless infinite loop.
+  const tickerTools = schoolCourse?.tools ?? course.tools;
+
   return (
     <>
       <CourseSchema course={course} />
       {/* Hero */}
-      <section className="relative overflow-hidden py-16 text-white border-b border-white/[0.08]" style={{ backgroundColor: '#020617' }}>
+      <section className="relative overflow-hidden py-20 text-white border-b border-white/[0.08] sm:py-24" style={{ backgroundColor: '#020617' }}>
         {/* Course thumbnail background */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={course.thumbnail}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+          className="absolute inset-0 h-full w-full object-cover opacity-15"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-[#020617]/60" />
+        {/* Emerald radial glow — the "AI Lab" signal the designer mocked up */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 30%, rgba(5, 150, 105, 0.18) 0%, transparent 55%)',
+          }}
+        />
         {/* Grid overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -149,6 +170,46 @@ export default async function CourseDetailPage({
             ) : null}
             <span>by {course.instructorName}</span>
           </div>
+
+          {/* Hero CTAs — primary is the free-session hook (highest intent, no
+              price friction); secondary scrolls to the offline enrollment
+              card for students who want the live batch. */}
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {onlineLink && (
+              <FreeSessionHook
+                courseSlug={onlineLink.slug}
+                label="Try Session 1 Free"
+              />
+            )}
+            <a
+              href="#syllabus"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/5"
+            >
+              Explore the Syllabus →
+            </a>
+          </div>
+
+          {/* Tool ticker — infinite horizontal marquee of tools this course
+              covers. Duplicated once so the CSS translate loop reads as
+              seamless. */}
+          {tickerTools.length > 0 && (
+            <div className="el-tool-ticker mt-10">
+              <div className="el-tool-ticker-track" aria-hidden={false}>
+                {tickerTools.map((tool) => (
+                  <span key={`a-${tool}`} className="el-tool-ticker-pill">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+              <div className="el-tool-ticker-track" aria-hidden>
+                {tickerTools.map((tool) => (
+                  <span key={`b-${tool}`} className="el-tool-ticker-pill">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -170,11 +231,11 @@ export default async function CourseDetailPage({
                 <h2 className="mb-4 text-2xl font-bold text-white">What You&apos;ll Achieve</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {course.learningOutcomes.map((outcome, i) => (
-                    <div key={i} className="flex items-start gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/15 p-3">
+                    <div key={i} className="el-glass-card-subtle flex items-start gap-3 p-3" style={{ borderColor: 'rgba(5,150,105,0.3)', background: 'rgba(5,150,105,0.08)' }}>
                       <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-sm text-gray-400">{outcome}</span>
+                      <span className="text-sm text-gray-300">{outcome}</span>
                     </div>
                   ))}
                 </div>
@@ -192,7 +253,7 @@ export default async function CourseDetailPage({
                     { icon: '📋', title: 'Assignments & Briefs', desc: 'Homework + detailed project briefs with rubrics' },
                     { icon: '🏆', title: 'Certificate', desc: 'TARAhut-verified certificate, shareable on LinkedIn' },
                   ].map((item) => (
-                    <div key={item.title} className="flex items-start gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-3">
+                    <div key={item.title} className="el-glass-card-subtle flex items-start gap-3 p-3">
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-lg">{item.icon}</span>
                       <div>
                         <p className="text-sm font-semibold text-white">{item.title}</p>
@@ -209,7 +270,7 @@ export default async function CourseDetailPage({
                   <h2 className="mb-4 text-2xl font-bold text-white">Course Highlights</h2>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {schoolCourse.highlights.map((h, i) => (
-                      <div key={i} className="flex items-start gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-3">
+                      <div key={i} className="el-glass-card-subtle flex items-start gap-3 p-3">
                         <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#059669] text-white text-[10px] font-bold">{i + 1}</span>
                         <span className="text-sm text-gray-400">{h}</span>
                       </div>
@@ -218,8 +279,11 @@ export default async function CourseDetailPage({
                 </div>
               )}
 
-              {/* Syllabus */}
-              <div className="mb-12">
+              {/* Syllabus — scrollytelling visual timeline. School courses keep
+                  the condensed accordion because their syllabus shape is
+                  different (modules numbered 1..N with sessions per module)
+                  and VisualTimeline expects the regular syllabus shape. */}
+              <div id="syllabus" className="mb-12 scroll-mt-24">
                 <h2 className="mb-2 text-2xl font-bold text-white">Course Syllabus</h2>
                 {schoolCourse ? (
                   <>
@@ -227,7 +291,10 @@ export default async function CourseDetailPage({
                     <SchoolCourseSyllabus syllabus={schoolCourse.syllabus} />
                   </>
                 ) : (
-                  <CourseSyllabus syllabus={course.syllabus} />
+                  <>
+                    <p className="mb-6 text-sm text-gray-500">{course.syllabus.length} phases · {course.duration} · scroll to explore</p>
+                    <VisualTimeline phases={course.syllabus} />
+                  </>
                 )}
               </div>
 
