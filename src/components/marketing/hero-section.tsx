@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Award, MapPin } from 'lucide-react'
+import { NeuralNavigatorLoader } from './neural-navigator-loader'
 
 export function HeroSection() {
   return (
@@ -142,101 +142,22 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* RIGHT — Founder portrait (from v3) */}
-          <div className="relative flex items-center justify-center md:justify-end">
-            <div className="relative group w-full max-w-[360px] md:max-w-[420px] lg:max-w-[460px]">
-              <div
-                className="absolute -inset-1 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(to right, rgba(153,247,255,0.2), rgba(140,243,243,0.2))',
-                }}
-              />
-
-              <div
-                className="relative rounded-2xl overflow-hidden p-2 transform rotate-2"
-                style={{
-                  background: 'rgba(29,39,46,0.5)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/parveen-sukhija.jpg"
-                  alt="Parveen Sukhija — Founder, TARAhut AI Labs"
-                  className="w-full h-auto max-h-[70vh] rounded-lg object-cover filter grayscale-[0.2] hover:grayscale-0 transition-all duration-500"
-                  style={{ objectPosition: 'center 18%', aspectRatio: '4 / 5' }}
-                />
-              </div>
-
-              <div
-                className="absolute -top-6 -right-6 p-4 rounded-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500"
-                style={{
-                  background: 'rgba(29,39,46,0.5)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 20px 40px -10px rgba(153,247,255,0.1)',
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ background: 'rgba(153,247,255,0.2)', color: '#99f7ff' }}
-                  >
-                    <Award className="w-5 h-5" strokeWidth={2.25} />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white leading-none">25+ Years</p>
-                    <p className="text-[10px] uppercase tracking-widest mt-1" style={{ color: '#a5acb3' }}>
-                      Experience
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="absolute -bottom-8 -left-8 p-4 rounded-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500"
-                style={{
-                  background: 'rgba(29,39,46,0.5)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 20px 40px -10px rgba(6,182,212,0.15)',
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ background: 'rgba(140,243,243,0.2)', color: '#8cf3f3' }}
-                  >
-                    <MapPin className="w-5 h-5" strokeWidth={2.25} />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-white leading-none">Punjab, India</p>
-                    <p className="text-[10px] uppercase tracking-widest mt-1" style={{ color: '#a5acb3' }}>
-                      HQ Center
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="absolute bottom-6 right-6 px-4 py-2 rounded-lg"
-                style={{
-                  background: 'rgba(29,39,46,0.7)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                }}
-              >
-                <p className="text-sm font-bold" style={{ color: '#99f7ff' }}>
-                  Parveen Sukhija
-                </p>
-                <p className="text-[10px] uppercase text-slate-300">
-                  Founder, TARAhut AI Labs
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* RIGHT — Neural Navigator (R3F). Interactive 3D graph of all 9
+              courses; click a node to reveal the course and jump into the
+              funnel. Replaces the founder portrait — that asset can move
+              to the "Why TARAhut" section or About page in a follow-up.
+              The component is lazy-loaded (dynamic import, ssr:false) so
+              the ~350KB three/r3f bundle doesn't block initial paint.
+              Mobile + reduced-motion users get a static decorative
+              fallback instead of the WebGL canvas. */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="relative w-full"
+          >
+            <NeuralNavigatorLoader />
+          </motion.div>
 
         </div>
       </div>
