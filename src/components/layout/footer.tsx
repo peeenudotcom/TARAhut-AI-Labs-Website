@@ -10,9 +10,11 @@ const footerLinks = {
   ],
   courses: [
     { label: 'AI Tools Mastery', href: '/courses/ai-tools-mastery-beginners' },
-    { label: 'Prompt Engineering', href: '/courses/generative-ai-prompt-engineering' },
     { label: 'AI for Marketing', href: '/courses/ai-digital-marketing' },
-    { label: 'Python & AI Dev', href: '/courses/python-ai-development' },
+    { label: 'AI Power 8-Week', href: '/courses/ai-power-8-week-program' },
+    { label: 'Master Claude', href: '/courses/master-claude-15-days' },
+    { label: 'AI Hustler 45', href: '/courses/ai-hustler-45' },
+    { label: 'All Courses →', href: '/courses' },
   ],
   resources: [
     { label: 'FAQ', href: '/faq' },
