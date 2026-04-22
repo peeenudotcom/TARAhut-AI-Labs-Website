@@ -365,10 +365,10 @@ export default function AboutPage() {
                 &gt; The Lab Team
               </p>
               <h2 className="mt-3 font-['Space_Grotesk',sans-serif] text-3xl font-bold text-white sm:text-4xl">
-                Trainers who run the labs with Parveen
+                Meet Your Trainer
               </h2>
               <p className="mt-3 text-gray-400">
-                The people you&apos;ll actually meet when you walk into a session.
+                The instructor you&apos;ll actually sit with every session.
               </p>
             </div>
           </AnimatedSection>
