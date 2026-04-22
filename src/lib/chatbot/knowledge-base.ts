@@ -5,6 +5,7 @@
 import { courses } from '@/config/courses'
 import { faqCategories } from '@/config/faqs'
 import { siteConfig } from '@/config/site'
+import { renderSemanticSessions } from './semantic-sessions'
 
 export function buildKnowledgeBase(): string {
   const sections: string[] = []
@@ -62,6 +63,12 @@ We currently have ${courses.length} courses. Here's every course with full detai
 
 ${course.shortDescription}${syllabusText}${outcomesText}${toolsText}`)
   })
+
+  // ==================== SEMANTIC SESSION MAP ====================
+  // Enriched 16-session map for the flagship AI Tools Mastery course.
+  // TARA uses the tags to match user intent ("save time on social
+  // media" → Session 06 Canva AI) instead of keyword-matching titles.
+  sections.push(renderSemanticSessions())
 
   // ==================== FAQ ====================
   sections.push(`# FREQUENTLY ASKED QUESTIONS
