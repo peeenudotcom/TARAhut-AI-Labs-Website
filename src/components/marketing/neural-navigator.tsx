@@ -423,7 +423,7 @@ export function NeuralNavigator() {
           </div>
         )}
 
-        <Canvas camera={{ position: [0, 3.5, 14], fov: 48 }}>
+        <Canvas camera={{ position: [0, 3.2, 16], fov: 45 }}>
           <ambientLight intensity={0.4} />
           <pointLight position={[0, 0, 0]} intensity={2.2} color="#10b981" />
           <pointLight position={[6, 6, 6]} intensity={0.6} color="#34d399" />
