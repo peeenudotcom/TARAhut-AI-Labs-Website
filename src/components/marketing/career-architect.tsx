@@ -3,8 +3,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { courses } from '@/config/courses';
 import { siteConfig } from '@/config/site';
+import {
+  AMBITION_OPTIONS,
+  IDENTITY_OPTIONS,
+  courseBySlug,
+  flattenCourse,
+  getLabel,
+  getPrescription,
+  type Ambition,
+  type Identity,
+} from '@/lib/career-architect/matrix';
 
 // AI Career Architect — a three-step interactive diagnostic that
 // reframes a standard lead form as "TARA is designing a custom
@@ -15,178 +24,9 @@ import { siteConfig } from '@/config/site';
 
 type Step = 'identity' | 'ambition' | 'contact' | 'analyzing' | 'result';
 
-type Identity = 'student' | 'biz-owner' | 'freelancer' | 'professional';
-type Ambition = 'save-time' | 'make-money' | 'get-job' | 'scale';
-
-const IDENTITY_OPTIONS: { id: Identity; label: string; icon: string; sub: string }[] = [
-  { id: 'student',       label: 'Student',       icon: '🎓', sub: 'Class 10 → College' },
-  { id: 'biz-owner',     label: 'Biz Owner',     icon: '🏪', sub: 'Running a shop or brand' },
-  { id: 'freelancer',    label: 'Freelancer',    icon: '💼', sub: 'Client work, solo operator' },
-  { id: 'professional',  label: 'Professional',  icon: '🧑‍💻', sub: 'Salaried, in-house role' },
-];
-
-const AMBITION_OPTIONS: { id: Ambition; label: string; icon: string; sub: string }[] = [
-  { id: 'save-time',  label: 'Save Time',  icon: '⚡', sub: 'Cut hours off daily work' },
-  { id: 'make-money', label: 'Make Money', icon: '💰', sub: 'Earn with a new skill' },
-  { id: 'get-job',    label: 'Get a Job',  icon: '🚀', sub: 'Land an AI-ready role' },
-  { id: 'scale',      label: 'Scale',      icon: '📈', sub: 'Grow output 10×' },
-];
-
-interface Prescription {
-  // The one course that best fits this profile — the buy decision.
-  primarySlug: string;
-  // Two supporting courses that cover adjacent needs.
-  alternatives: [string, string];
-  // Indices into the primary course's flattened session list (0-based).
-  // Kept ≤ 11 so every course — smallest syllabus is 12 sessions —
-  // has these three sessions available.
-  highlightedIndices: [number, number, number];
-  // Short "why this track" headline TARA shows on the result card.
-  pitch: string;
-}
-
-// The full recommendation matrix — 4 identities × 4 ambitions = 16
-// curated prescriptions. Authored here (not computed) so every
-// reveal feels intentional and the strongest course for each
-// profile gets the primary slot.
-const RECOMMENDATIONS: Record<`${Identity}-${Ambition}`, Prescription> = {
-  // STUDENT
-  'student-save-time': {
-    primarySlug: 'ai-tools-mastery-beginners',
-    alternatives: ['ai-power-8-week-program', 'master-claude-15-days'],
-    highlightedIndices: [0, 4, 6],
-    pitch: 'Start with the fastest-compounding tool stack — ChatGPT, Claude, and research AI.',
-  },
-  'student-make-money': {
-    primarySlug: 'ai-hustler-45',
-    alternatives: ['ai-tools-mastery-beginners', 'master-ai-builder'],
-    highlightedIndices: [0, 5, 10],
-    pitch: 'The 45-day freelance runway — earn your first AI paycheck before graduation.',
-  },
-  'student-get-job': {
-    primarySlug: 'ai-power-8-week-program',
-    alternatives: ['ai-tools-mastery-beginners', 'ai-hustler-45'],
-    highlightedIndices: [0, 6, 11],
-    pitch: '8 weeks, capstone project, portfolio — walk into interviews with proof, not promises.',
-  },
-  'student-scale': {
-    primarySlug: 'master-ai-builder',
-    alternatives: ['generative-ai-prompt-engineering', 'ai-power-8-week-program'],
-    highlightedIndices: [0, 4, 8],
-    pitch: 'Go beyond prompting — build full-stack AI products and ship them to real users.',
-  },
-
-  // BIZ OWNER
-  'biz-owner-save-time': {
-    primarySlug: 'ai-tools-mastery-beginners',
-    alternatives: ['master-claude-15-days', 'ai-digital-marketing'],
-    highlightedIndices: [2, 5, 7],
-    pitch: 'The operator stack — write, research, and design faster than your competition.',
-  },
-  'biz-owner-make-money': {
-    primarySlug: 'ai-digital-marketing',
-    alternatives: ['master-ai-builder', 'ai-tools-mastery-beginners'],
-    highlightedIndices: [0, 4, 8],
-    pitch: 'AI marketing is the cheapest growth lever you have. Master it in 12 weeks.',
-  },
-  'biz-owner-get-job': {
-    primarySlug: 'ai-power-8-week-program',
-    alternatives: ['ai-tools-mastery-beginners', 'ai-hustler-45'],
-    highlightedIndices: [0, 5, 10],
-    pitch: 'Pivoting? The 8-week comprehensive path builds a portfolio hiring managers trust.',
-  },
-  'biz-owner-scale': {
-    primarySlug: 'master-ai-builder',
-    alternatives: ['ai-digital-marketing', 'generative-ai-prompt-engineering'],
-    highlightedIndices: [2, 5, 9],
-    pitch: 'Automate the repetitive, productize the expertise — the 90-day builder path.',
-  },
-
-  // FREELANCER
-  'freelancer-save-time': {
-    primarySlug: 'ai-tools-mastery-beginners',
-    alternatives: ['master-claude-15-days', 'generative-ai-prompt-engineering'],
-    highlightedIndices: [2, 5, 7],
-    pitch: 'Bill the same, deliver 3× faster. The 13+ tool stack every freelancer needs.',
-  },
-  'freelancer-make-money': {
-    primarySlug: 'ai-hustler-45',
-    alternatives: ['ai-digital-marketing', 'ai-tools-mastery-beginners'],
-    highlightedIndices: [0, 8, 11],
-    pitch: 'Designed for this. 45 days from zero to earning on Fiverr / Upwork / direct clients.',
-  },
-  'freelancer-get-job': {
-    primarySlug: 'ai-hustler-45',
-    alternatives: ['ai-power-8-week-program', 'ai-tools-mastery-beginners'],
-    highlightedIndices: [0, 10, 11],
-    pitch: 'Freelance is the new job. Build a 45-day runway with real paying clients.',
-  },
-  'freelancer-scale': {
-    primarySlug: 'master-ai-builder',
-    alternatives: ['ai-digital-marketing', 'generative-ai-prompt-engineering'],
-    highlightedIndices: [1, 5, 10],
-    pitch: 'Stop trading hours for money — ship products, build retainers, reclaim your calendar.',
-  },
-
-  // PROFESSIONAL
-  'professional-save-time': {
-    primarySlug: 'ai-tools-mastery-beginners',
-    alternatives: ['master-claude-15-days', 'generative-ai-prompt-engineering'],
-    highlightedIndices: [2, 5, 6],
-    pitch: 'Reclaim 10+ hours a week on the tools you already open daily.',
-  },
-  'professional-make-money': {
-    primarySlug: 'ai-hustler-45',
-    alternatives: ['ai-tools-mastery-beginners', 'ai-digital-marketing'],
-    highlightedIndices: [2, 8, 10],
-    pitch: 'Side income engine — AI skills that pay weekends, no resignation required.',
-  },
-  'professional-get-job': {
-    primarySlug: 'ai-power-8-week-program',
-    alternatives: ['ai-tools-mastery-beginners', 'master-claude-15-days'],
-    highlightedIndices: [0, 6, 11],
-    pitch: '8-week comprehensive program — ship a capstone, build a portfolio, rewrite your resume.',
-  },
-  'professional-scale': {
-    primarySlug: 'generative-ai-prompt-engineering',
-    alternatives: ['master-ai-builder', 'master-claude-15-days'],
-    highlightedIndices: [0, 5, 10],
-    pitch: 'Stop using AI like a beginner. Advanced prompting + custom workflows at expert level.',
-  },
-};
-
-// Flatten a course's nested syllabus into a linear session list.
-// Strips the "Week N:" / "Module N:" prefix off the module heading
-// so it can be used as a clean tag on each session card.
-function flattenCourse(
-  slug: string
-): { n: number; title: string; tag: string }[] {
-  const course = courses.find((c) => c.slug === slug);
-  if (!course) return [];
-  const sessions: { n: number; title: string; tag: string }[] = [];
-  course.syllabus.forEach((mod) => {
-    const tagMatch = mod.module.match(
-      /^(Weeks?|Modules?|Phases?|Days?|Sprints?|Months?)\s+\d+\s*[:—-]\s*(.*)$/i
-    );
-    const tag = tagMatch ? tagMatch[2].trim() : mod.module;
-    mod.topics.forEach((topic) => {
-      sessions.push({ n: sessions.length + 1, title: topic, tag });
-    });
-  });
-  return sessions;
-}
-
-function courseByslug(slug: string) {
-  return courses.find((c) => c.slug === slug);
-}
-
-function getPrescription(identity: Identity, ambition: Ambition) {
-  return RECOMMENDATIONS[`${identity}-${ambition}`];
-}
-
-function idLabel(arr: { id: string; label: string }[], id: string): string {
-  return arr.find((o) => o.id === id)?.label ?? id;
-}
+// Matrix + helpers moved to @/lib/career-architect/matrix so the
+// same source powers both this client UI and the /api/career-roadmap
+// PDF endpoint. Below is just UI.
 
 // Slide-in animation shared across step panels. Short distance and
 // tight easing so the flow feels snappy, not floaty.
@@ -256,7 +96,7 @@ export function CareerArchitect() {
     [identity, ambition]
   );
 
-  const primaryCourse = prescription ? courseByslug(prescription.primarySlug) : null;
+  const primaryCourse = prescription ? courseBySlug(prescription.primarySlug) : null;
   const primarySessions = useMemo(
     () => (prescription ? flattenCourse(prescription.primarySlug) : []),
     [prescription]
@@ -272,8 +112,8 @@ export function CareerArchitect() {
     () =>
       prescription
         ? (prescription.alternatives
-            .map((s) => courseByslug(s))
-            .filter(Boolean) as NonNullable<ReturnType<typeof courseByslug>>[])
+            .map((s) => courseBySlug(s))
+            .filter(Boolean) as NonNullable<ReturnType<typeof courseBySlug>>[])
         : [],
     [prescription]
   );
@@ -284,8 +124,8 @@ export function CareerArchitect() {
       `Hi TARAhut! I'm ${name || 'a new student'}.`,
       ``,
       `TARA matched my profile to a custom path:`,
-      `· Who I am: ${idLabel(IDENTITY_OPTIONS, identity)}`,
-      `· My goal: ${idLabel(AMBITION_OPTIONS, ambition)}`,
+      `· Who I am: ${getLabel(IDENTITY_OPTIONS, identity)}`,
+      `· My goal: ${getLabel(AMBITION_OPTIONS, ambition)}`,
       `· Primary course: ${primaryCourse.title}`,
       ``,
       `Please send me my full roadmap PDF and help me book a free demo class for this course.`,
@@ -533,8 +373,10 @@ export function CareerArchitect() {
               >
                 <RoadmapBlueprint
                   name={name}
-                  identityLabel={idLabel(IDENTITY_OPTIONS, identity)}
-                  ambitionLabel={idLabel(AMBITION_OPTIONS, ambition)}
+                  identity={identity}
+                  ambition={ambition}
+                  identityLabel={getLabel(IDENTITY_OPTIONS, identity)}
+                  ambitionLabel={getLabel(AMBITION_OPTIONS, ambition)}
                   primaryCourse={primaryCourse}
                   highlightedSessions={highlightedSessions}
                   pitch={prescription.pitch}
@@ -796,6 +638,8 @@ function ProgressDots() {
 
 function RoadmapBlueprint({
   name,
+  identity,
+  ambition,
   identityLabel,
   ambitionLabel,
   primaryCourse,
@@ -806,12 +650,14 @@ function RoadmapBlueprint({
   onReset,
 }: {
   name: string;
+  identity: Identity;
+  ambition: Ambition;
   identityLabel: string;
   ambitionLabel: string;
-  primaryCourse: NonNullable<ReturnType<typeof courseByslug>>;
+  primaryCourse: NonNullable<ReturnType<typeof courseBySlug>>;
   highlightedSessions: { n: number; title: string; tag: string }[];
   pitch: string;
-  alternativeCourses: NonNullable<ReturnType<typeof courseByslug>>[];
+  alternativeCourses: NonNullable<ReturnType<typeof courseBySlug>>[];
   whatsappHref: string;
   onReset: () => void;
 }) {
@@ -819,6 +665,47 @@ function RoadmapBlueprint({
     (n, m) => n + m.topics.length,
     0
   );
+
+  const [pdfState, setPdfState] = useState<'idle' | 'generating' | 'error'>('idle');
+
+  async function handleDownloadAndBook() {
+    if (pdfState === 'generating') return;
+    setPdfState('generating');
+    try {
+      const res = await fetch('/api/career-roadmap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identity, ambition, name }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const blob = await res.blob();
+      // Trigger download via an ephemeral anchor — works across
+      // browsers without needing a full page nav.
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const safeName = (name || 'your')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+      a.download = `tarahut-roadmap-${safeName || 'your'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setPdfState('idle');
+      // After download completes, hand off to WhatsApp for the demo
+      // booking conversation. Short delay so the download prompt
+      // lands before the new tab opens.
+      window.setTimeout(() => {
+        window.open(whatsappHref, '_blank', 'noopener,noreferrer');
+      }, 400);
+    } catch (err) {
+      console.error('[career-architect] pdf fetch failed', err);
+      setPdfState('error');
+    }
+  }
+
   return (
     <div>
       {/* Certificate header */}
@@ -946,21 +833,48 @@ function RoadmapBlueprint({
         </div>
       )}
 
-      {/* CTAs — primary WhatsApp closer, secondary link to full
-          primary syllabus, tertiary restart. */}
+      {/* CTAs — primary fetches the PDF then hands off to WhatsApp,
+          secondary links to the full primary syllabus, tertiary
+          restart. */}
       <div className="mt-7 flex flex-col gap-3">
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(16,185,129,0.55)] transition-all hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-[0_0_44px_rgba(16,185,129,0.85)] sm:text-base"
+        <button
+          type="button"
+          onClick={handleDownloadAndBook}
+          disabled={pdfState === 'generating'}
+          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(16,185,129,0.55)] transition-all hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-[0_0_44px_rgba(16,185,129,0.85)] disabled:cursor-wait disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:bg-emerald-500 disabled:hover:shadow-[0_0_24px_rgba(16,185,129,0.55)] sm:text-base"
         >
-          <svg className="size-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.326 0-4.48-.742-6.24-2.004l-.436-.326-2.65.889.889-2.65-.326-.436A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-          </svg>
-          Download My Roadmap PDF &amp; Book Free Demo
-        </a>
+          {pdfState === 'generating' ? (
+            <>
+              <svg
+                className="size-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+                aria-hidden
+              >
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={3} opacity={0.25} />
+                <path d="M22 12a10 10 0 01-10 10" stroke="currentColor" strokeWidth={3} strokeLinecap="round" />
+              </svg>
+              Generating your PDF…
+            </>
+          ) : (
+            <>
+              <svg className="size-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.326 0-4.48-.742-6.24-2.004l-.436-.326-2.65.889.889-2.65-.326-.436A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+              </svg>
+              Download My Roadmap PDF &amp; Book Free Demo
+            </>
+          )}
+        </button>
+        {pdfState === 'error' && (
+          <p className="text-center text-xs font-semibold text-red-400">
+            Couldn&apos;t generate the PDF. You can still message TARA on{' '}
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="underline">
+              WhatsApp
+            </a>{' '}
+            — we&apos;ll send it over manually.
+          </p>
+        )}
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link
             href={`/courses/${primaryCourse.slug}#syllabus`}
