@@ -221,9 +221,13 @@ export default async function CourseDetailPage({
       {/* Content */}
       <section className="py-16 bg-white/[0.03]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_380px]">
-            {/* Left Column */}
-            <div>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px]">
+            {/* Left Column — min-w-0 so wide children (e.g. the Proof
+                Bridge marquee with min-w-max) don't force the grid
+                track to balloon past the viewport. CSS grid defaults
+                to minmax(auto,1fr) which expands to fit content; we
+                need minmax(0,1fr) to clamp it. */}
+            <div className="min-w-0">
 
               {/* About This Course */}
               <div className="mb-12">
