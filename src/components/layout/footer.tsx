@@ -4,6 +4,7 @@ import { siteConfig } from '@/config/site';
 const footerLinks = {
   company: [
     { label: 'About Us', href: '/about' },
+    { label: 'Lab Feed', href: '/lab-feed' },
     { label: 'Blog', href: '/blog' },
     { label: 'Partner With Us', href: '/partner' },
     { label: 'Contact', href: '/contact' },
