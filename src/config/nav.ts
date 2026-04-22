@@ -131,6 +131,7 @@ export const navEntries: NavEntry[] = [
     layout: 'grid',
     panelWidth: 620,
     items: [
+      { label: 'Prompt Vault', href: '/tools/prompts', description: '100+ Punjab-ready prompts', icon: '✨' },
       { label: 'Career Lab', href: '/tools/career-lab', description: 'Discover your AI career path in 60 seconds', icon: '🎯' },
       { label: 'AI Assessment', href: '/assess', description: 'Test your AI readiness', icon: '📊' },
       { label: 'Resources', href: '/resources', description: 'Free PDFs & guides', icon: '📥' },
