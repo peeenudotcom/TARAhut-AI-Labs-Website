@@ -445,7 +445,7 @@ export function Header() {
                 key={entry.href}
                 href={entry.href}
                 className={cn(
-                  'whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+                  'inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
                   'font-[family-name:var(--font-space-grotesk)]',
                   pathname === entry.href
                     ? 'text-emerald-300'
@@ -453,6 +453,12 @@ export function Header() {
                 )}
               >
                 {entry.label}
+                {entry.badge === 'live' && (
+                  <span aria-label="Live" className="relative flex size-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-red-500" />
+                  </span>
+                )}
               </Link>
             )
           )}
@@ -509,13 +515,19 @@ export function Header() {
                     <SheetClose key={entry.href} render={<Link href={entry.href} />}>
                       <span
                         className={cn(
-                          'block rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-white/[0.06]',
+                          'flex items-center gap-2 rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-white/[0.06]',
                           pathname === entry.href
                             ? 'text-emerald-300'
                             : 'text-white'
                         )}
                       >
                         {entry.label}
+                        {entry.badge === 'live' && (
+                          <span aria-label="Live" className="relative flex size-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+                            <span className="relative inline-flex size-1.5 rounded-full bg-red-500" />
+                          </span>
+                        )}
                       </span>
                     </SheetClose>
                   )

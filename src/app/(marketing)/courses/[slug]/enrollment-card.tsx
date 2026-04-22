@@ -506,6 +506,19 @@ export function EnrollmentCard({
                   Enroll via WhatsApp
                 </a>
 
+                {/* Conversion closer — small emerald link into the Lab
+                    Feed for hesitant buyers. Proof beats promise at
+                    the moment a card is open but the pay button
+                    hasn't been clicked. */}
+                <Link
+                  href="/lab-feed"
+                  className="group mb-3 flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.04] px-4 py-2.5 text-xs font-semibold text-emerald-300 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/10 hover:text-emerald-200"
+                >
+                  <span aria-hidden className="text-sm">✦</span>
+                  See what students are building this month
+                  <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                </Link>
+
                 {/* Email */}
                 <a
                   href={`mailto:${siteConfig.contact.email}?subject=Enquiry: ${courseTitle}`}

@@ -6,6 +6,10 @@ export interface NavItem {
   // If set, hovering this item swaps the mega-menu featured card to these values.
   image?: string;
   tagline?: string;
+  // When 'live', the header renders a red pulsing dot next to the
+  // label — signals that content behind this link is updated often
+  // and is worth revisiting (used by the Lab Feed entry).
+  badge?: 'live';
 }
 
 export interface NavGroup {
@@ -134,7 +138,7 @@ export const navEntries: NavEntry[] = [
     ],
     footer: { label: 'View all tools →', href: '/tools' },
   },
-  { label: 'Lab Feed', href: '/lab-feed' },
+  { label: 'Lab Feed', href: '/lab-feed', badge: 'live' },
   { label: 'Blog', href: '/blog' },
   {
     label: 'About',
