@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { siteConfig } from '@/config/site'
+import { ThoughtTrace } from './thought-trace'
 
 // Landing-page subdomain → short display name for the greeting
 const SUBDOMAIN_LABELS: Record<string, string> = {
@@ -332,20 +333,25 @@ export function AskTara() {
                 )
               })}
 
-              {/* Typing indicator */}
+              {/* Thought Trace — emerald terminal log that reveals
+                  TARA's reasoning steps while the response streams.
+                  Replaces the generic 3-dot typing indicator so the
+                  wait feels like deliberate reasoning, not latency. */}
               {isLoading && (
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-sm shadow-md">
-                    ✨
-                  </div>
-                  <div className="rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
+                <ThoughtTrace
+                  lastUserMessage={
+                    [...messages]
+                      .reverse()
+                      .find((m) => m.role === 'user')
+                      ? messageText(
+                          ([...messages].reverse().find((m) => m.role === 'user')!.parts as Array<{
+                            type: string
+                            text?: string
+                          }>)
+                        )
+                      : ''
+                  }
+                />
               )}
 
               {error && (
