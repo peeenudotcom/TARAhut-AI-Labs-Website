@@ -134,6 +134,7 @@ export const navEntries: NavEntry[] = [
     ],
     footer: { label: 'View all tools →', href: '/tools' },
   },
+  { label: 'Lab Feed', href: '/lab-feed' },
   { label: 'Blog', href: '/blog' },
   {
     label: 'About',
