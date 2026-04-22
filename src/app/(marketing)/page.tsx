@@ -10,6 +10,7 @@ import { PartnerBanner } from '@/components/marketing/partner-banner'
 import { FaqSection } from '@/components/marketing/faq-section'
 import { FreeLessonCta } from '@/components/marketing/free-lesson-cta'
 import { CtaSection } from '@/components/marketing/cta-section'
+import { CareerArchitect } from '@/components/marketing/career-architect'
 import { EnrollmentToast } from '@/components/landing/enrollment-toast'
 
 export default function HomePage() {
@@ -26,6 +27,10 @@ export default function HomePage() {
       <NewsletterSection />
       <PartnerBanner />
       <FaqSection />
+      {/* AI Career Architect — lead magnet right above the footer.
+          Turns the last scroll before the footer into an interactive
+          "TARA designs your path" moment rather than a passive CTA. */}
+      <CareerArchitect />
       <CtaSection />
       <EnrollmentToast />
     </>
