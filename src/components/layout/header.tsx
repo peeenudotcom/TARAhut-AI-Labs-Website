@@ -330,7 +330,7 @@ function DesktopDropdown({ entry, pathname }: { entry: NavDropdown; pathname: st
     <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <button
         className={cn(
-          'flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+          'flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-2 text-[13px] font-semibold uppercase transition-colors',
           'font-[family-name:var(--font-space-grotesk)]',
           isActive || open
             ? 'text-emerald-300'
@@ -436,7 +436,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {navEntries.map((entry) =>
             isDropdown(entry) ? (
               <DesktopDropdown key={entry.label} entry={entry} pathname={pathname} />
@@ -445,7 +445,7 @@ export function Header() {
                 key={entry.href}
                 href={entry.href}
                 className={cn(
-                  'inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+                  'inline-flex items-center gap-2 whitespace-nowrap rounded-lg px-2.5 py-2 text-[13px] font-semibold uppercase transition-colors',
                   'font-[family-name:var(--font-space-grotesk)]',
                   pathname === entry.href
                     ? 'text-emerald-300'
@@ -454,9 +454,12 @@ export function Header() {
               >
                 {entry.label}
                 {entry.badge === 'live' && (
-                  <span aria-label="Live" className="relative flex size-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                    <span className="relative inline-flex size-1.5 rounded-full bg-red-500" />
+                  <span
+                    aria-label="Live"
+                    className="relative inline-flex size-2 items-center justify-center"
+                  >
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-80" />
+                    <span className="relative inline-flex size-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.9)]" />
                   </span>
                 )}
               </Link>
