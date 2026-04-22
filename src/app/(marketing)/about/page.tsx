@@ -46,17 +46,34 @@ const values = [
   },
 ];
 
-const team: { name: string; role: string; bio: string; photo?: string; initials?: string }[] = [
-  {
-    name: 'Parveen Sukhija',
-    role: 'Founder & Lead Instructor',
-    bio: 'With 25+ years of experience across IT, digital marketing, and education, Parveen founded TARAhut AI Labs to bring practical AI education to Punjab and beyond.',
-    photo: '/images/parveen-sukhija.jpg',
-  },
+// Founder gets her own spotlight section rather than a small avatar
+// card — she's the origin story, not a directory entry. Keeps the
+// team array for everyone who teaches alongside her.
+const founder = {
+  name: 'Parveen Sukhija',
+  role: 'Founder & Lead Instructor',
+  photo: '/images/parveen-sukhija.jpg',
+  tagline:
+    'Bringing practical AI education to the heart of Punjab, and beyond.',
+  bio: [
+    `Parveen has spent over 25 years at the intersection of IT, digital marketing, and education — building products, running teams, and teaching. After watching the AI revolution unfold from tier-1 boardrooms, she came back to Kotkapura with one question: why should a student in Punjab wait five years for what a student in Bangalore has today?`,
+    `TARAhut AI Labs is the answer. Every curriculum, every session, every tool choice is calibrated against one question: "Will this help a student earn or build within 90 days?" The result is a program that's less theory, more output — and a lab that's always running live projects alongside the teaching.`,
+  ],
+  quote:
+    '"The next decade will reward people who use AI with intent, not people who fear it. Our job is to put that intent within reach."',
+  stats: [
+    { value: '25+', label: 'Years in tech' },
+    { value: '9', label: 'Courses designed' },
+    { value: '500+', label: 'Students taught' },
+  ],
+};
+
+const team: { name: string; role: string; bio: string; specialty?: string; photo?: string; initials?: string }[] = [
   {
     name: 'Liky Prusty',
     role: 'Master Trainer',
-    bio: 'An expert educator with a passion for making AI concepts simple and actionable. Liky leads hands-on training sessions and ensures every student builds real-world skills.',
+    specialty: 'Hands-on AI · Curriculum Lead',
+    bio: 'An expert educator with a passion for making AI concepts simple and actionable. Liky leads hands-on training sessions and makes sure every student walks away with a real project, not just a certificate.',
     photo: '/images/liky-prusty.jpeg',
   },
 ];
@@ -242,42 +259,159 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="bg-[#020617] py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Founder Spotlight — full portrait, rich story, stats. The
+          origin-story moment for the school; everything else on this
+          page reports into it. */}
+      <section className="relative overflow-hidden bg-[#020617] py-24 sm:py-28">
+        {/* Emerald aura + lab grid — matches the hero. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse at 30% 50%, rgba(16,185,129,0.14) 0%, transparent 60%)',
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, rgba(16,185,129,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.05) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+            maskImage:
+              'radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%)',
+          }}
+        />
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection>
+            <div className="grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-14">
+              {/* Portrait — generous dimensions, emerald ring + glow */}
+              <div className="relative mx-auto w-full max-w-sm md:max-w-none">
+                {/* Ambient emerald wash behind portrait */}
+                <div
+                  aria-hidden
+                  className="absolute -inset-8 rounded-[32px] opacity-60 blur-2xl"
+                  style={{
+                    background:
+                      'radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(13,148,136,0.25) 45%, transparent 75%)',
+                  }}
+                />
+                <div className="relative overflow-hidden rounded-[28px] border border-emerald-400/20 bg-white/[0.03] shadow-[0_20px_60px_-20px_rgba(16,185,129,0.5)]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={founder.photo}
+                    alt={founder.name}
+                    className="block h-auto w-full object-cover"
+                  />
+                </div>
+                {/* Credential chip pinned to the portrait corner */}
+                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-emerald-400/40 bg-[#020617]/90 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300 shadow-[0_0_24px_rgba(16,185,129,0.45)] backdrop-blur-sm sm:px-5 sm:py-2 sm:text-[11px]">
+                  &gt; Founder &amp; Lead Instructor
+                </div>
+              </div>
+
+              {/* Copy side */}
+              <div>
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
+                  &gt; Meet the Founder
+                </p>
+                <h2 className="mt-3 font-['Space_Grotesk',sans-serif] text-4xl font-bold leading-tight text-white sm:text-5xl">
+                  {founder.name}
+                </h2>
+                <p className="mt-2 text-base font-medium text-emerald-300/90">
+                  {founder.tagline}
+                </p>
+
+                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-300">
+                  {founder.bio.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
+
+                <blockquote className="mt-7 rounded-xl border-l-2 border-emerald-400 bg-emerald-500/[0.06] p-5 font-['Space_Grotesk',sans-serif] text-base italic leading-snug text-white/95">
+                  {founder.quote}
+                </blockquote>
+
+                <dl className="mt-7 grid grid-cols-3 gap-3 border-t border-emerald-500/15 pt-6">
+                  {founder.stats.map((stat) => (
+                    <div key={stat.label}>
+                      <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-emerald-400/80">
+                        {stat.label}
+                      </dt>
+                      <dd className="mt-1 font-['Space_Grotesk',sans-serif] text-2xl font-bold text-white sm:text-3xl">
+                        {stat.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Training Team — everyone who teaches alongside the founder.
+          Designed to breathe when there's 1-3 people and scale
+          cleanly as the team grows. */}
+      <section className="bg-[#0A0F1C] py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="mb-12 text-center">
-              <h2 className="text-3xl font-bold text-white">
-                Meet the Team
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
+                &gt; The Lab Team
+              </p>
+              <h2 className="mt-3 font-['Space_Grotesk',sans-serif] text-3xl font-bold text-white sm:text-4xl">
+                Trainers who run the labs with Parveen
               </h2>
               <p className="mt-3 text-gray-400">
-                The people behind TARAhut AI Labs.
+                The people you&apos;ll actually meet when you walk into a session.
               </p>
             </div>
           </AnimatedSection>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-start">
+          <div
+            className={`grid gap-6 items-start ${
+              team.length === 1
+                ? 'mx-auto max-w-md'
+                : 'sm:grid-cols-2 lg:grid-cols-3'
+            }`}
+          >
             {team.map((member, i) => (
               <AnimatedSection key={member.name} delay={i * 0.1}>
-                <div className="flex flex-col items-center rounded-xl border border-white/[0.08] bg-white/[0.03] p-8 text-center backdrop-blur-sm transition-colors hover:border-emerald-500/30 hover:bg-white/[0.06]">
-                  {'photo' in member ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      className="mb-4 h-24 w-24 rounded-full object-cover object-top shadow-md bg-emerald-500/10"
-                    />
+                <div className="group flex flex-col items-center rounded-2xl border border-white/[0.08] bg-white/[0.03] p-8 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-emerald-500/40 hover:bg-white/[0.05] hover:shadow-[0_20px_50px_-20px_rgba(16,185,129,0.4)]">
+                  {member.photo ? (
+                    <div className="relative mb-5">
+                      <div
+                        aria-hidden
+                        className="absolute -inset-2 rounded-full bg-emerald-500/15 blur-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                      />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={member.photo}
+                        alt={member.name}
+                        className="relative h-32 w-32 rounded-full border-2 border-emerald-400/30 object-cover object-top shadow-md sm:h-36 sm:w-36"
+                      />
+                    </div>
                   ) : (
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-2xl font-bold text-white">
+                    <div className="mb-5 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-3xl font-bold text-white">
                       {member.initials}
                     </div>
                   )}
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="font-['Space_Grotesk',sans-serif] text-xl font-bold text-white">
                     {member.name}
                   </h3>
-                  <p className="mb-3 text-sm font-medium text-emerald-400">
+                  <p className="mt-1 text-sm font-semibold text-emerald-400">
                     {member.role}
                   </p>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  {member.specialty && (
+                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-300/75">
+                      {member.specialty}
+                    </p>
+                  )}
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
                     {member.bio}
                   </p>
                 </div>
