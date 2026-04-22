@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { AskTara } from '@/components/chatbot/ask-tara';
 import { WhatsAppButton } from '@/components/layout/whatsapp-button';
+import { BackToTop } from '@/components/layout/back-to-top';
 import { PageTransition } from '@/components/layout/page-transition';
 
 export default function MarketingLayout({
@@ -18,6 +19,7 @@ export default function MarketingLayout({
       <Footer />
       <AskTara />
       <WhatsAppButton />
+      <BackToTop />
     </>
   );
 }
