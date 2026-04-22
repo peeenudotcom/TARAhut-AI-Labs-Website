@@ -11,6 +11,7 @@ import { EnrollmentCard } from './enrollment-card';
 import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
 import { VisualTimeline, type TimelinePhase } from '@/components/courses/visual-timeline';
+import { ProofBridge } from '@/components/marketing/proof-bridge';
 import { FreeSessionHook } from '@/components/landing/free-session-hook';
 
 const levelColors: Record<string, string> = {
@@ -328,6 +329,13 @@ export default async function CourseDetailPage({
                   </div>
                 );
               })()}
+
+              {/* Proof Bridge — lands right after the syllabus finale
+                  to answer the "can I actually do this?" question with
+                  real student outputs. Filters to course-specific
+                  projects when available, falls back to the global
+                  feed. */}
+              <ProofBridge courseSlug={course.slug} />
 
               {/* Tools */}
               <div className="mb-12">
