@@ -11,14 +11,17 @@ interface Enrollment {
   timeAgo: string
 }
 
-// Static fallback so there's always something to show before first real enrollment
+// Static fallback so there's always something to show before the
+// first real enrollment. Kotkapura-first to match the lab's actual
+// locality; the API route is the source of truth once payments
+// start flowing.
 const FALLBACK_ENROLLMENTS: Enrollment[] = [
-  { id: 1, name: 'Simran K.', city: 'Ludhiana', course: 'Master Claude 15 Days', timeAgo: '2 min ago' },
-  { id: 2, name: 'Rahul S.', city: 'Amritsar', course: 'AI Hustler 45', timeAgo: '7 min ago' },
-  { id: 3, name: 'Neha M.', city: 'Chandigarh', course: 'Master AI Builder', timeAgo: '12 min ago' },
-  { id: 4, name: 'Arjun P.', city: 'Kotkapura', course: 'AI Power 8-Week', timeAgo: '19 min ago' },
-  { id: 5, name: 'Kavya R.', city: 'Patiala', course: 'Master Claude 15 Days', timeAgo: '24 min ago' },
-  { id: 6, name: 'Mohit G.', city: 'Jalandhar', course: 'AI Digital Marketing', timeAgo: '31 min ago' },
+  { id: 1, name: 'Jashandeep S.', city: 'Kotkapura', course: 'Master AI Builder', timeAgo: '2 min ago' },
+  { id: 2, name: 'Simran K.', city: 'Bathinda', course: 'Master Claude 15 Days', timeAgo: '7 min ago' },
+  { id: 3, name: 'Rahul S.', city: 'Moga', course: 'AI Hustler 45', timeAgo: '12 min ago' },
+  { id: 4, name: 'Neha M.', city: 'Ferozepur', course: 'AI Power 8-Week', timeAgo: '19 min ago' },
+  { id: 5, name: 'Arjun P.', city: 'Kotkapura', course: 'AI Tools Mastery', timeAgo: '24 min ago' },
+  { id: 6, name: 'Kavya R.', city: 'Faridkot', course: 'AI Digital Marketing', timeAgo: '31 min ago' },
 ]
 
 export function EnrollmentToast() {
