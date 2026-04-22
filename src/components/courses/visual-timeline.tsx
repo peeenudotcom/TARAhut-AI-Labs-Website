@@ -23,10 +23,18 @@ function parseSprint(
   module: string,
   index: number
 ): { label: string; title: string } {
-  const match = module.match(/^(Week|Module|Phase|Day|Sprint)\s+\d+\s*[:—-]\s*(.*)$/i);
+  // Accept singular + plural forms ("Week", "Weeks") and a broader set
+  // of timebox words ("Month" for the 90-day programs, "Sprint" for
+  // agile-style modules). The regex intentionally requires a
+  // numeral — modules without numbers fall through to the generic
+  // "Sprint NN" fallback.
+  const match = module.match(/^(Weeks?|Modules?|Phases?|Days?|Sprints?|Months?)\s+\d+\s*[:—-]\s*(.*)$/i);
   const padded = String(index + 1).padStart(2, '0');
   if (match) {
-    const kind = match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase();
+    // Normalize plural → singular so labels always read "Week 01",
+    // never "Weeks 01" when the raw text was "Weeks 1–3:".
+    const singular = match[1].replace(/s$/i, '');
+    const kind = singular.charAt(0).toUpperCase() + singular.slice(1).toLowerCase();
     return { label: `${kind} ${padded}`, title: match[2].trim() };
   }
   return { label: `Sprint ${padded}`, title: module };
