@@ -1,102 +1,131 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { LabFeedBento } from '@/components/marketing/lab-feed-bento';
 import { labFeed } from '@/config/lab-feed';
 
 export const metadata: Metadata = {
-  title: 'The Live Lab Feed · TARAhut AI Labs',
+  title: 'The Live Lab | TARAhut Student Showcase',
   description:
-    'Real-world AI applications built by TARAhut students across Punjab during their 16-session transformation. Updated weekly.',
+    'Real-world AI projects built by TARAhut students during their 16-session transformation. Hover any tile to see the actual prompt or workflow that shipped it.',
 };
 
-// Public gallery of student outputs. Same dark + emerald-grid
-// treatment as the hero so /lab-feed reads as part of the same
-// universe, not a separate page.
+// Announcements for the live ticker — short phrases separated by `•`.
+// Authored here for now; swap for a real data source once the Lab
+// has live signals (new enrolments, project shipments, batch starts).
+const TICKER_LINES = [
+  'Session 05 progress · 12 students generated 4K brand logos this week',
+  'New batch starting Monday in the Kotkapura Lab',
+  'Student Arjun just deployed a Custom GPT for a local law firm',
+  '500+ graduates across Punjab & online',
+  'Ship a project in 16 sessions — not 16 months',
+];
+
 export default function LabFeedPage() {
   const totalProjects = labFeed.length;
-  const locations = new Set(
-    labFeed.map((t) => (t.studentMeta.toLowerCase().includes('kotkapura') ? 'kotkapura' : 'online'))
-  );
 
   return (
     <main
-      className="relative min-h-screen overflow-hidden pb-24 pt-20 text-white md:pt-28"
-      style={{ backgroundColor: '#020617' }}
+      className="relative overflow-x-hidden pb-24 text-white"
+      style={{
+        backgroundColor: '#030406',
+        backgroundImage:
+          'radial-gradient(circle at 50% -20%, rgba(16,185,129,0.15) 0%, transparent 70%)',
+      }}
     >
-      {/* Emerald radial glow — mirrors the hero so the page feels like
-          the same "lab" opening a new room, not a separate site. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-        <div
-          className="absolute top-[-10%] left-[10%] h-[700px] w-[700px] rounded-full blur-[140px]"
-          style={{ background: 'rgba(16,185,129,0.14)' }}
-        />
-        <div
-          className="absolute bottom-[-10%] right-[5%] h-[500px] w-[500px] rounded-full blur-[120px]"
-          style={{ background: 'rgba(13,148,136,0.10)' }}
-        />
-      </div>
-
-      {/* Lab grid overlay — same 40px cell size as the hero grid so
-          the continuity reads even as the user scrolls this page. */}
+      {/* Live ticker — emerald-tinted marquee that slides across the
+          top of the page below the global nav. Doubled so the CSS
+          animation loops seamlessly. Pauses on hover. */}
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* Header */}
-        <header className="mb-12 text-center md:mb-16">
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.24em] text-emerald-400">
-            &gt; The Proof Surface
-          </p>
-          <h1 className="mt-3 font-['Space_Grotesk',sans-serif] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
-            The <span className="text-emerald-400">Live Lab</span> Feed
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-gray-400 md:text-base">
-            Real-world AI applications built by TARAhut students across Punjab during their 16-session transformation. Every tile is a real project, tagged with the session where the tool was first introduced.
-          </p>
-
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-emerald-300/90">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-block size-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-              {totalProjects} projects · updated weekly
-            </span>
-            <span className="text-white/20">·</span>
-            <span>
-              {locations.has('kotkapura') ? 'Kotkapura Lab + ' : ''}Online
-            </span>
-          </div>
-        </header>
-
-        <LabFeedBento />
-
-        {/* Footer CTA — nudges the user from "look at the proof" to
-            "book a seat" or "jump into the galaxy" after they've
-            browsed. */}
-        <div className="mt-16 text-center md:mt-20">
-          <p className="mx-auto max-w-xl font-['Space_Grotesk',sans-serif] text-xl font-bold leading-snug text-white md:text-2xl">
-            Your project could be on this grid in 8 weeks.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="/#galaxy"
-              className="rounded-lg bg-emerald-500 px-6 py-3 text-sm font-bold text-white shadow-[0_0_24px_rgba(16,185,129,0.5)] transition-all hover:bg-emerald-400 hover:shadow-[0_0_36px_rgba(16,185,129,0.8)]"
-            >
-              Pick your course →
-            </a>
-            <a
-              href="/learn"
-              className="rounded-lg border border-white/15 bg-transparent px-6 py-3 text-sm font-semibold text-gray-200 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white"
-            >
-              Try Session 1 free
-            </a>
+        aria-label="Live announcements"
+        className="group relative border-b border-white/[0.08] bg-emerald-500/[0.08] py-2.5 backdrop-blur-sm"
+      >
+        <div className="relative flex overflow-hidden whitespace-nowrap">
+          <div
+            className="inline-flex shrink-0 items-center gap-8 pr-8 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-300 [animation:lab-ticker_42s_linear_infinite] group-hover:[animation-play-state:paused]"
+            style={{ willChange: 'transform' }}
+          >
+            {[...TICKER_LINES, ...TICKER_LINES].map((line, i) => (
+              <span key={i} className="flex items-center gap-8">
+                <span
+                  aria-hidden
+                  className="inline-block size-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]"
+                />
+                {line}
+              </span>
+            ))}
           </div>
         </div>
+        <style>{`
+          @keyframes lab-ticker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
       </div>
+
+      {/* Hero — centered, sets the promise for the page */}
+      <section className="px-5 pb-12 pt-20 text-center sm:pt-24">
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.24em] text-emerald-400">
+          &gt; The Proof Surface
+        </p>
+        <h1 className="mx-auto mt-4 max-w-4xl font-['Space_Grotesk',sans-serif] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+          The <span className="text-emerald-400">Live Lab</span>
+        </h1>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gray-400 md:text-lg">
+          This is where theory turns into reality. Explore the actual projects
+          built by TARAhut students during their 16-session transformation —
+          hover any tile to see the prompt or workflow behind it.
+        </p>
+        <p className="mx-auto mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-emerald-300/90">
+          <span className="inline-block size-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
+          {totalProjects} projects · updated weekly
+        </p>
+      </section>
+
+      {/* Grid + filters */}
+      <section className="px-5 pb-20">
+        <div className="mx-auto max-w-[1300px]">
+          <LabFeedBento />
+        </div>
+      </section>
+
+      {/* Final CTA — the closer. After the visitor has browsed real
+          output, convert the curiosity. Linked to the flagship course
+          page; secondary "Try Session 1 free" for hesitant buyers. */}
+      <section
+        className="px-5 py-20 sm:py-24"
+        style={{
+          backgroundImage:
+            'linear-gradient(to top, rgba(16,185,129,0.12) 0%, transparent 100%)',
+        }}
+      >
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-400">
+            &gt; Your Turn
+          </p>
+          <h2 className="mt-3 font-['Space_Grotesk',sans-serif] text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
+            Ready to build your first project?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base text-gray-400">
+            Join the next batch in the Kotkapura Lab or online and move from
+            spectator to creator in 16 sessions.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/courses/master-ai-builder"
+              className="rounded-full bg-emerald-500 px-9 py-4 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(16,185,129,0.5)] transition-all hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-[0_0_44px_rgba(16,185,129,0.85)] md:text-base"
+            >
+              Enroll in the Master AI Journey
+            </Link>
+            <Link
+              href="/learn"
+              className="rounded-full border border-white/15 bg-transparent px-7 py-4 text-sm font-semibold text-gray-200 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white md:text-base"
+            >
+              Try Session 1 free
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
