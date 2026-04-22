@@ -115,6 +115,10 @@ export function AskTara() {
   })
 
   const isLoading = status === 'streaming' || status === 'submitted'
+  // Trace only shows during "submitted" — the wait for the first
+  // streamed token. Once streaming starts, the partial message
+  // replaces the trace so we don't stack two bubbles.
+  const isThinking = status === 'submitted'
 
   // Detect landing-page subdomain once on mount
   useEffect(() => {
@@ -334,26 +338,35 @@ export function AskTara() {
               })}
 
               {/* Thought Trace — emerald terminal log that reveals
-                  TARA's reasoning steps while the response streams.
-                  Replaces the generic 3-dot typing indicator so the
-                  wait feels like deliberate reasoning, not latency. */}
-              {isLoading && (
-                <ThoughtTrace
-                  lastUserMessage={
-                    [...messages]
-                      .reverse()
-                      .find((m) => m.role === 'user')
-                      ? messageText(
-                          ([...messages].reverse().find((m) => m.role === 'user')!.parts as Array<{
-                            type: string
-                            text?: string
-                          }>)
-                        )
-                      : ''
-                  }
-                />
-              )}
-
+                  TARA's reasoning steps while we wait for the first
+                  streamed token. Exits the moment streaming begins
+                  so the real message takes over without stacking. */}
+              <AnimatePresence>
+                {isThinking && (
+                  <motion.div
+                    key="thought-trace"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <ThoughtTrace
+                      lastUserMessage={
+                        [...messages]
+                          .reverse()
+                          .find((m) => m.role === 'user')
+                          ? messageText(
+                              ([...messages].reverse().find((m) => m.role === 'user')!.parts as Array<{
+                                type: string
+                                text?: string
+                              }>)
+                            )
+                          : ''
+                      }
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
               {error && (
                 <div className="rounded-2xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-xs text-red-300">
                   Something went wrong. Please try again or{' '}

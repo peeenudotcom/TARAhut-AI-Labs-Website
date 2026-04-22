@@ -66,11 +66,15 @@ export function ThoughtTrace({ lastUserMessage }: Props) {
   const intent = useMemo(() => extractIntent(lastUserMessage), [lastUserMessage]);
   const steps = useMemo(() => buildSteps(intent), [intent]);
 
-  const [visibleCount, setVisibleCount] = useState(1);
+  // Start at zero and reveal the first step on the next tick so it
+  // fades in like every subsequent step — the old behaviour had step
+  // 01 appearing instantly at mount, which read as "pop" rather than
+  // "reasoning."
+  const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
     if (visibleCount >= steps.length) return;
-    const delay = steps[visibleCount - 1]?.dwellMs ?? 400;
+    const delay = visibleCount === 0 ? 180 : (steps[visibleCount - 1]?.dwellMs ?? 400);
     const t = window.setTimeout(() => {
       setVisibleCount((c) => Math.min(c + 1, steps.length));
     }, delay);
@@ -102,14 +106,22 @@ export function ThoughtTrace({ lastUserMessage }: Props) {
             0%, 100% { opacity: 1; }
             50%      { opacity: 0.25; }
           }
+          @keyframes trace-step-in {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
         `}</style>
 
-        <ul className="flex flex-col gap-1.5">
+        <ul className="flex flex-col gap-1.5 min-h-[1.5rem]">
           {steps.slice(0, visibleCount).map((s, i) => {
             const active = i === visibleCount - 1 && visibleCount < steps.length;
             const done = !active;
             return (
-              <li key={s.tag} className="flex items-start gap-2">
+              <li
+                key={s.tag}
+                className="flex items-start gap-2"
+                style={{ animation: 'trace-step-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both' }}
+              >
                 <span
                   className={`mt-[3px] inline-block size-1.5 rounded-full ${
                     done
