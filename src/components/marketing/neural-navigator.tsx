@@ -22,14 +22,14 @@ interface OrbitConfig {
 
 const ORBIT_CONFIG: OrbitConfig[] = [
   { radius: 0,   speed: 0,    size: 0.55, phase: 0 },     // sun (flagship)
-  { radius: 1.4, speed: 1.10, size: 0.17, phase: 0.4 },
-  { radius: 1.9, speed: 0.85, size: 0.22, phase: 1.8 },
-  { radius: 2.5, speed: 0.70, size: 0.16, phase: 3.2 },
-  { radius: 3.1, speed: 0.55, size: 0.24, phase: 0.9 },
-  { radius: 3.7, speed: 0.45, size: 0.20, phase: 4.1 },
-  { radius: 4.3, speed: 0.55, size: 0.18, phase: 2.6 },
-  { radius: 4.9, speed: 0.28, size: 0.26, phase: 5.4 },
-  { radius: 5.5, speed: 0.20, size: 0.22, phase: 1.1 },
+  { radius: 1.3, speed: 1.10, size: 0.17, phase: 0.4 },
+  { radius: 1.7, speed: 0.85, size: 0.22, phase: 1.8 },
+  { radius: 2.1, speed: 0.70, size: 0.16, phase: 3.2 },
+  { radius: 2.6, speed: 0.55, size: 0.24, phase: 0.9 },
+  { radius: 3.0, speed: 0.45, size: 0.20, phase: 4.1 },
+  { radius: 3.5, speed: 0.55, size: 0.18, phase: 2.6 },
+  { radius: 4.0, speed: 0.28, size: 0.26, phase: 5.4 },
+  { radius: 4.5, speed: 0.20, size: 0.22, phase: 1.1 },
 ];
 
 function shorten(title: string): string {
@@ -166,14 +166,18 @@ function OrbitRing({
   active: boolean;
   dimmed: boolean;
 }) {
-  const thickness = active ? 0.018 : 0.006;
+  // Thicker rings + higher baseline opacity so the paths read as real
+  // structure on the dark canvas — at 2px baseline they faded into the
+  // grid and gave the impression of broken UI rather than an orbital
+  // plane.
+  const thickness = active ? 0.022 : 0.012;
   return (
     <mesh rotation={[Math.PI / 2, 0, 0]} raycast={() => null}>
       <ringGeometry args={[radius - thickness, radius + thickness, 128]} />
       <meshBasicMaterial
         color={active ? '#34d399' : '#10b981'}
         transparent
-        opacity={(active ? 0.75 : 0.18) * (dimmed ? 0.3 : 1)}
+        opacity={(active ? 0.85 : 0.42) * (dimmed ? 0.35 : 1)}
         side={THREE.DoubleSide}
         depthWrite={false}
       />
@@ -186,8 +190,11 @@ function ParallaxGroup({ children }: { children: React.ReactNode }) {
   useFrame((state) => {
     const g = ref.current;
     if (!g) return;
-    const targetY = state.pointer.x * 0.15;
-    const targetX = -state.pointer.y * 0.1;
+    // Softer parallax — prior values swung the outer orbits past the
+    // rounded container's clip on wide screens. 0.08/0.06 keeps the
+    // depth illusion without clipping.
+    const targetY = state.pointer.x * 0.08;
+    const targetX = -state.pointer.y * 0.06;
     g.rotation.y += (targetY - g.rotation.y) * 0.05;
     g.rotation.x += (targetX - g.rotation.x) * 0.05;
   });
@@ -214,7 +221,11 @@ function CameraController({
   orbitRef: React.RefObject<OrbitRef | null>;
 }) {
   const { camera } = useThree();
-  const defaultPos = useMemo(() => new THREE.Vector3(0, 4, 12), []);
+  // Pulled back + slightly higher so the outer orbit (radius 4.5)
+  // sits comfortably within the rounded container's clip on all
+  // viewports. Prior z=12 was too tight; outer orbits kissed the
+  // edge and auto-rotate + parallax clipped them.
+  const defaultPos = useMemo(() => new THREE.Vector3(0, 3.5, 14), []);
   const defaultLookAt = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
   useFrame(() => {
@@ -226,9 +237,9 @@ function CameraController({
       // so the planet fills the foreground with the sun behind it.
       const radial =
         target.length() > 0.01
-          ? target.clone().normalize().multiplyScalar(2.4)
-          : new THREE.Vector3(0, 0, 3.5);
-      desiredPos = target.clone().add(radial).add(new THREE.Vector3(0, 1.2, 0));
+          ? target.clone().normalize().multiplyScalar(2.0)
+          : new THREE.Vector3(0, 0, 3.0);
+      desiredPos = target.clone().add(radial).add(new THREE.Vector3(0, 1.0, 0));
       desiredLookAt = target;
     } else {
       desiredPos = defaultPos;
@@ -412,7 +423,7 @@ export function NeuralNavigator() {
           </div>
         )}
 
-        <Canvas camera={{ position: [0, 4, 12], fov: 52 }}>
+        <Canvas camera={{ position: [0, 3.5, 14], fov: 48 }}>
           <ambientLight intensity={0.4} />
           <pointLight position={[0, 0, 0]} intensity={2.2} color="#10b981" />
           <pointLight position={[6, 6, 6]} intensity={0.6} color="#34d399" />
