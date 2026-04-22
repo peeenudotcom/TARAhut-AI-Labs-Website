@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { courses } from '@/config/courses';
 import { siteConfig } from '@/config/site';
 
 // AI Career Architect — a three-step interactive diagnostic that
@@ -31,54 +32,156 @@ const AMBITION_OPTIONS: { id: Ambition; label: string; icon: string; sub: string
   { id: 'scale',      label: 'Scale',      icon: '📈', sub: 'Grow output 10×' },
 ];
 
-// The flagship 16-session roadmap. Authored here (not derived from
-// courses.ts) because this surface needs session-level titles short
-// enough to fit in a blueprint card; the courses config carries the
-// long-form descriptions for the Pulse Path.
-const SESSIONS: { n: number; title: string; tag: string }[] = [
-  { n: 1,  title: 'AI Lab Setup',                  tag: 'Foundations' },
-  { n: 2,  title: 'AI Mindset & Career Map',       tag: 'Foundations' },
-  { n: 3,  title: 'Prompt Engineering Basics',     tag: 'Foundations' },
-  { n: 4,  title: 'Advanced Prompting Library',    tag: 'Foundations' },
-  { n: 5,  title: 'ChatGPT & Claude Deep Dive',    tag: 'Text & Research' },
-  { n: 6,  title: 'AI for Pro Writing',            tag: 'Text & Research' },
-  { n: 7,  title: 'Research with Perplexity',      tag: 'Text & Research' },
-  { n: 8,  title: 'Presentations with Gamma',      tag: 'Text & Research' },
-  { n: 9,  title: 'Midjourney Image Mastery',      tag: 'Creative' },
-  { n: 10, title: 'HeyGen Video Avatars',          tag: 'Creative' },
-  { n: 11, title: 'ElevenLabs Voice + Audio',      tag: 'Creative' },
-  { n: 12, title: 'Brand Kit Project',             tag: 'Creative' },
-  { n: 13, title: 'No-Code Sites with Bolt',       tag: 'Launch' },
-  { n: 14, title: 'Capstone Project',              tag: 'Launch' },
-  { n: 15, title: 'Portfolio Assembly',            tag: 'Launch' },
-  { n: 16, title: 'Freelancing Launchpad',         tag: 'Launch' },
-];
+interface Prescription {
+  // The one course that best fits this profile — the buy decision.
+  primarySlug: string;
+  // Two supporting courses that cover adjacent needs.
+  alternatives: [string, string];
+  // Indices into the primary course's flattened session list (0-based).
+  // Kept ≤ 11 so every course — smallest syllabus is 12 sessions —
+  // has these three sessions available.
+  highlightedIndices: [number, number, number];
+  // Short "why this track" headline TARA shows on the result card.
+  pitch: string;
+}
 
-// Recommendation matrix — each (identity, ambition) maps to the 3
-// session indices that matter most. Curated, not computed, so the
-// reveal feels intentional rather than algorithmic.
-const RECOMMENDATIONS: Record<`${Identity}-${Ambition}`, [number, number, number]> = {
-  'student-save-time':       [0, 4, 7],   // lab setup, ChatGPT deep dive, presentations
-  'student-make-money':      [1, 8, 15],  // career map, Midjourney, freelance
-  'student-get-job':         [1, 11, 14], // career map, brand kit, portfolio
-  'student-scale':           [3, 9, 13],  // prompt library, video, capstone
-  'biz-owner-save-time':     [2, 5, 6],   // prompts, pro writing, research
-  'biz-owner-make-money':    [4, 8, 12],  // ChatGPT, Midjourney, no-code site
-  'biz-owner-get-job':       [0, 5, 12],  // setup, writing, no-code
-  'biz-owner-scale':         [3, 8, 12],  // advanced prompts, images, no-code
-  'freelancer-save-time':    [2, 5, 7],   // prompts, writing, presentations
-  'freelancer-make-money':   [4, 8, 15],  // ChatGPT, images, freelance
-  'freelancer-get-job':      [13, 14, 15],// capstone, portfolio, freelance
-  'freelancer-scale':        [8, 12, 13], // images, no-code, capstone
-  'professional-save-time':  [2, 5, 6],   // prompts, writing, research
-  'professional-make-money': [4, 8, 13],  // ChatGPT, images, capstone
-  'professional-get-job':    [1, 14, 15], // career map, portfolio, freelance
-  'professional-scale':      [3, 11, 12], // prompts, brand kit, no-code
+// The full recommendation matrix — 4 identities × 4 ambitions = 16
+// curated prescriptions. Authored here (not computed) so every
+// reveal feels intentional and the strongest course for each
+// profile gets the primary slot.
+const RECOMMENDATIONS: Record<`${Identity}-${Ambition}`, Prescription> = {
+  // STUDENT
+  'student-save-time': {
+    primarySlug: 'ai-tools-mastery-beginners',
+    alternatives: ['ai-power-8-week-program', 'master-claude-15-days'],
+    highlightedIndices: [0, 4, 6],
+    pitch: 'Start with the fastest-compounding tool stack — ChatGPT, Claude, and research AI.',
+  },
+  'student-make-money': {
+    primarySlug: 'ai-hustler-45',
+    alternatives: ['ai-tools-mastery-beginners', 'master-ai-builder'],
+    highlightedIndices: [0, 5, 10],
+    pitch: 'The 45-day freelance runway — earn your first AI paycheck before graduation.',
+  },
+  'student-get-job': {
+    primarySlug: 'ai-power-8-week-program',
+    alternatives: ['ai-tools-mastery-beginners', 'ai-hustler-45'],
+    highlightedIndices: [0, 6, 11],
+    pitch: '8 weeks, capstone project, portfolio — walk into interviews with proof, not promises.',
+  },
+  'student-scale': {
+    primarySlug: 'master-ai-builder',
+    alternatives: ['generative-ai-prompt-engineering', 'ai-power-8-week-program'],
+    highlightedIndices: [0, 4, 8],
+    pitch: 'Go beyond prompting — build full-stack AI products and ship them to real users.',
+  },
+
+  // BIZ OWNER
+  'biz-owner-save-time': {
+    primarySlug: 'ai-tools-mastery-beginners',
+    alternatives: ['master-claude-15-days', 'ai-digital-marketing'],
+    highlightedIndices: [2, 5, 7],
+    pitch: 'The operator stack — write, research, and design faster than your competition.',
+  },
+  'biz-owner-make-money': {
+    primarySlug: 'ai-digital-marketing',
+    alternatives: ['master-ai-builder', 'ai-tools-mastery-beginners'],
+    highlightedIndices: [0, 4, 8],
+    pitch: 'AI marketing is the cheapest growth lever you have. Master it in 12 weeks.',
+  },
+  'biz-owner-get-job': {
+    primarySlug: 'ai-power-8-week-program',
+    alternatives: ['ai-tools-mastery-beginners', 'ai-hustler-45'],
+    highlightedIndices: [0, 5, 10],
+    pitch: 'Pivoting? The 8-week comprehensive path builds a portfolio hiring managers trust.',
+  },
+  'biz-owner-scale': {
+    primarySlug: 'master-ai-builder',
+    alternatives: ['ai-digital-marketing', 'generative-ai-prompt-engineering'],
+    highlightedIndices: [2, 5, 9],
+    pitch: 'Automate the repetitive, productize the expertise — the 90-day builder path.',
+  },
+
+  // FREELANCER
+  'freelancer-save-time': {
+    primarySlug: 'ai-tools-mastery-beginners',
+    alternatives: ['master-claude-15-days', 'generative-ai-prompt-engineering'],
+    highlightedIndices: [2, 5, 7],
+    pitch: 'Bill the same, deliver 3× faster. The 13+ tool stack every freelancer needs.',
+  },
+  'freelancer-make-money': {
+    primarySlug: 'ai-hustler-45',
+    alternatives: ['ai-digital-marketing', 'ai-tools-mastery-beginners'],
+    highlightedIndices: [0, 8, 11],
+    pitch: 'Designed for this. 45 days from zero to earning on Fiverr / Upwork / direct clients.',
+  },
+  'freelancer-get-job': {
+    primarySlug: 'ai-hustler-45',
+    alternatives: ['ai-power-8-week-program', 'ai-tools-mastery-beginners'],
+    highlightedIndices: [0, 10, 11],
+    pitch: 'Freelance is the new job. Build a 45-day runway with real paying clients.',
+  },
+  'freelancer-scale': {
+    primarySlug: 'master-ai-builder',
+    alternatives: ['ai-digital-marketing', 'generative-ai-prompt-engineering'],
+    highlightedIndices: [1, 5, 10],
+    pitch: 'Stop trading hours for money — ship products, build retainers, reclaim your calendar.',
+  },
+
+  // PROFESSIONAL
+  'professional-save-time': {
+    primarySlug: 'ai-tools-mastery-beginners',
+    alternatives: ['master-claude-15-days', 'generative-ai-prompt-engineering'],
+    highlightedIndices: [2, 5, 6],
+    pitch: 'Reclaim 10+ hours a week on the tools you already open daily.',
+  },
+  'professional-make-money': {
+    primarySlug: 'ai-hustler-45',
+    alternatives: ['ai-tools-mastery-beginners', 'ai-digital-marketing'],
+    highlightedIndices: [2, 8, 10],
+    pitch: 'Side income engine — AI skills that pay weekends, no resignation required.',
+  },
+  'professional-get-job': {
+    primarySlug: 'ai-power-8-week-program',
+    alternatives: ['ai-tools-mastery-beginners', 'master-claude-15-days'],
+    highlightedIndices: [0, 6, 11],
+    pitch: '8-week comprehensive program — ship a capstone, build a portfolio, rewrite your resume.',
+  },
+  'professional-scale': {
+    primarySlug: 'generative-ai-prompt-engineering',
+    alternatives: ['master-ai-builder', 'master-claude-15-days'],
+    highlightedIndices: [0, 5, 10],
+    pitch: 'Stop using AI like a beginner. Advanced prompting + custom workflows at expert level.',
+  },
 };
 
-function getRecommendations(identity: Identity, ambition: Ambition) {
-  const idx = RECOMMENDATIONS[`${identity}-${ambition}`];
-  return idx.map((i) => SESSIONS[i]);
+// Flatten a course's nested syllabus into a linear session list.
+// Strips the "Week N:" / "Module N:" prefix off the module heading
+// so it can be used as a clean tag on each session card.
+function flattenCourse(
+  slug: string
+): { n: number; title: string; tag: string }[] {
+  const course = courses.find((c) => c.slug === slug);
+  if (!course) return [];
+  const sessions: { n: number; title: string; tag: string }[] = [];
+  course.syllabus.forEach((mod) => {
+    const tagMatch = mod.module.match(
+      /^(Weeks?|Modules?|Phases?|Days?|Sprints?|Months?)\s+\d+\s*[:—-]\s*(.*)$/i
+    );
+    const tag = tagMatch ? tagMatch[2].trim() : mod.module;
+    mod.topics.forEach((topic) => {
+      sessions.push({ n: sessions.length + 1, title: topic, tag });
+    });
+  });
+  return sessions;
+}
+
+function courseByslug(slug: string) {
+  return courses.find((c) => c.slug === slug);
+}
+
+function getPrescription(identity: Identity, ambition: Ambition) {
+  return RECOMMENDATIONS[`${identity}-${ambition}`];
 }
 
 function idLabel(arr: { id: string; label: string }[], id: string): string {
@@ -148,25 +251,48 @@ export function CareerArchitect() {
     setStep('analyzing');
   }
 
-  const recs = useMemo(
-    () => (identity && ambition ? getRecommendations(identity, ambition) : []),
+  const prescription = useMemo(
+    () => (identity && ambition ? getPrescription(identity, ambition) : null),
     [identity, ambition]
   );
 
+  const primaryCourse = prescription ? courseByslug(prescription.primarySlug) : null;
+  const primarySessions = useMemo(
+    () => (prescription ? flattenCourse(prescription.primarySlug) : []),
+    [prescription]
+  );
+  const highlightedSessions = useMemo(() => {
+    if (!prescription) return [];
+    return prescription.highlightedIndices
+      .map((i) => primarySessions[i])
+      .filter((s): s is { n: number; title: string; tag: string } => Boolean(s));
+  }, [prescription, primarySessions]);
+
+  const alternativeCourses = useMemo(
+    () =>
+      prescription
+        ? (prescription.alternatives
+            .map((s) => courseByslug(s))
+            .filter(Boolean) as NonNullable<ReturnType<typeof courseByslug>>[])
+        : [],
+    [prescription]
+  );
+
   const whatsappHref = useMemo(() => {
-    if (!identity || !ambition) return siteConfig.links.whatsapp;
+    if (!identity || !ambition || !primaryCourse) return siteConfig.links.whatsapp;
     const msg = [
       `Hi TARAhut! I'm ${name || 'a new student'}.`,
       ``,
-      `I just completed the AI Career Architect:`,
+      `TARA matched my profile to a custom path:`,
       `· Who I am: ${idLabel(IDENTITY_OPTIONS, identity)}`,
       `· My goal: ${idLabel(AMBITION_OPTIONS, ambition)}`,
+      `· Primary course: ${primaryCourse.title}`,
       ``,
-      `Please send me my 16-session roadmap PDF and help me book a free demo class.`,
+      `Please send me my full roadmap PDF and help me book a free demo class for this course.`,
     ].join('\n');
     const digits = siteConfig.contact.phone.replace(/\D/g, '');
     return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
-  }, [identity, ambition, name]);
+  }, [identity, ambition, name, primaryCourse]);
 
   function reset() {
     setStep('identity');
@@ -396,7 +522,7 @@ export function CareerArchitect() {
               </motion.div>
             )}
 
-            {step === 'result' && identity && ambition && (
+            {step === 'result' && identity && ambition && prescription && primaryCourse && (
               <motion.div
                 key="result"
                 variants={stepVariants}
@@ -409,7 +535,10 @@ export function CareerArchitect() {
                   name={name}
                   identityLabel={idLabel(IDENTITY_OPTIONS, identity)}
                   ambitionLabel={idLabel(AMBITION_OPTIONS, ambition)}
-                  recs={recs}
+                  primaryCourse={primaryCourse}
+                  highlightedSessions={highlightedSessions}
+                  pitch={prescription.pitch}
+                  alternativeCourses={alternativeCourses}
                   whatsappHref={whatsappHref}
                   onReset={reset}
                 />
@@ -669,17 +798,27 @@ function RoadmapBlueprint({
   name,
   identityLabel,
   ambitionLabel,
-  recs,
+  primaryCourse,
+  highlightedSessions,
+  pitch,
+  alternativeCourses,
   whatsappHref,
   onReset,
 }: {
   name: string;
   identityLabel: string;
   ambitionLabel: string;
-  recs: { n: number; title: string; tag: string }[];
+  primaryCourse: NonNullable<ReturnType<typeof courseByslug>>;
+  highlightedSessions: { n: number; title: string; tag: string }[];
+  pitch: string;
+  alternativeCourses: NonNullable<ReturnType<typeof courseByslug>>[];
   whatsappHref: string;
   onReset: () => void;
 }) {
+  const totalSessions = primaryCourse.syllabus.reduce(
+    (n, m) => n + m.topics.length,
+    0
+  );
   return (
     <div>
       {/* Certificate header */}
@@ -705,39 +844,110 @@ function RoadmapBlueprint({
         Goal: <span className="text-emerald-300">{ambitionLabel}</span>
       </p>
 
-      {/* Focus sessions — 3 highlighted slots */}
-      <div className="mt-7 rounded-2xl border border-emerald-500/20 bg-black/35 p-4 sm:p-6">
+      {/* Primary course — the buy decision. Big emerald card with
+          course meta, pitch line, and 3 highlighted sessions pulled
+          from this course's real syllabus. */}
+      <Link
+        href={`/courses/${primaryCourse.slug}#syllabus`}
+        className="mt-7 block overflow-hidden rounded-2xl border border-emerald-400/40 bg-emerald-500/[0.08] p-5 transition-all hover:border-emerald-300/70 hover:bg-emerald-500/[0.12] hover:shadow-[0_20px_50px_-20px_rgba(16,185,129,0.55)] sm:p-6"
+      >
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
-          &gt; Start here · 3 highlighted sessions
+          &gt; Primary track · designed for you
         </p>
-        <ul className="mt-4 flex flex-col gap-3">
-          {recs.map((s) => (
-            <li
-              key={s.n}
-              className="flex items-center gap-4 rounded-xl border border-emerald-400/15 bg-emerald-500/[0.05] p-3 transition-colors hover:border-emerald-400/40 sm:p-4"
-            >
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-black/60 font-mono text-base font-extrabold text-emerald-300 shadow-[inset_0_0_12px_rgba(16,185,129,0.35)] sm:size-14 sm:text-lg">
-                {String(s.n).padStart(2, '0')}
-              </span>
-              <div className="min-w-0">
-                <p className="font-['Space_Grotesk',sans-serif] text-base font-bold leading-snug text-white sm:text-lg">
-                  {s.title}
-                </p>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-300/80">
-                  {s.tag}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 text-xs text-[#94a3b8] sm:text-sm">
-          These 3 anchor your path. The remaining 13 sessions build around them
-          — TARA will share the full PDF over WhatsApp.
+        <h4 className="mt-2 font-['Space_Grotesk',sans-serif] text-2xl font-bold leading-tight text-white sm:text-3xl">
+          {primaryCourse.title}
+        </h4>
+        <p className="mt-2 text-sm leading-relaxed text-white/85 sm:text-base">
+          {pitch}
         </p>
-      </div>
 
-      {/* CTAs — primary WhatsApp closer, secondary link to the full
-          syllabus, tertiary restart. Stacks on mobile. */}
+        {/* Meta row — duration, level, sessions, price */}
+        <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-mono uppercase tracking-[0.16em]">
+          <span className="rounded-md border border-emerald-400/30 bg-black/30 px-2 py-0.5 text-emerald-300">
+            {primaryCourse.duration}
+          </span>
+          <span className="rounded-md border border-emerald-400/30 bg-black/30 px-2 py-0.5 text-emerald-300">
+            {primaryCourse.level}
+          </span>
+          <span className="rounded-md border border-emerald-400/30 bg-black/30 px-2 py-0.5 text-emerald-300">
+            {totalSessions} sessions
+          </span>
+          <span className="rounded-md border border-emerald-400/30 bg-black/30 px-2 py-0.5 text-emerald-300">
+            ₹{primaryCourse.price.toLocaleString('en-IN')}
+          </span>
+        </div>
+
+        {/* Highlighted sessions from THIS course's real syllabus */}
+        <div className="mt-5 border-t border-emerald-500/20 pt-5">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400/90">
+            &gt; Start here · 3 sessions from this track
+          </p>
+          <ul className="mt-3 flex flex-col gap-2.5">
+            {highlightedSessions.map((s) => (
+              <li
+                key={s.n}
+                className="flex items-start gap-3 rounded-lg border border-emerald-400/15 bg-black/35 p-3 sm:items-center sm:gap-4"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-black/70 font-mono text-sm font-extrabold text-emerald-300 shadow-[inset_0_0_10px_rgba(16,185,129,0.35)] sm:size-12 sm:text-base">
+                  {String(s.n).padStart(2, '0')}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-['Space_Grotesk',sans-serif] text-sm font-bold leading-snug text-white sm:text-base">
+                    {s.title}
+                  </p>
+                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.16em] text-emerald-300/80 sm:text-[10px]">
+                    {s.tag}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Link>
+
+      {/* Alternative tracks — two adjacent paths. Smaller cards, same
+          clickable pattern. Frames "if the primary isn't the fit". */}
+      {alternativeCourses.length > 0 && (
+        <div className="mt-6">
+          <p className="mb-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#94a3b8]">
+            &gt; Also worth considering
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {alternativeCourses.map((alt) => {
+              const altTotal = alt.syllabus.reduce(
+                (n, m) => n + m.topics.length,
+                0
+              );
+              return (
+                <Link
+                  key={alt.slug}
+                  href={`/courses/${alt.slug}`}
+                  className="group flex flex-col gap-1 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-all hover:-translate-y-0.5 hover:border-emerald-400/40 hover:bg-emerald-500/[0.06]"
+                >
+                  <p className="font-['Space_Grotesk',sans-serif] text-sm font-bold text-white group-hover:text-emerald-200 sm:text-base">
+                    {alt.title}
+                  </p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#94a3b8]">
+                    {alt.duration} · {altTotal} sessions · ₹{alt.price.toLocaleString('en-IN')}
+                  </p>
+                  <p className="mt-1 text-xs leading-snug text-[#94a3b8] line-clamp-2">
+                    {alt.shortDescription}
+                  </p>
+                  <span
+                    aria-hidden
+                    className="mt-1 text-xs text-emerald-400 transition-transform group-hover:translate-x-0.5"
+                  >
+                    Explore →
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* CTAs — primary WhatsApp closer, secondary link to full
+          primary syllabus, tertiary restart. */}
       <div className="mt-7 flex flex-col gap-3">
         <a
           href={whatsappHref}
@@ -753,10 +963,10 @@ function RoadmapBlueprint({
         </a>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link
-            href="/courses/ai-tools-mastery-beginners#syllabus"
+            href={`/courses/${primaryCourse.slug}#syllabus`}
             className="inline-flex min-h-[48px] flex-1 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-gray-200 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white sm:text-base"
           >
-            See all 16 sessions
+            See full {totalSessions}-session syllabus
           </Link>
           <button
             type="button"
