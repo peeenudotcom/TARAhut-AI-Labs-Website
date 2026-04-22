@@ -65,10 +65,10 @@ function StaticFallback() {
   );
 }
 
-// Client gate: small viewports and reduced-motion users skip the WebGL
-// scene entirely (bandwidth + battery + accessibility). They get a static
-// decorative fallback that communicates the same info without spinning
-// up a GPU context.
+// Client gate: reduced-motion users skip the WebGL scene (accessibility
+// — they asked for less animation). Everyone else — including mobile
+// — gets the galaxy, because it's the centerpiece of the hero and
+// hiding it on phones was killing the conversion hook.
 export function NeuralNavigatorLoader() {
   const [state, setState] = useState<'pending' | 'canvas' | 'fallback'>('pending');
 
@@ -76,8 +76,7 @@ export function NeuralNavigatorLoader() {
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    const bigScreen = window.matchMedia('(min-width: 768px)').matches;
-    setState(reduceMotion || !bigScreen ? 'fallback' : 'canvas');
+    setState(reduceMotion ? 'fallback' : 'canvas');
   }, []);
 
   if (state === 'pending') return <NavigatorSkeleton />;
