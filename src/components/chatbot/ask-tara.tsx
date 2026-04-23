@@ -370,6 +370,7 @@ export function AskTara({
             status={voice.status}
             transcript={voice.transcript}
             onCancel={dismissVoice}
+            subdomain={subdomain}
           />
         )}
       </AnimatePresence>

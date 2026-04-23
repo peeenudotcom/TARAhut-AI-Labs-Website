@@ -7,7 +7,20 @@ interface Props {
   status: VoiceStatus;
   transcript: string;
   onCancel: () => void;
+  /**
+   * Active landing-page subdomain. When `"claude"`, the overlay renders
+   * a [ CLAUDE-POWERED VOICE ASSISTANT ] branding pill above the status
+   * label so users understand the voice intelligence is architect-grade
+   * on this page specifically.
+   */
+  subdomain?: string | null;
 }
+
+// Per-subdomain HUD branding. Only Claude has a distinct persona for now —
+// other subdomains fall back to the generic voice HUD.
+const SUBDOMAIN_HUD_LABEL: Record<string, string> = {
+  claude: 'CLAUDE-POWERED VOICE ASSISTANT',
+};
 
 const STATUS_LABEL: Record<VoiceStatus, string> = {
   idle: '',
@@ -27,8 +40,9 @@ const STATUS_LABEL: Record<VoiceStatus, string> = {
 // browser permissions UX and audio-graph wiring; the CSS version
 // reads as "live" and is one round-trip simpler. Easy to swap in
 // the analyser later if needed.
-export function VoiceOverlay({ status, transcript, onCancel }: Props) {
+export function VoiceOverlay({ status, transcript, onCancel, subdomain }: Props) {
   const label = STATUS_LABEL[status];
+  const hudBrand = subdomain ? SUBDOMAIN_HUD_LABEL[subdomain] : undefined;
 
   return (
     <motion.div
@@ -46,7 +60,21 @@ export function VoiceOverlay({ status, transcript, onCancel }: Props) {
       />
 
       {/* Ripple stack */}
-      <div className="relative flex flex-col items-center gap-8">
+      <div className="relative flex flex-col items-center gap-6 sm:gap-8">
+        {/* Per-subdomain HUD branding — sits above the ripples as a
+            persistent tag that telegraphs "this voice is powered by
+            X on this page". Claude page: "CLAUDE-POWERED VOICE ASSISTANT". */}
+        {hudBrand && (
+          <motion.span
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-full border border-emerald-400/50 bg-black/80 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-200 shadow-[0_0_22px_rgba(16,185,129,0.55)] backdrop-blur-md"
+          >
+            [ {hudBrand} ]
+          </motion.span>
+        )}
+
         <div className="relative size-56 sm:size-64">
           {/* Three concentric rings, staggered phase so they never
               line up — gives the impression of continuous ripple. */}
