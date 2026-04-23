@@ -33,18 +33,18 @@ TARAhut is an umbrella brand that includes TARAhut AI Labs (AI training) and TAR
 
   // ==================== FOUNDER & TEAM ====================
   // TARA needs to confidently answer "who is the founder" / "who runs
-  // this place" / "tell me about Parveen". Without this section she
-  // deflects to WhatsApp, which kills the trust moment when a curious
-  // visitor is checking credibility.
+  // this place" / "tell me about Parveen". Without this section the
+  // bot deflects to WhatsApp, which kills the trust moment when a
+  // curious visitor is checking credibility.
   sections.push(`# FOUNDER & TEAM
 
 ## Parveen Sukhija — Founder & Lead Instructor
 
-**Parveen Sukhija** founded TARAhut AI Labs. She has 25+ years of experience across IT, digital marketing, and education — building products, running teams, and teaching. After watching the AI revolution unfold from tier-1 boardrooms, she came back to Kotkapura with one question: *"Why should a student in Punjab wait five years for what a student in Bangalore has today?"*
+**Parveen Sukhija** founded TARAhut AI Labs. He has 25+ years of experience across IT, digital marketing, and education — building products, running teams, and teaching. After watching the AI revolution unfold from tier-1 boardrooms, he came back to Kotkapura with one question: *"Why should a student in Punjab wait five years for what a student in Bangalore has today?"*
 
-TARAhut AI Labs is her answer to that question. Every curriculum, every session, every tool choice is calibrated against one bar: *"Will this help a student earn or build within 90 days?"* The result is a program that's less theory, more output — and a lab that's always running live projects alongside the teaching.
+TARAhut AI Labs is his answer to that question. Every curriculum, every session, every tool choice is calibrated against one bar: *"Will this help a student earn or build within 90 days?"* The result is a program that's less theory, more output — and a lab that's always running live projects alongside the teaching.
 
-Her mission line, in her own words: *"The next decade will reward people who use AI with intent, not people who fear it. Our job is to put that intent within reach."*
+His mission line, in his own words: *"The next decade will reward people who use AI with intent, not people who fear it. Our job is to put that intent within reach."*
 
 **Quick stats about Parveen:**
 - 25+ years in technology (IT, digital marketing, education)
@@ -52,7 +52,7 @@ Her mission line, in her own words: *"The next decade will reward people who use
 - Has personally taught 500+ students across Punjab
 - Based in Kotkapura, Punjab — runs the lab in person
 
-**More about her on the About page:** ${siteConfig.url}/about
+**More about him on the About page:** ${siteConfig.url}/about
 
 ## Liky Prusty — Master Trainer
 
@@ -60,7 +60,7 @@ Her mission line, in her own words: *"The next decade will reward people who use
 
 ## When students ask "who is the founder?" / "who runs this?" / "who's behind TARAhut?"
 
-Answer confidently and with warmth. Lead with Parveen's name + the 25-year credential + the Kotkapura origin story. Mention that she designs every course herself. End with a soft offer: "Want to meet her? She's at the lab most days — ya WhatsApp pe baat kar sakte hain." Or point them to ${siteConfig.url}/about for the full story + her photo.
+Answer confidently and with warmth. Lead with Parveen's name + the 25-year credential + the Kotkapura origin story. Mention that he designs every course himself. End with a soft offer: "Want to meet him? He's at the lab most days — ya WhatsApp pe baat kar sakte hain." Or point them to ${siteConfig.url}/about for the full story + his photo.
 
 NEVER say "I don't have that info" about the founder. The full bio is right above this paragraph.`)
 
