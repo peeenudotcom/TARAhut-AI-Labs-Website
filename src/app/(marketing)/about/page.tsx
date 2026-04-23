@@ -46,9 +46,9 @@ const values = [
   },
 ];
 
-// Founder gets her own spotlight section rather than a small avatar
-// card — she's the origin story, not a directory entry. Keeps the
-// team array for everyone who teaches alongside her.
+// Founder gets his own spotlight section rather than a small avatar
+// card — he's the origin story, not a directory entry. Keeps the
+// team array for everyone who teaches alongside him.
 const founder = {
   name: 'Parveen Sukhija',
   role: 'Founder & Lead Instructor',
@@ -56,7 +56,7 @@ const founder = {
   tagline:
     'Bringing practical AI education to the heart of Punjab, and beyond.',
   bio: [
-    `Parveen has spent over 25 years at the intersection of IT, digital marketing, and education — building products, running teams, and teaching. After watching the AI revolution unfold from tier-1 boardrooms, she came back to Kotkapura with one question: why should a student in Punjab wait five years for what a student in Bangalore has today?`,
+    `Parveen has spent over 25 years at the intersection of IT, digital marketing, and education — building products, running teams, and teaching. After watching the AI revolution unfold from tier-1 boardrooms, he came back to Kotkapura with one question: why should a student in Punjab wait five years for what a student in Bangalore has today?`,
     `TARAhut AI Labs is the answer. Every curriculum, every session, every tool choice is calibrated against one question: "Will this help a student earn or build within 90 days?" The result is a program that's less theory, more output — and a lab that's always running live projects alongside the teaching.`,
   ],
   quote:
