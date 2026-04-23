@@ -62,10 +62,11 @@ const PLANETS = [...courses]
 interface PlanetProps {
   data: (typeof PLANETS)[number];
   dimmed: boolean;
+  emphasized: boolean;
   onSelect: (position: THREE.Vector3) => void;
 }
 
-function Planet({ data, dimmed, onSelect }: PlanetProps) {
+function Planet({ data, dimmed, emphasized, onSelect }: PlanetProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const isSun = data.radius === 0;
@@ -80,31 +81,35 @@ function Planet({ data, dimmed, onSelect }: PlanetProps) {
     );
   });
 
-  const coreColor = hovered ? '#34d399' : '#10b981';
-  const haloColor = hovered ? '#6ee7b7' : '#34d399';
+  const coreColor = hovered ? '#34d399' : emphasized ? '#34d399' : '#10b981';
+  const haloColor = hovered ? '#6ee7b7' : emphasized ? '#a7f3d0' : '#34d399';
   const dimFactor = dimmed ? 0.3 : 1;
+  // Role-aware emphasis — when the active hero variant flags this
+  // course's slug, double the halo opacity and emissive intensity so
+  // the visitor's eye lands on the recommended planets first.
+  const emphasisBoost = emphasized && !dimmed ? 2.0 : 1;
 
   return (
     <>
-      {!isSun && <OrbitRing radius={data.radius} active={hovered} dimmed={dimmed} />}
+      {!isSun && <OrbitRing radius={data.radius} active={hovered || emphasized} dimmed={dimmed} />}
 
       <group ref={groupRef}>
         <mesh raycast={() => null}>
-          <sphereGeometry args={[data.size * 3, 20, 20]} />
+          <sphereGeometry args={[data.size * (emphasized ? 3.6 : 3), 20, 20]} />
           <meshBasicMaterial
             color={coreColor}
             transparent
-            opacity={(hovered ? 0.2 : isSun ? 0.14 : 0.08) * dimFactor}
+            opacity={(hovered ? 0.2 : isSun ? 0.14 : 0.08) * dimFactor * emphasisBoost}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />
         </mesh>
         <mesh raycast={() => null}>
-          <sphereGeometry args={[data.size * 1.7, 20, 20]} />
+          <sphereGeometry args={[data.size * (emphasized ? 2.0 : 1.7), 20, 20]} />
           <meshBasicMaterial
             color={haloColor}
             transparent
-            opacity={(hovered ? 0.4 : isSun ? 0.3 : 0.22) * dimFactor}
+            opacity={(hovered ? 0.4 : isSun ? 0.3 : 0.22) * dimFactor * emphasisBoost}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />
@@ -134,7 +139,11 @@ function Planet({ data, dimmed, onSelect }: PlanetProps) {
             speed={isSun ? 2 : 3}
             distort={isSun ? 0.45 : 0.25}
             emissive={coreColor}
-            emissiveIntensity={(hovered ? 1.4 : isSun ? 1.1 : 0.7) * (dimmed ? 0.4 : 1)}
+            emissiveIntensity={
+              (hovered ? 1.4 : isSun ? 1.1 : 0.7) *
+              (dimmed ? 0.4 : 1) *
+              emphasisBoost
+            }
             transparent
             opacity={dimmed ? 0.5 : 1}
           />
@@ -275,7 +284,18 @@ function HudStat({ label, value }: StatProps) {
   );
 }
 
-export function NeuralNavigator() {
+interface NavigatorProps {
+  // Slugs to glow brighter — driven by the role-aware hero variant
+  // (biz owners get marketing + builder; freelancers get creative;
+  // students get prompt + builder).
+  emphasizedSlugs?: string[];
+}
+
+export function NeuralNavigator({ emphasizedSlugs = [] }: NavigatorProps = {}) {
+  const emphasizedSet = useMemo(
+    () => new Set(emphasizedSlugs),
+    [emphasizedSlugs]
+  );
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
   const orbitRef = useRef<OrbitRef>(null);
@@ -434,6 +454,7 @@ export function NeuralNavigator() {
                 key={p.slug}
                 data={p}
                 dimmed={selectedSlug !== null && selectedSlug !== p.slug}
+                emphasized={emphasizedSet.has(p.slug) && selectedSlug === null}
                 onSelect={(position) => handleSelect(p.slug, position)}
               />
             ))}

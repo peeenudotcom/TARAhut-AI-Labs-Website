@@ -14,6 +14,7 @@ import {
   type Ambition,
   type Identity,
 } from '@/lib/career-architect/matrix';
+import { persistUserRole, type UserRole } from '@/lib/hooks/use-user-role';
 
 // AI Career Architect — a three-step interactive diagnostic that
 // reframes a standard lead form as "TARA is designing a custom
@@ -89,6 +90,10 @@ export function CareerArchitect() {
     }
     setError('');
     setStep('analyzing');
+    // Persist the identity so the homepage hero personalises on
+    // their next visit. Identity values from the matrix already
+    // match the UserRole shape one-to-one.
+    if (identity) persistUserRole(identity as UserRole);
   }
 
   const prescription = useMemo(
