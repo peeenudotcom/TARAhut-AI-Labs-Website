@@ -452,20 +452,27 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
             className="hidden md:block absolute left-1/2 top-[12%] bottom-[12%] w-px bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent pointer-events-none"
           />
 
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-10 items-center">
-              {/* Left — Copy */}
-              <div className="relative">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20">
+            {/*
+              Mobile: flex column with explicit ordering — headline block,
+              then the Artifact Window (above the fold), then subtitle +
+              stats + CTAs. Desktop (lg+): 2-col grid where the artifact
+              spans both rows in the right column and the copy fills the
+              left column top-to-bottom.
+            */}
+            <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:gap-y-6 lg:items-center">
+              {/* HEAD — logo + label + headline */}
+              <div className="order-1 lg:order-none lg:col-start-1 lg:row-start-1 lg:self-end">
                 <motion.div
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-8"
+                  className="mb-6 sm:mb-8"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/images/logo-tarahut-white.png"
                     alt="TARAhut AI Labs"
-                    className="h-8 sm:h-9 w-auto"
+                    className="h-7 sm:h-9 w-auto"
                   />
                 </motion.div>
 
@@ -484,7 +491,7 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="mt-5 text-5xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1.02] tracking-tight text-white"
+                  className="mt-4 sm:mt-5 text-4xl sm:text-5xl lg:text-[5.5rem] font-bold leading-[1.02] tracking-tight text-white"
                   style={{ fontFamily: DISPLAY }}
                 >
                   Master{' '}
@@ -494,12 +501,25 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   <br />
                   in 15 Days.
                 </motion.h1>
+              </div>
 
+              {/* ARTIFACT — above the fold on mobile, spans both rows on desktop */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.25, duration: 0.6 }}
+                className="order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center relative flex justify-center lg:justify-end"
+              >
+                <ClaudeArtifactWindow />
+              </motion.div>
+
+              {/* BODY — subtitle + stats + CTAs */}
+              <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2 lg:self-start">
                 <motion.p
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="mt-6 text-base sm:text-lg text-gray-300/90 max-w-xl leading-relaxed"
+                  className="text-base sm:text-lg text-gray-300/90 max-w-xl leading-relaxed"
                 >
                   Go beyond basic chat. Master <span className="text-white">Long-Context</span>,{' '}
                   <span className="text-white">XML Tagging</span>, and the 2026{' '}
@@ -511,7 +531,7 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="mt-8 grid grid-cols-3 gap-3 max-w-lg"
+                  className="mt-6 sm:mt-8 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-lg"
                 >
                   {[
                     { value: 200, suffix: 'M+', label: 'Claude Users' },
@@ -520,10 +540,10 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   ].map((s) => (
                     <div
                       key={s.label}
-                      className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm px-3 py-3 text-center"
+                      className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm px-2.5 sm:px-3 py-3 text-center"
                     >
                       <div
-                        className="text-xl sm:text-2xl font-bold bg-gradient-to-b from-emerald-300 to-teal-500 bg-clip-text text-transparent"
+                        className="text-lg sm:text-2xl font-bold bg-gradient-to-b from-emerald-300 to-teal-500 bg-clip-text text-transparent"
                         style={{ fontFamily: DISPLAY }}
                       >
                         <AnimatedNumber value={s.value} suffix={s.suffix} />
@@ -540,7 +560,7 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center"
+                  className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:items-center"
                 >
                   <a
                     href="#enroll"
@@ -548,7 +568,7 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                       e.preventDefault()
                       document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-base text-black overflow-hidden shadow-[0_10px_40px_rgba(16,185,129,0.35)]"
+                    className="group relative inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base text-black overflow-hidden shadow-[0_10px_40px_rgba(16,185,129,0.35)]"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-400" />
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-300 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -570,7 +590,7 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                       e.preventDefault()
                       document.getElementById('sprints')?.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="inline-flex items-center justify-center px-6 py-4 rounded-full border border-white/15 text-sm font-semibold text-gray-200 hover:border-emerald-400/40 hover:text-emerald-300 transition-colors"
+                    className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-4 rounded-full border border-white/15 text-base sm:text-sm font-semibold text-gray-200 hover:border-emerald-400/40 hover:text-emerald-300 transition-colors"
                   >
                     See Artifact Demos
                   </a>
@@ -585,16 +605,6 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
                   )}
                 </motion.div>
               </div>
-
-              {/* Right — Live Artifact Window */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.25, duration: 0.6 }}
-                className="relative flex justify-center lg:justify-end"
-              >
-                <ClaudeArtifactWindow />
-              </motion.div>
             </div>
           </div>
 
@@ -987,7 +997,12 @@ export function ClaudeLandingContent({ course }: { course: Course }) {
         </div>
       </div>
 
-      <AskTara />
+      {/*
+        mobileBottomClass="bottom-24" lifts the orb above the mobile sticky
+        Enroll CTA bar (~64px tall) so the safe zone stays clear. Desktop
+        unaffected — orb stays at md:bottom-6.
+      */}
+      <AskTara mobileBottomClass="bottom-24" />
       <ExitIntentPopup courseTitle={course.title} courseSlug={course.slug} primaryColor="#10b981" />
       <EnrollmentToast />
     </>
