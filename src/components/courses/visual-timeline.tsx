@@ -12,12 +12,13 @@ export interface TimelinePhase {
 
 interface Props {
   phases: TimelinePhase[];
-  // Optional injection slot — when this predicate returns a node for a
-  // given session (passed the topic title and the global session
-  // number), that node renders immediately AFTER the matching session
-  // card. Used by the AI Tools Mastery page to drop the Live AI
-  // Playground next to the prompt-engineering session.
-  renderAfterSession?: (session: { sessionNumber: number; title: string }) => React.ReactNode;
+  // Optional injection slot. When `injectAfterTitleMatch` matches any
+  // substring of a session topic title (case-insensitive, OR'd across
+  // the array), `injectNode` renders full-width after that phase's
+  // session grid. Pure data — no functions — so the prop survives the
+  // Server → Client component boundary (Next.js RSC rule).
+  injectAfterTitleMatch?: string[];
+  injectNode?: React.ReactNode;
 }
 
 // Pull a sprint label + title out of a module string like
@@ -53,7 +54,12 @@ function parseSprint(
 // revealing (opacity + slight translate) when it enters the viewport.
 // The path's glow height is driven off scroll position so the user
 // feels the progress bar racing ahead of them as they go.
-export function VisualTimeline({ phases, renderAfterSession }: Props) {
+export function VisualTimeline({
+  phases,
+  injectAfterTitleMatch,
+  injectNode,
+}: Props) {
+  const matchTokens = (injectAfterTitleMatch ?? []).map((s) => s.toLowerCase());
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
   const [progressPct, setProgressPct] = useState(0);
@@ -161,18 +167,19 @@ export function VisualTimeline({ phases, renderAfterSession }: Props) {
                 // grid (full-width).
                 const phaseSessions = phase.topics.map((topic, topicIdx) => {
                   globalSessionIdx += 1;
+                  const lower = topic.toLowerCase();
+                  const matched =
+                    injectNode != null &&
+                    matchTokens.length > 0 &&
+                    matchTokens.some((t) => lower.includes(t));
                   return {
                     topic,
                     topicIdx,
                     sessionNumber: globalSessionIdx,
-                    inject:
-                      renderAfterSession?.({
-                        sessionNumber: globalSessionIdx,
-                        title: topic,
-                      }) ?? null,
+                    matched,
                   };
                 });
-                const firstInject = phaseSessions.find((s) => s.inject)?.inject;
+                const hasMatch = phaseSessions.some((s) => s.matched);
 
                 return (
                   <>
@@ -207,8 +214,8 @@ export function VisualTimeline({ phases, renderAfterSession }: Props) {
                         );
                       })}
                     </div>
-                    {firstInject && (
-                      <div className="mt-2 pl-16">{firstInject}</div>
+                    {hasMatch && injectNode && (
+                      <div className="mt-2 pl-16">{injectNode}</div>
                     )}
                   </>
                 );
