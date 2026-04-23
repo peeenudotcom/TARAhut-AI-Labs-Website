@@ -50,7 +50,12 @@ export async function POST(req: NextRequest) {
     // Cap history to last 20 messages to keep token usage bounded
     const trimmedMessages = messages.slice(-20)
 
-    // Build the system prompt with page context
+    // Build the system prompt with page context. ~8-10K tokens once
+    // the knowledge base, semantic session map, and reasoning rules
+    // are inlined — too expensive to re-process on every "what's the
+    // address?" so we mark it as ephemeral cache (5-min TTL). After
+    // the first request in a window, subsequent requests pay ~10% of
+    // the input-token cost AND respond several × faster.
     const systemPrompt = buildSystemPrompt({ subdomain })
 
     const modelMessages = await convertToModelMessages(trimmedMessages)
@@ -60,8 +65,20 @@ export async function POST(req: NextRequest) {
       // and /api/course-tool use. Do NOT use "claude-haiku-4.5" — that's Vercel AI Gateway
       // slug format and fails against the direct Anthropic provider.
       model: anthropic('claude-haiku-4-5-20251001'),
-      system: systemPrompt,
-      messages: modelMessages,
+      messages: [
+        // System prompt as a leading system message with cacheControl
+        // so Anthropic caches the heavy KB. The `system` field doesn't
+        // accept providerOptions, so we promote the system prompt
+        // into the messages array to attach the cache breakpoint.
+        {
+          role: 'system',
+          content: systemPrompt,
+          providerOptions: {
+            anthropic: { cacheControl: { type: 'ephemeral' } },
+          },
+        },
+        ...modelMessages,
+      ],
       maxOutputTokens: 800,
       temperature: 0.7,
       onError: ({ error }) => {
