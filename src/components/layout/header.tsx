@@ -17,6 +17,7 @@ import {
 } from '@/config/nav';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { SmartCta } from './smart-cta';
 import {
   Sheet,
   SheetTrigger,
@@ -481,14 +482,10 @@ export function Header() {
           >
             Sign up
           </Link>
-          <a
-            href="https://wa.me/919200882008?text=Hi%2C+I+want+to+book+a+free+demo+class+at+TARAhut+AI+Labs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-[0_6px_20px_-6px_rgba(16,185,129,0.5)] transition-all hover:shadow-[0_10px_30px_-6px_rgba(16,185,129,0.6)] active:scale-[0.97]"
-          >
-            Book Free Demo
-          </a>
+          {/* Context-aware CTA — swaps label, icon, and link based on
+              the most-visible [data-cta] section on the current page.
+              Defaults to "Book Free Demo" → WhatsApp. */}
+          <SmartCta />
         </div>
 
         {/* Mobile Menu */}

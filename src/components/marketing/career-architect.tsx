@@ -151,6 +151,7 @@ export function CareerArchitect() {
   return (
     <section
       id="career-architect"
+      data-cta="roadmap"
       className="relative overflow-hidden px-4 py-24 sm:py-28"
       style={{ backgroundColor: '#030406' }}
     >
