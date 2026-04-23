@@ -18,12 +18,20 @@ export default function HomePage() {
     <>
       <HeroSection />
       <StatsCounter />
+      {/* Lab connectors — soft emerald auras seeded between sections
+          so the page feels continuously lit by the AI Galaxy at the
+          top, not a stack of detached cards. Pure CSS via globals
+          (.lab-connector). Zero-height — doesn't affect layout. */}
+      <div className="lab-connector" aria-hidden />
       <CourseHighlights />
       <FreeLessonCta />
+      <div className="lab-connector" aria-hidden />
       <WhyTarahut />
       <ToolsShowcase />
+      <div className="lab-connector" aria-hidden />
       <TestimonialsSection />
       <CommunitySection />
+      <div className="lab-connector" aria-hidden />
       <NewsletterSection />
       <PartnerBanner />
       <FaqSection />

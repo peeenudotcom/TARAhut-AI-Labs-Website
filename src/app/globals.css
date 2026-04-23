@@ -139,3 +139,91 @@
 .audience-card:hover .audience-card-link {
   opacity: 1;
 }
+
+/* ── 10% Aura Rule — site-wide ambient emerald lighting ──────────
+ * Goal: every section of the marketing pages should carry at least
+ * a faint emerald wash so the page never reads as a "black hole".
+ * All rules are scoped to .lab-main so admin / learn / auth routes
+ * are unaffected.
+ *
+ * Background-image only — never background-color — so existing
+ * inline backgrounds (Hero, CareerArchitect, Lab Feed, etc.) keep
+ * their richer gradients on top.
+ */
+
+/* Section wash — applied to every <section> inside the marketing
+ * <main>. The 5% emerald + radial mask reads as ambient lab light
+ * without competing with content. Stays under inline section
+ * gradients because background-image and background-color are
+ * separate properties — the inline gradient/colour layers on top. */
+.lab-main section {
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 35%,
+    rgba(5, 150, 105, 0.05) 0%,
+    transparent 65%
+  );
+}
+
+/* Connector aura — drop a <div class="lab-connector" /> between
+ * two sections to add a soft emerald halo that "carries" the light
+ * from one to the next. Zero-height so it doesn't push layout. */
+.lab-connector {
+  position: relative;
+  height: 0;
+  pointer-events: none;
+}
+.lab-connector::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -120px;
+  width: min(640px, 80vw);
+  height: 240px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse,
+    rgba(5, 150, 105, 0.085),
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: 0;
+}
+
+/* Universal hover glow — opt-in via className="lab-hover-glow".
+ * Existing components that already have custom hover treatments
+ * keep theirs; this is for the dull cards that didn't have any. */
+.lab-hover-glow {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lab-hover-glow:hover,
+.lab-hover-glow:focus-visible {
+  border-color: rgba(5, 150, 105, 0.5);
+  box-shadow:
+    0 10px 30px -10px rgba(5, 150, 105, 0.32),
+    0 0 18px rgba(5, 150, 105, 0.18);
+  transform: translateY(-2px);
+}
+
+/* Footer — emerald border-top + soft glow behind the brand row.
+ * Scoped to footers within marketing pages via .lab-main + sibling
+ * selector (footer is a sibling of <main>, not a child, in the
+ * marketing layout). Use a body-class-based selector instead. */
+body:has(.lab-main) > footer {
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid rgba(5, 150, 105, 0.18);
+}
+body:has(.lab-main) > footer::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 220px;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 70% 100% at 50% 0%,
+    rgba(5, 150, 105, 0.09),
+    transparent 70%
+  );
+  pointer-events: none;
+}
