@@ -97,6 +97,15 @@ export function AskTara() {
   const [subdomain, setSubdomain] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Boot sequence — emerald terminal trace plays the first time the
+  // chat opens this page-session. Subsequent opens skip the boot so
+  // returning users get straight to the greeting.
+  const [bootDone, setBootDone] = useState(false)
+  useEffect(() => {
+    if (!open || bootDone) return
+    const t = window.setTimeout(() => setBootDone(true), 1400)
+    return () => window.clearTimeout(t)
+  }, [open, bootDone])
 
   // Memoize transport so it doesn't recreate on every render
   const transport = useMemo(
@@ -160,7 +169,10 @@ export function AskTara() {
             onClick={() => setOpen(true)}
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            // On exit (when window opens) the orb scales UP and fades —
+            // looks like it's expanding outward into the chat window
+            // rather than just disappearing.
+            exit={{ opacity: 0, scale: 1.6, transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] } }}
             transition={{ delay: 1.5, type: 'spring', stiffness: 200, damping: 20 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
@@ -234,10 +246,15 @@ export function AskTara() {
         {open && (
           <motion.div
             key="ask-tara-window"
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+            // Origin-point morph: the window scales up FROM where the
+            // orb sits (bottom-right) so it visually emerges from the
+            // orb instead of materialising in space. transformOrigin
+            // sits at the orb's center (~64px from each edge).
+            initial={{ opacity: 0, scale: 0.06 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.06, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } }}
+            style={{ transformOrigin: 'calc(100% - 64px) calc(100% - 64px)' }}
+            transition={{ type: 'spring', stiffness: 220, damping: 24, mass: 0.9 }}
             className="fixed z-50 flex flex-col bg-[#0a0f1f] border border-white/10 shadow-2xl shadow-black/50
                        inset-x-0 bottom-0 top-0 md:inset-auto md:bottom-6 md:right-6
                        md:h-[640px] md:max-h-[80vh] md:w-[400px] md:rounded-3xl overflow-hidden"
@@ -298,20 +315,43 @@ export function AskTara() {
                   'radial-gradient(circle at 20% 10%, rgba(16,185,129,0.08), transparent 50%), radial-gradient(circle at 80% 90%, rgba(20,184,166,0.06), transparent 50%)',
               }}
             >
-              {/* Greeting (always shown as first message) */}
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden ring-1 ring-emerald-400/40 shadow-md">
-                  <img
-                    src="/images/chatbot/ask-tara.jpg"
-                    alt="Ask TARA"
-                    className="h-full w-full object-cover"
-                    style={{ objectPosition: 'center 30%' }}
-                  />
-                </div>
-                <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-3 text-sm text-gray-100 leading-relaxed">
-                  {renderMessage(greeting)}
-                </div>
-              </div>
+              {/* Boot sequence — terminal trace plays once per session
+                  the first time the chat opens. Sets the "this is a
+                  real system, not a chatbot" tone before TARA's warm
+                  greeting fades in. */}
+              <AnimatePresence mode="wait">
+                {!bootDone ? (
+                  <motion.div
+                    key="boot"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -6, transition: { duration: 0.2 } }}
+                    className="rounded-2xl border border-emerald-500/30 bg-black/45 px-4 py-3 font-mono text-[11px] leading-relaxed text-emerald-300 shadow-[inset_0_0_12px_rgba(16,185,129,0.15)]"
+                  >
+                    <BootTraceLines />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="greeting"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex gap-3"
+                  >
+                    <div className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden ring-1 ring-emerald-400/40 shadow-md">
+                      <img
+                        src="/images/chatbot/ask-tara.jpg"
+                        alt="Ask TARA"
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: 'center 30%' }}
+                      />
+                    </div>
+                    <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-3 text-sm text-gray-100 leading-relaxed">
+                      {renderMessage(greeting)}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Real conversation */}
               {messages.map((m) => {
@@ -441,5 +481,60 @@ export function AskTara() {
         )}
       </AnimatePresence>
     </>
+  )
+}
+
+// Boot sequence — emerald terminal trace that runs once when the
+// chat first opens in a session. Sets the "this is a real system,
+// not a popup" tone before the warm Hinglish greeting fades in.
+const BOOT_LINES: { tag: string; body: string; delay: number }[] = [
+  { tag: 'POWER',    body: 'TARA system online…',                      delay: 0 },
+  { tag: 'LOAD',     body: 'Pulling TARAhut syllabus + 25 prompts',    delay: 280 },
+  { tag: 'CONTEXT',  body: 'Loading 16-session map + Punjab routing',  delay: 560 },
+  { tag: 'READY',    body: 'Hinglish mode · friendly tone · go ✓',     delay: 880 },
+]
+
+function BootTraceLines() {
+  const [shown, setShown] = useState(0)
+  useEffect(() => {
+    const timers = BOOT_LINES.map((line, i) =>
+      window.setTimeout(() => setShown((s) => Math.max(s, i + 1)), line.delay)
+    )
+    return () => timers.forEach((t) => window.clearTimeout(t))
+  }, [])
+  return (
+    <ul className="flex flex-col gap-1.5 min-h-[1.5rem]">
+      <style>{`
+        @keyframes tara-boot-in {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes tara-boot-blink {
+          0%, 100% { opacity: 1; }
+          50%      { opacity: 0.25; }
+        }
+      `}</style>
+      {BOOT_LINES.slice(0, shown).map((line, i) => {
+        const active = i === shown - 1 && shown < BOOT_LINES.length
+        return (
+          <li
+            key={line.tag}
+            className="flex items-start gap-2"
+            style={{ animation: 'tara-boot-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both' }}
+          >
+            <span
+              className={`mt-[3px] inline-block size-1.5 rounded-full ${
+                active ? 'bg-emerald-300' : 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]'
+              }`}
+              style={active ? { animation: 'tara-boot-blink 0.6s ease-in-out infinite' } : undefined}
+            />
+            <span className="flex-1">
+              <span className="font-bold text-emerald-400">[{line.tag}]</span>{' '}
+              <span className="text-emerald-200/90">{line.body}</span>
+            </span>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
