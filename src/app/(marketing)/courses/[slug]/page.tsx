@@ -11,6 +11,7 @@ import { EnrollmentCard } from './enrollment-card';
 import { EnrollmentToast } from '@/components/landing/enrollment-toast';
 import { CourseSchema } from '@/components/seo/structured-data';
 import { VisualTimeline, type TimelinePhase } from '@/components/courses/visual-timeline';
+import { AIPlayground } from '@/components/courses/ai-playground';
 import { ProofBridge } from '@/components/marketing/proof-bridge';
 import { FreeSessionHook } from '@/components/landing/free-session-hook';
 
@@ -329,7 +330,27 @@ export default async function CourseDetailPage({
                         {totalSessions} sessions across {timelinePhases.length} {sprintWord} · {course.duration} · scroll to light up the path
                       </p>
                     </div>
-                    <VisualTimeline phases={timelinePhases} />
+                    <VisualTimeline
+                      phases={timelinePhases}
+                      // Drop the Live AI Playground inline right after
+                      // the prompt-engineering session — only on the AI
+                      // Tools Mastery page (the prompt framework is the
+                      // headline content there). Match by content
+                      // rather than index so the widget survives any
+                      // session reordering.
+                      renderAfterSession={
+                        course.slug === 'ai-tools-mastery-beginners'
+                          ? ({ title }) => {
+                              const t = title.toLowerCase();
+                              const isPromptSession =
+                                t.includes('advanced prompting') ||
+                                t.includes('prompt engineering') ||
+                                (t.includes('prompt') && t.includes('library'));
+                              return isPromptSession ? <AIPlayground /> : null;
+                            }
+                          : undefined
+                      }
+                    />
                   </div>
                 );
               })()}
