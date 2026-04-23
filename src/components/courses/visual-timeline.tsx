@@ -131,8 +131,31 @@ export function VisualTimeline({
       <div className="relative flex flex-col gap-16 sm:gap-24">
         {phases.map((phase, phaseIdx) => {
           const { label, title } = parseSprint(phase.module, phaseIdx);
+          // Pick a context-aware CTA variant for this sprint based on
+          // its content — drives the SmartCta in the header to swap
+          // labels as the user scrolls past each phase. Read by the
+          // header via [data-cta="…"].
+          const sprintTopics = phase.topics.join(' ').toLowerCase();
+          const isVideoPhase =
+            /video|midjourney|heygen|elevenlabs|generative\s*video|sora|luma|capcut/.test(
+              sprintTopics
+            );
+          const isPromptPhase =
+            phaseIdx === 0 ||
+            /prompt\s*engineering|foundation|what\s*is\s*ai|chatgpt.+claude/.test(
+              sprintTopics
+            );
+          const ctaVariant = isVideoPhase
+            ? 'video-samples'
+            : isPromptPhase
+            ? 'free-session'
+            : '';
           return (
-            <section key={`${phase.module}-${phaseIdx}`} className="relative">
+            <section
+              key={`${phase.module}-${phaseIdx}`}
+              className="relative"
+              data-cta={ctaVariant || undefined}
+            >
               {/* Sprint header — dot anchored to the left path, label
                   and title flowing to the right. */}
               <div className="relative mb-6 pl-16 sm:mb-10">

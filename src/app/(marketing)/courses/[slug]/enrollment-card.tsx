@@ -260,7 +260,7 @@ export function EnrollmentCard({
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
-      <div className="lg:self-start lg:sticky lg:top-24">
+      <div className="lg:self-start lg:sticky lg:top-24" data-cta="discount">
         <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] shadow-lg">
           {/* Price header */}
           <div className="bg-gradient-to-r from-[#059669] to-[#0D9488] p-6 text-white">
