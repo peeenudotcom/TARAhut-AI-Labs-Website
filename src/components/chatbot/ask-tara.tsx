@@ -709,6 +709,28 @@ export function AskTara() {
                 disabled={isLoading}
                 className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-emerald-400/50 disabled:opacity-50"
               />
+              {/* Mic button — second voice trigger so users can ask
+                  another voice question without closing the chat
+                  and long-pressing the orb again. Only renders when
+                  the browser supports SpeechRecognition. */}
+              {voice.isSupported && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVoiceMode(true)
+                    voice.start()
+                  }}
+                  disabled={isLoading || voiceMode}
+                  className="group/mic flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/40 bg-black/40 text-emerald-300 transition-all hover:border-emerald-300/70 hover:bg-emerald-500/15 hover:text-emerald-200 active:scale-95 disabled:opacity-40 disabled:hover:bg-black/40"
+                  aria-label="Speak to TARA"
+                  title="Speak to TARA"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 0 1-14 0M12 18v3" />
+                  </svg>
+                </button>
+              )}
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
@@ -724,6 +746,7 @@ export function AskTara() {
             {/* Footer hint */}
             <div className="px-4 pb-3 bg-[#0a0f1f]">
               <p className="text-center text-[10px] text-gray-600">
+                {voice.isSupported && <>🎤 Tap the mic to speak · </>}
                 AI-powered · Not 100% accurate · For urgent help,{' '}
                 <a href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">
                   WhatsApp us
