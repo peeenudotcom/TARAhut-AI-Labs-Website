@@ -335,20 +335,19 @@ export default async function CourseDetailPage({
                       // Drop the Live AI Playground inline right after
                       // the prompt-engineering session — only on the AI
                       // Tools Mastery page (the prompt framework is the
-                      // headline content there). Match by content
-                      // rather than index so the widget survives any
-                      // session reordering.
-                      renderAfterSession={
+                      // headline content there). Match by title
+                      // substring so the widget survives any session
+                      // reordering. Pure data so the prop survives the
+                      // Server → Client component boundary.
+                      injectAfterTitleMatch={
                         course.slug === 'ai-tools-mastery-beginners'
-                          ? ({ title }) => {
-                              const t = title.toLowerCase();
-                              const isPromptSession =
-                                t.includes('advanced prompting') ||
-                                t.includes('prompt engineering') ||
-                                (t.includes('prompt') && t.includes('library'));
-                              return isPromptSession ? <AIPlayground /> : null;
-                            }
+                          ? ['advanced prompting', 'prompt engineering', 'prompt library']
                           : undefined
+                      }
+                      injectNode={
+                        course.slug === 'ai-tools-mastery-beginners' ? (
+                          <AIPlayground />
+                        ) : undefined
                       }
                     />
                   </div>
