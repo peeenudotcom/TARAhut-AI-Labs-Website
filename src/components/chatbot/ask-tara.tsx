@@ -1,11 +1,51 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { siteConfig } from '@/config/site'
 import { ThoughtTrace } from './thought-trace'
+import { VoiceOverlay } from './voice-overlay'
+import { useVoiceCommand } from '@/lib/hooks/use-voice-command'
+
+// Long-press threshold for activating voice mode. A regular click is
+// "tap and release within 380ms" → opens the chat as before. Holding
+// past the threshold flips into voice mode and shows the overlay.
+const VOICE_HOLD_MS = 380
+
+// Intent routing — voice transcripts get matched against these
+// keyword sets. First match wins. Order = priority. Each intent has
+// a small handler that scrolls, navigates, or hands the transcript
+// to the chat.
+type IntentKind =
+  | 'syllabus'
+  | 'price'
+  | 'demo'
+  | 'lab-feed'
+  | 'prompts'
+  | 'roadmap'
+  | 'founder'
+  | 'chat'
+
+const INTENT_PATTERNS: { kind: IntentKind; tokens: string[] }[] = [
+  { kind: 'syllabus',  tokens: ['syllabus', 'sessions', 'curriculum', 'course outline', 'what will i learn'] },
+  { kind: 'price',     tokens: ['fee', 'price', 'cost', 'kitna', 'how much', 'discount'] },
+  { kind: 'demo',      tokens: ['demo', 'free class', 'book', 'visit', 'enroll'] },
+  { kind: 'lab-feed',  tokens: ['lab feed', 'projects', 'student work', 'showcase', 'what students built'] },
+  { kind: 'prompts',   tokens: ['prompt vault', 'free prompts', 'prompt library', 'punjab prompts'] },
+  { kind: 'roadmap',   tokens: ['roadmap', 'pick a course', 'which course', 'career path', 'architect'] },
+  { kind: 'founder',   tokens: ['founder', 'owner', 'who runs', 'who is parveen', 'about us'] },
+]
+
+function inferIntent(text: string): IntentKind {
+  const t = text.toLowerCase()
+  for (const { kind, tokens } of INTENT_PATTERNS) {
+    if (tokens.some((tok) => t.includes(tok))) return kind
+  }
+  return 'chat'
+}
 
 // Landing-page subdomain → short display name for the greeting
 const SUBDOMAIN_LABELS: Record<string, string> = {
@@ -93,10 +133,17 @@ function renderLine(line: string): React.ReactNode {
 }
 
 export function AskTara() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [subdomain, setSubdomain] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Voice mode state — set true once a long-press has elapsed past
+  // the threshold. The overlay renders, recognition runs, and a
+  // single transcript fires the intent router below.
+  const [voiceMode, setVoiceMode] = useState(false)
+  const holdTimerRef = useRef<number | null>(null)
+  const heldRef = useRef(false)
   // Viewport detection so we can pick desktop morph (panel at corner)
   // vs mobile morph (bottom sheet) animation targets without trying
   // to animate vw/vh values through framer-motion.
@@ -145,6 +192,130 @@ export function AskTara() {
     setSubdomain(detectSubdomain())
   }, [])
 
+  // Voice intent router — handles a finalised transcript by either
+  // scrolling to a section, navigating to a page, or handing the
+  // transcript to the chat as a typed message.
+  const handleVoiceIntent = useCallback(
+    (text: string) => {
+      const intent = inferIntent(text)
+
+      function scrollToId(id: string): boolean {
+        if (typeof document === 'undefined') return false
+        const el = document.getElementById(id)
+        if (!el) return false
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return true
+      }
+
+      const closeOverlayAfter = (ms: number) =>
+        window.setTimeout(() => setVoiceMode(false), ms)
+
+      switch (intent) {
+        case 'syllabus': {
+          // Try the current page's #syllabus anchor first; fall back
+          // to the AI Tools Mastery course's syllabus.
+          if (!scrollToId('syllabus')) {
+            router.push('/courses/ai-tools-mastery-beginners#syllabus')
+          }
+          closeOverlayAfter(700)
+          return
+        }
+        case 'demo': {
+          // Career Architect lives on the home page + at /start.
+          if (!scrollToId('career-architect')) router.push('/start')
+          closeOverlayAfter(700)
+          return
+        }
+        case 'roadmap': {
+          if (!scrollToId('career-architect')) router.push('/start')
+          closeOverlayAfter(700)
+          return
+        }
+        case 'lab-feed': {
+          router.push('/lab-feed')
+          closeOverlayAfter(500)
+          return
+        }
+        case 'prompts': {
+          router.push('/tools/prompts')
+          closeOverlayAfter(500)
+          return
+        }
+        case 'price':
+        case 'founder':
+        case 'chat':
+        default: {
+          // Open the chat and send the transcript as a typed message.
+          // TARA answers with the real (cached) knowledge base — for
+          // pricing she pulls live numbers, for founder she pulls
+          // Parveen's bio.
+          setOpen(true)
+          window.setTimeout(() => sendMessage({ text }), 250)
+          closeOverlayAfter(450)
+          return
+        }
+      }
+    },
+    [router, sendMessage]
+  )
+
+  const voice = useVoiceCommand({
+    onTranscript: (t) => handleVoiceIntent(t),
+    onError: () => closeOverlayAfter(1200),
+  })
+
+  // Helper used by the error path above + ESC handler.
+  function closeOverlayAfter(ms: number) {
+    window.setTimeout(() => setVoiceMode(false), ms)
+  }
+
+  // ESC closes the voice overlay.
+  useEffect(() => {
+    if (!voiceMode) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        voice.stop()
+        setVoiceMode(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [voiceMode, voice])
+
+  // Long-press detection on the orb. Tap = open chat (existing
+  // behaviour). Hold past VOICE_HOLD_MS = enter voice mode.
+  function startHold() {
+    heldRef.current = false
+    if (!voice.isSupported) return // tap-only fallback on Firefox etc.
+    holdTimerRef.current = window.setTimeout(() => {
+      heldRef.current = true
+      setVoiceMode(true)
+      voice.start()
+    }, VOICE_HOLD_MS)
+  }
+
+  function endHold() {
+    if (holdTimerRef.current) {
+      window.clearTimeout(holdTimerRef.current)
+      holdTimerRef.current = null
+    }
+  }
+
+  function handleOrbClick() {
+    // If the click came at the end of a held-press, the orb already
+    // entered voice mode — don't also open the chat.
+    if (heldRef.current) {
+      heldRef.current = false
+      return
+    }
+    setOpen(true)
+  }
+
+  function dismissVoice() {
+    voice.stop()
+    setVoiceMode(false)
+  }
+
   // Auto-scroll when new messages arrive
   useEffect(() => {
     if (scrollRef.current) {
@@ -167,6 +338,19 @@ export function AskTara() {
 
   return (
     <>
+      {/* Voice overlay — full-screen ripple + status when the orb
+          has been long-pressed. Tap-and-release outside the rings
+          (or ESC) cancels. */}
+      <AnimatePresence>
+        {voiceMode && (
+          <VoiceOverlay
+            status={voice.status}
+            transcript={voice.transcript}
+            onCancel={dismissVoice}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Floating button (closed state) — styled as a "tenth planet"
           that escaped the galaxy. Liquid blob morphs its border-radius
           continuously, the outer halo pulses in sync with the sun's
@@ -177,7 +361,14 @@ export function AskTara() {
         {!open && (
           <motion.button
             key="ask-tara-fab"
-            onClick={() => setOpen(true)}
+            onClick={handleOrbClick}
+            onMouseDown={startHold}
+            onMouseUp={endHold}
+            onMouseLeave={endHold}
+            onTouchStart={startHold}
+            onTouchEnd={endHold}
+            onTouchCancel={endHold}
+            onContextMenu={(e) => e.preventDefault()}
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             // On exit (when window opens) the orb scales UP and fades —
@@ -187,8 +378,9 @@ export function AskTara() {
             transition={{ delay: 1.5, type: 'spring', stiffness: 200, damping: 20 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
-            className="group fixed bottom-6 right-6 z-50"
-            aria-label="Chat with Ask TARA"
+            className="group fixed bottom-6 right-6 z-50 select-none"
+            style={{ touchAction: 'manipulation' }}
+            aria-label={voice.isSupported ? 'Tap to chat · hold to speak' : 'Chat with Ask TARA'}
           >
             {/* Orbital label — mirrors the monospace hover labels on
                 the galaxy planets; appears on hover, sits to the left
