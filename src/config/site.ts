@@ -5,7 +5,7 @@ export const siteConfig = {
   ogImage: 'https://tarahutailabs.com/og.png',
   links: {
     whatsapp: 'https://wa.me/919200882008',
-    instagram: 'https://instagram.com/tarahutailabs',
+    instagram: 'https://instagram.com/tarahutailab',
     linkedin: 'https://linkedin.com/company/tarahutailabs',
     youtube: 'https://youtube.com/@tarahutailabs',
   },
