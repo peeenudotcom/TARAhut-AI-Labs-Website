@@ -12,6 +12,12 @@ export interface TimelinePhase {
 
 interface Props {
   phases: TimelinePhase[];
+  // Optional injection slot — when this predicate returns a node for a
+  // given session (passed the topic title and the global session
+  // number), that node renders immediately AFTER the matching session
+  // card. Used by the AI Tools Mastery page to drop the Live AI
+  // Playground next to the prompt-engineering session.
+  renderAfterSession?: (session: { sessionNumber: number; title: string }) => React.ReactNode;
 }
 
 // Pull a sprint label + title out of a module string like
@@ -47,7 +53,7 @@ function parseSprint(
 // revealing (opacity + slight translate) when it enters the viewport.
 // The path's glow height is driven off scroll position so the user
 // feels the progress bar racing ahead of them as they go.
-export function VisualTimeline({ phases }: Props) {
+export function VisualTimeline({ phases, renderAfterSession }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
   const [progressPct, setProgressPct] = useState(0);
@@ -148,38 +154,65 @@ export function VisualTimeline({ phases }: Props) {
               {/* Session grid — full-width to the right of the path.
                   Single column on mobile, 2-col from sm+ so cards get
                   breathing room. */}
-              <div className="grid gap-4 pl-16 sm:grid-cols-2 sm:gap-6">
-                {phase.topics.map((topic, topicIdx) => {
+              {(() => {
+                // Collect the sessions for this phase up front so we can
+                // (a) render the grid, and (b) check whether any session
+                // in this phase has an inject node to drop in below the
+                // grid (full-width).
+                const phaseSessions = phase.topics.map((topic, topicIdx) => {
                   globalSessionIdx += 1;
-                  const sessionNum = String(globalSessionIdx).padStart(2, '0');
-                  const id = `s-${phaseIdx}-${topicIdx}`;
-                  const active = visibleIds.has(id);
-                  return (
-                    <article
-                      key={id}
-                      data-session-id={id}
-                      className={`relative overflow-hidden rounded-2xl border bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-700 ease-out md:p-6 ${
-                        active
-                          ? 'translate-y-0 border-emerald-500/30 opacity-100 shadow-[0_0_24px_rgba(16,185,129,0.12)]'
-                          : 'translate-y-5 border-white/[0.08] opacity-35'
-                      }`}
-                    >
-                      <span
-                        aria-hidden
-                        className={`absolute top-0 left-0 h-full w-[3px] transition-opacity duration-500 ${
-                          active ? 'bg-emerald-400 opacity-100' : 'opacity-0'
-                        }`}
-                      />
-                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
-                        Session {sessionNum}
-                      </p>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-200 md:text-[0.95rem]">
-                        {topic}
-                      </p>
-                    </article>
-                  );
-                })}
-              </div>
+                  return {
+                    topic,
+                    topicIdx,
+                    sessionNumber: globalSessionIdx,
+                    inject:
+                      renderAfterSession?.({
+                        sessionNumber: globalSessionIdx,
+                        title: topic,
+                      }) ?? null,
+                  };
+                });
+                const firstInject = phaseSessions.find((s) => s.inject)?.inject;
+
+                return (
+                  <>
+                    <div className="grid gap-4 pl-16 sm:grid-cols-2 sm:gap-6">
+                      {phaseSessions.map(({ topic, topicIdx, sessionNumber }) => {
+                        const sessionNum = String(sessionNumber).padStart(2, '0');
+                        const id = `s-${phaseIdx}-${topicIdx}`;
+                        const active = visibleIds.has(id);
+                        return (
+                          <article
+                            key={id}
+                            data-session-id={id}
+                            className={`relative overflow-hidden rounded-2xl border bg-white/[0.03] p-5 backdrop-blur-md transition-all duration-700 ease-out md:p-6 ${
+                              active
+                                ? 'translate-y-0 border-emerald-500/30 opacity-100 shadow-[0_0_24px_rgba(16,185,129,0.12)]'
+                                : 'translate-y-5 border-white/[0.08] opacity-35'
+                            }`}
+                          >
+                            <span
+                              aria-hidden
+                              className={`absolute top-0 left-0 h-full w-[3px] transition-opacity duration-500 ${
+                                active ? 'bg-emerald-400 opacity-100' : 'opacity-0'
+                              }`}
+                            />
+                            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">
+                              Session {sessionNum}
+                            </p>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-200 md:text-[0.95rem]">
+                              {topic}
+                            </p>
+                          </article>
+                        );
+                      })}
+                    </div>
+                    {firstInject && (
+                      <div className="mt-2 pl-16">{firstInject}</div>
+                    )}
+                  </>
+                );
+              })()}
             </section>
           );
         })}
