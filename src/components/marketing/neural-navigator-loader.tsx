@@ -65,11 +65,18 @@ function StaticFallback() {
   );
 }
 
+interface LoaderProps {
+  // Course slugs to emphasise (glow brighter) in the galaxy. Driven
+  // by the role-aware hero variant — biz owners get the marketing +
+  // builder planets brighter, freelancers get the creative ones, etc.
+  emphasizedSlugs?: string[];
+}
+
 // Client gate: reduced-motion users skip the WebGL scene (accessibility
 // — they asked for less animation). Everyone else — including mobile
 // — gets the galaxy, because it's the centerpiece of the hero and
 // hiding it on phones was killing the conversion hook.
-export function NeuralNavigatorLoader() {
+export function NeuralNavigatorLoader({ emphasizedSlugs }: LoaderProps = {}) {
   const [state, setState] = useState<'pending' | 'canvas' | 'fallback'>('pending');
 
   useEffect(() => {
@@ -81,5 +88,5 @@ export function NeuralNavigatorLoader() {
 
   if (state === 'pending') return <NavigatorSkeleton />;
   if (state === 'fallback') return <StaticFallback />;
-  return <NeuralNavigator />;
+  return <NeuralNavigator emphasizedSlugs={emphasizedSlugs} />;
 }
