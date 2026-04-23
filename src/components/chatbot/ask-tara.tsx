@@ -8,6 +8,7 @@ import { DefaultChatTransport } from 'ai'
 import { siteConfig } from '@/config/site'
 import { ThoughtTrace } from './thought-trace'
 import { VoiceOverlay } from './voice-overlay'
+import { VoiceHint } from './voice-hint'
 import { useVoiceCommand } from '@/lib/hooks/use-voice-command'
 
 // Long-press threshold for activating voice mode. A regular click is
@@ -142,6 +143,14 @@ export function AskTara() {
   // the threshold. The overlay renders, recognition runs, and a
   // single transcript fires the intent router below.
   const [voiceMode, setVoiceMode] = useState(false)
+  // Hold-state visible ripple — fires the moment the user touches
+  // the orb (instant feedback) before the 380ms voice-mode threshold
+  // so the press never feels unresponsive.
+  const [isHolding, setIsHolding] = useState(false)
+  // Hide the "Hold to Speak" pill the moment the user engages the
+  // orb (or opens the chat) so it never lingers over an active
+  // interaction.
+  const [hintDismissed, setHintDismissed] = useState(false)
   const holdTimerRef = useRef<number | null>(null)
   const heldRef = useRef(false)
   // Viewport detection so we can pick desktop morph (panel at corner)
@@ -286,7 +295,9 @@ export function AskTara() {
   // behaviour). Hold past VOICE_HOLD_MS = enter voice mode.
   function startHold() {
     heldRef.current = false
+    setHintDismissed(true) // pill goes away the moment the user engages
     if (!voice.isSupported) return // tap-only fallback on Firefox etc.
+    setIsHolding(true) // immediate visual feedback ripple from the orb
     holdTimerRef.current = window.setTimeout(() => {
       heldRef.current = true
       setVoiceMode(true)
@@ -299,9 +310,11 @@ export function AskTara() {
       window.clearTimeout(holdTimerRef.current)
       holdTimerRef.current = null
     }
+    setIsHolding(false)
   }
 
   function handleOrbClick() {
+    setHintDismissed(true)
     // If the click came at the end of a held-press, the orb already
     // entered voice mode — don't also open the chat.
     if (heldRef.current) {
@@ -382,6 +395,10 @@ export function AskTara() {
             style={{ touchAction: 'manipulation' }}
             aria-label={voice.isSupported ? 'Tap to chat · hold to speak' : 'Chat with Ask TARA'}
           >
+            {/* "Hold to Speak" intro pill — only renders when voice is
+                supported, only for the first 3 visits per device. */}
+            {voice.isSupported && <VoiceHint dismissed={hintDismissed} />}
+
             {/* Orbital label — mirrors the monospace hover labels on
                 the galaxy planets; appears on hover, sits to the left
                 like a trailing planet tag. */}
@@ -390,6 +407,31 @@ export function AskTara() {
                 Ask TARA
               </span>
             </div>
+
+            {/* Hold-state ripple — fires the moment the finger touches
+                the orb (instant feedback, before voice mode actually
+                starts at 380ms). Two concentric rings expand outward
+                so the user feels "yes, I'm holding correctly." */}
+            {isHolding && (
+              <>
+                {[0, 1].map((i) => (
+                  <span
+                    key={i}
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-full border border-emerald-300"
+                    style={{
+                      animation: `tara-hold-ripple 0.85s ease-out ${i * 0.25}s infinite`,
+                    }}
+                  />
+                ))}
+                <style>{`
+                  @keyframes tara-hold-ripple {
+                    0%   { transform: scale(0.95); opacity: 0.85; }
+                    100% { transform: scale(1.85); opacity: 0; }
+                  }
+                `}</style>
+              </>
+            )}
 
             {/* Outer emerald halo — pulses at the sun's cadence. */}
             <motion.span
