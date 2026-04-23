@@ -133,7 +133,17 @@ function renderLine(line: string): React.ReactNode {
   return parts.length > 0 ? parts : line
 }
 
-export function AskTara() {
+export function AskTara({
+  mobileBottomClass = 'bottom-6',
+}: {
+  /**
+   * Tailwind class that controls the orb's distance from the bottom edge
+   * on mobile. Pages with a persistent mobile sticky CTA (e.g. landing pages)
+   * should pass a larger value like `"bottom-24"` so the orb doesn't cover
+   * the Enroll button. Reset to `md:bottom-6` at md+ regardless.
+   */
+  mobileBottomClass?: string
+} = {}) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [subdomain, setSubdomain] = useState<string | null>(null)
@@ -391,7 +401,7 @@ export function AskTara() {
             transition={{ delay: 1.5, type: 'spring', stiffness: 200, damping: 20 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
-            className="group fixed bottom-6 right-6 z-50 select-none"
+            className={`group fixed ${mobileBottomClass} md:bottom-6 right-6 z-50 select-none`}
             style={{ touchAction: 'manipulation' }}
             aria-label={voice.isSupported ? 'Tap to chat · hold to speak' : 'Chat with Ask TARA'}
           >

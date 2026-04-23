@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Geist_Mono, Playfair_Display, Space_Grotesk, Manrope } from 'next/font/google';
+import { Inter, Geist_Mono, Playfair_Display, Space_Grotesk, Manrope, Fira_Code } from 'next/font/google';
 import Script from 'next/script';
 import { siteConfig } from '@/config/site';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
@@ -33,6 +33,12 @@ const manrope = Manrope({
   variable: '--font-manrope',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
+});
+
+const firaCode = Fira_Code({
+  variable: '--font-fira-code',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
@@ -71,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} ${playfair.variable} ${spaceGrotesk.variable} ${manrope.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${playfair.variable} ${spaceGrotesk.variable} ${manrope.variable} ${firaCode.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <OrganizationSchema />
