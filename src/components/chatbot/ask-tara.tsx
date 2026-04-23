@@ -97,6 +97,17 @@ export function AskTara() {
   const [subdomain, setSubdomain] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Viewport detection so we can pick desktop morph (panel at corner)
+  // vs mobile morph (bottom sheet) animation targets without trying
+  // to animate vw/vh values through framer-motion.
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const sync = () => setIsMobile(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
   // Boot sequence — emerald terminal trace plays the first time the
   // chat opens this page-session. Subsequent opens skip the boot so
   // returning users get straight to the greeting.
@@ -241,24 +252,74 @@ export function AskTara() {
         )}
       </AnimatePresence>
 
-      {/* Chat window (open state) */}
+      {/* Chat window — true geometric morph from the orb. The HUD
+          starts at the orb's exact size + circular shape, then
+          animates width / height / borderRadius simultaneously so it
+          visually IS the orb expanding into a panel, not a separate
+          element materialising. Mobile uses bottom-sheet end values
+          (full-width, 80vh, top-rounded only). */}
       <AnimatePresence>
         {open && (
           <motion.div
             key="ask-tara-window"
-            // Origin-point morph: the window scales up FROM where the
-            // orb sits (bottom-right) so it visually emerges from the
-            // orb instead of materialising in space. transformOrigin
-            // sits at the orb's center (~64px from each edge).
-            initial={{ opacity: 0, scale: 0.06 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.06, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } }}
-            style={{ transformOrigin: 'calc(100% - 64px) calc(100% - 64px)' }}
-            transition={{ type: 'spring', stiffness: 220, damping: 24, mass: 0.9 }}
-            className="fixed z-50 flex flex-col bg-[#0a0f1f] border border-white/10 shadow-2xl shadow-black/50
-                       inset-x-0 bottom-0 top-0 md:inset-auto md:bottom-6 md:right-6
-                       md:h-[640px] md:max-h-[80vh] md:w-[400px] md:rounded-3xl overflow-hidden"
+            initial={{
+              width: 64,
+              height: 64,
+              borderRadius: 32,
+              bottom: 24,
+              right: 24,
+              opacity: 0,
+            }}
+            animate={
+              isMobile
+                ? {
+                    width: '100vw',
+                    height: '85vh',
+                    borderTopLeftRadius: 28,
+                    borderTopRightRadius: 28,
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    bottom: 0,
+                    right: 0,
+                    opacity: 1,
+                  }
+                : {
+                    width: 400,
+                    height: Math.min(640, typeof window !== 'undefined' ? window.innerHeight * 0.8 : 640),
+                    borderRadius: 28,
+                    bottom: 24,
+                    right: 24,
+                    opacity: 1,
+                  }
+            }
+            exit={{
+              width: 64,
+              height: 64,
+              borderRadius: 32,
+              bottom: 24,
+              right: 24,
+              opacity: 0,
+              transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+            }}
+            transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+            className="fixed z-50 flex flex-col overflow-hidden bg-[#0a0f1f] border border-emerald-500/40 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(5,150,105,0.18)]"
           >
+            {/* Laser scanline — fires top→bottom across the freshly
+                opened HUD. Triggers after the morph completes
+                (delay 0.55s) so it reads as "neural activation" once
+                the panel is at full size. */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-0 right-0 z-[60] h-px bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.9)]"
+              style={{ animation: 'tara-scan 0.85s ease-in-out 0.55s 1 forwards', top: 0, opacity: 0 }}
+            />
+            <style>{`
+              @keyframes tara-scan {
+                0%   { top: 0;    opacity: 1; }
+                90%  { opacity: 0.85; }
+                100% { top: 100%; opacity: 0; }
+              }
+            `}</style>
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-emerald-950 to-teal-950 px-5 py-4">
               <div className="flex items-center gap-3">
@@ -488,10 +549,10 @@ export function AskTara() {
 // chat first opens in a session. Sets the "this is a real system,
 // not a popup" tone before the warm Hinglish greeting fades in.
 const BOOT_LINES: { tag: string; body: string; delay: number }[] = [
-  { tag: 'POWER',    body: 'TARA system online…',                      delay: 0 },
-  { tag: 'LOAD',     body: 'Pulling TARAhut syllabus + 25 prompts',    delay: 280 },
-  { tag: 'CONTEXT',  body: 'Loading 16-session map + Punjab routing',  delay: 560 },
-  { tag: 'READY',    body: 'Hinglish mode · friendly tone · go ✓',     delay: 880 },
+  { tag: 'SYSTEM',  body: 'INITIALIZING NEURAL LINK…',         delay: 0   },
+  { tag: 'DB',      body: 'FETCHING 16-SESSION KNOWLEDGE BASE',delay: 320 },
+  { tag: 'CONTEXT', body: 'Punjab routing · Hinglish mode',    delay: 640 },
+  { tag: 'STATUS',  body: 'ONLINE ✓',                          delay: 960 },
 ]
 
 function BootTraceLines() {
