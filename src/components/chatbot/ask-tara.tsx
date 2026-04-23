@@ -61,6 +61,22 @@ const SUBDOMAIN_LABELS: Record<string, string> = {
   marketing: 'AI for Digital Marketing',
 }
 
+// Map `/lp/<slug>` paths back to their subdomain key. Mirrors the
+// production proxy rewrites in src/proxy.ts so a preview URL or a
+// direct `/lp/master-claude-15-days` visit still gets the same
+// per-page persona as claude.tarahutailabs.com would.
+const PATH_TO_SUBDOMAIN: Record<string, string> = {
+  '/lp/master-claude-15-days': 'claude',
+  '/lp/master-ai-builder': 'builder',
+  '/lp/ai-hustler-45': 'hustler',
+  '/lp/ai-power-8-week-program': 'power',
+  '/lp/ai-tools-mastery-beginners': 'tools',
+  '/lp/generative-ai-prompt-engineering': 'prompts',
+  '/lp/ai-explorer-school-kids-junior': 'kids',
+  '/lp/ai-explorer-school-kids-senior': 'teens',
+  '/lp/ai-digital-marketing': 'marketing',
+}
+
 function detectSubdomain(): string | null {
   if (typeof window === 'undefined') return null
   const host = window.location.host.toLowerCase()
@@ -68,6 +84,13 @@ function detectSubdomain(): string | null {
   // claude.tarahutailabs.com → "claude"
   if (parts.length >= 3 && parts[0] in SUBDOMAIN_LABELS) {
     return parts[0]
+  }
+  // Path fallback — preview URLs and direct `/lp/<slug>` visits don't
+  // have the production subdomain, but the user is still on the same
+  // landing page conceptually.
+  const path = window.location.pathname.toLowerCase()
+  if (path in PATH_TO_SUBDOMAIN) {
+    return PATH_TO_SUBDOMAIN[path]
   }
   return null
 }
@@ -370,6 +393,7 @@ export function AskTara({
             status={voice.status}
             transcript={voice.transcript}
             onCancel={dismissVoice}
+            subdomain={subdomain}
           />
         )}
       </AnimatePresence>
