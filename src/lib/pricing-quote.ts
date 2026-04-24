@@ -7,7 +7,7 @@ import {
   type PromoError,
 } from '@/lib/promo';
 import {
-  getCoursePricing,
+  getLpPricing,
   RETURN_CUSTOMER_PRICE,
 } from '@/config/pricing';
 
@@ -44,7 +44,7 @@ export async function quoteCoursePrice(params: {
   promoCode?: string | null;
 }): Promise<PriceQuote> {
   const { courseSlug, email, promoCode } = params;
-  const { price, originalPrice } = getCoursePricing(courseSlug);
+  const { price, originalPrice } = getLpPricing(courseSlug);
   const returnCustomer = await hasPriorPurchase(email);
   const basePrice = returnCustomer ? RETURN_CUSTOMER_PRICE : price;
   const originalAmount = originalPrice ?? price;

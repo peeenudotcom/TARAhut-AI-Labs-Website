@@ -4,7 +4,7 @@ import { createServiceClient } from '@/lib/supabase';
 import { courseConfigs } from '@/config/learn-modules';
 import { grantCourseAccess } from '@/lib/course-access';
 import { hasPriorPurchase } from '@/lib/pricing-quote';
-import { getCoursePricing, RETURN_CUSTOMER_PRICE } from '@/config/pricing';
+import { getLpPricing, RETURN_CUSTOMER_PRICE } from '@/config/pricing';
 import { validatePromoCode, computeDiscount } from '@/lib/promo';
 
 export async function POST(req: NextRequest) {
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       if (validation.ok) {
         const basePrice = isReturnCustomer
           ? RETURN_CUSTOMER_PRICE
-          : getCoursePricing(slug).price;
+          : getLpPricing(slug).price;
         const { discountAmount } = computeDiscount(basePrice, validation.discountPercent);
         const { error: redemptionError } = await db.from('promo_redemptions').insert({
           promo_code_id: validation.id,
