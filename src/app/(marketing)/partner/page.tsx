@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { PartnerForm } from './partner-form';
+import { PartnerPunjabMap } from '@/components/landing/partner-punjab-map';
+import { PartnerProfitCalculator } from '@/components/landing/partner-profit-calculator';
 
 export const metadata: Metadata = {
   title: 'Partner with TARAhut · Lab-in-a-Box | Own the AI Future of Your City',
@@ -73,6 +75,69 @@ const WHAT_YOU_GET = [
   { emoji: '👥', label: 'Trainer onboarding (5 days intensive at Kotkapura HQ)' },
   { emoji: '🛡️', label: 'District exclusivity for the duration of the partnership' },
 ];
+
+// ─────────────────────────────────────────────────────────────
+// Economics section — structure only. Specific rupee figures and
+// totals are intentionally kept off the public page and moved to
+// the discovery call; the page sells the MODEL, the call sells
+// the NUMBERS. Ranges (capex, break-even, ROI) stay because they
+// are guardrails, not promises.
+// ─────────────────────────────────────────────────────────────
+
+const REVENUE_STREAMS = [
+  {
+    tag: '01 · B2C',
+    icon: '🎓',
+    title: 'Enrollment',
+    note: 'The volume',
+    desc: 'Monthly cohorts across TARAhut flagship courses — Tools Mastery, Master Builder, Career Architect funnel feeding seats.',
+    badge: 'Largest stream',
+  },
+  {
+    tag: '02 · B2B',
+    icon: '🏢',
+    title: 'Local Business Workshops',
+    note: 'The high-ticket',
+    desc: 'AI audits and transformation workshops for shops, clinics, agencies in your district — priced like consulting, delivered like a one-day sprint.',
+    badge: 'Premium ticket',
+  },
+  {
+    tag: '03 · SERVICES',
+    icon: '🔧',
+    title: 'AI Implementation',
+    note: 'The retention',
+    desc: 'Custom GPT builds and automation hand-offs for local clients, delivered by senior students under your supervision. Recurring and compounding.',
+    badge: 'Recurring revenue',
+  },
+];
+
+const OPERATING_COSTS = [
+  { label: 'Rent & utilities',    note: '500–800 sq. ft. local space' },
+  { label: 'Lab Manager',          note: '1 staff · facilitates the system, does not build it' },
+  { label: 'Marketing',            note: 'Digital ads + local ground' },
+  { label: 'Technology & Royalty', note: 'TARA bot + cloud infrastructure' },
+  { label: 'Misc · maintenance',   note: '' },
+];
+
+const UNFAIR_ADVANTAGES = [
+  {
+    icon: '🎯',
+    title: 'Lead Generation',
+    body: 'Our Career Architect funnels qualified leads directly to your WhatsApp — pre-qualified, ready to talk. You wake up to enquiries, not to empty seats.',
+  },
+  {
+    icon: '📚',
+    title: 'Zero Syllabus Drift',
+    body: 'We update the 16-session curriculum centrally. You never chase the tech — AI moves fast, our labs move with it, and your trainer manual refreshes automatically.',
+  },
+  {
+    icon: '🛡️',
+    title: '5km Exclusivity Radius',
+    body: 'One TARAhut Lab per 5km. You dominate your local market without stepping on another partner, and no one else can ride your reputation.',
+  },
+];
+
+const EXCLUSIVITY_WHATSAPP = `https://wa.me/919200882008?text=${encodeURIComponent('Hi TARAhut! I want to apply for district exclusivity for a TARAhut AI Lab. Please share the partnership details.')}`;
 
 // ─────────────────────────────────────────────────────────────
 // Page
@@ -166,6 +231,11 @@ export default function PartnerPage() {
               </div>
             </div>
 
+            {/* Map */}
+            <div className="mt-10 md:mt-12">
+              <PartnerPunjabMap />
+            </div>
+
             {/* CTAs */}
             <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
               <a
@@ -178,10 +248,10 @@ export default function PartnerPage() {
                 </svg>
               </a>
               <a
-                href="#pillars"
+                href="#economics"
                 className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-4 rounded-full border border-white/15 text-sm font-bold tracking-[0.15em] uppercase text-gray-300 hover:border-emerald-400/40 hover:text-emerald-300 transition-colors"
               >
-                See the Model
+                See the Economics
               </a>
             </div>
 
@@ -253,6 +323,277 @@ export default function PartnerPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ PROFIT PROJECTIONS ═══════════ */}
+      <section id="economics" className="relative py-20 md:py-28 bg-[#020817] border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-4 md:mb-6">
+            <span
+              className="text-[11px] sm:text-xs font-bold tracking-[0.32em] uppercase text-emerald-400"
+              style={{ fontFamily: MONO }}
+            >
+              The Economics · Projections
+            </span>
+            <h2
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-[1.1]"
+              style={{ fontFamily: DISPLAY }}
+            >
+              What a Partner Lab <span className="text-gray-500">prints.</span>
+            </h2>
+          </div>
+
+          {/* Disclaimer strip */}
+          <div className="max-w-3xl mx-auto text-center mb-14 md:mb-16">
+            <p className="text-[11px] sm:text-xs text-gray-500 tracking-wide leading-relaxed" style={{ fontFamily: MONO }}>
+              # projections based on kotkapura hq trajectory · tier-1 cities (ludhiana · amritsar) may run ~2× higher due to pricing elasticity · actuals depend on location, execution, market
+            </p>
+          </div>
+
+          {/* Revenue streams — 3 cards */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                01 · Revenue streams
+              </span>
+              <span className="h-px flex-1 bg-white/[0.06]" />
+              <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
+                monthly
+              </span>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+              {REVENUE_STREAMS.map((s) => (
+                <div
+                  key={s.tag}
+                  className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:p-6 hover:border-emerald-400/30 transition-colors"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-2xl" aria-hidden>{s.icon}</span>
+                    <span
+                      className="text-[10px] font-bold tracking-[0.28em] text-emerald-400"
+                      style={{ fontFamily: MONO }}
+                    >
+                      {s.tag}
+                    </span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
+                    {s.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-emerald-300/80 uppercase tracking-widest" style={{ fontFamily: MONO }}>
+                    {s.note}
+                  </p>
+                  <p className="mt-3 text-sm text-gray-400 leading-relaxed">{s.desc}</p>
+                  <div className="mt-5 pt-4 border-t border-white/[0.06]">
+                    <span
+                      className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.24em] uppercase text-emerald-300"
+                      style={{ fontFamily: MONO }}
+                    >
+                      <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                      {s.badge}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Revenue summary strip — qualitative, no rupees */}
+            <div className="mt-4 flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] px-5 py-4">
+              <span
+                className="text-[11px] sm:text-xs font-bold tracking-[0.26em] text-emerald-300 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                Three streams · stacked monthly
+              </span>
+              <span
+                className="text-[11px] sm:text-xs text-emerald-400/70 tracking-wide"
+                style={{ fontFamily: MONO }}
+              >
+                figures · discovery call
+              </span>
+            </div>
+          </div>
+
+          {/* Operating costs — lean ledger */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                02 · Operating costs
+              </span>
+              <span className="h-px flex-1 bg-white/[0.06]" />
+              <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
+                monthly
+              </span>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
+              <div className="px-5 sm:px-6 py-4 border-b border-white/[0.06]">
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  <span className="text-white font-semibold">The system is the teacher.</span> No high-paid AI experts —
+                  your lab manager facilitates TARAhut IP rather than generating it. That&apos;s the structural advantage.
+                </p>
+              </div>
+              <ul className="divide-y divide-white/[0.05]">
+                {OPERATING_COSTS.map((c) => (
+                  <li key={c.label} className="flex items-center gap-3 sm:gap-4 px-5 sm:px-6 py-3.5">
+                    <span className="flex items-center justify-center w-1.5 h-1.5 rounded-full bg-emerald-400/60 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm sm:text-base font-medium text-gray-200">{c.label}</div>
+                      {c.note && (
+                        <div className="text-[11px] text-gray-500 mt-0.5" style={{ fontFamily: MONO }}>
+                          {c.note}
+                        </div>
+                      )}
+                    </div>
+                    <span
+                      className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 shrink-0"
+                      style={{ fontFamily: MONO }}
+                    >
+                      line item
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="px-5 sm:px-6 py-4 border-t border-emerald-500/20 bg-emerald-500/[0.04] flex items-center justify-between">
+                <span
+                  className="text-[11px] font-bold tracking-[0.26em] uppercase text-emerald-300"
+                  style={{ fontFamily: MONO }}
+                >
+                  Five lines · no hidden payroll
+                </span>
+                <span
+                  className="text-[11px] text-emerald-400/70 tracking-wide"
+                  style={{ fontFamily: MONO }}
+                >
+                  figures · discovery call
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive calculator — the prospect models their own projection */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                03 · Your projection
+              </span>
+              <span className="h-px flex-1 bg-white/[0.06]" />
+              <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
+                interactive
+              </span>
+            </div>
+
+            <PartnerProfitCalculator />
+          </div>
+
+          {/* ROI + Break-even card */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                04 · Capital plan
+              </span>
+              <span className="h-px flex-1 bg-white/[0.06]" />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+              {[
+                { kpi: '₹8–12L', label: 'Initial Capex', note: 'Franchise fee + interior branding + high-speed lab setup' },
+                { kpi: '3–5 mo', label: 'Break-Even', note: 'From first cohort live to profit' },
+                { kpi: '~300%', label: 'ROI · Year 18mo', note: 'At projected capacity — Tier-1 runs higher' },
+              ].map((k) => (
+                <div
+                  key={k.label}
+                  className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.02] p-5"
+                >
+                  <div
+                    className="text-3xl sm:text-4xl font-extrabold tabular-nums"
+                    style={{
+                      fontFamily: DISPLAY,
+                      background: 'linear-gradient(to bottom, #ffffff 0%, #94a3b8 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    {k.kpi}
+                  </div>
+                  <div className="mt-2 text-[11px] tracking-[0.28em] uppercase text-emerald-300 font-bold" style={{ fontFamily: MONO }}>
+                    {k.label}
+                  </div>
+                  <div className="mt-1.5 text-xs text-gray-500 leading-relaxed">{k.note}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Unfair Advantages */}
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
+                style={{ fontFamily: MONO }}
+              >
+                05 · The unfair advantage
+              </span>
+              <span className="h-px flex-1 bg-white/[0.06]" />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+              {UNFAIR_ADVANTAGES.map((a) => (
+                <div
+                  key={a.title}
+                  className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:p-6 hover:border-emerald-400/30 transition-colors"
+                >
+                  <div className="text-3xl mb-3" aria-hidden>{a.icon}</div>
+                  <h3 className="text-base sm:text-lg font-bold text-white" style={{ fontFamily: DISPLAY }}>
+                    {a.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-400 leading-relaxed">{a.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* District Exclusivity footer CTA */}
+          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/[0.08] via-emerald-500/[0.02] to-transparent p-6 md:p-8 text-center">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.32em] uppercase text-emerald-400 mb-3" style={{ fontFamily: MONO }}>
+              # batch_1 · open · limited
+            </div>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
+              Apply for District Exclusivity
+            </h3>
+            <p className="mt-3 text-sm md:text-base text-gray-400 max-w-xl mx-auto">
+              One TARAhut Lab per 5km. First partners in each district get the market. WhatsApp us and we&apos;ll lock your area in the first discovery call.
+            </p>
+            <a
+              href={EXCLUSIVITY_WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 mt-6 px-8 py-4 rounded-full font-black text-sm tracking-[0.15em] uppercase text-black bg-white hover:bg-emerald-500 hover:text-white transition-colors shadow-[0_10px_40px_rgba(16,185,129,0.2)]"
+            >
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.326 0-4.48-.742-6.24-2.004l-.436-.326-2.65.889.889-2.65-.326-.436A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+              </svg>
+              WhatsApp the Partnership Team
+            </a>
+            <p className="mt-4 text-[11px] text-gray-500 tracking-[0.22em] uppercase" style={{ fontFamily: MONO }}>
+              or scroll down · fill the enquiry form
+            </p>
           </div>
         </div>
       </section>
