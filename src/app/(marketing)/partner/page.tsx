@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { PartnerForm } from './partner-form';
-import { PartnerPunjabMap } from '@/components/landing/partner-punjab-map';
 
 export const metadata: Metadata = {
   title: 'Partner with TARAhut · Lab-in-a-Box | Own the AI Future of Your City',
@@ -141,14 +140,21 @@ export default function PartnerPage() {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span>
-                  <span className="text-white font-bold">500+</span> students served at Kotkapura HQ
+                  <span className="text-white font-bold">Kotkapura HQ</span> live · first cohorts running
                 </span>
               </div>
               <div className="hidden sm:block w-px h-4 bg-white/15" />
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span>
-                  <span className="text-white font-bold">10+</span> districts targeted for 2026
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/60" />
+                <span className="text-gray-500">
+                  <span
+                    className="text-emerald-400 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-[11px]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    Target
+                  </span>
+                  <span className="mx-1.5">·</span>
+                  <span className="text-gray-300">500+ students across Punjab by 2026</span>
                 </span>
               </div>
               <div className="hidden sm:block w-px h-4 bg-white/15" />
@@ -158,11 +164,6 @@ export default function PartnerPage() {
                   Model: <span className="text-white font-bold">Lab-in-a-Box</span>
                 </span>
               </div>
-            </div>
-
-            {/* Map */}
-            <div className="mt-10 md:mt-12">
-              <PartnerPunjabMap />
             </div>
 
             {/* CTAs */}
