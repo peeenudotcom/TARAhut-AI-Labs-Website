@@ -76,9 +76,11 @@ const WHAT_YOU_GET = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// Profit Projections — numbers are projections based on Kotkapura
-// HQ trajectory. Tier-1 cities may run materially higher. A
-// disclaimer is rendered inline so nothing reads as a guarantee.
+// Economics section — structure only. Specific rupee figures and
+// totals are intentionally kept off the public page and moved to
+// the discovery call; the page sells the MODEL, the call sells
+// the NUMBERS. Ranges (capex, break-even, ROI) stay because they
+// are guardrails, not promises.
 // ─────────────────────────────────────────────────────────────
 
 const REVENUE_STREAMS = [
@@ -87,33 +89,33 @@ const REVENUE_STREAMS = [
     icon: '🎓',
     title: 'Enrollment',
     note: 'The volume',
-    desc: '2 batches × 20 students × ₹9,999 blended (Tools Mastery + Master Builder)',
-    amount: 400000,
+    desc: 'Monthly cohorts across TARAhut flagship courses — Tools Mastery, Master Builder, Career Architect funnel feeding seats.',
+    badge: 'Largest stream',
   },
   {
     tag: '02 · B2B',
     icon: '🏢',
     title: 'Local Business Workshops',
     note: 'The high-ticket',
-    desc: '2 business audits / AI transformation workshops @ ₹25,000',
-    amount: 50000,
+    desc: 'AI audits and transformation workshops for shops, clinics, agencies in your district — priced like consulting, delivered like a one-day sprint.',
+    badge: 'Premium ticket',
   },
   {
     tag: '03 · SERVICES',
     icon: '🔧',
     title: 'AI Implementation',
     note: 'The retention',
-    desc: 'Custom GPT builds for local clients · delivered via student interns',
-    amount: 30000,
+    desc: 'Custom GPT builds and automation hand-offs for local clients, delivered by senior students under your supervision. Recurring and compounding.',
+    badge: 'Recurring revenue',
   },
 ];
 
 const OPERATING_COSTS = [
-  { label: 'Rent & utilities',        note: '500–800 sq. ft. local space',          amount: 30000 },
-  { label: 'Lab Manager',              note: '1 staff · facilitates the system',     amount: 20000 },
-  { label: 'Marketing',                note: 'Digital ads + local ground',           amount: 30000 },
-  { label: 'Technology & Royalty',     note: 'TARA bot + cloud infrastructure',      amount: 20000 },
-  { label: 'Misc · maintenance',       note: '',                                     amount: 5000  },
+  { label: 'Rent & utilities',    note: '500–800 sq. ft. local space' },
+  { label: 'Lab Manager',          note: '1 staff · facilitates the system, does not build it' },
+  { label: 'Marketing',            note: 'Digital ads + local ground' },
+  { label: 'Technology & Royalty', note: 'TARA bot + cloud infrastructure' },
+  { label: 'Misc · maintenance',   note: '' },
 ];
 
 const UNFAIR_ADVANTAGES = [
@@ -133,17 +135,6 @@ const UNFAIR_ADVANTAGES = [
     body: 'One TARAhut Lab per 5km. You dominate your local market without stepping on another partner, and no one else can ride your reputation.',
   },
 ];
-
-// Industry benchmark for the comparison bar chart — conservative
-// estimate of a typical small-town coaching centre's monthly profit.
-// Labelled as "industry avg" so it never reads as a specific claim.
-const MANUAL_EDU_BENCHMARK = 40000;
-
-const rupees = (n: number) => `₹${n.toLocaleString('en-IN')}`;
-
-const TOTAL_REVENUE = REVENUE_STREAMS.reduce((sum, s) => sum + s.amount, 0);
-const TOTAL_COSTS   = OPERATING_COSTS.reduce((sum, c) => sum + c.amount, 0);
-const NET_PROFIT    = TOTAL_REVENUE - TOTAL_COSTS;
 
 const EXCLUSIVITY_WHATSAPP = `https://wa.me/919200882008?text=${encodeURIComponent('Hi TARAhut! I want to apply for district exclusivity for a TARAhut AI Lab. Please share the partnership details.')}`;
 
@@ -399,38 +390,31 @@ export default function PartnerPage() {
                   </p>
                   <p className="mt-3 text-sm text-gray-400 leading-relaxed">{s.desc}</p>
                   <div className="mt-5 pt-4 border-t border-white/[0.06]">
-                    <div
-                      className="text-2xl sm:text-3xl font-extrabold tabular-nums"
-                      style={{
-                        fontFamily: DISPLAY,
-                        background: 'linear-gradient(to bottom, #ffffff 0%, #94a3b8 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                      }}
+                    <span
+                      className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.24em] uppercase text-emerald-300"
+                      style={{ fontFamily: MONO }}
                     >
-                      {rupees(s.amount)}
-                    </div>
-                    <div className="mt-0.5 text-[10px] text-gray-600 tracking-[0.22em] uppercase" style={{ fontFamily: MONO }}>
-                      per month
-                    </div>
+                      <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                      {s.badge}
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Revenue total */}
-            <div className="mt-4 flex items-center justify-between rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] px-5 py-4">
+            {/* Revenue summary strip — qualitative, no rupees */}
+            <div className="mt-4 flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] px-5 py-4">
               <span
-                className="text-[11px] sm:text-xs font-bold tracking-[0.28em] text-emerald-300 uppercase"
+                className="text-[11px] sm:text-xs font-bold tracking-[0.26em] text-emerald-300 uppercase"
                 style={{ fontFamily: MONO }}
               >
-                Total gross revenue
+                Three streams · stacked monthly
               </span>
               <span
-                className="text-2xl sm:text-3xl font-extrabold text-emerald-300 tabular-nums"
-                style={{ fontFamily: DISPLAY }}
+                className="text-[11px] sm:text-xs text-emerald-400/70 tracking-wide"
+                style={{ fontFamily: MONO }}
               >
-                {rupees(TOTAL_REVENUE)}<span className="text-sm text-emerald-400/70 ml-2">/mo</span>
+                figures · discovery call
               </span>
             </div>
           </div>
@@ -469,99 +453,44 @@ export default function PartnerPage() {
                         </div>
                       )}
                     </div>
-                    <div
-                      className="text-sm sm:text-base font-bold tabular-nums shrink-0 text-gray-300"
-                      style={{ fontFamily: DISPLAY }}
+                    <span
+                      className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 shrink-0"
+                      style={{ fontFamily: MONO }}
                     >
-                      {rupees(c.amount)}
-                    </div>
+                      line item
+                    </span>
                   </li>
                 ))}
               </ul>
               <div className="px-5 sm:px-6 py-4 border-t border-emerald-500/20 bg-emerald-500/[0.04] flex items-center justify-between">
                 <span
-                  className="text-[11px] font-bold tracking-[0.28em] uppercase text-emerald-300"
+                  className="text-[11px] font-bold tracking-[0.26em] uppercase text-emerald-300"
                   style={{ fontFamily: MONO }}
                 >
-                  Total opex
+                  Five lines · no hidden payroll
                 </span>
                 <span
-                  className="text-xl sm:text-2xl font-extrabold text-emerald-300 tabular-nums"
-                  style={{ fontFamily: DISPLAY }}
+                  className="text-[11px] text-emerald-400/70 tracking-wide"
+                  style={{ fontFamily: MONO }}
                 >
-                  {rupees(TOTAL_COSTS)}<span className="text-xs text-emerald-400/70 ml-2">/mo</span>
+                  figures · discovery call
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Net profit readout */}
+          {/* Comparison bar chart — manual vs AI-native (no rupee anchors) */}
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <span
                 className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
                 style={{ fontFamily: MONO }}
               >
-                03 · Net profit
+                03 · The delta
               </span>
               <span className="h-px flex-1 bg-white/[0.06]" />
               <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
-                year one
-              </span>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
-              <table className="w-full text-sm sm:text-base">
-                <thead>
-                  <tr className="text-left border-b border-white/[0.06]">
-                    <th className="px-5 sm:px-6 py-3 text-[10px] font-bold tracking-[0.22em] uppercase text-gray-500" style={{ fontFamily: MONO }}>
-                      Line
-                    </th>
-                    <th className="px-5 sm:px-6 py-3 text-right text-[10px] font-bold tracking-[0.22em] uppercase text-gray-500" style={{ fontFamily: MONO }}>
-                      Monthly
-                    </th>
-                    <th className="px-5 sm:px-6 py-3 text-right text-[10px] font-bold tracking-[0.22em] uppercase text-gray-500" style={{ fontFamily: MONO }}>
-                      Annual · Y1
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/[0.05]">
-                  <tr>
-                    <td className="px-5 sm:px-6 py-3.5 text-gray-300">Gross revenue</td>
-                    <td className="px-5 sm:px-6 py-3.5 text-right font-bold tabular-nums text-gray-200" style={{ fontFamily: DISPLAY }}>{rupees(TOTAL_REVENUE)}</td>
-                    <td className="px-5 sm:px-6 py-3.5 text-right font-bold tabular-nums text-gray-200" style={{ fontFamily: DISPLAY }}>{rupees(TOTAL_REVENUE * 12)}</td>
-                  </tr>
-                  <tr>
-                    <td className="px-5 sm:px-6 py-3.5 text-gray-300">Operating costs</td>
-                    <td className="px-5 sm:px-6 py-3.5 text-right font-bold tabular-nums text-gray-400" style={{ fontFamily: DISPLAY }}>−{rupees(TOTAL_COSTS)}</td>
-                    <td className="px-5 sm:px-6 py-3.5 text-right font-bold tabular-nums text-gray-400" style={{ fontFamily: DISPLAY }}>−{rupees(TOTAL_COSTS * 12)}</td>
-                  </tr>
-                  <tr className="bg-emerald-500/[0.04] border-t border-emerald-500/20">
-                    <td className="px-5 sm:px-6 py-4 text-emerald-300 font-bold tracking-wide uppercase text-xs sm:text-sm">Net profit</td>
-                    <td className="px-5 sm:px-6 py-4 text-right text-xl sm:text-2xl font-extrabold tabular-nums text-emerald-300" style={{ fontFamily: DISPLAY }}>
-                      {rupees(NET_PROFIT)}
-                    </td>
-                    <td className="px-5 sm:px-6 py-4 text-right text-xl sm:text-2xl font-extrabold tabular-nums text-emerald-300" style={{ fontFamily: DISPLAY }}>
-                      {rupees(NET_PROFIT * 12)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Comparison bar chart — manual vs AI-native */}
-          <div className="mb-10">
-            <div className="flex items-center gap-3 mb-5">
-              <span
-                className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
-                style={{ fontFamily: MONO }}
-              >
-                04 · The delta
-              </span>
-              <span className="h-px flex-1 bg-white/[0.06]" />
-              <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
-                monthly profit
+                structural
               </span>
             </div>
 
@@ -578,14 +507,8 @@ export default function PartnerPage() {
                   <div className="flex-1 relative h-6 rounded-full bg-white/[0.03] overflow-hidden">
                     <div
                       className="absolute inset-y-0 left-0 rounded-full bg-gray-600/70"
-                      style={{ width: `${(MANUAL_EDU_BENCHMARK / NET_PROFIT) * 100}%` }}
+                      style={{ width: '11%' }}
                     />
-                  </div>
-                  <div
-                    className="text-base sm:text-lg font-bold tabular-nums text-gray-400 w-28 text-right"
-                    style={{ fontFamily: DISPLAY }}
-                  >
-                    {rupees(MANUAL_EDU_BENCHMARK)}
                   </div>
                 </div>
                 <p className="mt-2 text-[11px] text-gray-600" style={{ fontFamily: MONO }}>
@@ -612,12 +535,6 @@ export default function PartnerPage() {
                       }}
                     />
                   </div>
-                  <div
-                    className="text-base sm:text-lg font-extrabold tabular-nums text-emerald-300 w-28 text-right"
-                    style={{ fontFamily: DISPLAY }}
-                  >
-                    {rupees(NET_PROFIT)}
-                  </div>
                 </div>
                 <p className="mt-2 text-[11px] text-emerald-400/70" style={{ fontFamily: MONO }}>
                   # 3 revenue streams · platform-powered opex · central syllabus updates
@@ -626,14 +543,9 @@ export default function PartnerPage() {
 
               <div className="mt-6 pt-5 border-t border-white/[0.06] text-center">
                 <p className="text-sm text-gray-300">
-                  That&apos;s a{' '}
-                  <span
-                    className="font-bold text-emerald-300 tabular-nums"
-                    style={{ fontFamily: DISPLAY }}
-                  >
-                    {Math.round(NET_PROFIT / MANUAL_EDU_BENCHMARK)}×
-                  </span>{' '}
+                  A <span className="font-bold text-emerald-300" style={{ fontFamily: DISPLAY }}>~9×</span>{' '}
                   delta — structural, not promotional. Different model, different math.
+                  Exact figures in the discovery call.
                 </p>
               </div>
             </div>
@@ -646,7 +558,7 @@ export default function PartnerPage() {
                 className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
                 style={{ fontFamily: MONO }}
               >
-                05 · Capital plan
+                04 · Capital plan
               </span>
               <span className="h-px flex-1 bg-white/[0.06]" />
             </div>
@@ -688,7 +600,7 @@ export default function PartnerPage() {
                 className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
                 style={{ fontFamily: MONO }}
               >
-                06 · The unfair advantage
+                05 · The unfair advantage
               </span>
               <span className="h-px flex-1 bg-white/[0.06]" />
             </div>
