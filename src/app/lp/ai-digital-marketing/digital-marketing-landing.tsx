@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Script from 'next/script'
 import { motion } from 'framer-motion'
 import type { Course } from '@/config/courses'
@@ -18,235 +18,77 @@ declare global {
 
 type Step = 'form' | 'paying' | 'success'
 
-interface AdCampaign {
-  headline: string
-  primary_text: string
-  cta: string
-  target_audience: string
-  hashtags: string[]
-  best_platform: string
-  estimated_reach: string
-}
-
-function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string }) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    let start = 0
-    const end = value
-    const duration = 1500
-    const step = Math.ceil(end / (duration / 16))
-    const timer = setInterval(() => {
-      start += step
-      if (start >= end) { setCount(end); clearInterval(timer) }
-      else setCount(start)
-    }, 16)
-    return () => clearInterval(timer)
-  }, [value])
-  return <>{count.toLocaleString('en-IN')}{suffix}</>
-}
-
-// ═══════════ AI AD CAMPAIGN GENERATOR ═══════════
-const exampleBusinesses = [
-  'Sweet shop in Ludhiana',
-  'Yoga studio for women',
-  'Mobile accessories store',
-  'Online coaching for IELTS',
-  'Homemade Punjabi snacks delivery',
-]
-
-function AdCampaignGenerator() {
-  const [business, setBusiness] = useState('')
-  const [campaign, setCampaign] = useState<AdCampaign | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  async function handleGenerate() {
-    if (!business.trim() || business.trim().length < 3) return
-    setLoading(true)
-    setCampaign(null)
-    setError('')
-    try {
-      const res = await fetch('/api/ad-campaign-generator', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ business }),
-      })
-      const data = await res.json()
-      if (res.ok) setCampaign(data.result)
-      else setError(data.error || 'Something went wrong')
-    } catch { setError('Network error') }
-    setLoading(false)
+const VIRAL_STYLES = `
+  @keyframes viral-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
   }
+  .viral-heatmap-node {
+    position: absolute;
+    background: radial-gradient(circle, rgba(217, 70, 239, 0.85) 0%, transparent 70%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    animation: viral-pulse 2s infinite;
+  }
+  .viral-magenta-glow {
+    text-shadow: 0 0 20px rgba(217, 70, 239, 0.4);
+  }
+`
 
+// ─── SHARED PIECES ───
+
+function IgMockup() {
   return (
-    <section className="py-16 md:py-24 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#1a0f2e] to-[#020617]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[150px]" style={{ background: 'rgba(236,72,153,0.1)' }} />
-
-      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-400/30 text-xs font-bold text-pink-300 mb-4">
-            🔥 FREE AI TOOL — No signup required
-          </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white">
-            Watch AI Create a Complete<br />
-            <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Ad Campaign in 15 Seconds
-            </span>
-          </h2>
-          <p className="text-gray-400 mt-4 text-base md:text-lg max-w-xl mx-auto">
-            Type your business. AI generates a complete Facebook/Instagram ad — headline, copy, CTA, targeting, hashtags. Ready to run.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 backdrop-blur-sm"
-        >
-          {/* Example chips */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="text-xs text-gray-500">Try:</span>
-            {exampleBusinesses.map((ex) => (
-              <button
-                key={ex}
-                onClick={() => setBusiness(ex)}
-                className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 hover:border-pink-400/30 hover:text-pink-300 transition-colors"
-              >
-                {ex}
-              </button>
-            ))}
+    <div className="w-full bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-fuchsia-500 via-pink-500 to-amber-400 p-[2px]">
+            <div className="w-full h-full rounded-full bg-zinc-900 flex items-center justify-center text-sm">🥤</div>
           </div>
-
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={business}
-              onChange={(e) => setBusiness(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleGenerate() }}
-              placeholder="e.g. 'Clothing store in Ludhiana'"
-              className="flex-1 px-4 py-3 rounded-xl bg-[#020617] border border-white/10 text-white placeholder-gray-600 focus:border-pink-400 focus:outline-none transition-colors text-sm"
-            />
-            <button
-              onClick={handleGenerate}
-              disabled={loading || business.trim().length < 3}
-              className="group px-6 py-3 rounded-xl font-bold text-sm text-white relative overflow-hidden disabled:opacity-40 shrink-0"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500" />
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-fuchsia-500 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative">
-                {loading ? '✨ Generating...' : '✨ Generate'}
-              </span>
-            </button>
+          <div className="leading-tight">
+            <p className="text-xs font-semibold text-white">ludhiana_cafe</p>
+            <p className="text-[10px] text-zinc-500">Sponsored · Ad</p>
           </div>
-
-          {error && <p className="mt-3 text-red-400 text-sm text-center">{error}</p>}
-
-          {/* Instagram Ad Preview */}
-          {campaign && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6"
-            >
-              {/* Ad mockup */}
-              <div className="mx-auto max-w-sm bg-white rounded-2xl overflow-hidden shadow-2xl">
-                {/* Header */}
-                <div className="flex items-center justify-between p-3 border-b border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-yellow-500 p-0.5">
-                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-xs font-bold text-gray-800">
-                        🏪
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-gray-900">your_business</p>
-                      <p className="text-[10px] text-gray-500">Sponsored &middot; Ad</p>
-                    </div>
-                  </div>
-                  <span className="text-gray-400 text-lg">⋯</span>
-                </div>
-                {/* Image placeholder */}
-                <div className="aspect-square bg-gradient-to-br from-pink-400 via-purple-500 to-blue-500 flex items-center justify-center p-6">
-                  <p className="text-white font-bold text-xl text-center leading-tight">
-                    {campaign.headline}
-                  </p>
-                </div>
-                {/* Actions */}
-                <div className="p-3 border-b border-gray-100">
-                  <div className="flex gap-3 mb-2">
-                    <span className="text-xl">♡</span>
-                    <span className="text-xl">💬</span>
-                    <span className="text-xl">✈</span>
-                  </div>
-                  <p className="text-xs text-gray-900">
-                    <span className="font-semibold">your_business</span>{' '}
-                    <span className="text-gray-700">{campaign.primary_text}</span>
-                  </p>
-                  <p className="text-xs text-blue-600 mt-1">
-                    {campaign.hashtags.map((h) => `#${h}`).join(' ')}
-                  </p>
-                </div>
-                {/* CTA button */}
-                <div className="p-3 bg-gray-50">
-                  <button className="w-full py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold">
-                    {campaign.cta}
-                  </button>
-                </div>
-              </div>
-
-              {/* Campaign details */}
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                  <p className="text-[10px] text-gray-500 uppercase tracking-wider">Best Platform</p>
-                  <p className="text-sm text-white font-semibold mt-1">{campaign.best_platform}</p>
-                </div>
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                  <p className="text-[10px] text-gray-500 uppercase tracking-wider">Estimated Reach</p>
-                  <p className="text-sm text-white font-semibold mt-1">{campaign.estimated_reach}</p>
-                </div>
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10 col-span-2">
-                  <p className="text-[10px] text-gray-500 uppercase tracking-wider">Target Audience</p>
-                  <p className="text-sm text-white mt-1">{campaign.target_audience}</p>
-                </div>
-              </div>
-
-              {/* Hook */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-5 p-5 rounded-xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-white/10 text-center"
-              >
-                <p className="text-white font-bold text-sm md:text-base">
-                  AI just created a complete ad in 15 seconds.
-                </p>
-                <p className="text-gray-300 text-sm mt-2">
-                  Imagine running campaigns like this for{' '}
-                  <span className="text-pink-400 font-bold">10 clients × ₹5,000/month</span>
-                  <br />
-                  <span className="text-emerald-400 font-bold text-lg">= ₹50,000/month income.</span>
-                </p>
-                <a
-                  href="#enroll"
-                  onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  className="inline-block mt-4 px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-bold text-sm hover:scale-105 transition-transform"
-                >
-                  Learn This in 12 Weeks →
-                </a>
-              </motion.div>
-            </motion.div>
-          )}
-        </motion.div>
+        </div>
+        <span className="text-zinc-500 text-lg">⋯</span>
       </div>
-    </section>
+      {/* Body */}
+      <div className="aspect-square flex flex-col items-center justify-center gap-3 p-8 bg-gradient-to-br from-zinc-900 to-black text-center">
+        <span className="text-6xl md:text-7xl">🥤🍔</span>
+        <p className="text-white font-extrabold text-2xl md:text-3xl leading-tight">BUY 1<br/>GET 1 FREE</p>
+        <p className="text-zinc-400 text-xs md:text-sm">Weekend only · Model Town</p>
+      </div>
+      {/* Actions */}
+      <div className="px-4 py-3 border-t border-white/5">
+        <div className="flex gap-4 mb-2 text-xl">
+          <span>♡</span><span>💬</span><span>↗</span>
+        </div>
+        <p className="text-xs text-zinc-400">
+          <span className="font-semibold text-white">ludhiana_cafe</span> Fresh burgers, cold drinks, and a killer weekend deal.
+        </p>
+        <p className="text-xs text-sky-400 mt-1">#ludhianafood #weekendvibes #burgers</p>
+      </div>
+    </div>
   )
 }
 
-// ═══════════ MAIN LANDING PAGE ═══════════
+function StepIcon({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-14 h-14 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-400">
+      {children}
+    </div>
+  )
+}
+
+// ─── MAIN ───
+
 export function DigitalMarketingLanding({ course }: { course: Course }) {
   const [step, setStep] = useState<Step>('form')
+  const [showHeatmap, setShowHeatmap] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -273,7 +115,7 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
       const options = {
         key: data.keyId, amount: data.amount, currency: data.currency,
         name: siteConfig.name, description: course.title, order_id: data.orderId,
-        prefill: { name, email, contact: phone }, theme: { color: '#db2777' },
+        prefill: { name, email, contact: phone }, theme: { color: '#d946ef' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           const verifyRes = await fetch('/api/payment/verify', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -298,414 +140,354 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
   const savings = (course.originalPrice || 0) - course.price
   const discount = course.originalPrice ? Math.round((savings / course.originalPrice) * 100) : 0
 
+  function scrollToEnroll() {
+    document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <>
+      <style dangerouslySetInnerHTML={{ __html: VIRAL_STYLES }} />
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
-      <div className="min-h-screen bg-[#020617] overflow-hidden">
-        {/* ═══════════ HERO ═══════════ */}
-        <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center">
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-[-30%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[150px] animate-pulse" style={{ background: 'rgba(236,72,153,0.15)' }} />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[130px] animate-pulse" style={{ background: 'rgba(139,92,246,0.12)', animationDelay: '1s' }} />
-            <div className="absolute top-[40%] left-[60%] w-[300px] h-[300px] rounded-full blur-[100px] animate-pulse" style={{ background: 'rgba(6,182,212,0.08)', animationDelay: '2s' }} />
-          </div>
+      <div className="min-h-screen bg-[#030406] text-white overflow-x-hidden">
 
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 w-full">
-            {/* Logo */}
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-8">
+        {/* ═══════════ STICKY NAV ═══════════ */}
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-[#030406]/80 backdrop-blur-md border-b border-white/5">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <a href="https://tarahutailabs.com" aria-label="TARAhut AI Labs">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo-tarahut-white.png" alt="TARAhut AI Labs" className="h-8 sm:h-10 w-auto" />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-400/30 text-sm">
-                <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
-                <span className="text-pink-300 font-medium">🔥 Just Launched · First Batch Open</span>
-              </span>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                <span className="text-white">AI for Digital</span>
-                <br />
-                <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  Marketing
-                </span>
-              </h1>
-              <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-300 font-medium">
-                Earn ₹20K–₹1L/month as a Freelance Marketer
-              </p>
-              <p className="mt-2 text-sm text-gray-500">
-                12 Weeks · Hands-on Live Projects · Real Clients by Week 10
-              </p>
-            </motion.div>
-
-            {/* Marketing stats */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-10 flex justify-center gap-3 sm:gap-5 flex-wrap">
-              {[
-                { value: 50, suffix: 'K/mo', label: 'Avg Freelancer Income', color: 'from-pink-400 to-pink-600' },
-                { value: 800, suffix: 'M+', label: 'Meta Users in India', color: 'from-purple-400 to-purple-600' },
-                { value: 12, suffix: ' Weeks', label: 'To Earning-Ready', color: 'from-cyan-400 to-blue-500' },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center px-4 sm:px-5 py-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm min-w-[100px]">
-                  <div className={`text-xl sm:text-2xl font-bold bg-gradient-to-b ${stat.color} bg-clip-text text-transparent`}>
-                    {stat.suffix.startsWith('K') && '₹'}<AnimatedNumber value={stat.value} suffix={stat.suffix} />
-                  </div>
-                  <div className="text-[10px] sm:text-xs text-gray-500 mt-1">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="#try-tool"
-                onClick={(e) => { e.preventDefault(); document.getElementById('try-tool')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className="group relative px-8 py-4 rounded-2xl font-semibold text-lg text-white overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500" />
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-fuchsia-500 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative flex items-center gap-2">
-                  ✨ Try Our Free AI Tool
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-              </a>
-              <a
-                href="#enroll"
-                onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
-              >
-                Enroll Now → ₹{course.price.toLocaleString('en-IN')}
-              </a>
-            </motion.div>
-
-            {course.originalPrice && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-6 text-center">
-                <span className="inline-flex items-center gap-2 text-sm text-gray-500">
-                  <span className="line-through">₹{course.originalPrice.toLocaleString('en-IN')}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-bold text-xs animate-pulse">
-                    {discount}% OFF — Only Today
-                  </span>
-                </span>
-              </motion.div>
-            )}
+              <img src="/images/logo-tarahut-white.png" alt="TARAhut AI Labs" className="h-7 sm:h-8 w-auto" />
+            </a>
+            <button
+              onClick={scrollToEnroll}
+              className="min-h-12 px-5 sm:px-6 rounded-full bg-fuchsia-500 text-black font-bold text-sm hover:bg-fuchsia-400 transition-colors shadow-[0_0_20px_rgba(217,70,239,0.35)]"
+            >
+              Get Started →
+            </button>
           </div>
+        </nav>
 
-          <motion.div className="absolute bottom-6 left-1/2 -translate-x-1/2" animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-            <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </motion.div>
-        </section>
+        {/* ═══════════ HERO — VIRAL ENGINE ═══════════ */}
+        <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-28 pb-20 relative">
+          <div
+            className="absolute inset-0 opacity-10 pointer-events-none"
+            style={{
+              backgroundImage: 'linear-gradient(#d946ef 1px, transparent 1px), linear-gradient(90deg, #d946ef 1px, transparent 1px)',
+              backgroundSize: '100px 100px',
+            }}
+          />
 
-        {/* ═══════════ PUNJABI HOOK + WHO IS THIS FOR ═══════════ */}
-        <section className="py-14 md:py-20 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617] to-[#1a0f2e]" />
-          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-              <div className="inline-block px-6 py-4 rounded-2xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-400/20">
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-amber-300" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                  &ldquo;Degree hai, par job nahi...&rdquo;
-                </p>
-                <p className="text-sm sm:text-base text-amber-100/70 mt-1">
-                  ...kyun na khud ka marketing business shuru karein?
-                </p>
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 text-fuchsia-500 font-bold tracking-widest uppercase text-sm mb-4 viral-magenta-glow"
+          >
+            Data-Driven Creativity
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="relative z-10 text-5xl md:text-7xl lg:text-8xl text-center mb-6 leading-[1.05] font-bold"
+            style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}
+          >
+            Scale Ads <span className="text-fuchsia-500">3×</span>
+            <br />
+            <span className="text-emerald-500">with AI That Predicts Viral.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="relative z-10 text-zinc-400 text-center max-w-2xl text-base md:text-lg mb-12"
+          >
+            See where eyes land before you spend ₹1 on ads.
+            Master the attention triggers that turn scrolls into sales.
+          </motion.p>
+
+          {/* VIRAL COMPARISON SLIDER */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative z-10 w-full max-w-md md:max-w-xl"
+          >
+            <h3 className="text-center mb-6 text-zinc-500 uppercase text-xs tracking-widest">
+              Toggle AI Attention Heatmap
+            </h3>
+
+            <div className="rounded-3xl overflow-hidden relative shadow-2xl border border-fuchsia-500/20 bg-white/[0.03] backdrop-blur-sm">
+              <div className={`transition-all duration-500 ${showHeatmap ? '' : 'grayscale opacity-40'}`}>
+                <IgMockup />
               </div>
-            </motion.div>
 
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
-              <span className="text-pink-400 text-sm font-semibold tracking-wider uppercase">Perfect For</span>
-            </motion.div>
+              {/* Heatmap overlay */}
+              <div
+                className={`absolute inset-0 transition-opacity duration-500 pointer-events-none ${showHeatmap ? 'opacity-100' : 'opacity-0'}`}
+                aria-hidden={!showHeatmap}
+              >
+                <div className="viral-heatmap-node" style={{ top: '32%', left: '28%' }} />
+                <div className="viral-heatmap-node" style={{ top: '42%', left: '54%', width: 160, height: 160 }} />
+                <div className="viral-heatmap-node" style={{ top: '82%', left: '18%' }} />
+              </div>
 
-            <div className="grid sm:grid-cols-3 gap-4">
-              {[
-                { emoji: '🎓', title: 'Fresh Graduates', subtitle: 'BCom, BBA, BA, MBA', color: 'from-pink-500/20 to-rose-500/20', border: 'border-pink-400/20' },
-                { emoji: '💼', title: 'Working Pros', subtitle: 'Want side income', color: 'from-purple-500/20 to-indigo-500/20', border: 'border-purple-400/20' },
-                { emoji: '🏢', title: 'Agency Dreamers', subtitle: 'Start your own agency', color: 'from-cyan-500/20 to-blue-500/20', border: 'border-cyan-400/20' },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className={`text-center p-5 rounded-2xl bg-gradient-to-br ${item.color} border ${item.border} backdrop-blur-sm`}
+              {/* Toggle — 48px min for tap target */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button
+                  onClick={() => setShowHeatmap((v) => !v)}
+                  className={`min-h-12 px-7 rounded-full font-bold shadow-xl hover:scale-105 transition-transform ${
+                    showHeatmap ? 'bg-fuchsia-500 text-black' : 'bg-white text-black'
+                  }`}
                 >
-                  <span className="text-3xl">{item.emoji}</span>
-                  <h3 className="text-white font-bold mt-2 text-sm">{item.title}</h3>
-                  <p className="text-gray-400 text-xs mt-1">{item.subtitle}</p>
-                </motion.div>
-              ))}
+                  {showHeatmap ? 'Hide Analysis' : 'Show AI Analysis'}
+                </button>
+              </div>
+
+              {/* Labels */}
+              <div className="absolute bottom-3 left-3 bg-black/70 px-3 py-1 rounded-lg text-[10px] font-bold text-white">
+                BEFORE: LOW ATTENTION
+              </div>
+              <div
+                className={`absolute bottom-3 right-3 bg-fuchsia-500 px-3 py-1 rounded-lg text-[10px] font-bold text-black transition-opacity ${
+                  showHeatmap ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                AI-OPTIMIZED · 89%
+              </div>
             </div>
 
-            {/* Before / After */}
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-12">
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <div className="text-center pb-2">
-                  <span className="px-4 py-1.5 rounded-full bg-red-500/15 text-red-400 text-xs font-bold uppercase">Before</span>
-                </div>
-                <div className="text-center pb-2">
-                  <span className="px-4 py-1.5 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold uppercase">After 12 Weeks</span>
-                </div>
-                {[
-                  { before: '😵 Job ke liye bhatak raha', after: '💼 Apna agency chala raha' },
-                  { before: '📱 Sirf Instagram scroll', after: '🎯 Instagram se clients mila raha' },
-                  { before: '💰 Income: ₹0', after: '💸 Income: ₹50K+/month' },
-                  { before: '🤷 Marketing ka zero knowledge', after: '🧠 Meta ads, SEO, funnels master' },
-                ].map((row, i) => (
-                  <React.Fragment key={i}>
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 + i * 0.1 }}
-                      className="p-3 sm:p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-sm text-gray-400"
-                    >
-                      {row.before}
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: 10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 + i * 0.1 }}
-                      className="p-3 sm:p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-sm text-white font-medium"
-                    >
-                      {row.after}
-                    </motion.div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </motion.div>
+            <p className="mt-4 text-center text-xs text-zinc-500 md:hidden">
+              Tap to see where people look first.
+            </p>
+          </motion.div>
 
-            {/* Differentiators */}
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mt-10 flex flex-wrap justify-center gap-3">
-              {[
-                { icon: '🎯', text: 'Real client projects' },
-                { icon: '💸', text: 'Live Meta ads (₹500 budget)' },
-                { icon: '🏆', text: 'Portfolio by Week 12' },
-                { icon: '🤝', text: 'Alumni network' },
-              ].map((d) => (
-                <span key={d.text} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 font-medium">
-                  <span>{d.icon}</span> {d.text}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            onClick={scrollToEnroll}
+            className="relative z-10 mt-12 bg-fuchsia-500 text-black px-10 md:px-12 min-h-14 md:min-h-16 rounded-full font-black text-lg md:text-xl shadow-[0_0_40px_rgba(217,70,239,0.35)] hover:scale-105 transition-transform w-full max-w-sm"
+          >
+            GET THE VIRAL BLUEPRINT
+          </motion.button>
+
+          {course.originalPrice && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55 }}
+              className="relative z-10 mt-6 text-center"
+            >
+              <span className="inline-flex items-center gap-2 text-sm text-zinc-500">
+                <span className="line-through">₹{course.originalPrice.toLocaleString('en-IN')}</span>
+                <span className="text-white font-bold">₹{course.price.toLocaleString('en-IN')}</span>
+                <span className="px-2 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 font-bold text-xs">
+                  {discount}% OFF
+                </span>
+              </span>
+            </motion.div>
+          )}
+        </section>
+
+        {/* ═══════════ TRUST BAR ═══════════ */}
+        <section className="py-8 border-y border-white/5 bg-black/40">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <p className="text-center text-[10px] tracking-[0.3em] uppercase text-zinc-600 mb-5">
+              Trained on the tools that run the ad world
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-4 opacity-60 grayscale">
+              {['Meta', 'Google Ads', 'Instagram', 'ChatGPT', 'Claude', 'Canva'].map((brand) => (
+                <span key={brand} className="text-zinc-400 font-bold text-sm sm:text-base tracking-tight">
+                  {brand}
                 </span>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* ═══════════ AI AD CAMPAIGN GENERATOR (THE WOW TOOL) ═══════════ */}
-        <div id="try-tool">
-          <AdCampaignGenerator />
-        </div>
-
-        {/* ═══════════ WHAT YOU'LL LEARN ═══════════ */}
+        {/* ═══════════ PROCESS PATH ═══════════ */}
         <section className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#0a1628] to-[#020617]" />
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-              <span className="text-pink-400 text-sm font-semibold tracking-wider uppercase">The Complete Toolkit</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-                Skills That Get You Paid
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <span className="text-fuchsia-500 text-xs font-bold tracking-widest uppercase">How It Works</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3" style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
+                Three steps to growth.
               </h2>
-            </motion.div>
+            </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8 relative">
+              {/* Connector line (desktop) */}
+              <div className="hidden md:block absolute top-7 left-[16%] right-[16%] h-px bg-gradient-to-r from-fuchsia-500/0 via-fuchsia-500/40 to-fuchsia-500/0" />
+
               {[
-                { icon: '📝', title: 'AI Copywriting', desc: 'Write viral captions, ad copy, emails, landing pages in minutes using Claude + ChatGPT' },
-                { icon: '🎨', title: 'Visual Design', desc: 'Canva AI, Midjourney, Adobe Firefly — create brand kits, reels, posters without a designer' },
-                { icon: '🎬', title: 'Video Content', desc: 'HeyGen avatars, CapCut AI, ElevenLabs voices — batch-create video content for clients' },
-                { icon: '🎯', title: 'Meta Ads', desc: 'Facebook & Instagram advertising. Run real ₹500 budget ads and get real results' },
-                { icon: '🌐', title: 'Local SEO', desc: 'Google My Business, local keywords, ranking strategies for Punjab businesses' },
-                { icon: '💼', title: 'Client Acquisition', desc: 'Cold outreach, proposals, pricing, contracts — everything you need to close deals' },
-              ].map((item, i) => (
+                {
+                  num: '01',
+                  title: 'Connect Data',
+                  desc: 'Plug in your business, audience, and existing content. AI reads the signal.',
+                  icon: (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>
+                    </svg>
+                  ),
+                },
+                {
+                  num: '02',
+                  title: 'AI Analyzes',
+                  desc: 'Attention heatmaps, viral pattern matching, and audience prediction — in seconds.',
+                  icon: (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/>
+                    </svg>
+                  ),
+                },
+                {
+                  num: '03',
+                  title: 'Growth Happens',
+                  desc: 'Ship campaigns that convert. Track ROI. Scale what works.',
+                  icon: (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                  ),
+                },
+              ].map((s, i) => (
                 <motion.div
-                  key={i}
+                  key={s.num}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-pink-400/30 transition-all hover:scale-[1.02]"
+                  transition={{ delay: i * 0.1 }}
+                  className="relative text-center md:text-left"
                 >
-                  <span className="text-3xl">{item.icon}</span>
-                  <h3 className="mt-3 text-white font-bold text-base">{item.title}</h3>
-                  <p className="mt-2 text-sm text-gray-400 leading-relaxed">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════ INCOME CALCULATOR ═══════════ */}
-        <section className="py-16 md:py-20 relative">
-          <div className="absolute inset-0 bg-[#0B1120]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-[150px]" style={{ background: 'rgba(16,185,129,0.08)' }} />
-          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10">
-              <span className="text-emerald-400 text-sm font-semibold tracking-wider uppercase">Your New Income</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-                Do The Math
-              </h2>
-              <p className="text-gray-400 mt-2 text-sm">Simple math. Real numbers. No hype.</p>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border border-emerald-400/20 rounded-2xl p-6 md:p-8">
-              <div className="space-y-4">
-                {[
-                  { label: '3 clients × ₹5,000/month', calc: '₹15,000', sub: 'Just 3 small businesses' },
-                  { label: '5 clients × ₹10,000/month', calc: '₹50,000', sub: 'Growing agency' },
-                  { label: '10 clients × ₹15,000/month', calc: '₹1,50,000', sub: 'Full-time agency' },
-                ].map((row, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 }}
-                    className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10"
-                  >
-                    <div>
-                      <p className="text-white font-semibold text-sm md:text-base">{row.label}</p>
-                      <p className="text-gray-500 text-xs mt-0.5">{row.sub}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-emerald-400 font-bold text-xl md:text-2xl">{row.calc}</p>
-                      <p className="text-[10px] text-gray-600">/month</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <p className="mt-6 text-center text-gray-400 text-sm">
-                Course investment: <span className="line-through text-gray-600">₹{course.originalPrice?.toLocaleString('en-IN')}</span>{' '}
-                <span className="text-white font-bold">₹{course.price.toLocaleString('en-IN')}</span>
-                <br />
-                <span className="text-emerald-400 text-xs">ROI in less than 1 month with just 2 clients.</span>
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ═══════════ SYLLABUS ═══════════ */}
-        <section className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-[#020617]" />
-          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-              <span className="text-purple-400 text-sm font-semibold tracking-wider uppercase">12-Week Roadmap</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">From Zero to Agency</h2>
-            </motion.div>
-
-            <div className="space-y-6">
-              {course.syllabus.map((mod, i) => {
-                const colors = ['pink', 'purple', 'cyan', 'emerald']
-                const c = colors[i % colors.length]
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="relative pl-8 md:pl-12"
-                  >
-                    {i < course.syllabus.length - 1 && (
-                      <div className={`absolute left-[13px] md:left-[21px] top-10 bottom-[-24px] w-0.5 bg-${c}-500/20`} />
-                    )}
-                    <div className={`absolute left-0 md:left-2 top-1 w-7 h-7 rounded-full bg-${c}-500/20 border-2 border-${c}-400 flex items-center justify-center`}>
-                      <span className="text-xs font-bold text-white">{i + 1}</span>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6">
-                      <h3 className="font-bold text-white text-base md:text-lg">{mod.module}</h3>
-                      <div className="mt-3 space-y-1.5">
-                        {mod.topics.slice(0, 3).map((topic, j) => (
-                          <p key={j} className="text-xs md:text-sm text-gray-400 flex items-start gap-2">
-                            <span className={`text-${c}-400 mt-0.5`}>▸</span>
-                            {topic.length > 100 ? topic.slice(0, 97) + '...' : topic}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════ WHAT YOU GET ═══════════ */}
-        <section className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-[#0B1120]" />
-          <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10">
-              <span className="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Everything You Need</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-                What You{' '}
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Get</span>
-              </h2>
-            </motion.div>
-
-            <div className="space-y-3">
-              {[
-                { icon: '📝', item: '500+ Ad Copy Templates', desc: 'Proven ad copy for every industry — just swap the business name' },
-                { icon: '🎨', item: 'Canva Pro Brand Kit', desc: 'Logo, colors, fonts, reusable templates for social media' },
-                { icon: '💼', item: 'Client Proposal Templates', desc: 'Winning proposals, contracts, SOWs, pricing sheets' },
-                { icon: '💬', item: 'Cold Outreach Scripts', desc: 'WhatsApp, Instagram DM, LinkedIn scripts that convert' },
-                { icon: '📊', item: 'Client Dashboard Templates', desc: 'Monthly reports that impress clients and justify your rates' },
-                { icon: '🎯', item: 'Meta Ads Playbook', desc: 'Step-by-step guides for every ad objective and industry' },
-                { icon: '🌐', item: 'Portfolio Website', desc: 'Step-by-step guide to build a portfolio site that gets clients' },
-                { icon: '👥', item: 'Alumni Community', desc: 'WhatsApp group for ongoing support, job leads, and collabs' },
-                { icon: '📜', item: 'Verified Certificate', desc: 'LinkedIn-shareable certificate with unique verification' },
-                { icon: '🎯', item: '12 Weeks Live Training', desc: 'Real projects, real clients, real results — not pre-recorded' },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04 }}
-                  className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/15 transition-colors"
-                >
-                  <span className="text-2xl shrink-0">{item.icon}</span>
-                  <div>
-                    <h3 className="text-white font-semibold text-sm">{item.item}</h3>
-                    <p className="text-gray-500 text-xs mt-0.5">{item.desc}</p>
+                  <div className="flex justify-center md:justify-start mb-4">
+                    <StepIcon>{s.icon}</StepIcon>
                   </div>
-                  <span className="ml-auto text-emerald-400 shrink-0">✓</span>
+                  <p className="text-xs text-zinc-500 font-mono tracking-wider">{s.num}</p>
+                  <h3 className="mt-1 text-xl font-bold text-white">{s.title}</h3>
+                  <p className="mt-2 text-sm text-zinc-400 leading-relaxed">{s.desc}</p>
                 </motion.div>
               ))}
             </div>
-
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mt-6 text-center">
-              <p className="text-gray-500 text-xs">
-                Total value: <span className="line-through">₹65,000+</span>{' '}
-                <span className="text-white font-bold">All included in ₹{course.price.toLocaleString('en-IN')}</span>
-              </p>
-            </motion.div>
           </div>
         </section>
 
-        {/* ═══════════ ENROLLMENT FORM ═══════════ */}
-        <section id="enroll" className="py-16 md:py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#1a0f2e] to-[#020617]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[150px]" style={{ background: 'rgba(236,72,153,0.08)' }} />
+        {/* ═══════════ BENTO GRID ═══════════ */}
+        <section className="py-16 md:py-24 relative border-t border-white/5">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <span className="text-emerald-500 text-xs font-bold tracking-widest uppercase">The Stack</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-3" style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
+                An AI lab for marketers.
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-2 gap-4 md:gap-5 md:h-[520px]">
+              {/* Card 1 — big */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="md:col-span-4 md:row-span-1 rounded-3xl p-6 md:p-8 bg-gradient-to-br from-fuchsia-500/10 via-fuchsia-500/[0.03] to-transparent border border-fuchsia-500/20 relative overflow-hidden"
+              >
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-fuchsia-500/10 blur-3xl rounded-full" />
+                <span className="text-xs font-bold uppercase tracking-widest text-fuchsia-400">Attention Prediction</span>
+                <h3 className="mt-3 text-2xl md:text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
+                  See the heatmap before you post.
+                </h3>
+                <p className="mt-3 text-sm text-zinc-400 max-w-md">
+                  Score every creative 0–100 on attention. Iterate before ad spend, not after.
+                </p>
+              </motion.div>
+
+              {/* Card 2 — tall */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.05 }}
+                className="md:col-span-2 md:row-span-2 rounded-3xl p-6 md:p-8 bg-gradient-to-br from-emerald-500/10 via-emerald-500/[0.03] to-transparent border border-emerald-500/20 relative overflow-hidden flex flex-col"
+              >
+                <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-emerald-500/10 blur-3xl rounded-full" />
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">AI Copywriting</span>
+                <h3 className="mt-3 text-2xl md:text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
+                  Hook, body, CTA —<br/>drafted in 10 seconds.
+                </h3>
+                <div className="mt-auto pt-6 space-y-2">
+                  {['Meta ad variants', 'WhatsApp broadcasts', 'Landing page hero'].map((x) => (
+                    <div key={x} className="flex items-center gap-2 text-sm text-zinc-300">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      {x}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Card 3 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="md:col-span-2 md:row-span-1 rounded-3xl p-6 bg-white/[0.03] border border-white/10"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-fuchsia-400">Viral Trends</span>
+                <h3 className="mt-2 text-lg font-bold text-white">Reads Reels, Shorts, TikTok daily.</h3>
+                <p className="mt-2 text-sm text-zinc-400">
+                  Know what&rsquo;s about to trend before your competitors do.
+                </p>
+              </motion.div>
+
+              {/* Card 4 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 }}
+                className="md:col-span-2 md:row-span-1 rounded-3xl p-6 bg-white/[0.03] border border-white/10"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">Auto-Targeting</span>
+                <h3 className="mt-2 text-lg font-bold text-white">Meta + Google audience builder.</h3>
+                <p className="mt-2 text-sm text-zinc-400">
+                  Interests, lookalikes, geo — structured for you.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════ ENROLLMENT ═══════════ */}
+        <section id="enroll" className="py-16 md:py-24 relative border-t border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#030406] via-[#1a0820] to-[#030406]" />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[150px]"
+            style={{ background: 'rgba(217,70,239,0.08)' }}
+          />
 
           <div className="relative z-10 max-w-md mx-auto px-4 sm:px-6">
             {step === 'success' ? (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/5 backdrop-blur-md border border-pink-400/30 rounded-3xl p-8 text-center">
-                <div className="w-20 h-20 rounded-full bg-pink-500/20 flex items-center justify-center mx-auto mb-6">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-white/5 backdrop-blur-md border border-fuchsia-400/30 rounded-3xl p-8 text-center"
+              >
+                <div className="w-20 h-20 rounded-full bg-fuchsia-500/20 flex items-center justify-center mx-auto mb-6">
                   <span className="text-4xl">🎉</span>
                 </div>
                 <h2 className="text-2xl font-bold text-white">You&apos;re In!</h2>
-                <p className="text-gray-400 mt-2 mb-1">Welcome to AI for Digital Marketing</p>
-                <p className="text-xs text-gray-600 mb-6">Payment ID: {paymentId}</p>
-                <p className="text-gray-400 text-sm mb-6">
+                <p className="text-zinc-400 mt-2 mb-1">Welcome to AI for Digital Marketing</p>
+                <p className="text-xs text-zinc-600 mb-6">Payment ID: {paymentId}</p>
+                <p className="text-zinc-400 text-sm mb-6">
                   We&apos;ll WhatsApp you within 2 hours with batch details.
                 </p>
                 <a
                   href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi! I just enrolled in AI for Digital Marketing. Payment ID: ${paymentId}. Please share batch details.`)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="inline-block px-6 py-3 rounded-xl bg-pink-600 text-white font-medium hover:bg-pink-700 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block min-h-12 px-6 py-3 rounded-xl bg-fuchsia-500 text-black font-bold hover:bg-fuchsia-400 transition-colors"
                 >
                   Message on WhatsApp →
                 </a>
@@ -713,63 +495,78 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
             ) : (
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white">
-                    Start Earning in{' '}
-                    <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">12 Weeks</span>
+                  <h2
+                    className="text-3xl md:text-4xl font-bold text-white"
+                    style={{ fontFamily: 'var(--font-space-grotesk), sans-serif' }}
+                  >
+                    Claim the <span className="text-fuchsia-500">Viral Blueprint</span>
                   </h2>
-                  <p className="text-gray-500 mt-2 text-sm">Limited seats per batch</p>
+                  <p className="text-zinc-500 mt-2 text-sm">Limited seats per batch</p>
                 </div>
 
                 <div id="enroll-form" className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8">
                   <div className="text-center mb-6 pb-6 border-b border-white/10">
                     <div className="flex items-center justify-center gap-3">
                       {course.originalPrice && (
-                        <span className="text-xl text-gray-600 line-through">₹{course.originalPrice.toLocaleString('en-IN')}</span>
+                        <span className="text-xl text-zinc-600 line-through">
+                          ₹{course.originalPrice.toLocaleString('en-IN')}
+                        </span>
                       )}
-                      <span className="text-5xl font-extrabold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                      <span className="text-5xl font-extrabold text-fuchsia-500 viral-magenta-glow">
                         ₹{course.price.toLocaleString('en-IN')}
                       </span>
                     </div>
                     {savings > 0 && (
-                      <span className="inline-block mt-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-400/30 text-red-300 text-xs font-bold">
+                      <span className="inline-block mt-3 px-4 py-1.5 rounded-full bg-fuchsia-500/15 border border-fuchsia-400/30 text-fuchsia-200 text-xs font-bold">
                         🔥 Save ₹{savings.toLocaleString('en-IN')} — {discount}% OFF
                       </span>
                     )}
                   </div>
 
                   <form onSubmit={handleEnroll} className="space-y-4">
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your Full Name" required
-                      className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-pink-400 focus:outline-none transition-all" />
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" required
-                      className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-pink-400 focus:outline-none transition-all" />
-                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="WhatsApp Number"
-                      className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-pink-400 focus:outline-none transition-all" />
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Your Full Name"
+                      required
+                      className="w-full min-h-12 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-600 focus:border-fuchsia-400 focus:outline-none transition-all"
+                    />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Email Address"
+                      required
+                      className="w-full min-h-12 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-600 focus:border-fuchsia-400 focus:outline-none transition-all"
+                    />
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="WhatsApp Number"
+                      className="w-full min-h-12 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-600 focus:border-fuchsia-400 focus:outline-none transition-all"
+                    />
 
                     {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-                    <button type="submit" disabled={loading || step === 'paying'}
-                      className="group w-full py-4 rounded-xl font-bold text-lg text-white relative overflow-hidden disabled:opacity-50">
-                      <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-fuchsia-500 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <span className="relative">
-                        {loading || step === 'paying' ? '⏳ Processing...' : `Enroll Now — ₹${course.price.toLocaleString('en-IN')}`}
-                      </span>
+                    <button
+                      type="submit"
+                      disabled={loading || step === 'paying'}
+                      className="w-full min-h-14 py-4 rounded-xl font-bold text-lg text-black bg-fuchsia-500 hover:bg-fuchsia-400 disabled:opacity-50 shadow-[0_0_30px_rgba(217,70,239,0.3)] transition-all"
+                    >
+                      {loading || step === 'paying'
+                        ? '⏳ Processing...'
+                        : `Enroll Now — ₹${course.price.toLocaleString('en-IN')}`}
                     </button>
                   </form>
 
-                  <div className="mt-5 flex items-center justify-center gap-3 text-[11px] text-gray-600">
+                  <div className="mt-5 flex items-center justify-center gap-3 text-[11px] text-zinc-600">
                     <span>🔒 Secure</span>
                     <span>•</span>
                     <span>📜 Certificate</span>
                     <span>•</span>
                     <span>💬 Support</span>
-                  </div>
-
-                  <div className="mt-4 text-center">
-                    <a href={`https://wa.me/919200882008?text=${encodeURIComponent(`Hi, I have a question about AI for Digital Marketing course`)}`}
-                      target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-pink-400 transition-colors">
-                      Have questions? Chat with us →
-                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -777,45 +574,21 @@ export function DigitalMarketingLanding({ course }: { course: Course }) {
           </div>
         </section>
 
-        {/* ═══════════ FINAL CTA ═══════════ */}
-        <section className="py-20 relative text-center">
-          <div className="absolute inset-0 bg-[#020617]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-[150px]" style={{ background: 'rgba(236,72,153,0.1)' }} />
-          <div className="relative z-10 px-4">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white">
-              Your First Client Is{' '}
-              <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">10 Weeks Away.</span>
-            </h2>
-            <p className="mt-4 text-gray-500 text-sm">Stop scrolling. Start earning.</p>
-            <a href="#enroll" onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="inline-block mt-8 px-10 py-4 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white font-bold text-lg hover:scale-105 transition-transform shadow-[0_10px_40px_rgba(236,72,153,0.3)]">
-              Enroll Now →
-            </a>
+        {/* ═══════════ MINIMAL FOOTER ═══════════ */}
+        <footer className="py-8 border-t border-white/5">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-600">
+            <p>© {new Date().getFullYear()} {siteConfig.name}</p>
+            <div className="flex items-center gap-5">
+              <a href="/privacy" className="hover:text-zinc-400 transition-colors">Privacy</a>
+              <a href="/terms" className="hover:text-zinc-400 transition-colors">Terms</a>
+            </div>
           </div>
-        </section>
-
-        <footer className="py-6 pb-24 md:pb-6 border-t border-white/5 text-center">
-          <p className="text-xs text-gray-600">
-            {siteConfig.name} &middot; {siteConfig.contact.address} &middot; {siteConfig.contact.phone}
-          </p>
         </footer>
-
-        {/* Mobile sticky CTA */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#020617]/95 backdrop-blur-md border-t border-white/10 px-4 py-3 flex items-center justify-between">
-          <div>
-            {course.originalPrice && <span className="text-xs text-gray-600 line-through mr-1">₹{course.originalPrice.toLocaleString('en-IN')}</span>}
-            <span className="text-lg font-bold text-white">₹{course.price.toLocaleString('en-IN')}</span>
-          </div>
-          <a href="#enroll" onClick={(e) => { e.preventDefault(); document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' }) }}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-sm">
-            Enroll Now
-          </a>
-        </div>
       </div>
 
       {/* Conversion boosters */}
       <AskTara />
-      <ExitIntentPopup courseTitle={course.title} courseSlug={course.slug} primaryColor="#ec4899" />
+      <ExitIntentPopup courseTitle={course.title} courseSlug={course.slug} primaryColor="#d946ef" />
       <EnrollmentToast />
     </>
   )
