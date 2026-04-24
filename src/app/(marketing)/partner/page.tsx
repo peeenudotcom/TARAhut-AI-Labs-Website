@@ -1,185 +1,340 @@
 import type { Metadata } from 'next';
 import { PartnerForm } from './partner-form';
+import { PartnerPunjabMap } from '@/components/landing/partner-punjab-map';
 
 export const metadata: Metadata = {
-  title: 'Become a Partner | TARAhut AI Labs',
+  title: 'Partner with TARAhut · Lab-in-a-Box | Own the AI Future of Your City',
   description:
-    'Partner with TARAhut AI Labs and launch your own AI training center. Franchise opportunity with full support, curriculum, and branding.',
+    "The First AI Lab was Kotkapura. Yours is next. Launch a TARAhut AI Lab in your city with proven curriculum, TARA AI technology, and the lead systems that fill our Kotkapura center.",
 };
 
-const benefits = [
+const MONO = 'var(--font-fira-code), ui-monospace, monospace';
+const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif';
+
+// ─────────────────────────────────────────────────────────────
+// The three pillars of Lab-in-a-Box
+// ─────────────────────────────────────────────────────────────
+
+const PILLARS = [
   {
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-      </svg>
-    ),
-    title: 'Ready-Made Curriculum',
-    description: 'Launch with proven AI courses — ChatGPT, Canva AI, content creation, and more. No R&D required.',
+    tag: '01 · CURRICULUM',
+    icon: '🧠',
+    title: 'The Brain',
+    subtitle: '16 tested sessions. Written, iterated, shipped.',
+    body:
+      'You inherit the full Master syllabus — 16 sessions across AI foundations, prompt engineering, content, automation, and monetisation. Tested with every cohort in Kotkapura. Every project, every assignment, every rubric is ready to run on day one.',
+    proof: [
+      '16-session syllabus · English · Hindi · Punjabi',
+      'Prompt libraries + project briefs + grading rubrics',
+      'Trainer manual — lesson-by-lesson playbook',
+    ],
   },
   {
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-      </svg>
-    ),
-    title: 'Trainer Support',
-    description: 'Get trained by our expert team. We help you onboard trainers and manage your first batches.',
+    tag: '02 · TECHNOLOGY',
+    icon: '🤖',
+    title: 'The Platform',
+    subtitle: 'TARA, the Galaxy, and the automation backend — already built.',
+    body:
+      "You don't build the stack — you plug into ours. TARA handles 24/7 enquiries on your subdomain. The Galaxy UI and the course dashboards are the same ones running on tarahutailabs.com. Payments, enrolment tracking, WhatsApp automation — wired in from day one.",
+    proof: [
+      'TARA bot on your city subdomain',
+      'Emerald Galaxy + landing-page themes already built',
+      'Razorpay + WhatsApp + admin dashboard plumbed in',
+    ],
   },
   {
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
-      </svg>
-    ),
-    title: 'Marketing & Branding',
-    description: 'Use the TARAhut AI Labs brand, social media kits, and marketing templates to attract students fast.',
-  },
-  {
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-      </svg>
-    ),
-    title: 'Revenue Share Model',
-    description: 'Transparent profit-sharing with low setup costs. Start earning from your very first batch.',
+    tag: '03 · LEADS',
+    icon: '📈',
+    title: 'The Funnel',
+    subtitle: 'Career Architect and ROI calculators that convert.',
+    body:
+      'The lead magnets that filled Kotkapura are yours to deploy. Career Architect diagnoses the right course for a student in 3 steps. ROI calculators make the case parents and professionals need. Same funnel, your city — pre-tuned, ready to run paid campaigns against.',
+    proof: [
+      'Career Architect lead magnet + PDF roadmap',
+      'Role-based ROI calculators (hours reclaimed · freelancing income)',
+      'Ad templates + Meta pixel setup + landing-page copy bank',
+    ],
   },
 ];
 
-const steps = [
-  { step: '01', title: 'Submit Enquiry', desc: 'Fill out the form below with your details and investment capacity.' },
-  { step: '02', title: 'Discovery Call', desc: 'Our team will call you within 24 hours to discuss the opportunity.' },
-  { step: '03', title: 'Site Visit & Agreement', desc: 'We visit your location, finalise terms, and sign the partnership agreement.' },
-  { step: '04', title: 'Launch Your Center', desc: 'Get trained, set up your center, and start your first batch.' },
+const HOW_IT_WORKS = [
+  { step: '01', title: 'Submit Enquiry', desc: 'Fill out the form below with your city, space, and investment capacity.' },
+  { step: '02', title: 'Discovery Call', desc: 'Our team calls you within 24 hours to walk through the model + unit economics.' },
+  { step: '03', title: 'Site Visit & Agreement', desc: 'We visit your space, finalise district exclusivity, and sign the partnership.' },
+  { step: '04', title: 'Launch Your Lab', desc: 'Trainer onboarding, subdomain setup, and your first cohort live within 4 weeks.' },
 ];
+
+const WHAT_YOU_GET = [
+  { emoji: '📚', label: 'Full 16-session curriculum + trainer manual + grading rubrics' },
+  { emoji: '🌐', label: 'Your own city subdomain (e.g. ludhiana.tarahutailabs.com) with TARA' },
+  { emoji: '🎨', label: 'Brand kit · landing page themes · social templates · poster kit' },
+  { emoji: '🎯', label: 'Career Architect + ROI Calculator lead magnets pre-configured' },
+  { emoji: '📈', label: 'Meta pixel + Google Analytics + enrolment dashboard' },
+  { emoji: '💬', label: 'WhatsApp automation + Razorpay payments + admin back-office' },
+  { emoji: '👥', label: 'Trainer onboarding (5 days intensive at Kotkapura HQ)' },
+  { emoji: '🛡️', label: 'District exclusivity for the duration of the partnership' },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────
 
 export default function PartnerPage() {
   return (
     <>
-      {/* Hero */}
-      <section
-        className="relative py-24 overflow-hidden"
-        style={{ backgroundColor: '#020617' }}
-      >
-        {/* Grid overlay */}
+      {/* ═══════════ HERO ═══════════ */}
+      <section className="relative overflow-hidden py-20 md:py-28">
+        {/* Blueprint grid */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+          className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
+            backgroundImage:
+              'linear-gradient(rgba(16,185,129,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.6) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
           }}
         />
-        {/* Glow orbs */}
+
+        {/* Ambient emerald orbs */}
         <div
-          className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)',
-            filter: 'blur(60px)',
-          }}
+          aria-hidden
+          className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full blur-[120px] opacity-60 pointer-events-none"
+          style={{ background: 'rgba(16,185,129,0.14)' }}
         />
         <div
-          className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
-            filter: 'blur(48px)',
-          }}
+          aria-hidden
+          className="absolute -bottom-32 -right-20 w-[500px] h-[500px] rounded-full blur-[120px] opacity-50 pointer-events-none"
+          style={{ background: 'rgba(16,185,129,0.1)' }}
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            {/* Pill badge */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400 mb-6">
-              Business Partnership Opportunity
+          {/* Label */}
+          <div className="text-center">
+            <span
+              className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-[0.32em] uppercase text-emerald-400"
+              style={{ fontFamily: MONO }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Regional Expansion · 2026
             </span>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-white via-white to-emerald-400 bg-clip-text text-transparent">
-              Become a TARAhut AI Labs Partner
+
+            <h1
+              className="mt-5 text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight"
+              style={{ fontFamily: DISPLAY }}
+            >
+              <span className="text-white">The first AI Lab was</span>{' '}
+              <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Kotkapura.</span>
+              <br />
+              <span className="bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                Yours is next.
+              </span>
             </h1>
-            <p className="mt-5 text-lg text-gray-400 max-w-2xl">
-              Launch your own AI training center under the TARAhut AI Labs brand. We provide the curriculum, training, support, and marketing — you bring the space and the passion.
+
+            <p className="mt-6 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              Own a TARAhut AI Lab in your district. Inherit the curriculum,
+              the technology, and the lead systems that filled our Kotkapura
+              center. No R&amp;D. No guesswork. A real business on day one.
             </p>
-            <div className="mt-8 flex flex-wrap gap-6 text-sm text-gray-300">
+
+            {/* HQ stats strip */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Low investment, high returns
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>
+                  <span className="text-white font-bold">500+</span> students served at Kotkapura HQ
+                </span>
               </div>
+              <div className="hidden sm:block w-px h-4 bg-white/15" />
               <div className="flex items-center gap-2">
-                <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Full curriculum &amp; trainer support
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>
+                  <span className="text-white font-bold">10+</span> districts targeted for 2026
+                </span>
               </div>
+              <div className="hidden sm:block w-px h-4 bg-white/15" />
               <div className="flex items-center gap-2">
-                <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Growing demand for AI skills
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>
+                  Model: <span className="text-white font-bold">Lab-in-a-Box</span>
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Benefits */}
-      <section className="py-20 bg-[#0A0F1C]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white">Why Partner With Us?</h2>
-            <p className="mt-3 text-gray-400 max-w-xl mx-auto">
-              Everything you need to run a successful AI training center — without starting from scratch.
+            {/* Map */}
+            <div className="mt-10 md:mt-12">
+              <PartnerPunjabMap />
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="#enquiry"
+                className="group relative inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full font-black text-sm tracking-[0.15em] uppercase text-black bg-white hover:bg-emerald-500 hover:text-white transition-colors shadow-[0_10px_40px_rgba(16,185,129,0.2)]"
+              >
+                <span>Apply for Franchise Details</span>
+                <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+              <a
+                href="#pillars"
+                className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-4 rounded-full border border-white/15 text-sm font-bold tracking-[0.15em] uppercase text-gray-300 hover:border-emerald-400/40 hover:text-emerald-300 transition-colors"
+              >
+                See the Model
+              </a>
+            </div>
+
+            <p className="mt-6 text-[11px] tracking-[0.22em] uppercase text-gray-500 font-bold" style={{ fontFamily: MONO }}>
+              Exclusivity granted per district · Batch 1 partners now open
             </p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((b) => (
+        </div>
+      </section>
+
+      {/* ═══════════ THE 3 PILLARS ═══════════ */}
+      <section id="pillars" className="relative py-20 md:py-28 bg-[#040914]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14 md:mb-20">
+            <span
+              className="text-[11px] sm:text-xs font-bold tracking-[0.32em] uppercase text-emerald-400"
+              style={{ fontFamily: MONO }}
+            >
+              The Lab-in-a-Box
+            </span>
+            <h2
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-[1.1]"
+              style={{ fontFamily: DISPLAY }}
+            >
+              We&apos;ve already solved the <span className="text-gray-500">three hardest problems</span>
+              <br />of running an AI school.
+            </h2>
+            <p className="mt-4 text-sm md:text-base text-gray-400 max-w-2xl mx-auto">
+              Most education franchises sell a brand. We hand you a <em className="not-italic text-white">working system</em> — the same one that built Kotkapura.
+            </p>
+          </div>
+
+          <div className="space-y-6 md:space-y-8">
+            {PILLARS.map((p) => (
               <div
-                key={b.title}
-                className="rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-6 transition-all duration-200 hover:border-emerald-500/30 hover:bg-white/[0.06]"
+                key={p.tag}
+                className="grid md:grid-cols-5 gap-6 md:gap-10 p-6 md:p-8 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-emerald-400/30 transition-colors"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 mb-4">
-                  {b.icon}
+                <div className="md:col-span-3">
+                  <div
+                    className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400"
+                    style={{ fontFamily: MONO }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    {p.tag}
+                  </div>
+                  <div className="mt-3 flex items-baseline gap-3">
+                    <span className="text-3xl" aria-hidden>{p.icon}</span>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight" style={{ fontFamily: DISPLAY }}>
+                      {p.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-sm md:text-base text-emerald-300/90">{p.subtitle}</p>
+                  <p className="mt-4 text-sm md:text-base text-gray-400 leading-relaxed">{p.body}</p>
                 </div>
-                <h3 className="font-semibold text-white mb-2">{b.title}</h3>
-                <p className="text-sm text-gray-400">{b.description}</p>
+
+                <div className="md:col-span-2 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.03] p-4 md:p-5">
+                  <div className="text-[10px] tracking-[0.28em] uppercase text-emerald-400/80 mb-3" style={{ fontFamily: MONO }}>
+                    You get
+                  </div>
+                  <ul className="space-y-2.5">
+                    {p.proof.map((line) => (
+                      <li key={line} className="flex items-start gap-2 text-sm text-gray-300">
+                        <span className="text-emerald-400 mt-0.5 shrink-0">✓</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="py-20 bg-[#0A0F1C] border-t border-white/[0.06]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* ═══════════ WHAT YOU GET (FULL LIST) ═══════════ */}
+      <section className="relative py-20 md:py-24 bg-[#020817]">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white">How It Works</h2>
-            <p className="mt-3 text-gray-400">From enquiry to your first batch in 4 simple steps.</p>
+            <span className="text-[11px] font-bold tracking-[0.28em] uppercase text-emerald-400" style={{ fontFamily: MONO }}>
+              Inside the Box
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
+              Everything in the partnership
+            </h2>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s) => (
-              <div key={s.step} className="relative">
-                <div className="text-5xl font-black text-emerald-500/20 mb-3">{s.step}</div>
-                <h3 className="font-semibold text-white mb-1">{s.title}</h3>
-                <p className="text-sm text-gray-400">{s.desc}</p>
+
+          <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
+            {WHAT_YOU_GET.map((item) => (
+              <div
+                key={item.label}
+                className="flex items-start gap-3 p-4 rounded-xl border border-white/10 bg-white/[0.02]"
+              >
+                <span className="text-xl leading-none shrink-0 mt-0.5" aria-hidden>{item.emoji}</span>
+                <span className="text-sm text-gray-200 leading-relaxed">{item.label}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Enquiry Form */}
-      <section className="py-20 bg-[#0A0F1C] border-t border-white/[0.06]" id="enquiry">
+      {/* ═══════════ HOW IT WORKS ═══════════ */}
+      <section className="relative py-20 md:py-24 bg-[#040914] border-y border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-[11px] font-bold tracking-[0.28em] uppercase text-emerald-400" style={{ fontFamily: MONO }}>
+              The Process
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
+              From enquiry to first cohort in 4 steps
+            </h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {HOW_IT_WORKS.map((s) => (
+              <div key={s.step} className="relative p-5 rounded-2xl border border-white/10 bg-white/[0.02]">
+                <div
+                  className="text-4xl sm:text-5xl font-black tabular-nums mb-3"
+                  style={{
+                    fontFamily: DISPLAY,
+                    background: 'linear-gradient(to bottom, rgba(16,185,129,0.6), rgba(16,185,129,0.12))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {s.step}
+                </div>
+                <h3 className="text-base font-bold text-white mb-1" style={{ fontFamily: DISPLAY }}>
+                  {s.title}
+                </h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ ENQUIRY FORM ═══════════ */}
+      <section id="enquiry" className="relative py-20 md:py-24 bg-[#020817] border-t border-white/[0.06]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_520px]">
-            {/* Left info */}
+            {/* Left — info */}
             <div>
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Ready to Get Started?
+              <span className="text-[11px] font-bold tracking-[0.28em] uppercase text-emerald-400" style={{ fontFamily: MONO }}>
+                Apply
+              </span>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
+                Ready to own the future of your city?
               </h2>
-              <p className="text-gray-400 mb-8">
-                Fill out the enquiry form and our partnership team will reach out within 24 hours. We&apos;re expanding across India and looking for passionate entrepreneurs in every city.
+              <p className="mt-4 text-gray-400">
+                Partnership team responds within 24 hours. Discovery call is 30 minutes — we walk through the unit economics, district availability, and what a launch timeline looks like for your city.
               </p>
 
-              <div className="space-y-5">
+              <div className="mt-8 space-y-5">
                 <div className="flex items-start gap-4">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/[0.03] border border-white/[0.08] text-emerald-400">
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -188,7 +343,7 @@ export default function PartnerPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-white">Call us directly</p>
-                    <a href="tel:+919200882008" className="text-sm text-emerald-400 hover:underline">+91 99154 24411</a>
+                    <a href="tel:+919915424411" className="text-sm text-emerald-400 hover:underline">+91 99154 24411</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -204,11 +359,20 @@ export default function PartnerPage() {
                   </div>
                 </div>
               </div>
+
+              <div className="mt-8 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04]">
+                <div className="text-[10px] tracking-[0.28em] uppercase text-emerald-400 font-bold mb-2" style={{ fontFamily: MONO }}>
+                  Batch 1 · Open
+                </div>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  Currently accepting first 5 city partners. Each gets <span className="text-white font-semibold">district exclusivity</span> for the duration of the agreement — one lab per district, no exceptions.
+                </p>
+              </div>
             </div>
 
-            {/* Right: Form */}
+            {/* Right — form */}
             <div>
-              <h2 className="mb-6 text-2xl font-bold text-white">
+              <h2 className="mb-6 text-2xl font-bold text-white" style={{ fontFamily: DISPLAY }}>
                 Partner Enquiry Form
               </h2>
               <PartnerForm />
