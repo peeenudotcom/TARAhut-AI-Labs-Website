@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PartnerForm } from './partner-form';
 import { PartnerPunjabMap } from '@/components/landing/partner-punjab-map';
+import { PartnerProfitCalculator } from '@/components/landing/partner-profit-calculator';
 
 export const metadata: Metadata = {
   title: 'Partner with TARAhut · Lab-in-a-Box | Own the AI Future of Your City',
@@ -479,76 +480,22 @@ export default function PartnerPage() {
             </div>
           </div>
 
-          {/* Comparison bar chart — manual vs AI-native (no rupee anchors) */}
+          {/* Interactive calculator — the prospect models their own projection */}
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <span
                 className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-emerald-400 uppercase"
                 style={{ fontFamily: MONO }}
               >
-                03 · The delta
+                03 · Your projection
               </span>
               <span className="h-px flex-1 bg-white/[0.06]" />
               <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide" style={{ fontFamily: MONO }}>
-                structural
+                interactive
               </span>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:p-7">
-              {/* Row 1 — Manual education */}
-              <div className="mb-6">
-                <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-sm text-gray-400 font-semibold">Traditional coaching centre</span>
-                  <span className="text-[10px] text-gray-500 uppercase tracking-[0.22em]" style={{ fontFamily: MONO }}>
-                    industry avg
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 relative h-6 rounded-full bg-white/[0.03] overflow-hidden">
-                    <div
-                      className="absolute inset-y-0 left-0 rounded-full bg-gray-600/70"
-                      style={{ width: '11%' }}
-                    />
-                  </div>
-                </div>
-                <p className="mt-2 text-[11px] text-gray-600" style={{ fontFamily: MONO }}>
-                  # one revenue line · teacher-heavy opex · syllabus drift
-                </p>
-              </div>
-
-              {/* Row 2 — TARAhut */}
-              <div>
-                <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-sm text-emerald-300 font-semibold">TARAhut Partner Lab</span>
-                  <span className="text-[10px] text-emerald-400 uppercase tracking-[0.22em]" style={{ fontFamily: MONO }}>
-                    projection
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 relative h-6 rounded-full bg-white/[0.03] overflow-hidden">
-                    <div
-                      className="absolute inset-y-0 left-0 rounded-full"
-                      style={{
-                        width: '100%',
-                        background: 'linear-gradient(90deg, #10b981 0%, #34d399 100%)',
-                        boxShadow: '0 0 30px rgba(16,185,129,0.35)',
-                      }}
-                    />
-                  </div>
-                </div>
-                <p className="mt-2 text-[11px] text-emerald-400/70" style={{ fontFamily: MONO }}>
-                  # 3 revenue streams · platform-powered opex · central syllabus updates
-                </p>
-              </div>
-
-              <div className="mt-6 pt-5 border-t border-white/[0.06] text-center">
-                <p className="text-sm text-gray-300">
-                  A <span className="font-bold text-emerald-300" style={{ fontFamily: DISPLAY }}>~9×</span>{' '}
-                  delta — structural, not promotional. Different model, different math.
-                  Exact figures in the discovery call.
-                </p>
-              </div>
-            </div>
+            <PartnerProfitCalculator />
           </div>
 
           {/* ROI + Break-even card */}
