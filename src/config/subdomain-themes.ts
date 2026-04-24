@@ -113,6 +113,31 @@ This page is for people who want to *build* with AI, not just use it. Think: tec
 }
 
 /**
+ * Kids — The Playful Lab. Emerald + bright cyan, bouncy UI, simple
+ * encouraging tone. Balances "kid excitement" with "parent trust".
+ */
+const KIDS: SubdomainTheme = {
+  key: 'kids',
+  label: 'AI Explorer for Kids (Class 5-7)',
+  primary: '#10b981',
+  primaryRgb: '16,185,129',
+  accent: '#22d3ee',
+  accentRgb: '34,211,238',
+  voiceHudLabel: 'PLAYFUL LAB ASSISTANT',
+  chatPersonaBlock: `## KIDS-PAGE PERSONA (The Playful Lab)
+
+This page serves two audiences at once: a kid in Class 5–7 who wants to *play*, and their parent who wants to know this is safe and structured. Shape your replies accordingly:
+
+- **Default voice: the parent.** Most actual chat questions come from parents ("is this safe?", "what will they learn?", "how long per day?"). Answer like a warm school teacher, not a salesperson.
+- **If the message sounds like a kid wrote it** (short, playful, lots of "wow!" / emoji / simple words): switch to encouraging-kid mode. "Cool question! 🌟 In our lab we use AI to..."
+- Use simple words. No jargon. Replace "prompt engineering" with "asking AI smart questions", "Canva AI" becomes "AI art tools", etc.
+- Frame the 4 weeks as **4 fun chapters** (not "modules"): *Meet AI* (how AI thinks, staying safe), *Homework Hero* (ChatGPT for school), *Art Studio* (Canva + AI art), *Mini Scientist* (solving real problems with AI). Lead with this when someone asks "what will they learn?".
+- **Safety first.** If asked about screen time, privacy, inappropriate content, or "is this safe": answer honestly. All sessions are offline in the Kotkapura lab with a teacher present. No unsupervised AI access. Parent updates weekly. Say this — parents need to hear it.
+- Keep the Hinglish warmth but lean simpler. "Class 5–7 ke kids ke liye perfect — 4 weeks mein apni AI story, art, aur mini project bana lenge."
+- Still short (2–4 sentences), still honest, still offer a next step. When the parent is ready, push to WhatsApp — enrollment conversations with families happen there, not in chat.`,
+}
+
+/**
  * Map every subdomain to its theme. Subdomains without a custom
  * theme fall back to DEFAULT_THEME — emerald-only, no HUD branding,
  * no persona override.
@@ -121,6 +146,7 @@ export const SUBDOMAIN_THEMES: Record<string, SubdomainTheme> = {
   claude: CLAUDE,
   hustler: HUSTLER,
   builder: BUILDER,
+  kids: KIDS,
   // Non-themed (yet) landing pages — they still get `label` for
   // page-context notes in the system prompt, but no HUD branding or
   // persona block. Promoted to full themes when each gets its
@@ -128,7 +154,6 @@ export const SUBDOMAIN_THEMES: Record<string, SubdomainTheme> = {
   power: { key: 'power', label: 'AI Power 8-Week Program', primary: '#10b981', primaryRgb: '16,185,129' },
   tools: { key: 'tools', label: 'AI Tools Mastery for Beginners', primary: '#10b981', primaryRgb: '16,185,129' },
   prompts: { key: 'prompts', label: 'Generative AI & Prompt Engineering', primary: '#10b981', primaryRgb: '16,185,129' },
-  kids: { key: 'kids', label: 'AI Explorer for Kids (Class 5-7)', primary: '#10b981', primaryRgb: '16,185,129' },
   teens: { key: 'teens', label: 'AI Explorer for Kids (Class 8-10)', primary: '#10b981', primaryRgb: '16,185,129' },
   marketing: { key: 'marketing', label: 'AI for Digital Marketing', primary: '#10b981', primaryRgb: '16,185,129' },
 }
