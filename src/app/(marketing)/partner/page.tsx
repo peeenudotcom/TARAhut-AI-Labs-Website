@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { PartnerForm } from './partner-form';
+import { PartnerPunjabMap } from '@/components/landing/partner-punjab-map';
 
 export const metadata: Metadata = {
   title: 'Partner with TARAhut · Lab-in-a-Box | Own the AI Future of Your City',
@@ -236,6 +237,11 @@ export default function PartnerPage() {
                   Model: <span className="text-white font-bold">Lab-in-a-Box</span>
                 </span>
               </div>
+            </div>
+
+            {/* Map */}
+            <div className="mt-10 md:mt-12">
+              <PartnerPunjabMap />
             </div>
 
             {/* CTAs */}
