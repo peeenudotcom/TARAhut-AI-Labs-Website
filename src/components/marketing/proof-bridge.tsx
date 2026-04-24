@@ -11,8 +11,8 @@ interface Props {
 // Proof Bridge — the connective tissue between "here is what you'll
 // learn" (syllabus) and "here is what you can buy" (enrollment).
 // Appears right after the Pulse Path finale. The psychological job
-// it does: when a reader finishes the 16 sessions their brain asks
-// "can I actually do this?" — the bridge answers with real output.
+// it does: when a reader finishes scanning the syllabus their brain
+// asks "can I actually do this?" — the bridge answers with real output.
 //
 // Layout: full-width emerald-glow banner with a horizontally
 // auto-scrolling marquee of student project thumbnails and a single
@@ -72,7 +72,7 @@ export function ProofBridge({ courseSlug }: Props) {
           Yes — you can actually build this.
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/65 md:text-base">
-          Real outputs from students who sat in the same 16 sessions, in Kotkapura and online. Updated weekly.
+          Real outputs from students who sat through the same program, in Kotkapura and online. Updated weekly.
         </p>
       </div>
 

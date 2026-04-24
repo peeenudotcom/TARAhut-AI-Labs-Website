@@ -124,8 +124,8 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-20 bg-[#0A0F1C]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden lab-aura py-20 bg-[#0A0F1C]">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="mb-6 text-3xl font-bold text-white">
@@ -158,8 +158,8 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="bg-[#020617] py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden lab-aura bg-[#020617] py-20">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="grid gap-12 md:grid-cols-2">
               {/* Mission */}
@@ -227,8 +227,8 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-[#0A0F1C]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden lab-aura py-20 bg-[#0A0F1C]">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold text-white">
@@ -357,8 +357,8 @@ export default function AboutPage() {
       {/* Training Team — everyone who teaches alongside the founder.
           Designed to breathe when there's 1-3 people and scale
           cleanly as the team grows. */}
-      <section className="bg-[#0A0F1C] py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden lab-aura bg-[#0A0F1C] py-20">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="mb-12 text-center">
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400">

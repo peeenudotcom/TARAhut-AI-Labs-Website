@@ -6,7 +6,7 @@ import { labFeed } from '@/config/lab-feed';
 export const metadata: Metadata = {
   title: 'The Live Lab | TARAhut Student Showcase',
   description:
-    'Real-world AI projects built by TARAhut students during their 16-session transformation. Hover any tile to see the actual prompt or workflow that shipped it.',
+    'Real-world AI projects built by TARAhut students across every program — hover any tile to see the actual prompt or workflow that shipped it.',
 };
 
 // Announcements for the live ticker — short phrases separated by `•`.
@@ -17,7 +17,7 @@ const TICKER_LINES = [
   'New batch starting Monday in the Kotkapura Lab',
   'Student Arjun just deployed a Custom GPT for a local law firm',
   '500+ graduates across Punjab & online',
-  'Ship a project in 16 sessions — not 16 months',
+  'Ship a real project in weeks — not months',
 ];
 
 export default function LabFeedPage() {
@@ -73,8 +73,8 @@ export default function LabFeedPage() {
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gray-400 md:text-lg">
           This is where theory turns into reality. Explore the actual projects
-          built by TARAhut students during their 16-session transformation —
-          hover any tile to see the prompt or workflow behind it.
+          built by TARAhut students across every program — hover any tile to
+          see the prompt or workflow behind it.
         </p>
         <p className="mx-auto mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-emerald-300/90">
           <span className="inline-block size-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
@@ -108,7 +108,7 @@ export default function LabFeedPage() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-gray-400">
             Join the next batch in the Kotkapura Lab or online and move from
-            spectator to creator in 16 sessions.
+            spectator to creator — in weeks, not months.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link

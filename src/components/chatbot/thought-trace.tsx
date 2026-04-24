@@ -51,11 +51,16 @@ function buildSteps(intent: string): Step[] {
     { tag: 'PARSE_INPUT',   body: 'Listening to your question…',        dwellMs: 280 },
     { tag: 'ANALYZE_GOAL',  body: `Goal → ${intent}`,                   dwellMs: 420 },
     { tag: 'LOAD_BRAIN',    body: 'Pulling TARAhut syllabus + FAQs',    dwellMs: 360 },
-    { tag: 'MATCH_INTENT',  body: 'Matching intent → 16-session map',   dwellMs: 520 },
+    { tag: 'MATCH_INTENT',  body: 'Matching intent → syllabus map',     dwellMs: 520 },
     { tag: 'WEIGHT_SESSIONS', body: 'Weighting sessions by your goal', dwellMs: 480 },
     { tag: 'COMPOSE',       body: 'Composing response in Hinglish…',    dwellMs: 440 },
   ];
 }
+
+// Max trace lines visible at once. On small phones (iPhone SE ~320px,
+// older Pixels) the stack can push the chat bubble off-screen — cap
+// at 3 and let earlier lines slide out.
+const MAX_VISIBLE = 3;
 
 // Thought Trace — terminal-style live log of what TARA is doing
 // while the chat response streams. Replaces the generic 3-dot
@@ -113,10 +118,16 @@ export function ThoughtTrace({ lastUserMessage }: Props) {
         `}</style>
 
         <ul className="flex flex-col gap-1.5 min-h-[1.5rem]">
-          {steps.slice(0, visibleCount).map((s, i) => {
-            const active = i === visibleCount - 1 && visibleCount < steps.length;
-            const done = !active;
-            return (
+          {/* Sliding window — show at most MAX_VISIBLE (3) lines so the
+              trace never pushes the chat bubble off narrow phones. The
+              most recent is at the bottom; earlier lines drop off. */}
+          {steps
+            .slice(Math.max(0, visibleCount - MAX_VISIBLE), visibleCount)
+            .map((s, idx) => {
+              const i = Math.max(0, visibleCount - MAX_VISIBLE) + idx;
+              const active = i === visibleCount - 1 && visibleCount < steps.length;
+              const done = !active;
+              return (
               <li
                 key={s.tag}
                 className="flex items-start gap-2"

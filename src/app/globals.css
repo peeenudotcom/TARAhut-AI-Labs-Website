@@ -171,6 +171,28 @@
   );
 }
 
+/* Force-aura pseudo — opt-in via className="lab-aura". For sections
+ * whose inline bg (e.g. bg-[#0A0F1C], bg-[#020617]) is opaque and
+ * would otherwise paint over the .lab-main radial gradient above.
+ * Requires position: relative on the parent section — the ::before
+ * paints behind content but in front of the bg colour.
+ *
+ * Usage: <section className="relative overflow-hidden lab-aura ...">
+ */
+.lab-aura::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 35%,
+    rgba(16, 185, 129, 0.08) 0%,
+    rgba(16, 185, 129, 0.02) 45%,
+    transparent 75%
+  );
+}
+
 /* Connector aura — drop a <div class="lab-connector" /> between
  * two sections to add a soft emerald halo that "carries" the light
  * from one to the next. Zero-height so it doesn't push layout. */
