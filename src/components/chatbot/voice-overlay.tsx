@@ -2,25 +2,20 @@
 
 import { motion } from 'framer-motion';
 import type { VoiceStatus } from '@/lib/hooks/use-voice-command';
+import { getTheme } from '@/config/subdomain-themes';
 
 interface Props {
   status: VoiceStatus;
   transcript: string;
   onCancel: () => void;
   /**
-   * Active landing-page subdomain. When `"claude"`, the overlay renders
-   * a [ CLAUDE-POWERED VOICE ASSISTANT ] branding pill above the status
-   * label so users understand the voice intelligence is architect-grade
-   * on this page specifically.
+   * Active landing-page subdomain. Themed subdomains (claude, hustler)
+   * render a branded pill above the ripple stack — e.g.
+   * `[ CLAUDE-POWERED VOICE ASSISTANT ]`. Unthemed or null → no pill.
+   * Branding labels live in `src/config/subdomain-themes.ts`.
    */
   subdomain?: string | null;
 }
-
-// Per-subdomain HUD branding. Only Claude has a distinct persona for now —
-// other subdomains fall back to the generic voice HUD.
-const SUBDOMAIN_HUD_LABEL: Record<string, string> = {
-  claude: 'CLAUDE-POWERED VOICE ASSISTANT',
-};
 
 const STATUS_LABEL: Record<VoiceStatus, string> = {
   idle: '',
@@ -42,7 +37,13 @@ const STATUS_LABEL: Record<VoiceStatus, string> = {
 // the analyser later if needed.
 export function VoiceOverlay({ status, transcript, onCancel, subdomain }: Props) {
   const label = STATUS_LABEL[status];
-  const hudBrand = subdomain ? SUBDOMAIN_HUD_LABEL[subdomain] : undefined;
+  const theme = getTheme(subdomain);
+  const hudBrand = theme.voiceHudLabel;
+  // Accent colour for the branding pill border + glow. Falls back to
+  // primary when no accent is defined (Claude = pure emerald; Hustler
+  // = gold over emerald).
+  const pillAccent = theme.accent ?? theme.primary;
+  const pillAccentRgb = theme.accentRgb ?? theme.primaryRgb;
 
   return (
     <motion.div
@@ -61,15 +62,21 @@ export function VoiceOverlay({ status, transcript, onCancel, subdomain }: Props)
 
       {/* Ripple stack */}
       <div className="relative flex flex-col items-center gap-6 sm:gap-8">
-        {/* Per-subdomain HUD branding — sits above the ripples as a
+        {/* Per-theme HUD branding — sits above the ripples as a
             persistent tag that telegraphs "this voice is powered by
-            X on this page". Claude page: "CLAUDE-POWERED VOICE ASSISTANT". */}
+            X on this page". Pill border + glow use the theme's
+            accent colour (gold on Hustler, emerald on Claude). */}
         {hudBrand && (
           <motion.span
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-full border border-emerald-400/50 bg-black/80 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-200 shadow-[0_0_22px_rgba(16,185,129,0.55)] backdrop-blur-md"
+            className="rounded-full border bg-black/80 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.28em] backdrop-blur-md"
+            style={{
+              borderColor: `rgba(${pillAccentRgb}, 0.5)`,
+              color: pillAccent,
+              boxShadow: `0 0 22px rgba(${pillAccentRgb}, 0.55)`,
+            }}
           >
             [ {hudBrand} ]
           </motion.span>
