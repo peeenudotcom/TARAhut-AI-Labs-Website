@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { siteConfig } from '@/config/site'
+import { SUBDOMAIN_THEMES, getTheme } from '@/config/subdomain-themes'
 import { ThoughtTrace } from './thought-trace'
 import { VoiceOverlay } from './voice-overlay'
 import { VoiceHint } from './voice-hint'
@@ -48,19 +49,6 @@ function inferIntent(text: string): IntentKind {
   return 'chat'
 }
 
-// Landing-page subdomain → short display name for the greeting
-const SUBDOMAIN_LABELS: Record<string, string> = {
-  claude: 'Master Claude 15 Days',
-  builder: 'Master AI Builder 90-Day',
-  hustler: 'AI Hustler 45',
-  power: 'AI Power 8-Week',
-  tools: 'AI Tools Mastery',
-  prompts: 'Prompt Engineering',
-  kids: 'AI Explorer for Kids',
-  teens: 'AI Explorer for Teens',
-  marketing: 'AI for Digital Marketing',
-}
-
 // Map `/lp/<slug>` paths back to their subdomain key. Mirrors the
 // production proxy rewrites in src/proxy.ts so a preview URL or a
 // direct `/lp/master-claude-15-days` visit still gets the same
@@ -81,8 +69,8 @@ function detectSubdomain(): string | null {
   if (typeof window === 'undefined') return null
   const host = window.location.host.toLowerCase()
   const parts = host.split('.')
-  // claude.tarahutailabs.com → "claude"
-  if (parts.length >= 3 && parts[0] in SUBDOMAIN_LABELS) {
+  // claude.tarahutailabs.com → "claude" (validated against theme registry)
+  if (parts.length >= 3 && parts[0] in SUBDOMAIN_THEMES) {
     return parts[0]
   }
   // Path fallback — preview URLs and direct `/lp/<slug>` visits don't
@@ -156,17 +144,7 @@ function renderLine(line: string): React.ReactNode {
   return parts.length > 0 ? parts : line
 }
 
-export function AskTara({
-  mobileBottomClass = 'bottom-6',
-}: {
-  /**
-   * Tailwind class that controls the orb's distance from the bottom edge
-   * on mobile. Pages with a persistent mobile sticky CTA (e.g. landing pages)
-   * should pass a larger value like `"bottom-24"` so the orb doesn't cover
-   * the Enroll button. Reset to `md:bottom-6` at md+ regardless.
-   */
-  mobileBottomClass?: string
-} = {}) {
+export function AskTara() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [subdomain, setSubdomain] = useState<string | null>(null)
@@ -369,7 +347,12 @@ export function AskTara({
     }
   }, [messages])
 
-  const landingCourseName = subdomain ? SUBDOMAIN_LABELS[subdomain] : null
+  // Landing-page theme drives the greeting label + auto-lifts the
+  // orb above the mobile sticky CTA bar. Non-landing pages get the
+  // generic greeting and the default 24px-from-bottom orb position.
+  const theme = getTheme(subdomain)
+  const landingCourseName = subdomain ? theme.label : null
+  const orbMobileBottomClass = subdomain ? 'bottom-24' : 'bottom-6'
 
   const greeting = landingCourseName
     ? `Hi! I'm Tara 👋 I see you're checking out **${landingCourseName}**. Kuch bhi poochh sakte ho — price, batch dates, kya seekhoge, kuch bhi. Main yahaan hoon!`
@@ -425,7 +408,7 @@ export function AskTara({
             transition={{ delay: 1.5, type: 'spring', stiffness: 200, damping: 20 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
-            className={`group fixed ${mobileBottomClass} md:bottom-6 right-6 z-50 select-none`}
+            className={`group fixed ${orbMobileBottomClass} md:bottom-6 right-6 z-50 select-none`}
             style={{ touchAction: 'manipulation' }}
             aria-label={voice.isSupported ? 'Tap to chat · hold to speak' : 'Chat with Ask TARA'}
           >
