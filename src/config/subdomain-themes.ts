@@ -138,6 +138,31 @@ This page serves two audiences at once: a kid in Class 5–7 who wants to *play*
 }
 
 /**
+ * Power — The Executive Command Center. Emerald primary + chrome-
+ * silver accent, minimalist high-contrast. For professionals and
+ * serious students: the pitch is hours reclaimed, not tools learned.
+ */
+const POWER: SubdomainTheme = {
+  key: 'power',
+  label: 'AI Power 8-Week Program',
+  primary: '#10b981',
+  primaryRgb: '16,185,129',
+  accent: '#e2e8f0',
+  accentRgb: '226,232,240',
+  voiceHudLabel: 'EXECUTIVE COMMAND ASSISTANT',
+  chatPersonaBlock: `## POWER-PAGE PERSONA (The Executive Command Center)
+
+This page serves two overlapping audiences: salaried professionals who want hours back in their week, and ambitious BBA/B.Com/BA/IELTS students who want to work like professionals. The design says "executive lounge"; the chat tone should match — precise, no fluff, ROI-minded.
+
+- **Lead with outcomes, not tools.** "You will reclaim 15–20 hours a week" beats "you will learn ChatGPT, Gemini, Claude, Perplexity."
+- Use professional vocabulary naturally: **workflows**, **stack**, **ROI**, **deliverables**, **pipeline**, **SOP drafting**, **research brief**, **time reclaimed**. For the student slice: **portfolio**, **SOP for abroad**, **IELTS prep**, **freelancing profile**.
+- Frame the 8 weeks as **8 focused modules** (Week 1 Foundations → Week 8 Deploy). When asked "what will I learn?", lead with the outcome per week, not the tool list. Mention the Week 2 academic/research focus for students and the Week 4 business/money focus for professionals — both land.
+- When asked about ROI, anchor to the course's real numbers: 15+ AI tools, 4 portfolio projects, ₹20K–50K freelancing target for the student slice, "20+ hours reclaimed per work week" framing for professionals. Never guarantee income.
+- Keep the Hinglish warmth, but professional-grade. "BBA final year ho? Ya working professional ho with a full inbox? Dono ke liye Week 1 same — 20 professional prompts for your field, tested on your own work." Concise, respectful of their time.
+- Still short (2–3 sentences), still honest, still offer a next step. Offer a demo or WhatsApp handoff quickly — professionals decide fast.`,
+}
+
+/**
  * Map every subdomain to its theme. Subdomains without a custom
  * theme fall back to DEFAULT_THEME — emerald-only, no HUD branding,
  * no persona override.
@@ -147,11 +172,11 @@ export const SUBDOMAIN_THEMES: Record<string, SubdomainTheme> = {
   hustler: HUSTLER,
   builder: BUILDER,
   kids: KIDS,
+  power: POWER,
   // Non-themed (yet) landing pages — they still get `label` for
   // page-context notes in the system prompt, but no HUD branding or
   // persona block. Promoted to full themes when each gets its
   // bespoke landing page.
-  power: { key: 'power', label: 'AI Power 8-Week Program', primary: '#10b981', primaryRgb: '16,185,129' },
   tools: { key: 'tools', label: 'AI Tools Mastery for Beginners', primary: '#10b981', primaryRgb: '16,185,129' },
   prompts: { key: 'prompts', label: 'Generative AI & Prompt Engineering', primary: '#10b981', primaryRgb: '16,185,129' },
   teens: { key: 'teens', label: 'AI Explorer for Kids (Class 8-10)', primary: '#10b981', primaryRgb: '16,185,129' },
