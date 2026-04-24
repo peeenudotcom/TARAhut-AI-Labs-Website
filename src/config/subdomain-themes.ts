@@ -90,6 +90,29 @@ This page is for Punjab freelancers, college kids, job-seekers — anyone who wa
 }
 
 /**
+ * Builder — The Systems Architect. Emerald primary + cyan-blue accent,
+ * blueprint aesthetic. Deploys, RAG, agents — not "chat with AI".
+ */
+const BUILDER: SubdomainTheme = {
+  key: 'builder',
+  label: 'Master AI Builder 90-Day Program',
+  primary: '#10b981',
+  primaryRgb: '16,185,129',
+  accent: '#00d4ff',
+  accentRgb: '0,212,255',
+  voiceHudLabel: 'BUILDER SYSTEMS ARCHITECT',
+  chatPersonaBlock: `## BUILDER-PAGE PERSONA (The Systems Architect)
+
+This page is for people who want to *build* with AI, not just use it. Think: technical founders, ambitious engineers, operators who want to ship real systems. Shape your replies accordingly:
+
+- Use architect vocabulary naturally: **agents**, **tool-use**, **RAG** (retrieval-augmented generation), **workflows**, **automations**, **production deploys**, **the stack**, **end-to-end systems**. Course covers Zapier, Make.com, automation pipelines — use those names when relevant.
+- Frame the 90-day program as **three production layers**: *Tooling Layer* (Month 1 — master 20+ AI tools, prompt engineering, content creation), *Systems Layer* (Month 2 — video/voice/image generation, workflow automation with Zapier + Make), *Production Layer* (Month 3 — real client project, freelancing launch, capstone end-to-end system). When someone asks "what will I learn?", lead with these three layers, not a week-by-week list.
+- Anchor outcomes to concrete artifacts: 50+ portfolio pieces, Fiverr/Upwork/LinkedIn profiles live, capstone = a real business system deployed. ₹20K–50K monthly earning range is the realistic target — never guarantee.
+- Keep the Hinglish warmth. You can say "Bhai, 90 din mein ek full AI system deploy karenge for a real business — capstone pe 50+ deliverables tumhari portfolio mein hongi." Technical + direct.
+- Still short (2–4 sentences), still honest (don't overclaim), still offer a next step. Just lean "architect to architect" — system thinking, not tool listing.`,
+}
+
+/**
  * Map every subdomain to its theme. Subdomains without a custom
  * theme fall back to DEFAULT_THEME — emerald-only, no HUD branding,
  * no persona override.
@@ -97,11 +120,11 @@ This page is for Punjab freelancers, college kids, job-seekers — anyone who wa
 export const SUBDOMAIN_THEMES: Record<string, SubdomainTheme> = {
   claude: CLAUDE,
   hustler: HUSTLER,
+  builder: BUILDER,
   // Non-themed (yet) landing pages — they still get `label` for
   // page-context notes in the system prompt, but no HUD branding or
   // persona block. Promoted to full themes when each gets its
   // bespoke landing page.
-  builder: { key: 'builder', label: 'Master AI Builder 90-Day Program', primary: '#ef4444', primaryRgb: '239,68,68' },
   power: { key: 'power', label: 'AI Power 8-Week Program', primary: '#10b981', primaryRgb: '16,185,129' },
   tools: { key: 'tools', label: 'AI Tools Mastery for Beginners', primary: '#10b981', primaryRgb: '16,185,129' },
   prompts: { key: 'prompts', label: 'Generative AI & Prompt Engineering', primary: '#10b981', primaryRgb: '16,185,129' },
