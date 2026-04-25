@@ -189,7 +189,7 @@ export function CareerArchitect() {
             Let TARA design your AI roadmap
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[#94a3b8] md:text-base">
-            3 quick questions. A custom 16-session path. No generic answers.
+            3 quick questions. A custom learning path. No generic answers.
           </p>
         </div>
 
@@ -219,7 +219,7 @@ export function CareerArchitect() {
                 <StepHeading
                   step="01/03"
                   title="Who are you?"
-                  sub="TARA will customize the 16-session journey based on your professional background."
+                  sub="TARA will match you to the right course — 15 days, 8 weeks, or 90 days — based on your professional background."
                 />
                 <OptionGrid>
                   {IDENTITY_OPTIONS.map((opt) => (

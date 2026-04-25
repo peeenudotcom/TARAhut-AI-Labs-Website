@@ -12,7 +12,10 @@ import { motion } from 'framer-motion'
  * "marketplace average" so legal-safe.
  */
 export function HustlerIncomeCalculator() {
-  const [hours, setHours] = useState(2)
+  // Default 4 hours → ₹30,000/mo first paint. "Believable wealth"
+  // band for a Punjab freelancer — anything lower looks weak, much
+  // higher reads as a scam before the user has touched the slider.
+  const [hours, setHours] = useState(4)
   const [displayIncome, setDisplayIncome] = useState(0)
   const rafRef = useRef<number | null>(null)
 

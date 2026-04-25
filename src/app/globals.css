@@ -125,9 +125,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Trap any horizontal bleed (3D Spline hero, wide hero orbs, over-wide
+       SVG viewBoxes) so mobile never shows a sideways scroll. Paired with
+       max-width: 100vw on html so overflow on html doesn't leak either. */
+    overflow-x: hidden;
+    max-width: 100vw;
   }
   html {
     @apply font-sans;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }
 
@@ -161,6 +168,28 @@
     ellipse 80% 60% at 50% 35%,
     rgba(5, 150, 105, 0.05) 0%,
     transparent 65%
+  );
+}
+
+/* Force-aura pseudo — opt-in via className="lab-aura". For sections
+ * whose inline bg (e.g. bg-[#0A0F1C], bg-[#020617]) is opaque and
+ * would otherwise paint over the .lab-main radial gradient above.
+ * Requires position: relative on the parent section — the ::before
+ * paints behind content but in front of the bg colour.
+ *
+ * Usage: <section className="relative overflow-hidden lab-aura ...">
+ */
+.lab-aura::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 35%,
+    rgba(16, 185, 129, 0.08) 0%,
+    rgba(16, 185, 129, 0.02) 45%,
+    transparent 75%
   );
 }
 

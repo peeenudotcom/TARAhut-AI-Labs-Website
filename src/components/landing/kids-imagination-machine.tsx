@@ -216,7 +216,16 @@ export function KidsImaginationMachine() {
                 style={{ fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif' }}
               >
                 &ldquo;{revealed}
-                {typing && <span className="inline-block w-[2px] h-[1em] align-middle ml-0.5 bg-cyan-300 animate-pulse" />}
+                {typing && (
+                  <motion.span
+                    aria-hidden
+                    className="ml-1 inline-block"
+                    animate={{ scale: [0.6, 1.1, 0.8], rotate: [0, 12, -8, 0] }}
+                    transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    ✨
+                  </motion.span>
+                )}
                 &rdquo;
               </motion.p>
             )}

@@ -34,8 +34,20 @@ export default function ContactPage() {
       </section>
 
       {/* Content */}
-      <section className="py-20 bg-[#0A0F1C]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative py-20 bg-[#0A0F1C] overflow-hidden">
+        {/* Emerald aura — keeps the section in the same visual universe as
+            the hero so it doesn't read as a flat "broken link" panel. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute top-[-20%] left-[-5%] w-[500px] h-[500px] rounded-full blur-[140px]"
+            style={{ background: 'rgba(16,185,129,0.08)' }}
+          />
+          <div
+            className="absolute bottom-[-10%] right-[-5%] w-[420px] h-[420px] rounded-full blur-[120px]"
+            style={{ background: 'rgba(13,148,136,0.06)' }}
+          />
+        </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_400px]">
             {/* Left: Contact Form */}
             <div>

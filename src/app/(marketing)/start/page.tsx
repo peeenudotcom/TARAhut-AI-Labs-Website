@@ -4,7 +4,7 @@ import { CareerArchitect } from '@/components/marketing/career-architect';
 export const metadata: Metadata = {
   title: 'Start Here · AI Career Architect | TARAhut AI Labs',
   description:
-    'Answer 3 quick questions and let TARA design your custom 16-session AI career roadmap — free, personalized, delivered to your WhatsApp.',
+    'Answer 3 quick questions and let TARA design your custom AI career roadmap — free, personalized, delivered to your WhatsApp.',
 };
 
 // Standalone entry point for social-media traffic and ads. Drops

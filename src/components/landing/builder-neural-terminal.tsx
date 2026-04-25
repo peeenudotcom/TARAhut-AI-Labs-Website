@@ -8,7 +8,7 @@ const LINES: { kind: 'prompt' | 'system' | 'success' | 'muted'; text: string }[]
   { kind: 'system',  text: '>> deploying claude-sonnet-4-6 agent' },
   { kind: 'muted',   text: '  tools: [rag, web_search, code_exec]' },
   { kind: 'system',  text: '>> indexing 4,210 documents → embeddings' },
-  { kind: 'success', text: '>> agent live · 16 sessions mapped' },
+  { kind: 'success', text: '>> agent live · syllabus mapped' },
   { kind: 'muted',   text: '  avg latency 840ms · p95 1.8s' },
   { kind: 'prompt',  text: '> ready for production_' },
 ]

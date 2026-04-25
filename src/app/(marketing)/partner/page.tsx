@@ -66,7 +66,7 @@ const HOW_IT_WORKS = [
 ];
 
 const WHAT_YOU_GET = [
-  { emoji: '📚', label: 'Full 16-session curriculum + trainer manual + grading rubrics' },
+  { emoji: '📚', label: 'Full curriculum library across all TARAhut courses + trainer manual + grading rubrics' },
   { emoji: '🌐', label: 'Your own city subdomain (e.g. ludhiana.tarahutailabs.com) with TARA' },
   { emoji: '🎨', label: 'Brand kit · landing page themes · social templates · poster kit' },
   { emoji: '🎯', label: 'Career Architect + ROI Calculator lead magnets pre-configured' },
@@ -128,7 +128,7 @@ const UNFAIR_ADVANTAGES = [
   {
     icon: '📚',
     title: 'Zero Syllabus Drift',
-    body: 'We update the 16-session curriculum centrally. You never chase the tech — AI moves fast, our labs move with it, and your trainer manual refreshes automatically.',
+    body: 'We update every course centrally — Master Claude, AI Hustler, Master Builder, the Kids Lab, everything. You never chase the tech. AI moves fast, our labs move with it, and your trainer manuals refresh automatically.',
   },
   {
     icon: '🛡️',

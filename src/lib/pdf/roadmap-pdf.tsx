@@ -297,7 +297,7 @@ export function RoadmapDocument({
     <Document
       author="TARAhut AI Labs"
       title={`${name || 'Your'} AI Career Roadmap`}
-      subject="Custom 16-session roadmap designed by TARA"
+      subject="Custom AI career roadmap designed by TARA"
     >
       <Page size="A4" style={styles.page}>
         <View style={styles.railBar} />
