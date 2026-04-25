@@ -234,7 +234,7 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.68 }}
             >
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-              Trusted by 500+ students across Punjab
+              9 courses · 20+ AI tools · in-person + online
             </motion.p>
 
             <motion.div

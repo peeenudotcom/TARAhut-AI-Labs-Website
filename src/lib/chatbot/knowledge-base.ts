@@ -49,7 +49,7 @@ His mission line, in his own words: *"The next decade will reward people who use
 **Quick stats about Parveen:**
 - 25+ years in technology (IT, digital marketing, education)
 - Designed all 9 of TARAhut's current courses
-- Has personally taught 500+ students across Punjab
+- Founded the Kotkapura HQ lab — first cohorts running now
 - Based in Kotkapura, Punjab — runs the lab in person
 
 **More about him on the About page:** ${siteConfig.url}/about
