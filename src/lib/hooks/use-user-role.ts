@@ -12,6 +12,13 @@ import { useEffect, useState } from 'react';
 
 export const ROLE_STORAGE_KEY = 'tarahut_user_role';
 
+// Custom in-window event so multiple useUserRole() instances in the
+// same tab stay in sync. The native `storage` event only fires in
+// OTHER tabs, which is why the hero didn't react to the picker.
+// Exported so consumers (e.g. hero overlay) can react to explicit
+// role changes without firing on initial localStorage hydration.
+export const ROLE_CHANGE_EVENT = 'tarahut:role-change';
+
 export type UserRole =
   | 'student'
   | 'biz-owner'
@@ -55,8 +62,16 @@ export function useUserRole(): {
       if (e.key !== ROLE_STORAGE_KEY) return;
       setRoleState(readStored());
     }
+    function onRoleChange(e: Event) {
+      const detail = (e as CustomEvent<UserRole | null>).detail;
+      setRoleState(detail ?? null);
+    }
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener(ROLE_CHANGE_EVENT, onRoleChange);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener(ROLE_CHANGE_EVENT, onRoleChange);
+    };
   }, []);
 
   function setRole(next: UserRole | null) {
@@ -68,6 +83,7 @@ export function useUserRole(): {
     } catch {
       // ignore
     }
+    window.dispatchEvent(new CustomEvent(ROLE_CHANGE_EVENT, { detail: next }));
   }
 
   return { role, setRole };
@@ -83,4 +99,5 @@ export function persistUserRole(role: UserRole) {
   } catch {
     // ignore
   }
+  window.dispatchEvent(new CustomEvent(ROLE_CHANGE_EVENT, { detail: role }));
 }
