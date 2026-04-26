@@ -127,6 +127,31 @@ export interface PlaygroundTask {
     nextMicroStep?: string;    // "→ Open WhatsApp below and message one prospect (60 seconds)" — the immediate next action that removes ambiguity after the lock-in
   };
   examples?: PlaygroundExamples; // Structured examples shown as cards (lifts them out of the textarea)
+  // Post-generation success-state variant. When set to 'action-first', the
+  // success state renders a clean vertical flow optimised around the primary
+  // action (Send via WhatsApp, etc.) and demotes/hides the comparison +
+  // why-it-worked + open refinement chip blocks. The classic flow remains
+  // the default — switch a session over only after live calibration.
+  successStyle?: 'action-first' | 'classic';
+  // Outcome-driven Generate button label. Replaces "✨ Generate with AI"
+  // with task-specific framing like "Generate My First Earnings Map" so the
+  // user knows exactly what they'll get. Per-session override.
+  generateButtonLabel?: string;
+  // Channel chips rendered as a small "Use this in" row in the action-first
+  // success state. Identifiers map to icons + labels in the component.
+  // Examples: ['whatsapp', 'instagram', 'linkedin', 'email', 'sms'].
+  useThisIn?: string[];
+  // Repeat-loop strip: tomorrow's nudge + an optional progress counter.
+  // Renders below the finish line in the action-first flow to create
+  // momentum across days, not just within a single session.
+  repeatLoop?: {
+    tomorrow: string;       // "Tomorrow: send to one more business"
+    counter?: string;       // "0/5 messages sent" — local-only in v1
+  };
+  // Soft identity nudge before the continue CTA in the action-first flow.
+  // Reinforces action-over-perfection. Shorter than yourTurnTemplate — this
+  // is a one-liner, not a full re-prompt.
+  yourTurnNudge?: string;   // "Done > perfect. Send it now, refine tomorrow."
 }
 
 export interface LearnModule {
@@ -1822,22 +1847,189 @@ Each message must be DIFFERENT in angle (curiosity, social-proof, pain, observat
         { q: 'What does AI stand for?', options: ['Automatic Intelligence', 'Artificial Intelligence', 'Advanced Internet'], answer: 1 },
         { q: 'Which is an AI tool?', options: ['Microsoft Word', 'ChatGPT', 'Calculator'], answer: 1 },
         { q: 'AI is best at...', options: ['Replacing humans', 'Augmenting human capabilities', 'Only entertainment'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First AI Earnings Conversation',
+        taskDescription: 'Have your first real conversation with AI — about how it can help YOU earn money with your existing skills.',
+        timeEstimate: 'Takes 2 minutes',
+        starterPrompt: `I'm based in Punjab. My background: 12th pass, comfortable with WhatsApp + basic computer use. No formal design or coding skills.
+
+I want to earn money with AI in the next 3 months. Tell me:
+1. The 3 most realistic AI-based services I could offer to local small businesses (sweets shops, boutiques, coaching centres)
+2. For each, the minimum I need to learn before offering it
+3. A realistic monthly income range for the first 3 months`,
+        proTipChips: ['Background', 'Skills', 'Local market'],
+        outroLine: 'You just had your first real AI conversation about earning. The journey starts now.',
+        outputHeadline: '✨ Your First AI Earnings Map',
+        successHeadline: 'Your first AI earnings map is ready — built around YOUR background.',
+        continueButtonLabel: 'Sent? Continue → Session 2',
+        // First session of Hustler 45 is the action-first calibration target.
+        // Validates: do users move faster to the primary action when the
+        // post-generation UI strips comparison + why-it-worked + open chips?
+        successStyle: 'action-first',
+        generateButtonLabel: '✨ Generate My First Earnings Map',
+        useThisIn: ['whatsapp', 'email'],
+        intentCommit: {
+          reinforcement: 'Send this once. See what happens. The first reply changes everything.',
+          ctaLabel: '✔ I will send it today',
+          confirmedLine: 'Locked in. The first move is yours.',
+          nextMicroStep: '↓ Open WhatsApp below and message one local business now (60 seconds)',
+        },
+        finishLine: {
+          primary: '🏁 Pick the ONE service from the map that feels most like you.',
+          microNudge: '💡 Don\'t pick what pays the most — pick what you\'d actually start tomorrow.',
+          followThroughNudge: '📲 Message 1 business — that\'s how this turns into your first reply.',
+        },
+        repeatLoop: {
+          tomorrow: 'Tomorrow: pick 3 local businesses to message about your service',
+          counter: 'Day 1 of 45',
+        },
+        yourTurnNudge: 'Action over perfection. Start ugly, refine later.',
+        refinementChips: [
+          { label: '🎯 Niche to ONE service', instruction: 'Now pick the single most realistic of the 3 services for someone in a tier-3 Punjab town and double-click on it: 30-day skill plan, first 3 client types to approach, and a starter price.' },
+          { label: '🇮🇳 Punjabi version', instruction: 'Now translate the whole earnings plan into Punjabi (Gurmukhi) — keep it warm and family-style, like advice from an older brother.' },
+          { label: '💰 Add a daily routine', instruction: 'Now add a realistic 1-hour-per-day routine for 30 days that someone with a part-time job could actually follow to launch the first service.' },
+        ],
+        realWorldActions: [
+          { label: '📱 Start my first outreach on WhatsApp', action: { type: 'whatsapp' } },
+          { label: '📋 Copy', action: { type: 'copy' } },
+          { label: '📧 Email to myself', action: { type: 'email' } },
+        ],
+      } },
       { session: 2, title: 'AI Landscape & Choosing Tools', description: 'Compare tools and choose the right one for each task', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: false, deliverable: 'Tool comparison matrix', previewQuestions: [
         { q: 'The best AI tool depends on...', options: ['Popularity', 'The specific task', 'Price only'], answer: 1 },
         { q: 'Claude is especially good at...', options: ['Image generation', 'Long document analysis', 'Only coding'], answer: 1 },
         { q: 'You should use multiple AI tools because...', options: ['It is fun', 'Each has different strengths', 'One tool does everything'], answer: 0 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Personal AI Tool Choice Matrix',
+        taskDescription: 'Stop guessing which AI tool to open. Get a clear "use this for that" matrix for the work YOU actually do.',
+        timeEstimate: 'Takes 2 minutes',
+        starterPrompt: `I do these 5 tasks regularly for small Punjab businesses:
+1. Writing WhatsApp pitches and follow-ups
+2. Drafting Instagram captions in English + Punjabi
+3. Brainstorming festival promo ideas (Diwali, Karva Chauth, Lohri)
+4. Quick research on competitor businesses online
+5. Designing simple posters for shop owners
+
+Budget: free tiers only for the first month.
+
+Build me a Tool Choice Matrix: for each task, tell me Use First / Strong Second / Don't Bother. Be opinionated — I need a default, not a buffet.`,
+        proTipChips: ['Tasks', 'Budget', 'Default tool'],
+        outroLine: 'You now have a default for every task — no more "which tool should I open?" paralysis.',
+        outputHeadline: '✨ Your AI Tool Choice Matrix',
+        successHeadline: 'You have a default tool for every task. Open the matrix every time you start work.',
+        continueButtonLabel: 'Lock in your stack → Session 3',
+        refinementChips: [
+          { label: '📱 Phone-only edition', instruction: 'Now rebuild the matrix assuming I only have a phone (no laptop) — recommend mobile-app versions of each tool.' },
+          { label: '💸 Add ONE paid upgrade', instruction: 'Now suggest the SINGLE most worth-it paid upgrade if I had ₹500/month to spend on AI tools — and why.' },
+          { label: '🇮🇳 Indic-language rule', instruction: 'Now add a "Punjabi/Hindi output" column to the matrix showing which tool is best when the output needs to be in Indic language.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my matrix', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+      } },
       { session: 3, title: 'AI Deep Dive — Hands-On All Tools', description: 'Practice with every major AI tool', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini', 'Canva'], isFree: false, deliverable: 'Multi-tool output comparison', previewQuestions: [
         { q: 'Hands-on practice is important because...', options: ['Reading is enough', 'You learn by doing', 'AI tools are simple'], answer: 1 },
         { q: 'When comparing tools, test with...', options: ['Different prompts', 'The same prompt across all tools', 'No prompts'], answer: 1 },
         { q: 'The goal of deep dive is...', options: ['Speed', 'Understanding each tool\'s strengths and limits', 'Memorizing menus'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Same Problem, 3 AI Brains',
+        taskDescription: 'See ChatGPT, Claude, and Gemini solve the same Punjab business problem 3 different ways — then pick the winning approach.',
+        timeEstimate: 'Takes 3 minutes',
+        starterPrompt: `Business: A 6-month-old saree boutique in Bathinda. Average sale ₹2,500. Owner has ₹3,000/month for marketing. Currently 800 Instagram followers, mostly local women aged 25-45. Foot traffic is slow on weekdays.
+
+Problem: How should this boutique drive 20+ extra weekday walk-ins per week over the next 30 days?
+
+Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list-heavy), one in Claude-style (nuanced, prioritised, weighs trade-offs), one in Gemini-style (current trends + seasonal awareness). End with an Honest Verdict on which plan actually wins for THIS shop.`,
+        proTipChips: ['Business', 'Constraints', 'Specific goal'],
+        outroLine: 'You felt the difference between 3 AI brains. Now you can pick the right one for each job.',
+        outputHeadline: '✨ Same Problem. 3 Brains. 3 Plans.',
+        successHeadline: 'You can now choose the right AI for the right thinking style.',
+        continueButtonLabel: 'Take the winning plan → Session 4',
+        refinementChips: [
+          { label: '🍬 Switch business type', instruction: 'Now run the same 3-brains exercise but for a Patiala mithai shop wanting to drive Diwali pre-orders. Same 3 styles, same Honest Verdict.' },
+          { label: '⏱️ 7-day version', instruction: 'Now compress the winning plan into a 7-day sprint instead of 30 days — keep the same quality of moves, just front-loaded.' },
+          { label: '💸 Cut budget in half', instruction: 'Now redo the winning plan assuming the budget drops to ₹1,500/month — what changes, what gets cut.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the 3 plans', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+      } },
       { session: 4, title: 'Prompt Engineering — 5-Block Framework', description: 'Master structured prompting for business use', week: 1, tools: ['ChatGPT', 'Claude'], isFree: false, deliverable: 'Prompt library with 20+ prompts', previewQuestions: [
         { q: 'A structured prompt includes...', options: ['One word', 'Role, context, task, format, and constraints', 'Just a question'], answer: 1 },
         { q: 'Better prompts give...', options: ['Slower responses', 'More accurate and useful outputs', 'No difference'], answer: 1 },
         { q: 'The 5-Block Framework helps by...', options: ['Making prompts longer', 'Organizing your instructions clearly', 'Confusing the AI'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First 5-Block Prompt → 5 Send-Ready Captions',
+        taskDescription: 'Run a fully-structured Role / Context / Task / Format / Constraints prompt and feel why structure beats wishing.',
+        timeEstimate: 'Takes 3 minutes',
+        starterPrompt: `**Role:** You are a senior Punjab content marketer with 10 years experience writing for small local businesses.
+
+**Context:** I run a 2-year-old home-based bakery in Patiala. I sell custom cakes (avg ₹800), cookies (₹250/box), and brownies (₹300/box). My customers are mostly working women aged 28-45 who order for birthdays, anniversaries, and Karva Chauth gifts. Marketing budget: ₹2,000/month. Currently 1,400 Instagram followers, mostly local.
+
+**Task:** Write 5 Instagram captions to drive Karva Chauth gift orders this season.
+
+**Format:** For each caption give me:
+- Full caption text (under 200 characters)
+- The single best emoji
+- A specific CTA (DM / WhatsApp / link)
+- The exact hashtag set (5 hashtags)
+
+**Constraints:** Warm, family-aware tone. No "amazing/premium/world-class" filler. Mix English with 1-2 Hindi/Punjabi words where natural. Each caption MUST take a different angle.`,
+        proTipChips: ['Role', 'Context', 'Task', 'Format', 'Constraints'],
+        outroLine: 'You ran a real 5-block prompt. Now do this for YOUR business and you have a content engine.',
+        outputHeadline: '✨ 5 Send-Ready Karva Chauth Captions',
+        successHeadline: 'This is what structured prompting produces. Now write the same prompt for YOUR business.',
+        continueButtonLabel: 'Use the framework on your work → Session 5',
+        refinementChips: [
+          { label: '🇮🇳 Punjabi versions', instruction: 'Now add a Punjabi (Gurmukhi) version of each caption alongside the English one — keep the same warmth, family-style tone.' },
+          { label: '💎 Premium product line', instruction: 'Now rewrite the same 5 captions but for a premium product line: ₹1,800 limited-edition cake boxes (only 12 made). Adjust scarcity language accordingly.' },
+          { label: '📱 WhatsApp version', instruction: 'Now adapt these 5 captions into 5 WhatsApp broadcast messages (under 350 chars each) for sending to past customers.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy these captions', action: { type: 'copy' } },
+          { label: '📱 Send first one via WhatsApp', action: { type: 'whatsapp', sectionMatch: 'Caption 1' } },
+          { label: '📧 Email all 5', action: { type: 'email' } },
+        ],
+        comparison: {
+          basicPromptLabel: 'Write 5 Karva Chauth captions for my home bakery in Patiala.',
+          basicOutput: `1. ✨ Make this Karva Chauth special with our delicious cakes! Order now! #karvachauth #cakes #patiala
+
+2. 🎂 Beautiful cakes for the most beautiful festival. DM to order. #cake #karvachauth
+
+3. 💕 Show your love with our amazing cakes this Karva Chauth! #love #karvachauth
+
+4. 🌙 Celebrate Karva Chauth with sweet memories. Order today! #celebration #cakes
+
+5. 🌟 Premium quality cakes for your special day. Visit us now! #premium #cake #patiala`,
+        },
+        whyItWorked: {
+          heading: 'Why your 5-block prompt produced 10× better output',
+          bullets: [
+            '**Role** — "senior Punjab content marketer with 10 years" → captions had voice and authority, not generic AI tone.',
+            '**Context** — "Patiala bakery, ₹800 cakes, working women 28-45, ₹2K budget" → every caption was specific to the actual business reality.',
+            '**Task** — "5 Karva Chauth captions" → output was decisive, on-brief, no hedging.',
+            '**Format** — "caption + emoji + CTA + hashtags" → structured output you can paste straight into Instagram.',
+            '**Constraints** — "warm, family-aware, no filler, mix Hindi/Punjabi, different angles" → the bumpers that prevent generic slop.',
+          ],
+        },
+        yourTurnTemplate: `**Role:** You are a senior Punjab content marketer with 10 years experience writing for small local businesses.
+
+**Context:** I run [YOUR BUSINESS — e.g. a saree boutique, fitness studio, coaching centre] in [YOUR CITY/TOWN]. My average sale is ₹[YOUR PRICE]. My customers are [YOUR CUSTOMERS — e.g. women 25-45, parents of school kids]. Marketing budget: ₹[YOUR BUDGET]/month.
+
+**Task:** Write 5 [PLATFORM — Instagram / WhatsApp / Facebook] captions that drive [YOUR GOAL — bookings / pre-orders / enquiries] for [YOUR OCCASION — Diwali / new launch / weekend special].
+
+**Format:** For each caption give me:
+- Full caption text (under 200 characters)
+- The single best emoji
+- A specific CTA (DM / WhatsApp / link)
+- The exact hashtag set (5 hashtags)
+
+**Constraints:** Warm, family-aware tone. No "amazing/premium/world-class" filler. Mix English with 1-2 Hindi/Punjabi words where natural. Each caption MUST take a different angle.`,
+        yourTurnHeadline: 'Now run the 5-Block on YOUR business',
+        yourTurnBody: 'Reading the example doesn\'t teach the skill — writing one for your own business does. Replace the bracketed fields with YOUR details and generate again.',
+      } },
       { session: 5, title: 'ChatGPT Deep Dive — English Content', description: 'Create business content in English using ChatGPT', week: 2, tools: ['ChatGPT'], isFree: false, deliverable: 'Business content portfolio (English)', previewQuestions: [
         { q: 'Business content should be...', options: ['Very long', 'Clear, professional, and action-oriented', 'Informal always'], answer: 1 },
         { q: 'ChatGPT helps businesses by...', options: ['Replacing writers', 'Drafting content quickly that humans refine', 'Nothing'], answer: 1 },
