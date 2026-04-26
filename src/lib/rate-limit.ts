@@ -43,6 +43,16 @@ export function rateLimit(key: string, opts: RateLimitOptions): RateLimitResult 
   return { allowed: true, remaining: opts.limit - existing.count, resetAt: existing.resetAt }
 }
 
+// Refund a previously-counted hit. Use when an upstream call (e.g. Claude
+// stream) failed AFTER rate-limit acquisition — the user's quota shouldn't
+// burn on errors they didn't cause. No-op if the bucket has expired.
+export function refundRateLimit(key: string): void {
+  const bucket = buckets.get(key)
+  if (bucket && bucket.count > 0) {
+    bucket.count -= 1
+  }
+}
+
 export function getClientIp(req: Request): string {
   const forwarded = req.headers.get('x-forwarded-for')
   if (forwarded) return forwarded.split(',')[0].trim()
