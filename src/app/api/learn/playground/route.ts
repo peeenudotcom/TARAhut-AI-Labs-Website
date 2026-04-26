@@ -464,6 +464,10 @@ QUALITY BAR: Each message ends with ONE specific small ask. NO "let me know if y
 };
 
 export async function POST(req: NextRequest) {
+  // Lifted out of the try block so the outer catch can refund the anon
+  // rate-limit hit if ANYTHING below throws (e.g. a future env-var bug
+  // or a transient Supabase error).
+  let refundOnFailure: (() => void) | undefined;
   try {
     const user = await getUser();
 
@@ -496,12 +500,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const db = createServiceClient();
     let cap: number;
     let remainingAfter: number;
-    // Captured for onError below. For anon users we burn an in-memory hit at
-    // rate-limit time; if the Claude call fails we must give it back.
-    let refundOnFailure: (() => void) | undefined;
 
     // DEV BYPASS — remove before production. Skips both authed + anon caps so
     // we can iterate locally without restarting the server to clear quota.
@@ -511,7 +511,11 @@ export async function POST(req: NextRequest) {
     if (user) {
       // Authed: cap counts artifacts saved by this student for this session
       // in the last 24h. DB is source of truth, survives restarts.
+      // createServiceClient() is called LAZILY here (not at top-of-route) so
+      // that anon users — who never need Supabase — don't hit a missing-env
+      // error if the service-role key is misconfigured.
       cap = AUTHED_DAILY_CAP;
+      const db = createServiceClient();
       const sinceIso = new Date(Date.now() - ANON_WINDOW_MS).toISOString();
       const { count, error: countErr } = await db
         .from('learn_artifacts')
@@ -589,7 +593,10 @@ export async function POST(req: NextRequest) {
         // ephemeral by design — saving requires an account, which is the funnel.
         if (!user) return;
         try {
-          await db.from('learn_artifacts').insert({
+          // Lazily construct the service client here too — same reason as
+          // above (don't break the route if env is misconfigured for anon).
+          const saveDb = createServiceClient();
+          await saveDb.from('learn_artifacts').insert({
             student_id: user.id,
             course_id: courseId,
             session_number: sessionNumber,
@@ -616,6 +623,10 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error) {
     console.error('[playground] route error:', error);
+    // Refund the anon rate-limit hit if we already incremented it before
+    // the throw — protects users from getting stuck at the cap when the
+    // failure was server-side (env misconfig, transient Supabase, etc.).
+    if (refundOnFailure) refundOnFailure();
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },
       { status: 500 }
