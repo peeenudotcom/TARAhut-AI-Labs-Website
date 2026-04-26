@@ -1,7 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useUserRole, ROLE_LABEL } from '@/lib/hooks/use-user-role'
+import { rolePrioritySorter } from '@/lib/role-personalization'
+
+// Course display name → slug map. Lets us reuse the same role-priority
+// sorter the hero/highlights use, without changing the testimonial
+// shape (which is keyed on display name).
+const COURSE_NAME_TO_SLUG: Record<string, string> = {
+  'AI Tools Mastery for Beginners': 'ai-tools-mastery-beginners',
+  'Master AI Builder — 90 Day Program': 'master-ai-builder',
+  'AI for Digital Marketing': 'ai-digital-marketing',
+  'AI Hustler 45': 'ai-hustler-45',
+  'AI Power 8-Week Program': 'ai-power-8-week-program',
+  'Master Claude in 15 Days': 'master-claude-15-days',
+}
 
 const testimonials = [
   {
@@ -114,8 +128,20 @@ function Stars({ count }: { count: number }) {
 }
 
 export function TestimonialsSection() {
+  const { role } = useUserRole()
   const [showAll, setShowAll] = useState(false)
-  const displayed = showAll ? testimonials : testimonials.slice(0, 3)
+
+  // Reorder so testimonials whose course matches the role's
+  // priority list float to the top — the first 3 cards (the
+  // default-collapsed view) become role-relevant.
+  const ordered = useMemo(
+    () =>
+      [...testimonials].sort(
+        rolePrioritySorter(role, (t) => COURSE_NAME_TO_SLUG[t.course] ?? ''),
+      ),
+    [role],
+  )
+  const displayed = showAll ? ordered : ordered.slice(0, 3)
 
   return (
     <section className="relative py-24 overflow-hidden">
@@ -165,7 +191,7 @@ export function TestimonialsSection() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#e53935]" />
             </span>
             <p className="text-xs font-semibold tracking-widest uppercase text-[#e53935]">
-              Trusted by Students
+              {role ? `Stories From Other ${ROLE_LABEL[role]}s` : 'Trusted by Students'}
             </p>
           </div>
           <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
