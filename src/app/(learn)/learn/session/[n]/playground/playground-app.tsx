@@ -621,7 +621,7 @@ export function PlaygroundApp({
               disabled={phase === 'streaming' || !prompt.trim() || overLimit || remaining <= 0}
               className="mb-5 w-full rounded-xl bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] px-5 py-3.5 text-sm font-extrabold text-white shadow-[0_0_24px_rgba(99,102,241,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_0_36px_rgba(168,85,247,0.6)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
             >
-              {phase === 'streaming' ? '⏳ Generating…' : '✨ Generate with AI'}
+              {phase === 'streaming' ? '⏳ Generating…' : (task.generateButtonLabel ?? '✨ Generate with AI')}
             </button>
 
             {/* Anon hit the daily cap — show the rich upsell card here
@@ -733,7 +733,197 @@ export function PlaygroundApp({
                   </div>
                 </div>
 
-                {phase === 'done' && (
+                {/* ── ACTION-FIRST SUCCESS STATE ───────────────────────────
+                    Calibration variant for Hustler 45 S1. Strips comparison +
+                    why-it-worked + open refinement chips from the main view
+                    so the dominant primary action wins the user's attention.
+                    Refinement still available behind a "Refine this" toggle —
+                    demoted, never removed. Toggled per-session via
+                    playgroundTask.successStyle === 'action-first'. */}
+                {phase === 'done' && task.successStyle === 'action-first' && (
+                  <div className="space-y-5 p-4 sm:p-6">
+                    {/* 1 · Success headline — the biggest text on the screen */}
+                    <header className="text-center">
+                      <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#10b981]">
+                        ✓ Ready
+                      </p>
+                      <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
+                        {task.successHeadline ?? 'Your AI output is ready.'}
+                      </h2>
+                    </header>
+
+                    {/* 2 · "Use this in" channel chip row */}
+                    {task.useThisIn && task.useThisIn.length > 0 && (
+                      <div className="flex flex-wrap items-center justify-center gap-2">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-[#64748b]">
+                          Use this in
+                        </span>
+                        {task.useThisIn.map((c) => (
+                          <span
+                            key={c}
+                            className="inline-flex items-center gap-1.5 rounded-full border border-[#1e1e3a] bg-[#06060e] px-2.5 py-1 text-xs text-[#94a3b8]"
+                          >
+                            <span aria-hidden>{channelIcon(c)}</span>
+                            {channelLabel(c)}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* 3 · Intent commit — single-tap rehearsal moment */}
+                    {task.intentCommit && (
+                      <IntentCommitBlock
+                        config={task.intentCommit}
+                        committed={intentCommitted}
+                        onCommit={() => setIntentCommitted(true)}
+                      />
+                    )}
+
+                    {/* 4 · PRIMARY ACTION — dominant, must out-weigh everything else */}
+                    {task.realWorldActions && task.realWorldActions.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => executeAction(task.realWorldActions![0])}
+                        className="w-full rounded-2xl bg-gradient-to-r from-[#10b981] to-[#059669] px-6 py-5 text-lg font-extrabold text-white shadow-[0_0_36px_rgba(16,185,129,0.55)] transition hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(16,185,129,0.75)]"
+                      >
+                        {task.realWorldActions[0].label}
+                      </button>
+                    )}
+
+                    {/* 5 · Collapsible message preview — content lives behind a tap */}
+                    {response && (
+                      <details className="group">
+                        <summary className="flex cursor-pointer items-center justify-center gap-1.5 text-xs font-semibold text-[#94a3b8] hover:text-[#cbd5e1] [&::-webkit-details-marker]:hidden">
+                          <span className="group-open:hidden">Preview the output ↓</span>
+                          <span className="hidden group-open:inline">Hide preview ↑</span>
+                        </summary>
+                        <div
+                          className="prose prose-sm prose-invert mt-3 max-w-none rounded-xl border border-[#1e1e3a] bg-[#06060e]/60 p-4 prose-headings:text-white prose-strong:text-white"
+                          dangerouslySetInnerHTML={{ __html: renderMarkdown(response) }}
+                        />
+                      </details>
+                    )}
+
+                    {/* 6 · Secondary actions — small, low emphasis, no buttons */}
+                    {task.realWorldActions && task.realWorldActions.length > 1 && (
+                      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                        {task.realWorldActions.slice(1).map((act) => (
+                          <button
+                            key={act.label}
+                            type="button"
+                            onClick={() => executeAction(act)}
+                            className="text-xs font-semibold text-[#94a3b8] underline-offset-2 transition hover:text-white hover:underline"
+                          >
+                            {act.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* 7 · Finish line — 3 short beats: stop / start / outcome */}
+                    {task.finishLine && (
+                      <div className="space-y-1.5 rounded-xl border border-[#1e1e3a] bg-[#06060e]/60 p-4">
+                        <p className="text-sm font-bold text-[#cbd5e1]">
+                          {task.finishLine.primary}
+                        </p>
+                        {task.finishLine.microNudge && (
+                          <p className="text-xs italic text-[#94a3b8]">
+                            {task.finishLine.microNudge}
+                          </p>
+                        )}
+                        {task.finishLine.followThroughNudge && (
+                          <p className="border-t border-[#1e1e3a] pt-2 text-xs font-semibold text-[#10b981]">
+                            {task.finishLine.followThroughNudge}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* 8 · Repeat-loop strip — momentum across days */}
+                    {task.repeatLoop && (
+                      <div className="flex items-center justify-between gap-3 rounded-xl border border-[#a855f7]/25 bg-[#a855f7]/[0.05] px-4 py-3">
+                        <p className="text-xs leading-snug text-[#cbd5e1]">
+                          ↻ {task.repeatLoop.tomorrow}
+                        </p>
+                        {task.repeatLoop.counter && (
+                          <span className="rounded-full border border-[#a855f7]/30 bg-[#a855f7]/[0.10] px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#a855f7]">
+                            {task.repeatLoop.counter}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* 9 · Your-Turn nudge — soft identity reinforcement */}
+                    {task.yourTurnNudge && (
+                      <p className="text-center text-xs italic text-[#94a3b8]">
+                        {task.yourTurnNudge}
+                      </p>
+                    )}
+
+                    {/* 10 · Continue CTA — full-width, ties action to next session */}
+                    <Link
+                      href={`/learn/session/${sessionNumber + 1}${courseId !== 'ai-tools-mastery-beginners' ? `?course=${courseId}` : ''}`}
+                      className="block w-full rounded-2xl bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] px-6 py-4 text-center text-base font-extrabold text-white shadow-[0_0_24px_rgba(99,102,241,0.5)] transition hover:-translate-y-0.5 hover:shadow-[0_0_36px_rgba(168,85,247,0.7)]"
+                    >
+                      {task.continueButtonLabel ?? `Continue to Session ${sessionNumber + 1} →`}
+                    </Link>
+
+                    {/* Send-commit — fires only AFTER the user clicks a send action */}
+                    {task.sendCommit && hasTriggeredSendAction && (
+                      <SendCommitBlock
+                        config={task.sendCommit}
+                        choice={sendCommitChoice}
+                        onChoose={setSendCommitChoice}
+                      />
+                    )}
+
+                    {/* Action flash toast */}
+                    {actionFlash && (
+                      <p className="text-center text-xs font-semibold text-[#10b981]">
+                        ✓ {actionFlash} — done
+                      </p>
+                    )}
+
+                    {/* Refine this — collapsed; never competes with primary */}
+                    {task.refinementChips && task.refinementChips.length > 0 && (
+                      <details className="group rounded-xl border border-[#1e1e3a] bg-[#06060e]/40 p-3">
+                        <summary className="flex cursor-pointer items-center justify-center gap-1.5 text-xs font-semibold text-[#94a3b8] hover:text-[#cbd5e1] [&::-webkit-details-marker]:hidden">
+                          <span className="group-open:hidden">↻ Refine this output (optional) ↓</span>
+                          <span className="hidden group-open:inline">↻ Hide refinements ↑</span>
+                        </summary>
+                        <div className="mt-3 flex flex-wrap justify-center gap-2">
+                          {task.refinementChips.map((chip) => (
+                            <button
+                              key={chip.label}
+                              type="button"
+                              onClick={() => refineWith(chip.instruction)}
+                              disabled={remaining <= 0 || phase !== 'done'}
+                              className="rounded-full border border-[#a855f7]/30 bg-[#a855f7]/[0.06] px-3 py-1.5 text-xs font-semibold text-[#cbd5e1] transition hover:border-[#a855f7] hover:bg-[#a855f7]/[0.15] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {chip.label}
+                            </button>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+
+                    {/* Anon → sign-in nudge at the very bottom (deemphasised) */}
+                    {!isAuthenticated && (
+                      <div className="rounded-xl border border-[#a855f7]/20 bg-[#a855f7]/[0.04] p-3 text-center">
+                        <p className="text-xs text-[#94a3b8]">
+                          Sign in (free, 10 sec) to save this plan to your dashboard and unlock 3 generations/day.{' '}
+                          <Link
+                            href={`/login?next=/learn/session/${sessionNumber}/playground${courseId !== 'ai-tools-mastery-beginners' ? `?course=${courseId}` : ''}`}
+                            className="font-bold text-[#a855f7] underline-offset-2 hover:underline"
+                          >
+                            Sign in →
+                          </Link>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {phase === 'done' && task.successStyle !== 'action-first' && (
                   <>
                     {/* Why-it-worked callout — closes the learning loop by
                         making the user understand WHY their structured prompt
@@ -1275,6 +1465,27 @@ function truncate(text: string, max: number): string {
   const trimmed = text.trim();
   if (trimmed.length <= max) return trimmed;
   return trimmed.slice(0, max - 1).trimEnd() + '…';
+}
+
+// Channel chip helpers for the action-first success state. Maps short
+// identifier strings (set in playgroundTask.useThisIn) to a small icon and
+// human label. Unknown channels degrade to capitalized text — the chip
+// row stays useful even if a typo slips through.
+const CHANNEL_META: Record<string, { icon: string; label: string }> = {
+  whatsapp: { icon: '💬', label: 'WhatsApp' },
+  instagram: { icon: '📷', label: 'Instagram' },
+  linkedin: { icon: '💼', label: 'LinkedIn' },
+  email: { icon: '📧', label: 'Email' },
+  sms: { icon: '📲', label: 'SMS' },
+  twitter: { icon: '𝕏', label: 'X' },
+  facebook: { icon: '📘', label: 'Facebook' },
+  telegram: { icon: '✈️', label: 'Telegram' },
+};
+function channelIcon(c: string): string {
+  return CHANNEL_META[c]?.icon ?? '•';
+}
+function channelLabel(c: string): string {
+  return CHANNEL_META[c]?.label ?? c.charAt(0).toUpperCase() + c.slice(1);
 }
 
 // Intent commit — sits BEFORE the channel buttons. A single tap converts

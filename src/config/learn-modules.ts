@@ -127,6 +127,31 @@ export interface PlaygroundTask {
     nextMicroStep?: string;    // "→ Open WhatsApp below and message one prospect (60 seconds)" — the immediate next action that removes ambiguity after the lock-in
   };
   examples?: PlaygroundExamples; // Structured examples shown as cards (lifts them out of the textarea)
+  // Post-generation success-state variant. When set to 'action-first', the
+  // success state renders a clean vertical flow optimised around the primary
+  // action (Send via WhatsApp, etc.) and demotes/hides the comparison +
+  // why-it-worked + open refinement chip blocks. The classic flow remains
+  // the default — switch a session over only after live calibration.
+  successStyle?: 'action-first' | 'classic';
+  // Outcome-driven Generate button label. Replaces "✨ Generate with AI"
+  // with task-specific framing like "Generate My First Earnings Map" so the
+  // user knows exactly what they'll get. Per-session override.
+  generateButtonLabel?: string;
+  // Channel chips rendered as a small "Use this in" row in the action-first
+  // success state. Identifiers map to icons + labels in the component.
+  // Examples: ['whatsapp', 'instagram', 'linkedin', 'email', 'sms'].
+  useThisIn?: string[];
+  // Repeat-loop strip: tomorrow's nudge + an optional progress counter.
+  // Renders below the finish line in the action-first flow to create
+  // momentum across days, not just within a single session.
+  repeatLoop?: {
+    tomorrow: string;       // "Tomorrow: send to one more business"
+    counter?: string;       // "0/5 messages sent" — local-only in v1
+  };
+  // Soft identity nudge before the continue CTA in the action-first flow.
+  // Reinforces action-over-perfection. Shorter than yourTurnTemplate — this
+  // is a one-liner, not a full re-prompt.
+  yourTurnNudge?: string;   // "Done > perfect. Send it now, refine tomorrow."
 }
 
 export interface LearnModule {
@@ -1835,16 +1860,39 @@ I want to earn money with AI in the next 3 months. Tell me:
         proTipChips: ['Background', 'Skills', 'Local market'],
         outroLine: 'You just had your first real AI conversation about earning. The journey starts now.',
         outputHeadline: '✨ Your First AI Earnings Map',
-        successHeadline: 'You now have a path from "no skills" to "first paid client" — built around YOUR background.',
-        continueButtonLabel: 'Pick your first service → Session 2',
+        successHeadline: 'Your first AI earnings map is ready — built around YOUR background.',
+        continueButtonLabel: 'Sent? Continue → Session 2',
+        // First session of Hustler 45 is the action-first calibration target.
+        // Validates: do users move faster to the primary action when the
+        // post-generation UI strips comparison + why-it-worked + open chips?
+        successStyle: 'action-first',
+        generateButtonLabel: '✨ Generate My First Earnings Map',
+        useThisIn: ['whatsapp', 'email'],
+        intentCommit: {
+          reinforcement: 'Send this once. See what happens. The first reply changes everything.',
+          ctaLabel: '✔ I will send it today',
+          confirmedLine: 'Locked in. The first move is yours.',
+          nextMicroStep: '↓ Open WhatsApp below and message one local business now (60 seconds)',
+        },
+        finishLine: {
+          primary: '🏁 Pick the ONE service from the map that feels most like you.',
+          microNudge: '💡 Don\'t pick what pays the most — pick what you\'d actually start tomorrow.',
+          followThroughNudge: '📲 Message 1 business — that\'s how this turns into your first reply.',
+        },
+        repeatLoop: {
+          tomorrow: 'Tomorrow: pick 3 local businesses to message about your service',
+          counter: 'Day 1 of 45',
+        },
+        yourTurnNudge: 'Action over perfection. Start ugly, refine later.',
         refinementChips: [
           { label: '🎯 Niche to ONE service', instruction: 'Now pick the single most realistic of the 3 services for someone in a tier-3 Punjab town and double-click on it: 30-day skill plan, first 3 client types to approach, and a starter price.' },
           { label: '🇮🇳 Punjabi version', instruction: 'Now translate the whole earnings plan into Punjabi (Gurmukhi) — keep it warm and family-style, like advice from an older brother.' },
           { label: '💰 Add a daily routine', instruction: 'Now add a realistic 1-hour-per-day routine for 30 days that someone with a part-time job could actually follow to launch the first service.' },
         ],
         realWorldActions: [
-          { label: '📋 Copy my earnings map', action: { type: 'copy' } },
-          { label: '📧 Email it to myself', action: { type: 'email' } },
+          { label: '📱 Start my first outreach on WhatsApp', action: { type: 'whatsapp' } },
+          { label: '📋 Copy', action: { type: 'copy' } },
+          { label: '📧 Email to myself', action: { type: 'email' } },
         ],
       } },
       { session: 2, title: 'AI Landscape & Choosing Tools', description: 'Compare tools and choose the right one for each task', week: 1, tools: ['ChatGPT', 'Claude', 'Gemini'], isFree: false, deliverable: 'Tool comparison matrix', previewQuestions: [
