@@ -2034,52 +2034,426 @@ Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list
         { q: 'Business content should be...', options: ['Very long', 'Clear, professional, and action-oriented', 'Informal always'], answer: 1 },
         { q: 'ChatGPT helps businesses by...', options: ['Replacing writers', 'Drafting content quickly that humans refine', 'Nothing'], answer: 1 },
         { q: 'The best content prompts specify...', options: ['Nothing', 'Audience, tone, format, and purpose', 'Only the topic'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First 5-Angle Business Content Set',
+        taskDescription: 'Run one prompt → get 5 different business messages, each with a different angle. Send-ready in 2 minutes.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 1-year-old saree boutique in Patiala. Average sale ₹1,800. Owner has ₹2,000/month for marketing. Mostly local women aged 28-50.
+
+Goal: Drive 15+ extra weekend visits over the next 30 days.
+
+Generate 5 business messages — each a DIFFERENT angle:
+1. WhatsApp pitch (under 80 words) for past customers
+2. Email to a list of 200 local subscribers
+3. Instagram caption with 5 hashtags
+4. LinkedIn post for a personal-brand owner who runs the boutique
+5. WhatsApp broadcast message for festival regulars (under 60 words)
+
+Constraints: Indian business English, warm-not-corporate, mix in 1-2 Hindi/Punjabi words where natural, no "amazing/premium/world-class".`,
+        proTipChips: ['Business', 'Goal', 'Constraints'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate 5 Send-Ready Business Pitches',
+        successHeadline: '5 different angles. 5 send-ready messages. All for the same business.',
+        continueButtonLabel: 'Sent? Continue → Session 6',
+        refinementChips: [
+          { label: '🇮🇳 Punjabi versions', instruction: 'Now add a Punjabi (Gurmukhi) version of each of the 5 messages — keep the same angles and warmth.' },
+          { label: '💎 Premium positioning', instruction: 'Now rewrite the same 5 messages but for a premium product line: ₹4,500 limited-edition saree boxes (only 8 made). Keep angles, adjust scarcity language.' },
+          { label: '📅 Add posting times', instruction: 'Now add a recommended day + time (IST) to send each of the 5 messages, with a 1-line reason per timing.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 5 messages', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Pick the ONE message that fits this week best.',
+          microNudge: '💡 Don\'t pick the one with the most words — pick the one with the clearest ask.',
+          followThroughNudge: '📲 Send it to 5 customers tonight — that\'s how this turns into 1-2 reply conversations tomorrow.',
+        },
+      } },
       { session: 6, title: 'ChatGPT Deep Dive — Hindi & Punjabi', description: 'Create multilingual business content', week: 2, tools: ['ChatGPT'], isFree: false, deliverable: 'Business content in Hindi and Punjabi', previewQuestions: [
         { q: 'Multilingual content matters because...', options: ['It looks impressive', 'Local businesses need content in local languages', 'AI only works in English'], answer: 1 },
         { q: 'For Hindi/Punjabi content, you should...', options: ['Translate from English', 'Create directly in the target language with cultural context', 'Use Google Translate only'], answer: 1 },
         { q: 'Regional language content helps businesses...', options: ['Nothing', 'Connect with local customers authentically', 'Only in rural areas'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Native Multilingual Content Set',
+        taskDescription: 'Run one prompt → get 3-language marketing copy that sounds like a real native writer wrote it (not Google Translate).',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 5-year-old sweets shop in Bathinda. Average order ₹600. Customer base: regular families ordering for festivals, especially Karva Chauth, Diwali, Lohri.
+
+Goal: Drive Karva Chauth pre-orders over the next 7 days. Target: families who ordered last year.
+
+Generate the same WhatsApp broadcast message in 3 languages:
+1. Punjabi (Gurmukhi script) — warm, family-style, "ji" honorifics
+2. Hindi (Devanagari) — conversational business Hindi, NOT formal Sanskritised
+3. English — clean Indian English
+
+Length: under 90 words each. Include an early bird incentive (10% off if ordered by Day 4). Sign off as "Singh Sweets parivaar".
+
+Then add a "## Quick reading guide" — 1 line per language explaining one cultural choice you made.`,
+        proTipChips: ['Business', 'Cultural context', 'Constraints'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate Punjabi + Hindi Business Content (Native, Not Translated)',
+        successHeadline: '3 languages. Native cadence in each. Ready to send to your customer list.',
+        continueButtonLabel: 'Sent? Continue → Session 7',
+        refinementChips: [
+          { label: '💑 Karva Chauth → Diwali', instruction: 'Now adapt all 3 versions for Diwali pre-orders instead of Karva Chauth — keep same shop and incentive structure but reflect Diwali context (mithai boxes, diyas, family gifting).' },
+          { label: '💬 Make it more casual', instruction: 'Now rewrite all 3 versions in a more casual / friendly register — like talking to neighbourhood regulars, not formal customers.' },
+          { label: '📅 Add a 3-day follow-up sequence', instruction: 'Now turn this into a 3-message sequence (Day 1 / Day 2 / Day 3) in all 3 languages — first message announces, second reminds, third creates last-chance urgency.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 3 versions', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Pick the language your top 20 customers actually read in.',
+          microNudge: '💡 Most Punjab regulars prefer Punjabi or Hindi — English is for new/younger customers.',
+          followThroughNudge: '📲 Send the Punjabi/Hindi version to 10 regulars tonight — pre-orders usually start within 24h.',
+        },
+      } },
       { session: 7, title: 'Canva AI — Social Media Graphics', description: 'Design professional social media content with Canva AI', week: 2, tools: ['Canva'], isFree: false, deliverable: '10 social media designs', previewQuestions: [
         { q: 'Canva AI can...', options: ['Only make logos', 'Generate designs, edit photos, and create brand kits', 'Replace Photoshop completely'], answer: 1 },
         { q: 'Good social media designs are...', options: ['Very text-heavy', 'Visual, branded, and clear', 'Always complex'], answer: 1 },
         { q: 'Consistent branding means...', options: ['Random colors', 'Same fonts, colors, and style across all posts', 'Different every time'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 5-Post Canva Brief Set',
+        taskDescription: 'Generate complete design briefs you can hand to Canva AI and get publishable graphics in minutes.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A coaching centre in Kotkapura preparing students for JEE / NEET. Target: parents of class 11-12 students. Brand colors so far: deep blue + gold. Marketing budget: ₹2,500/month.
+
+Goal: 5 social media posts to drive admission enquiries for the upcoming batch starting June 2026.
+
+For each post, give me:
+- **Format:** square 1080×1080 OR story 1080×1920
+- **On-screen text:** exact copy (headline + subline + CTA)
+- **Color palette:** 3 hex codes
+- **Font pairing:** specific Canva fonts
+- **Canva AI prompt:** ready-to-paste text describing the visual
+- **Posting note:** day/time + caption hook for the post (1 line)
+
+5 different angles: 1 social proof / 1 result-focused / 1 urgency / 1 educational / 1 trust-building. NO "amazing/premium" filler.`,
+        proTipChips: ['Business', 'Brand', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate 5 Canva-Ready Social Media Post Briefs',
+        successHeadline: '5 design briefs. Paste each into Canva AI. Publish today.',
+        continueButtonLabel: 'Designed? Continue → Session 8',
+        refinementChips: [
+          { label: '📱 Carousel version', instruction: 'Now turn the 5 separate posts into a 5-slide carousel that tells a story (slide 1 hook → slide 5 CTA). Keep the same color/font system.' },
+          { label: '🇮🇳 Add Punjabi captions', instruction: 'Now add a Punjabi (Gurmukhi) version of the on-screen text + caption for each post — for parents who prefer Punjabi.' },
+          { label: '🎯 Reels version', instruction: 'Now adapt the same 5 angles into 5 Reel scripts (15-30 sec each) — hook, body beats, CTA, B-roll suggestions.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 5 briefs', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Pick 2 briefs to design and publish this week.',
+          microNudge: '💡 Pick the urgency one + the social proof one — they convert fastest for coaching centres.',
+          followThroughNudge: '📲 Publish them on Instagram by Friday — admission enquiries usually spike in 48h after a strong post.',
+        },
+      } },
       { session: 8, title: 'Canva AI — Marketing Materials', description: 'Create flyers, brochures, and business cards', week: 2, tools: ['Canva'], isFree: false, deliverable: 'Marketing materials set', previewQuestions: [
         { q: 'Marketing materials should...', options: ['Be as cheap as possible', 'Look professional and reflect the brand', 'Use clip art'], answer: 1 },
         { q: 'Canva templates save time by...', options: ['Doing everything automatically', 'Providing professional starting points you customize', 'Limiting creativity'], answer: 1 },
         { q: 'A good business card includes...', options: ['Everything about the business', 'Name, title, contact info, and brand colors', 'Only a phone number'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 4-Material Print Marketing Set',
+        taskDescription: 'Get complete print briefs (flyer + card + brochure + festival poster) you can take straight to a Punjab printer.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 3-year-old restaurant in Patiala specialising in Punjabi thali (₹250) + family meal deals (₹999 for 4). Festival season is Diwali. Marketing goal: Drive pre-order bookings for Diwali week.
+
+Brand colors so far: warm orange + deep maroon. Languages on materials: Punjabi + English mix.
+
+Generate 4 print-ready Canva briefs:
+1. **A5 flyer** (148×210mm + 3mm bleed) — for distribution at nearby offices/shops
+2. **Business card** (90×54mm + 3mm bleed) — for the owner
+3. **A4 trifold brochure** (210×297mm folded into 3) — full menu + festival packages
+4. **Diwali festival poster** (A3, 297×420mm) — for shop window display
+
+For each: print size + bleed, front + back content, CMYK color palette (3-4 hex), font pairing (specific Canva fonts), Canva AI prompt for any imagery, local print cost tip + 1 quality recommendation (e.g. "350 gsm matte for cards").`,
+        proTipChips: ['Business', 'Festival', 'Languages'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate Print-Ready Canva Briefs for Flyers + Cards',
+        successHeadline: '4 print-ready briefs. Take them to your Patiala printer this week.',
+        continueButtonLabel: 'Printed? Continue → Session 9',
+        refinementChips: [
+          { label: '💰 Cheaper print run', instruction: 'Now suggest 3 specific cost-cutting choices (lighter gsm, simpler colors, fewer designs) that drop the total print cost by 40% while keeping it looking professional.' },
+          { label: '🇮🇳 Pure Punjabi version', instruction: 'Now adapt all 4 materials to be 80% Punjabi (Gurmukhi) and 20% English instead of mixed — for a more local, family-style audience.' },
+          { label: '📍 QR code integration', instruction: 'Now add a QR code spec to each material — what it should link to (WhatsApp catalog / Google Maps / GBP profile) and where it should sit on the design.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 4 briefs', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Print the flyer + business card first — they\'re the cheapest test.',
+          microNudge: '💡 ₹500-800 will get you 100 flyers + 200 cards from a local Patiala printer.',
+          followThroughNudge: '📲 Distribute 50 flyers in nearby offices this Friday — pre-orders usually start coming in by Monday.',
+        },
+      } },
       { session: 9, title: 'Canva AI — Professional Portfolio', description: 'Build a portfolio that wins clients', week: 3, tools: ['Canva'], isFree: false, deliverable: 'Professional portfolio', previewQuestions: [
         { q: 'A portfolio shows...', options: ['Your education only', 'Your best work and results', 'Everything you ever made'], answer: 1 },
         { q: 'Portfolio pieces should include...', options: ['Just images', 'The problem, your solution, and the results', 'Only text'], answer: 1 },
         { q: 'The best portfolios are...', options: ['Very long', 'Curated to show range and quality', 'Generic templates'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Win-Clients Portfolio Plan',
+        taskDescription: 'Stop "polishing" your portfolio. Get a structure that converts viewers into paying clients.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Background: I'm based in Bathinda. I've completed Hustler 45 sessions 1-8 — comfortable with ChatGPT for content, Canva for design, basic video editing. I want to position myself as a "social media + content" freelancer for local businesses (sweets shops, boutiques, coaching centres). I have NO real paid clients yet.
+
+Build me a portfolio that wins my first ₹3,000-8,000/month client in 30 days. Cover:
+
+1. **Portfolio Section Map** — 4-5 sections in order, 1-line purpose each.
+
+2. **Sample Piece — Worked Example** — fully written: PROBLEM (a real Patiala mithai shop scenario) → SOLUTION (what I delivered: 7-day content calendar + 5 captions + 3 Canva designs) → RESULT (concrete, honest — "owner reported 12 extra weekend orders"). Even though this is a spec project, frame it like real work.
+
+3. **My Hire-Me Page** — exact copy:
+   - Headline (under 12 words)
+   - 3 services with 1-line description each
+   - Starting price for each
+   - 1-sentence CTA
+   - Where to put my WhatsApp number
+
+4. **3 Spec Projects to Build This Week** — specific to my niche, doable in 7 days each, that match the kind of client I want.`,
+        proTipChips: ['Niche', 'Skills', 'Target client'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Build the Portfolio That Wins Your First Paid Client',
+        successHeadline: 'A portfolio that converts. A Hire-Me page. 3 spec projects to build this week.',
+        continueButtonLabel: 'Built? Continue → Session 10',
+        refinementChips: [
+          { label: '💎 Premium positioning', instruction: 'Now reposition the portfolio + Hire-Me page for a premium tier (₹15-25K/month clients) — adjust the language, services list, and starting prices.' },
+          { label: '📷 Pure design niche', instruction: 'Now narrow this to ONLY a design freelancer (Canva-based brand kits, post sets, print materials) — drop the content/video stuff.' },
+          { label: '🇮🇳 Punjabi/Hindi version', instruction: 'Now translate the Hire-Me page to Punjabi + Hindi versions — for a portfolio shown to local Punjab business owners who prefer Indic-language communication.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my plan', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Build ONE spec project this week — not all 3.',
+          microNudge: '💡 Pick the spec project that matches the FIRST type of client you want to message (Session 30+).',
+          followThroughNudge: '📲 Post the spec project on LinkedIn + WhatsApp Status by Sunday — that\'s where your first enquiry usually comes from.',
+        },
+      } },
       { session: 10, title: 'Video AI — HeyGen Avatars', description: 'Create AI avatar marketing videos', week: 3, tools: ['HeyGen'], isFree: false, deliverable: 'AI avatar marketing video', previewQuestions: [
         { q: 'HeyGen creates...', options: ['Written content', 'AI avatar videos from text scripts', 'Music'], answer: 1 },
         { q: 'AI videos help businesses by...', options: ['Nothing', 'Creating professional video content without filming', 'Replacing TV'], answer: 1 },
         { q: 'A good video script is...', options: ['Very long', 'Short, clear, and has a call to action', 'Improvised'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First HeyGen Avatar Marketing Video',
+        taskDescription: 'Generate a script you can paste into HeyGen and have a finished video in 10 minutes.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A boutique in Amritsar selling phulkari + handloom suits (avg sale ₹3,500). Owner is a 40-year-old woman who wants more local Insta visibility. Festival coming up: Karva Chauth.
+
+Generate a HeyGen avatar video script for a 60-second video promoting "Karva Chauth Limited Edition" suit collection (only 24 pieces, hand-stitched).
+
+Output:
+- **Video Spec** — duration, language (English with 1-2 Punjabi phrases), recommended HeyGen avatar (Indian female, 35-45, warm-confident, neutral Indian English), background music style.
+- **Hook (0-5s)** — exact spoken words + delivery note (smile, lean in, etc.)
+- **Body (5-50s)** — exact words split by beats with delivery notes
+- **CTA (50-60s)** — exact spoken words + on-screen text overlay
+- **Caption to post with the video** — 2-3 sentence Instagram caption + 5 hashtags
+
+Word budget: ~150 spoken words. NO "transform your business / unlock potential / game-changing" filler.`,
+        proTipChips: ['Business', 'Festival', 'Audience'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a HeyGen-Ready 60-Second Avatar Video Script',
+        successHeadline: 'Script ready. Paste into HeyGen. Generate. Post.',
+        continueButtonLabel: 'Generated? Continue → Session 11',
+        refinementChips: [
+          { label: '🇮🇳 Pure Punjabi version', instruction: 'Now rewrite the entire script in Punjabi (Devanagari can be used in HeyGen). Same beats, same pacing — but native Punjabi cadence with "ji" honorifics throughout.' },
+          { label: '⏱️ 30-second version', instruction: 'Now compress this into a 30-second script (~75 spoken words) for Instagram Reels — faster pace, sharper hook, single CTA.' },
+          { label: '🎬 Behind-the-scenes angle', instruction: 'Now rewrite as a behind-the-scenes "owner story" video — the same boutique owner sharing how this collection was made (artisan story, time, craft) instead of selling.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the script', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Open HeyGen now and paste the script.',
+          microNudge: '💡 First-time HeyGen videos take ~10 minutes. Don\'t over-iterate — generate, post, observe.',
+          followThroughNudge: '📲 Post the video on Instagram Reels by Wednesday — Karva Chauth shopping spikes in the 5 days before the festival.',
+        },
+      } },
       { session: 11, title: 'Video AI — Voiceovers & CapCut', description: 'AI voiceovers and video editing', week: 3, tools: ['CapCut', 'ElevenLabs'], isFree: false, deliverable: 'Edited video with AI voiceover', previewQuestions: [
         { q: 'AI voiceovers are useful for...', options: ['Nothing', 'Creating professional narration without recording', 'Only music'], answer: 1 },
         { q: 'CapCut helps with...', options: ['Writing', 'Video editing with AI-powered features', 'Spreadsheets'], answer: 1 },
         { q: 'Good video editing keeps videos...', options: ['As long as possible', 'Engaging, paced well, and focused', 'Silent'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your CapCut + ElevenLabs Production Brief',
+        taskDescription: 'Stop guessing how to edit. Get the full production brief for a 45-second business promo.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A new gym in Kotkapura (3 months old). Founder is 28, ex-cricket player. Target audience: men + women 22-45 who want to lose weight or get fit. Average membership: ₹1,500/month.
+
+Goal: A 45-second Instagram Reel promo for the "New Year, New You" 30-day transformation challenge starting January.
+
+Generate the complete production brief:
+
+- **Final video spec:** 45 seconds, 9:16 (Reels), language: English with 2-3 Punjabi phrases, target platform: Instagram Reels.
+
+- **Voiceover script (ElevenLabs ready):** word-for-word with *emphasis* markers, [pause] markers, breath points. ~110 spoken words. Voice direction: Indian male, 28-35, warm-confident, neutral Indian English.
+
+- **CapCut edit timeline:** table with TIME (00:00-00:05 etc.) / SHOT description / VO / TEXT-ON-SCREEN / MUSIC.
+
+- **B-roll shopping list:** 4-6 specific clips the student needs (e.g. "wide shot of gym floor with members training, 5 sec, golden hour").
+
+- **Music style:** specific mood + BPM + when it should duck for VO (e.g. "Upbeat 100-110 BPM, ducks at 0:08 for VO").
+
+NO vague edit notes. Every beat specific.`,
+        proTipChips: ['Business', 'Goal', 'Vibe'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate CapCut Edit Brief + ElevenLabs Voiceover Script',
+        successHeadline: 'Production brief ready. Edit in CapCut, voice in ElevenLabs, publish.',
+        continueButtonLabel: 'Edited? Continue → Session 12',
+        refinementChips: [
+          { label: '👩 Female voiceover', instruction: 'Now redo the VO direction for a female voice (Indian female, 28-35, warm-energetic, neutral Indian English) — adjust pacing/emphasis to match.' },
+          { label: '🇮🇳 Hindi version', instruction: 'Now rewrite the VO script in Hindi (Devanagari) and adjust ElevenLabs voice direction to a Hindi-fluent voice. Update text overlays to Hindi too.' },
+          { label: '🎬 Documentary angle', instruction: 'Now rewrite this as a 60-second member-story video (real-feeling): one specific member\'s 30-day journey. Same gym, same goal — but emotional storytelling, not promo.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the brief', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Capture B-roll first — that\'s usually the bottleneck.',
+          microNudge: '💡 Use phone camera in 4K, golden hour, no filters — better than fancy cameras with bad light.',
+          followThroughNudge: '📲 Publish by January 1 — the New Year fitness wave is 5-7 days, you want to ride it not chase it.',
+        },
+      } },
       { session: 12, title: 'Video AI — 3 Types of Marketing Videos', description: 'Create testimonial, explainer, and promo videos', week: 3, tools: ['CapCut', 'HeyGen', 'Canva'], isFree: false, deliverable: '3 marketing video types', previewQuestions: [
         { q: 'The 3 types of marketing videos are...', options: ['Random, funny, long', 'Testimonial, explainer, and promotional', 'Only ads'], answer: 1 },
         { q: 'Testimonial videos work because...', options: ['They are cheap', 'Real people sharing real results builds trust', 'They are short'], answer: 1 },
         { q: 'An explainer video should...', options: ['Be 30 minutes', 'Clearly explain the product/service in under 2 minutes', 'Have no visuals'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 3-Video Marketing Set',
+        taskDescription: 'One business, 3 videos that work together. Trust → clarity → conversion.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 2-year-old fitness studio in Patiala (women-only). Average membership ₹2,000/month. Owner trains 30+ members. Has 3-4 strong member transformation stories. Currently 2,200 Instagram followers.
+
+Goal: A 3-week video posting plan that takes a viewer from "I don't know this studio" → "I trust them" → "I'm enquiring".
+
+Generate 3 distinct video concepts:
+
+**Video 1 — TESTIMONIAL (45s)**
+- Target audience (1 specific segment)
+- Best platform (Reels/Story/Feed)
+- Hook line (first 3 seconds spoken)
+- Body structure (3-4 beats with delivery notes)
+- CTA (final 5 seconds + on-screen text)
+- Exact opening + closing line
+
+**Video 2 — EXPLAINER (75s)** — same structure
+**Video 3 — PROMO (20s)** — same structure
+
+Then add:
+**## Posting plan** — when to post each one over 3 weeks (week 1 = ?, week 2 = ?, week 3 = ?), and how they sequence emotionally.`,
+        proTipChips: ['Business', 'Member story', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate 3 Distinct Marketing Videos for the SAME Business',
+        successHeadline: '3 distinct videos. 3 funnel stages. A 3-week plan.',
+        continueButtonLabel: 'Planned? Continue → Session 13',
+        refinementChips: [
+          { label: '🎯 Single platform — Reels only', instruction: 'Now adapt all 3 videos for Instagram Reels exclusively (under 60 sec each, vertical, hook in first 1 second). Drop the ones that don\'t fit Reels format.' },
+          { label: '🇮🇳 Punjabi voice', instruction: 'Now redo the spoken language for all 3 videos in Punjabi (with "ji" warmth) — adjust hooks/CTAs to match the cultural register.' },
+          { label: '💰 Add a 4th sales video', instruction: 'Now add a 4th video concept (30s, sales-focused) for the LAST week of the plan — pure conversion, limited-time membership offer.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 3 concepts', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Shoot Video 1 (testimonial) first — it\'s the easiest and most trust-building.',
+          microNudge: '💡 Pick a member who\'s comfortable on camera — natural beats polished every time.',
+          followThroughNudge: '📲 Post the testimonial this Sunday — it warms up your audience for the explainer the following week.',
+        },
+      } },
       { session: 13, title: 'Digital Marketing Fundamentals Day 1', description: 'SEO, content marketing, and online presence basics', week: 4, tools: ['ChatGPT', 'Google'], isFree: false, deliverable: 'Digital marketing plan', previewQuestions: [
         { q: 'SEO stands for...', options: ['Social Email Outreach', 'Search Engine Optimization', 'Simple Email Operations'], answer: 1 },
         { q: 'Content marketing is about...', options: ['Spamming posts', 'Creating valuable content that attracts customers', 'Only paid ads'], answer: 1 },
         { q: 'Every business needs...', options: ['TV ads', 'An online presence (Google, social media, website)', 'Only word of mouth'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 4-Week Digital Marketing Sprint',
+        taskDescription: 'A doable 4-week plan for ONE business. No agency-scale fantasies. Real hours, real outcomes.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A coaching centre in Kotkapura (5 years old) preparing students for class 10 + 12 board exams. ~80 active students. Owner does most marketing herself, 1 hour per day. Current online presence: a mostly-empty GBP, an Instagram with 600 followers, no website.
+
+Goal: A 4-week digital marketing plan that increases admission enquiries for the next batch (starting April 2026).
+
+Generate:
+
+**## Week 1 — Audit + Foundation** — 4-5 specific tasks with hours each.
+**## Week 2 — Local SEO + GMB** — 4-5 tasks with hours.
+**## Week 3 — Content Engine** — 4-5 tasks with hours, including specific content topic ideas.
+**## Week 4 — Measure + Iterate** — 4-5 tasks + the 3 metrics to track.
+
+Then:
+**## Total time investment** — honest weekly hours + realistic outcome ("Expect 30-50% more enquiries by end of month if all tasks done").
+
+Constraints: phone-only doable, free tools where possible, NO "leverage SEO" filler.`,
+        proTipChips: ['Business', 'Online state', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a 4-Week Digital Marketing Plan',
+        successHeadline: 'A 4-week plan you can actually execute. With honest expected outcomes.',
+        continueButtonLabel: 'Started? Continue → Session 14',
+        refinementChips: [
+          { label: '💰 ₹1,000/month budget', instruction: 'Now redo the plan assuming a strict ₹1,000/month total ad budget — what gets cut, what stays organic, where the spend goes.' },
+          { label: '📱 Reels-first version', instruction: 'Now rebuild the Week 3 content engine entirely around Instagram Reels (3 Reels/week with specific topic ideas) instead of a mix of formats.' },
+          { label: '🎯 Pure GBP focus', instruction: 'Now narrow this to a 4-week plan focused ONLY on Google Business Profile (no Instagram). What does week-by-week GBP optimization look like?' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my plan', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Block 1 hour every morning for these tasks — same time, same place.',
+          microNudge: '💡 Don\'t batch all of Week 1 into one weekend — daily reps build the habit.',
+          followThroughNudge: '📲 Track the 3 metrics in a Google Sheet from Day 1 — without numbers, you can\'t prove what works.',
+        },
+      } },
       { session: 14, title: 'Digital Marketing — Social Media Strategy', description: 'Build a complete social media strategy', week: 4, tools: ['ChatGPT', 'Canva', 'Meta'], isFree: false, deliverable: 'Social media strategy document', previewQuestions: [
         { q: 'A social media strategy defines...', options: ['Random posting', 'Goals, audience, content pillars, and schedule', 'Only hashtags'], answer: 1 },
         { q: 'Content pillars are...', options: ['Building supports', '3-5 topic categories you consistently post about', 'Only educational content'], answer: 1 },
         { q: 'Posting consistency matters because...', options: ['It wastes time', 'Algorithms favor regular, quality content', 'Once a month is enough'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 30-Day Social Strategy Document',
+        taskDescription: 'Stop posting randomly. Get a strategy you can hand to a client (or follow yourself).',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 4-year-old saree boutique in Bathinda. Average sale ₹2,200. Currently has 2,800 Instagram followers + a small WhatsApp Business catalog. Owner posts ~2x/week, no plan.
+
+Goal: A 30-day social media strategy across Instagram (primary) + WhatsApp Business (secondary) + Facebook (light) that grows enquiries 30%+ over the month.
+
+Generate:
+
+**## Content Pillars** — exactly 4 pillars, 1-line description + 2-3 example post types under each.
+
+**## Posting Cadence** — table-style: PLATFORM / POSTS PER WEEK / BEST DAYS / BEST TIME (IST).
+
+**## Week 1-4 Content Calendar** — for each week, 4-5 specific post ideas (hook line + format + which pillar).
+
+**## What to Track** — 3 specific metrics + Punjab-boutique-realistic benchmarks ("3-5% engagement rate is good").
+
+**## The ONE Habit That Makes or Breaks This** — single most important behavior (usually consistency or DM response time).
+
+Constraints: realistic for ONE person, no "post 3x/day on every platform", NO "engage your audience" filler.`,
+        proTipChips: ['Business', 'Current state', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a 30-Day Social Media Strategy',
+        successHeadline: 'A 30-day strategy you (or your client) can actually execute. Daily.',
+        continueButtonLabel: 'Posted? Continue → Session 15',
+        refinementChips: [
+          { label: '🇮🇳 Punjabi caption pack', instruction: 'Now generate Punjabi (Gurmukhi) versions of the first 5 captions in the calendar — for posts targeting older Punjabi-speaking female customers.' },
+          { label: '📱 Reels-only edition', instruction: 'Now rebuild the calendar around Reels exclusively (4 Reels/week) — drop carousels and static images.' },
+          { label: '💰 Add ₹1,500/month boost spend', instruction: 'Now layer a ₹1,500/month Instagram boost-post strategy on top — which 4 posts/month to boost, what audience to target, expected reach.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my strategy', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Schedule Week 1 posts in Meta Business Suite this Sunday.',
+          microNudge: '💡 If you can\'t schedule a week ahead, you can\'t maintain consistency.',
+          followThroughNudge: '📲 Reply to every DM within 1 hour during business hours — that\'s the ONE habit.',
+        },
+      } },
       { session: 15, title: 'Portfolio Building + Phase 1 Exam', description: 'Compile portfolio and take Phase 1 certification exam', week: 4, tools: ['All tools'], isFree: false, deliverable: 'Complete portfolio + Phase 1 certificate', previewQuestions: [
         { q: 'A portfolio should contain...', options: ['Everything', 'Your best work organized by service type', 'Only one project'], answer: 1 },
         { q: 'The Phase 1 exam tests...', options: ['Memory', 'Your ability to create a complete business package under time pressure', 'Speed typing'], answer: 1 },
@@ -2089,7 +2463,50 @@ Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list
         { q: 'Advanced prompting differs from basic by...', options: ['Being longer', 'Using structured frameworks and chaining', 'Being more confusing'], answer: 1 },
         { q: 'CRISP framework improves prompts by...', options: ['Making them shorter', 'Providing structure: Context, Role, Instructions, Specs, Parameters', 'Nothing'], answer: 1 },
         { q: 'Client-ready prompts must be...', options: ['Complicated', 'Consistent, professional, and produce quality output', 'Generic'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First CRISP Client Deliverable',
+        taskDescription: 'Run a fully-structured CRISP prompt and feel why this is the framework that pays.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `**CONTEXT:** I run a freelance content service for Punjab small businesses. My current client: "Kalsi Brothers Mithai" — a 3rd-generation sweets shop in Patiala, ₹600 average order, family customers, peak season is Diwali (3 weeks away). Their main channel is WhatsApp Business with ~1,200 saved customers. They want to drive Diwali pre-orders.
+
+**ROLE:** You are a senior Punjab WhatsApp marketing strategist with 10 years working with sweets shops, halwais, and family businesses across Punjab.
+
+**INSTRUCTIONS:** Generate a 5-message WhatsApp pre-order campaign — to be sent over 5 days, leading up to Diwali week. Each message should drive a specific action.
+
+**SPECS:**
+- 5 messages total, one per day
+- Each message: under 100 words
+- Include early-bird incentive (free delivery + 5% off if ordered by Day 3)
+- Use [Name] placeholder for personalisation
+- Include relevant emojis but no spam (max 2 per message)
+- Format: Day | Time to send | Exact message text
+
+**PARAMETERS:**
+- Tone: warm, family-style, "ji" honorifics where appropriate
+- Language: Hinglish (English script with Punjabi/Hindi words mixed in)
+- Must include: shop name "Kalsi Brothers Mithai"
+- Must NOT include: "amazing", "premium", "limited offer" filler
+- Must reference: Diwali, parivaar (family), tradition`,
+        proTipChips: ['Context', 'Specs', 'Parameters'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a Client-Ready Deliverable from a CRISP Prompt',
+        successHeadline: 'A 5-message WhatsApp campaign your client could send tomorrow.',
+        continueButtonLabel: 'Sent to client? Continue → Session 17',
+        refinementChips: [
+          { label: '🇮🇳 Pure Punjabi version', instruction: 'Now redo all 5 messages in Punjabi (Gurmukhi) — same beats, same structure, native Punjabi cadence.' },
+          { label: '📅 Karva Chauth → Diwali → Bhai Dooj sequence', instruction: 'Now expand this into a 10-day campaign covering Karva Chauth → Diwali → Bhai Dooj — keep 1 message per day, layer the festivals naturally.' },
+          { label: '💎 Premium product line', instruction: 'Now redo the campaign for a premium product launch (₹2,500 limited-edition Diwali mithai box, only 50 made) — adjust scarcity language and audience segment.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the campaign', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Schedule the 5 messages in WhatsApp Business now.',
+          microNudge: '💡 Pre-orders typically come within 2 hours of the first message — be ready to reply.',
+          followThroughNudge: '📲 Send a thank-you message to early orderers — they refer 2-3 friends 60% of the time.',
+        },
+      } },
       { session: 17, title: 'Field Visit — Real Business Needs', description: 'Visit local businesses and understand their digital needs', week: 5, tools: [], isFree: false, deliverable: 'Business needs audit reports', previewQuestions: [
         { q: 'Field visits help you understand...', options: ['Nothing new', 'Real problems businesses face that you can solve', 'Only theory'], answer: 1 },
         { q: 'When visiting a business, you should...', options: ['Pitch immediately', 'Listen, observe, and take notes first', 'Criticize their marketing'], answer: 1 },
@@ -2099,42 +2516,416 @@ Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list
         { q: 'Service packages should be...', options: ['One-size-fits-all', 'Tiered (basic/growth/premium) for different budgets', 'Very expensive only'], answer: 1 },
         { q: 'A proposal should include...', options: ['Just a price', 'Problem, solution, deliverables, timeline, and price', 'Only your resume'], answer: 1 },
         { q: 'Tiered pricing helps because...', options: ['It confuses clients', 'Clients choose the level that fits their budget', 'Only premium sells'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Tiered Service Offer + Client Proposal',
+        taskDescription: 'Stop quoting one-off prices. Build the package structure that converts and the proposal that closes.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance niche: Social media + content for Punjab small businesses (sweets shops, boutiques, coaching centres, restaurants). I've completed Hustler 45 sessions 1-17 and have 2 spec projects in my portfolio.
+
+Specific prospect: "Ranjit Sweets" — a 2-year-old mithai shop in Bathinda. Owner has tried Instagram himself, posts inconsistently, low engagement. He wants to "do social media properly" but doesn't know what that costs. Initial conversation suggested budget around ₹5,000-15,000/month.
+
+Generate:
+
+**## Service Packages** — table format: TIER | PRICE/MONTH (₹) | DELIVERABLES | BEST FOR
+- **Basic** ₹3K-8K range
+- **Growth** ₹8K-20K range
+- **Premium** ₹20K-40K range
+
+Tiers must differ in SCOPE and STRATEGIC DEPTH, not just "more posts".
+
+**## Full Client Proposal** — written as if sending to Ranjit Sweets:
+- **The Problem We're Solving** (3-4 lines mirroring what he said)
+- **Our Approach** (4-5 lines)
+- **Scope of Work** (clear bulleted deliverables)
+- **Timeline** (week-by-week for first month)
+- **Investment** (recommend ONE tier — Growth — with rationale)
+- **What's Out of Scope** (3-4 items)
+- **Next Step** (specific action — "Reply to this WhatsApp with 'Yes' and we kick off Monday")
+
+Constraints: Punjab-realistic pricing (NOT US rates), no "transform your business" filler.`,
+        proTipChips: ['Niche', 'Prospect', 'Budget signal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate Tiered Service Packages + Client Proposal',
+        successHeadline: 'Tiered packages + a proposal that converts — both client-ready.',
+        continueButtonLabel: 'Sent the proposal? Continue → Session 19',
+        refinementChips: [
+          { label: '💎 Premium positioning', instruction: 'Now reposition this for a premium-only freelancer — drop the Basic tier, raise Growth to ₹12-25K, Premium to ₹30-60K. Adjust scope + language accordingly.' },
+          { label: '📱 WhatsApp pitch version', instruction: 'Now condense the full proposal into a 200-word WhatsApp pitch I can send to the prospect first — short, scannable, with a clear next step.' },
+          { label: '🇮🇳 Punjabi proposal version', instruction: 'Now translate the full proposal into Punjabi (Gurmukhi) — for prospects who prefer Punjabi-language business communication.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my packages + proposal', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Send the proposal to ONE real prospect this week.',
+          microNudge: '💡 Send via WhatsApp first, follow up with email if no reply in 48h.',
+          followThroughNudge: '📲 Most prospects say yes to Growth tier — Basic is for "I just want to try" and Premium is anchor.',
+        },
+      } },
       { session: 19, title: 'Contracts + Client Onboarding', description: 'Set up professional client relationships', week: 5, tools: ['ChatGPT', 'Canva'], isFree: false, deliverable: 'Contract template + onboarding checklist', previewQuestions: [
         { q: 'A contract protects...', options: ['Only the client', 'Both you and the client', 'Nobody'], answer: 1 },
         { q: 'Client onboarding should include...', options: ['Nothing formal', 'Welcome message, timeline, deliverables, and communication plan', 'Only an invoice'], answer: 1 },
         { q: 'Setting expectations early prevents...', options: ['Good results', 'Scope creep and misunderstandings', 'Client happiness'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Client-Ready Contract + Onboarding Flow',
+        taskDescription: 'Stop sending US contract templates. Get an India-context contract + onboarding flow your prospect can actually read and sign.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance service: Social media management + content creation for Punjab small businesses. Typical client: ₹8,000-15,000/month retainer, 3-month minimum contract. Payment: 50/50 (advance + month-end). Deliverables: 12-16 social posts/month + 1 monthly strategy review.
+
+Generate:
+
+**## Contract Template** — full text in numbered sections. Use [BRACKETS] for fillable fields. Cover:
+1. Scope of Work
+2. Deliverables
+3. Timeline
+4. Payment Terms (50/50 advance/final, late fee 2% per week after 7 days)
+5. Revisions (2 rounds per deliverable)
+6. IP Transfer (transfers on full payment)
+7. Confidentiality
+8. Cancellation (30-day notice either side)
+9. Jurisdiction (Indian courts, [City])
+
+For any clause that's not obvious, add a 1-line "What this means" in plain language.
+
+**## Onboarding Flow (6 steps)** — for each step:
+- Day (Day 0 / Day 1 / Day 3 / Day 7 / Day 14 / Day 30)
+- Channel (WhatsApp / Email)
+- Purpose (1 line)
+- Exact message template ready to copy-paste
+
+**## Red Flag Checklist** — 4-5 client behaviors that should make you pause before signing (scope creep without budget, pushy deadlines, "do a free sample first", late on advance, etc.).
+
+Constraints: India-context throughout, plain language (no legalese), all amounts in ₹.`,
+        proTipChips: ['Service', 'Pricing', 'Payment terms'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate India-Context Contract + Client Onboarding Flow',
+        successHeadline: 'Contract + onboarding flow + red flag checklist. India-ready.',
+        continueButtonLabel: 'Signed first contract? Continue → Session 20',
+        refinementChips: [
+          { label: '🇮🇳 Punjabi summary', instruction: 'Now write a 1-page plain-Punjabi (Gurmukhi) summary of the contract — what each clause means in family-style Punjabi, for clients who prefer Punjabi.' },
+          { label: '📅 Project-based version', instruction: 'Now rewrite the contract for a project-based engagement (e.g. ₹25,000 one-time for a brand kit + 10 social designs) instead of a monthly retainer.' },
+          { label: '💸 Smaller scope tier', instruction: 'Now adapt the contract for a small Basic tier (₹3,000/month, 6 posts) — simpler, fewer clauses, faster to sign.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy contract + onboarding', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Save these templates in your phone as Quick Replies.',
+          microNudge: '💡 First contract usually takes 2 days from "yes" to signed — that\'s normal.',
+          followThroughNudge: '📲 Send the onboarding Day 1 message within 4 hours of getting the advance — sets the pace.',
+        },
+      } },
       { session: 20, title: 'WhatsApp Marketing Campaigns', description: 'Build effective WhatsApp marketing for businesses', week: 6, tools: ['WhatsApp Business'], isFree: false, deliverable: 'WhatsApp marketing campaign', previewQuestions: [
         { q: 'WhatsApp Business is useful for...', options: ['Personal chats only', 'Catalogs, auto-replies, and broadcast lists', 'Only large companies'], answer: 1 },
         { q: 'Broadcast lists differ from groups because...', options: ['They are the same', 'Messages appear as individual chats to recipients', 'They are public'], answer: 1 },
         { q: 'Good WhatsApp marketing is...', options: ['Spamming everyone', 'Targeted, valuable, and permission-based', 'Daily messages'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 7-Day WhatsApp Marketing Campaign',
+        taskDescription: 'A complete WhatsApp Business campaign you can deploy this week. Permission-based, value-first, not spam.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A boutique in Patiala selling kurta sets + sarees. ~700 saved WhatsApp contacts (mix of regulars + lapsed + new prospects). Festival approaching: Karva Chauth (12 days away). Average sale ₹2,500.
+
+Generate a 7-day WhatsApp Business campaign to drive Karva Chauth pre-orders + walk-ins.
+
+**## Catalog Setup** — 5 specific items: title + 2-line description + price (₹) + suggested image type.
+
+**## Auto-Reply Templates:**
+- Greeting message (when new customer messages first time)
+- Away message (off-hours)
+- Quick replies (4-5 with shortcut keys: /price, /location, /catalog, /timings, /custom)
+
+**## Broadcast Segments** — 3 lists with rough size estimate + tone for each:
+- Regulars (last purchase < 3 months)
+- Lapsed (last purchase 3-12 months)
+- New prospects (joined catalog but no purchase yet)
+
+**## 7-Day Message Sequence** — for each day:
+- Day | Time to send (IST) | Target segment | Exact message text (with [Name] placeholder) | Expected action
+
+Constraints: permission-based throughout, no spam, sound like a person not a brand, NO "Hello dear customer" / "Greetings of the day" filler.
+
+**## Compliance reminder** — 1 paragraph on opt-in + WhatsApp's 24h customer service window.`,
+        proTipChips: ['Business', 'Customer base', 'Festival'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a 7-Day WhatsApp Business Campaign',
+        successHeadline: 'A 7-day campaign ready to deploy. With segments. With timing.',
+        continueButtonLabel: 'Deployed? Continue → Session 21',
+        refinementChips: [
+          { label: '🇮🇳 Pure Punjabi version', instruction: 'Now redo all 7 days of messages in Punjabi (Gurmukhi) — same segments, same timing, native Punjabi cadence.' },
+          { label: '💎 Premium tier launch', instruction: 'Now adapt this campaign for the launch of a premium tier (₹6,500 limited-edition Karva Chauth saree, only 12 made) instead of regular pre-orders.' },
+          { label: '🎁 Add a referral mechanic', instruction: 'Now add a Day 5 referral message to the regulars segment — refer 2 friends, get ₹500 off your next order. Include the exact mechanism.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the campaign', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Set up the catalog + auto-replies BEFORE sending Day 1.',
+          microNudge: '💡 Catalog takes 30-45 minutes. Don\'t skip it — it does 70% of the conversion work.',
+          followThroughNudge: '📲 Reply to every Day 1 reply within 1 hour — that\'s when WhatsApp\'s green badge magic happens.',
+        },
+      } },
       { session: 21, title: 'Google My Business Deep Dive', description: 'Master GMB for local business visibility', week: 6, tools: ['Google Business'], isFree: false, deliverable: 'Optimized GMB profile', previewQuestions: [
         { q: 'GMB helps businesses by...', options: ['Nothing', 'Appearing in local Google search and Maps results', 'Only for restaurants'], answer: 1 },
         { q: 'A complete GMB profile includes...', options: ['Just a name', 'Photos, hours, services, posts, and reviews', 'Only the address'], answer: 1 },
         { q: 'GMB posts should be...', options: ['Never updated', 'Posted weekly with offers, updates, and photos', 'Only text'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Complete Google Business Profile Setup',
+        taskDescription: 'Stop having a half-empty GBP. Get the complete optimisation that wins local search visibility.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A coaching centre in Kotkapura preparing students for class 10 + 12 board exams. 5 years old. ~80 active students. Currently has a barebones GBP (just name + address + phone, no description, no posts, 12 reviews).
+
+Goal: Optimise the GBP so it shows up for "tuition Kotkapura", "class 12 coaching Kotkapura", etc. — and converts profile visitors into enquiries.
+
+**## Core Profile**
+- Business name (exact text)
+- Primary category
+- 4 secondary categories
+- Description (under 750 chars, written out, keyword-rich but reads naturally)
+- Service area (towns/PIN codes)
+- Hours
+
+**## Products / Services Listings** — 5-8 specific entries with title + 2-line description + price band
+
+**## First 4 GBP Posts** — for each:
+- Post type (UPDATE / OFFER / EVENT)
+- Exact text (under 1500 chars)
+- CTA button choice
+- Recommended image
+
+**## Review Strategy** — 3 templates: 5-star reply, 3-star reply (constructive feedback), 1-star reply (complaint). Each under 60 words.
+
+**## Q&A seeding** — 5 questions + answers the business should pre-populate.
+
+**## Photo upload checklist** — 8 specific photo types to add.
+
+Constraints: keyword-rich but natural (not stuffed), no "boost rankings" filler, India-context throughout.`,
+        proTipChips: ['Business', 'Service area', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a Complete GBP Optimisation Plan',
+        successHeadline: 'A complete GBP optimisation. Ready to publish today.',
+        continueButtonLabel: 'Published? Continue → Session 22',
+        refinementChips: [
+          { label: '💰 Add a launch offer', instruction: 'Now add a specific "first batch starts April" UPDATE post + a free-trial-class OFFER post — both with clear booking CTAs.' },
+          { label: '🇮🇳 Punjabi GBP description', instruction: 'Now generate a Punjabi (Gurmukhi) version of the description + first 2 posts — for parents who search in Punjabi.' },
+          { label: '📍 Multi-location version', instruction: 'Now redo this for a 2-location version of the same coaching centre (Kotkapura + Faridkot) — separate GBPs, shared brand.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the GBP setup', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Publish the description + first post today.',
+          microNudge: '💡 GBP rankings update over 2-4 weeks — set it now, observe in late May.',
+          followThroughNudge: '📲 Ask 5 happy parents to leave reviews this week — that\'s the single biggest ranking lever.',
+        },
+      } },
       { session: 22, title: 'Meta Business Suite', description: 'Manage Facebook and Instagram professionally', week: 6, tools: ['Meta Business Suite'], isFree: false, deliverable: 'Scheduled social media week', previewQuestions: [
         { q: 'Meta Business Suite manages...', options: ['Only Facebook', 'Facebook and Instagram from one dashboard', 'Only ads'], answer: 1 },
         { q: 'Scheduling posts helps by...', options: ['Wasting time', 'Maintaining consistency without daily effort', 'Nothing'], answer: 1 },
         { q: 'Business Suite insights show...', options: ['Nothing useful', 'Reach, engagement, and audience demographics', 'Only follower count'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 30-Day Meta Business Suite Plan',
+        taskDescription: 'Stop posting the same thing on FB and IG. Get a real cross-platform plan with schedules, adaptations, and inbox SLAs.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A boutique in Patiala selling kurta sets + sarees + bridal wear. Currently posts inconsistently: 2-3 posts/week on Instagram, almost nothing on Facebook. Owner has Meta Business Suite installed but doesn't use Planner.
+
+Goal: A 30-day plan that uses Meta Business Suite properly — Planner for scheduling, Inbox for response, Insights for measurement.
+
+**## Initial Setup Checklist** — 6-8 specific actions to take BEFORE Day 1 (link accounts, create posting schedule, set up auto-replies, etc.)
+
+**## Posting Schedule (30 days)** — table:
+- WEEK | FB POSTS/WEEK | IG POSTS/WEEK | IG REELS/WEEK | IG STORIES/WEEK | DAYS | BEST TIME (IST)
+- Realistic for ONE person.
+
+**## Cross-Post Adaptation Rules** — 4-5 rules for adapting one piece of content across both platforms (caption length differs, hashtags differ, format differs, what NOT to cross-post, etc.)
+
+**## Inbox Management Plan**
+- Response SLA (under 1h during business hours = green badge)
+- Common Q template (with placeholders)
+- Escalation rule (when to bring in the owner)
+
+**## Weekly Insights Review** — the 5 metrics to check + what each tells you + what action to take if down.
+
+Constraints: realistic for ONE person, no "engagement is everything" / "post more reels" filler.`,
+        proTipChips: ['Business', 'Current cadence', 'Goal'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a 30-Day Meta Business Suite Plan',
+        successHeadline: 'A 30-day Meta Business Suite plan with schedule, inbox SLA, and metrics.',
+        continueButtonLabel: 'Scheduled? Continue → Session 23',
+        refinementChips: [
+          { label: '📱 Reels-heavy edition', instruction: 'Now rebuild the schedule to be Reels-heavy (4 Reels/week, 1 carousel, 0 static) — adapt the cross-post rules accordingly.' },
+          { label: '💰 Add ₹2,000/month boost spend', instruction: 'Now layer a boost-post strategy on top — which 4 posts/month to boost, what audience to target, expected reach + cost per click in Patiala area.' },
+          { label: '🇮🇳 Add Punjabi inbox templates', instruction: 'Now generate Punjabi (Gurmukhi) versions of the Inbox common-Q templates — for customers who message in Punjabi.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the plan', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Schedule Week 1 posts in Planner this Sunday.',
+          microNudge: '💡 If Planner is empty by Monday, the week\'s posts won\'t happen.',
+          followThroughNudge: '📲 Reply to all DMs within 1 hour during business hours — green badge unlocks in ~7 days of consistent response.',
+        },
+      } },
       { session: 23, title: 'Sarvam AI + Multilingual Content', description: 'Create content in Indian languages using Sarvam AI', week: 7, tools: ['Sarvam AI', 'ChatGPT'], isFree: false, deliverable: 'Multilingual marketing content', previewQuestions: [
         { q: 'Sarvam AI specializes in...', options: ['English only', 'Indian languages including Hindi, Punjabi, Tamil', 'Only code'], answer: 1 },
         { q: 'Multilingual marketing helps businesses...', options: ['Nothing', 'Reach customers in their preferred language', 'Only in cities'], answer: 1 },
         { q: 'Good multilingual content is...', options: ['Direct translation', 'Culturally adapted and natural-sounding', 'Always formal'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Sarvam-Style Multilingual Content Set',
+        taskDescription: 'Generate marketing copy that sounds like a real Punjabi/Hindi writer wrote it — not Google Translate.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `Business: A 7-year-old sweets shop in Bathinda. Loyal customer base of ~500 families. Currently planning a Diwali special: a limited-edition gift box (₹1,200) with 5 traditional mithai varieties, beautifully packaged, only 80 boxes made.
+
+Goal: 3-language marketing copy (Punjabi / Hindi / English) for the Diwali gift box launch. Same message, native in each language.
+
+Generate the same WhatsApp broadcast announcement in 3 languages:
+
+**## Punjabi (Gurmukhi version)** — full marketing copy:
+- Warm family-style tone, "ji" honorifics where appropriate
+- Diwali context (lakshmi pooja, parivaar, tradition)
+- Scarcity language (sirf 80 dabbiya — only 80 boxes)
+- Pre-order CTA via WhatsApp
+- Length: 90-110 words
+
+**## Hindi (Devanagari version)** — same content, native Hindi rewrite (NOT translated from Punjabi/English). Conversational business Hindi, not Sanskritised.
+
+**## English version** — clean Indian English variant.
+
+**## Quick guide** — 3-4 lines in English explaining one specific cultural choice you made in each language version (e.g. "Used 'sangat ji' in Punjabi to address the regular customer family — feels more personal than 'dear customer'").
+
+Constraints: NO literal translation, NO forcibly Sanskritised Hindi, code-mix where natural ("Limited offer aaj sham tak").`,
+        proTipChips: ['Business', 'Cultural context', 'Audience'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate Sarvam-Style Multilingual Marketing Content',
+        successHeadline: '3 native versions. Same message, each in its own voice.',
+        continueButtonLabel: 'Sent? Continue → Session 24',
+        refinementChips: [
+          { label: '💑 Karva Chauth instead', instruction: 'Now adapt all 3 versions for Karva Chauth instead of Diwali — same shop, same gift box, but the cultural anchors shift to Karva Chauth (sargi, vrat, husband-wife tradition).' },
+          { label: '📅 3-day reminder sequence', instruction: 'Now turn this into a 3-day sequence (Day 1 announce, Day 2 reminder, Day 3 last-chance) in all 3 languages.' },
+          { label: '💎 Premium tier launch', instruction: 'Now create the same 3-language launch for a premium tier (₹3,500 large box, only 30 made) — adjust scarcity language and family-gifting positioning.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 3 versions', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Pick the language your top 50 customers actually read in.',
+          microNudge: '💡 In Bathinda, that\'s usually Punjabi for older customers, Hinglish for younger.',
+          followThroughNudge: '📲 Send the right-language version to your top 50 tonight — Diwali pre-orders peak in the last 7 days.',
+        },
+      } },
       { session: 24, title: 'Objection Handling Mastery', description: 'Handle client objections and close deals', week: 7, tools: [], isFree: false, deliverable: 'Objection handling scripts', previewQuestions: [
         { q: 'The LAAR framework stands for...', options: ['Look, Ask, Answer, Run', 'Listen, Acknowledge, Address, Redirect', 'Leave, Avoid, Argue, Reject'], answer: 1 },
         { q: 'When a client says "it\'s too expensive"...', options: ['Lower your price immediately', 'Show the ROI and value compared to the cost', 'Walk away'], answer: 1 },
         { q: 'Objections are actually...', options: ['Rejections', 'Buying signals that need addressing', 'Insults'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your LAAR Objection Response Scripts',
+        taskDescription: 'Stop freezing when a client says "too expensive". Get 5 LAAR-framework scripts you can use in real conversations.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance service: Social media + content for Punjab small businesses. Typical pitch: ₹8K-15K/month retainer, 3-month minimum.
+
+Generate LAAR-framework scripted responses (Listen → Acknowledge → Address → Redirect) to the 5 most common client objections I hear:
+
+1. "Aap ke rates bahut zyada hain. Local mein koi 3,000 mein bhi karta hai." (Your rates are too high. Someone local does it for ₹3,000.)
+2. "Pehle sample de do, agar achha laga toh contract karenge." (Give me a sample first, if I like it we'll sign a contract.)
+3. "Mujhe ek-do din sochne do." (Let me think for a day or two.)
+4. "Hum khud kar lete hain abhi tak. Tumhari zaroorat kya hai?" (We've been doing it ourselves so far. Why do we need you?)
+5. "Result kab tak aayega? Mujhe 10 din mein 100 customers chahiye." (When will I see results? I need 100 customers in 10 days.)
+
+For each objection: "## Objection N — '<exact words>'" with:
+- **What they're really saying** (1 line — the underlying concern, not the surface)
+- **Listen** (1-2 sentences — opening response that shows you heard them)
+- **Acknowledge** (1 sentence — validate without conceding)
+- **Address** (3-4 sentences — substantive answer with proof/example)
+- **Redirect** (1 sentence ending in a question — moves the conversation forward)
+
+Then add: "## When to walk away" — 2-3 client signals that mean "this won't work, politely close the conversation".
+
+Constraints: sound like a real Punjab freelancer (not a US sales template), NO high-pressure / fake-scarcity tactics, NEVER say "Let me put you in touch with my manager".`,
+        proTipChips: ['Service', 'Pricing', 'Common pushback'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate LAAR-Framework Objection Response Scripts',
+        successHeadline: '5 LAAR scripts ready. Honest persuasion, no gimmicks.',
+        continueButtonLabel: 'Practiced? Continue → Session 25',
+        refinementChips: [
+          { label: '🇮🇳 Pure Punjabi version', instruction: 'Now redo all 5 scripts entirely in Punjabi (Gurmukhi) — same LAAR structure, native Punjabi business cadence.' },
+          { label: '📞 Phone-call version', instruction: 'Now adapt all 5 scripts for a phone-call context (more conversational, room for pauses) instead of WhatsApp text — adjust pacing accordingly.' },
+          { label: '💎 Premium-tier objections', instruction: 'Now generate 3 NEW scripts for a premium-tier (₹25K+/month) freelancer — different objections show up at that level (e.g. "Why should we trust you over an agency?", "What\'s your guarantee?").' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy all 5 scripts', action: { type: 'copy' } },
+          { label: '📧 Email them to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Practice script #1 (price objection) out loud 3 times.',
+          microNudge: '💡 Reading isn\'t practicing — say it out loud, even alone in a room.',
+          followThroughNudge: '📲 Use the right script in your NEXT prospect conversation — it\'ll feel awkward the first time, then natural.',
+        },
+      } },
       { session: 25, title: 'Workflow Automation', description: 'Automate repetitive tasks for efficiency', week: 7, tools: ['Zapier', 'Make'], isFree: false, deliverable: 'Automated client workflows', previewQuestions: [
         { q: 'Automation saves...', options: ['Nothing', 'Time on repetitive tasks so you can focus on growth', 'Only money'], answer: 1 },
         { q: 'A good automation candidate is...', options: ['Creative work', 'Repetitive tasks done the same way every time', 'One-time projects'], answer: 1 },
         { q: 'Zapier connects...', options: ['Physical devices', 'Different apps to work together automatically', 'Only Google products'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your First Real Workflow Automation',
+        taskDescription: 'Stop doing the same task 50 times a week. Build the automation that does it for you.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance situation: I run a small content service for Punjab businesses. Every week, I get 8-15 enquiries via Tally form on my website (or via DM, but Tally is the structured one). Right now I:
+1. Get the form notification by email
+2. Manually copy the data into a Google Sheet (lead tracker)
+3. Send a thank-you WhatsApp from my phone
+4. Add the lead to my CRM
+5. Schedule a follow-up reminder for Day 3
+
+Total time per lead: ~8 minutes. With 12 leads/week = 96 minutes/week of admin.
+
+Generate the complete automation that handles all of this for me.
+
+**## What this automates + time saved** — 1 paragraph: which steps are automated, expected weekly time saved.
+
+**## Tools needed (and tier)** — list with free vs paid status (Zapier free = 100 tasks/mo OR Make free = 1000 ops/mo, Tally form, Google Sheets, WATI for WhatsApp, Gmail).
+
+**## Step-by-step workflow** — numbered:
+- Step 1: Trigger (Tally form submission)
+- Step 2: Format data (clean phone number, etc.)
+- Step 3: Add row to Google Sheet
+- Step 4: Send WhatsApp via WATI (with template + [Name] personalisation)
+- Step 5: Email confirmation via Gmail
+- Step 6: Schedule Day-3 follow-up reminder
+
+For each step: app + 1-line config note.
+
+**## Test plan** — 4 specific test cases the student should run before going live (incl. one error case).
+
+**## Monitoring** — what to check weekly + 2 common failure modes + how to fix each.
+
+**## Cost reality check** — monthly cost at low (10 leads/mo), mid (50/mo), high (200/mo) volume.
+
+Constraints: free-tier-capable where possible, NO "automate everything / set it and forget it" filler, include error handling.`,
+        proTipChips: ['Recurring task', 'Volume', 'Tools'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a Zapier or Make.com Automation Workflow',
+        successHeadline: '~96 minutes/week saved. Workflow ready to build.',
+        continueButtonLabel: 'Built? Continue → Session 26',
+        refinementChips: [
+          { label: '💰 Pure free-tier version', instruction: 'Now redo the automation using ONLY free tiers (Zapier free 100 tasks/mo + free WhatsApp via wa.me link instead of WATI). What functionality do I lose? What do I keep?' },
+          { label: '📞 Add a phone-call follow-up trigger', instruction: 'Now add a step where if the lead doesn\'t reply to WhatsApp within 48h, I get a daily reminder (via Telegram or email) listing all unresponded leads with their numbers.' },
+          { label: '🤖 Add AI lead qualification', instruction: 'Now add an AI step (using OpenAI or Claude API) that reads the form responses and auto-tags the lead as "hot / warm / cold" based on stated budget and timeline — write the exact prompt.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy the workflow', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Build steps 1-3 first (form → sheet → WhatsApp). Skip the rest till those work.',
+          microNudge: '💡 First-time Zapier setup takes 60-90 minutes. Block the time, don\'t fragment.',
+          followThroughNudge: '📲 Test with your OWN phone number first — submit a fake lead, watch the whole chain fire.',
+        },
+      } },
       { session: 26, title: 'Phase 2 Practical Exam', description: 'Pitch a complete client package under pressure', week: 7, tools: [], isFree: false, deliverable: 'Phase 2 certification', previewQuestions: [
         { q: 'The Phase 2 exam is...', options: ['Written test', 'A 15-minute live pitch to a simulated client', 'Multiple choice'], answer: 1 },
         { q: 'Pass mark for Phase 2 is...', options: ['50/100', '70/100', '90/100'], answer: 1 },
@@ -2144,7 +2935,53 @@ Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list
         { q: 'A professional invoice must include...', options: ['Just the amount', 'Invoice number, date, services, amount, payment details', 'Only your name'], answer: 1 },
         { q: 'GST registration is needed above...', options: ['₹5 lakh/year', '₹20 lakh/year', '₹50 lakh/year'], answer: 1 },
         { q: 'Time blocking helps freelancers...', options: ['Work less', 'Handle multiple clients without burnout', 'Avoid clients'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your Freelance Business Operations Setup',
+        taskDescription: 'Set up the boring-but-critical infrastructure: invoicing, GST awareness, income tracking, time blocks. India-context throughout.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance situation: Hustler 45 student, just landed first paying clients. Current monthly income: ~₹15,000-25,000 (likely growing). Niche: social media + content for Punjab small businesses. Based in Bathinda.
+
+I need the operational setup to handle this professionally.
+
+Generate:
+
+**## Invoice template** — list of fields a professional invoice must have (invoice number, date, services, amount, GSTIN field, HSN/SAC code placeholder, payment terms, late fee, etc.). Then a worked example with sample numbers — for invoicing a ₹10,000/month retainer client.
+
+**## GST decision tree:**
+- Income < ₹20L/year: stay unregistered, simple invoicing
+- Income ₹20-50L/year: composition scheme option (1% turnover tax, simpler filing)
+- Income ₹50L+: must register regular GST
+- Plus 1 paragraph on how to track this so you don't miss the threshold.
+
+**## Income tracker** — Google Sheets column structure:
+- Date | Client | Service | Amount (₹) | Mode (UPI/Bank/Cash) | Status (Paid/Pending) | Tax bucket
+- Plus 1 monthly review habit (what to check on the 1st of each month).
+
+**## Time-block template** — 1 sample week (Monday-Saturday) with hours blocked for client work, biz dev, learning, admin. Realistic for a Punjab freelancer (1-2 client calls/day, deep work blocks, evening WhatsApp window).
+
+**## When to involve a CA** — 3 specific trigger points where DIY stops being smart (income > ₹15L, multiple clients across states, want to incorporate as Pvt Ltd).
+
+Constraints: India-context throughout, NOT tax advice (recommend consulting a CA above ₹15-20L), NO "live your dream life / be your own boss" hype.`,
+        proTipChips: ['Income range', 'Niche', 'Location'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate Your Freelance Business Operations Setup',
+        successHeadline: 'Invoicing + GST awareness + income tracker + time blocks. Operations ready.',
+        continueButtonLabel: 'Set up? Continue → Session 28',
+        refinementChips: [
+          { label: '📄 Multi-format invoice', instruction: 'Now give me 3 invoice formats: (1) simple (under ₹20L freelancer), (2) composition GST (1% turnover tax), (3) regular GST with input credit. When to use each.' },
+          { label: '🇮🇳 Punjabi invoice version', instruction: 'Now translate the invoice template into Punjabi (Gurmukhi) — for clients who prefer Punjabi documentation.' },
+          { label: '💰 Pricing increase plan', instruction: 'Now add a "how to raise rates" plan: when (after 3 months of consistent delivery), how much (15-25% jump), how to communicate it to existing clients (1-page WhatsApp message template), grandfathered tier strategy.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my setup', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Send your first professional invoice this week.',
+          microNudge: '💡 Don\'t use a generic Word template — use Canva or Stripe Invoicing for the polish that signals "real business".',
+          followThroughNudge: '📲 Set up the income tracker on Day 1 — reconstructing 6 months later is brutal. Future-you will thank you.',
+        },
+      } },
       { session: 28, title: 'Field Work Day 1 — Guided Sprint', description: 'Trainer demonstrates live business approaches', week: 8, tools: [], isFree: false, deliverable: 'Observation notes + approach scripts', previewQuestions: [
         { q: 'Field work starts with...', options: ['Cold calling', 'Watching the trainer approach businesses first', 'Sending emails'], answer: 1 },
         { q: 'During trainer demos, you should...', options: ['Just watch', 'Take detailed notes on what works', 'Do nothing'], answer: 1 },
@@ -2179,7 +3016,50 @@ Show me 3 different 30-day plans — one in ChatGPT-style (action-oriented, list
         { q: 'Scaling requires...', options: ['Working 5x harder', 'Systems: templates, SOPs, automation', 'Luck'], answer: 1 },
         { q: 'Monthly retainers provide...', options: ['Unpredictable income', 'Predictable recurring revenue', 'Less work'], answer: 1 },
         { q: 'The 90-day plan targets...', options: ['₹1,000/month', '₹25,000-35,000/month with 5-7 clients', '₹1,00,000/month'], answer: 1 },
-      ]},
+      ], playgroundTask: {
+        taskTitle: 'Your 90-Day Scale Plan',
+        taskDescription: '1 client → 5-7 retainer clients in 90 days. Solo systems first. No hire-a-team fantasies.',
+        timeEstimate: 'Takes 2-3 minutes',
+        starterPrompt: `My freelance situation: I just landed my first paying client (₹8,000/month retainer for a Patiala restaurant). Niche: social media + content for Punjab small businesses. I have ~25 hours/week available for client work + biz dev. Bandwidth-realistic upper limit: 5-7 retainer clients before I burn out.
+
+Generate a 90-day plan to grow from 1 client to 5-7 clients @ ₹25K-35K/month total revenue.
+
+**## Month 1 — Stabilise** — 4-5 specific actions (SOP-ify the first client's work, ask for testimonial + referral, set up basic CRM in Sheets, raise quality bar).
+
+**## Month 2 — Add 2-3 retainer clients** — outreach plan (specific channels: WhatsApp via referrals, LinkedIn, Insta DMs, in-person), retainer package definition, target conversion rate (e.g. 1 in 8 conversations → signed retainer).
+
+**## Month 3 — Optimise + raise rates** — which clients to keep / which to graduate off, how to introduce a 15-20% price rise to existing clients (with WhatsApp message template), grandfathered tier strategy.
+
+**## Retainer Package Spec** — exact monthly deliverable list at 3 tiers:
+- ₹8K tier: what they get + my hours/month
+- ₹15K tier: what they get + my hours/month
+- ₹25K tier: what they get + my hours/month
+
+**## The 4 systems to build first** — templates, SOPs, asset library, lead-tracker. 1-line on what each contains.
+
+**## Honest income forecast** — Day 30 / Day 60 / Day 90 realistic income range with the ONE assumption it depends on (usually: outreach volume).
+
+Constraints: ONE-person capacity (NO "hire 3 contractors"), NO "passive income / scale to 6 figures" hype, honest about realistic conversion rates.`,
+        proTipChips: ['Current state', 'Bandwidth', 'Niche'],
+        outroLine: 'You generated something real for a real Punjab business. Now use it.',
+        outputHeadline: '✨ Generate a 90-Day Plan to Scale to ₹25-35K/Month',
+        successHeadline: '90-day plan: 1 client → 5-7 retainers. Realistic, solo-friendly, system-driven.',
+        continueButtonLabel: 'Started Month 1? Continue → Session 35',
+        refinementChips: [
+          { label: '💎 Premium-only path', instruction: 'Now redo the plan to get to ₹35K/month from 3-4 premium clients (₹10-15K each) instead of 5-7 mid-tier — different outreach, different positioning.' },
+          { label: '📅 30-day acceleration', instruction: 'Now compress this into a 30-day plan to add 2 retainer clients (instead of 3 months) — what gets cut, what stays critical.' },
+          { label: '🤝 Add a partner/referral channel', instruction: 'Now add a channel for partnerships with local print shops + photographers + web designers — they refer me, I refer them. Structure of the partnership + first 3 partners to approach.' },
+        ],
+        realWorldActions: [
+          { label: '📋 Copy my 90-day plan', action: { type: 'copy' } },
+          { label: '📧 Email it to myself', action: { type: 'email' } },
+        ],
+        finishLine: {
+          primary: '🏁 Pick ONE outreach channel for Month 2 — not three.',
+          microNudge: '💡 Most students fail Month 2 by spreading thin across LinkedIn + Insta + WhatsApp + email all at once.',
+          followThroughNudge: '📲 Send 5 outreach messages on your chosen channel TONIGHT — Day 1 momentum compounds into Day 30 results.',
+        },
+      } },
       { session: 35, title: 'Demo Day + Graduation', description: 'Present your best work and earn your certificate', week: 10, tools: [], isFree: false, deliverable: 'Final presentation + TARAhut AI Hustler 45 certificate', previewQuestions: [
         { q: 'Demo Day presentation is...', options: ['30 minutes', '5 minutes: best work + client story + income', 'Optional'], answer: 1 },
         { q: 'After graduation, the alumni network provides...', options: ['Nothing', 'Ongoing support, referrals, and learning', 'A job'], answer: 1 },
