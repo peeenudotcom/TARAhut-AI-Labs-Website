@@ -679,12 +679,17 @@ code{font-family:'JetBrains Mono',monospace;background:rgba(0,240,255,.08);paddi
     <p style="color:var(--t3);font-size:.8rem">AI creates a personalised plan in seconds. A human consultant would charge ₹5,000 for this.</p>
   </div>
 
-  <div class="demo">
-    <div class="demo-bar"><div class="demo-dots"><i></i><i></i><i></i></div><h4>🧪 Prompt 5: Ask Anything in Your Mind</h4></div>
-    <p style="color:var(--t2);font-size:.85rem;margin-bottom:.75rem">Type any question you've been wondering about — AI is ready:</p>
-    <textarea class="demo-in" id="freePrompt" placeholder="Type any question you want to ask an AI... e.g. 'What career should I choose if I love writing?' or 'How do I start a YouTube channel?'"></textarea>
-    <button class="btn btn-glow btn-sm" onclick="copyFreePrompt()" style="margin-bottom:.75rem">📋 Copy This Prompt</button>
-    <div class="demo-out" id="freeOut">Your prompt will appear here — then paste it into ChatGPT, Claude, or Gemini and press Enter.</div>
+  <div class="demo" id="liveLab" style="border:1px solid rgba(168,85,247,.4);background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(0,240,255,.04));box-shadow:0 0 40px rgba(168,85,247,.12);text-align:center;padding:2rem 1.5rem">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--c1);margin-bottom:.75rem">⚡ Live · Powered by Claude</div>
+    <h3 style="font-size:1.4rem;margin:0 0 .5rem;background:linear-gradient(90deg,#a855f7,#00f0ff);-webkit-background-clip:text;background-clip:text;color:transparent">🚀 Your First AI Task — In a Real AI Lab</h3>
+    <p style="color:var(--t2);font-size:.95rem;line-height:1.6;max-width:540px;margin:0 auto 1.25rem">Open a guided AI Playground where you'll write, generate, and save your first real Claude output — right here on the platform. <strong style="color:var(--c1)">No copying, no switching tabs.</strong></p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-bottom:1.25rem;font-size:.78rem;color:var(--t3)">
+      <span>📋 Guided task</span>
+      <span>✨ Live AI response</span>
+      <span>💾 Saved to your dashboard</span>
+    </div>
+    <a href="/learn/session/1/playground" target="_top" class="btn btn-glow" style="display:inline-block;text-decoration:none;font-size:.95rem;padding:.85rem 2rem">Open AI Playground →</a>
+    <p style="color:var(--t3);font-size:.72rem;margin-top:.85rem">Takes 2 minutes · 1 free generation, no sign-in needed</p>
   </div>
 
   <div class="callout call-2"><div class="call-ico">🌟</div><div class="call-body"><h4>You Just Did What Millions Haven't</h4><p>Most people have heard of AI but never actually tried it. You just had your first real conversation. Notice how it responds instantly, understands context, and adapts to what you ask. <strong>This is the skill of the decade — and you just started learning it.</strong></p></div></div>
@@ -924,12 +929,8 @@ function copyPrompt(el,text){
     setTimeout(()=>el.textContent=orig,3000);
   }).catch(()=>{el.style.background='rgba(52,211,153,.1)';});
 }
-function copyFreePrompt(){
-  const txt=document.getElementById('freePrompt').value.trim();
-  if(!txt){document.getElementById('freeOut').textContent='⚠️ Type a question first, then click copy.';return;}
-  document.getElementById('freeOut').textContent='✅ Copied! Now open ChatGPT, Claude, or Gemini and paste it in. Press Enter. Read the response carefully.';
-  navigator.clipboard.writeText(txt).catch(()=>{});
-}
+// Live AI Playground is a dedicated page — see CTA above. No inline JS needed
+// here; the link uses target="_top" to break out of the lesson iframe.
 
 // === QUIZ ===
 const qData=[

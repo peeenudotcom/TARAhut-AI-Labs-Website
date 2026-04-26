@@ -1,3 +1,134 @@
+export interface PlaygroundRefinementChip {
+  // One-tap follow-up that nudges Claude to refine the existing output.
+  // The instruction is appended to the original prompt before re-generation.
+  label: string;        // "✏️ Make it shorter"
+  instruction: string;  // "Now rewrite this in half the words while keeping the key points."
+}
+
+export type PlaygroundActionType =
+  | { type: 'whatsapp'; phone?: string; sectionMatch?: string }  // Opens wa.me with the AI output as message body. If sectionMatch is set, sends ONLY the matched section's body (not the full output) — used by Session 14's "Send first reply via WhatsApp" so the chat opens with the reply draft, not the entire delivery plan.
+  | { type: 'copy'; sectionMatch?: string }    // Copies AI output to clipboard. If sectionMatch is set, copies ONLY the section whose `## Heading` starts with that string (case-insensitive). Used by Session 11's "Copy Day 1 post" so the user gets just the Day 1 chunk, not the full calendar.
+  | { type: 'email' }                           // Mailto link with subject + AI output as body
+  | { type: 'continue-session' }                // Plain link back to lesson
+  | { type: 'open-url'; url: string; copyFirst?: boolean };  // Opens an external tool (e.g. ChatGPT GPT Builder), optionally copying the output first
+
+export interface PlaygroundAction {
+  label: string;        // "📱 Send via WhatsApp"
+  action: PlaygroundActionType;
+}
+
+export interface PlaygroundComparison {
+  // Static "Before" example shown side-by-side with the live response. Used
+  // in sessions teaching a technique (RCTF, few-shot, etc.) where the WHOLE
+  // point is the delta. Authored once per task — never AI-generated, so cost
+  // stays at zero and the contrast is consistent.
+  basicPromptLabel: string;   // "Write 5 captions for a sweets shop"
+  basicOutput: string;        // markdown — the lazy / source content
+  // Optional label overrides — different sessions need different framings.
+  // Default: "Without RCTF" / "With YOUR RCTF prompt".
+  leftHeader?: string;        // e.g. "📚 Your 3 source examples"
+  rightHeader?: string;       // e.g. "✨ AI matched the voice"
+  leftSubLabel?: string;      // small grey eyebrow on left card
+  rightSubLabel?: string;     // small grey eyebrow on right card
+}
+
+export interface PlaygroundExample {
+  // One worked example shown as a card ABOVE the textarea (not crammed inside).
+  // Used by few-shot tasks where 2-3 examples are needed but stuffing them
+  // into a textarea overwhelms the user before they can experience the result.
+  label: string;   // "Patiala mustard oil 250ml"
+  text: string;    // The full example description
+}
+
+export interface PlaygroundExamples {
+  intro: string;                  // "Learn my brand voice from these 3 examples:"
+  items: PlaygroundExample[];     // 2-3 examples
+  visibleByDefault?: number;      // How many show on load (rest hidden behind "View N more")
+}
+
+export interface PlaygroundTask {
+  // The student-facing task framing — drives the sidebar "Your First AI Task"
+  // card and the AI Playground page header. Only sessions with a task defined
+  // get a live playground; others fall back to copy-prompt-only.
+  taskTitle: string;             // Sidebar card heading — "Your First AI Task"
+  taskDescription: string;       // "Create a professional WhatsApp message using AI."
+  timeEstimate: string;          // "Takes 2 minutes"
+  starterPrompt: string;         // Pre-fills the textarea — multi-line OK
+  proTipChips: string[];         // Pill chips under "Pro Tip"
+  outroLine: string;             // Subtitle in the green "First AI Conversation ✓" sidebar badge
+  // Drive the post-generation product moment (the keystone of the "guided
+  // product, not chatbox" rework). Each is optional so older sessions
+  // remain compatible while we roll the pattern out.
+  outputHeadline?: string;       // Replaces "AI Response" once done — "Your AI-Generated 30-day Plan"
+  successHeadline?: string;      // Big celebratory line shown after Save — "🎯 You now have a 30-day roadmap"
+  refinementChips?: PlaygroundRefinementChip[];  // 2–3 one-tap iterations
+  realWorldActions?: PlaygroundAction[];         // 1–2 actions to actually USE the output
+  // Learning-loop scaffolding — for sessions that teach a technique. The user
+  // shouldn't just see better output, they should INTERNALISE why it's better
+  // and APPLY it to their own context.
+  comparison?: PlaygroundComparison;             // "Without RCTF" vs "With RCTF" comparison
+  whyItWorked?: { heading: string; bullets: string[] };  // Callout under the live response
+  // Post-action reflection — multi-select chips that turn the abstract "you
+  // tested it" into a tactile self-confirmation. Optional; only sessions
+  // where the asset is meant to be USED (Custom GPT, prompt template, etc.)
+  // get one. Selections are local-only (no backend save in v1).
+  // `identityLine` fires once at least one chip is selected — frames the
+  // moment as a real-world skill win, not just UI feedback.
+  testReflection?: {
+    headline: string;
+    prompt: string;
+    hint?: string;
+    chips: string[];
+    identityLine?: string;
+  };
+  yourTurnTemplate?: string;     // Replaces starterPrompt with a [BRACKETED] version when "Your Turn" clicked
+  // Task-specific framing for the Your Turn block — generic fallbacks ship
+  // when omitted, but each session reads better with its own copy (RCTF
+  // prompt vs voice clone vs business plan, etc.).
+  yourTurnHeadline?: string;     // "Now write your own RCTF prompt" / "Now train AI on YOUR brand voice"
+  yourTurnBody?: string;         // 1-2 sentences explaining what they should do
+  // Override for the success-state Continue button so each session can frame
+  // it as execution → progression (not just navigation).
+  continueButtonLabel?: string;  // "Use this voice for your product → Continue to Session 5"
+  // One-line hint about WHERE to actually send/use the output. Renders as a
+  // small icon-led line in the success card. Anchors abstract output to
+  // a real channel: "Send via: 💬 WhatsApp · 📧 Email · 📩 Instagram DM".
+  useWhereHint?: string;
+  // Commitment loop — triggered after the user clicks any send action
+  // (WhatsApp / Email / Instagram / LinkedIn / open-url). Asks "did you
+  // actually send it?" with Yes/Not-yet. Yes locks in identity; Not-yet
+  // nudges. Closes the loop from "I could send it" → "I sent it".
+  sendCommit?: {
+    prompt: string;            // "Did you send this to a real business?"
+    yesLabel: string;          // "✅ Yes, sent it"
+    noLabel: string;           // "🤔 Not yet"
+    yesReinforcement: string;  // "You just took your first real step..."
+    noNudge: string;           // "Pick one local business and send it now..."
+  };
+  // Finish line — sits BELOW the action buttons. Names what "done" looks
+  // like, optionally where to start, and optionally what to do AFTER done.
+  // Three semantic beats: (1) stop condition, (2) starting point, (3) bridge
+  // from "selected" to actual real-world publication. Together they remove
+  // the "I opened the tool, now what?" + "I picked one, now what?" risks.
+  finishLine?: {
+    primary: string;             // "🏁 Generate 3-5 images and pick 1 you'd actually post today."
+    microNudge?: string;         // "💡 Start with Prompt 1 — it's your strongest angle."
+    followThroughNudge?: string; // "📲 Post it on Instagram or send it on WhatsApp today — that's where this turns into results."
+  };
+  // Intent commitment — sits ABOVE the channel hint / action buttons.
+  // Reinforces the rehearsal moment: "Say this once out loud →
+  // ✔ I'll use this today". Bridges intention to commitment before the
+  // user even clicks a channel. Pairs especially well with sessions that
+  // produce a conversation starter or script.
+  intentCommit?: {
+    reinforcement: string;     // "Say this once out loud — then send it or use it in your next conversation."
+    ctaLabel: string;          // "✔ I'll use this today"
+    confirmedLine: string;     // "Locked in." (the affirmation)
+    nextMicroStep?: string;    // "→ Open WhatsApp below and message one prospect (60 seconds)" — the immediate next action that removes ambiguity after the lock-in
+  };
+  examples?: PlaygroundExamples; // Structured examples shown as cards (lifts them out of the textarea)
+}
+
 export interface LearnModule {
   session: number;
   title: string;
@@ -7,6 +138,7 @@ export interface LearnModule {
   isFree: boolean;
   deliverable: string;
   previewQuestions: { q: string; options: string[]; answer: number }[];
+  playgroundTask?: PlaygroundTask;
 }
 
 export interface CourseConfig {
@@ -55,6 +187,29 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'Which of these is an AI tool?', options: ['Microsoft Word', 'ChatGPT', 'Calculator'], answer: 1 },
           { q: 'Can AI replace human creativity completely?', options: ['Yes, very soon', 'No, it augments human creativity', 'Only in art'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Your First AI Task',
+          taskDescription: 'Create a professional WhatsApp message using AI.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Write a professional WhatsApp message for:
+A student asking for internship
+
+Tone: polite + confident
+Length: short`,
+          proTipChips: ['Tone', 'Length', 'Audience'],
+          outroLine: 'You just saved 15 minutes of work',
+          outputHeadline: 'Your WhatsApp Message — Ready to Send',
+          successHeadline: 'This is YOUR first AI deliverable. Send it now.',
+          refinementChips: [
+            { label: '✂️ Make it shorter', instruction: 'Now rewrite this in half the words. Keep the polite + confident tone.' },
+            { label: '🇮🇳 Reply in Punjabi', instruction: 'Now translate this message into Punjabi (Gurmukhi script), keeping the same warmth.' },
+            { label: '🤝 Add a follow-up line', instruction: 'Add one short follow-up line at the end politely asking for a 5-minute call this week.' },
+          ],
+          realWorldActions: [
+            { label: '📱 Send via WhatsApp', action: { type: 'whatsapp' } },
+            { label: '📋 Copy message', action: { type: 'copy' } },
+          ],
+        },
       },
       {
         session: 2,
@@ -69,6 +224,32 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'AI hallucination means AI…', options: ['Gets tired', 'Generates false information confidently', 'Only works at night'], answer: 1 },
           { q: 'Which skill becomes MORE valuable when AI exists?', options: ['Typing speed', 'Critical thinking', 'Memorizing facts'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Your AI Career Plan',
+          taskDescription: 'Get a personalised 30-day plan for learning AI on your career path.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `I am a 12th grade student in Punjab interested in starting a small business.
+I have 1 hour per day to learn AI tools.
+
+Create a 30-day plan for me with:
+- Which 2 AI tools to focus on each week
+- One small project I can complete every weekend
+- A portfolio piece I can show clients by Day 30
+- One ethical rule I should follow when using AI for clients`,
+          proTipChips: ['Goal', 'Timeframe', 'Background'],
+          outroLine: 'You have a 30-day roadmap you can start tomorrow.',
+          outputHeadline: 'Your Personal 30-Day AI Business Plan — Ready to Execute',
+          successHeadline: 'You now have a step-by-step roadmap to start your AI journey.',
+          refinementChips: [
+            { label: '💼 More portfolio focus', instruction: 'Now revise the plan so I have 4 portfolio pieces by Day 30 instead of 2 — more varied across content, marketing and design.' },
+            { label: '⏱️ Make it 15-day plan', instruction: 'Now compress this into a focused 15-day plan instead of 30 days. Keep the same quality of deliverables.' },
+            { label: '₹ Add a budget', instruction: 'Now add a "Cost" line to each week showing me which tools are free vs paid and budget for the cheapest paid path under ₹500/month.' },
+          ],
+          realWorldActions: [
+            { label: '📋 Copy my plan', action: { type: 'copy' } },
+            { label: '📧 Email plan to myself', action: { type: 'email' } },
+          ],
+        },
       },
       {
         session: 3,
@@ -83,6 +264,67 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A vague prompt gives you…', options: ['Precise results', 'Vague, generic results', 'Better creativity'], answer: 1 },
           { q: 'Which prompt is better?', options: ['"Write something"', '"Write a 3-sentence email to a client apologizing for a delay"', '"Email about delay"'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Your First 4/4 RCTF Prompt',
+          taskDescription: 'Run a fully-structured RCTF prompt and see the quality jump for yourself.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Act as a senior content marketing strategist with 10 years' experience.
+
+Context: I run a small online sweets shop in Punjab, India. My target customers are families ordering for festivals (Diwali, Karva Chauth). My ad budget is ₹3,000 per month.
+
+Task: Write 5 Instagram caption ideas that drive Diwali pre-orders.
+
+Format: For each caption give me:
+- Full caption text (under 180 characters)
+- The single best emoji to use
+- A specific CTA (DM, WhatsApp, link)`,
+          proTipChips: ['Role', 'Context', 'Task', 'Format'],
+          outroLine: 'You ran a real 4/4 RCTF prompt and felt the quality.',
+          outputHeadline: 'Your AI Output — Generated from a 4/4 RCTF Prompt',
+          successHeadline: 'This is what a structured prompt produces. Now write your own.',
+          refinementChips: [
+            { label: '🥖 Switch to a bakery', instruction: 'Now keep the same RCTF structure but rewrite for a small bakery in Amritsar selling for Christmas instead of Diwali.' },
+            { label: '🇮🇳 Add Hindi versions', instruction: 'Now add a Hindi (Devanagari) version of each caption alongside the English one.' },
+            { label: '💸 Cut budget to ₹1,000', instruction: 'Now adjust the strategy assuming the ad budget is only ₹1,000/month — lean harder on organic reach.' },
+          ],
+          realWorldActions: [
+            { label: '📋 Copy this output', action: { type: 'copy' } },
+            { label: '📧 Email it to myself', action: { type: 'email' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Write 5 Instagram captions for a sweets shop in Punjab.',
+            basicOutput: `1. 🎉 Try our delicious sweets today! Visit us for the best mithai in Punjab. #sweets #mithai #punjab
+
+2. ✨ Premium quality sweets handcrafted with love. Order now! #punjabisweets #mithai
+
+3. 🍬 Sweetness in every bite! Check out our amazing collection. DM for orders. #sweetshop
+
+4. 😋 The taste of tradition. Quality you can trust. Visit our store today! #indiansweets
+
+5. 🌟 Make your celebrations sweeter with us. Order now and enjoy! #celebration #sweets`,
+          },
+          whyItWorked: {
+            heading: 'Why your RCTF prompt produced 10× better output',
+            bullets: [
+              '**Role** — "senior content marketing strategist with 10 years\' experience" → Claude wrote with authority instead of generic AI voice.',
+              '**Context** — "Punjab sweets shop, Diwali/Karva Chauth families, ₹3,000 budget" → every caption referenced festivals, culture, and budget-aware tactics.',
+              '**Task** — "5 Instagram caption ideas that drive Diwali pre-orders" → output was decisive and on-brief, not a generic dump.',
+              '**Format** — "caption + best emoji + specific CTA" → structured output you can copy-paste straight into Instagram.',
+            ],
+          },
+          yourTurnTemplate: `Act as a senior content marketing strategist with 10 years' experience.
+
+Context: I run a [YOUR BUSINESS — e.g. saree boutique, fitness studio, tutoring centre] in [YOUR CITY/TOWN]. My target customers are [YOUR CUSTOMERS — e.g. working women aged 25-40]. My ad budget is ₹[YOUR BUDGET] per month.
+
+Task: Write 5 [PLATFORM — Instagram / WhatsApp / Facebook] captions that drive [YOUR GOAL — bookings / orders / signups].
+
+Format: For each caption give me:
+- Full caption text (under 180 characters)
+- The single best emoji to use
+- A specific CTA (DM, WhatsApp, link)`,
+          yourTurnHeadline: 'Now write your own RCTF prompt',
+          yourTurnBody: 'Reading examples doesn\'t teach the skill — writing one for your own business or idea does. Click below to swap in a template, fill in YOUR details, and generate again.',
+        },
       },
       {
         session: 4,
@@ -97,6 +339,92 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'Chain-of-thought prompting helps AI…', options: ['Write shorter answers', 'Reason step-by-step through problems', 'Use less energy'], answer: 1 },
           { q: 'A prompt library is useful because…', options: ['It costs less', 'It saves time by reusing proven prompts', 'AI prefers libraries'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Clone a Brand Voice with Few-Shot',
+          taskDescription: 'Teach Claude a specific writing style using 3 examples — then watch it write 5 new pieces in the exact same voice.',
+          timeEstimate: 'Takes 3 minutes',
+          // Short, focused starter — the 3 examples now live in `examples`
+          // (rendered as cards above the textarea) so the user isn't drowning
+          // in text before they can hit Generate.
+          starterPrompt: `Write 5 NEW product descriptions in the exact same voice as the examples above for these products:
+
+1. Cold-pressed coconut oil for hair, 200ml
+2. Handmade Punjabi juttis, men's black, size 9
+3. Wildflower honey from Kullu, 500g
+4. Cotton kurta, ivory white, size M
+5. Organic raw sweetcorn, 1kg`,
+          proTipChips: ['Examples', 'Pattern', 'Voice'],
+          outroLine: 'You taught the AI a brand voice from 3 examples — that\'s a real freelance skill.',
+          outputHeadline: '✨ AI Has Learned Your Brand Voice',
+          successHeadline: 'You\'ve trained AI on your own brand voice.',
+          continueButtonLabel: 'Use this voice for your product → Continue to Session 5',
+          examples: {
+            intro: 'Read these 3 examples carefully — Claude will study them and clone the voice.',
+            visibleByDefault: 1,
+            items: [
+              {
+                label: 'Hand-pressed Patiala mustard oil, 250ml',
+                text: 'Strong roots, ancient method. Cold-pressed in clay drums for 90 days. Three drops before bath, two months to see thicker hair. ₹299. Made in our village, not a factory.',
+              },
+              {
+                label: 'Handloom Phulkari dupatta, mustard yellow',
+                text: 'Stitched by Amritsar grandmothers. Each thread takes 4 hours. Lasts a generation if you don\'t wash it in cold water. ₹2,400. Only 12 made this season.',
+              },
+              {
+                label: 'Organic ajwain, 100g',
+                text: 'From the same field your grandmother bought from. No pesticides, sun-dried for 6 days. Half a teaspoon after dinner — your stomach will thank you. ₹149. We ship Tuesday and Friday.',
+              },
+            ],
+          },
+          refinementChips: [
+            { label: '💎 Make voice more luxe', instruction: 'Now rewrite the 5 new descriptions in a more premium / luxury voice while keeping the same length and structure.' },
+            { label: '✂️ Under 30 words each', instruction: 'Now compress each of the 5 descriptions to under 30 words while keeping the voice and key sensory details.' },
+            { label: '💰 Add price psychology', instruction: 'Now rewrite each with a small psychological hook (scarcity, social proof, anchor) — keep the same voice.' },
+          ],
+          realWorldActions: [
+            { label: '📋 Copy this output', action: { type: 'copy' } },
+            { label: '📧 Email it to myself', action: { type: 'email' } },
+          ],
+          // Comparison reframed for voice cloning: the LEFT card shows the
+          // SOURCE examples (the original style), the RIGHT card shows the
+          // generated output. Student instantly sees the voice transfer.
+          comparison: {
+            basicPromptLabel: 'The voice from your 3 source examples',
+            basicOutput: `**Patiala mustard oil:** "Strong roots, ancient method. Cold-pressed in clay drums for 90 days. ₹299. Made in our village, not a factory."
+
+**Phulkari dupatta:** "Stitched by Amritsar grandmothers. Each thread takes 4 hours. ₹2,400. Only 12 made this season."
+
+**Organic ajwain:** "From the same field your grandmother bought from. ₹149. We ship Tuesday and Friday."`,
+            leftHeader: '📚 Your 3 source examples',
+            rightHeader: '✨ AI matched the voice',
+            leftSubLabel: 'Original style',
+            rightSubLabel: 'Generated style',
+          },
+          whyItWorked: {
+            heading: 'Why your few-shot prompt cloned the voice perfectly',
+            bullets: [
+              '**3 examples > 50 instructions** — you taught Claude the *pattern* (sentence rhythm, what to mention) instead of explaining rules.',
+              '**Specificity transferred** — Claude copied the small details: ₹ price format, location mention, "ship Tuesday and Friday"-style proof.',
+              '**No "premium" or "engaging" filler** — your examples didn\'t use those words, so Claude didn\'t either.',
+              '**Voice consistency** — all 5 outputs read like the same person wrote them, because they were trained on the same 3 examples.',
+            ],
+          },
+          // Your Turn keeps the full bracketed prompt inline (since the user
+          // is now editing the examples themselves). Examples cards hide once
+          // they enter Your Turn mode.
+          // Just the items list — examples cards above stay visible, so the
+          // student only edits the 5 product names. One small action, real
+          // ownership: "I got descriptions for MY actual products in this voice."
+          yourTurnTemplate: `Write 5 NEW product descriptions in the exact same voice as the examples above for these products:
+
+1. [YOUR PRODUCT 1 — e.g. "Saffron-infused mustard oil, 200ml"]
+2. [YOUR PRODUCT 2]
+3. [YOUR PRODUCT 3]
+4. [YOUR PRODUCT 4]
+5. [YOUR PRODUCT 5]`,
+          yourTurnHeadline: 'Now generate this for YOUR products',
+          yourTurnBody: 'Replace the 5 product names in the textarea with your own — Claude will write descriptions for them in the exact same voice. That\'s the moment the skill becomes yours.',
+        },
       },
       {
         session: 5,
@@ -111,6 +439,72 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'Claude is known for being especially…', options: ['Fast at math', 'Safe and nuanced in responses', 'Best for image generation'], answer: 1 },
           { q: 'When should you use both ChatGPT and Claude?', options: ['Never, pick one', 'When you want to compare outputs for quality', 'Only for coding'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Design Your First Custom GPT',
+          taskDescription: 'Get a complete Custom GPT spec you can paste into ChatGPT in 2 minutes — a real freelance product.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Design a Custom GPT for this use case:
+
+A WhatsApp tone polisher for small Punjab business owners. They paste rough Punjabi/English business messages, and it returns polished, polite, customer-friendly versions ready to send.
+
+Give me the complete Custom GPT spec ready to paste into ChatGPT.`,
+          proTipChips: ['User', 'Task', 'Output format'],
+          outroLine: 'You built your first AI tool — paste it in ChatGPT and it works for you 24/7.',
+          outputHeadline: '✨ Your Ready-to-Use AI Assistant',
+          successHeadline: 'You just built your first AI tool.',
+          continueButtonLabel: 'Test it with your own message → Continue to Session 6',
+          refinementChips: [
+            { label: '🇮🇳 Add Punjabi/Hindi handling', instruction: 'Now strengthen the instructions to handle Punjabi (Gurmukhi) and Hindi inputs with cultural nuance — not just translation.' },
+            { label: '🎯 Niche to one industry', instruction: 'Now niche this GPT specifically for sweets shop owners (festivals, pre-orders, family customers) instead of general business.' },
+            { label: '💼 Make it sellable', instruction: 'Now add a brief "How to monetise this GPT" section — how a freelancer could charge ₹500/month for access.' },
+          ],
+          // Primary action: open ChatGPT's GPT Builder with the spec already
+          // copied — user pastes, tests, and walks away with a working tool.
+          realWorldActions: [
+            { label: '🚀 Open ChatGPT GPT Builder', action: { type: 'open-url', url: 'https://chatgpt.com/gpts/editor', copyFirst: true } },
+            { label: '📋 Copy spec only', action: { type: 'copy' } },
+            { label: '📧 Email to myself', action: { type: 'email' } },
+          ],
+          testReflection: {
+            headline: '✅ You tested your AI assistant',
+            prompt: 'What improved in YOUR message?',
+            hint: 'Most users notice Tone & Clarity first.',
+            chips: ['Tone', 'Clarity', 'Professionalism', 'Translation', 'Politeness'],
+            identityLine: 'You just improved a real message using AI — this is a skill you can use daily.',
+          },
+          comparison: {
+            basicPromptLabel: 'Make me a custom GPT for messaging.',
+            basicOutput: `**Name:** Message Helper
+
+**Description:** A GPT that helps you write messages.
+
+**Instructions:** You are a helpful AI that writes good messages for users. Be friendly and helpful. Make sure messages are clear.
+
+**Conversation Starters:** Help me write a message`,
+            leftHeader: '🔸 Vague request',
+            rightHeader: '🔹 With a clear use-case',
+            leftSubLabel: 'Useless GPT',
+            rightSubLabel: 'Real freelance product',
+          },
+          whyItWorked: {
+            heading: 'Why your prompt produced a usable Custom GPT',
+            bullets: [
+              '**Specific user** — "Punjab business owners" is actionable; "users" is not.',
+              '**Concrete task** — "polish rough Punjabi/English messages" defines the input AND output, not just a vibe.',
+              '**Cultural anchor** — naming the language and customer type forces real instructions, not generic ones.',
+              '**Output frame** — asking for the spec "ready to paste" forces the right structure (Name, Description, Instructions, Starters).',
+            ],
+          },
+          yourTurnTemplate: `Design a Custom GPT for this use case:
+
+[YOUR USE CASE — describe (a) WHO uses it, (b) WHAT they paste in, (c) WHAT they get back]
+
+For example: "A bio-rewriter for Punjab handloom boutique owners. They paste their current Instagram bio. It returns 3 stronger versions with festival hooks and a clear CTA."
+
+Give me the complete Custom GPT spec ready to paste into ChatGPT.`,
+          yourTurnHeadline: 'Now build YOUR own AI tool',
+          yourTurnBody: 'Pick a real workflow you (or a friend) repeat weekly — describe the user, what they paste in, what they get back. Walk away with a usable AI tool you can paste into ChatGPT today.',
+        },
       },
       {
         session: 6,
@@ -125,6 +519,86 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'AI can help improve your resume by…', options: ['Adding fake experience', 'Optimizing for keywords and clarity', 'Changing your name'], answer: 1 },
           { q: 'Which tone is best for a client proposal?', options: ['Casual and funny', 'Professional and solution-focused', 'Very formal and long'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Write a Client Proposal That Wins',
+          taskDescription: 'Generate a complete client proposal — sectioned, persuasive, send-ready. The single most valuable freelance document.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Write a client proposal for this scenario:
+
+CLIENT: A small Punjab sweets shop owner (Diwali pre-order season approaching, never used AI)
+SERVICE I OFFER: AI-powered Diwali Instagram marketing — 5 Reels per week + 15 captions + 2 carousel ads
+PRICING: ₹15,000 per month
+TIMELINE: Start Oct 1, 6-week Diwali sprint
+ME: 3 portfolio pieces, AI-trained at TARAhut, based in Kotkapura
+
+Write a proposal that wins this client.`,
+          proTipChips: ['Their problem', 'Your solution', 'Investment'],
+          outroLine: 'You have a complete proposal you could send to a real client tomorrow.',
+          outputHeadline: '✨ Your Client Proposal — Send-Ready',
+          successHeadline: 'This is a real proposal you can send today to get your first client.',
+          continueButtonLabel: 'Send your first proposal → Continue to Session 7',
+          useWhereHint: '📤 Send this to a real local business via:',
+          sendCommit: {
+            prompt: 'Did you send this to a real business?',
+            yesLabel: '✅ Yes, sent it',
+            noLabel: '🤔 Not yet',
+            yesReinforcement: '🚀 You just took your first real step toward getting a client.',
+            noNudge: '👋 Pick one local business and send it now — it takes 30 seconds.',
+          },
+          refinementChips: [
+            { label: '✂️ Cut to one page', instruction: 'Now compress this to fit on a single A4 page (under 350 words) without losing the persuasive hooks.' },
+            { label: '🎁 Add a free trial offer', instruction: 'Now add a "Try me first" section offering 1 free Reel before commitment, with terms.' },
+            { label: '📱 Make it WhatsApp-friendly', instruction: 'Now reformat as a WhatsApp message thread (3-5 short messages) instead of a formal proposal.' },
+          ],
+          // Channel-specific send buttons — the hint above introduces them.
+          // Instagram + LinkedIn don't have direct-DM URL schemes, so we open
+          // their messaging inboxes after copying the proposal so the user
+          // can paste straight in.
+          realWorldActions: [
+            { label: '💬 Send via WhatsApp', action: { type: 'whatsapp' } },
+            { label: '📧 Email to prospect', action: { type: 'email' } },
+            { label: '📩 Open Instagram DM', action: { type: 'open-url', url: 'https://www.instagram.com/direct/inbox/', copyFirst: true } },
+            { label: '💼 Open LinkedIn DM', action: { type: 'open-url', url: 'https://www.linkedin.com/messaging/', copyFirst: true } },
+            { label: '📋 Copy', action: { type: 'copy' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Write a client proposal for Diwali Instagram marketing.',
+            basicOutput: `**Proposal for Diwali Instagram Marketing**
+
+Dear Sir,
+
+I would like to provide you with our Instagram marketing services for the upcoming Diwali season. We offer high-quality content creation including reels, captions, and carousel ads that will drive engagement for your business.
+
+Our pricing is competitive and we deliver excellent results. Please let me know if you are interested.
+
+Thank you,
+[Name]`,
+            leftHeader: '🔸 Generic proposal',
+            rightHeader: '🔹 With sectioned structure',
+            leftSubLabel: 'Won\'t win the client',
+            rightSubLabel: 'Send-ready',
+          },
+          whyItWorked: {
+            heading: 'Why your structured proposal lands the deal',
+            bullets: [
+              '**Their problem first** — you led with their pain (Diwali season, no AI experience), not your service.',
+              '**Specific deliverables** — "5 Reels per week" beats "high-quality content".',
+              '**Investment frame** — "₹15,000/month" presented as ROI, not cost.',
+              '**Local proof** — Kotkapura + TARAhut credibility resonates with Punjab business owners.',
+            ],
+          },
+          yourTurnTemplate: `Write a client proposal for this scenario:
+
+CLIENT: [YOUR PROSPECT — describe their business + situation]
+SERVICE I OFFER: [WHAT YOU\'RE SELLING — be specific about deliverables]
+PRICING: [YOUR PRICE — monthly fee or project fee]
+TIMELINE: [WHEN YOU START + HOW LONG]
+ME: [YOUR CREDIBILITY — portfolio, training, location]
+
+Write a proposal that wins this client.`,
+          yourTurnHeadline: 'Now write a proposal for YOUR real prospect',
+          yourTurnBody: 'Pick someone you actually want as a client (a friend\'s business, a local shop, a LinkedIn connection). Replace the brackets with their real details, then generate.',
+        },
       },
       {
         session: 7,
@@ -139,6 +613,52 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'NotebookLM lets you…', options: ['Generate images from text', 'Chat with your own uploaded documents', 'Schedule social media posts'], answer: 1 },
           { q: 'Why are citations important in AI research?', options: ['They make documents longer', 'They let you verify the source and accuracy', 'AI requires them to function'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Generate a Research Brief',
+          taskDescription: 'Get a structured research brief on any business topic — with verification pointers so you don\'t get fooled by AI hallucinations.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Research brief on this topic:
+
+TOPIC: AI adoption in small Punjab businesses (fewer than 50 employees)
+AUDIENCE: An AI freelancer writing a pitch for local clients
+WHAT I NEED: What's working, what's not, and 3 specific opportunities I can sell against
+
+Format the brief so I can use it in a sales conversation tomorrow.`,
+          proTipChips: ['Topic', 'Audience', 'Use case'],
+          outroLine: 'You have a research-grade brief in 2 minutes — what used to take 4 hours.',
+          outputHeadline: '✨ Your Research Brief — Sales-Ready',
+          successHeadline: 'This is how you sound like an expert without years of experience.',
+          continueButtonLabel: 'Use this to start a real conversation → Continue to Session 8',
+          useWhereHint: '📤 Use ONE insight from above to start a real conversation today:',
+          intentCommit: {
+            reinforcement: 'Say the opener line above out loud once — then send it or use it in your next conversation.',
+            ctaLabel: '✔ I\'ll use this today',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Do it now — tap WhatsApp below and send one message (takes 60 seconds)',
+          },
+          refinementChips: [
+            { label: '🎯 Narrow to one industry', instruction: 'Now narrow the brief specifically to Punjab sweets shops (festival-driven retail) — drop everything not relevant to that niche.' },
+            { label: '📊 Add data points', instruction: 'Now add 5 specific numbers / statistics I can quote (acknowledge if uncertain — never invent stats).' },
+            { label: '❓ Add objection handlers', instruction: 'Now add 3 likely objections from a hesitant client + a one-line response to each.' },
+          ],
+          // Channel openers (no pre-fill) — the user is meant to extract ONE
+          // insight and start a conversation in their OWN words. We open the
+          // channel; they bring the insight + the human voice.
+          realWorldActions: [
+            { label: '💬 Open WhatsApp', action: { type: 'open-url', url: 'https://web.whatsapp.com/' } },
+            { label: '📧 Open Email', action: { type: 'open-url', url: 'mailto:' } },
+            { label: '📋 Copy brief for reference', action: { type: 'copy' } },
+          ],
+          yourTurnTemplate: `Research brief on this topic:
+
+TOPIC: [YOUR REAL TOPIC — e.g. "Instagram engagement trends for Punjab boutiques in 2026"]
+AUDIENCE: [WHO WILL READ THIS — e.g. "a saree shop owner I'm pitching"]
+WHAT I NEED: [YOUR USE CASE — e.g. "3 hooks I can lead with in a WhatsApp pitch"]
+
+Format the brief so I can use it in a sales conversation tomorrow.`,
+          yourTurnHeadline: 'Now research YOUR real topic',
+          yourTurnBody: 'Pick a topic you need to discuss with a real prospect THIS WEEK — replace the brackets and generate. Then walk into the conversation with ONE insight that makes you sound like the expert in the room.',
+        },
       },
       {
         session: 8,
@@ -153,6 +673,81 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'The rule of thumb for slides is…', options: ['As much text as possible', 'One clear idea per slide', 'Only use images, no text'], answer: 1 },
           { q: 'Canva AI\'s "Magic Design" feature…', options: ['Requires design experience', 'Generates design templates from your content', 'Only works on desktop'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Generate Your Pitch Deck Outline',
+          taskDescription: 'Get an 8-slide pitch deck outline — narrative-driven, slide-by-slide, ready to paste into Gamma.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Generate an 8-slide pitch deck outline for this scenario:
+
+I AM PITCHING: AI-powered Instagram marketing services
+TO: A 45-year-old saree boutique owner in Patiala who wants more young (25-40) customers
+MY FEE: ₹12,000/month
+PITCH LENGTH: 7 minutes
+GOAL: Get a 30-day trial signed today
+
+Deck must be narrative — each slide builds on the last.`,
+          proTipChips: ['Audience', 'Goal', 'Length'],
+          outroLine: 'You have a narrative deck outline ready to present to a real client.',
+          outputHeadline: '✨ Your Pitch Deck — 8 Slides, Story-Driven',
+          successHeadline: 'This is a pitch you can use to close a real client.',
+          continueButtonLabel: 'Present this to a real client → Continue to Session 9',
+          useWhereHint: '📤 Use this in: 🤝 in-person meeting · 📱 WhatsApp PDF · 💻 Zoom call',
+          intentCommit: {
+            reinforcement: 'Run through your hook slide out loud once — then book one real client meeting this week to present it.',
+            ctaLabel: '✔ I\'ll present this this week',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Build it now — tap "Build in Gamma" below (2 mins)',
+          },
+          refinementChips: [
+            { label: '⏱️ Cut to 5 slides', instruction: 'Now compress this to a 5-slide version for a 3-minute pitch — keep only what drives the close.' },
+            { label: '📈 Add a results slide', instruction: 'Now add a slide showing 2 hypothetical 30/60/90-day result projections so the prospect sees a clear payoff.' },
+            { label: '🎨 Add visual direction', instruction: 'Now add a 1-line visual/imagery direction for each slide (mood, photo style, key visual).' },
+          ],
+          // Channel openers — Gamma + Canva are the build tools. Both copy
+          // the outline first so the user pastes straight in. Email for
+          // sharing as a doc, Copy for clipboard-only.
+          realWorldActions: [
+            { label: '🚀 Build in Gamma', action: { type: 'open-url', url: 'https://gamma.app/create', copyFirst: true } },
+            { label: '🎨 Build in Canva', action: { type: 'open-url', url: 'https://www.canva.com/create/presentations/', copyFirst: true } },
+            { label: '📧 Email outline', action: { type: 'email' } },
+            { label: '📋 Copy outline', action: { type: 'copy' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Make me a pitch deck for Instagram marketing.',
+            basicOutput: `**Slide 1:** Introduction
+**Slide 2:** About Us
+**Slide 3:** Services
+**Slide 4:** Why Instagram?
+**Slide 5:** Pricing
+**Slide 6:** Portfolio
+**Slide 7:** Contact
+**Slide 8:** Thank You`,
+            leftHeader: '🔸 Generic structure',
+            rightHeader: '🔹 With audience + goal',
+            leftSubLabel: 'Won\'t close',
+            rightSubLabel: 'Closes',
+          },
+          whyItWorked: {
+            heading: 'Why your deck outline actually flows',
+            bullets: [
+              '**Specific audience** — "45-year-old saree boutique owner" forces angle on age-gap (their customers are getting younger).',
+              '**Concrete goal** — "Sign 30-day trial today" makes every slide work toward closing, not informing.',
+              '**Time constraint** — 7 min limits to 8 slides, forces ruthless cuts.',
+              '**Narrative mandate** — each slide builds, no orphan "About Us" slides that break flow.',
+            ],
+          },
+          yourTurnTemplate: `Generate an 8-slide pitch deck outline for this scenario:
+
+I AM PITCHING: [YOUR SERVICE]
+TO: [YOUR PROSPECT — age, business, what they want]
+MY FEE: [YOUR PRICE]
+PITCH LENGTH: [YOUR TIME]
+GOAL: [YOUR CLOSE — what action do they take by end?]
+
+Deck must be narrative — each slide builds on the last.`,
+          yourTurnHeadline: 'Now outline YOUR real pitch deck',
+          yourTurnBody: 'Pick a real prospect you want to close THIS WEEK. Replace the brackets with their details. Then build the deck in Gamma or Canva and present it — that\'s how the skill becomes income.',
+        },
       },
       {
         session: 9,
@@ -167,6 +762,78 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A good image prompt includes…', options: ['Just the subject name', 'Subject, style, mood, and composition', 'Only colors'], answer: 1 },
           { q: 'AI-generated images can be used for…', options: ['Only personal use', 'Business branding, marketing, and content (check license)', 'Nothing commercial'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Build 5 Pro Midjourney Prompts',
+          taskDescription: 'Get 5 production-quality Midjourney prompts with style, lighting, composition, and aspect ratio — copy-paste ready.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Generate 5 Midjourney prompts for this campaign:
+
+USE CASE: Instagram square ads for a Punjab handloom Phulkari boutique
+AUDIENCE: Indian women aged 25-40 who love festive wear
+GOAL: Drive boutique walk-ins for the Karva Chauth season
+EACH PROMPT MUST DIFFER in mood/angle (not 5 variations of the same shot)
+
+Format each as a complete Midjourney prompt with style modifiers and aspect ratio (1:1).`,
+          proTipChips: ['Subject', 'Style', 'Composition'],
+          outroLine: 'You have 5 publish-ready image prompts that took pros hours to write.',
+          outputHeadline: '✨ Your 5 Midjourney Prompts — Ready to Generate',
+          successHeadline: 'These are ready-to-use prompts for real campaign visuals.',
+          continueButtonLabel: 'Generate your first images → Continue to Session 10',
+          useWhereHint: '📤 Use these for: 📸 Instagram ads · 📱 WhatsApp creatives · 🖼️ product banners',
+          finishLine: {
+            primary: '🏁 Generate 3-5 images per prompt and pick 1 you\'d actually post today.',
+            microNudge: '💡 Start with Prompt 1 — it\'s your strongest angle.',
+            followThroughNudge: '📲 Post it on Instagram or send it on WhatsApp now — this is where it turns into results.',
+          },
+          refinementChips: [
+            { label: '🎬 Switch to cinematic style', instruction: 'Now rewrite all 5 in a cinematic / editorial photography style instead of commercial product photography.' },
+            { label: '📱 Make 4:5 portrait', instruction: 'Now adjust all 5 prompts for Instagram Reels covers — 4:5 aspect ratio, vertical composition.' },
+            { label: '🌅 Add seasonal lighting', instruction: 'Now add specific golden-hour Diwali lighting (warm, festive, lamplit) to each prompt.' },
+          ],
+          // Channel openers — direct launchers into the image-generation
+          // tools, with prompts copied first so the user pastes straight in.
+          realWorldActions: [
+            { label: '🎨 Open Midjourney', action: { type: 'open-url', url: 'https://www.midjourney.com/imagine', copyFirst: true } },
+            { label: '✨ Open Ideogram', action: { type: 'open-url', url: 'https://ideogram.ai/t/explore', copyFirst: true } },
+            { label: '🖌 Open Leonardo', action: { type: 'open-url', url: 'https://app.leonardo.ai/image-generation', copyFirst: true } },
+            { label: '📋 Copy all prompts', action: { type: 'copy' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Phulkari boutique Instagram ads.',
+            basicOutput: `1. A Phulkari dupatta on a model. Bright colors. Beautiful style.
+
+2. Indian woman wearing a Phulkari dupatta. Festive look.
+
+3. Phulkari Indian fashion. Traditional style. High quality.
+
+4. Beautiful Phulkari design. Punjab fashion. Pretty model.
+
+5. Indian festive wear. Phulkari embroidery. Stunning visuals.`,
+            leftHeader: '🔸 Vague prompts',
+            rightHeader: '🔹 With style + composition',
+            leftSubLabel: 'AI guesses',
+            rightSubLabel: 'AI delivers',
+          },
+          whyItWorked: {
+            heading: 'Why your prompts produced usable images',
+            bullets: [
+              '**Use case anchored** — "boutique walk-ins for Karva Chauth" forces seasonal mood, not generic "fashion".',
+              '**Audience-specific** — "Indian women 25-40, festive" filters out wedding-couture / runway / Western styles.',
+              '**Style modifiers** — naming the photography style (commercial, editorial, candid) makes Midjourney consistent.',
+              '**Differentiated angles** — mandating each prompt differs prevents 5 variations of the same shot.',
+            ],
+          },
+          yourTurnTemplate: `Generate 5 Midjourney prompts for this campaign:
+
+USE CASE: [YOUR USE CASE — e.g. "Instagram ads for my Bathinda fitness studio"]
+AUDIENCE: [YOUR TARGET — e.g. "women 30-45 who want to lose weight after pregnancy"]
+GOAL: [YOUR GOAL — e.g. "drive trial class signups"]
+EACH PROMPT MUST DIFFER in mood/angle.
+
+Format each as a complete Midjourney prompt with style modifiers and aspect ratio.`,
+          yourTurnHeadline: 'Now write prompts for YOUR real campaign',
+          yourTurnBody: 'Pick a real campaign you (or a friend) is running THIS WEEK. Fill in the brackets, generate the 5 prompts, then run them in Midjourney or Ideogram — your first publishable AI visuals.',
+        },
       },
       {
         session: 10,
@@ -181,6 +848,60 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A 60-second brand video should focus on…', options: ['Every feature of your product', 'One clear message or call-to-action', 'Only showing your logo'], answer: 1 },
           { q: 'CapCut is used for…', options: ['Writing scripts', 'Editing and enhancing video content', 'Generating avatars'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Write a 60-Second Promo Script',
+          taskDescription: 'Generate a 60-second video script with shot list — Hook → Value → Proof → CTA — ready for HeyGen or CapCut.',
+          timeEstimate: 'Takes 2 minutes',
+          starterPrompt: `Write a 60-second promo video script for this scenario:
+
+PRODUCT: A Punjab sweets shop launching Diwali pre-orders
+TARGET VIEWER: Punjabi families ordering 1-2 weeks before Diwali
+GOAL: Drive WhatsApp pre-orders before festival rush
+PLATFORM: Instagram Reels + WhatsApp status
+
+Script must follow 5-sec HOOK → 30-sec VALUE → 15-sec PROOF → 10-sec CTA. Include a shot list per beat.`,
+          proTipChips: ['Hook', 'Value', 'CTA'],
+          outroLine: 'You have a video script ready to record and post today — what used to take a copywriter ₹8,000.',
+          outputHeadline: '✨ Your 60-Second Video Script — Ready to Record',
+          successHeadline: 'This is a video you can record and post today to get real customers.',
+          continueButtonLabel: 'Post your first video → Continue to Session 11',
+          useWhereHint: '📤 Use this for: 🎥 Instagram Reels · 📱 WhatsApp Status · ▶️ YouTube Shorts',
+          intentCommit: {
+            reinforcement: 'Read your hook out loud once — then record it in 1-2 takes today. Don\'t wait for the perfect moment.',
+            ctaLabel: '✔ I\'ll record and post this today',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Record it now — tap CapCut below and capture your hook (60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Record this in 1-2 takes — don\'t aim for perfect, aim for posted.',
+            microNudge: '💡 Start with the Hook only — once you record the first 5 seconds, the rest flows.',
+            followThroughNudge: '📲 Post it now on Reels or WhatsApp Status — that\'s where this turns into leads.',
+          },
+          refinementChips: [
+            { label: '⏱️ Make it 30-second', instruction: 'Now compress to a 30-second version — keep the hook and CTA, halve the value section.' },
+            { label: '🇮🇳 Punjabi voiceover', instruction: 'Now rewrite the dialogue in Punjabi (Gurmukhi script) — keep the same beats.' },
+            { label: '😊 Add humour', instruction: 'Now add one quick humour beat in the hook (relatable family Diwali moment) — keep the rest serious.' },
+          ],
+          // Channel openers — tap straight into the recording / editing tool
+          // with the script copied first. CapCut is mobile-native + free,
+          // HeyGen is the AI-avatar route. Both are first-step options.
+          realWorldActions: [
+            { label: '🎬 Open CapCut', action: { type: 'open-url', url: 'https://www.capcut.com/editor', copyFirst: true } },
+            { label: '🎥 Open HeyGen', action: { type: 'open-url', url: 'https://app.heygen.com/create', copyFirst: true } },
+            { label: '📋 Copy script', action: { type: 'copy' } },
+            { label: '📧 Email script', action: { type: 'email' } },
+          ],
+          yourTurnTemplate: `Write a 60-second promo video script for this scenario:
+
+PRODUCT: [YOUR PRODUCT/SERVICE]
+TARGET VIEWER: [WHO\'S WATCHING — be specific]
+GOAL: [WHAT ACTION YOU WANT THEM TO TAKE]
+PLATFORM: [WHERE IT\'LL POST — Reels / YouTube / WhatsApp]
+
+Script must follow 5-sec HOOK → 30-sec VALUE → 15-sec PROOF → 10-sec CTA. Include a shot list per beat.`,
+          yourTurnHeadline: 'Now write a script for YOUR real video',
+          yourTurnBody: 'Pick a video you\'ll record TODAY — for your business or your first client. Fill in the brackets, generate the script, then record it in 1-2 takes. The skill becomes income only when you post.',
+        },
       },
       {
         session: 11,
@@ -195,6 +916,62 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A content calendar helps you…', options: ['Post randomly when inspired', 'Plan and schedule consistent content', 'Delete old posts'], answer: 1 },
           { q: 'For social media, shorter content tends to…', options: ['Perform worse', 'Perform better due to attention spans', 'Only work on Twitter'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Build a 7-Day Content Calendar',
+          taskDescription: 'Get a complete 7-day Instagram calendar — daily hook, body, CTA, hashtags, format, post time. Stop guessing what to post.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Build a 7-day Instagram content calendar for this account:
+
+ACCOUNT: A new AI freelance content writer based in Bathinda
+AUDIENCE: Small Punjab business owners (sweets shops, boutiques, coaching centres)
+GOAL: Get 3 enquiries by Day 7
+TONE: Friendly expert, locally rooted
+
+Each day must have: hook (first line), body (1-2 sentences), CTA, 5 hashtags, format (Reel / Carousel / Static / Story), best post time. Vary formats across the week.`,
+          proTipChips: ['Audience', 'Goal', 'Format mix'],
+          outroLine: 'You have 7 days of posts ready to publish — what most freelancers spend Sunday agonising over.',
+          outputHeadline: '✨ Your 7-Day Content Calendar — Schedule-Ready',
+          successHeadline: 'This is a week of content you can start posting today to attract real customers.',
+          continueButtonLabel: 'Post your first content → Continue to Session 12',
+          useWhereHint: '📤 Use this on: 📸 Instagram · 📱 WhatsApp Status · 🎥 Reels · 🧵 Stories',
+          intentCommit: {
+            reinforcement: 'Pick Day 1 and post it today — don\'t wait for the perfect week. One post starts the streak.',
+            ctaLabel: '✔ I\'ll post Day 1 today',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Open Instagram below and publish your first post now (60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Don\'t try to post all 7 — just publish Day 1 now.',
+            microNudge: '💡 Come back tomorrow and follow Day 2 — consistency beats planning.',
+            followThroughNudge: '📲 7 days = visibility → visibility = inquiries — start today.',
+          },
+          refinementChips: [
+            { label: '🎯 Aim for one viral post', instruction: 'Now rewrite Day 4 to be a high-shareability post (controversial take, surprising insight, before/after) designed to boost reach.' },
+            { label: '📊 Add weekly theme', instruction: 'Now wrap all 7 days in a single weekly theme that builds story arc — Day 1 introduces, Day 7 closes.' },
+            { label: '🎬 More Reels', instruction: 'Now switch the static posts to Reels — give a quick visual / hook idea for each.' },
+          ],
+          // Posting-first action set — Instagram + WhatsApp foreground the
+          // distribution moment, "Copy Day 1 post" uses the new sectionMatch
+          // copy so the user only gets Day 1 (not the full 7-day wall),
+          // matching Day-1-first psychology. Email handles the full calendar
+          // as a secondary utility.
+          realWorldActions: [
+            { label: '📸 Open Instagram', action: { type: 'open-url', url: 'https://www.instagram.com/' } },
+            { label: '💬 Open WhatsApp', action: { type: 'open-url', url: 'https://web.whatsapp.com/' } },
+            { label: '📋 Copy Day 1 post', action: { type: 'copy', sectionMatch: 'Day 1' } },
+            { label: '📧 Email full calendar', action: { type: 'email' } },
+          ],
+          yourTurnTemplate: `Build a 7-day Instagram content calendar for this account:
+
+ACCOUNT: [YOUR ACCOUNT — what business + where based]
+AUDIENCE: [YOUR TARGET CUSTOMERS]
+GOAL: [WHAT WIN BY DAY 7 — DMs, enquiries, follows, sales]
+TONE: [YOUR VOICE — friendly, formal, witty, etc.]
+
+Each day must have: hook, body, CTA, 5 hashtags, format, best post time. Vary formats.`,
+          yourTurnHeadline: 'Now build a calendar for YOUR account',
+          yourTurnBody: 'Start your 7-day posting streak THIS WEEK — one post per day is how this turns into clients. Replace the brackets with your real account, generate the calendar, then post Day 1 today.',
+        },
       },
       {
         session: 12,
@@ -209,6 +986,61 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'Brand consistency means…', options: ['Using the same tool every day', 'Looking and sounding the same across all platforms', 'Only using one color'], answer: 1 },
           { q: 'When creating for a local business, you should…', options: ['Copy a global brand style', 'Research the local audience and competitors first', 'Use the most trendy design'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Generate Your Complete Brand Kit',
+          taskDescription: 'Get a full brand identity in 3 minutes — name analysis, mission, voice, colors, tagline, bio, logo direction. What designers charge ₹15,000 for.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Generate a complete brand kit for this business:
+
+BUSINESS NAME: Nibble (Instagram handle: @nibble.ai)
+WHAT IT DOES: AI services for small Punjab businesses — content + automation for sweets shops, boutiques, coaching centres
+DESIRED VIBE: Friendly-expert. Locally rooted but tech-forward. Approachable, not corporate.
+FOUNDER: Solo Punjab-based AI freelancer, mid-20s
+
+Give me: name analysis (why this works), mission (1 line), brand voice (3 words + Do/Don't), color palette (3 colors with hex + reasoning), typography vibe, tagline, Instagram bio (under 150 chars), logo direction (3 sentences).`,
+          proTipChips: ['Vibe', 'Audience', 'Local context'],
+          outroLine: 'You have a brand identity ready to go live across every surface — bio, messages, posts.',
+          outputHeadline: '✨ Your Complete Brand Kit — Designer-Quality',
+          successHeadline: 'This is your brand identity — use it today across everything you post and send.',
+          continueButtonLabel: 'Update your brand live → Continue to Session 13',
+          useWhereHint: '📤 Use this in: 📸 Instagram bio · 💬 WhatsApp replies · 📧 client messages · 🎥 video scripts',
+          intentCommit: {
+            reinforcement: 'Update ONE place with this brand today — start with your Instagram bio. One visible change beats a perfect plan.',
+            ctaLabel: '✔ I\'ll update my bio now',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Copy your bio below and paste it into Instagram (takes 60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Don\'t try to apply everything — update your bio first.',
+            microNudge: '💡 Then use this voice in your next post or message today.',
+            followThroughNudge: '📲 Consistency in voice builds trust — that\'s what turns viewers into clients.',
+          },
+          refinementChips: [
+            { label: '🌑 Make it darker / luxe', instruction: 'Now make the entire kit feel premium / luxury — darker palette, more refined voice, aspirational tagline.' },
+            { label: '🇮🇳 Add Hindi/Punjabi tagline', instruction: 'Now add a Hindi (Devanagari) AND Punjabi (Gurmukhi) version of the tagline that locals would actually say.' },
+            { label: '👥 Generate 3 customer personas', instruction: 'Now add 3 specific customer personas (name, age, profession, why they\'d hire) so the brand has someone to speak to.' },
+          ],
+          // Identity-application action set — Instagram profile edit is the
+          // single-most-visible surface to update first; sectionMatch copies
+          // give one-tap access to the bio + tagline (the two most-used kit
+          // elements) without having to scroll through the full kit.
+          realWorldActions: [
+            { label: '📸 Open Instagram (Edit Profile)', action: { type: 'open-url', url: 'https://www.instagram.com/accounts/edit/' } },
+            { label: '💬 Open WhatsApp', action: { type: 'open-url', url: 'https://web.whatsapp.com/' } },
+            { label: '📋 Copy Instagram bio', action: { type: 'copy', sectionMatch: 'Instagram Bio' } },
+            { label: '📋 Copy tagline', action: { type: 'copy', sectionMatch: 'Tagline' } },
+          ],
+          yourTurnTemplate: `Generate a complete brand kit for this business:
+
+BUSINESS NAME: [YOUR NAME + handle]
+WHAT IT DOES: [BUSINESS DESCRIPTION — what + who for]
+DESIRED VIBE: [YOUR AESTHETIC — friendly / luxe / playful / serious / etc.]
+FOUNDER: [WHO YOU ARE — background, location, age range]
+
+Give me: name analysis, mission, brand voice (3 words + Do/Don't), color palette (3 colors with hex + reasoning), typography vibe, tagline, Instagram bio under 150 chars, logo direction.`,
+          yourTurnHeadline: 'Now generate YOUR brand kit',
+          yourTurnBody: 'Apply this brand to your real business THIS WEEK — this is how you stop sounding generic and start being remembered. Replace the brackets with real details, generate, then update your bio today.',
+        },
       },
       {
         session: 13,
@@ -223,6 +1055,77 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A portfolio website should showcase…', options: ['Everything you have ever done', 'Your best 3-5 projects with results', 'Only your resume'], answer: 1 },
           { q: 'No-code tools are useful because…', options: ['They are always free', 'Non-developers can build functional websites quickly', 'They have no limitations'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Write Your Bolt.new Master Prompt',
+          taskDescription: 'Get a complete Bolt.new prompt — sections, copy, design direction, tech stack — paste it and Bolt builds the whole site.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Write a complete Bolt.new prompt for this website:
+
+WHAT: A landing page for an AI freelance content service in Punjab
+SECTIONS NEEDED: Hero / Services (3 cards) / Pricing (₹3K / ₹8K / ₹15K monthly) / Portfolio (3 case studies) / About me / Contact (WhatsApp + form)
+DESIGN DIRECTION: Mobile-first. Punjabi-village warmth (mustard, terracotta tones) with cyan/electric tech accents. Bold sans-serif for headings. Large, friendly typography.
+TECH PREFERENCES: Tailwind CSS. Next.js App Router. Dark mode default.
+
+Output the complete master prompt I can paste into Bolt.new.`,
+          proTipChips: ['Sections', 'Design', 'Tech stack'],
+          outroLine: 'You have a Bolt.new prompt that builds a real website — what costs ₹30K from a freelance dev.',
+          outputHeadline: '✨ Your Bolt.new Master Prompt — Site-Ready',
+          successHeadline: 'This is your first client-ready website draft — live in 90 seconds.',
+          continueButtonLabel: 'Share your live site → Continue to Session 14',
+          useWhereHint: '📤 Share your live site URL on: 📸 Instagram bio · 💼 LinkedIn · 💬 WhatsApp · 📧 email signature',
+          intentCommit: {
+            reinforcement: 'Paste this into Bolt and generate your first version — don\'t edit yet. Done beats perfect.',
+            ctaLabel: '✔ I\'ll generate my first version now',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Tap Open Bolt below — your prompt is already copied. Paste + generate (90 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Don\'t try to make it perfect — just generate the first version.',
+            microNudge: '💡 Review only the Hero and Pricing sections first — leave the rest for later.',
+            followThroughNudge: '📲 Send the live URL to one prospect or add it to your bio today — that\'s where a draft turns into trust.',
+          },
+          refinementChips: [
+            { label: '🎨 Add a colour system', instruction: 'Now add a complete colour system (primary, secondary, accent, background, text, surface) with hex codes for the design.' },
+            { label: '✍️ Generate the copy', instruction: 'Now write the actual hero headline, sub-hero, services copy (3 cards), and CTA text — not just "include hero section".' },
+            { label: '📱 Add micro-interactions', instruction: 'Now add 3 specific micro-interactions (button hovers, scroll reveals, card lifts) that elevate the polish.' },
+          ],
+          // Build-tool launcher — Bolt is foregrounded with copyFirst so the
+          // user pastes straight in. Email + plain copy remain as utility
+          // fallbacks. No "share" button here — sharing happens AFTER Bolt
+          // produces the URL, not from this screen.
+          realWorldActions: [
+            { label: '🚀 Open Bolt.new', action: { type: 'open-url', url: 'https://bolt.new', copyFirst: true } },
+            { label: '📋 Copy prompt', action: { type: 'copy' } },
+            { label: '📧 Email prompt to self', action: { type: 'email' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Build me a website for AI freelance services.',
+            basicOutput: `Build a website with the following: a homepage with information about services, an about page, a contact form, and a portfolio section. Make it look modern and professional. Use a clean design with good colors.`,
+            leftHeader: '🔸 Vague Bolt prompt',
+            rightHeader: '🔹 With sections + design + stack',
+            leftSubLabel: 'Bolt guesses',
+            rightSubLabel: 'Bolt delivers',
+          },
+          whyItWorked: {
+            heading: 'Why your Bolt prompt produced a real website',
+            bullets: [
+              '**Named sections** — Bolt builds what you list; "Hero / Services / Pricing / Portfolio / About / Contact" leaves no ambiguity.',
+              '**Specific copy hints** — "₹3K / ₹8K / ₹15K monthly" gives Bolt real numbers to render, not placeholder lorem.',
+              '**Design direction** — naming the aesthetic (mustard + terracotta + cyan) prevents generic blue-and-white SaaS look.',
+              '**Tech stack** — Tailwind + Next.js App Router locks Bolt into modern, editable code (not legacy frameworks).',
+            ],
+          },
+          yourTurnTemplate: `Write a complete Bolt.new prompt for this website:
+
+WHAT: [YOUR WEBSITE PURPOSE — portfolio / business / landing page]
+SECTIONS NEEDED: [LIST EVERY SECTION you want, in order]
+DESIGN DIRECTION: [YOUR AESTHETIC — colours, vibe, typography style]
+TECH PREFERENCES: [Tailwind / framework preference / dark mode / mobile-first]
+
+Output the complete master prompt I can paste into Bolt.new.`,
+          yourTurnHeadline: 'Now write the prompt for YOUR website',
+          yourTurnBody: 'Pick the website you actually need (your portfolio, a friend\'s business, a side project). Fill in the brackets, generate, then paste into Bolt — your live draft will be ready in 90 seconds.',
+        },
       },
       {
         session: 14,
@@ -237,6 +1140,68 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'When working on a client brief, you should first…', options: ['Start designing immediately', 'Understand the client\'s goals and audience', 'Use as many AI tools as possible'], answer: 1 },
           { q: 'Delivering a complete solution means…', options: ['Sending a rough draft', 'Presenting a polished, client-ready output', 'Using only one AI tool'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Receive a Realistic Client Brief',
+          taskDescription: 'Get a vague-but-realistic client brief PLUS your delivery plan — clarifying questions, scope, timeline, pricing rationale.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Generate a realistic client brief AND my response plan for this scenario:
+
+CLIENT PERSONA: A 50-year-old Patiala bakery owner. Wants "more business". Budget around ₹20K/month. Has never used AI. Sends WhatsApp messages with typos.
+MY SERVICE: AI-powered marketing — content + automation + ads
+MY GOAL: Convert this lead into a paying client this week
+
+Output:
+1. The realistic vague WhatsApp brief he\'d actually send (in his voice)
+2. My 5 clarifying questions before quoting
+3. Proposed scope (3 deliverables, prioritised)
+4. Timeline (30 days, week-by-week)
+5. Pricing rationale (why ₹X is right for THIS client)`,
+          proTipChips: ['Persona', 'Goal', 'Real voice'],
+          outroLine: 'You can now turn vague client messages into structured delivery plans — and reply within minutes.',
+          outputHeadline: '✨ Your Client Reply + Full Delivery Plan',
+          successHeadline: 'This is a real client message — and you\'re ready to reply and close.',
+          continueButtonLabel: 'Send your first reply → Continue to Session 15',
+          useWhereHint: '📤 Send your reply now: 💬 WhatsApp · 📧 Email · 📩 Instagram DM',
+          intentCommit: {
+            reinforcement: 'Send the first reply within 10 minutes — fast replies win clients before competitors even notice the message.',
+            ctaLabel: '✔ I\'ll send my reply now',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Tap WhatsApp below — your first reply is already loaded. Pick the contact + send (60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Send the first reply without overthinking — speed beats perfection.',
+            microNudge: '💡 Ask just 1-2 natural questions in your reply — save the rest for the call.',
+            followThroughNudge: '📲 Move the conversation toward a 5-min call — that\'s where real clients close.',
+          },
+          refinementChips: [
+            { label: '💸 Cut budget to ₹8K', instruction: 'Now adjust scope + pricing assuming the client\'s real budget is ₹8K/month — what 1-2 deliverables make the most ROI sense?' },
+            { label: '⏱️ Speed to 7 days', instruction: 'Now compress to a 7-day "quick win" plan — what can I deliver this week to prove value?' },
+            { label: '🚫 Add red flags', instruction: 'Now add 3 client red flags I should watch for in his replies (signs to walk away before wasting time).' },
+          ],
+          // Reply-first action set — WhatsApp is foregrounded with sectionMatch
+          // so the chat opens with JUST the first reply (not the whole plan).
+          // Copy variants split: first reply (primary) vs full plan (utility).
+          realWorldActions: [
+            { label: '💬 Send first reply via WhatsApp', action: { type: 'whatsapp', sectionMatch: 'Your First Reply' } },
+            { label: '📋 Copy first reply', action: { type: 'copy', sectionMatch: 'Your First Reply' } },
+            { label: '📋 Copy full plan', action: { type: 'copy' } },
+            { label: '📧 Email full plan to self', action: { type: 'email' } },
+          ],
+          yourTurnTemplate: `Generate a realistic client brief AND my response plan for this scenario:
+
+CLIENT PERSONA: [DESCRIBE A REAL PROSPECT — age, business, what they\'d ask, sophistication]
+MY SERVICE: [WHAT YOU OFFER]
+MY GOAL: [WHAT WIN — close, trial, free consult]
+
+Output:
+1. The realistic vague brief he/she\'d actually send (in their voice)
+2. My 5 clarifying questions before quoting
+3. Proposed scope (3 deliverables, prioritised)
+4. Timeline (week-by-week)
+5. Pricing rationale`,
+          yourTurnHeadline: 'Now do this for YOUR real prospect',
+          yourTurnBody: 'Pick someone you actually want to close THIS WEEK. Fill in the brackets — Claude returns a brief in their voice + a real first reply you can send today.',
+        },
       },
       {
         session: 15,
@@ -251,6 +1216,69 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'A strong portfolio presentation should be…', options: ['As long as possible', 'Concise, visual, and story-driven', 'Text-heavy with no visuals'], answer: 1 },
           { q: 'Practicing your presentation helps because…', options: ['It wastes time', 'It builds confidence and reveals weak spots', 'Clients do not care about delivery'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Write Your Hire-Me Page',
+          taskDescription: 'Generate a complete Hire-Me page — hero, services, process, differentiators, testimonial template, CTA. Stop staring at a blank page.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Write a complete Hire-Me page for this freelancer:
+
+NAME / LOCATION: AI freelancer based in Kotkapura, Punjab
+SKILLS: ChatGPT prompting, Canva AI design, content calendars, Bolt.new sites, voice cloning
+EXPERIENCE: 6 months self-taught learning + 3 portfolio pieces (sweets shop campaign, boutique brand kit, coaching centre site)
+TARGET CLIENTS: Small Punjab businesses — sweets, boutique, coaching centres
+VIBE: Friendly, ambitious, family-rooted, locally credible
+
+Output:
+- Hero (hook headline + sub + primary CTA)
+- What I Do (3 service cards with outcome-focused titles)
+- How I Work (3 steps from enquiry to delivery)
+- Why Me (3 differentiators specific to this freelancer)
+- Testimonial template (placeholder a real client could fill)
+- Contact / CTA section`,
+          proTipChips: ['Vibe', 'Outcome focus', 'Specificity'],
+          outroLine: 'You have what you send when someone asks "what do you do?" — sendable today.',
+          outputHeadline: '✨ Your Hire-Me Page — Publish-Ready',
+          successHeadline: 'This is what you send when someone asks what you do.',
+          continueButtonLabel: 'Send your hire-me reply → Continue to Session 16',
+          useWhereHint: '📤 Use this in: 💬 WhatsApp replies · 📸 Instagram bio link · 📧 Email signature · 💼 LinkedIn About',
+          intentCommit: {
+            reinforcement: 'Send the WhatsApp reply to ONE person who asked "what do you do?" today — even if it feels a little awkward. That\'s how this starts working.',
+            ctaLabel: '✔ I\'ll send it to someone today',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Tap WhatsApp below — your reply is already loaded. Pick the contact + send (60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Don\'t publish the whole page first — send the WhatsApp reply to one person now.',
+            microNudge: '💡 Then drop the hero line in your Instagram bio and email signature today.',
+            followThroughNudge: '📲 The page only earns when it\'s in someone\'s inbox or DMs — distribution is the deliverable.',
+          },
+          refinementChips: [
+            { label: '✂️ Cut to 200 words', instruction: 'Now compress the entire page to under 200 words total — keep only what closes.' },
+            { label: '🇮🇳 Bilingual version', instruction: 'Now add a Punjabi (Gurmukhi) version of the hero hook + CTA so locals immediately feel at home.' },
+            { label: '💬 Add an FAQ', instruction: 'Now add 5 honest FAQs (pricing, turnaround, what if it doesn\'t work, what tools used, do you teach me) — direct answers, no fluff.' },
+          ],
+          // Distribution-first action set — WhatsApp reply (sectionMatch
+          // pulls just the chat-ready 30-50 word message), Instagram for bio
+          // updates, plus surgical copies of hero + headline. Full-page copy
+          // / email kept as utility fallbacks.
+          realWorldActions: [
+            { label: '💬 Send WhatsApp reply', action: { type: 'whatsapp', sectionMatch: 'Your WhatsApp Reply' } },
+            { label: '📸 Open Instagram (Edit Profile)', action: { type: 'open-url', url: 'https://www.instagram.com/accounts/edit/' } },
+            { label: '📋 Copy hero (for bio)', action: { type: 'copy', sectionMatch: 'Hero' } },
+            { label: '📋 Copy full page', action: { type: 'copy' } },
+          ],
+          yourTurnTemplate: `Write a complete Hire-Me page for this freelancer:
+
+NAME / LOCATION: [YOUR NAME + WHERE YOU ARE]
+SKILLS: [YOUR ACTUAL SKILLS — list 3-5]
+EXPERIENCE: [YOUR HONEST EXPERIENCE — months learning + portfolio pieces]
+TARGET CLIENTS: [WHO YOU WANT TO SERVE]
+VIBE: [YOUR PERSONALITY — friendly / formal / playful / etc.]
+
+Output: Hero / Services (3 cards) / How I Work (3 steps) / Why Me (3 differentiators) / Testimonial template / CTA.`,
+          yourTurnHeadline: 'Now write YOUR own Hire-Me page',
+          yourTurnBody: 'Replace the brackets with YOUR real skills, location, and target clients. Then send the WhatsApp reply to one person today — that\'s how a page becomes a paying client.',
+        },
       },
       {
         session: 16,
@@ -265,6 +1293,93 @@ export const courseConfigs: Record<string, CourseConfig> = {
           { q: 'Fiverr and Upwork are platforms for…', options: ['Social media only', 'Finding freelance work and clients', 'Hosting websites'], answer: 1 },
           { q: 'A 90-day career plan should include…', options: ['One big goal only', 'Weekly milestones, skill targets, and income goals', 'Only the jobs you want to apply for'], answer: 1 },
         ],
+        playgroundTask: {
+          taskTitle: 'Generate Your First 10 Outreach Messages',
+          taskDescription: 'Get 10 personalised cold outreach messages — different platforms, different angles. Send 5 today and you\'ll have replies by Friday.',
+          timeEstimate: 'Takes 3 minutes',
+          starterPrompt: `Generate 10 cold outreach messages for this freelancer:
+
+WHAT I OFFER: AI content + automation services for small Punjab businesses
+TARGET CUSTOMERS: Sweets shop owners, boutique owners, coaching-centre owners, small restaurants
+MIX OF PLATFORMS: 4 WhatsApp DMs / 3 Instagram DMs / 2 LinkedIn cold messages / 1 cold email
+
+Each message must be DIFFERENT in angle:
+- One curiosity-led ("noticed something specific about their account")
+- One social-proof-led ("just helped a similar business with X result")
+- One pain-led ("I bet you spend 4 hours/week on Y")
+- One observation-led ("your competitor just started doing X")
+- One direct-offer-led ("free 1-hour audit, no pitch")
+- One referral-style ("a mutual contact suggested I reach out")
+- Two more original angles I can choose from
+
+Each message under 80 words, ends with one specific easy next step.`,
+          proTipChips: ['Platform', 'Angle', 'Specific ask'],
+          outroLine: 'You have your first 10 chances at a real client. The first reply is the win.',
+          outputHeadline: '✨ Your 10 Outreach Messages — Send-Ready',
+          successHeadline: 'These are your first 10 chances at a real client — start with Message 1.',
+          continueButtonLabel: 'Send Message 1 today → Earn your certificate',
+          useWhereHint: '📤 Send these on: 💬 WhatsApp · 📩 Instagram DM · 💼 LinkedIn · 📧 Email',
+          intentCommit: {
+            reinforcement: 'Send Message 1 to one prospect today — even if it feels a little awkward. That\'s how your first reply arrives.',
+            ctaLabel: '✔ I\'ll send Message 1 today',
+            confirmedLine: 'Locked in.',
+            nextMicroStep: 'Tap WhatsApp below — Message 1 is loaded. Pick a contact + send (60 seconds)',
+          },
+          finishLine: {
+            primary: '🏁 Don\'t send all 10 — just send Message 1 now.',
+            microNudge: '💡 Start with Message 1 (WhatsApp · Curiosity Hook) — it\'s your safest opener.',
+            followThroughNudge: '📲 Get 1 reply this week — that\'s your first real lead, not just a sent message.',
+          },
+          refinementChips: [
+            { label: '🇮🇳 Punjabi WhatsApp versions', instruction: 'Now rewrite the 4 WhatsApp DMs in Punjabi (Gurmukhi) — keep the same angles, adjust to natural Punjabi business idiom.' },
+            { label: '🎯 Niche to sweets only', instruction: 'Now niche all 10 specifically to sweets shop owners (mention festivals, pre-orders, family customers) — drop other niches.' },
+            { label: '💰 Add follow-up', instruction: 'Now add a polite follow-up message for each (to send 4 days later if no reply).' },
+          ],
+          // Decision-fatigue killer — 10 messages, ONE primary send button
+          // (Message 1, the safest opener). Other messages are accessible
+          // via the full-copy / email fallbacks but the visual hierarchy
+          // makes Message 1 the unmissable next step.
+          realWorldActions: [
+            { label: '💬 Send Message 1 via WhatsApp', action: { type: 'whatsapp', sectionMatch: 'Message 1' } },
+            { label: '📋 Copy Message 1', action: { type: 'copy', sectionMatch: 'Message 1' } },
+            { label: '📋 Copy all 10 messages', action: { type: 'copy' } },
+            { label: '📧 Email all messages to self', action: { type: 'email' } },
+          ],
+          comparison: {
+            basicPromptLabel: 'Write 10 cold outreach messages for AI freelancing.',
+            basicOutput: `1. Hi! I offer AI services. Are you interested?
+
+2. Hello, I help businesses with AI marketing. Let me know if you need help.
+
+3. Hi there, I do AI content for businesses. Reply if interested.
+
+4. Hello! I am a freelancer offering AI services. DM me to know more.
+
+5. Hi, I provide AI marketing for small businesses. Reach out anytime.`,
+            leftHeader: '🔸 Same message to everyone',
+            rightHeader: '🔹 With 10 different angles',
+            leftSubLabel: 'Gets ignored',
+            rightSubLabel: 'Gets replies',
+          },
+          whyItWorked: {
+            heading: 'Why your outreach pack actually gets replies',
+            bullets: [
+              '**10 angles, not 1 message** — you can send to 10 different prospects without sounding like a copy-paste bot.',
+              '**Platform-matched tone** — WhatsApp ≠ LinkedIn ≠ cold email. Each is written for its medium.',
+              '**Specific easy ask** — every message ends with ONE small step (audit / 5-min call / yes-no question), not a vague "let me know".',
+              '**Personalisation hooks** — angles like "noticed your account" and "your competitor" force the prospect to engage with the substance, not just react to a pitch.',
+            ],
+          },
+          yourTurnTemplate: `Generate 10 cold outreach messages for this freelancer:
+
+WHAT I OFFER: [YOUR REAL SERVICE]
+TARGET CUSTOMERS: [WHO YOU WANT TO REACH — be specific]
+MIX OF PLATFORMS: [PICK YOUR 4-3-2-1 split — WhatsApp / IG / LinkedIn / email]
+
+Each message must be DIFFERENT in angle (curiosity, social-proof, pain, observation, direct-offer, referral, plus more). Each under 80 words, ends with one specific easy next step.`,
+          yourTurnHeadline: 'Now generate YOUR own outreach pack',
+          yourTurnBody: 'Replace the brackets with your real service and target customers. Walk away with 10 messages — then send Message 1 today. The first reply is the win, not the 10 sent messages.',
+        },
       },
     ],
   },

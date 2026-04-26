@@ -8,6 +8,7 @@ import { NextSessionPreview } from './next-session-preview';
 import { ShareProgress } from './share-progress';
 import { PeerPair } from './peer-pair';
 import { TeachBack } from './teach-back';
+import { FirstConversationCard } from './first-conversation-card';
 
 export const metadata = {
   title: 'My Learning Dashboard',
@@ -85,7 +86,7 @@ export default async function DashboardPage({
   const activeModules = courseConfig.modules;
   const allCourseIds = enrollments.map((e) => e.course_id).filter((id) => id in courseConfigs);
 
-  const [unlocksResult, quizResult, achievementsResult, streakResult, purchaseResult, certificateResult] = await Promise.all([
+  const [unlocksResult, quizResult, achievementsResult, streakResult, purchaseResult, certificateResult, firstArtifactResult] = await Promise.all([
     supabase
       .from('session_unlocks')
       .select('session_number')
@@ -122,7 +123,21 @@ export default async function DashboardPage({
       .eq('student_id', user.id)
       .eq('course_id', activeCourseId)
       .maybeSingle(),
+    // Earliest live-playground artifact for Session 1 — drives the
+    // "Your first AI conversation" card. We pull oldest, not newest,
+    // because the *first* conversation is the emotional anchor.
+    supabase
+      .from('learn_artifacts')
+      .select('prompt, response, created_at')
+      .eq('student_id', user.id)
+      .eq('course_id', activeCourseId)
+      .eq('session_number', 1)
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle(),
   ]);
+
+  const firstArtifact = firstArtifactResult.data;
 
   const isOnlinePurchaser = (purchaseResult.data?.length ?? 0) > 0;
   const certificate = certificateResult.data;
@@ -369,6 +384,15 @@ export default async function DashboardPage({
             />
           </div>
         </div>
+
+        {/* ── Your first AI conversation (live-playground artifact) ── */}
+        {firstArtifact && (
+          <FirstConversationCard
+            prompt={firstArtifact.prompt}
+            response={firstArtifact.response}
+            createdAt={firstArtifact.created_at}
+          />
+        )}
 
         {/* ── Today's Challenge ── */}
         {todayChallenge && (
