@@ -2,8 +2,10 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { courses } from '@/config/courses'
+import { useUserRole, ROLE_LABEL } from '@/lib/hooks/use-user-role'
+import { rolePrioritySorter } from '@/lib/role-personalization'
 
 const featuredCourses = courses.filter((c) => c.isFeatured)
 
@@ -137,10 +139,22 @@ function CourseCard({ course, index }: { course: typeof featuredCourses[0]; inde
 }
 
 export function CourseHighlights() {
+  const { role } = useUserRole()
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
   const [visibleCount, setVisibleCount] = useState(3)
   const trackRef = useRef<HTMLDivElement>(null)
+
+  // Reorder so role-relevant courses lead. Pure permutation —
+  // doesn't add/remove any course, just re-prioritises.
+  const orderedCourses = useMemo(
+    () => [...featuredCourses].sort(rolePrioritySorter(role, (c) => c.slug)),
+    [role],
+  )
+
+  // Snap slider back to start whenever the order changes so the user
+  // sees their freshly-prioritised courses without scrolling.
+  useEffect(() => { setCurrent(0) }, [role])
 
   // Responsive visible count
   useEffect(() => {
@@ -154,7 +168,7 @@ export function CourseHighlights() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const total = featuredCourses.length
+  const total = orderedCourses.length
   const maxIndex = Math.max(0, total - visibleCount)
 
   const prev = useCallback(() => setCurrent(i => Math.max(0, i - 1)), [])
@@ -187,13 +201,15 @@ export function CourseHighlights() {
         transition={{ duration: 0.5 }}
       >
         <p className="text-sm font-medium tracking-widest uppercase text-emerald-400">
-          Learn from the best
+          {role ? `Recommended for ${ROLE_LABEL[role]}s` : 'Learn from the best'}
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Popular Courses
+          {role ? 'Your Top Picks' : 'Popular Courses'}
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-gray-400">
-          Industry-relevant AI programs designed to get you job-ready with hands-on projects and real-world skills.
+          {role
+            ? 'Reordered just for you — the programs that fit your goals are showing first.'
+            : 'Industry-relevant AI programs designed to get you job-ready with hands-on projects and real-world skills.'}
         </p>
       </motion.div>
 
@@ -228,7 +244,7 @@ export function CourseHighlights() {
               transform: `translateX(calc(-${offset}% - ${current * gapPx}px))`,
             }}
           >
-            {featuredCourses.map((course, i) => (
+            {orderedCourses.map((course, i) => (
               <CourseCard key={course.id} course={course} index={i} />
             ))}
           </div>

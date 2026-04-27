@@ -1,9 +1,11 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { NeuralNavigatorLoader } from './neural-navigator-loader'
-import { ROLE_LABEL, useUserRole, type UserRole } from '@/lib/hooks/use-user-role'
+import { RolePickerStrip } from './role-picker-strip'
+import { ROLE_CHANGE_EVENT, ROLE_LABEL, useUserRole, type UserRole } from '@/lib/hooks/use-user-role'
 
 // Role-aware hero copy. Default state keeps the original headline
 // for cold visitors. When the Career Architect has saved a role to
@@ -60,6 +62,27 @@ const HERO_VARIANTS: Record<
 export function HeroSection() {
   const { role, setRole } = useUserRole()
   const variant = HERO_VARIANTS[role ?? 'default']
+
+  // Loud micro-moment overlay — fires only on explicit role changes
+  // (custom event from setRole/persistUserRole), never on initial
+  // localStorage hydration. ~900ms scanline + SYSTEM badge.
+  const [optimizing, setOptimizing] = useState<UserRole | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => {
+    function onRoleChange(e: Event) {
+      const next = (e as CustomEvent<UserRole | null>).detail
+      if (!next) return
+      if (timerRef.current) clearTimeout(timerRef.current)
+      setOptimizing(next)
+      timerRef.current = setTimeout(() => setOptimizing(null), 900)
+    }
+    window.addEventListener(ROLE_CHANGE_EVENT, onRoleChange)
+    return () => {
+      window.removeEventListener(ROLE_CHANGE_EVENT, onRoleChange)
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
+
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
@@ -173,6 +196,11 @@ export function HeroSection() {
               </motion.p>
             </AnimatePresence>
 
+            {/* Soft role picker — one click swaps the entire hero
+                (headline, sub, CTA, galaxy emphasis) to the matching
+                variant. Hides itself once a role is set. */}
+            <RolePickerStrip />
+
             <motion.p
               className="mt-3 text-sm text-gray-500"
               initial={{ opacity: 0 }}
@@ -279,6 +307,45 @@ export function HeroSection() {
 
         </div>
       </div>
+
+      {/* 🔦 OPTIMIZING overlay — loud micro-moment that fires when a
+          role chip is clicked (or Career Architect submits). 900ms
+          scanline sweep + SYSTEM badge, then settles into the new
+          variant. z-30 sits above content but below the SYSTEM HUD. */}
+      <AnimatePresence>
+        {optimizing && (
+          <motion.div
+            key="optimizing-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-emerald-950/35 backdrop-blur-[2px]"
+          >
+            <motion.div
+              initial={{ top: 0, opacity: 0 }}
+              animate={{ top: '100%', opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 0.9, ease: 'easeInOut' }}
+              className="absolute left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-emerald-300 to-transparent shadow-[0_0_28px_rgba(52,211,153,0.95)]"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-2 rounded-full border border-emerald-400/60 bg-black/75 px-5 py-2 backdrop-blur-md"
+            >
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.95)]" />
+              </span>
+              <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-emerald-100">
+                <span className="text-emerald-400">[SYSTEM]</span> Optimizing for {ROLE_LABEL[optimizing]}…
+              </span>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

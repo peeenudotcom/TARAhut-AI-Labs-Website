@@ -1,6 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useUserRole, ROLE_LABEL } from '@/lib/hooks/use-user-role'
+import { ROLE_HEADLINE_ACCENT, ROLE_TAGLINES } from '@/lib/role-personalization'
 
 const features = [
   {
@@ -78,6 +80,12 @@ const features = [
 ]
 
 export function WhyTarahut() {
+  const { role } = useUserRole()
+  const accentWord = role ? ROLE_HEADLINE_ACCENT[role] : 'IT Institute'
+  const sub = role
+    ? ROLE_TAGLINES[role]
+    : "We built TARAhut AI Labs because we were tired of courses that teach theory but not income. Here's what makes us different."
+  const kicker = role ? `Why TARAhut for ${ROLE_LABEL[role]}s` : 'Why TARAhut AI Labs'
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Animated gradient orbs */}
@@ -126,13 +134,13 @@ export function WhyTarahut() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#e53935]" />
             </span>
             <p className="text-xs font-semibold tracking-widest uppercase text-[#e53935]">
-              Why TARAhut AI Labs
+              {kicker}
             </p>
           </div>
           <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Not Just Another{' '}
+            {role ? 'Built For ' : 'Not Just Another '}
             <span className="relative inline-block">
-              <span className="relative z-10">IT Institute</span>
+              <span className="relative z-10">{accentWord}</span>
               <motion.span
                 className="absolute bottom-1 left-0 right-0 h-3 bg-gradient-to-r from-[#e53935]/30 to-[#f59e0b]/30 rounded"
                 initial={{ scaleX: 0 }}
@@ -144,7 +152,7 @@ export function WhyTarahut() {
             </span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-400">
-            We built TARAhut AI Labs because we were tired of courses that teach theory but not income. Here&apos;s what makes us different.
+            {sub}
           </p>
         </motion.div>
 
