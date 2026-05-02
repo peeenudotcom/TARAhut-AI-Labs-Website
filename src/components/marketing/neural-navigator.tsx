@@ -339,44 +339,7 @@ export function NeuralNavigator({ emphasizedSlugs = [] }: NavigatorProps = {}) {
 
   return (
     <div className="relative h-[460px] w-full sm:h-[560px] lg:h-[600px]">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-12 z-0"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.35) 0%, rgba(13,148,136,0.18) 35%, transparent 70%)',
-          filter: 'blur(30px)',
-        }}
-      />
-
-      <div className="relative z-[1] h-full w-full overflow-hidden rounded-3xl border border-emerald-400/5 bg-[#020617]/60 backdrop-blur-sm">
-        {/* Faint scientific grid — echoes the hero grid so the canvas
-            reads as a lab readout, not an empty void. Radial mask fades
-            the grid toward the center so the galaxy itself stays the
-            visual focus; the grid only shows where emptiness would
-            otherwise dominate. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, rgba(16,185,129,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.07) 1px, transparent 1px)',
-            backgroundSize: '36px 36px',
-            maskImage:
-              'radial-gradient(ellipse at 50% 45%, transparent 0%, transparent 25%, black 75%)',
-            WebkitMaskImage:
-              'radial-gradient(ellipse at 50% 45%, transparent 0%, transparent 25%, black 75%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(circle at 50% 45%, rgba(16,185,129,0.18) 0%, transparent 55%)',
-          }}
-        />
-
+      <div className="relative z-[1] h-full w-full">
         {/* HUD info card — thin glowing emerald border on dark glass.
             Appears top-left with corner brackets to read as a
             heads-up-display rather than a standard web popup. */}
@@ -495,9 +458,6 @@ export function NeuralNavigator({ emphasizedSlugs = [] }: NavigatorProps = {}) {
           <CameraController target={cameraTarget} orbitRef={orbitRef} />
         </Canvas>
 
-        <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-center font-mono text-[11px] uppercase tracking-widest text-white/70 sm:text-xs">
-          Navigate the TARAhut Galaxy
-        </p>
       </div>
     </div>
   );
