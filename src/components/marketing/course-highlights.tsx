@@ -1,300 +1,520 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useMemo, useState } from 'react'
 import { courses } from '@/config/courses'
-import { useUserRole, ROLE_LABEL } from '@/lib/hooks/use-user-role'
+import { useUserRole, ROLE_LABEL, type UserRole } from '@/lib/hooks/use-user-role'
 import { rolePrioritySorter } from '@/lib/role-personalization'
 
 const featuredCourses = courses.filter((c) => c.isFeatured)
 
-const courseBadges: Record<string, { text: string; classes: string }> = {
-  '1': { text: '🔥 Most Popular', classes: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' },
-  '5': { text: '⚡ Limited Seats', classes: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+type Audience = 'pro' | 'mkt' | 'kids'
+type Scene = 's-pro' | 's-claude' | 's-hustler' | 's-mkt' | 's-kids-pink' | 's-kids-warm'
+
+const courseMeta: Record<string, { audience: Audience; audLabel: string; scene: Scene }> = {
+  '1':  { audience: 'pro',  audLabel: 'Professional', scene: 's-pro' },
+  '2':  { audience: 'mkt',  audLabel: 'Marketing',    scene: 's-mkt' },
+  '3':  { audience: 'kids', audLabel: 'School Kids',  scene: 's-kids-pink' },
+  '3b': { audience: 'kids', audLabel: 'School Kids',  scene: 's-kids-warm' },
+  '5':  { audience: 'pro',  audLabel: 'Professional', scene: 's-pro' },
+  '7':  { audience: 'pro',  audLabel: 'Professional', scene: 's-pro' },
+  '9':  { audience: 'pro',  audLabel: 'Professional', scene: 's-claude' },
+  '10': { audience: 'pro',  audLabel: 'Professional', scene: 's-pro' },
+  '11': { audience: 'pro',  audLabel: 'Side Hustle',  scene: 's-hustler' },
 }
 
-const levelColors: Record<string, string> = {
-  Beginner: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  Intermediate: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  Advanced: 'bg-rose-500/15 text-rose-400 border-rose-500/20',
+const audienceFilters: { id: 'all' | Audience; label: string }[] = [
+  { id: 'all',  label: 'All' },
+  { id: 'pro',  label: 'Professionals' },
+  { id: 'mkt',  label: 'Marketing' },
+  { id: 'kids', label: 'School Kids' },
+]
+
+// Lowercase italic noun used in the editorial headline ("Programs for *X.*").
+// "founders" reads punchier than "business owners" and aligns with the hero accent.
+const ROLE_HEADLINE_NOUN: Record<UserRole, string> = {
+  'student':      'students',
+  'biz-owner':    'founders',
+  'freelancer':   'freelancers',
+  'professional': 'professionals',
 }
 
-const categoryColors: Record<string, string> = {
-  'AI Tools': '#059669',
-  Marketing: '#10B981',
-  Development: '#F59E0B',
-  Business: '#EF4444',
-  'Content Creation': '#0D9488',
+function inr(n: number) {
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
 }
 
-function formatPrice(price: number) {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(price)
-}
-
-function getDiscountPercent(original: number, current: number) {
+function discountPct(original: number, current: number) {
   return Math.round(((original - current) / original) * 100)
 }
 
-function CourseCard({ course, index }: { course: typeof featuredCourses[0]; index: number }) {
-  const catColor = categoryColors[course.category] || '#059669'
-  const discount = course.originalPrice
-    ? getDiscountPercent(course.originalPrice, course.price)
-    : null
-
+function CourseCard({
+  course,
+  meta,
+  ariaHidden,
+}: {
+  course: (typeof featuredCourses)[number]
+  meta: { audience: Audience; audLabel: string; scene: Scene }
+  ariaHidden?: boolean
+}) {
+  const discount = course.originalPrice ? discountPct(course.originalPrice, course.price) : null
   return (
-    <div className="group relative flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] rounded-2xl border border-white/[0.08] bg-white/[0.03] transition-all duration-300 hover:shadow-xl hover:shadow-[#059669]/10 hover:-translate-y-2">
-      {/* Gradient top bar */}
-      <div className="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-[#059669] to-[#0D9488] transition-all duration-300 group-hover:h-1.5" />
-
-      {/* Course badge */}
-      {courseBadges[course.id] && (
-        <div className={`absolute right-4 top-4 inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${courseBadges[course.id].classes}`}>
-          {courseBadges[course.id].text}
-        </div>
-      )}
-
-      <div className="p-6">
-        {/* Category + discount */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div
-              className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
-              style={{ backgroundColor: catColor }}
-            >
-              {course.category.charAt(0)}
-            </div>
-            <span className="text-xs font-medium text-gray-500">{course.category}</span>
-          </div>
-          {discount && (
-            <span className="inline-flex items-center rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-semibold text-red-400 border border-red-500/20">
-              -{discount}%
-            </span>
+    <article className="pc-card" data-aud={meta.audience} aria-hidden={ariaHidden || undefined}>
+      <div className="pc-cover">
+        <Scene scene={meta.scene} />
+        <div className="pc-cover-mask" />
+      </div>
+      <div className="pc-card-top">
+        <span className={`pc-pill pc-aud-${meta.audience}`}>
+          <span className="pc-tag-dot" />
+          {meta.audLabel}
+        </span>
+        <div className="pc-card-top-right">
+          {course.batchStartingSoon && (
+            <span className="pc-badge pc-badge-seats">⚡ Limited Seats</span>
           )}
-        </div>
-
-        {/* Level + Duration */}
-        <div className="mt-4 flex items-center justify-between">
-          <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${levelColors[course.level]}`}>
-            {course.level}
-          </span>
-          <span className="text-xs text-gray-500">{course.duration}</span>
-        </div>
-
-        <h3 className="mt-4 text-lg font-semibold text-white leading-snug line-clamp-2">
-          {course.title}
-        </h3>
-
-        <p className="mt-2 text-sm leading-relaxed text-gray-400 line-clamp-3">
-          {course.shortDescription}
-        </p>
-
-        {/* Rating or New badge */}
-        <div className="mt-4 flex items-center gap-3">
-          {course.rating > 0 ? (
-            <>
-              <div className="flex items-center gap-1">
-                <svg className="h-4 w-4 fill-amber-400 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <span className="text-sm font-semibold text-white">{course.rating}</span>
-              </div>
-              <span className="text-xs text-gray-500">{course.studentsEnrolled} students enrolled</span>
-            </>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              New · First Batch Open
-            </span>
+          {discount !== null && (
+            <span className="pc-badge pc-badge-discount">-{discount}%</span>
           )}
-        </div>
-
-        {/* Price */}
-        <div className="mt-5 flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-white">{formatPrice(course.price)}</span>
-          {course.originalPrice && (
-            <span className="text-sm text-gray-600 line-through">{formatPrice(course.originalPrice)}</span>
-          )}
-        </div>
-
-        <div className="mt-5">
-          <Link
-            href={`/courses/${course.slug}`}
-            className="inline-flex items-center text-sm font-semibold text-emerald-400 transition-colors hover:text-emerald-300"
-          >
-            View Curriculum
-            <span className="ml-1 transition-transform group-hover:translate-x-1">&rarr;</span>
-          </Link>
         </div>
       </div>
+      <div className="pc-card-mid">
+        <div className="pc-meta-row">
+          <span className="pc-level">{course.level}</span>
+          <span className="pc-dot" />
+          <span>{course.duration}</span>
+        </div>
+        <h3 className="pc-card-title">{course.title}</h3>
+        <p className="pc-card-desc">{course.shortDescription}</p>
+      </div>
+      <div className="pc-card-bottom">
+        <div className="pc-price">
+          <span className="pc-price-now">{inr(course.price)}</span>
+          {course.originalPrice && (
+            <span className="pc-price-was">{inr(course.originalPrice)}</span>
+          )}
+        </div>
+        <Link
+          className="pc-cta"
+          href={`/courses/${course.slug}`}
+          tabIndex={ariaHidden ? -1 : undefined}
+        >
+          View Curriculum
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </Link>
+      </div>
+    </article>
+  )
+}
+
+function Scene({ scene }: { scene: Scene }) {
+  if (scene === 's-pro' || scene === 's-claude' || scene === 's-hustler') {
+    return (
+      <div className={`pc-scene pc-${scene}`}>
+        <div className="pc-glow pc-g1" />
+        <div className="pc-grid-lines" />
+        <div className="pc-grain" />
+      </div>
+    )
+  }
+  return (
+    <div className={`pc-scene pc-${scene}`}>
+      <div className="pc-orb pc-o1" />
+      <div className="pc-orb pc-o2" />
+      <div className="pc-grain" />
     </div>
   )
 }
 
 export function CourseHighlights() {
   const { role } = useUserRole()
-  const [current, setCurrent] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const [visibleCount, setVisibleCount] = useState(3)
-  const trackRef = useRef<HTMLDivElement>(null)
+  const [filter, setFilter] = useState<'all' | Audience>('all')
 
-  // Reorder so role-relevant courses lead. Pure permutation —
-  // doesn't add/remove any course, just re-prioritises.
+  // Reorder so role-relevant courses lead. Pure permutation — same 9 courses,
+  // just re-prioritised. Filter is applied on top.
   const orderedCourses = useMemo(
     () => [...featuredCourses].sort(rolePrioritySorter(role, (c) => c.slug)),
     [role],
   )
 
-  // Snap slider back to start whenever the order changes so the user
-  // sees their freshly-prioritised courses without scrolling.
-  useEffect(() => { setCurrent(0) }, [role])
+  const visible = orderedCourses.filter((c) => {
+    if (filter === 'all') return true
+    return courseMeta[c.id]?.audience === filter
+  })
 
-  // Responsive visible count
-  useEffect(() => {
-    function update() {
-      if (window.innerWidth < 640) setVisibleCount(1)
-      else if (window.innerWidth < 1024) setVisibleCount(2)
-      else setVisibleCount(3)
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
+  const lowestPrice = Math.min(...featuredCourses.map((c) => c.price))
+  const marquee = visible.length >= 3
+  const durationSec = Math.max(40, visible.length * 6)
 
-  const total = orderedCourses.length
-  const maxIndex = Math.max(0, total - visibleCount)
-
-  const prev = useCallback(() => setCurrent(i => Math.max(0, i - 1)), [])
-  const next = useCallback(() => setCurrent(i => (i >= maxIndex ? 0 : i + 1)), [maxIndex])
-
-  // Auto-play
-  useEffect(() => {
-    if (paused) return
-    const id = setInterval(next, 4000)
-    return () => clearInterval(id)
-  }, [paused, next])
-
-  // Clamp current when visibleCount changes
-  useEffect(() => {
-    setCurrent(i => Math.min(i, maxIndex))
-  }, [maxIndex])
-
-  // Calculate % offset
-  const cardWidthPercent = 100 / visibleCount
-  const gapPx = visibleCount === 1 ? 0 : visibleCount === 2 ? 12 : 16
-  const offset = current * (cardWidthPercent)
+  const headlineNoun = role ? ROLE_HEADLINE_NOUN[role] : 'everyone'
+  const eyebrowText = role
+    ? `Recommended for ${ROLE_LABEL[role]}s · 2026 cohort`
+    : 'Curated learning paths · 2026 cohort'
+  const metaParagraph = role
+    ? 'Reordered just for you — the programs that fit your goals lead the way. Hands-on projects, real datasets, weekly feedback.'
+    : 'Industry-relevant AI programs designed with hands-on projects, real datasets and weekly feedback. From school kids to working professionals.'
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-      <motion.div
-        className="text-center"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <p className="text-sm font-medium tracking-widest uppercase text-emerald-400">
-          {role ? `Recommended for ${ROLE_LABEL[role]}s` : 'Learn from the best'}
-        </p>
-        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          {role ? 'Your Top Picks' : 'Popular Courses'}
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-gray-400">
-          {role
-            ? 'Reordered just for you — the programs that fit your goals are showing first.'
-            : 'Industry-relevant AI programs designed to get you job-ready with hands-on projects and real-world skills.'}
-        </p>
-      </motion.div>
+    <>
+      <style>{popularCoursesCss}</style>
+      <section className="pc-section">
+        <div className="pc-right-fade" />
+        <div className="pc-container">
+          <div className="pc-head">
+            <div>
+              <div className="pc-eyebrow"><i />{eyebrowText}</div>
+              <h2 className="pc-title">
+                Programs for<br />
+                <em>{headlineNoun}.</em>
+              </h2>
+            </div>
+            <div className="pc-meta">
+              <p>{metaParagraph}</p>
+              <span className="pc-count">
+                <b>{featuredCourses.length}</b>active programs · <b>{inr(lowestPrice)}/-</b>onwards
+              </span>
+            </div>
+          </div>
 
-      {/* Slider */}
-      <motion.div
-        className="mt-16 relative"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {/* Left arrow */}
-        <button
-          onClick={prev}
-          disabled={current === 0}
-          aria-label="Previous"
-          className="absolute -left-5 top-1/2 z-10 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.08] text-white transition-all hover:bg-[#059669] hover:text-white hover:border-[#059669] disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        {/* Track viewport */}
-        <div className="overflow-hidden rounded-2xl" ref={trackRef}>
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{
-              gap: `${gapPx}px`,
-              transform: `translateX(calc(-${offset}% - ${current * gapPx}px))`,
-            }}
-          >
-            {orderedCourses.map((course, i) => (
-              <CourseCard key={course.id} course={course} index={i} />
+          <div className="pc-filters">
+            {audienceFilters.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={`pc-filter ${filter === f.id ? 'pc-filter-on' : ''} ${f.id !== 'all' ? `pc-filter-${f.id}` : ''}`}
+                onClick={() => setFilter(f.id)}
+              >
+                <i />{f.label}
+              </button>
             ))}
           </div>
+
+          <div className="pc-rail-wrap">
+            <div
+              className={`pc-rail ${marquee ? 'pc-rail-marquee' : ''}`}
+              style={marquee ? { animationDuration: `${durationSec}s` } : undefined}
+            >
+              {visible.map((c) => {
+                const meta = courseMeta[c.id]
+                if (!meta) return null
+                return <CourseCard key={c.id} course={c} meta={meta} />
+              })}
+              {marquee && visible.map((c) => {
+                const meta = courseMeta[c.id]
+                if (!meta) return null
+                return <CourseCard key={`${c.id}-clone`} course={c} meta={meta} ariaHidden />
+              })}
+            </div>
+          </div>
+
+          <div className="pc-below">
+            <span className="pc-marquee-hint">
+              <i className="pc-pulse-dot" /> Auto-scrolling · hover to pause
+            </span>
+            <Link className="pc-view-all" href="/courses">
+              View all courses
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </Link>
+          </div>
         </div>
-
-        {/* Right arrow */}
-        <button
-          onClick={next}
-          disabled={current >= maxIndex}
-          aria-label="Next"
-          className="absolute -right-5 top-1/2 z-10 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.08] text-white transition-all hover:bg-[#059669] hover:text-white hover:border-[#059669] disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </motion.div>
-
-      {/* Dot indicators */}
-      <div className="mt-8 flex items-center justify-center gap-2">
-        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`rounded-full transition-all duration-300 ${
-              i === current
-                ? 'w-8 h-2.5 bg-[#059669]'
-                : 'w-2.5 h-2.5 bg-white/20 hover:bg-white/40'
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* View All */}
-      <motion.div
-        className="mt-10 text-center"
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.3 }}
-      >
-        <Link
-          href="/courses"
-          className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-6 py-3 text-sm font-semibold text-emerald-400 hover:bg-white/5 hover:text-emerald-300 transition-colors"
-        >
-          View All Courses
-          <span>&rarr;</span>
-        </Link>
-      </motion.div>
-    </section>
+      </section>
+    </>
   )
 }
+
+const popularCoursesCss = `
+.pc-section{
+  --pc-bg:#070b0d;
+  --pc-ink:#f4f2ee;
+  --pc-muted:#7c8682;
+  --pc-line:#16201d;
+  --pc-green:#10b981;
+  --pc-green-soft:#5df0c0;
+  --pc-kid:#ff8a5b;
+  --pc-mkt:#ff6ab0;
+  --pc-pro:#10b981;
+  --pc-gold:#ffd84a;
+  position:relative;padding:96px 0 80px;color:var(--pc-ink);font-family:var(--font-sans),system-ui,sans-serif;
+  background:
+    radial-gradient(60% 50% at 78% 0%, rgba(16,185,129,.12) 0%, transparent 60%),
+    radial-gradient(40% 40% at 8% 100%, rgba(16,185,129,.06) 0%, transparent 60%),
+    linear-gradient(180deg, #070b0d 0%, #050708 100%);
+  overflow:hidden;
+}
+.pc-section::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;
+  background-image:radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:24px 24px;
+  -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+}
+.pc-section::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:96px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg, var(--pc-bg), transparent);
+}
+.pc-right-fade{
+  position:absolute;top:0;bottom:0;right:0;width:96px;z-index:3;pointer-events:none;
+  background:linear-gradient(-90deg, var(--pc-bg), transparent);
+}
+.pc-container{max-width:1440px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+
+.pc-head{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:48px}
+.pc-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--pc-muted);margin-bottom:18px;
+}
+.pc-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--pc-green);box-shadow:0 0 12px var(--pc-green)}
+.pc-title{
+  font-family:var(--font-display),'Playfair Display',serif;font-weight:400;
+  font-size:clamp(48px,5.6vw,84px);line-height:.96;letter-spacing:-.025em;margin:0;
+  color:var(--pc-ink);text-wrap:balance;max-width:14ch;
+}
+.pc-title em{font-style:italic;color:var(--pc-green-soft);position:relative}
+.pc-title em::after{
+  content:"";position:absolute;left:0;right:0;bottom:.08em;height:.06em;
+  background:var(--pc-green);opacity:.35;border-radius:1px;
+}
+.pc-meta{display:flex;flex-direction:column;gap:18px;align-items:flex-end;text-align:right}
+.pc-meta p{margin:0;color:var(--pc-muted);font-size:14px;line-height:1.55;max-width:36ch}
+.pc-count{
+  display:inline-flex;align-items:baseline;gap:10px;
+  font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:var(--pc-muted);text-transform:uppercase;
+}
+.pc-count b{font-family:var(--font-display),'Playfair Display',serif;font-style:italic;font-weight:400;font-size:28px;color:var(--pc-ink);letter-spacing:-.01em}
+
+.pc-filters{display:flex;align-items:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.pc-filter{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.03);border:1px solid var(--pc-line);color:var(--pc-muted);
+  font-size:12px;letter-spacing:.06em;cursor:pointer;transition:all .2s ease;font-weight:500;
+  font-family:inherit;
+}
+.pc-filter:hover{color:var(--pc-ink);border-color:#243430}
+.pc-filter-on{background:rgba(16,185,129,.12)!important;border-color:rgba(16,185,129,.4)!important;color:var(--pc-green-soft)!important}
+.pc-filter i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
+.pc-filter-pro i{background:var(--pc-pro)}
+.pc-filter-mkt i{background:var(--pc-mkt)}
+.pc-filter-kids i{background:var(--pc-kid)}
+
+.pc-rail-wrap{position:relative;overflow:hidden;margin:0 -56px;padding:8px 0 24px}
+.pc-rail{
+  display:flex;gap:24px;
+  padding:0 56px;
+  width:max-content;
+}
+.pc-rail-marquee{
+  animation-name:pcMarquee;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+.pc-rail-wrap:hover .pc-rail-marquee,
+.pc-rail-wrap:focus-within .pc-rail-marquee{animation-play-state:paused}
+@keyframes pcMarquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(calc(-50% - 12px))}
+}
+@media (prefers-reduced-motion:reduce){
+  .pc-rail-marquee{animation:none}
+}
+
+.pc-card{
+  flex:0 0 calc((100vw - 160px) / 3);
+  max-width:440px;
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  background:linear-gradient(180deg, #0d1411 0%, #0a0e10 100%);
+  border:1px solid var(--pc-line);
+  container-type:inline-size;
+  transition:transform .4s cubic-bezier(.2,.7,.2,1), border-color .3s ease, box-shadow .4s ease;
+  cursor:pointer;
+  isolation:isolate;
+  min-height:480px;
+  display:flex;flex-direction:column;
+}
+.pc-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(16,185,129,.35);
+  box-shadow:0 24px 60px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(16,185,129,.12);
+}
+
+.pc-cover{
+  position:absolute;inset:0;border-radius:inherit;overflow:hidden;
+  opacity:1;pointer-events:none;z-index:0;
+}
+.pc-cover-mask{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(7,11,13,.15) 0%, rgba(7,11,13,.55) 50%, rgba(7,11,13,.92) 100%);
+}
+
+.pc-card-top{
+  position:relative;z-index:2;padding:20px 22px 0;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+}
+.pc-card-top-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.pc-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  font-size:11px;letter-spacing:.06em;color:var(--pc-ink);font-weight:500;
+}
+.pc-tag-dot{width:6px;height:6px;border-radius:50%}
+.pc-aud-pro .pc-tag-dot{background:var(--pc-pro);box-shadow:0 0 8px var(--pc-pro)}
+.pc-aud-mkt .pc-tag-dot{background:var(--pc-mkt);box-shadow:0 0 8px var(--pc-mkt)}
+.pc-aud-kids .pc-tag-dot{background:var(--pc-kid);box-shadow:0 0 8px var(--pc-kid)}
+
+.pc-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:6px;
+  font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.04em;
+}
+.pc-badge-discount{background:rgba(217,119,87,.14);color:#ffb089;border:1px solid rgba(217,119,87,.3)}
+.pc-badge-seats{background:rgba(255,216,74,.12);color:#ffe28a;border:1px solid rgba(255,216,74,.28)}
+
+.pc-card-mid{
+  position:relative;z-index:2;padding:24px 22px 8px;flex:1;display:flex;flex-direction:column;gap:14px;
+}
+.pc-meta-row{
+  display:flex;align-items:center;gap:10px;font-family:var(--font-geist-mono),ui-monospace,monospace;
+  font-size:10.5px;letter-spacing:.08em;color:rgba(255,255,255,.7);text-transform:uppercase;
+  flex-wrap:nowrap;white-space:nowrap;
+}
+.pc-meta-row span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.pc-level{color:var(--pc-green-soft)}
+.pc-dot{width:3px;height:3px;border-radius:50%;background:var(--pc-muted);opacity:.6}
+
+.pc-card-title{
+  font-family:var(--font-display),'Playfair Display',serif;font-weight:400;font-size:28px;line-height:1.05;letter-spacing:-.015em;
+  margin:0;color:#fff;text-wrap:balance;
+}
+.pc-card-desc{
+  color:rgba(244,242,238,.85);font-size:13.5px;line-height:1.55;margin:0;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+.pc-card-bottom{
+  position:relative;z-index:2;padding:16px 22px 20px;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+  border-top:1px solid rgba(255,255,255,.12);margin-top:auto;
+}
+.pc-price{display:flex;flex-direction:column;gap:4px}
+.pc-price-now{font-family:var(--font-display),'Playfair Display',serif;font-size:28px;letter-spacing:-.01em;line-height:1;color:#fff}
+.pc-price-was{font-size:12px;color:rgba(255,255,255,.6);text-decoration:line-through;letter-spacing:.04em}
+.pc-cta{
+  display:inline-flex;align-items:center;gap:6px;color:var(--pc-green-soft);
+  font-size:13px;font-weight:500;text-decoration:none;letter-spacing:.02em;
+  transition:gap .2s ease;
+}
+.pc-card:hover .pc-cta{gap:10px}
+.pc-cta svg{width:14px;height:14px}
+
+.pc-scene{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+.pc-grain{position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.18;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.6'/></svg>");
+}
+
+.pc-s-pro{background:
+  radial-gradient(60% 50% at 70% 20%, #0e6b4f 0%, transparent 60%),
+  radial-gradient(80% 70% at 20% 70%, #0a2b30 0%, transparent 60%),
+  linear-gradient(180deg, #0a1410 0%, #050807 100%);}
+.pc-s-pro .pc-glow{position:absolute;border-radius:50%;filter:blur(50px);mix-blend-mode:screen;opacity:.55;pointer-events:none}
+.pc-s-pro .pc-g1{width:60%;height:60%;right:-10%;top:-10%;background:radial-gradient(circle,#12c98c,transparent 60%)}
+.pc-s-pro .pc-grid-lines{position:absolute;inset:0;opacity:.18;pointer-events:none;background-image:
+  linear-gradient(rgba(120,220,180,.3) 1px,transparent 1px),
+  linear-gradient(90deg, rgba(120,220,180,.3) 1px,transparent 1px);
+  background-size:36px 36px;-webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);}
+
+.pc-s-claude{background:
+  radial-gradient(60% 50% at 70% 20%, #3a1e12 0%, transparent 60%),
+  radial-gradient(80% 70% at 20% 70%, #1e120a 0%, transparent 60%),
+  linear-gradient(180deg, #120806 0%, #060403 100%);}
+.pc-s-claude .pc-glow{position:absolute;border-radius:50%;filter:blur(50px);mix-blend-mode:screen;opacity:.55;pointer-events:none}
+.pc-s-claude .pc-g1{width:60%;height:60%;right:-10%;top:-10%;background:radial-gradient(circle,#d97757,transparent 60%)}
+.pc-s-claude .pc-grid-lines{position:absolute;inset:0;opacity:.12;pointer-events:none;background-image:
+  linear-gradient(rgba(217,119,87,.3) 1px,transparent 1px),
+  linear-gradient(90deg, rgba(217,119,87,.3) 1px,transparent 1px);
+  background-size:36px 36px;-webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);}
+
+.pc-s-hustler{background:
+  radial-gradient(70% 55% at 78% 25%, #c2b300 0%, transparent 55%),
+  linear-gradient(180deg, #0f0d05 0%, #070603 100%);}
+.pc-s-hustler .pc-glow{position:absolute;border-radius:50%;filter:blur(50px);mix-blend-mode:screen;opacity:.55;pointer-events:none}
+.pc-s-hustler .pc-g1{width:60%;height:60%;right:-10%;top:-10%;background:radial-gradient(circle,#ffd84a,transparent 60%)}
+.pc-s-hustler .pc-grid-lines{position:absolute;inset:0;opacity:.12;pointer-events:none;background-image:
+  linear-gradient(rgba(255,216,74,.3) 1px,transparent 1px),
+  linear-gradient(90deg, rgba(255,216,74,.3) 1px,transparent 1px);
+  background-size:36px 36px;-webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);}
+
+.pc-s-mkt{background:
+  radial-gradient(70% 60% at 80% 20%, #ff6ab0 0%, transparent 55%),
+  radial-gradient(90% 70% at 15% 40%, #8b5bff 0%, transparent 60%),
+  radial-gradient(120% 90% at 50% 110%, #180a2a 0%, #0b0614 70%);}
+.pc-s-mkt .pc-orb{position:absolute;border-radius:50%;filter:blur(36px);mix-blend-mode:screen;opacity:.7;pointer-events:none}
+.pc-s-mkt .pc-o1{width:50%;height:50%;left:-8%;top:-10%;background:radial-gradient(circle,#ff8ac9,transparent 60%)}
+.pc-s-mkt .pc-o2{width:40%;height:40%;right:-8%;bottom:-10%;background:radial-gradient(circle,#b28bff,transparent 60%)}
+
+.pc-s-kids-warm{background:
+  radial-gradient(80% 60% at 20% 20%, #ffd08a 0%, transparent 55%),
+  radial-gradient(90% 70% at 85% 30%, #ff8a5b 0%, transparent 60%),
+  radial-gradient(120% 90% at 60% 110%, #3a1a0a 0%, #120806 70%);}
+.pc-s-kids-pink{background:
+  radial-gradient(80% 60% at 25% 25%, #ffc2c2 0%, transparent 55%),
+  radial-gradient(90% 70% at 80% 30%, #ff7aa8 0%, transparent 60%),
+  radial-gradient(120% 90% at 60% 110%, #2b0f1c 0%, #110710 70%);}
+.pc-s-kids-warm .pc-orb,.pc-s-kids-pink .pc-orb{position:absolute;border-radius:50%;filter:blur(36px);mix-blend-mode:screen;opacity:.85;pointer-events:none}
+.pc-s-kids-warm .pc-orb.pc-o1,.pc-s-kids-pink .pc-orb.pc-o1{width:50%;height:50%;left:-8%;top:-10%}
+.pc-s-kids-warm .pc-orb.pc-o2,.pc-s-kids-pink .pc-orb.pc-o2{width:40%;height:40%;right:-8%;bottom:5%}
+.pc-s-kids-warm .pc-orb.pc-o1{background:radial-gradient(circle,#ffe0a8,transparent 60%)}
+.pc-s-kids-warm .pc-orb.pc-o2{background:radial-gradient(circle,#ff7a3d,transparent 60%)}
+.pc-s-kids-pink .pc-orb.pc-o1{background:radial-gradient(circle,#ffd0e2,transparent 60%)}
+.pc-s-kids-pink .pc-orb.pc-o2{background:radial-gradient(circle,#ff5b95,transparent 60%)}
+
+.pc-below{
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+  margin-top:36px;flex-wrap:wrap;
+}
+.pc-marquee-hint{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:11px;color:var(--pc-muted);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.pc-pulse-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--pc-green);
+  box-shadow:0 0 12px var(--pc-green);
+  animation:pcPulse 1.6s ease-in-out infinite;
+}
+@keyframes pcPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+.pc-view-all{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;
+  background:transparent;border:1px solid var(--pc-line);color:var(--pc-ink);
+  font-size:13px;font-weight:500;letter-spacing:.04em;text-decoration:none;
+  transition:all .2s ease;font-family:inherit;cursor:pointer;
+}
+.pc-view-all:hover{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.4);color:var(--pc-green-soft);gap:14px}
+.pc-view-all svg{width:14px;height:14px}
+
+@media (max-width:1100px){
+  .pc-card{flex:0 0 calc((100vw - 96px) / 2);max-width:420px}
+}
+@media (max-width:720px){
+  .pc-container{padding:0 24px}
+  .pc-rail-wrap{margin:0 -24px;padding:8px 0 24px}
+  .pc-rail{padding:0 24px;gap:16px}
+  .pc-head{grid-template-columns:1fr}
+  .pc-meta{align-items:flex-start;text-align:left}
+  .pc-card{flex:0 0 80vw;max-width:360px;min-height:440px}
+  .pc-section{padding:72px 0 64px}
+  @keyframes pcMarquee{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(calc(-50% - 8px))}
+  }
+}
+`
