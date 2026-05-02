@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
@@ -63,13 +63,16 @@ interface PlanetProps {
   data: (typeof PLANETS)[number];
   dimmed: boolean;
   emphasized: boolean;
+  autoLabeled: boolean;
   onSelect: (position: THREE.Vector3) => void;
+  onHoverChange: (hovered: boolean) => void;
 }
 
-function Planet({ data, dimmed, emphasized, onSelect }: PlanetProps) {
+function Planet({ data, dimmed, emphasized, autoLabeled, onSelect, onHoverChange }: PlanetProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const isSun = data.radius === 0;
+  const showLabel = (hovered || autoLabeled) && !dimmed;
 
   useFrame(({ clock }) => {
     if (isSun || !groupRef.current) return;
@@ -126,10 +129,12 @@ function Planet({ data, dimmed, emphasized, onSelect }: PlanetProps) {
           onPointerOver={(e) => {
             e.stopPropagation();
             setHovered(true);
+            onHoverChange(true);
             document.body.style.cursor = 'pointer';
           }}
           onPointerOut={() => {
             setHovered(false);
+            onHoverChange(false);
             document.body.style.cursor = 'auto';
           }}
         >
@@ -149,14 +154,14 @@ function Planet({ data, dimmed, emphasized, onSelect }: PlanetProps) {
           />
         </mesh>
 
-        {hovered && !dimmed && (
+        {showLabel && (
           <Html
             center
             position={[0, data.size + 0.35, 0]}
             style={{ pointerEvents: 'none' }}
             zIndexRange={[20, 10]}
           >
-            <span className="whitespace-nowrap rounded border border-emerald-400/40 bg-black/75 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-white/95 shadow-[0_0_14px_rgba(16,185,129,0.45)]">
+            <span className="animate-in fade-in zoom-in-95 duration-300 whitespace-nowrap rounded border border-emerald-400/40 bg-black/75 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-white/95 shadow-[0_0_14px_rgba(16,185,129,0.45)]">
               {data.shortTitle}
             </span>
           </Html>
@@ -299,6 +304,22 @@ export function NeuralNavigator({ emphasizedSlugs = [] }: NavigatorProps = {}) {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
   const orbitRef = useRef<OrbitRef>(null);
+
+  // Auto-spotlight: cycle a course label across the planets every
+  // 2.5s so the galaxy reads as a course menu even at rest. Pauses on
+  // real hover (hover takes over) or when a planet is selected (HUD
+  // owns the focus).
+  const [autoIndex, setAutoIndex] = useState(0);
+  const [hoverActive, setHoverActive] = useState(false);
+  const autoActive = !selectedSlug && !hoverActive;
+  useEffect(() => {
+    if (!autoActive) return;
+    const id = setInterval(() => {
+      setAutoIndex((i) => (i + 1) % PLANETS.length);
+    }, 2500);
+    return () => clearInterval(id);
+  }, [autoActive]);
+  const autoSlug = autoActive ? PLANETS[autoIndex].slug : null;
 
   const selectedCourse: Course | null = useMemo(
     () => (selectedSlug ? courses.find((c) => c.slug === selectedSlug) ?? null : null),
@@ -455,7 +476,9 @@ export function NeuralNavigator({ emphasizedSlugs = [] }: NavigatorProps = {}) {
                 data={p}
                 dimmed={selectedSlug !== null && selectedSlug !== p.slug}
                 emphasized={emphasizedSet.has(p.slug) && selectedSlug === null}
+                autoLabeled={autoSlug === p.slug}
                 onSelect={(position) => handleSelect(p.slug, position)}
+                onHoverChange={setHoverActive}
               />
             ))}
           </ParallaxGroup>
